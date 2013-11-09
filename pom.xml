@@ -1,12 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 	<groupId>org.bitbucket.cowwoc.preconditions</groupId>
 	<artifactId>core</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Preconditions</name>
+	<description>A Java library for enforcing preconditions.</description>
+	<url>http://code.google.com/p/cmake-maven-project/</url>
 
 	<licenses>
 		<license>
@@ -15,6 +21,13 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<scm>
+		<url>https://bitbucket.org/cowwoc/preconditions/</url>
+		<connection>scm:hg:https://bitbucket.org/cowwoc/preconditions/</connection>
+		<developerConnection>scm:hg:https://bitbucket.org/cowwoc/preconditions/</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
 	<developers>
 		<developer>

@@ -21,7 +21,7 @@ public class Preconditions<T>
 	 * @param parameter the value of the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	Preconditions(String name, T parameter)
+	protected Preconditions(String name, T parameter)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
