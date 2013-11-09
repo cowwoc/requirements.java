@@ -70,6 +70,7 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<arguments />
 	</properties>
 
 	<dependencies>
