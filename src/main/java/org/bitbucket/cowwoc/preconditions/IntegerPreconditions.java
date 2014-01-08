@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Gili Tzabari.
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.DiscreteDomain;
@@ -11,7 +15,7 @@ import com.google.common.collect.Range;
 public final class IntegerPreconditions extends NumberPreconditions<Integer>
 {
 	/**
-	 * Creates new IntgerPreconditions.
+	 * Creates new IntegerPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter

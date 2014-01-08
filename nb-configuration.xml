@@ -252,5 +252,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-spi-editor-hints-projects.text.x-java.org_2e_netbeans_2e_modules_2e_java_2e_hints_2e_bugs_2e_ThrowableNotThrown_2e_methodInvocation.enabled>true</org-netbeans-spi-editor-hints-projects.text.x-java.org_2e_netbeans_2e_modules_2e_java_2e_hints_2e_bugs_2e_ThrowableNotThrown_2e_methodInvocation.enabled>
         <org-netbeans-spi-editor-hints-projects.text.x-java.org_2e_netbeans_2e_modules_2e_java_2e_hints_2e_threading_2e_Tiny_2e_nestedSynchronized.enabled>true</org-netbeans-spi-editor-hints-projects.text.x-java.org_2e_netbeans_2e_modules_2e_java_2e_hints_2e_threading_2e_Tiny_2e_nestedSynchronized.enabled>
         <org-netbeans-spi-editor-hints-projects.text.x-java.Javac_5f_SERIALIZATION.enabled>true</org-netbeans-spi-editor-hints-projects.text.x-java.Javac_5f_SERIALIZATION.enabled>
+        <netbeans.hint.licensePath>${project.basedir}/licenseheader.txt</netbeans.hint.licensePath>
     </properties>
 </project-shared-configuration>
