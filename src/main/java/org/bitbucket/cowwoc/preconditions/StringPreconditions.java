@@ -43,10 +43,16 @@ public final class StringPreconditions extends Preconditions<String>
 	 * <p/>
 	 * @param range the range of acceptable parameter lengths
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is too long
+	 * @throws IllegalArgumentException if parameter's length is outside of the specified range
+	 * @throws NullPointerException     if parameter or range are null
 	 */
-	public StringPreconditions lengthIn(Range<Integer> range) throws IllegalArgumentException
+	public StringPreconditions lengthIn(Range<Integer> range)
+		throws NullPointerException, IllegalArgumentException
 	{
+		if (parameter == null)
+			throw new NullPointerException("parameter may not be null");
+		if (range == null)
+			throw new NullPointerException("range may not be null");
 		boolean inRange = range.contains(parameter.length());
 		if (inRange)
 			return this;
