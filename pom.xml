@@ -6,7 +6,7 @@
 		<version>7</version>
 	</parent>
 	<groupId>org.bitbucket.cowwoc.preconditions</groupId>
-	<artifactId>core</artifactId>
+	<artifactId>preconditions-core</artifactId>
 	<version>1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Preconditions</name>
