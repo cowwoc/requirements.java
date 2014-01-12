@@ -11,36 +11,19 @@ import java.net.URI;
  * <p/>
  * @author Gili Tzabari
  */
-public final class UriPreconditions extends Preconditions<URI>
+public final class UriPreconditions extends Preconditions<UriPreconditions, URI>
 {
 	/**
 	 * Creates new UriPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	UriPreconditions(String name, URI parameter)
 	{
 		super(name, parameter);
-	}
-
-	@Override
-	public UriPreconditions isEqualTo(Object value) throws IllegalArgumentException
-	{
-		return (UriPreconditions) super.isEqualTo(value);
-	}
-
-	@Override
-	public UriPreconditions stateIsNotNull() throws NullPointerException
-	{
-		return (UriPreconditions) super.stateIsNotNull();
-	}
-
-	@Override
-	public UriPreconditions isNotNull() throws NullPointerException
-	{
-		return (UriPreconditions) super.isNotNull();
 	}
 
 	/**

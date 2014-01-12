@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * <p/>
  * @author Gili Tzabari
  */
-public final class StringPreconditions extends Preconditions<String>
+public final class StringPreconditions extends Preconditions<StringPreconditions, String>
 {
 	private final static Pattern emailPattern = Pattern.compile("[^@]+@[^@]+");
 
@@ -22,7 +22,8 @@ public final class StringPreconditions extends Preconditions<String>
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	StringPreconditions(String name, String parameter)
 	{
@@ -75,7 +76,7 @@ public final class StringPreconditions extends Preconditions<String>
 	 */
 	public StringPreconditions isShorterThan(int maxLength) throws IllegalArgumentException
 	{
-		if (parameter.length() > maxLength)
+		if (parameter.length() >= maxLength)
 		{
 			throw new IllegalArgumentException(name + " may not be longer than " + maxLength +
 				" characters. Was: " + parameter.length());
@@ -94,24 +95,5 @@ public final class StringPreconditions extends Preconditions<String>
 		if (!emailPattern.matcher(parameter).matches())
 			throw new IllegalArgumentException(name + " is not a valid email address: " + parameter);
 		return this;
-	}
-
-	@Override
-	public StringPreconditions isNotNull() throws NullPointerException
-	{
-		return (StringPreconditions) super.isNotNull();
-	}
-
-	@Override
-	public StringPreconditions stateIsNotNull() throws NullPointerException
-	{
-		return (StringPreconditions) super.stateIsNotNull();
-	}
-
-	@Override
-	public StringPreconditions isEqualTo(Object value)
-		throws IllegalArgumentException
-	{
-		return (StringPreconditions) super.isEqualTo(value);
 	}
 }

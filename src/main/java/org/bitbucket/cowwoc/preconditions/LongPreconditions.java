@@ -12,14 +12,15 @@ import com.google.common.collect.Range;
  * <p/>
  * @author Gili Tzabari
  */
-public final class LongPreconditions extends NumberPreconditions<Long>
+public final class LongPreconditions extends NumberPreconditions<LongPreconditions, Long>
 {
 	/**
 	 * Creates new LongPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	LongPreconditions(String name, Long parameter)
 	{
@@ -35,7 +36,7 @@ public final class LongPreconditions extends NumberPreconditions<Long>
 	 */
 	public LongPreconditions isIn(Range<Long> range) throws IllegalArgumentException
 	{
-		return (LongPreconditions) isIn(range, DiscreteDomain.longs());
+		return isIn(range, DiscreteDomain.longs());
 	}
 
 	@Override

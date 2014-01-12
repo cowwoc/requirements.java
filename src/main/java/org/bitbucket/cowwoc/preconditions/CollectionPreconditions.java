@@ -12,36 +12,20 @@ import java.util.Collection;
  * @param <E> the type of element in the collection
  * @author Gili Tzabari
  */
-public final class CollectionPreconditions<E> extends Preconditions<Collection<E>>
+public final class CollectionPreconditions<E> extends
+	Preconditions<CollectionPreconditions<E>, Collection<E>>
 {
 	/**
 	 * Creates new MapPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	CollectionPreconditions(String name, Collection<E> parameter)
 	{
 		super(name, parameter);
-	}
-
-	@Override
-	public CollectionPreconditions<E> isEqualTo(Object value) throws IllegalArgumentException
-	{
-		return (CollectionPreconditions<E>) super.isEqualTo(value);
-	}
-
-	@Override
-	public CollectionPreconditions<E> stateIsNotNull() throws NullPointerException
-	{
-		return (CollectionPreconditions<E>) super.stateIsNotNull();
-	}
-
-	@Override
-	public CollectionPreconditions<E> isNotNull() throws NullPointerException
-	{
-		return (CollectionPreconditions<E>) super.isNotNull();
 	}
 
 	/**

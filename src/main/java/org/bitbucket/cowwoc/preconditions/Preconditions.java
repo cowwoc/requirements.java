@@ -14,22 +14,27 @@ import java.util.Objects;
  * Verifies preconditions of a parameter.
  * <p/>
  * @author Gili Tzabari
+ * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter
  */
-public class Preconditions<T>
+public class Preconditions<S extends Preconditions<S, T>, T>
 {
 	/**
 	 * Creates new Preconditions.
 	 * <p>
+	 * @param <S>       the type of preconditions that was instantiated
 	 * @param <T>       the type of the parameter
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <T> Preconditions<T> requireThat(String name, T parameter)
+	public static <S extends Preconditions<S, T>, T> S requireThat(String name, T parameter)
 	{
-		return new Preconditions<>(name, parameter);
+		@SuppressWarnings("unchecked")
+		S self = (S) new Preconditions<>(name, parameter);
+		return self;
 	}
 
 	/**
@@ -76,12 +81,13 @@ public class Preconditions<T>
 	 * Creates new MapPreconditions.
 	 * <p>
 	 * @param <K>       the type of key in the map
+	 * @param <V>       the type of value in the map
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static <K> MapPreconditions<K> requireThat(String name, Map<K, ?> parameter)
+	public static <K, V> MapPreconditions<K, V> requireThat(String name, Map<K, V> parameter)
 	{
 		return new MapPreconditions<>(name, parameter);
 	}
@@ -139,6 +145,7 @@ public class Preconditions<T>
 		return new ClassPreconditions<>(name, parameter);
 	}
 
+	protected final S self;
 	protected final String name;
 	protected final T parameter;
 
@@ -147,12 +154,21 @@ public class Preconditions<T>
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	protected Preconditions(String name, T parameter)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
+		if (name.trim().isEmpty())
+			throw new IllegalArgumentException("name may not be empty");
+		@SuppressWarnings(
+			{
+				"unchecked", "LocalVariableHidesMemberVariable"
+			})
+		S self = (S) this;
+		this.self = self;
 		this.name = name;
 		this.parameter = parameter;
 	}
@@ -163,11 +179,11 @@ public class Preconditions<T>
 	 * @return this
 	 * @throws NullPointerException if parameter is null
 	 */
-	public Preconditions<T> isNotNull() throws NullPointerException
+	public S isNotNull() throws NullPointerException
 	{
 		if (parameter == null)
 			throw new NullPointerException(name + " may not be null");
-		return this;
+		return self;
 	}
 
 	/**
@@ -176,11 +192,11 @@ public class Preconditions<T>
 	 * @return this
 	 * @throws IllegalStateException if parameter is null
 	 */
-	public Preconditions<T> stateIsNotNull() throws IllegalStateException
+	public S stateIsNotNull() throws IllegalStateException
 	{
 		if (parameter == null)
 			throw new IllegalStateException(name + " may not be null");
-		return this;
+		return self;
 	}
 
 	/**
@@ -190,12 +206,12 @@ public class Preconditions<T>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not equal to value
 	 */
-	public Preconditions<T> isEqualTo(Object value)
+	public S isEqualTo(T value)
 		throws IllegalArgumentException
 	{
 		if (!Objects.equals(parameter, value))
 			throw new IllegalArgumentException(name + " must be equal to " + value + ". Was: " + parameter);
-		return this;
+		return self;
 	}
 
 	/**
@@ -203,23 +219,20 @@ public class Preconditions<T>
 	 * <p/>
 	 * @param type the class to compare to
 	 * @return this
-	 * @throws NullPointerException     if {@code type} is null
+	 * @throws NullPointerException     if {@code parameter} or {@code type} are null
 	 * @throws IllegalArgumentException if {@code parameter} is not an instance of {@code type}
 	 */
-	public Preconditions<T> isInstanceOf(Class<?> type) throws NullPointerException
+	public S isInstanceOf(Class<?> type) throws NullPointerException
 	{
+		if (parameter == null)
+			throw new NullPointerException("parameter may not be null");
 		if (type == null)
 			throw new NullPointerException("type may not be null");
 		if (!type.isInstance(parameter))
 		{
-			Class<?> actualType;
-			if (parameter == null)
-				actualType = null;
-			else
-				actualType = parameter.getClass();
 			throw new IllegalArgumentException(name + " must be an instance of " + type + ". Was: " +
-				actualType);
+				parameter.getClass());
 		}
-		return this;
+		return self;
 	}
 }

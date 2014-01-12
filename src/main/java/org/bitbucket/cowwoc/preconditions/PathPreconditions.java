@@ -4,10 +4,10 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -16,36 +16,19 @@ import java.nio.file.attribute.BasicFileAttributes;
  * <p/>
  * @author Gili Tzabari
  */
-public final class PathPreconditions extends Preconditions<Path>
+public final class PathPreconditions extends Preconditions<PathPreconditions, Path>
 {
 	/**
 	 * Creates new PathPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	PathPreconditions(String name, Path parameter)
 	{
 		super(name, parameter);
-	}
-
-	@Override
-	public PathPreconditions isEqualTo(Object value) throws IllegalArgumentException
-	{
-		return (PathPreconditions) super.isEqualTo(value);
-	}
-
-	@Override
-	public PathPreconditions stateIsNotNull() throws NullPointerException
-	{
-		return (PathPreconditions) super.stateIsNotNull();
-	}
-
-	@Override
-	public PathPreconditions isNotNull() throws NullPointerException
-	{
-		return (PathPreconditions) super.isNotNull();
 	}
 
 	/**
@@ -84,7 +67,7 @@ public final class PathPreconditions extends Preconditions<Path>
 		{
 			attrs = Files.readAttributes(parameter, BasicFileAttributes.class, options);
 		}
-		catch (FileNotFoundException e)
+		catch (NoSuchFileException e)
 		{
 			throw new IllegalArgumentException(name + " refers to a non-existent path: " +
 				parameter.toAbsolutePath(), e);
@@ -113,12 +96,12 @@ public final class PathPreconditions extends Preconditions<Path>
 		{
 			attrs = Files.readAttributes(parameter, BasicFileAttributes.class, options);
 		}
-		catch (FileNotFoundException e)
+		catch (NoSuchFileException e)
 		{
 			throw new IllegalArgumentException(name + " refers to a non-existent path: " +
 				parameter.toAbsolutePath(), e);
 		}
-		if (!attrs.isRegularFile())
+		if (!attrs.isDirectory())
 		{
 			throw new IllegalArgumentException(name + " must refer to a directory. Was: " +
 				parameter.toAbsolutePath());

@@ -12,14 +12,15 @@ import com.google.common.collect.Range;
  * <p/>
  * @author Gili Tzabari
  */
-public final class IntegerPreconditions extends NumberPreconditions<Integer>
+public final class IntegerPreconditions extends NumberPreconditions<IntegerPreconditions, Integer>
 {
 	/**
 	 * Creates new IntegerPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	IntegerPreconditions(String name, Integer parameter)
 	{
@@ -35,7 +36,7 @@ public final class IntegerPreconditions extends NumberPreconditions<Integer>
 	 */
 	public IntegerPreconditions isIn(Range<Integer> range) throws IllegalArgumentException
 	{
-		return (IntegerPreconditions) isIn(range, DiscreteDomain.integers());
+		return isIn(range, DiscreteDomain.integers());
 	}
 
 	@Override

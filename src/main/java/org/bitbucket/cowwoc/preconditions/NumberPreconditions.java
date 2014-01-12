@@ -10,17 +10,20 @@ import com.google.common.collect.Range;
 /**
  * Verifies preconditions of a Number parameter.
  * <p/>
+ * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-public abstract class NumberPreconditions<T extends Number & Comparable<T>> extends Preconditions<T>
+public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T extends Comparable<? super T>>
+	extends Preconditions<S, T>
 {
 	/**
 	 * Creates new NumberPreconditions.
 	 * <p>
 	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	NumberPreconditions(String name, T parameter)
 	{
@@ -36,12 +39,12 @@ public abstract class NumberPreconditions<T extends Number & Comparable<T>> exte
 	 * @throws NullPointerException     if domain is null
 	 * @throws IllegalArgumentException if the parameter is not in range
 	 */
-	protected NumberPreconditions<T> isIn(Range<T> range, DiscreteDomain<T> domain)
+	protected S isIn(Range<T> range, DiscreteDomain<T> domain)
 		throws IllegalArgumentException
 	{
 		boolean inRange = range.contains(parameter);
 		if (inRange)
-			return this;
+			return self;
 		Range<T> canonical = range.canonical(domain);
 		throw new IllegalArgumentException(name + " must be in the range[" + canonical.lowerEndpoint() +
 			", " + canonical.upperEndpoint() + "): " + parameter);
@@ -53,7 +56,7 @@ public abstract class NumberPreconditions<T extends Number & Comparable<T>> exte
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is negative
 	 */
-	public abstract NumberPreconditions<T> isNotNegative();
+	public abstract S isNotNegative();
 
 	/**
 	 * Ensures that the parameter is positive.
@@ -61,5 +64,5 @@ public abstract class NumberPreconditions<T extends Number & Comparable<T>> exte
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not positive
 	 */
-	public abstract NumberPreconditions<T> isPositive();
+	public abstract S isPositive();
 }
