@@ -16,27 +16,27 @@ public class UriPreconditionsTest
 	public void nameIsNull()
 	{
 		URI parameter = URI.create("http://host.com/");
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
 		URI parameter = URI.create("http://host.com/");
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
 	public void isAbsoluteTrue()
 	{
 		URI parameter = URI.create("http://host.com/index.html");
-		Preconditions.requireThat("parameter", parameter).isAbsolute();
+		Preconditions.requireThat(parameter, "parameter").isAbsolute();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isAbsoluteFalse()
 	{
 		URI parameter = URI.create("../index.html");
-		Preconditions.requireThat("parameter", parameter).isAbsolute();
+		Preconditions.requireThat(parameter, "parameter").isAbsolute();
 	}
 }

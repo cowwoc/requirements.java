@@ -17,14 +17,14 @@ public final class LongPreconditions extends NumberPreconditions<LongPreconditio
 	/**
 	 * Creates new LongPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	LongPreconditions(String name, Long parameter)
+	LongPreconditions(Long parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

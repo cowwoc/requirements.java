@@ -16,14 +16,14 @@ public class IntegerPreconditionsTest
 	public void nameIsNull()
 	{
 		Integer parameter = 1;
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
 		Integer parameter = 1;
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class IntegerPreconditionsTest
 	{
 		Integer parameter = 1;
 		Range<Integer> range = Range.closed(0, 2);
-		Preconditions.requireThat("parameter", parameter).isIn(range);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -39,37 +39,37 @@ public class IntegerPreconditionsTest
 	{
 		Integer parameter = 1;
 		Range<Integer> range = Range.closed(10, 20);
-		Preconditions.requireThat("parameter", parameter).isIn(range);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
 	}
 
 	@Test
 	public void isNotNegativeTrue()
 	{
 		Integer parameter = 0;
-		Preconditions.requireThat("parameter", parameter).isNotNegative();
+		Preconditions.requireThat(parameter, "parameter").isNotNegative();
 
 		parameter = 1;
-		Preconditions.requireThat("parameter", parameter).isNotNegative();
+		Preconditions.requireThat(parameter, "parameter").isNotNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotNegativeFalse()
 	{
 		Integer parameter = -1;
-		Preconditions.requireThat("parameter", parameter).isNotNegative();
+		Preconditions.requireThat(parameter, "parameter").isNotNegative();
 	}
 
 	@Test
 	public void isPositiveTrue()
 	{
 		Integer parameter = 1;
-		Preconditions.requireThat("parameter", parameter).isPositive();
+		Preconditions.requireThat(parameter, "parameter").isPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isPositiveFalse()
 	{
 		Integer parameter = 0;
-		Preconditions.requireThat("parameter", parameter).isPositive();
+		Preconditions.requireThat(parameter, "parameter").isPositive();
 	}
 }

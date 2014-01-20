@@ -17,14 +17,14 @@ public final class IntegerPreconditions extends NumberPreconditions<IntegerPreco
 	/**
 	 * Creates new IntegerPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	IntegerPreconditions(String name, Integer parameter)
+	IntegerPreconditions(Integer parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

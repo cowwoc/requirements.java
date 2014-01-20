@@ -18,14 +18,14 @@ public final class CollectionPreconditions<E> extends
 	/**
 	 * Creates new MapPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	CollectionPreconditions(String name, Collection<E> parameter)
+	CollectionPreconditions(Collection<E> parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

@@ -24,16 +24,16 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * <p>
 	 * @param <S>       the type of preconditions that was instantiated
 	 * @param <T>       the type of the parameter
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <S extends Preconditions<S, T>, T> S requireThat(String name, T parameter)
+	public static <S extends Preconditions<S, T>, T> S requireThat(T parameter, String name)
 	{
 		@SuppressWarnings("unchecked")
-		S self = (S) new Preconditions<>(name, parameter);
+		S self = (S) new Preconditions<>(parameter, name);
 		return self;
 	}
 
@@ -41,40 +41,40 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * Creates new CollectionPreconditions.
 	 * <p>
 	 * @param <E>       the type of element in the collection
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static <E> CollectionPreconditions<E> requireThat(String name, Collection<E> parameter)
+	public static <E> CollectionPreconditions<E> requireThat(Collection<E> parameter, String name)
 	{
-		return new CollectionPreconditions<>(name, parameter);
+		return new CollectionPreconditions<>(parameter, name);
 	}
 
 	/**
 	 * Creates new IntegerPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static IntegerPreconditions requireThat(String name, Integer parameter)
+	public static IntegerPreconditions requireThat(Integer parameter, String name)
 	{
-		return new IntegerPreconditions(name, parameter);
+		return new IntegerPreconditions(parameter, name);
 	}
 
 	/**
 	 * Creates new LongPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static LongPreconditions requireThat(String name, Long parameter)
+	public static LongPreconditions requireThat(Long parameter, String name)
 	{
-		return new LongPreconditions(name, parameter);
+		return new LongPreconditions(parameter, name);
 	}
 
 	/**
@@ -82,82 +82,82 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * <p>
 	 * @param <K>       the type of key in the map
 	 * @param <V>       the type of value in the map
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static <K, V> MapPreconditions<K, V> requireThat(String name, Map<K, V> parameter)
+	public static <K, V> MapPreconditions<K, V> requireThat(Map<K, V> parameter, String name)
 	{
-		return new MapPreconditions<>(name, parameter);
+		return new MapPreconditions<>(parameter, name);
 	}
 
 	/**
 	 * Creates new PathPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static PathPreconditions requireThat(String name, Path parameter)
+	public static PathPreconditions requireThat(Path parameter, String name)
 	{
-		return new PathPreconditions(name, parameter);
+		return new PathPreconditions(parameter, name);
 	}
 
 	/**
 	 * Creates new StringPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static StringPreconditions requireThat(String name, String parameter)
+	public static StringPreconditions requireThat(String parameter, String name)
 	{
-		return new StringPreconditions(name, parameter);
+		return new StringPreconditions(parameter, name);
 	}
 
 	/**
 	 * Creates new UriPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static UriPreconditions requireThat(String name, URI parameter)
+	public static UriPreconditions requireThat(URI parameter, String name)
 	{
-		return new UriPreconditions(name, parameter);
+		return new UriPreconditions(parameter, name);
 	}
 
 	/**
 	 * Creates new ClassPreconditions.
 	 * <p>
 	 * @param <T>       the type of class
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException if name is null
 	 */
-	public static <T> ClassPreconditions<T> requireThat(String name, Class<T> parameter)
+	public static <T> ClassPreconditions<T> requireThat(Class<T> parameter, String name)
 	{
-		return new ClassPreconditions<>(name, parameter);
+		return new ClassPreconditions<>(parameter, name);
 	}
 
 	protected final S self;
-	protected final String name;
 	protected final T parameter;
+	protected final String name;
 
 	/**
 	 * Creates new Preconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	protected Preconditions(String name, T parameter)
+	protected Preconditions(T parameter, String name)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
@@ -169,8 +169,8 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 			})
 		S self = (S) this;
 		this.self = self;
-		this.name = name;
 		this.parameter = parameter;
+		this.name = name;
 	}
 
 	/**

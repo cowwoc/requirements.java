@@ -20,14 +20,14 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	/**
 	 * Creates new NumberPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	NumberPreconditions(String name, T parameter)
+	NumberPreconditions(T parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

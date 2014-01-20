@@ -18,14 +18,14 @@ public final class MapPreconditions<K, V> extends Preconditions<MapPreconditions
 	/**
 	 * Creates new MapPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	MapPreconditions(String name, Map<K, V> parameter)
+	MapPreconditions(Map<K, V> parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

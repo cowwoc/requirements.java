@@ -16,41 +16,41 @@ public class ClassPreconditionsTest
 	public void nameIsNull()
 	{
 		Class<Object> parameter = Object.class;
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmptyForCollection()
 	{
 		Class<Object> parameter = Object.class;
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
 	public void isSupertypeOfTrue()
 	{
 		Class<Object> parameter = Object.class;
-		Preconditions.requireThat("parameter", parameter).isSupertypeOf(Random.class);
+		Preconditions.requireThat(parameter, "parameter").isSupertypeOf(Random.class);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isSupertypeOfFalse()
 	{
 		Class<Random> parameter = Random.class;
-		Preconditions.requireThat("parameter", parameter).isSupertypeOf(Object.class);
+		Preconditions.requireThat(parameter, "parameter").isSupertypeOf(Object.class);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isSupertypeOfNullType()
 	{
 		Class<Random> parameter = Random.class;
-		Preconditions.requireThat("parameter", parameter).isSupertypeOf(null);
+		Preconditions.requireThat(parameter, "parameter").isSupertypeOf(null);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isSupertypeOfNullParameter()
 	{
 		Class<Random> parameter = null;
-		Preconditions.requireThat("parameter", parameter).isSupertypeOf(Random.class);
+		Preconditions.requireThat(parameter, "parameter").isSupertypeOf(Random.class);
 	}
 }

@@ -16,14 +16,14 @@ public final class UriPreconditions extends Preconditions<UriPreconditions, URI>
 	/**
 	 * Creates new UriPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	UriPreconditions(String name, URI parameter)
+	UriPreconditions(URI parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

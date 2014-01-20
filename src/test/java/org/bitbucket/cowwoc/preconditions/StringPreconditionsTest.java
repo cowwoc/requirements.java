@@ -16,56 +16,56 @@ public class StringPreconditionsTest
 	public void nameIsNull()
 	{
 		String parameter = "value";
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
 		String parameter = "value";
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
 	public void isNotEmptyTrue()
 	{
 		String parameter = "value";
-		Preconditions.requireThat("parameter", parameter).isNotEmpty();
+		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotEmptyFalse()
 	{
 		String parameter = "";
-		Preconditions.requireThat("parameter", parameter).isNotEmpty();
+		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
 	}
 
 	@Test
 	public void isShorterThanTrue()
 	{
 		String parameter = "value";
-		Preconditions.requireThat("parameter", parameter).isShorterThan(10);
+		Preconditions.requireThat(parameter, "parameter").isShorterThan(10);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isShorterThanFalse()
 	{
 		String parameter = "1234567890";
-		Preconditions.requireThat("parameter", parameter).isShorterThan(10);
+		Preconditions.requireThat(parameter, "parameter").isShorterThan(10);
 	}
 
 	@Test
 	public void isValidEmailTrue()
 	{
 		String parameter = "name@gmail.com";
-		Preconditions.requireThat("parameter", parameter).isValidEmail();
+		Preconditions.requireThat(parameter, "parameter").isValidEmail();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isValidEmailFalse()
 	{
 		String parameter = "name.com";
-		Preconditions.requireThat("parameter", parameter).isValidEmail();
+		Preconditions.requireThat(parameter, "parameter").isValidEmail();
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class StringPreconditionsTest
 	{
 		String parameter = "123";
 		Range<Integer> range = Range.closed(1, 5);
-		Preconditions.requireThat("parameter", parameter).lengthIn(range);
+		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -81,7 +81,7 @@ public class StringPreconditionsTest
 	{
 		String parameter = "1234567";
 		Range<Integer> range = Range.closed(1, 5);
-		Preconditions.requireThat("parameter", parameter).lengthIn(range);
+		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -89,7 +89,7 @@ public class StringPreconditionsTest
 	{
 		String parameter = null;
 		Range<Integer> range = Range.closed(1, 5);
-		Preconditions.requireThat("parameter", parameter).lengthIn(range);
+		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -97,6 +97,6 @@ public class StringPreconditionsTest
 	{
 		String parameter = "1234567";
 		Range<Integer> range = null;
-		Preconditions.requireThat("parameter", parameter).lengthIn(range);
+		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
 	}
 }

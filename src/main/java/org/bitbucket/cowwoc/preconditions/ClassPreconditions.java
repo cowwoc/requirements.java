@@ -15,14 +15,14 @@ public class ClassPreconditions<T> extends Preconditions<ClassPreconditions<T>, 
 	/**
 	 * Creates new ClassPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	ClassPreconditions(String name, Class<T> parameter)
+	ClassPreconditions(Class<T> parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

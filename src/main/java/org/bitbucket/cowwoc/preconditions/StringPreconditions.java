@@ -20,14 +20,14 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	/**
 	 * Creates new StringPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	StringPreconditions(String name, String parameter)
+	StringPreconditions(String parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

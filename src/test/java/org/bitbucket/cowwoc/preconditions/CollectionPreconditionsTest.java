@@ -17,27 +17,27 @@ public class CollectionPreconditionsTest
 	public void nameIsNull()
 	{
 		Collection<String> parameter = Collections.emptyList();
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
 		Collection<String> parameter = Collections.emptyList();
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
 	public void isNotEmptyTrue()
 	{
 		Collection<String> parameter = Collections.singleton("element");
-		Preconditions.requireThat("parameter", parameter).isNotEmpty();
+		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotEmptyFalse()
 	{
 		Collection<String> parameter = Collections.emptyList();
-		Preconditions.requireThat("parameter", parameter).isNotEmpty();
+		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
 	}
 }

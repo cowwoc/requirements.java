@@ -21,14 +21,14 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	/**
 	 * Creates new PathPreconditions.
 	 * <p>
-	 * @param name      the name of the parameter
 	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	PathPreconditions(String name, Path parameter)
+	PathPreconditions(Path parameter, String name)
 	{
-		super(name, parameter);
+		super(parameter, name);
 	}
 
 	/**

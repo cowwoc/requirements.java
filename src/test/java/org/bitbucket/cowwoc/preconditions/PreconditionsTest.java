@@ -16,49 +16,49 @@ public class PreconditionsTest
 	public void nameIsNull()
 	{
 		Object parameter = new Object();
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
 		Object parameter = new Object();
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
 	public void isEqualsTrue()
 	{
 		Object parameter = new Object();
-		Preconditions.requireThat("parameter", parameter).isEqualTo(parameter);
+		Preconditions.requireThat(parameter, "parameter").isEqualTo(parameter);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualsFalse()
 	{
 		Object parameter = new Object();
-		Preconditions.requireThat("parameter", parameter).isEqualTo(new Object());
+		Preconditions.requireThat(parameter, "parameter").isEqualTo(new Object());
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isInstanceOfNullParameter()
 	{
 		Random parameter = null;
-		Preconditions.requireThat("parameter", parameter).isInstanceOf(Random.class);
+		Preconditions.requireThat(parameter, "parameter").isInstanceOf(Random.class);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isInstanceOfNullValue()
 	{
 		Random parameter = new Random();
-		Preconditions.requireThat("parameter", parameter).isInstanceOf(null);
+		Preconditions.requireThat(parameter, "parameter").isInstanceOf(null);
 	}
 
 	@Test
 	public void isInstanceOfTrue()
 	{
 		Random parameter = new Random();
-		Preconditions.requireThat("parameter", parameter).isInstanceOf(Random.class).
+		Preconditions.requireThat(parameter, "parameter").isInstanceOf(Random.class).
 			isInstanceOf(Object.class);
 	}
 
@@ -66,34 +66,34 @@ public class PreconditionsTest
 	public void isInstanceOfFalse()
 	{
 		Random parameter = new Random();
-		Preconditions.requireThat("parameter", parameter).isInstanceOf(String.class);
+		Preconditions.requireThat(parameter, "parameter").isInstanceOf(String.class);
 	}
 
 	@Test
 	public void isNotNullTrue()
 	{
 		Object parameter = new Object();
-		Preconditions.requireThat("parameter", parameter).isNotNull();
+		Preconditions.requireThat(parameter, "parameter").isNotNull();
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isNotNullFalse()
 	{
 		Object parameter = null;
-		Preconditions.requireThat("parameter", parameter).isNotNull();
+		Preconditions.requireThat(parameter, "parameter").isNotNull();
 	}
 
 	@Test
 	public void stateIsNotNullTrue()
 	{
 		Object parameter = new Object();
-		Preconditions.requireThat("parameter", parameter).stateIsNotNull();
+		Preconditions.requireThat(parameter, "parameter").stateIsNotNull();
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void stateIsNotNullFalse()
 	{
 		Object parameter = null;
-		Preconditions.requireThat("parameter", parameter).stateIsNotNull();
+		Preconditions.requireThat(parameter, "parameter").stateIsNotNull();
 	}
 }

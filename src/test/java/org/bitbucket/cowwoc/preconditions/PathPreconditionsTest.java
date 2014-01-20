@@ -19,14 +19,14 @@ public class PathPreconditionsTest
 	public void nameIsNull()
 	{
 		Path parameter = Paths.get("/");
-		Preconditions.requireThat(null, parameter);
+		Preconditions.requireThat(parameter, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
 		Path parameter = Paths.get("/");
-		Preconditions.requireThat("", parameter);
+		Preconditions.requireThat(parameter, "");
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class PathPreconditionsTest
 		Path parameter = Files.createTempFile(null, null);
 		try
 		{
-			Preconditions.requireThat("parameter", parameter).exists();
+			Preconditions.requireThat(parameter, "parameter").exists();
 		}
 		finally
 		{
@@ -48,7 +48,7 @@ public class PathPreconditionsTest
 	{
 		Path parameter = Files.createTempFile(null, null);
 		Files.delete(parameter);
-		Preconditions.requireThat("parameter", parameter).exists();
+		Preconditions.requireThat(parameter, "parameter").exists();
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class PathPreconditionsTest
 		Path parameter = Files.createTempDirectory(null);
 		try
 		{
-			Preconditions.requireThat("parameter", parameter).isDirectory();
+			Preconditions.requireThat(parameter, "parameter").isDirectory();
 		}
 		finally
 		{
@@ -70,7 +70,7 @@ public class PathPreconditionsTest
 	{
 		Path parameter = Files.createTempDirectory(null);
 		Files.delete(parameter);
-		Preconditions.requireThat("parameter", parameter).isDirectory();
+		Preconditions.requireThat(parameter, "parameter").isDirectory();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -79,7 +79,7 @@ public class PathPreconditionsTest
 		Path parameter = Files.createTempFile(null, null);
 		try
 		{
-			Preconditions.requireThat("parameter", parameter).isDirectory();
+			Preconditions.requireThat(parameter, "parameter").isDirectory();
 		}
 		finally
 		{
@@ -93,7 +93,7 @@ public class PathPreconditionsTest
 		Path parameter = Files.createTempFile(null, null);
 		try
 		{
-			Preconditions.requireThat("parameter", parameter).isRegularFile();
+			Preconditions.requireThat(parameter, "parameter").isRegularFile();
 		}
 		finally
 		{
@@ -106,7 +106,7 @@ public class PathPreconditionsTest
 	{
 		Path parameter = Files.createTempFile(null, null);
 		Files.delete(parameter);
-		Preconditions.requireThat("parameter", parameter).isRegularFile();
+		Preconditions.requireThat(parameter, "parameter").isRegularFile();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -115,7 +115,7 @@ public class PathPreconditionsTest
 		Path parameter = Files.createTempDirectory(null);
 		try
 		{
-			Preconditions.requireThat("parameter", parameter).isRegularFile();
+			Preconditions.requireThat(parameter, "parameter").isRegularFile();
 		}
 		finally
 		{
