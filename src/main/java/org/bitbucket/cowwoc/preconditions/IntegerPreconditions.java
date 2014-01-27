@@ -23,6 +23,7 @@ public final class IntegerPreconditions extends NumberPreconditions<IntegerPreco
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	IntegerPreconditions(Integer parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}

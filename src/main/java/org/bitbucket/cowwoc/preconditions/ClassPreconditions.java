@@ -21,6 +21,7 @@ public class ClassPreconditions<T> extends Preconditions<ClassPreconditions<T>, 
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	ClassPreconditions(Class<T> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}
@@ -33,7 +34,8 @@ public class ClassPreconditions<T> extends Preconditions<ClassPreconditions<T>, 
 	 * @throws NullPointerException     if {@code parameter} or {@code type} are null
 	 * @throws IllegalArgumentException if {@code parameter} is not a supertype of {@code type}
 	 */
-	public ClassPreconditions<T> isSupertypeOf(Class<?> type) throws NullPointerException
+	public ClassPreconditions<T> isSupertypeOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
 	{
 		if (parameter == null)
 			throw new NullPointerException("parameter may not be null");

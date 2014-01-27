@@ -24,6 +24,7 @@ public final class CollectionPreconditions<E> extends
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	CollectionPreconditions(Collection<E> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}

@@ -26,6 +26,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	StringPreconditions(String parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}

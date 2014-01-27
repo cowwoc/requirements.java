@@ -23,6 +23,7 @@ public final class LongPreconditions extends NumberPreconditions<LongPreconditio
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	LongPreconditions(Long parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}

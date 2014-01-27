@@ -14,7 +14,7 @@ import com.google.common.collect.Range;
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T extends Comparable<? super T>>
+public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
 	extends Preconditions<S, T>
 {
 	/**
@@ -26,6 +26,7 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	NumberPreconditions(T parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}
@@ -40,14 +41,15 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @throws IllegalArgumentException if the parameter is not in range
 	 */
 	protected S isIn(Range<T> range, DiscreteDomain<T> domain)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
+		Preconditions.requireThat(domain, "domain").isNotNull();
 		boolean inRange = range.contains(parameter);
 		if (inRange)
 			return self;
 		Range<T> canonical = range.canonical(domain);
-		throw new IllegalArgumentException(name + " must be in the range[" + canonical.lowerEndpoint() +
-			", " + canonical.upperEndpoint() + "): " + parameter);
+		throw new IllegalArgumentException(name + " (" + parameter + ") must be in the range [" +
+			canonical.lowerEndpoint() + ", " + canonical.upperEndpoint() + "]");
 	}
 
 	/**
@@ -56,7 +58,7 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is negative
 	 */
-	public abstract S isNotNegative();
+	public abstract S isNotNegative() throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is positive.
@@ -64,5 +66,23 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not positive
 	 */
-	public abstract S isPositive();
+	public abstract S isPositive() throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter is greater than a value.
+	 * <p>
+	 * @param value the value the parameter must be greater than
+	 * @param name  the name of the value
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is less than or equal to value
+	 */
+	public S isGreaterThan(long value, String name) throws IllegalArgumentException
+	{
+		if (parameter.longValue() <= value)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
+				name + " (" + value + ")");
+		}
+		return self;
+	}
 }

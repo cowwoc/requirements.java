@@ -31,6 +31,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static <S extends Preconditions<S, T>, T> S requireThat(T parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		@SuppressWarnings("unchecked")
 		S self = (S) new Preconditions<>(parameter, name);
@@ -44,9 +45,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static <E> CollectionPreconditions<E> requireThat(Collection<E> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new CollectionPreconditions<>(parameter, name);
 	}
@@ -57,9 +60,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static IntegerPreconditions requireThat(Integer parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new IntegerPreconditions(parameter, name);
 	}
@@ -70,9 +75,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static LongPreconditions requireThat(Long parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new LongPreconditions(parameter, name);
 	}
@@ -85,9 +92,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static <K, V> MapPreconditions<K, V> requireThat(Map<K, V> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new MapPreconditions<>(parameter, name);
 	}
@@ -98,9 +107,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static PathPreconditions requireThat(Path parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new PathPreconditions(parameter, name);
 	}
@@ -111,9 +122,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static StringPreconditions requireThat(String parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new StringPreconditions(parameter, name);
 	}
@@ -124,9 +137,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static UriPreconditions requireThat(URI parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new UriPreconditions(parameter, name);
 	}
@@ -138,9 +153,11 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException if name is null
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
 	public static <T> ClassPreconditions<T> requireThat(Class<T> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new ClassPreconditions<>(parameter, name);
 	}
@@ -158,6 +175,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	protected Preconditions(T parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
@@ -206,8 +224,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not equal to value
 	 */
-	public S isEqualTo(T value)
-		throws IllegalArgumentException
+	public S isEqualTo(T value) throws IllegalArgumentException
 	{
 		if (!Objects.equals(parameter, value))
 			throw new IllegalArgumentException(name + " must be equal to " + value + ". Was: " + parameter);
@@ -222,7 +239,8 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @throws NullPointerException     if {@code parameter} or {@code type} are null
 	 * @throws IllegalArgumentException if {@code parameter} is not an instance of {@code type}
 	 */
-	public S isInstanceOf(Class<?> type) throws NullPointerException
+	public S isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
 	{
 		if (parameter == null)
 			throw new NullPointerException("parameter may not be null");

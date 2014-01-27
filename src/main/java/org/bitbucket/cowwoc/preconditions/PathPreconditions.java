@@ -27,6 +27,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	PathPreconditions(Path parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}

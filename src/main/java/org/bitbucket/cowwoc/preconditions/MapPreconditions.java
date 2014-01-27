@@ -24,6 +24,7 @@ public final class MapPreconditions<K, V> extends Preconditions<MapPreconditions
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	MapPreconditions(Map<K, V> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name);
 	}
