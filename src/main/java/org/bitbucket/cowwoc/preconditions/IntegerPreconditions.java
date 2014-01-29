@@ -39,20 +39,4 @@ public final class IntegerPreconditions extends NumberPreconditions<IntegerPreco
 	{
 		return isIn(range, DiscreteDomain.integers());
 	}
-
-	@Override
-	public IntegerPreconditions isNotNegative()
-	{
-		if (parameter.compareTo(0) < 0)
-			throw new IllegalArgumentException(name + " may not be negative");
-		return this;
-	}
-
-	@Override
-	public IntegerPreconditions isPositive()
-	{
-		if (parameter.compareTo(0) <= 0)
-			throw new IllegalArgumentException(name + " may not be negative");
-		return this;
-	}
 }

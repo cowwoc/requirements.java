@@ -27,9 +27,25 @@ public class LongPreconditionsTest
 	}
 
 	@Test
-	public void isInTrue()
+	public void isInLowerBound()
+	{
+		Long parameter = 0L;
+		Range<Long> range = Range.closed(0L, 2L);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
+	@Test
+	public void isInBounds()
 	{
 		Long parameter = 1L;
+		Range<Long> range = Range.closed(0L, 2L);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
+	@Test
+	public void isInUpperBound()
+	{
+		Long parameter = 2L;
 		Range<Long> range = Range.closed(0L, 2L);
 		Preconditions.requireThat(parameter, "parameter").isIn(range);
 	}
@@ -40,78 +56,5 @@ public class LongPreconditionsTest
 		Long parameter = 1L;
 		Range<Long> range = Range.closed(10L, 20L);
 		Preconditions.requireThat(parameter, "parameter").isIn(range);
-	}
-
-	@Test
-	public void isNotNegativeTrue()
-	{
-		Long parameter = 0L;
-		Preconditions.requireThat(parameter, "parameter").isNotNegative();
-
-		parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isNotNegative();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotNegativeFalse()
-	{
-		Long parameter = -1L;
-		Preconditions.requireThat(parameter, "parameter").isNotNegative();
-	}
-
-	@Test
-	public void isPositiveTrue()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isPositive();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositiveFalse()
-	{
-		Long parameter = 0L;
-		Preconditions.requireThat(parameter, "parameter").isPositive();
-	}
-
-	@Test
-	public void isGreaterThanIntegerTrue()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isGreaterThan(0, "value");
-	}
-
-	@Test
-	public void isGreaterThanLongTrue()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "intParameter").isGreaterThan(0L, "value");
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanIntegerFalse()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isGreaterThan(1, "value");
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanLongFalseEquals()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isGreaterThan(1L, "value");
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanIntegerFalseSmaller()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isGreaterThan(2, "value");
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanLongFalseSmaller()
-	{
-		Long parameter = 1L;
-		Preconditions.requireThat(parameter, "parameter").isGreaterThan(2L, "value");
 	}
 }

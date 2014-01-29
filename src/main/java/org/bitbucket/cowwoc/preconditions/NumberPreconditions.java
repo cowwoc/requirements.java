@@ -53,12 +53,43 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	}
 
 	/**
+	 * Ensures that the parameter is negative.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is not negative
+	 */
+	public S isNegative() throws IllegalArgumentException
+	{
+		if (parameter.longValue() >= 0L)
+			throw new IllegalArgumentException(name + " must be negative");
+		return self;
+	}
+
+	/**
 	 * Ensures that the parameter is not negative.
 	 * <p/>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is negative
 	 */
-	public abstract S isNotNegative() throws IllegalArgumentException;
+	public S isNotNegative() throws IllegalArgumentException
+	{
+		if (parameter.longValue() < 0L)
+			throw new IllegalArgumentException(name + " may not be negative");
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is zero.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is not zero
+	 */
+	public S isZero() throws IllegalArgumentException
+	{
+		if (parameter.longValue() == 0L)
+			throw new IllegalArgumentException(name + " may not be negative");
+		return self;
+	}
 
 	/**
 	 * Ensures that the parameter is positive.
@@ -66,7 +97,62 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not positive
 	 */
-	public abstract S isPositive() throws IllegalArgumentException;
+	public S isPositive() throws IllegalArgumentException
+	{
+		if (parameter.longValue() <= 0L)
+			throw new IllegalArgumentException(name + " must be positive");
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is not positive.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is positive
+	 */
+	public S isNotPositive() throws IllegalArgumentException
+	{
+		if (parameter.longValue() > 0L)
+			throw new IllegalArgumentException(name + " may not be positive");
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is less than a value.
+	 * <p>
+	 * @param value the value the parameter must be less than
+	 * @param name  the name of the value
+	 * @return this
+	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
+	 *                                  {@code value}
+	 */
+	public S isLessThan(long value, String name) throws IllegalArgumentException
+	{
+		if (parameter.longValue() >= value)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
+				name + " (" + value + ")");
+		}
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is less than or equal to value.
+	 * <p>
+	 * @param value the value the parameter must be less than or equal to
+	 * @param name  the name of the value
+	 * @return this
+	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
+	 */
+	public S isLessThanOrEqualTo(long value, String name) throws IllegalArgumentException
+	{
+		if (parameter.longValue() < value)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
+				"or equal to " + name + " (" + value + ")");
+		}
+		return self;
+	}
 
 	/**
 	 * Ensures that the parameter is greater than a value.
@@ -82,6 +168,24 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
 				name + " (" + value + ")");
+		}
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is greater than or bigger than a value.
+	 * <p>
+	 * @param value the value the parameter must be greater than or equal to
+	 * @param name  the name of the value
+	 * @return this
+	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
+	 */
+	public S isGreaterThanOrEqualTo(long value, String name) throws IllegalArgumentException
+	{
+		if (parameter.longValue() < value)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
+				"or equal to " + name + " (" + value + ")");
 		}
 		return self;
 	}

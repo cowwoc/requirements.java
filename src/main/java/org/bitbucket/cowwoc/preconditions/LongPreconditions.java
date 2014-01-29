@@ -39,20 +39,4 @@ public final class LongPreconditions extends NumberPreconditions<LongPreconditio
 	{
 		return isIn(range, DiscreteDomain.longs());
 	}
-
-	@Override
-	public LongPreconditions isNotNegative()
-	{
-		if (parameter.compareTo(0L) < 0)
-			throw new IllegalArgumentException(name + " may not be negative");
-		return this;
-	}
-
-	@Override
-	public LongPreconditions isPositive()
-	{
-		if (parameter.compareTo(0L) <= 0)
-			throw new IllegalArgumentException(name + " may not be negative");
-		return this;
-	}
 }
