@@ -55,33 +55,19 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	}
 
 	/**
-	 * Creates new IntegerPreconditions.
+	 * Creates new NumberPreconditions.
 	 * <p>
+	 * @param <T>       the type of the number
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static IntegerPreconditions requireThat(Integer parameter, String name)
-		throws NullPointerException, IllegalArgumentException
+	public static <T extends Number & Comparable<? super T>> NumberPreconditions<T> requireThat(
+		T parameter, String name) throws NullPointerException, IllegalArgumentException
 	{
-		return new IntegerPreconditions(parameter, name);
-	}
-
-	/**
-	 * Creates new LongPreconditions.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	public static LongPreconditions requireThat(Long parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		return new LongPreconditions(parameter, name);
+		return new NumberPreconditions<>(parameter, name);
 	}
 
 	/**

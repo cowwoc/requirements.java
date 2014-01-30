@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import com.google.common.collect.Range;
+import java.math.BigDecimal;
 import org.testng.annotations.Test;
 
 /**
@@ -11,6 +13,60 @@ import org.testng.annotations.Test;
  */
 public class NumberPreconditionsTest
 {
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nameIsNull()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void nameIsEmpty()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "");
+	}
+
+	@Test
+	public void isInLowerBound()
+	{
+		Integer parameter = 0;
+		Range<Integer> range = Range.closed(0, 2);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
+	@Test
+	public void isInBounds()
+	{
+		Integer parameter = 1;
+		Range<Integer> range = Range.closed(0, 2);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
+	@Test
+	public void isInUpperBound()
+	{
+		Integer parameter = 2;
+		Range<Integer> range = Range.closed(0, 2);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInFalseOpenRange()
+	{
+		Integer parameter = 1;
+		Range<Integer> range = Range.open(10, 20);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInFalseClosedRange()
+	{
+		Integer parameter = 1;
+		Range<Integer> range = Range.closed(10, 20);
+		Preconditions.requireThat(parameter, "parameter").isIn(range);
+	}
+
 	@Test
 	public void isNegative_NegativeOne()
 	{
@@ -47,10 +103,53 @@ public class NumberPreconditionsTest
 	}
 
 	@Test
-	public void isPositive_One()
+	public void isZero_Zero()
+	{
+		Integer parameter = 0;
+		Preconditions.requireThat(parameter, "parameter").isZero();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isZero_One()
 	{
 		Integer parameter = 1;
-		Preconditions.requireThat(parameter, "parameter").isPositive();
+		Preconditions.requireThat(parameter, "parameter").isZero();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isZero_NegativeOne()
+	{
+		Integer parameter = -1;
+		Preconditions.requireThat(parameter, "parameter").isZero();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotZero_ZeroPointOne()
+	{
+		BigDecimal parameter = BigDecimal.valueOf(0.1);
+		Preconditions.requireThat(parameter, "parameter").isZero();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotZero_One()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isZero();
+	}
+
+	@Test
+	public void isNotZero()
+	{
+		Preconditions.requireThat(-1, "parameter").isNotZero();
+		Preconditions.requireThat(BigDecimal.valueOf(0.1), "parameter").isNotZero();
+		Preconditions.requireThat(1, "parameter").isNotZero();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotZero_Zero()
+	{
+		Integer parameter = 0;
+		Preconditions.requireThat(parameter, "parameter").isNotZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

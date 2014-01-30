@@ -4,18 +4,17 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
+import java.math.BigDecimal;
 
 /**
  * Verifies preconditions of a Number parameter.
  * <p/>
- * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
-	extends Preconditions<S, T>
+public final class NumberPreconditions<T extends Number & Comparable<? super T>>
+	extends Preconditions<NumberPreconditions<T>, T>
 {
 	/**
 	 * Creates new NumberPreconditions.
@@ -34,22 +33,43 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	/**
 	 * Ensures that the parameter is within range.
 	 * <p/>
-	 * @param range  the range
-	 * @param domain the number domain
+	 * @param range the range
 	 * @return this
-	 * @throws NullPointerException     if domain is null
+	 * @throws NullPointerException     if range is null
 	 * @throws IllegalArgumentException if the parameter is not in range
 	 */
-	protected S isIn(Range<T> range, DiscreteDomain<T> domain)
+	public NumberPreconditions<T> isIn(Range<T> range)
 		throws NullPointerException, IllegalArgumentException
 	{
-		Preconditions.requireThat(domain, "domain").isNotNull();
+		Preconditions.requireThat(range, "range").isNotNull();
 		boolean inRange = range.contains(parameter);
 		if (inRange)
-			return self;
-		Range<T> canonical = range.canonical(domain);
-		throw new IllegalArgumentException(name + " (" + parameter + ") must be in the range [" +
-			canonical.lowerEndpoint() + ", " + canonical.upperEndpoint() + "]");
+			return this;
+		StringBuilder message = new StringBuilder(name + " (" + parameter + ") must be in the range ");
+		switch (range.lowerBoundType())
+		{
+			case OPEN:
+				message.append("(");
+				break;
+			case CLOSED:
+				message.append("[");
+				break;
+			default:
+				throw new AssertionError(range.lowerBoundType().name());
+		}
+		message.append(range.lowerEndpoint()).append(", ").append(range.upperEndpoint());
+		switch (range.lowerBoundType())
+		{
+			case OPEN:
+				message.append(")");
+				break;
+			case CLOSED:
+				message.append("]");
+				break;
+			default:
+				throw new AssertionError(range.lowerBoundType().name());
+		}
+		throw new IllegalArgumentException(message.toString());
 	}
 
 	/**
@@ -58,11 +78,11 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not negative
 	 */
-	public S isNegative() throws IllegalArgumentException
+	public NumberPreconditions<T> isNegative() throws IllegalArgumentException
 	{
 		if (parameter.longValue() >= 0L)
 			throw new IllegalArgumentException(name + " must be negative");
-		return self;
+		return this;
 	}
 
 	/**
@@ -71,11 +91,11 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is negative
 	 */
-	public S isNotNegative() throws IllegalArgumentException
+	public NumberPreconditions<T> isNotNegative() throws IllegalArgumentException
 	{
 		if (parameter.longValue() < 0L)
 			throw new IllegalArgumentException(name + " may not be negative");
-		return self;
+		return this;
 	}
 
 	/**
@@ -84,11 +104,40 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not zero
 	 */
-	public S isZero() throws IllegalArgumentException
+	public NumberPreconditions<T> isZero() throws IllegalArgumentException
 	{
+		if (parameter instanceof BigDecimal)
+		{
+			// Number.longValue() truncates the fractional portion, which we need to take into account
+			BigDecimal decimal = (BigDecimal) parameter;
+			if (decimal.signum() != 0)
+				throw new IllegalArgumentException(name + " must be zero");
+			return this;
+		}
+		if (parameter.longValue() != 0L)
+			throw new IllegalArgumentException(name + " must be zero");
+		return this;
+	}
+
+	/**
+	 * Ensures that the parameter is not zero.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is zero
+	 */
+	public NumberPreconditions<T> isNotZero() throws IllegalArgumentException
+	{
+		if (parameter instanceof BigDecimal)
+		{
+			// Number.longValue() truncates the fractional portion, which we need to take into account
+			BigDecimal decimal = (BigDecimal) parameter;
+			if (decimal.signum() == 0)
+				throw new IllegalArgumentException(name + " may not be zero");
+			return this;
+		}
 		if (parameter.longValue() == 0L)
-			throw new IllegalArgumentException(name + " may not be negative");
-		return self;
+			throw new IllegalArgumentException(name + " may not be zero");
+		return this;
 	}
 
 	/**
@@ -97,11 +146,11 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not positive
 	 */
-	public S isPositive() throws IllegalArgumentException
+	public NumberPreconditions<T> isPositive() throws IllegalArgumentException
 	{
 		if (parameter.longValue() <= 0L)
 			throw new IllegalArgumentException(name + " must be positive");
-		return self;
+		return this;
 	}
 
 	/**
@@ -110,11 +159,11 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is positive
 	 */
-	public S isNotPositive() throws IllegalArgumentException
+	public NumberPreconditions<T> isNotPositive() throws IllegalArgumentException
 	{
 		if (parameter.longValue() > 0L)
 			throw new IllegalArgumentException(name + " may not be positive");
-		return self;
+		return this;
 	}
 
 	/**
@@ -126,14 +175,14 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
 	 *                                  {@code value}
 	 */
-	public S isLessThan(long value, String name) throws IllegalArgumentException
+	public NumberPreconditions<T> isLessThan(long value, String name) throws IllegalArgumentException
 	{
 		if (parameter.longValue() >= value)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
 				name + " (" + value + ")");
 		}
-		return self;
+		return this;
 	}
 
 	/**
@@ -144,14 +193,15 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
 	 */
-	public S isLessThanOrEqualTo(long value, String name) throws IllegalArgumentException
+	public NumberPreconditions<T> isLessThanOrEqualTo(long value, String name) throws
+		IllegalArgumentException
 	{
 		if (parameter.longValue() < value)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
 				"or equal to " + name + " (" + value + ")");
 		}
-		return self;
+		return this;
 	}
 
 	/**
@@ -162,14 +212,15 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is less than or equal to value
 	 */
-	public S isGreaterThan(long value, String name) throws IllegalArgumentException
+	public NumberPreconditions<T> isGreaterThan(long value, String name)
+		throws IllegalArgumentException
 	{
 		if (parameter.longValue() <= value)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
 				name + " (" + value + ")");
 		}
-		return self;
+		return this;
 	}
 
 	/**
@@ -180,13 +231,14 @@ public abstract class NumberPreconditions<S extends NumberPreconditions<S, T>, T
 	 * @return this
 	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
 	 */
-	public S isGreaterThanOrEqualTo(long value, String name) throws IllegalArgumentException
+	public NumberPreconditions<T> isGreaterThanOrEqualTo(long value, String name) throws
+		IllegalArgumentException
 	{
 		if (parameter.longValue() < value)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
 				"or equal to " + name + " (" + value + ")");
 		}
-		return self;
+		return this;
 	}
 }
