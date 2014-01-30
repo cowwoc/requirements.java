@@ -103,10 +103,10 @@ public class NumberPreconditionsTest
 	}
 
 	@Test
-	public void isZero_Zero()
+	public void isZero()
 	{
-		Integer parameter = 0;
-		Preconditions.requireThat(parameter, "parameter").isZero();
+		Preconditions.requireThat(0, "parameter").isZero();
+		Preconditions.requireThat(BigDecimal.ZERO, "parameter").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -146,10 +146,23 @@ public class NumberPreconditionsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_Zero()
+	public void isNotZero_Integer()
 	{
 		Integer parameter = 0;
 		Preconditions.requireThat(parameter, "parameter").isNotZero();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotZero_BigDecimal()
+	{
+		Preconditions.requireThat(BigDecimal.ZERO, "parameter").isNotZero();
+	}
+
+	@Test
+	public void isPositive()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -212,7 +225,7 @@ public class NumberPreconditionsTest
 	public void isLessThanOrEqualTo_Greater()
 	{
 		Integer parameter = 3;
-		Preconditions.requireThat(parameter, "parameter").isLessThan(2, "value");
+		Preconditions.requireThat(parameter, "parameter").isLessThanOrEqualTo(2, "value");
 	}
 
 	@Test

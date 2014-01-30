@@ -47,6 +47,9 @@
 				<version>3.1</version>
 				<configuration>
 					<showDeprecation>true</showDeprecation>
+					<compilerArgs>
+						<arg>-Xlint</arg>
+					</compilerArgs>
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>

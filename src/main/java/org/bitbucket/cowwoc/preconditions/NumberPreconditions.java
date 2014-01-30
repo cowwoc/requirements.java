@@ -196,7 +196,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	public NumberPreconditions<T> isLessThanOrEqualTo(long value, String name) throws
 		IllegalArgumentException
 	{
-		if (parameter.longValue() < value)
+		if (parameter.longValue() > value)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
 				"or equal to " + name + " (" + value + ")");
