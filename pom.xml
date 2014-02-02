@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 	<name>Preconditions</name>
 	<description>A Java library for enforcing preconditions.</description>
-	<url>http://code.google.com/p/cmake-maven-project/</url>
+	<url>https://bitbucket.org/cowwoc/preconditions/</url>
 
 	<licenses>
 		<license>
