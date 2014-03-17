@@ -86,15 +86,18 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	}
 
 	/**
-	 * Ensures that a String is a valid email address.
+	 * Ensures that the parameter contains a valid email format.
 	 * <p/>
 	 * @return this
-	 * @throws IllegalArgumentException if email is not a valid email address
+	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
 	 */
 	public StringPreconditions isValidEmail() throws IllegalArgumentException
 	{
 		if (!emailPattern.matcher(parameter).matches())
-			throw new IllegalArgumentException(name + " is not a valid email address: " + parameter);
+		{
+			throw new IllegalArgumentException(name + " does not contain a valid email format: " +
+				parameter);
+		}
 		return this;
 	}
 }

@@ -58,7 +58,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-file path
-	 * @throws IOException              if an I/O error occurs
+	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */
 	public PathPreconditions isRegularFile(LinkOption... options)
 		throws IllegalArgumentException, IOException
@@ -87,7 +87,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-directory path
-	 * @throws IOException              if an I/O error occurs
+	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */
 	public PathPreconditions isDirectory(LinkOption... options)
 		throws IllegalArgumentException, IOException
