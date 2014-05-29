@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  * Verifies preconditions of a parameter.
- * <p/>
+ * <p>
  * @author Gili Tzabari
  * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter
@@ -179,7 +179,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is not null.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws NullPointerException if parameter is null
 	 */
@@ -192,7 +192,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is not null.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalStateException if parameter is null
 	 */
@@ -205,7 +205,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is equal to a value.
-	 * <p/>
+	 * <p>
 	 * @param value the value to compare to
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not equal to value
@@ -219,7 +219,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is an instance of a class.
-	 * <p/>
+	 * <p>
 	 * @param type the class to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code parameter} or {@code type} are null

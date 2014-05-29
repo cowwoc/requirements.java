@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * Verifies preconditions of a Map parameter.
- * <p/>
+ * <p>
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map
  * @author Gili Tzabari
@@ -31,7 +31,7 @@ public final class MapPreconditions<K, V> extends Preconditions<MapPreconditions
 
 	/**
 	 * Ensures that the parameter contains a key.
-	 * <p/>
+	 * <p>
 	 * @param key the key that must exist
 	 * @return this
 	 * @throws IllegalArgumentException if the map does not contain key
@@ -45,7 +45,7 @@ public final class MapPreconditions<K, V> extends Preconditions<MapPreconditions
 
 	/**
 	 * Ensures that the parameter contains a value.
-	 * <p/>
+	 * <p>
 	 * @param value the value that must exist
 	 * @return this
 	 * @throws IllegalArgumentException if the map does not contain value
@@ -62,7 +62,7 @@ public final class MapPreconditions<K, V> extends Preconditions<MapPreconditions
 
 	/**
 	 * Ensures that the parameter is not empty.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is empty
 	 */

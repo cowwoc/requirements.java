@@ -13,7 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 /**
  * Verifies preconditions of a Path parameter.
- * <p/>
+ * <p>
  * @author Gili Tzabari
  */
 public final class PathPreconditions extends Preconditions<PathPreconditions, Path>
@@ -38,7 +38,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * Note that the result of this method is immediately outdated. If this method indicates the file
 	 * exists then there is no guarantee that a subsequence access will succeed. Care should be taken
 	 * when using this method in security sensitive applications.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to a non-existent path
 	 */
@@ -54,7 +54,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 
 	/**
 	 * Ensures that a path refers to a regular file.
-	 * <p/>
+	 * <p>
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-file path
@@ -83,7 +83,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 
 	/**
 	 * Ensures that a path refers to a directory.
-	 * <p/>
+	 * <p>
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-directory path
@@ -112,7 +112,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 
 	/**
 	 * Ensures that a path is relative.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to an absolute path
 	 */
@@ -126,7 +126,7 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 
 	/**
 	 * Ensures that a path is absolute.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to an absolute path
 	 */

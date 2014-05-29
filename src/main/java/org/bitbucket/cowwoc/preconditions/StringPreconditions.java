@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 /**
  * Verifies preconditions of a String parameter.
- * <p/>
+ * <p>
  * @author Gili Tzabari
  */
 public final class StringPreconditions extends Preconditions<StringPreconditions, String>
@@ -35,7 +35,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 
 	/**
 	 * Ensures that the parameter is not empty.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is empty
 	 */
@@ -48,7 +48,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 
 	/**
 	 * Ensures that the parameter length is within a range.
-	 * <p/>
+	 * <p>
 	 * @param range the range of acceptable parameter lengths
 	 * @return this
 	 * @throws IllegalArgumentException if parameter's length is outside of the specified range
@@ -72,7 +72,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 
 	/**
 	 * Ensures that the parameter isn't too short.
-	 * <p/>
+	 * <p>
 	 * @param minLength the minimum length allowed for the string
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is too short
@@ -89,7 +89,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 
 	/**
 	 * Ensures that the parameter's length is equal to a single value.
-	 * <p/>
+	 * <p>
 	 * @param length the expected length of the string
 	 * @return this
 	 * @throws IllegalArgumentException if parameter length is incorrect
@@ -106,7 +106,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 
 	/**
 	 * Ensures that the parameter isn't too long.
-	 * <p/>
+	 * <p>
 	 * @param maxLength the maximum length allowed for the string
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is too long
@@ -123,7 +123,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 
 	/**
 	 * Ensures that the parameter contains a valid email format.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
 	 */
@@ -140,7 +140,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	/**
 	 * Ensures that the parameter contains a valid IP address format. This check implies
 	 * {@code isNotNull()} and {@code isNotEmpty()}.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not contain a valid IP address format
 	 */

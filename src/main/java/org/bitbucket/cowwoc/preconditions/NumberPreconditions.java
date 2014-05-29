@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 /**
  * Verifies preconditions of a Number parameter.
- * <p/>
+ * <p>
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
@@ -32,7 +32,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is within range.
-	 * <p/>
+	 * <p>
 	 * @param range the range
 	 * @return this
 	 * @throws NullPointerException     if range is null
@@ -74,7 +74,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is negative.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not negative
 	 */
@@ -87,7 +87,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is not negative.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is negative
 	 */
@@ -100,7 +100,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is zero.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not zero
 	 */
@@ -121,7 +121,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is not zero.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is zero
 	 */
@@ -142,7 +142,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is positive.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not positive
 	 */
@@ -155,7 +155,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 
 	/**
 	 * Ensures that the parameter is not positive.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is positive
 	 */

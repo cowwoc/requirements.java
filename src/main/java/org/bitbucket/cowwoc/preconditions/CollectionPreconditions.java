@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * Verifies preconditions of a Collection parameter.
- * <p/>
+ * <p>
  * @param <E> the type of element in the collection
  * @author Gili Tzabari
  */
@@ -31,7 +31,7 @@ public final class CollectionPreconditions<E> extends
 
 	/**
 	 * Ensures that the parameter is not empty.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is empty
 	 */

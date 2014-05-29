@@ -8,7 +8,7 @@ import java.net.URI;
 
 /**
  * Verifies preconditions of a Number parameter.
- * <p/>
+ * <p>
  * @author Gili Tzabari
  */
 public final class UriPreconditions extends Preconditions<UriPreconditions, URI>
@@ -28,7 +28,7 @@ public final class UriPreconditions extends Preconditions<UriPreconditions, URI>
 
 	/**
 	 * Ensures that the parameter is absolute.
-	 * <p/>
+	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not absolute
 	 */

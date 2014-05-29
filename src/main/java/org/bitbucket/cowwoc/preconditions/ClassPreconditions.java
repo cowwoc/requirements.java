@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.preconditions;
 
 /**
  * Verifies preconditions of a Class parameter.
- * <p/>
+ * <p>
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
@@ -28,7 +28,7 @@ public class ClassPreconditions<T> extends Preconditions<ClassPreconditions<T>, 
 
 	/**
 	 * Ensures that the parameter is a superclass or superinterface of a class.
-	 * <p/>
+	 * <p>
 	 * @param type the class to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code parameter} or {@code type} are null
