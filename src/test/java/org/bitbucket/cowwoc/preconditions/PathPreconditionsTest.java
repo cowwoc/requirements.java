@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -121,5 +122,33 @@ public class PathPreconditionsTest
 		{
 			Files.delete(parameter);
 		}
+	}
+
+	@Test
+	public void isRelativeTrue() throws IOException
+	{
+		Path parameter = Paths.get("path1/path2");
+		Preconditions.requireThat(parameter, "parameter").isRelative();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isRelativeFalse() throws IOException
+	{
+		Path parameter = Paths.get(new File("/paths1/path2").toURI());
+		Preconditions.requireThat(parameter, "parameter").isRelative();
+	}
+
+	@Test
+	public void isAbsoluteTrue() throws IOException
+	{
+		Path parameter = Paths.get(new File("/paths1/path2").toURI());
+		Preconditions.requireThat(parameter, "parameter").isAbsolute();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isAbsoluteFalse() throws IOException
+	{
+		Path parameter = Paths.get("path1/path2");
+		Preconditions.requireThat(parameter, "parameter").isAbsolute();
 	}
 }

@@ -41,31 +41,87 @@ public class StringPreconditionsTest
 	}
 
 	@Test
-	public void isShorterThanTrue()
+	public void hasMinimumLengthTrue()
 	{
 		String parameter = "value";
-		Preconditions.requireThat(parameter, "parameter").isShorterThan(10);
+		Preconditions.requireThat(parameter, "parameter").hasMinimumLength(parameter.length());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isShorterThanFalse()
+	public void hasMinimumLengthFalse()
 	{
 		String parameter = "1234567890";
-		Preconditions.requireThat(parameter, "parameter").isShorterThan(10);
+		Preconditions.requireThat(parameter, "parameter").hasMinimumLength(parameter.length() + 1);
 	}
 
 	@Test
-	public void isValidEmailTrue()
+	public void hasLengthTrue()
 	{
-		String parameter = "name@gmail.com";
-		Preconditions.requireThat(parameter, "parameter").isValidEmail();
+		String parameter = "value";
+		Preconditions.requireThat(parameter, "parameter").hasLength(parameter.length());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isValidEmailFalse()
+	public void hasLengthFalse()
+	{
+		String parameter = "1234567890";
+		Preconditions.requireThat(parameter, "parameter").hasLength(parameter.length() + 1);
+	}
+
+	@Test
+	public void hasMaximumLengthTrue()
+	{
+		String parameter = "value";
+		Preconditions.requireThat(parameter, "parameter").hasMaximumLength(parameter.length());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void hasMaximumLengthFalse()
+	{
+		String parameter = "1234567890";
+		Preconditions.requireThat(parameter, "parameter").hasMaximumLength(parameter.length() - 1);
+	}
+
+	@Test
+	public void isEmailFormatTrue()
+	{
+		String parameter = "name@gmail.com";
+		Preconditions.requireThat(parameter, "parameter").isEmailFormat();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEmailFormatFalse()
 	{
 		String parameter = "name.com";
-		Preconditions.requireThat(parameter, "parameter").isValidEmail();
+		Preconditions.requireThat(parameter, "parameter").isEmailFormat();
+	}
+
+	@Test
+	public void isIpAddressFormatTrueIpV4()
+	{
+		String parameter = "1.2.3.4";
+		Preconditions.requireThat(parameter, "parameter").isIpAddressFormat();
+	}
+
+	@Test
+	public void isIpAddressFormatTrueIpV6()
+	{
+		String parameter = "0000:0000:0000:0000:0000:0000:192.168.0.1";
+		Preconditions.requireThat(parameter, "parameter").isIpAddressFormat();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isIpAddressFormatFalseIpV4()
+	{
+		String parameter = "1.256.3.4";
+		Preconditions.requireThat(parameter, "parameter").isIpAddressFormat();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isIpAddressFormatFalseIpV6()
+	{
+		String parameter = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
+		Preconditions.requireThat(parameter, "parameter").isIpAddressFormat();
 	}
 
 	@Test

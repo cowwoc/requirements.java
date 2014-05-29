@@ -109,4 +109,32 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 		}
 		return this;
 	}
+
+	/**
+	 * Ensures that a path is relative.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if parameter refers to an absolute path
+	 */
+	public PathPreconditions isRelative()
+		throws IllegalArgumentException
+	{
+		if (parameter.isAbsolute())
+			throw new IllegalArgumentException(name + " must refer to a relative path. Was: " + parameter);
+		return this;
+	}
+
+	/**
+	 * Ensures that a path is absolute.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if parameter refers to an absolute path
+	 */
+	public PathPreconditions isAbsolute()
+		throws IllegalArgumentException
+	{
+		if (!parameter.isAbsolute())
+			throw new IllegalArgumentException(name + " must refer to an absolute path. Was: " + parameter);
+		return this;
+	}
 }

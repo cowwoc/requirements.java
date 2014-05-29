@@ -6,6 +6,8 @@ package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 /**
@@ -69,15 +71,49 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	}
 
 	/**
+	 * Ensures that the parameter isn't too short.
+	 * <p/>
+	 * @param minLength the minimum length allowed for the string
+	 * @return this
+	 * @throws IllegalArgumentException if parameter is too short
+	 */
+	public StringPreconditions hasMinimumLength(int minLength) throws IllegalArgumentException
+	{
+		if (parameter.length() < minLength)
+		{
+			throw new IllegalArgumentException(name + " may not be shorter than " + minLength +
+				" characters. Was: " + parameter.length());
+		}
+		return this;
+	}
+
+	/**
+	 * Ensures that the parameter's length is equal to a single value.
+	 * <p/>
+	 * @param length the expected length of the string
+	 * @return this
+	 * @throws IllegalArgumentException if parameter length is incorrect
+	 */
+	public StringPreconditions hasLength(int length) throws IllegalArgumentException
+	{
+		if (parameter.length() != length)
+		{
+			throw new IllegalArgumentException(name + "'s length must be equal to " + length +
+				" characters. Was: " + parameter.length());
+		}
+		return this;
+	}
+
+	/**
 	 * Ensures that the parameter isn't too long.
 	 * <p/>
 	 * @param maxLength the maximum length allowed for the string
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is too long
 	 */
-	public StringPreconditions isShorterThan(int maxLength) throws IllegalArgumentException
+	public StringPreconditions hasMaximumLength(int maxLength) throws IllegalArgumentException
 	{
-		if (parameter.length() >= maxLength)
+		if (parameter.length() > maxLength)
 		{
 			throw new IllegalArgumentException(name + " may not be longer than " + maxLength +
 				" characters. Was: " + parameter.length());
@@ -91,12 +127,40 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
 	 */
-	public StringPreconditions isValidEmail() throws IllegalArgumentException
+	public StringPreconditions isEmailFormat() throws IllegalArgumentException
 	{
 		if (!emailPattern.matcher(parameter).matches())
 		{
 			throw new IllegalArgumentException(name + " does not contain a valid email format: " +
 				parameter);
+		}
+		return this;
+	}
+
+	/**
+	 * Ensures that the parameter contains a valid IP address format. This check implies
+	 * {@code isNotNull()} and {@code isNotEmpty()}.
+	 * <p/>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter does not contain a valid IP address format
+	 */
+	public StringPreconditions isIpAddressFormat() throws IllegalArgumentException
+	{
+		isNotNull().isNotEmpty();
+		char firstCharacter = parameter.charAt(0);
+		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
+		{
+			throw new IllegalArgumentException(name + " does not contain a valid IP address format: " +
+				parameter);
+		}
+		try
+		{
+			InetAddress.getByName(parameter);
+		}
+		catch (UnknownHostException e)
+		{
+			throw new IllegalArgumentException(name + " does not contain a valid IP address format: " +
+				parameter, e);
 		}
 		return this;
 	}
