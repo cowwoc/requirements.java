@@ -164,4 +164,60 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 		}
 		return this;
 	}
+
+	/**
+	 * Ensures that the parameter starts with a value.
+	 * <p>
+	 * @param prefix the value the string must start with
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter does not start with prefix
+	 */
+	public StringPreconditions startsWith(String prefix) throws IllegalArgumentException
+	{
+		if (!parameter.startsWith(prefix))
+			throw new IllegalArgumentException(name + " must start with: " + prefix);
+		return this;
+	}
+
+	/**
+	 * Ensures that the parameter does not start with a value.
+	 * <p>
+	 * @param prefix the value the string must not start with
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter starts with prefix
+	 */
+	public StringPreconditions doesNotStartWith(String prefix) throws IllegalArgumentException
+	{
+		if (parameter.startsWith(prefix))
+			throw new IllegalArgumentException(name + " must not start with: " + prefix);
+		return this;
+	}
+
+	/**
+	 * Ensures that the parameter ends with a value.
+	 * <p>
+	 * @param suffix the value the string must end with
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter does not end with suffix
+	 */
+	public StringPreconditions endsWith(String suffix) throws IllegalArgumentException
+	{
+		if (!parameter.endsWith(suffix))
+			throw new IllegalArgumentException(name + " must end with: " + suffix);
+		return this;
+	}
+
+	/**
+	 * Ensures that the parameter does not end with a value.
+	 * <p>
+	 * @param suffix the value the string must not end with
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter ends with suffix
+	 */
+	public StringPreconditions doesNotEndWith(String suffix) throws IllegalArgumentException
+	{
+		if (parameter.endsWith(suffix))
+			throw new IllegalArgumentException(name + " must not end with: " + suffix);
+		return this;
+	}
 }

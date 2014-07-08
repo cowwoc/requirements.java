@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
  */
 public class StringPreconditionsTest
 {
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
@@ -154,5 +155,69 @@ public class StringPreconditionsTest
 		String parameter = "1234567";
 		Range<Integer> range = null;
 		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
+	}
+
+	@Test
+	public void startsWithTrue()
+	{
+		String prefix = "home";
+		String parameter = prefix + "1234";
+		Preconditions.requireThat(parameter, "parameter").startsWith(prefix);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void startsWithFalse()
+	{
+		String prefix = "home";
+		String parameter = "1234" + prefix;
+		Preconditions.requireThat(parameter, "parameter").startsWith(prefix);
+	}
+
+	@Test
+	public void doesNotStartWithTrue()
+	{
+		String prefix = "home";
+		String parameter = "1234" + prefix;
+		Preconditions.requireThat(parameter, "parameter").doesNotStartWith(prefix);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotStartWithFalse()
+	{
+		String prefix = "home";
+		String parameter = prefix + "1234";
+		Preconditions.requireThat(parameter, "parameter").doesNotStartWith(prefix);
+	}
+
+	@Test
+	public void endsWithTrue()
+	{
+		String suffix = "home";
+		String parameter = "1234" + suffix;
+		Preconditions.requireThat(parameter, "parameter").endsWith(suffix);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void endsWithFalse()
+	{
+		String suffix = "home";
+		String parameter = suffix + "1234";
+		Preconditions.requireThat(parameter, "parameter").endsWith(suffix);
+	}
+
+	@Test
+	public void doesNotEndWithTrue()
+	{
+		String suffix = "home";
+		String parameter = suffix + "1234";
+		Preconditions.requireThat(parameter, "parameter").doesNotEndWith(suffix);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotEndWithFalse()
+	{
+		String suffix = "home";
+		String parameter = "1234" + suffix;
+		Preconditions.requireThat(parameter, "parameter").doesNotEndWith(suffix);
 	}
 }
