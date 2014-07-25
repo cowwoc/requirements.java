@@ -67,7 +67,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 		Range<Integer> canonical = range.canonical(DiscreteDomain.integers());
 		throw new IllegalArgumentException(name + " must have a length in the " +
 			"range[" + canonical.lowerEndpoint() + ", " + (canonical.upperEndpoint() - 1) + "], was " +
-			parameter.length() + ". Parameter: " + parameter);
+			parameter.length() + ". " + name + ": \"" + parameter + "\"");
 	}
 
 	/**
@@ -82,7 +82,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 		if (parameter.length() < minLength)
 		{
 			throw new IllegalArgumentException(name + " may not be shorter than " + minLength +
-				" characters. Was: " + parameter.length());
+				" characters, was: " + parameter.length() + ". " + name + ": \"" + parameter + "\"");
 		}
 		return this;
 	}
@@ -99,7 +99,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 		if (parameter.length() != length)
 		{
 			throw new IllegalArgumentException(name + "'s length must be equal to " + length +
-				" characters. Was: " + parameter.length());
+				" characters, was " + parameter.length() + ". " + name + ": \"" + parameter + "\"");
 		}
 		return this;
 	}
@@ -116,7 +116,7 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 		if (parameter.length() > maxLength)
 		{
 			throw new IllegalArgumentException(name + " may not be longer than " + maxLength +
-				" characters. Was: " + parameter.length());
+				" characters, was: " + parameter.length() + ". " + name + ": \"" + parameter + "\"");
 		}
 		return this;
 	}
