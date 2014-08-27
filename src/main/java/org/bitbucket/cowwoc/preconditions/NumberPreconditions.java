@@ -10,11 +10,12 @@ import java.math.BigDecimal;
 /**
  * Verifies preconditions of a Number parameter.
  * <p>
+ * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-public final class NumberPreconditions<T extends Number & Comparable<? super T>>
-	extends Preconditions<NumberPreconditions<T>, T>
+public class NumberPreconditions<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
+	extends Preconditions<S, T>
 {
 	/**
 	 * Creates new NumberPreconditions.
@@ -38,13 +39,13 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @throws NullPointerException     if range is null
 	 * @throws IllegalArgumentException if the parameter is not in range
 	 */
-	public NumberPreconditions<T> isIn(Range<T> range)
+	public S isIn(Range<T> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(range, "range").isNotNull();
 		boolean inRange = range.contains(parameter);
 		if (inRange)
-			return this;
+			return self;
 		StringBuilder message = new StringBuilder(name + " (" + parameter + ") must be in the range ");
 		switch (range.lowerBoundType())
 		{
@@ -78,11 +79,11 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not negative
 	 */
-	public NumberPreconditions<T> isNegative() throws IllegalArgumentException
+	public S isNegative() throws IllegalArgumentException
 	{
 		if (parameter.longValue() >= 0L)
 			throw new IllegalArgumentException(name + " must be negative");
-		return this;
+		return self;
 	}
 
 	/**
@@ -91,11 +92,11 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is negative
 	 */
-	public NumberPreconditions<T> isNotNegative() throws IllegalArgumentException
+	public S isNotNegative() throws IllegalArgumentException
 	{
 		if (parameter.longValue() < 0L)
 			throw new IllegalArgumentException(name + " may not be negative");
-		return this;
+		return self;
 	}
 
 	/**
@@ -104,7 +105,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not zero
 	 */
-	public NumberPreconditions<T> isZero() throws IllegalArgumentException
+	public S isZero() throws IllegalArgumentException
 	{
 		if (parameter instanceof BigDecimal)
 		{
@@ -112,11 +113,11 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 			BigDecimal decimal = (BigDecimal) parameter;
 			if (decimal.signum() != 0)
 				throw new IllegalArgumentException(name + " must be zero");
-			return this;
+			return self;
 		}
 		if (parameter.longValue() != 0L)
 			throw new IllegalArgumentException(name + " must be zero");
-		return this;
+		return self;
 	}
 
 	/**
@@ -125,7 +126,7 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is zero
 	 */
-	public NumberPreconditions<T> isNotZero() throws IllegalArgumentException
+	public S isNotZero() throws IllegalArgumentException
 	{
 		if (parameter instanceof BigDecimal)
 		{
@@ -133,11 +134,11 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 			BigDecimal decimal = (BigDecimal) parameter;
 			if (decimal.signum() == 0)
 				throw new IllegalArgumentException(name + " may not be zero");
-			return this;
+			return self;
 		}
 		if (parameter.longValue() == 0L)
 			throw new IllegalArgumentException(name + " may not be zero");
-		return this;
+		return self;
 	}
 
 	/**
@@ -146,11 +147,11 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not positive
 	 */
-	public NumberPreconditions<T> isPositive() throws IllegalArgumentException
+	public S isPositive() throws IllegalArgumentException
 	{
 		if (parameter.longValue() <= 0L)
 			throw new IllegalArgumentException(name + " must be positive");
-		return this;
+		return self;
 	}
 
 	/**
@@ -159,86 +160,158 @@ public final class NumberPreconditions<T extends Number & Comparable<? super T>>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is positive
 	 */
-	public NumberPreconditions<T> isNotPositive() throws IllegalArgumentException
+	public S isNotPositive() throws IllegalArgumentException
 	{
 		if (parameter.longValue() > 0L)
 			throw new IllegalArgumentException(name + " may not be positive");
-		return this;
+		return self;
 	}
 
 	/**
-	 * Ensures that the parameter is less than a value.
+	 * Ensures that the parameter is less than the value of a variable.
 	 * <p>
 	 * @param value the value the parameter must be less than
-	 * @param name  the name of the value
+	 * @param name  the name of the variable
 	 * @return this
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
 	 *                                  {@code value}
 	 */
-	public NumberPreconditions<T> isLessThan(long value, String name) throws IllegalArgumentException
+	public S isLessThan(T value, String name) throws IllegalArgumentException
 	{
-		if (parameter.longValue() >= value)
+		if (parameter.compareTo(value) >= 0)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
 				name + " (" + value + ")");
 		}
-		return this;
+		return self;
 	}
 
 	/**
-	 * Ensures that the parameter is less than or equal to value.
+	 * Ensures that the parameter is less than a constant.
+	 * <p>
+	 * @param value the value the parameter must be less than
+	 * @return this
+	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
+	 *                                  {@code value}
+	 */
+	public S isLessThan(T value) throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) >= 0)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
+				value);
+		}
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is less than or equal to a variable.
 	 * <p>
 	 * @param value the value the parameter must be less than or equal to
-	 * @param name  the name of the value
+	 * @param name  the name of the variable
 	 * @return this
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
 	 */
-	public NumberPreconditions<T> isLessThanOrEqualTo(long value, String name) throws
-		IllegalArgumentException
+	public S isLessThanOrEqualTo(T value, String name)
+		throws IllegalArgumentException
 	{
-		if (parameter.longValue() > value)
+		if (parameter.compareTo(value) > 0)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
 				"or equal to " + name + " (" + value + ")");
 		}
-		return this;
+		return self;
 	}
 
 	/**
-	 * Ensures that the parameter is greater than a value.
+	 * Ensures that the parameter is less than or equal to a constant.
 	 * <p>
-	 * @param value the value the parameter must be greater than
-	 * @param name  the name of the value
+	 * @param value the value the parameter must be less than or equal to
 	 * @return this
-	 * @throws IllegalArgumentException if the parameter is less than or equal to value
+	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
 	 */
-	public NumberPreconditions<T> isGreaterThan(long value, String name)
+	public S isLessThanOrEqualTo(T value)
 		throws IllegalArgumentException
 	{
-		if (parameter.longValue() <= value)
+		if (parameter.compareTo(value) > 0)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be less than " +
+				"or equal to " + value);
+		}
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is greater than a variable.
+	 * <p>
+	 * @param value the value the parameter must be greater than
+	 * @param name  the name of the variable
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is less than or equal to {@code value}
+	 */
+	public S isGreaterThan(T value, String name)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) <= 0)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
 				name + " (" + value + ")");
 		}
-		return this;
+		return self;
 	}
 
 	/**
-	 * Ensures that the parameter is greater than or bigger than a value.
+	 * Ensures that the parameter is greater than a constant.
+	 * <p>
+	 * @param value the value the parameter must be greater than
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is less than or equal to {@code value}
+	 */
+	public S isGreaterThan(T value)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) <= 0)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
+				value);
+		}
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is greater than or bigger than a variable.
 	 * <p>
 	 * @param value the value the parameter must be greater than or equal to
-	 * @param name  the name of the value
+	 * @param name  the name of the variable
 	 * @return this
 	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
 	 */
-	public NumberPreconditions<T> isGreaterThanOrEqualTo(long value, String name) throws
-		IllegalArgumentException
+	public S isGreaterThanOrEqualTo(T value, String name)
+		throws IllegalArgumentException
 	{
-		if (parameter.longValue() < value)
+		if (parameter.compareTo(value) < 0)
 		{
 			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
 				"or equal to " + name + " (" + value + ")");
 		}
-		return this;
+		return self;
+	}
+
+	/**
+	 * Ensures that the parameter is greater than or bigger than a constant.
+	 * <p>
+	 * @param value the value the parameter must be greater than or equal to
+	 * @return this
+	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
+	 */
+	public S isGreaterThanOrEqualTo(T value)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) < 0)
+		{
+			throw new IllegalArgumentException(this.name + " (" + parameter + ") must be greater than " +
+				"or equal to " + value);
+		}
+		return self;
 	}
 }

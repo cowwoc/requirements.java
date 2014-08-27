@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -57,6 +58,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	/**
 	 * Creates new NumberPreconditions.
 	 * <p>
+	 * @param <S>       the type of preconditions that was instantiated
 	 * @param <T>       the type of the number
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -64,10 +66,26 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <T extends Number & Comparable<? super T>> NumberPreconditions<T> requireThat(
-		T parameter, String name) throws NullPointerException, IllegalArgumentException
+	public static <S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
+		NumberPreconditions<S, T> requireThat(T parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		return new NumberPreconditions<>(parameter, name);
+	}
+
+	/**
+	 * Creates new BigDecimalPreconditions.
+	 * <p>
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public static BigDecimalPreconditions requireThat(BigDecimal parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return new BigDecimalPreconditions(parameter, name);
 	}
 
 	/**

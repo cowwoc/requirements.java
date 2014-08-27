@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.Range;
-import java.math.BigDecimal;
 import org.testng.annotations.Test;
 
 /**
@@ -106,7 +105,6 @@ public class NumberPreconditionsTest
 	public void isZero()
 	{
 		Preconditions.requireThat(0, "parameter").isZero();
-		Preconditions.requireThat(BigDecimal.ZERO, "parameter").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -124,13 +122,6 @@ public class NumberPreconditionsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_ZeroPointOne()
-	{
-		BigDecimal parameter = BigDecimal.valueOf(0.1);
-		Preconditions.requireThat(parameter, "parameter").isZero();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotZero_One()
 	{
 		Integer parameter = 1;
@@ -141,7 +132,6 @@ public class NumberPreconditionsTest
 	public void isNotZero()
 	{
 		Preconditions.requireThat(-1, "parameter").isNotZero();
-		Preconditions.requireThat(BigDecimal.valueOf(0.1), "parameter").isNotZero();
 		Preconditions.requireThat(1, "parameter").isNotZero();
 	}
 
@@ -150,12 +140,6 @@ public class NumberPreconditionsTest
 	{
 		Integer parameter = 0;
 		Preconditions.requireThat(parameter, "parameter").isNotZero();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_BigDecimal()
-	{
-		Preconditions.requireThat(BigDecimal.ZERO, "parameter").isNotZero();
 	}
 
 	@Test
@@ -194,72 +178,142 @@ public class NumberPreconditionsTest
 	}
 
 	@Test
-	public void isLessThan()
+	public void isLessThanVariable()
 	{
 		Integer parameter = 0;
 		Preconditions.requireThat(parameter, "parameter").isLessThan(1, "value");
 	}
 
+	@Test
+	public void isLessThanConstant()
+	{
+		Integer parameter = 0;
+		Preconditions.requireThat(parameter, "parameter").isLessThan(1);
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThan_Equal()
+	public void isLessThanVariable_Equal()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isLessThan(1, "value");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThan_Greater()
+	public void isLessThanConstant_Equal()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isLessThan(1);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isLessThanVariable_Greater()
 	{
 		Integer parameter = 2;
 		Preconditions.requireThat(parameter, "parameter").isLessThan(1, "value");
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isLessThanConstant_Greater()
+	{
+		Integer parameter = 2;
+		Preconditions.requireThat(parameter, "parameter").isLessThan(1);
+	}
+
 	@Test
-	public void isLessThanOrEqualTo()
+	public void isLessThanOrEqualToVariable()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isLessThanOrEqualTo(1, "value");
 	}
 
+	@Test
+	public void isLessThanOrEqualToConstant()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isLessThanOrEqualTo(1);
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualTo_Greater()
+	public void isLessThanOrEqualToVariable_Greater()
 	{
 		Integer parameter = 3;
 		Preconditions.requireThat(parameter, "parameter").isLessThanOrEqualTo(2, "value");
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isLessThanOrEqualToConstant_Greater()
+	{
+		Integer parameter = 3;
+		Preconditions.requireThat(parameter, "parameter").isLessThanOrEqualTo(2);
+	}
+
 	@Test
-	public void isGreaterThan()
+	public void isGreaterThanVariable()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isGreaterThan(0, "value");
 	}
 
+	@Test
+	public void isGreaterThanConstant()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isGreaterThan(0);
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThan_Equal()
+	public void isGreaterThanVariable_Equal()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isGreaterThan(1, "value");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThan_Less()
+	public void isGreaterThanConstant_Equal()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isGreaterThan(1);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isGreaterThanVariable_Less()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isGreaterThan(2, "value");
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isGreaterThanConstant_Less()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isGreaterThan(2);
+	}
+
 	@Test
-	public void isGreaterThanOrEqualTo()
+	public void isGreaterThanOrEqualToVariable()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(1, "value");
 	}
 
+	@Test
+	public void isGreaterThanOrEqualToConstant()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(1);
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualTo_Less()
+	public void isGreaterThanOrEqualToVariable_Less()
 	{
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(2, "value");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isGreaterThanOrEqualToConstant_Less()
+	{
+		Integer parameter = 1;
+		Preconditions.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(2);
 	}
 }
