@@ -28,9 +28,37 @@ public class StringPreconditionsTest
 	}
 
 	@Test
-	public void isNotEmptyTrue()
+	public void isEmptyTrue()
+	{
+		String parameter = "";
+		Preconditions.requireThat(parameter, "parameter").isEmpty();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEmptyFalse()
+	{
+		String parameter = "   ";
+		Preconditions.requireThat(parameter, "parameter").isEmpty();
+	}
+
+	@Test
+	public void isTrimEmptyTrue()
+	{
+		String parameter = "   ";
+		Preconditions.requireThat(parameter, "parameter").trim().isEmpty();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isTrimEmptyFalse()
 	{
 		String parameter = "value";
+		Preconditions.requireThat(parameter, "parameter").trim().isEmpty();
+	}
+
+	@Test
+	public void isNotEmptyTrue()
+	{
+		String parameter = "   ";
 		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
 	}
 
@@ -39,6 +67,20 @@ public class StringPreconditionsTest
 	{
 		String parameter = "";
 		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
+	}
+
+	@Test
+	public void isTrimNotEmptyTrue()
+	{
+		String parameter = "value";
+		Preconditions.requireThat(parameter, "parameter").trim().isNotEmpty();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isTrimNotEmptyFalse()
+	{
+		String parameter = "   ";
+		Preconditions.requireThat(parameter, "parameter").trim().isNotEmpty();
 	}
 
 	@Test

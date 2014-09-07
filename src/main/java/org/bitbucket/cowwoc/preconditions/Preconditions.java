@@ -14,6 +14,8 @@ import java.util.Objects;
 /**
  * Verifies preconditions of a parameter.
  * <p>
+ * This class is not thread-safe.
+ * <p>
  * @author Gili Tzabari
  * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter
@@ -167,7 +169,7 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 	}
 
 	protected final S self;
-	protected final T parameter;
+	protected T parameter;
 	protected final String name;
 
 	/**

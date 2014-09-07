@@ -34,15 +34,41 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 	}
 
 	/**
+	 * Ensures that the parameter is empty.
+	 * <p>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter is not empty
+	 * @see #trim()
+	 */
+	public StringPreconditions isEmpty() throws IllegalArgumentException
+	{
+		if (!parameter.isEmpty())
+			throw new IllegalArgumentException(name + " must be empty");
+		return this;
+	}
+
+	/**
 	 * Ensures that the parameter is not empty.
 	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is empty
+	 * @see #trim()
 	 */
 	public StringPreconditions isNotEmpty() throws IllegalArgumentException
 	{
-		if (parameter.trim().isEmpty())
+		if (parameter.isEmpty())
 			throw new IllegalArgumentException(name + " may not be empty");
+		return this;
+	}
+
+	/**
+	 * Trims whitespace at the beginning and end of the parameter.
+	 * <p>
+	 * @return this
+	 */
+	public StringPreconditions trim()
+	{
+		this.parameter = parameter.trim();
 		return this;
 	}
 
