@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 /**
- * Verifies preconditions of a Class parameter.
+ * Verifies preconditions of a {@link Class} parameter.
  * <p>
  * @param <T> the type of the class
  * @author Gili Tzabari

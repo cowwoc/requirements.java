@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.preconditions;
 import java.net.URI;
 
 /**
- * Verifies preconditions of a Number parameter.
+ * Verifies preconditions of a {@link URI} parameter.
  * <p>
  * @author Gili Tzabari
  */

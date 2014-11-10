@@ -8,7 +8,7 @@ import com.google.common.collect.Range;
 import java.math.BigDecimal;
 
 /**
- * Verifies preconditions of a BigDecimal parameter.
+ * Verifies preconditions of a {@link BigDecimal} parameter.
  * <p>
  * @author Gili Tzabari
  */

@@ -8,7 +8,7 @@ import com.google.common.collect.Range;
 import java.time.Year;
 
 /**
- * Verifies preconditions of a Year parameter.
+ * Verifies preconditions of a {@link Year} parameter.
  * <p>
  * @author Gili Tzabari
  */

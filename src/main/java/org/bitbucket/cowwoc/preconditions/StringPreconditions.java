@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 /**
- * Verifies preconditions of a String parameter.
+ * Verifies preconditions of a {@link String} parameter.
  * <p>
  * @author Gili Tzabari
  */

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.preconditions;
 import java.util.Optional;
 
 /**
- * Verifies preconditions of an Optional parameter.
+ * Verifies preconditions of an {@link Optional} parameter.
  * <p>
  * @author Gili Tzabari
  */

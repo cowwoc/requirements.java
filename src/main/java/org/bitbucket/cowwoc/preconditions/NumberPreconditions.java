@@ -8,7 +8,7 @@ import com.google.common.collect.Range;
 import java.math.BigDecimal;
 
 /**
- * Verifies preconditions of a Number parameter.
+ * Verifies preconditions of a {@link Number} parameter.
  * <p>
  * @param <S> the type of preconditions that was instantiated
  * @param <T> the type of the parameter

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.preconditions;
 import java.util.Map;
 
 /**
- * Verifies preconditions of a Map parameter.
+ * Verifies preconditions of a {@link Map} parameter.
  * <p>
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map

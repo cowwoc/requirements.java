@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
 /**
- * Verifies preconditions of a Path parameter.
+ * Verifies preconditions of a {@link Path} parameter.
  * <p>
  * @author Gili Tzabari
  */

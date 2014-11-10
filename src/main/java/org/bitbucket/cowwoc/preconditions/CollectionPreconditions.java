@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.preconditions;
 import java.util.Collection;
 
 /**
- * Verifies preconditions of a Collection parameter.
+ * Verifies preconditions of a {@link Collection} parameter.
  * <p>
  * @param <E> the type of element in the collection
  * @author Gili Tzabari
