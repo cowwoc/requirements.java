@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.bitbucket.cowwoc</groupId>
 	<artifactId>preconditions</artifactId>
-	<version>1.12-SNAPSHOT</version>
+	<version>1.12</version>
 	<packaging>jar</packaging>
 	<name>Preconditions</name>
 	<description>A Java library for enforcing preconditions.</description>
@@ -28,7 +28,7 @@
 		<url>https://bitbucket.org/cowwoc/preconditions/</url>
 		<connection>scm:hg:https://bitbucket.org/cowwoc/preconditions/</connection>
 		<developerConnection>scm:hg:https://bitbucket.org/cowwoc/preconditions/</developerConnection>
-		<tag>HEAD</tag>
+		<tag>release-1.12</tag>
 	</scm>
 
 	<developers>
