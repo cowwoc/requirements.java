@@ -7,9 +7,11 @@ package org.bitbucket.cowwoc.preconditions;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
+import java.time.Year;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Verifies preconditions of a parameter.
@@ -168,6 +170,35 @@ public class Preconditions<S extends Preconditions<S, T>, T>
 		return new ClassPreconditions<>(parameter, name);
 	}
 
+	/**
+	 * Creates new YearPreconditions.
+	 * <p>
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public static YearPreconditions requireThat(Year parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return new YearPreconditions(parameter, name);
+	}
+
+	/**
+	 * Creates new OptionalPreconditions.
+	 * <p>
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public static OptionalPreconditions requireThat(Optional<?> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return new OptionalPreconditions(parameter, name);
+	}
 	protected final S self;
 	protected T parameter;
 	protected final String name;

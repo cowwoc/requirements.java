@@ -91,8 +91,8 @@ public final class StringPreconditions extends Preconditions<StringPreconditions
 		if (inRange)
 			return this;
 		Range<Integer> canonical = range.canonical(DiscreteDomain.integers());
-		throw new IllegalArgumentException(name + " must have a length in the " +
-			"range[" + canonical.lowerEndpoint() + ", " + (canonical.upperEndpoint() - 1) + "], was " +
+		throw new IllegalArgumentException(name + "'s length must be in the " +
+			"range [" + canonical.lowerEndpoint() + ", " + (canonical.upperEndpoint() - 1) + "], was " +
 			parameter.length() + ". " + name + ": \"" + parameter + "\"");
 	}
 
