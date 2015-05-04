@@ -40,4 +40,12 @@ public class CollectionPreconditionsTest
 		Collection<String> parameter = Collections.emptyList();
 		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Collection<?> parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

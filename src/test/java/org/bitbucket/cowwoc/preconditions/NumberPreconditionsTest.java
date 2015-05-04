@@ -316,4 +316,12 @@ public class NumberPreconditionsTest
 		Integer parameter = 1;
 		Preconditions.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(2);
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Integer parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

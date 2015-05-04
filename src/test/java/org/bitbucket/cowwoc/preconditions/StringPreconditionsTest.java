@@ -262,4 +262,12 @@ public class StringPreconditionsTest
 		String parameter = "1234" + suffix;
 		Preconditions.requireThat(parameter, "parameter").doesNotEndWith(suffix);
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		String parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

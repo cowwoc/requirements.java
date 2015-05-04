@@ -11,22 +11,15 @@ import java.util.Optional;
  * <p>
  * @author Gili Tzabari
  */
-public final class OptionalPreconditions
-	extends Preconditions<OptionalPreconditions, Optional<?>>
+public interface OptionalPreconditions extends ObjectPreconditions<OptionalPreconditions, Optional<?>>
 {
 	/**
-	 * Creates new OptionalPreconditions.
+	 * Ensures that the parameter is empty.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @return this
+	 * @throws IllegalArgumentException if the value is present
 	 */
-	OptionalPreconditions(Optional<?> parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		super(parameter, name);
-	}
+	OptionalPreconditions isEmpty() throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is present.
@@ -34,25 +27,5 @@ public final class OptionalPreconditions
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not present
 	 */
-	public OptionalPreconditions isPresent()
-		throws IllegalArgumentException
-	{
-		if (!this.parameter.isPresent())
-			throw new IllegalArgumentException(name + " must be present");
-		return this;
-	}
-
-	/**
-	 * Ensures that the parameter is empty.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the value is present
-	 */
-	public OptionalPreconditions isEmpty()
-		throws IllegalArgumentException
-	{
-		if (this.parameter.isPresent())
-			throw new IllegalArgumentException(name + " must be empty");
-		return this;
-	}
+	OptionalPreconditions isPresent() throws IllegalArgumentException;
 }

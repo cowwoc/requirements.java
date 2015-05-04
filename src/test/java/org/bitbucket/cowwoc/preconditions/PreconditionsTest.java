@@ -70,6 +70,20 @@ public class PreconditionsTest
 	}
 
 	@Test
+	public void isNullTrue()
+	{
+		Object parameter = null;
+		Preconditions.requireThat(parameter, "parameter").isNull();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNullFalse()
+	{
+		Object parameter = new Object();
+		Preconditions.requireThat(parameter, "parameter").isNull();
+	}
+
+	@Test
 	public void isNotNullTrue()
 	{
 		Object parameter = new Object();
@@ -83,17 +97,18 @@ public class PreconditionsTest
 		Preconditions.requireThat(parameter, "parameter").isNotNull();
 	}
 
-	@Test
-	public void stateIsNotNullTrue()
-	{
-		Object parameter = new Object();
-		Preconditions.requireThat(parameter, "parameter").stateIsNotNull();
-	}
-
 	@Test(expectedExceptions = IllegalStateException.class)
-	public void stateIsNotNullFalse()
+	public void isNotNullCustomException()
 	{
 		Object parameter = null;
-		Preconditions.requireThat(parameter, "parameter").stateIsNotNull();
+		Preconditions.requireThat(parameter, "parameter").using(IllegalStateException.class).isNotNull();
+	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Object parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

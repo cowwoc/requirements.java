@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Gili Tzabari.
+ * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.preconditions;
@@ -13,14 +13,37 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Verifies preconditions of a parameter.
+ * Verifies preconditions of a parameter if assertions are enabled.
  * <p>
  * @author Gili Tzabari
  */
-public final class Preconditions
+public final class Assertions
 {
+	private final boolean enabled;
+
 	/**
-	 * Creates a precondition for an {@code Object}.
+	 * Creates a new assertion.
+	 * <p>
+	 * To look up whether assertions are enabled for a particular class, invoke:
+	 * <p>
+	 * <code>
+	 * boolean assertionsEnabled = false;<br>
+	 * assert (assertionsEnabled = true);
+	 * </code>
+	 * <p>
+	 * from within the class in question.
+	 * <p>
+	 * @param enabled true if assertions are enabled for the class whose preconditions are being
+	 *                verified
+	 */
+	public Assertions(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+
+	/**
+	 * Same as {@link Preconditions#requireThat(Object, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param <S>       the type of preconditions that was instantiated
 	 * @param parameter the value of the parameter
@@ -29,17 +52,19 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <S extends ObjectPreconditions<S, Object>> S requireThat(Object parameter,
-		String name)
+	public <S extends ObjectPreconditions<S, Object>> S requireThat(Object parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
+		if (enabled)
+			return Preconditions.requireThat(parameter, name);
 		@SuppressWarnings("unchecked")
-		S self = (S) new ObjectPreconditionsImpl<>(parameter, name);
-		return self;
+		S result = (S) NoOpObjectPreconditions.INSTANCE;
+		return result;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Collection}.
+	 * Same as {@link Preconditions#requireThat(Collection, String)} but does nothing if assertions
+	 * are disabled.
 	 * <p>
 	 * @param <E>       the type of element in the collection
 	 * @param parameter the value of the parameter
@@ -48,14 +73,20 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <E> CollectionPreconditions<E> requireThat(Collection<E> parameter, String name)
+	public <E> CollectionPreconditions<E> requireThat(Collection<E> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new CollectionPreconditionsImpl<>(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		@SuppressWarnings("unchecked")
+		CollectionPreconditions<E> result
+			= (CollectionPreconditions<E>) NoOpCollectionPreconditions.INSTANCE;
+		return result;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Number}.
+	 * Same as {@link Preconditions#requireThat(Number, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param <S>       the type of preconditions that was instantiated
 	 * @param <T>       the type of the number
@@ -65,15 +96,20 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
+	public <S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
 		NumberPreconditions<S, T> requireThat(T parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new NumberPreconditionsImpl<>(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		@SuppressWarnings("unchecked")
+		NoOpNumberPreconditions<S, T> result = new NoOpNumberPreconditions<>();
+		return result;
 	}
 
 	/**
-	 * Creates a precondition for a {@code BigDecimal}.
+	 * Same as {@link Preconditions#requireThat(BigDecimal, String)} but does nothing if assertions
+	 * are disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -81,14 +117,17 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static BigDecimalPreconditions requireThat(BigDecimal parameter, String name)
+	public BigDecimalPreconditions requireThat(BigDecimal parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new BigDecimalPreconditionsImpl(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		return NoOpBigDecimalPreconditions.INSTANCE;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Map}.
+	 * Same as {@link Preconditions#requireThat(Map, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param <K>       the type of key in the map
 	 * @param <V>       the type of value in the map
@@ -98,14 +137,19 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <K, V> MapPreconditions<K, V> requireThat(Map<K, V> parameter, String name)
+	public <K, V> MapPreconditions<K, V> requireThat(Map<K, V> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new MapPreconditionsImpl<>(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		@SuppressWarnings("unchecked")
+		MapPreconditions<K, V> result = (MapPreconditions<K, V>) NoOpMapPreconditions.INSTANCE;
+		return result;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Path}.
+	 * Same as {@link Preconditions#requireThat(Path, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -113,14 +157,17 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static PathPreconditions requireThat(Path parameter, String name)
+	public PathPreconditions requireThat(Path parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new PathPreconditionsImpl(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		return NoOpPathPreconditions.INSTANCE;
 	}
 
 	/**
-	 * Creates a precondition for a {@code String}.
+	 * Same as {@link Preconditions#requireThat(String, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -128,14 +175,17 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static StringPreconditions requireThat(String parameter, String name)
+	public StringPreconditions requireThat(String parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new StringPreconditionsImpl(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		return NoOpStringPreconditions.INSTANCE;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Uri}.
+	 * Same as {@link Preconditions#requireThat(URI, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -143,14 +193,17 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static UriPreconditions requireThat(URI parameter, String name)
+	public UriPreconditions requireThat(URI parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new UriPreconditionsImpl(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		return NoOpUriPreconditions.INSTANCE;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Class}.
+	 * Same as {@link Preconditions#requireThat(Class, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param <T>       the type of class
 	 * @param parameter the value of the parameter
@@ -159,14 +212,19 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <T> ClassPreconditions<T> requireThat(Class<T> parameter, String name)
+	public <T> ClassPreconditions<T> requireThat(Class<T> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new ClassPreconditionsImpl<>(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		@SuppressWarnings("unchecked")
+		ClassPreconditions<T> result = (ClassPreconditions<T>) NoOpClassPreconditions.INSTANCE;
+		return result;
 	}
 
 	/**
-	 * Creates a precondition for a {@code Year}.
+	 * Same as {@link Preconditions#requireThat(Year, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -174,14 +232,17 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static YearPreconditions requireThat(Year parameter, String name)
+	public YearPreconditions requireThat(Year parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new YearPreconditionsImpl(parameter, name);
+		if (enabled)
+			return requireThat(parameter, name);
+		return NoOpYearPreconditions.INSTANCE;
 	}
 
 	/**
-	 * Creates a precondition for an {@code Optional}.
+	 * Same as {@link Preconditions#requireThat(Optional, String)} but does nothing if assertions are
+	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -189,16 +250,11 @@ public final class Preconditions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static OptionalPreconditions requireThat(Optional<?> parameter, String name)
+	public OptionalPreconditions requireThat(Optional<?> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new OptionalPreconditionsImpl(parameter, name);
-	}
-
-	/**
-	 * Prevent construction.
-	 */
-	private Preconditions()
-	{
+		if (enabled)
+			return requireThat(parameter, name);
+		return NoOpOptionalPreconditions.INSTANCE;
 	}
 }

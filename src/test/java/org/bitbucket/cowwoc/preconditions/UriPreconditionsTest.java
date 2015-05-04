@@ -39,4 +39,12 @@ public class UriPreconditionsTest
 		URI parameter = URI.create("../index.html");
 		Preconditions.requireThat(parameter, "parameter").isAbsolute();
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		URI parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

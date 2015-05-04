@@ -53,4 +53,12 @@ public class ClassPreconditionsTest
 		Class<Random> parameter = null;
 		Preconditions.requireThat(parameter, "parameter").isSupertypeOf(Random.class);
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Class<?> parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

@@ -1,37 +1,20 @@
 /*
- * Copyright 2013 Gili Tzabari.
+ * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.preconditions;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.LinkOption;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 
 /**
  * Verifies preconditions of a {@link Path} parameter.
  * <p>
  * @author Gili Tzabari
  */
-public final class PathPreconditions extends Preconditions<PathPreconditions, Path>
+public interface PathPreconditions extends ObjectPreconditions<PathPreconditions, Path>
 {
-	/**
-	 * Creates new PathPreconditions.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	PathPreconditions(Path parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		super(parameter, name);
-	}
-
 	/**
 	 * Ensures that a path exists.
 	 * <p>
@@ -42,44 +25,15 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to a non-existent path
 	 */
-	public PathPreconditions exists() throws IllegalArgumentException
-	{
-		if (!Files.exists(parameter))
-		{
-			throw new IllegalArgumentException(name + " refers to a non-existent path: " +
-				parameter.toAbsolutePath());
-		}
-		return this;
-	}
+	PathPreconditions exists() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that a path refers to a regular file.
+	 * Ensures that a path is absolute.
 	 * <p>
-	 * @param options options indicating how symbolic links are handled
 	 * @return this
-	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-file path
-	 * @throws IOException              if an I/O error occurs while reading the file attributes
+	 * @throws IllegalArgumentException if parameter refers to an absolute path
 	 */
-	public PathPreconditions isRegularFile(LinkOption... options)
-		throws IllegalArgumentException, IOException
-	{
-		BasicFileAttributes attrs;
-		try
-		{
-			attrs = Files.readAttributes(parameter, BasicFileAttributes.class, options);
-		}
-		catch (NoSuchFileException e)
-		{
-			throw new IllegalArgumentException(name + " refers to a non-existent path: " +
-				parameter.toAbsolutePath(), e);
-		}
-		if (!attrs.isRegularFile())
-		{
-			throw new IllegalArgumentException(name + " must refer to a file. Was: " +
-				parameter.toAbsolutePath());
-		}
-		return this;
-	}
+	PathPreconditions isAbsolute() throws IllegalArgumentException;
 
 	/**
 	 * Ensures that a path refers to a directory.
@@ -89,26 +43,19 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-directory path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */
-	public PathPreconditions isDirectory(LinkOption... options)
-		throws IllegalArgumentException, IOException
-	{
-		BasicFileAttributes attrs;
-		try
-		{
-			attrs = Files.readAttributes(parameter, BasicFileAttributes.class, options);
-		}
-		catch (NoSuchFileException e)
-		{
-			throw new IllegalArgumentException(name + " refers to a non-existent path: " +
-				parameter.toAbsolutePath(), e);
-		}
-		if (!attrs.isDirectory())
-		{
-			throw new IllegalArgumentException(name + " must refer to a directory. Was: " +
-				parameter.toAbsolutePath());
-		}
-		return this;
-	}
+	PathPreconditions isDirectory(LinkOption... options)
+		throws IllegalArgumentException, IOException;
+
+	/**
+	 * Ensures that a path refers to a regular file.
+	 * <p>
+	 * @param options options indicating how symbolic links are handled
+	 * @return this
+	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-file path
+	 * @throws IOException              if an I/O error occurs while reading the file attributes
+	 */
+	PathPreconditions isRegularFile(LinkOption... options)
+		throws IllegalArgumentException, IOException;
 
 	/**
 	 * Ensures that a path is relative.
@@ -116,25 +63,5 @@ public final class PathPreconditions extends Preconditions<PathPreconditions, Pa
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to an absolute path
 	 */
-	public PathPreconditions isRelative()
-		throws IllegalArgumentException
-	{
-		if (parameter.isAbsolute())
-			throw new IllegalArgumentException(name + " must refer to a relative path. Was: " + parameter);
-		return this;
-	}
-
-	/**
-	 * Ensures that a path is absolute.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if parameter refers to an absolute path
-	 */
-	public PathPreconditions isAbsolute()
-		throws IllegalArgumentException
-	{
-		if (!parameter.isAbsolute())
-			throw new IllegalArgumentException(name + " must refer to an absolute path. Was: " + parameter);
-		return this;
-	}
+	PathPreconditions isRelative() throws IllegalArgumentException;
 }

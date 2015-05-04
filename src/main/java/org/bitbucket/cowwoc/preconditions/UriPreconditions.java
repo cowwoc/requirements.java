@@ -7,35 +7,17 @@ package org.bitbucket.cowwoc.preconditions;
 import java.net.URI;
 
 /**
- * Verifies preconditions of a {@link URI} parameter.
+ * Interface needed for Preconditions.assertThat().
  * <p>
  * @author Gili Tzabari
  */
-public final class UriPreconditions extends Preconditions<UriPreconditions, URI>
+public interface UriPreconditions extends ObjectPreconditions<UriPreconditions, URI>
 {
-	/**
-	 * Creates new UriPreconditions.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	UriPreconditions(URI parameter, String name)
-	{
-		super(parameter, name);
-	}
-
 	/**
 	 * Ensures that the parameter is absolute.
 	 * <p>
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not absolute
 	 */
-	public UriPreconditions isAbsolute() throws IllegalArgumentException
-	{
-		if (!parameter.isAbsolute())
-			throw new IllegalArgumentException(name + " must be absolute: " + parameter);
-		return this;
-	}
+	UriPreconditions isAbsolute() throws IllegalArgumentException;
 }

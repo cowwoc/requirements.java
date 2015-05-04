@@ -206,4 +206,12 @@ public class YearPreconditionsTest
 		Year parameter = Year.of(1);
 		Preconditions.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(Year.of(2));
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Year parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

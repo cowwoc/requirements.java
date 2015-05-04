@@ -415,4 +415,12 @@ public class BigDecimalPreconditionsTest
 		Range<Integer> range = Range.closed(10, 20);
 		Preconditions.requireThat(parameter, "parameter").hasScaleIn(range);
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		BigDecimal parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

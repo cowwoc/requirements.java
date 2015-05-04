@@ -151,4 +151,12 @@ public class PathPreconditionsTest
 		Path parameter = Paths.get("path1/path2");
 		Preconditions.requireThat(parameter, "parameter").isAbsolute();
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Path parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

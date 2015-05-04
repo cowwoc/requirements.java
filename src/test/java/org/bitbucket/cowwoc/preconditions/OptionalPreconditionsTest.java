@@ -53,4 +53,12 @@ public class OptionalPreconditionsTest
 		Optional<?> parameter = Optional.of(5);
 		Preconditions.requireThat(parameter, "parameter").isEmpty();
 	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Optional<?> parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

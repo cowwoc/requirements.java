@@ -68,4 +68,26 @@ public class MapPreconditionsTest
 		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
 		Preconditions.requireThat(parameter, "parameter").containsValue("value");
 	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeEqualsFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
+		Preconditions.requireThat(parameter, "parameter").sizeEquals(2);
+	}
+
+	@Test
+	public void sizeEqualsTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").sizeEquals(1);
+	}
+
+	@Test
+	public void assertionsDisabled()
+	{
+		// Ensure that no exception is thrown if assertions are disabled
+		Map<?, ?> parameter = null;
+		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
 }

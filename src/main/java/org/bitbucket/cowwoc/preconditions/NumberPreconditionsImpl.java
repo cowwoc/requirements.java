@@ -1,0 +1,181 @@
+/*
+ * Copyright 2013 Gili Tzabari.
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package org.bitbucket.cowwoc.preconditions;
+
+import com.google.common.collect.Range;
+
+/**
+ * Default implementation of NumberPreconditions.
+ * <p>
+ * @param <S> the type of preconditions that was instantiated
+ * @param <T> the type of the parameter
+ * @author Gili Tzabari
+ */
+class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
+	extends ObjectPreconditionsImpl<S, T>
+	implements NumberPreconditions<S, T>
+{
+	/**
+	 * Creates new NumberPreconditionsImpl.
+	 * <p>
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	NumberPreconditionsImpl(T parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		super(parameter, name);
+	}
+
+	@Override
+	public S isIn(Range<T> range)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(range, "range").isNotNull();
+		if (range.contains(parameter))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			Ranges.getExceptionMessage(name, parameter, range));
+	}
+
+	@Override
+	public S isNegative() throws IllegalArgumentException
+	{
+		if (parameter.longValue() < 0L)
+			return self;
+		return throwException(IllegalArgumentException.class, String.format("%s must be negative", name));
+	}
+
+	@Override
+	public S isNotNegative() throws IllegalArgumentException
+	{
+		if (parameter.longValue() >= 0L)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s may not be negative", name));
+	}
+
+	@Override
+	public S isZero() throws IllegalArgumentException
+	{
+		if (parameter.longValue() == 0L)
+			return self;
+		return throwException(IllegalArgumentException.class, String.format("%s must be zero", name));
+	}
+
+	@Override
+	public S isNotZero() throws IllegalArgumentException
+	{
+		if (parameter.longValue() != 0L)
+			return self;
+		return throwException(IllegalArgumentException.class, String.format("%s may not be zero", name));
+	}
+
+	@Override
+	public S isPositive() throws IllegalArgumentException
+	{
+		if (parameter.longValue() > 0L)
+			return self;
+		return throwException(IllegalArgumentException.class, String.format("%s must be positive", name));
+	}
+
+	@Override
+	public S isNotPositive() throws IllegalArgumentException
+	{
+		if (parameter.longValue() <= 0L)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s may not be positive", name));
+	}
+
+	@Override
+	public S isLessThan(T value, String name) throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) < 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be less than %s (%d)", this.name, parameter.longValue(), name,
+				value.longValue()));
+	}
+
+	@Override
+	public S isLessThan(T value) throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) < 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be less than %d", this.name, parameter.longValue(),
+				value.longValue()));
+	}
+
+	@Override
+	public S isLessThanOrEqualTo(T value, String name)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) <= 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be less than or equal to %s (%d)", this.name,
+				parameter.longValue(), name, value.longValue()));
+	}
+
+	@Override
+	public S isLessThanOrEqualTo(T value)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) <= 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be less than or equal to %d", name, parameter.longValue(),
+				value.longValue()));
+	}
+
+	@Override
+	public S isGreaterThan(T value, String name)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) > 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be greater than %s (%d)", this.name, parameter.longValue(), name,
+				value.longValue()));
+	}
+
+	@Override
+	public S isGreaterThan(T value)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) > 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be greater than %d", name, parameter.longValue(),
+				value.longValue()));
+	}
+
+	@Override
+	public S isGreaterThanOrEqualTo(T value, String name)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) >= 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be greater than or equal to %s (%d)", this.name,
+				parameter.longValue(), name, value.longValue()));
+	}
+
+	@Override
+	public S isGreaterThanOrEqualTo(T value)
+		throws IllegalArgumentException
+	{
+		if (parameter.compareTo(value) >= 0)
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s (%d) must be greater than or equal to %d", this.name, parameter.longValue(),
+				value.longValue()));
+
+	}
+}

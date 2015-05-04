@@ -10,42 +10,16 @@ package org.bitbucket.cowwoc.preconditions;
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-public class ClassPreconditions<T> extends Preconditions<ClassPreconditions<T>, Class<T>>
+public interface ClassPreconditions<T> extends ObjectPreconditions<ClassPreconditions<T>, Class<T>>
 {
 	/**
-	 * Creates new ClassPreconditions.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	ClassPreconditions(Class<T> parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		super(parameter, name);
-	}
-
-	/**
-	 * Ensures that the parameter is a superclass or superinterface of a class.
+	 * Ensures that the parameter is a superclass or super-interface of a class.
 	 * <p>
 	 * @param type the class to compare to
 	 * @return this
-	 * @throws NullPointerException     if {@code parameter} or {@code type} are null
+	 * @throws NullPointerException     if {@code type} is null
 	 * @throws IllegalArgumentException if {@code parameter} is not a supertype of {@code type}
 	 */
-	public ClassPreconditions<T> isSupertypeOf(Class<?> type)
-		throws NullPointerException, IllegalArgumentException
-	{
-		if (parameter == null)
-			throw new NullPointerException("parameter may not be null");
-		if (type == null)
-			throw new NullPointerException("type may not be null");
-		if (!parameter.isAssignableFrom(type))
-		{
-			throw new IllegalArgumentException(name + " must be a supertype of " + type + ". Was: " +
-				parameter.getClass());
-		}
-		return this;
-	}
+	ClassPreconditions<T> isSupertypeOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException;
 }
