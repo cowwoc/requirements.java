@@ -28,7 +28,7 @@ enum NoOpOptionalPreconditions implements OptionalPreconditions
 	}
 
 	@Override
-	public <E extends RuntimeException> OptionalPreconditions using(Class<E> exception)
+	public NoOpOptionalPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import com.google.common.collect.Range;
-
 /**
  * An implementation of StringPreconditions that does nothing.
  * <p>
@@ -29,24 +27,6 @@ enum NoOpStringPreconditions implements StringPreconditions
 
 	@Override
 	public StringPreconditions endsWith(String suffix)
-	{
-		return this;
-	}
-
-	@Override
-	public StringPreconditions hasLength(int length)
-	{
-		return this;
-	}
-
-	@Override
-	public StringPreconditions hasMaximumLength(int maxLength)
-	{
-		return this;
-	}
-
-	@Override
-	public StringPreconditions hasMinimumLength(int minLength)
 	{
 		return this;
 	}
@@ -76,12 +56,6 @@ enum NoOpStringPreconditions implements StringPreconditions
 	}
 
 	@Override
-	public StringPreconditions lengthIn(Range<Integer> range)
-	{
-		return this;
-	}
-
-	@Override
 	public StringPreconditions startsWith(String prefix)
 	{
 		return this;
@@ -94,7 +68,7 @@ enum NoOpStringPreconditions implements StringPreconditions
 	}
 
 	@Override
-	public <E extends RuntimeException> StringPreconditions using(Class<E> exception)
+	public NoOpStringPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import com.google.common.collect.Range;
-
 /**
  * Interface needed for Preconditions.assertThat().
  * <p>
@@ -41,41 +39,6 @@ public interface StringPreconditions extends ObjectPreconditions<StringPrecondit
 	StringPreconditions endsWith(String suffix) throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the parameter's length is equal to a single value.
-	 * <p>
-	 * @param length the expected length of the string
-	 * @return this
-	 * @throws IllegalArgumentException if parameter length is incorrect
-	 */
-	StringPreconditions hasLength(int length) throws IllegalArgumentException;
-
-	/**
-	 * Ensures that the parameter isn't too long.
-	 * <p>
-	 * @param maxLength the maximum length allowed for the string
-	 * @return this
-	 * @throws IllegalArgumentException if parameter is too long
-	 */
-	StringPreconditions hasMaximumLength(int maxLength) throws IllegalArgumentException;
-
-	/**
-	 * Ensures that the parameter isn't too short.
-	 * <p>
-	 * @param minLength the minimum length allowed for the string
-	 * @return this
-	 * @throws IllegalArgumentException if parameter is too short
-	 */
-	StringPreconditions hasMinimumLength(int minLength) throws IllegalArgumentException;
-
-	/**
-	 * Ensures that the parameter contains a valid email format.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
-	 */
-	StringPreconditions isEmailFormat() throws IllegalArgumentException;
-
-	/**
 	 * Ensures that the parameter is empty.
 	 * <p>
 	 * @return this
@@ -83,14 +46,6 @@ public interface StringPreconditions extends ObjectPreconditions<StringPrecondit
 	 * @see #trim()
 	 */
 	StringPreconditions isEmpty() throws IllegalArgumentException;
-
-	/**
-	 * Ensures that the parameter contains a valid IP address format.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter does not contain a valid IP address format
-	 */
-	StringPreconditions isIpAddressFormat() throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is not empty.
@@ -102,15 +57,20 @@ public interface StringPreconditions extends ObjectPreconditions<StringPrecondit
 	StringPreconditions isNotEmpty() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the parameter length is within a range.
+	 * Ensures that the parameter contains a valid email format.
 	 * <p>
-	 * @param range the range of acceptable parameter lengths
 	 * @return this
-	 * @throws IllegalArgumentException if parameter's length is outside of the specified range
-	 * @throws NullPointerException     if range is null
+	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
 	 */
-	StringPreconditions lengthIn(Range<Integer> range) throws NullPointerException,
-		IllegalArgumentException;
+	StringPreconditions isEmailFormat() throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter contains a valid IP address format.
+	 * <p>
+	 * @return this
+	 * @throws IllegalArgumentException if the parameter does not contain a valid IP address format
+	 */
+	StringPreconditions isIpAddressFormat() throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter starts with a value.

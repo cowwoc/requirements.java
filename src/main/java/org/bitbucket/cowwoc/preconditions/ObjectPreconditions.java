@@ -16,11 +16,10 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	/**
 	 * Overrides the type of exception that will get thrown if a precondition fails.
 	 * <p>
-	 * @param <E>       the type of exception to throw
 	 * @param exception the type of exception to throw, null to disable the override
 	 * @return this
 	 */
-	<E extends RuntimeException> S using(Class<E> exception);
+	S usingException(Class<? extends RuntimeException> exception);
 
 	/**
 	 * Ensures that the parameter is equal to a value.

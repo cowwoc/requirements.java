@@ -71,7 +71,7 @@ enum NoOpYearPreconditions implements YearPreconditions
 	}
 
 	@Override
-	public <E extends RuntimeException> YearPreconditions using(Class<E> exception)
+	public NoOpYearPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

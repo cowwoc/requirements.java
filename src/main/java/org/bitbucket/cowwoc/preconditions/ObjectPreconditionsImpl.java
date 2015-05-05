@@ -20,25 +20,29 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 {
 	protected final S self;
 	@SuppressWarnings("ProtectedField")
-	protected T parameter;
+	protected final T parameter;
 	protected final String name;
-	private Optional<Class<? extends RuntimeException>> exceptionOverride = Optional.empty();
+	protected final Optional<Class<? extends RuntimeException>> exceptionOverride;
 
 	/**
 	 * Creates new ObjectPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	protected ObjectPreconditionsImpl(T parameter, String name)
+	protected ObjectPreconditionsImpl(T parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
+		if (exceptionOverride == null)
+			throw new NullPointerException("exceptionOverride may not be null");
 		@SuppressWarnings(
 			{
 				"unchecked", "LocalVariableHidesMemberVariable"
@@ -47,13 +51,15 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 		this.self = self;
 		this.parameter = parameter;
 		this.name = name;
+		this.exceptionOverride = exceptionOverride;
 	}
 
 	@Override
-	public <E extends RuntimeException> S using(Class<E> exception)
+	public S usingException(Class<? extends RuntimeException> exception)
 	{
-		exceptionOverride = Optional.ofNullable(exception);
-		return self;
+		@SuppressWarnings("unchecked")
+		S result = (S) new ObjectPreconditionsImpl<>(parameter, name, Optional.ofNullable(exception));
+		return result;
 	}
 
 	/**

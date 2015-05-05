@@ -22,7 +22,7 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object>
 	}
 
 	@Override
-	public <E extends RuntimeException> CollectionPreconditions<Object> using(Class<E> exception)
+	public NoOpCollectionPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Default implementation of MapPreconditions.
@@ -19,15 +20,17 @@ final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPrecon
 	/**
 	 * Creates new MapPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	MapPreconditionsImpl(Map<K, V> parameter, String name)
+	MapPreconditionsImpl(Map<K, V> parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name);
+		super(parameter, name, exceptionOverride);
 	}
 
 	@Override
@@ -54,14 +57,5 @@ final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPrecon
 		if (!parameter.isEmpty())
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s may not be empty", name));
-	}
-
-	@Override
-	public MapPreconditions<K, V> sizeEquals(int size) throws IllegalArgumentException
-	{
-		if (parameter.size() == size)
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d elements. Was: %d", name, size, parameter.size()));
 	}
 }

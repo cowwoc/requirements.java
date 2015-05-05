@@ -13,7 +13,8 @@ import java.util.Map;
  * @param <V> the type of value in the map
  * @author Gili Tzabari
  */
-public interface MapPreconditions<K, V> extends ObjectPreconditions<MapPreconditions<K, V>, Map<K, V>>
+public interface MapPreconditions<K, V> extends
+	ObjectPreconditions<MapPreconditions<K, V>, Map<K, V>>
 {
 	/**
 	 * Ensures that the parameter contains a key.
@@ -40,13 +41,4 @@ public interface MapPreconditions<K, V> extends ObjectPreconditions<MapPrecondit
 	 * @throws IllegalArgumentException if parameter is empty
 	 */
 	MapPreconditions<K, V> isNotEmpty() throws IllegalArgumentException;
-
-	/**
-	 * Ensures that the parameter is of the specified size.
-	 * <p>
-	 * @param size the size the map is expected to have
-	 * @return this
-	 * @throws IllegalArgumentException if parameter size does not match expectations
-	 */
-	MapPreconditions<K, V> sizeEquals(int size) throws IllegalArgumentException;
 }

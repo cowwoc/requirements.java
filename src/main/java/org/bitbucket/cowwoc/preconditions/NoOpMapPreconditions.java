@@ -34,13 +34,7 @@ enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
 	}
 
 	@Override
-	public MapPreconditions<Object, Object> sizeEquals(int size)
-	{
-		return this;
-	}
-
-	@Override
-	public <E extends RuntimeException> MapPreconditions<Object, Object> using(Class<E> exception)
+	public NoOpMapPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

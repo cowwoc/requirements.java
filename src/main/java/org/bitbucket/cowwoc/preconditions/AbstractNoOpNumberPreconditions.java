@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Gili Tzabari.
+ * Copyright 2015 Gili Tzabaro.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.preconditions;
@@ -11,137 +11,146 @@ import com.google.common.collect.Range;
  * <p>
  * @author Gili Tzabari
  */
-final class NoOpNumberPreconditions<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
+abstract class AbstractNoOpNumberPreconditions<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
 	implements NumberPreconditions<S, T>
 {
-	private final S self;
-
-	/**
-	 * Creates a new NoOpNumberPreconditions.
-	 */
-	@SuppressWarnings("unchecked")
-	NoOpNumberPreconditions()
-	{
-		this.self = (S) this;
-	}
-
 	@Override
+	@SuppressWarnings("unchecked")
 	public S isGreaterThan(T value, String name)
 	{
-		return self;
+		return (S) this;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public S isGreaterThan(T value)
 	{
-		return self;
+		return (S) this;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public S isGreaterThanOrEqualTo(T value, String name)
 	{
-		return self;
+		return (S) this;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public S isGreaterThanOrEqualTo(T value)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isIn(Range<T> range)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThan(T value, String name)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThan(T value)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThanOrEqualTo(T value, String name)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThanOrEqualTo(T value)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isNegative()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotNegative()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotPositive()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotZero()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isPositive()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isZero()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S usingException(Class<? extends RuntimeException> exception)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isEqualTo(T value)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isNull()
 	{
-		return self;
+		return (S) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotNull()
 	{
-		return self;
+		return (S) this;
 	}
 }

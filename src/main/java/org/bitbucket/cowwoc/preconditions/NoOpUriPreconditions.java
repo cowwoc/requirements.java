@@ -22,7 +22,7 @@ enum NoOpUriPreconditions implements UriPreconditions
 	}
 
 	@Override
-	public <E extends RuntimeException> UriPreconditions using(Class<E> exception)
+	public NoOpUriPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import com.google.common.collect.DiscreteDomain;
-import com.google.common.collect.Range;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -23,15 +22,17 @@ final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPrecon
 	/**
 	 * Creates new StringPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	StringPreconditionsImpl(String parameter, String name)
+	StringPreconditionsImpl(String parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name);
+		super(parameter, name, exceptionOverride);
 	}
 
 	/**
@@ -72,81 +73,7 @@ final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPrecon
 	@Override
 	public StringPreconditions trim()
 	{
-		this.parameter = parameter.trim();
-		return this;
-	}
-
-	/**
-	 * Ensures that the parameter length is within a range.
-	 * <p>
-	 * @param range the range of acceptable parameter lengths
-	 * @return this
-	 * @throws IllegalArgumentException if parameter's length is outside of the specified range
-	 * @throws NullPointerException     if range is null
-	 */
-	@Override
-	public StringPreconditions lengthIn(Range<Integer> range)
-		throws NullPointerException, IllegalArgumentException
-	{
-		Preconditions.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter.length()))
-			return this;
-		Range<Integer> canonical = range.canonical(DiscreteDomain.integers());
-		return throwException(IllegalArgumentException.class,
-			String.format("%s's length must be in the range [%d, %d]. Length was %d. Value was \"%s\".",
-				name, canonical.lowerEndpoint(), (canonical.upperEndpoint() - 1), parameter.length(),
-				parameter));
-	}
-
-	/**
-	 * Ensures that the parameter isn't too short.
-	 * <p>
-	 * @param minLength the minimum length allowed for the string
-	 * @return this
-	 * @throws IllegalArgumentException if parameter is too short
-	 */
-	@Override
-	public StringPreconditions hasMinimumLength(int minLength) throws IllegalArgumentException
-	{
-		if (parameter.length() >= minLength)
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d characters. Length was %d. Value was \"%s\".",
-				name, minLength, parameter.length(), parameter));
-	}
-
-	/**
-	 * Ensures that the parameter's length is equal to a single value.
-	 * <p>
-	 * @param length the expected length of the string
-	 * @return this
-	 * @throws IllegalArgumentException if parameter length is incorrect
-	 */
-	@Override
-	public StringPreconditions hasLength(int length) throws IllegalArgumentException
-	{
-		if (parameter.length() == length)
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s's length must be equal to %d. Length was %d. Value was \"%s\".",
-				name, length, parameter.length(), parameter));
-	}
-
-	/**
-	 * Ensures that the parameter isn't too long.
-	 * <p>
-	 * @param maxLength the maximum length allowed for the string
-	 * @return this
-	 * @throws IllegalArgumentException if parameter is too long
-	 */
-	@Override
-	public StringPreconditions hasMaximumLength(int maxLength) throws IllegalArgumentException
-	{
-		if (parameter.length() <= maxLength)
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must be shorter than %d characters. Length was %d. Value was \"%s\".",
-				name, maxLength + 1, parameter.length(), parameter));
+		return new StringPreconditionsImpl(parameter.trim(), name, exceptionOverride);
 	}
 
 	/**

@@ -15,6 +15,8 @@ import java.util.Optional;
 /**
  * Verifies preconditions of a parameter if assertions are enabled.
  * <p>
+ * All implementations must be immutable and (when possible) final.
+ * <p>
  * @author Gili Tzabari
  */
 public final class Assertions
@@ -102,9 +104,45 @@ public final class Assertions
 	{
 		if (enabled)
 			return requireThat(parameter, name);
-		@SuppressWarnings("unchecked")
-		NoOpNumberPreconditions<S, T> result = new NoOpNumberPreconditions<>();
-		return result;
+		return new NoOpNumberPreconditions<>();
+	}
+
+	/**
+	 * Same as {@link Preconditions#requireThat(Integer, String)} but does nothing if assertions are
+	 * disabled.
+	 * <p>
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public IntegerPreconditions requireThat(Integer parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		if (enabled)
+			return requireThat(parameter, name);
+		// Performance optimization for specific NumberPreconditions case
+		return NoOpIntegerPreconditions.INSTANCE;
+	}
+
+	/**
+	 * Same as {@link Preconditions#requireThat(Integer, String)} but does nothing if assertions are
+	 * disabled.
+	 * <p>
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public DoublePreconditions requireThat(Double parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		if (enabled)
+			return requireThat(parameter, name);
+		// Performance optimization for specific NumberPreconditions case
+		return NoOpDoublePreconditions.INSTANCE;
 	}
 
 	/**

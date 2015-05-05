@@ -47,7 +47,7 @@ enum NoOpPathPreconditions implements PathPreconditions
 	}
 
 	@Override
-	public <E extends RuntimeException> PathPreconditions using(Class<E> exception)
+	public NoOpPathPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

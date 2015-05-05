@@ -10,6 +10,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Optional;
 
 /**
  * Default implementation of PathPreconditions.
@@ -22,15 +23,17 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 	/**
 	 * Creates new PathPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	PathPreconditionsImpl(Path parameter, String name)
+	PathPreconditionsImpl(Path parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name);
+		super(parameter, name, exceptionOverride);
 	}
 
 	@Override
@@ -88,12 +91,6 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 		return this;
 	}
 
-	/**
-	 * Ensures that a path is relative.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if parameter refers to an absolute path
-	 */
 	@Override
 	public PathPreconditions isRelative()
 		throws IllegalArgumentException

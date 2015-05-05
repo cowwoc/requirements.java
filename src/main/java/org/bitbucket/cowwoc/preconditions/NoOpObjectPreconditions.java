@@ -14,7 +14,7 @@ enum NoOpObjectPreconditions implements ObjectPreconditions<NoOpObjectPreconditi
 	INSTANCE;
 
 	@Override
-	public <E extends RuntimeException> NoOpObjectPreconditions using(Class<E> exception)
+	public NoOpObjectPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import com.google.common.collect.Range;
 import org.testng.annotations.Test;
 
 /**
@@ -84,48 +83,6 @@ public class StringPreconditionsTest
 	}
 
 	@Test
-	public void hasMinimumLengthTrue()
-	{
-		String parameter = "value";
-		Preconditions.requireThat(parameter, "parameter").hasMinimumLength(parameter.length());
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void hasMinimumLengthFalse()
-	{
-		String parameter = "1234567890";
-		Preconditions.requireThat(parameter, "parameter").hasMinimumLength(parameter.length() + 1);
-	}
-
-	@Test
-	public void hasLengthTrue()
-	{
-		String parameter = "value";
-		Preconditions.requireThat(parameter, "parameter").hasLength(parameter.length());
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void hasLengthFalse()
-	{
-		String parameter = "1234567890";
-		Preconditions.requireThat(parameter, "parameter").hasLength(parameter.length() + 1);
-	}
-
-	@Test
-	public void hasMaximumLengthTrue()
-	{
-		String parameter = "value";
-		Preconditions.requireThat(parameter, "parameter").hasMaximumLength(parameter.length());
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void hasMaximumLengthFalse()
-	{
-		String parameter = "1234567890";
-		Preconditions.requireThat(parameter, "parameter").hasMaximumLength(parameter.length() - 1);
-	}
-
-	@Test
 	public void isEmailFormatTrue()
 	{
 		String parameter = "name@gmail.com";
@@ -165,38 +122,6 @@ public class StringPreconditionsTest
 	{
 		String parameter = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
 		Preconditions.requireThat(parameter, "parameter").isIpAddressFormat();
-	}
-
-	@Test
-	public void lengthInTrue()
-	{
-		String parameter = "123";
-		Range<Integer> range = Range.closed(1, 5);
-		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void lengthInFalse()
-	{
-		String parameter = "1234567";
-		Range<Integer> range = Range.closed(1, 5);
-		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void lengthInNullParameter()
-	{
-		String parameter = null;
-		Range<Integer> range = Range.closed(1, 5);
-		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void lengthInNullRange()
-	{
-		String parameter = "1234567";
-		Range<Integer> range = null;
-		Preconditions.requireThat(parameter, "parameter").lengthIn(range);
 	}
 
 	@Test

@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.Range;
 import java.time.Year;
+import java.util.Optional;
 
 /**
  * Default implementation of YearPreconditions.
@@ -18,15 +19,17 @@ final class YearPreconditionsImpl extends ObjectPreconditionsImpl<YearPreconditi
 	/**
 	 * Creates new YearPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	YearPreconditionsImpl(Year parameter, String name)
+	YearPreconditionsImpl(Year parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name);
+		super(parameter, name, exceptionOverride);
 	}
 
 	@Override

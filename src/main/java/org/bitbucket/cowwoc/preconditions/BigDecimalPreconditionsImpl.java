@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import com.google.common.collect.Range;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * Default implementation of BigDecimalPreconditions.
@@ -19,38 +19,17 @@ final class BigDecimalPreconditionsImpl
 	/**
 	 * Creates new BigDecimalPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	BigDecimalPreconditionsImpl(BigDecimal parameter, String name)
+	BigDecimalPreconditionsImpl(BigDecimal parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name);
-	}
-
-	@Override
-	public BigDecimalPreconditions hasPrecisionIn(Range<Integer> range)
-		throws NullPointerException, IllegalArgumentException
-	{
-		Preconditions.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter.precision()))
-			return this;
-		return throwException(IllegalArgumentException.class,
-			Ranges.getExceptionMessage(String.format("%s.precision()", name), parameter.precision(),
-				range));
-	}
-
-	@Override
-	public BigDecimalPreconditions hasScaleIn(Range<Integer> range)
-		throws NullPointerException, IllegalArgumentException
-	{
-		Preconditions.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter.scale()))
-			return this;
-		return throwException(IllegalArgumentException.class,
-			Ranges.getExceptionMessage(String.format("%s.scale()", name), parameter.scale(), range));
+		super(parameter, name, exceptionOverride);
 	}
 
 	@Override

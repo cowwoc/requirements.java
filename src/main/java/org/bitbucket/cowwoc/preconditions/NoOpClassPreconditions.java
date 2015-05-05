@@ -20,7 +20,7 @@ enum NoOpClassPreconditions implements ClassPreconditions<Object>
 	}
 
 	@Override
-	public <E extends RuntimeException> ClassPreconditions<Object> using(Class<E> exception)
+	public NoOpClassPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import java.net.URI;
+import java.util.Optional;
 
 /**
  * Default implementation of UriPreconditions.
@@ -17,14 +18,16 @@ final class UriPreconditionsImpl extends ObjectPreconditionsImpl<UriPrecondition
 	/**
 	 * Creates new UriPreconditionsImpl.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @throws NullPointerException     if name is null
+	 * @param parameter         the value of the parameter
+	 * @param name              the name of the parameter
+	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	UriPreconditionsImpl(URI parameter, String name)
+	UriPreconditionsImpl(URI parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
-		super(parameter, name);
+		super(parameter, name, exceptionOverride);
 	}
 
 	@Override

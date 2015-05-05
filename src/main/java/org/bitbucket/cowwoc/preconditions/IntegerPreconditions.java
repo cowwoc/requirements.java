@@ -4,15 +4,13 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import java.math.BigDecimal;
-
 /**
- * Verifies preconditions of a {@link BigDecimal} parameter.
+ * Verifies preconditions of an {@link Integer} parameter.
  * <p>
  * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
-public interface BigDecimalPreconditions
-	extends NumberPreconditions<BigDecimalPreconditions, BigDecimal>
+public interface IntegerPreconditions
+	extends NumberPreconditions<IntegerPreconditions, Integer>
 {
 }

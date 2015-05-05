@@ -101,7 +101,8 @@ public class PreconditionsTest
 	public void isNotNullCustomException()
 	{
 		Object parameter = null;
-		Preconditions.requireThat(parameter, "parameter").using(IllegalStateException.class).isNotNull();
+		Preconditions.requireThat(parameter, "parameter").usingException(IllegalStateException.class).
+			isNotNull();
 	}
 
 	@Test
