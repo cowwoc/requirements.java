@@ -16,9 +16,9 @@ import com.google.common.collect.Range;
 final class Ranges
 {
 	/**
-	 * @param <C>   the type of value that is out of range
 	 * @param name  the name of the variable whose value is out of range
 	 * @param value the value that is out of range
+	 * @param <C>   the type of value
 	 * @param range the expected range
 	 * @return an exception message indicating that the value is out of range
 	 * @throws AssertionError if name, value or range are null
@@ -31,6 +31,22 @@ final class Ranges
 		assert (range != null);
 		StringBuilder message = new StringBuilder(name + " (" + String.valueOf(value) +
 			") must be in the range ");
+		appendRange(range, message);
+		return message.toString();
+	}
+
+	/**
+	 * @param range   the expected range
+	 * @param <C>     the type of the range
+	 * @param message the message to append to
+	 * @return an exception message indicating that the value is out of range
+	 * @throws AssertionError if range or message are null
+	 */
+	public static <C extends Comparable<? super C>> String appendRange(Range<C> range,
+		StringBuilder message)
+	{
+		assert (range != null);
+		assert (message != null);
 		switch (range.lowerBoundType())
 		{
 			case OPEN:

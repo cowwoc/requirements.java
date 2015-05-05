@@ -15,4 +15,13 @@ import java.math.BigDecimal;
 public interface BigDecimalPreconditions
 	extends NumberPreconditions<BigDecimalPreconditions, BigDecimal>
 {
+	/**
+	 * @return preconditions over BigDecimal.precision()
+	 */
+	BigDecimalPrecisionPreconditions precision();
+
+	/**
+	 * @return preconditions over BigDecimal.scale()
+	 */
+	BigDecimalScalePreconditions scale();
 }

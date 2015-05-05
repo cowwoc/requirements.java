@@ -41,4 +41,9 @@ public interface MapPreconditions<K, V> extends
 	 * @throws IllegalArgumentException if parameter is empty
 	 */
 	MapPreconditions<K, V> isNotEmpty() throws IllegalArgumentException;
+
+	/**
+	 * @return preconditions over Map.size()
+	 */
+	MapSizePreconditions size();
 }

@@ -62,4 +62,10 @@ enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
 	{
 		return this;
 	}
+
+	@Override
+	public MapSizePreconditions size()
+	{
+		return NoOpMapSizePreconditions.INSTANCE;
+	}
 }

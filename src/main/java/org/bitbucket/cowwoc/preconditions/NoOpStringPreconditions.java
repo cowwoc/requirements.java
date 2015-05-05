@@ -96,4 +96,10 @@ enum NoOpStringPreconditions implements StringPreconditions
 	{
 		return this;
 	}
+
+	@Override
+	public StringLengthPreconditions length()
+	{
+		return NoOpStringLengthPreconditions.INSTANCE;
+	}
 }

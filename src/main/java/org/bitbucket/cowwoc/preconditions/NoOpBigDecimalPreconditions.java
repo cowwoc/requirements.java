@@ -11,7 +11,8 @@ import java.math.BigDecimal;
  * <p>
  * @author Gili Tzabari
  */
-final class NoOpBigDecimalPreconditions extends AbstractNoOpNumberPreconditions<BigDecimalPreconditions, BigDecimal>
+final class NoOpBigDecimalPreconditions
+	extends AbstractNoOpNumberPreconditions<BigDecimalPreconditions, BigDecimal>
 	implements BigDecimalPreconditions
 {
 	public static final NoOpBigDecimalPreconditions INSTANCE = new NoOpBigDecimalPreconditions();
@@ -20,5 +21,17 @@ final class NoOpBigDecimalPreconditions extends AbstractNoOpNumberPreconditions<
 	public NoOpBigDecimalPreconditions usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionPreconditions precision()
+	{
+		return NoOpBigDecimalPrecisionPreconditions.INSTANCE;
+	}
+
+	@Override
+	public BigDecimalScalePreconditions scale()
+	{
+		return NoOpBigDecimalScalePreconditions.INSTANCE;
 	}
 }

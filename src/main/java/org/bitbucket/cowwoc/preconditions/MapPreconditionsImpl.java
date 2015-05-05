@@ -58,4 +58,10 @@ final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPrecon
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s may not be empty", name));
 	}
+
+	@Override
+	public MapSizePreconditions size()
+	{
+		return new MapSizePreconditionsImpl(parameter, name, exceptionOverride);
+	}
 }

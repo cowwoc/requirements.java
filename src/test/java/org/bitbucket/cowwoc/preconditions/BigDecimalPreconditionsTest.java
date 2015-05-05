@@ -337,6 +337,38 @@ public class BigDecimalPreconditionsTest
 	}
 
 	@Test
+	public void precisionIsInBounds()
+	{
+		BigDecimal parameter = BigDecimal.valueOf(1234, 2);
+		Range<Integer> range = Range.closed(3, 5);
+		Preconditions.requireThat(parameter, "parameter").precision().isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void precisionIsInFalseClosedRange()
+	{
+		BigDecimal parameter = BigDecimal.valueOf(123, 2);
+		Range<Integer> range = Range.closed(10, 20);
+		Preconditions.requireThat(parameter, "parameter").precision().isIn(range);
+	}
+
+	@Test
+	public void scaleInBounds()
+	{
+		BigDecimal parameter = BigDecimal.valueOf(1234, 4);
+		Range<Integer> range = Range.closed(3, 5);
+		Preconditions.requireThat(parameter, "parameter").scale().isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsInFalseClosedRange()
+	{
+		BigDecimal parameter = BigDecimal.valueOf(123, 2);
+		Range<Integer> range = Range.closed(10, 20);
+		Preconditions.requireThat(parameter, "parameter").scale().isIn(range);
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled

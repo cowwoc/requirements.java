@@ -87,4 +87,9 @@ public interface StringPreconditions extends ObjectPreconditions<StringPrecondit
 	 * @return this
 	 */
 	StringPreconditions trim();
+
+	/**
+	 * @return preconditions over the String length
+	 */
+	StringLengthPreconditions length();
 }

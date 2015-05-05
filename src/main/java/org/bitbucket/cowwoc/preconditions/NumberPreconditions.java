@@ -22,18 +22,20 @@ public interface NumberPreconditions<S extends NumberPreconditions<S, T>, T exte
 	 * @param value the value the parameter must be greater than
 	 * @param name  the name of the variable
 	 * @return this
+	 * @throws NullPointerException     if value or name are null
 	 * @throws IllegalArgumentException if the parameter is less than or equal to {@code value}
 	 */
-	S isGreaterThan(T value, String name) throws IllegalArgumentException;
+	S isGreaterThan(T value, String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is greater than a constant.
 	 * <p>
 	 * @param value the value the parameter must be greater than
 	 * @return this
+	 * @throws NullPointerException     if value is null
 	 * @throws IllegalArgumentException if the parameter is less than or equal to {@code value}
 	 */
-	S isGreaterThan(T value) throws IllegalArgumentException;
+	S isGreaterThan(T value) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is greater than or bigger than a variable.
@@ -41,18 +43,22 @@ public interface NumberPreconditions<S extends NumberPreconditions<S, T>, T exte
 	 * @param value the value the parameter must be greater than or equal to
 	 * @param name  the name of the variable
 	 * @return this
+	 * @throws NullPointerException     if value or name are null
 	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
 	 */
-	S isGreaterThanOrEqualTo(T value, String name) throws IllegalArgumentException;
+	S isGreaterThanOrEqualTo(T value, String name)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is greater than or bigger than a constant.
 	 * <p>
 	 * @param value the value the parameter must be greater than or equal to
 	 * @return this
+	 * @throws NullPointerException     if value is null
 	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
 	 */
-	S isGreaterThanOrEqualTo(T value) throws IllegalArgumentException;
+	S isGreaterThanOrEqualTo(T value)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is within range.
@@ -70,20 +76,22 @@ public interface NumberPreconditions<S extends NumberPreconditions<S, T>, T exte
 	 * @param value the value the parameter must be less than
 	 * @param name  the name of the variable
 	 * @return this
+	 * @throws NullPointerException     if value or name are null
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
 	 *                                  {@code value}
 	 */
-	S isLessThan(T value, String name) throws IllegalArgumentException;
+	S isLessThan(T value, String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than a constant.
 	 * <p>
 	 * @param value the value the parameter must be less than
 	 * @return this
+	 * @throws NullPointerException     if value is null
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
 	 *                                  {@code value}
 	 */
-	S isLessThan(T value) throws IllegalArgumentException;
+	S isLessThan(T value) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than or equal to a variable.
@@ -91,15 +99,17 @@ public interface NumberPreconditions<S extends NumberPreconditions<S, T>, T exte
 	 * @param value the value the parameter must be less than or equal to
 	 * @param name  the name of the variable
 	 * @return this
+	 * @throws NullPointerException     if value or name are null
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
 	 */
-	S isLessThanOrEqualTo(T value, String name) throws IllegalArgumentException;
+	S isLessThanOrEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than or equal to a constant.
 	 * <p>
 	 * @param value the value the parameter must be less than or equal to
 	 * @return this
+	 * @throws NullPointerException     if value is null
 	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
 	 */
 	S isLessThanOrEqualTo(T value) throws IllegalArgumentException;

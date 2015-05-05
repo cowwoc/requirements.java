@@ -98,6 +98,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	@Override
 	public S isLessThan(T value, String name) throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
 		if (parameter.compareTo(value) < 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -108,6 +110,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	@Override
 	public S isLessThan(T value) throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) < 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -119,6 +122,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	public S isLessThanOrEqualTo(T value, String name)
 		throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
 		if (parameter.compareTo(value) <= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -130,6 +135,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	public S isLessThanOrEqualTo(T value)
 		throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) <= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -141,6 +147,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	public S isGreaterThan(T value, String name)
 		throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
 		if (parameter.compareTo(value) > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -152,6 +160,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	public S isGreaterThan(T value)
 		throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -163,6 +172,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	public S isGreaterThanOrEqualTo(T value, String name)
 		throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
 		if (parameter.compareTo(value) >= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -174,11 +185,11 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	public S isGreaterThanOrEqualTo(T value)
 		throws IllegalArgumentException
 	{
+		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) >= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be greater than or equal to %d", this.name, parameter.longValue(),
+			String.format("%s (%d) must be greater than or equal to %d", name, parameter.longValue(),
 				value.longValue()));
-
 	}
 }

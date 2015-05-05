@@ -108,7 +108,7 @@ public final class Assertions
 	}
 
 	/**
-	 * Same as {@link Preconditions#requireThat(Integer, String)} but does nothing if assertions are
+	 * Same as {@link Preconditions#requireThat(Number, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter
@@ -127,7 +127,7 @@ public final class Assertions
 	}
 
 	/**
-	 * Same as {@link Preconditions#requireThat(Integer, String)} but does nothing if assertions are
+	 * Same as {@link Preconditions#requireThat(Number, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
 	 * @param parameter the value of the parameter

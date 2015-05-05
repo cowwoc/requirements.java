@@ -182,4 +182,10 @@ final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPrecon
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must not end with: %s", name, suffix));
 	}
+
+	@Override
+	public StringLengthPreconditions length()
+	{
+		return new StringLengthPreconditionsImpl(parameter, name, exceptionOverride);
+	}
 }

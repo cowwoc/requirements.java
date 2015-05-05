@@ -49,4 +49,16 @@ final class BigDecimalPreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class, String.format("%s may not be zero", name));
 	}
+
+	@Override
+	public BigDecimalPrecisionPreconditions precision()
+	{
+		return new BigDecimalPrecisionPreconditionsImpl(parameter.precision(), name, exceptionOverride);
+	}
+
+	@Override
+	public BigDecimalScalePreconditions scale()
+	{
+		return new BigDecimalScalePreconditionsImpl(parameter.scale(), name, exceptionOverride);
+	}
 }
