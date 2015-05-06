@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 /**
- * Verifies preconditions of a {@link BigDecimal.scale()}.
+ * Verifies preconditions of a {@link String#length()}.
  * <p>
  * @author Gili Tzabari
  */

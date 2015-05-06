@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.Map;
+
 /**
- * Verifies preconditions of a {@link Map.size()}.
+ * Verifies preconditions of a {@link Map#size()}.
  * <p>
  * @author Gili Tzabari
  */

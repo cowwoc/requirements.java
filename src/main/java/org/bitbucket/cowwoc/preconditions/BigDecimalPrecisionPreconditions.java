@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.math.BigDecimal;
+
 /**
- * Verifies preconditions of a {@link BigDecimal.precision()}.
+ * Verifies preconditions of a {@link BigDecimal#precision()}.
  * <p>
  * @author Gili Tzabari
  */
