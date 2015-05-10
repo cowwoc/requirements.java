@@ -75,14 +75,15 @@ public final class Assertions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> CollectionPreconditions<E> requireThat(Collection<E> parameter, String name)
+	public <E, T extends Collection<E>> CollectionPreconditions<E, T> requireThat(T parameter,
+		String name)
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
 			return requireThat(parameter, name);
 		@SuppressWarnings("unchecked")
-		CollectionPreconditions<E> result
-			= (CollectionPreconditions<E>) NoOpCollectionPreconditions.INSTANCE;
+		CollectionPreconditions<E, T> result
+			= (CollectionPreconditions<E, T>) NoOpCollectionPreconditions.INSTANCE;
 		return result;
 	}
 

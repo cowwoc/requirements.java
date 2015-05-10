@@ -5,15 +5,15 @@
 package org.bitbucket.cowwoc.preconditions;
 
 /**
- * An implementation of BigDecimalScalePreconditions that does nothing.
+ * An implementation of MapSizePreconditions that does nothing.
  * <p>
  * @author Gili Tzabari
  */
-final class NoOpMapSizePreconditions extends AbstractNoOpNumberPreconditions<MapSizePreconditions, Integer>
+final class NoOpMapSizePreconditions
+	extends AbstractNoOpNumberPreconditions<MapSizePreconditions, Integer>
 	implements MapSizePreconditions
 {
-	public static final NoOpMapSizePreconditions INSTANCE
-		= new NoOpMapSizePreconditions();
+	public static final NoOpMapSizePreconditions INSTANCE = new NoOpMapSizePreconditions();
 
 	@Override
 	public MapSizePreconditions usingException(Class<? extends RuntimeException> exception)

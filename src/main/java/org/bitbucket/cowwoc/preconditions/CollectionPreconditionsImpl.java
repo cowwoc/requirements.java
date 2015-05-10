@@ -11,11 +11,12 @@ import java.util.Optional;
  * Default implementation of CollectionPreconditions.
  * <p>
  * @param <E> the type of element in the collection
+ * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-final class CollectionPreconditionsImpl<E>
-	extends ObjectPreconditionsImpl<CollectionPreconditions<E>, Collection<E>>
-	implements CollectionPreconditions<E>
+class CollectionPreconditionsImpl<E, T extends Collection<E>>
+	extends ObjectPreconditionsImpl<CollectionPreconditions<E, T>, T>
+	implements CollectionPreconditions<E, T>
 {
 	/**
 	 * Creates new CollectionPreconditionsImpl.
@@ -26,7 +27,7 @@ final class CollectionPreconditionsImpl<E>
 	 * @throws NullPointerException     if name or exceptionOverride are null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	CollectionPreconditionsImpl(Collection<E> parameter, String name,
+	CollectionPreconditionsImpl(T parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
@@ -34,10 +35,16 @@ final class CollectionPreconditionsImpl<E>
 	}
 
 	@Override
-	public CollectionPreconditions<E> isNotEmpty() throws IllegalArgumentException
+	public CollectionPreconditions<E, T> isNotEmpty() throws IllegalArgumentException
 	{
 		if (!parameter.isEmpty())
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s may not be empty", name));
+	}
+
+	@Override
+	public CollectionSizePreconditions size()
+	{
+		return new CollectionSizePreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

@@ -11,12 +11,12 @@ import java.util.Collection;
  * <p>
  * @author Gili Tzabari
  */
-enum NoOpCollectionPreconditions implements CollectionPreconditions<Object>
+enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Collection<Object>>
 {
 	INSTANCE;
 
 	@Override
-	public CollectionPreconditions<Object> isNotEmpty()
+	public CollectionPreconditions<Object, Collection<Object>> isNotEmpty()
 	{
 		return this;
 	}
@@ -28,26 +28,32 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object>
 	}
 
 	@Override
-	public CollectionPreconditions<Object> isEqualTo(Collection<Object> value)
+	public CollectionPreconditions<Object, Collection<Object>> isEqualTo(Collection<Object> value)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object> isInstanceOf(Class<?> type)
+	public CollectionPreconditions<Object, Collection<Object>> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object> isNull()
+	public CollectionPreconditions<Object, Collection<Object>> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object> isNotNull()
+	public CollectionPreconditions<Object, Collection<Object>> isNotNull()
 	{
 		return this;
+	}
+
+	@Override
+	public CollectionSizePreconditions size()
+	{
+		return NoOpCollectionSizePreconditions.INSTANCE;
 	}
 }

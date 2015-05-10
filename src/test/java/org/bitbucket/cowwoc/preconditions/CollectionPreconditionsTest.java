@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.Collections;
 import org.testng.annotations.Test;
@@ -39,6 +40,20 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = Collections.emptyList();
 		Preconditions.requireThat(parameter, "parameter").isNotEmpty();
+	}
+
+	@Test
+	public void sizeIsEqualToTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("element");
+		Preconditions.requireThat(parameter, "parameter").size().isEqualTo(1);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsEqualToFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("element");
+		Preconditions.requireThat(parameter, "parameter").size().isEqualTo(2);
 	}
 
 	@Test

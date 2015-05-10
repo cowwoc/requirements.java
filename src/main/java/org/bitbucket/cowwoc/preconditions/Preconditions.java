@@ -44,13 +44,15 @@ public final class Preconditions
 	 * Creates a precondition for a {@code Collection}.
 	 * <p>
 	 * @param <E>       the type of element in the collection
+	 * @param <T>       the type of the parameter
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <E> CollectionPreconditions<E> requireThat(Collection<E> parameter, String name)
+	public static <E, T extends Collection<E>> CollectionPreconditions<E, T> requireThat(T parameter,
+		String name)
 		throws NullPointerException, IllegalArgumentException
 	{
 		return new CollectionPreconditionsImpl<>(parameter, name, Optional.empty());
