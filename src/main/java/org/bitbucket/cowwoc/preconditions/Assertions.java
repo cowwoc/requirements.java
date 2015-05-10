@@ -69,6 +69,7 @@ public final class Assertions
 	 * are disabled.
 	 * <p>
 	 * @param <E>       the type of element in the collection
+	 * @param <T>       the type of the parameter
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
