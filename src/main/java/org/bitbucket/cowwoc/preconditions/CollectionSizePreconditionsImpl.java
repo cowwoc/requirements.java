@@ -38,8 +38,8 @@ final class CollectionSizePreconditionsImpl
 	}
 
 	@Override
-	public CollectionSizePreconditions isGreaterThanOrEqualTo(Integer value) throws
-		IllegalArgumentException
+	public CollectionSizePreconditions isGreaterThanOrEqualTo(Integer value)
+		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter >= value)
@@ -87,21 +87,20 @@ final class CollectionSizePreconditionsImpl
 	}
 
 	@Override
-	public CollectionSizePreconditions isLessThanOrEqualTo(Integer value) throws
-		IllegalArgumentException
+	public CollectionSizePreconditions isLessThanOrEqualTo(Integer value)
+		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.
-			format("%s may contain at most %d elements. It contained %s (%d elements)", name, value,
-				collection, parameter));
+			String.format("%s may contain at most %d elements. It contained %s (%d elements)", name,
+				value, collection, parameter));
 	}
 
 	@Override
-	public CollectionSizePreconditions isLessThanOrEqualTo(Integer value, String name) throws
-		IllegalArgumentException
+	public CollectionSizePreconditions isLessThanOrEqualTo(Integer value, String name)
+		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull();
@@ -124,8 +123,8 @@ final class CollectionSizePreconditionsImpl
 	}
 
 	@Override
-	public CollectionSizePreconditions isLessThan(Integer value, String name) throws
-		IllegalArgumentException
+	public CollectionSizePreconditions isLessThan(Integer value, String name)
+		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull();
@@ -182,8 +181,8 @@ final class CollectionSizePreconditionsImpl
 	}
 
 	@Override
-	public CollectionSizePreconditions isIn(Range<Integer> range) throws NullPointerException,
-		IllegalArgumentException
+	public CollectionSizePreconditions isIn(Range<Integer> range)
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
@@ -202,7 +201,19 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain %d elements. It contained %s (%d elements)", name, value,
-				collection,
-				parameter));
+				collection, parameter));
+	}
+
+	@Override
+	public CollectionSizePreconditions isEqualTo(Integer value, String name)
+		throws IllegalArgumentException
+	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
+		if (Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %d elements (%s). It contained %s (%d elements)", this.name,
+				value, name, collection, parameter));
 	}
 }

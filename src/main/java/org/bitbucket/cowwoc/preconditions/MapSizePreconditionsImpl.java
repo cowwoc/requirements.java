@@ -181,8 +181,8 @@ final class MapSizePreconditionsImpl
 	}
 
 	@Override
-	public MapSizePreconditions isIn(Range<Integer> range) throws NullPointerException,
-		IllegalArgumentException
+	public MapSizePreconditions isIn(Range<Integer> range)
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
@@ -202,5 +202,17 @@ final class MapSizePreconditionsImpl
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain %d entries. It contained %s (%d entries)", name, value,
 				map, parameter));
+	}
+
+	@Override
+	public MapSizePreconditions isEqualTo(Integer value, String name) throws IllegalArgumentException
+	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
+		if (Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %d entries (%s). It contained %s (%d entries)", this.name,
+				value, name, map, parameter));
 	}
 }

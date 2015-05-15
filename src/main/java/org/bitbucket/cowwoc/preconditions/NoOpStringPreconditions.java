@@ -80,6 +80,12 @@ enum NoOpStringPreconditions implements StringPreconditions
 	}
 
 	@Override
+	public StringPreconditions isEqualTo(String value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public StringPreconditions isInstanceOf(Class<?> type)
 	{
 		return this;

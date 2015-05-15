@@ -31,6 +31,16 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	S isEqualTo(T value) throws IllegalArgumentException;
 
 	/**
+	 * Ensures that the parameter is equal to a variable.
+	 * <p>
+	 * @param value the value to compare to
+	 * @param name  the name of the variable
+	 * @return this
+	 * @throws IllegalArgumentException if parameter is not equal to the variable
+	 */
+	S isEqualTo(T value, String name) throws IllegalArgumentException;
+
+	/**
 	 * Ensures that the parameter is an instance of a class.
 	 * <p>
 	 * @param type the class to compare to

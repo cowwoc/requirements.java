@@ -34,6 +34,13 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Coll
 	}
 
 	@Override
+	public CollectionPreconditions<Object, Collection<Object>> isEqualTo(Collection<Object> value,
+		String name)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionPreconditions<Object, Collection<Object>> isInstanceOf(Class<?> type)
 	{
 		return this;

@@ -203,4 +203,15 @@ final class StringLengthPreconditionsImpl
 			String.format("%s must contain %d characters. It contained \"%s\" (%d characters)", name,
 				value, string, parameter));
 	}
+
+	@Override
+	public StringLengthPreconditions isEqualTo(Integer value, String name)
+		throws IllegalArgumentException
+	{
+		if (Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %d characters (%s). It contained \"%s\" (%d characters)",
+				this.name, value, name, string, parameter));
+	}
 }

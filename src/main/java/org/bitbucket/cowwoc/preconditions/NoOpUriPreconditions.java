@@ -34,6 +34,12 @@ enum NoOpUriPreconditions implements UriPreconditions
 	}
 
 	@Override
+	public UriPreconditions isEqualTo(URI value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public UriPreconditions isInstanceOf(Class<?> type)
 	{
 		return this;

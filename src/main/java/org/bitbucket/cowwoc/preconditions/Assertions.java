@@ -81,7 +81,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		@SuppressWarnings("unchecked")
 		CollectionPreconditions<E, T> result
 			= (CollectionPreconditions<E, T>) NoOpCollectionPreconditions.INSTANCE;
@@ -105,46 +105,8 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return new NoOpNumberPreconditions<>();
-	}
-
-	/**
-	 * Same as {@link Preconditions#requireThat(Number, String)} but does nothing if assertions are
-	 * disabled.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	public IntegerPreconditions requireThat(Integer parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		if (enabled)
-			return requireThat(parameter, name);
-		// Performance optimization for specific NumberPreconditions case
-		return NoOpIntegerPreconditions.INSTANCE;
-	}
-
-	/**
-	 * Same as {@link Preconditions#requireThat(Number, String)} but does nothing if assertions are
-	 * disabled.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	public DoublePreconditions requireThat(Double parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		if (enabled)
-			return requireThat(parameter, name);
-		// Performance optimization for specific NumberPreconditions case
-		return NoOpDoublePreconditions.INSTANCE;
 	}
 
 	/**
@@ -161,7 +123,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return NoOpBigDecimalPreconditions.INSTANCE;
 	}
 
@@ -181,7 +143,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		@SuppressWarnings("unchecked")
 		MapPreconditions<K, V> result = (MapPreconditions<K, V>) NoOpMapPreconditions.INSTANCE;
 		return result;
@@ -201,7 +163,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return NoOpPathPreconditions.INSTANCE;
 	}
 
@@ -219,7 +181,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return NoOpStringPreconditions.INSTANCE;
 	}
 
@@ -237,7 +199,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return NoOpUriPreconditions.INSTANCE;
 	}
 
@@ -256,7 +218,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		@SuppressWarnings("unchecked")
 		ClassPreconditions<T> result = (ClassPreconditions<T>) NoOpClassPreconditions.INSTANCE;
 		return result;
@@ -276,7 +238,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return NoOpYearPreconditions.INSTANCE;
 	}
 
@@ -294,7 +256,7 @@ public final class Assertions
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
-			return requireThat(parameter, name);
+			return Preconditions.requireThat(parameter, name);
 		return NoOpOptionalPreconditions.INSTANCE;
 	}
 }

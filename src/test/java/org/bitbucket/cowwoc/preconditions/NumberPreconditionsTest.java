@@ -324,4 +324,18 @@ public class NumberPreconditionsTest
 		Integer parameter = null;
 		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
 	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void assertionsEnabledInteger()
+	{
+		int parameter = 5;
+		new Assertions(true).requireThat(parameter, "parameter").isGreaterThan(10);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void assertionsEnabledDouble()
+	{
+		double parameter = 5.5;
+		new Assertions(true).requireThat(parameter, "parameter").isGreaterThan(10.5);
+	}
 }

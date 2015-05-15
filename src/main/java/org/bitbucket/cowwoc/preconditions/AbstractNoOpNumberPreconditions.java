@@ -135,6 +135,13 @@ abstract class AbstractNoOpNumberPreconditions<S extends NumberPreconditions<S, 
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public S isEqualTo(T value, String name)
+	{
+		return (S) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public S isInstanceOf(Class<?> type)
 	{
 		return (S) this;

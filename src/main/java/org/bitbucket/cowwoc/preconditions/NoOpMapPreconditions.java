@@ -46,6 +46,12 @@ enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
 	}
 
 	@Override
+	public MapPreconditions<Object, Object> isEqualTo(Map<Object, Object> value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public MapPreconditions<Object, Object> isInstanceOf(Class<?> type)
 	{
 		return this;
