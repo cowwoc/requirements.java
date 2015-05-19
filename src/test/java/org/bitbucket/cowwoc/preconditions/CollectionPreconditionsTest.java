@@ -29,6 +29,20 @@ public class CollectionPreconditionsTest
 	}
 
 	@Test
+	public void isEmptyTrue()
+	{
+		Collection<String> parameter = Collections.emptyList();
+		Preconditions.requireThat(parameter, "parameter").isEmpty();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEmptyFalse()
+	{
+		Collection<String> parameter = Collections.singleton("element");
+		Preconditions.requireThat(parameter, "parameter").isEmpty();
+	}
+
+	@Test
 	public void isNotEmptyTrue()
 	{
 		Collection<String> parameter = Collections.singleton("element");

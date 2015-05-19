@@ -17,6 +17,14 @@ public interface CollectionPreconditions<E, T extends Collection<E>>
 	extends ObjectPreconditions<CollectionPreconditions<E, T>, T>
 {
 	/**
+	 * Ensures that the parameter is empty.
+	 * <p>
+	 * @return this
+	 * @throws IllegalArgumentException if parameter is not empty
+	 */
+	CollectionPreconditions<E, T> isEmpty() throws IllegalArgumentException;
+
+	/**
 	 * Ensures that the parameter is not empty.
 	 * <p>
 	 * @return this

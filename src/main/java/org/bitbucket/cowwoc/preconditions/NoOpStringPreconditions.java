@@ -38,13 +38,13 @@ enum NoOpStringPreconditions implements StringPreconditions
 	}
 
 	@Override
-	public StringPreconditions isEmpty()
+	public StringPreconditions isIpAddressFormat()
 	{
 		return this;
 	}
 
 	@Override
-	public StringPreconditions isIpAddressFormat()
+	public StringPreconditions isEmpty()
 	{
 		return this;
 	}

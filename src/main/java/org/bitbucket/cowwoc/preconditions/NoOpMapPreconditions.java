@@ -28,6 +28,12 @@ enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
 	}
 
 	@Override
+	public MapPreconditions<Object, Object> isEmpty()
+	{
+		return this;
+	}
+
+	@Override
 	public MapPreconditions<Object, Object> isNotEmpty()
 	{
 		return this;

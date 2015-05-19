@@ -16,6 +16,12 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Coll
 	INSTANCE;
 
 	@Override
+	public CollectionPreconditions<Object, Collection<Object>> isEmpty()
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionPreconditions<Object, Collection<Object>> isNotEmpty()
 	{
 		return this;

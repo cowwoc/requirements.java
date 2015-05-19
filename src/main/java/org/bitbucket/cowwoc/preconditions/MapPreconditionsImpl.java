@@ -52,6 +52,14 @@ final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPrecon
 	}
 
 	@Override
+	public MapPreconditions<K, V> isEmpty() throws IllegalArgumentException
+	{
+		if (parameter.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class, String.format("%s must be empty", name));
+	}
+
+	@Override
 	public MapPreconditions<K, V> isNotEmpty() throws IllegalArgumentException
 	{
 		if (!parameter.isEmpty())

@@ -35,6 +35,14 @@ public interface MapPreconditions<K, V> extends
 	MapPreconditions<K, V> containsValue(V value) throws IllegalArgumentException;
 
 	/**
+	 * Ensures that the parameter is empty.
+	 * <p>
+	 * @return this
+	 * @throws IllegalArgumentException if parameter is not empty
+	 */
+	MapPreconditions<K, V> isEmpty() throws IllegalArgumentException;
+
+	/**
 	 * Ensures that the parameter is not empty.
 	 * <p>
 	 * @return this

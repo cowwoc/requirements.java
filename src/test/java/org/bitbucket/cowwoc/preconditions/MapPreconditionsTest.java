@@ -28,6 +28,20 @@ public class MapPreconditionsTest
 	}
 
 	@Test
+	public void isEmptyTrue()
+	{
+		Map<String, String> parameter = Collections.emptyMap();
+		Preconditions.requireThat(parameter, "parameter").isEmpty();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEmptyFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").isEmpty();
+	}
+
+	@Test
 	public void isNotEmptyTrue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");

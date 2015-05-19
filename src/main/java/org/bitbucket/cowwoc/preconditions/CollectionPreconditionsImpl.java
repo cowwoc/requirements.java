@@ -35,6 +35,14 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	}
 
 	@Override
+	public CollectionPreconditions<E, T> isEmpty() throws IllegalArgumentException
+	{
+		if (parameter.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class, String.format("%s must be empty", name));
+	}
+
+	@Override
 	public CollectionPreconditions<E, T> isNotEmpty() throws IllegalArgumentException
 	{
 		if (!parameter.isEmpty())
