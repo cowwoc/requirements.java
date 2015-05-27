@@ -45,8 +45,8 @@ final class MapSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d entries. It contained %s (%d entries)", name,
-				value, map, parameter));
+			String.format("%s must contain at least %d entries. It contained %d entries: %s", name,
+				value, parameter, map));
 	}
 
 	@Override
@@ -58,8 +58,8 @@ final class MapSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d (%s) entries. It contained %s (%d entries)",
-				this.name, value, name, map, parameter));
+			String.format("%s must contain at least %d (%s) entries. It contained %d entries: %s",
+				this.name, value, name, parameter, map));
 	}
 
 	@Override
@@ -69,8 +69,8 @@ final class MapSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %d entries. It contained %s (%d entries)", name,
-				value, map, parameter));
+			String.format("%s must contain more than %d entries. It contained %d entries: %s", name,
+				value, parameter, map));
 	}
 
 	@Override
@@ -82,8 +82,8 @@ final class MapSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %d (%s) entries. It contained %s (%d entries)",
-				this.name, value, name, map, parameter));
+			String.format("%s must contain more than %d (%s) entries. It contained %d entries: %s",
+				this.name, value, name, parameter, map));
 	}
 
 	@Override
@@ -94,8 +94,8 @@ final class MapSizePreconditionsImpl
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %d entries. It contained %s (%d entries)", name, value,
-				map, parameter));
+			String.format("%s may contain at most %d entries. It contained %d entries: %s", name, value,
+				parameter, map));
 	}
 
 	@Override
@@ -107,8 +107,8 @@ final class MapSizePreconditionsImpl
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %d (%s) entries. It contained %s (%d entries)",
-				this.name, value, name, map, parameter));
+			String.format("%s may contain at most %d (%s) entries. It contained %d entries: %s",
+				this.name, value, name, parameter, map));
 	}
 
 	@Override
@@ -118,8 +118,8 @@ final class MapSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %d entries. It contained %s (%d entries)",
-				name, value, map, parameter));
+			String.format("%s must contain less than %d entries. It contained %d entries: %s",
+				name, value, parameter, map));
 	}
 
 	@Override
@@ -131,8 +131,8 @@ final class MapSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %d (%s) entries. It contained %s (%d entries)",
-				this.name, value, name, map, parameter));
+			String.format("%s must contain less than %d (%s) entries. It contained %d entries: %s",
+				this.name, value, name, parameter, map));
 	}
 
 	@Override
@@ -147,8 +147,8 @@ final class MapSizePreconditionsImpl
 		if (parameter > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least one entry. It contained %s (%d entries)", name,
-				map, parameter));
+			String.format("%s must contain at least one entry. It contained %d entries: %s", name,
+				parameter, map));
 	}
 
 	@Override
@@ -163,7 +163,7 @@ final class MapSizePreconditionsImpl
 		if (parameter == 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be empty. It contained %s (%d entries)", name, map, parameter));
+			String.format("%s must be empty. It contained %d entries: %s", name, parameter, map));
 	}
 
 	@Override
@@ -189,7 +189,7 @@ final class MapSizePreconditionsImpl
 			return self;
 		StringBuilder message = new StringBuilder(name + " must contain ");
 		Ranges.appendRange(range, message);
-		message.append(String.format(" entries. It contained %s (%d entries)", map, parameter));
+		message.append(String.format(" entries. It contained %d entries: %s", parameter, map));
 		return throwException(IllegalArgumentException.class, message.toString());
 	}
 
@@ -200,8 +200,8 @@ final class MapSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d entries. It contained %s (%d entries)", name, value,
-				map, parameter));
+			String.format("%s must contain %d entries. It contained %d entries: %s", name, value,
+				parameter, map));
 	}
 
 	@Override
@@ -212,7 +212,7 @@ final class MapSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d entries (%s). It contained %s (%d entries)", this.name,
-				value, name, map, parameter));
+			String.format("%s must contain %d entries (%s). It contained %d entries: %s", this.name,
+				value, name, parameter, map));
 	}
 }

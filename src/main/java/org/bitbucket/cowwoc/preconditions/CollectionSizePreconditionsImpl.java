@@ -45,8 +45,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d elements. It contained %s (%d elements)", name,
-				value, collection, parameter));
+			String.format("%s must contain at least %d elements. It contained %d elements: %s", name,
+				value, parameter, collection));
 	}
 
 	@Override
@@ -58,8 +58,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d (%s) elements. It contained %s (%d elements)",
-				this.name, value, name, collection, parameter));
+			String.format("%s must contain at least %d (%s) elements. It contained %d elements: %s",
+				this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -69,8 +69,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %d elements. It contained %s (%d elements)", name,
-				value, collection, parameter));
+			String.format("%s must contain more than %d elements. It contained %d elements: %s", name,
+				value, parameter, collection));
 	}
 
 	@Override
@@ -82,8 +82,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %d (%s) elements. It contained %s (%d elements)",
-				this.name, value, name, collection, parameter));
+			String.format("%s must contain more than %d (%s) elements. It contained %d elements: %s",
+				this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -94,8 +94,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %d elements. It contained %s (%d elements)", name,
-				value, collection, parameter));
+			String.format("%s may contain at most %d elements. It contained %d elements: %s", name,
+				value, parameter, collection));
 	}
 
 	@Override
@@ -107,8 +107,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %d (%s) elements. It contained %s (%d elements)",
-				this.name, value, name, collection, parameter));
+			String.format("%s may contain at most %d (%s) elements. It contained %d elements: %s",
+				this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -118,8 +118,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %d elements. It contained %s (%d elements)",
-				name, value, collection, parameter));
+			String.format("%s must contain less than %d elements. It contained %d elements: %s",
+				name, value, parameter, collection));
 	}
 
 	@Override
@@ -131,8 +131,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %d (%s) elements. It contained %s (%d elements)",
-				this.name, value, name, collection, parameter));
+			String.format("%s must contain less than %d (%s) elements. It contained %d elements: %s",
+				this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -147,8 +147,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least one entry. It contained %s (%d elements)", name,
-				collection, parameter));
+			String.format("%s must contain at least one entry. It contained %d elements: %s", name,
+				parameter, collection));
 	}
 
 	@Override
@@ -163,7 +163,7 @@ final class CollectionSizePreconditionsImpl
 		if (parameter == 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be empty. It contained %s (%d elements)", name, collection, parameter));
+			String.format("%s must be empty. It contained %d elements: %s", name, parameter, collection));
 	}
 
 	@Override
@@ -189,7 +189,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		StringBuilder message = new StringBuilder(name + " must contain ");
 		Ranges.appendRange(range, message);
-		message.append(String.format(" elements. It contained %s (%d elements)", collection, parameter));
+		message.append(String.format(" elements. It contained %d elements: %s", parameter, collection));
 		return throwException(IllegalArgumentException.class, message.toString());
 	}
 
@@ -200,8 +200,8 @@ final class CollectionSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d elements. It contained %s (%d elements)", name, value,
-				collection, parameter));
+			String.format("%s must contain %d elements. It contained %d elements: %s", name, value,
+				parameter, collection));
 	}
 
 	@Override
@@ -213,7 +213,7 @@ final class CollectionSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d elements (%s). It contained %s (%d elements)", this.name,
-				value, name, collection, parameter));
+			String.format("%s must contain %d elements (%s). It contained %d elements: %s", this.name,
+				value, name, parameter, collection));
 	}
 }
