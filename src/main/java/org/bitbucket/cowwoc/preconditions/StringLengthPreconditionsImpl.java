@@ -214,4 +214,25 @@ final class StringLengthPreconditionsImpl
 			String.format("%s must contain %d characters (%s). It contained %d characters: \"%s\"",
 				this.name, value, name, parameter, string));
 	}
+
+	@Override
+	public StringLengthPreconditions isNotEqualTo(Integer value) throws IllegalArgumentException
+	{
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %d characters, but it did. It contained \"%s\"", name,
+				value, string));
+	}
+
+	@Override
+	public StringLengthPreconditions isNotEqualTo(Integer value, String name)
+		throws IllegalArgumentException
+	{
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain %d characters (%s), but it did. It contained \"%s\"",
+				this.name, value, name, string));
+	}
 }

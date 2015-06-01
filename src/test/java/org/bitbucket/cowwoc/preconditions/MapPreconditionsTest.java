@@ -98,6 +98,20 @@ public class MapPreconditionsTest
 	}
 
 	@Test
+	public void sizeIsNotEqualToTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(2);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsNotEqualToFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
+		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(1);
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled

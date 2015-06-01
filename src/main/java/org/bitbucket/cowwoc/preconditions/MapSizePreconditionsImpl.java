@@ -215,4 +215,28 @@ final class MapSizePreconditionsImpl
 			String.format("%s must contain %d entries (%s). It contained %d entries: %s", this.name,
 				value, name, parameter, map));
 	}
+
+	@Override
+	public MapSizePreconditions isNotEqualTo(Integer value) throws IllegalArgumentException
+	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain %d entries, but it did. It contained %s", name, value,
+				map));
+	}
+
+	@Override
+	public MapSizePreconditions isNotEqualTo(Integer value, String name) throws
+		IllegalArgumentException
+	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain %d entries (%s), but it did. It contained %s", this.name,
+				value, name, map));
+	}
 }

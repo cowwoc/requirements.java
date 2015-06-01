@@ -32,6 +32,18 @@ enum NoOpObjectPreconditions implements ObjectPreconditions<NoOpObjectPreconditi
 	}
 
 	@Override
+	public NoOpObjectPreconditions isNotEqualTo(Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public NoOpObjectPreconditions isNotEqualTo(Object value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public NoOpObjectPreconditions isInstanceOf(Class<?> type)
 	{
 		return this;

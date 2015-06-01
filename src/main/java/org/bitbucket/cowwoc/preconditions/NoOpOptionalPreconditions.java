@@ -46,6 +46,18 @@ enum NoOpOptionalPreconditions implements OptionalPreconditions
 	}
 
 	@Override
+	public OptionalPreconditions isNotEqualTo(Optional<?> value)
+	{
+		return this;
+	}
+
+	@Override
+	public OptionalPreconditions isNotEqualTo(Optional<?> value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public OptionalPreconditions isInstanceOf(Class<?> type)
 	{
 		return this;

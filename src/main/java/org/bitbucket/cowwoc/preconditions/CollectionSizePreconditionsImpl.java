@@ -216,4 +216,28 @@ final class CollectionSizePreconditionsImpl
 			String.format("%s must contain %d elements (%s). It contained %d elements: %s", this.name,
 				value, name, parameter, collection));
 	}
+
+	@Override
+	public CollectionSizePreconditions isNotEqualTo(Integer value) throws IllegalArgumentException
+	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain %d elements, but it did. It contained %s", name, value,
+				collection));
+	}
+
+	@Override
+	public CollectionSizePreconditions isNotEqualTo(Integer value, String name)
+		throws IllegalArgumentException
+	{
+		Preconditions.requireThat(value, "value").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull();
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain %d elements (%s), but it did. It contained %s", this.name,
+				value, name, collection));
+	}
 }

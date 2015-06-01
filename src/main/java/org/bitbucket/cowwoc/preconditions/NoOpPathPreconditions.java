@@ -65,6 +65,18 @@ enum NoOpPathPreconditions implements PathPreconditions
 	}
 
 	@Override
+	public PathPreconditions isNotEqualTo(Path value)
+	{
+		return this;
+	}
+
+	@Override
+	public PathPreconditions isNotEqualTo(Path value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public PathPreconditions isInstanceOf(Class<?> type)
 	{
 		return this;

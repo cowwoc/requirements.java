@@ -203,6 +203,20 @@ public class StringPreconditionsTest
 	}
 
 	@Test
+	public void lengthIsNotEqualToTrue()
+	{
+		String parameter = "value";
+		Preconditions.requireThat(parameter, "parameter").length().isNotEqualTo(parameter.length() + 1);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void lengthIsNotEqualToFalse()
+	{
+		String parameter = "1234567890";
+		Preconditions.requireThat(parameter, "parameter").length().isNotEqualTo(parameter.length());
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled

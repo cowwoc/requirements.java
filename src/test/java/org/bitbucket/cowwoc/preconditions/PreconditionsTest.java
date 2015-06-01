@@ -40,6 +40,20 @@ public class PreconditionsTest
 		Preconditions.requireThat(parameter, "parameter").isEqualTo(new Object());
 	}
 
+	@Test
+	public void isNotEqualsTrue()
+	{
+		Object parameter = new Object();
+		Preconditions.requireThat(parameter, "parameter").isNotEqualTo(new Object());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotEqualsFalse()
+	{
+		Object parameter = new Object();
+		Preconditions.requireThat(parameter, "parameter").isNotEqualTo(parameter);
+	}
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isInstanceOfNullParameter()
 	{

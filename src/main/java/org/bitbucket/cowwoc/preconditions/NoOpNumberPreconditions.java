@@ -134,6 +134,18 @@ final class NoOpNumberPreconditions<S extends NumberPreconditions<S, T>, T exten
 	}
 
 	@Override
+	public S isNotEqualTo(T value)
+	{
+		return self;
+	}
+
+	@Override
+	public S isNotEqualTo(T value, String name)
+	{
+		return self;
+	}
+
+	@Override
 	public S isInstanceOf(Class<?> type)
 	{
 		return self;

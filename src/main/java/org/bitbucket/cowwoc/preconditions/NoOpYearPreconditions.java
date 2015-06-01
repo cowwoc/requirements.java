@@ -89,6 +89,18 @@ enum NoOpYearPreconditions implements YearPreconditions
 	}
 
 	@Override
+	public YearPreconditions isNotEqualTo(Year value)
+	{
+		return this;
+	}
+
+	@Override
+	public YearPreconditions isNotEqualTo(Year value, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public YearPreconditions isInstanceOf(Class<?> type)
 	{
 		return this;

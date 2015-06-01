@@ -148,6 +148,24 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 	}
 
 	@Override
+	public S isNotEqualTo(T value) throws IllegalArgumentException
+	{
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not be equal to %s, but it was", name, value));
+	}
+
+	@Override
+	public S isNotEqualTo(T value, String name) throws IllegalArgumentException
+	{
+		if (!Objects.equals(parameter, value))
+			return self;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not be equal to %s (%s), but it was", this.name, value, name));
+	}
+
+	@Override
 	public S isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{

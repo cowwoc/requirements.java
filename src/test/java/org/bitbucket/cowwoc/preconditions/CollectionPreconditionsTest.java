@@ -71,6 +71,20 @@ public class CollectionPreconditionsTest
 	}
 
 	@Test
+	public void sizeIsNotEqualToTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("element");
+		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(2);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsNotEqualToFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("element");
+		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(1);
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
