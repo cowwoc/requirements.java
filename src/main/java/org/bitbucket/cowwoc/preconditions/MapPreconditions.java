@@ -26,6 +26,15 @@ public interface MapPreconditions<K, V> extends
 	MapPreconditions<K, V> containsKey(K key) throws IllegalArgumentException;
 
 	/**
+	 * Ensures that the parameter does not contain a key.
+	 * <p>
+	 * @param key the key that must not exist
+	 * @return this
+	 * @throws IllegalArgumentException if the map contains {@code key}
+	 */
+	MapPreconditions<K, V> doesNotContainKey(K key) throws IllegalArgumentException;
+
+	/**
 	 * Ensures that the parameter contains a value.
 	 * <p>
 	 * @param value the value that must exist
@@ -33,6 +42,15 @@ public interface MapPreconditions<K, V> extends
 	 * @throws IllegalArgumentException if the map does not contain value
 	 */
 	MapPreconditions<K, V> containsValue(V value) throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter does not contain a value.
+	 * <p>
+	 * @param value the value that must not exist
+	 * @return this
+	 * @throws IllegalArgumentException if the map contains {@code value}
+	 */
+	MapPreconditions<K, V> doesNotContainValue(V value) throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is empty.

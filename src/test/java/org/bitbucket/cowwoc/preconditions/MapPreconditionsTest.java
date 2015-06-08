@@ -70,6 +70,20 @@ public class MapPreconditionsTest
 	}
 
 	@Test
+	public void doesNotContainKeyTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainKey("notKey");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainKeyFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainKey("notKey");
+	}
+
+	@Test
 	public void containsValueTrue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
@@ -81,6 +95,20 @@ public class MapPreconditionsTest
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
 		Preconditions.requireThat(parameter, "parameter").containsValue("value");
+	}
+
+	@Test
+	public void doesNotContainValueTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainValue("notValue");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainValueFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainValue("notValue");
 	}
 
 	@Test

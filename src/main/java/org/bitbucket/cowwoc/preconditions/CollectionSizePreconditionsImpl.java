@@ -224,7 +224,7 @@ final class CollectionSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %d elements, but it did. It contained %s", name, value,
+			String.format("%s must not contain %d elements, but did. It contained %s", name, value,
 				collection));
 	}
 
@@ -237,7 +237,7 @@ final class CollectionSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %d elements (%s), but it did. It contained %s", this.name,
+			String.format("%s must not contain %d elements (%s), but did. It contained %s", this.name,
 				value, name, collection));
 	}
 }

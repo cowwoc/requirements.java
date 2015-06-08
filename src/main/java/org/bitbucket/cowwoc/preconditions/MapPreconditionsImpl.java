@@ -43,12 +43,30 @@ final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPrecon
 	}
 
 	@Override
+	public MapPreconditions<K, V> doesNotContainKey(K key) throws IllegalArgumentException
+	{
+		if (!parameter.containsKey(key))
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain key: %s. Was: %s", name, key, parameter));
+	}
+
+	@Override
 	public MapPreconditions<K, V> containsValue(V value) throws IllegalArgumentException
 	{
 		if (parameter.containsValue(value))
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain value: %s. Was: %s", name, value, parameter));
+	}
+
+	@Override
+	public MapPreconditions<K, V> doesNotContainValue(V value) throws IllegalArgumentException
+	{
+		if (!parameter.containsValue(value))
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain value: %s. Was: %s", name, value, parameter));
 	}
 
 	@Override

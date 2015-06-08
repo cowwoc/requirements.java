@@ -78,6 +78,20 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Coll
 	}
 
 	@Override
+	public CollectionPreconditions<Object, Collection<Object>> contains(Object element)
+		throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionPreconditions<Object, Collection<Object>> doesNotContain(Object element)
+		throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionSizePreconditions size()
 	{
 		return NoOpCollectionSizePreconditions.INSTANCE;

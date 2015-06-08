@@ -223,7 +223,7 @@ final class MapSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %d entries, but it did. It contained %s", name, value,
+			String.format("%s must not contain %d entries, but did. It contained %s", name, value,
 				map));
 	}
 
@@ -236,7 +236,7 @@ final class MapSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %d entries (%s), but it did. It contained %s", this.name,
+			String.format("%s must not contain %d entries (%s), but did. It contained %s", this.name,
 				value, name, map));
 	}
 }

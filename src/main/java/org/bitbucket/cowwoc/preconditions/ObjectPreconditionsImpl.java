@@ -153,7 +153,7 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s, but it was", name, value));
+			String.format("%s must not be equal to %s, but was", name, value));
 	}
 
 	@Override
@@ -162,7 +162,7 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s (%s), but it was", this.name, value, name));
+			String.format("%s must not be equal to %s (%s), but was", this.name, value, name));
 	}
 
 	@Override

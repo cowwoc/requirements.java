@@ -51,6 +51,24 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	}
 
 	@Override
+	public CollectionPreconditions<E, T> contains(E element) throws IllegalArgumentException
+	{
+		if (parameter.contains(element))
+			return this;
+		return throwException(IllegalArgumentException.class, String.format("%s must contain %s. " +
+			"Was: %s", name, element, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContain(E element) throws IllegalArgumentException
+	{
+		if (!parameter.contains(element))
+			return this;
+		return throwException(IllegalArgumentException.class, String.format("%s must not contain %s. " +
+			"Was: %s", name, element, parameter));
+	}
+
+	@Override
 	public CollectionSizePreconditions size()
 	{
 		return new CollectionSizePreconditionsImpl(parameter, name, exceptionOverride);

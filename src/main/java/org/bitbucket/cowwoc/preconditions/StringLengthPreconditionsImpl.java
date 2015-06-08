@@ -221,7 +221,7 @@ final class StringLengthPreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d characters, but it did. It contained \"%s\"", name,
+			String.format("%s must contain %d characters, but did. It contained \"%s\"", name,
 				value, string));
 	}
 
@@ -232,7 +232,7 @@ final class StringLengthPreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %d characters (%s), but it did. It contained \"%s\"",
+			String.format("%s must not contain %d characters (%s), but did. It contained \"%s\"",
 				this.name, value, name, string));
 	}
 }

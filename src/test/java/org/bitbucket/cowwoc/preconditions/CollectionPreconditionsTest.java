@@ -57,6 +57,34 @@ public class CollectionPreconditionsTest
 	}
 
 	@Test
+	public void containsTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("element");
+		Preconditions.requireThat(parameter, "parameter").contains("element");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("notElement");
+		Preconditions.requireThat(parameter, "parameter").contains("element");
+	}
+
+	@Test
+	public void doesNotContainTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("notElement");
+		Preconditions.requireThat(parameter, "parameter").doesNotContain("element");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("element");
+		Preconditions.requireThat(parameter, "parameter").doesNotContain("element");
+	}
+
+	@Test
 	public void sizeIsEqualToTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("element");

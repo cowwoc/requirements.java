@@ -22,7 +22,19 @@ enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
 	}
 
 	@Override
+	public MapPreconditions<Object, Object> doesNotContainKey(Object key)
+	{
+		return this;
+	}
+
+	@Override
 	public MapPreconditions<Object, Object> containsValue(Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapPreconditions<Object, Object> doesNotContainValue(Object value)
 	{
 		return this;
 	}
