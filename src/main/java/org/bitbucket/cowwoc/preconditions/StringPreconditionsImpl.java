@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPreconditions, String>
 	implements StringPreconditions
 {
-	private final static Pattern emailPattern = Pattern.compile("[^@]+@[^@]+");
+	private final static Pattern EMAIL_PATTERN = Pattern.compile("[^@]+@[^@]+");
 
 	/**
 	 * Creates new StringPreconditionsImpl.
@@ -86,7 +86,7 @@ final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPrecon
 	@Override
 	public StringPreconditions isEmailFormat() throws IllegalArgumentException
 	{
-		if (emailPattern.matcher(parameter).matches())
+		if (EMAIL_PATTERN.matcher(parameter).matches())
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s does not contain a valid email format: %s", name, parameter));

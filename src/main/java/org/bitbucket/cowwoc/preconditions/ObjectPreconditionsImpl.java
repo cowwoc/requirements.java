@@ -22,6 +22,70 @@ import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 	implements ObjectPreconditions<S, T>
 {
+	/**
+	 * Calculates the difference between two strings.
+	 * <p>
+	 * @param expected the expected value
+	 * @param actual   the actual value
+	 */
+	private static void diff(StringBuilder expected, StringBuilder actual)
+	{
+		DiffMatchPatch diffFactory = new DiffMatchPatch();
+		LinkedList<Diff> diff = diffFactory.diffMain(expected.toString(), actual.toString());
+		diffFactory.diffCleanupSemantic(diff);
+		int expectedOffset = 0;
+		int actualOffset = 0;
+		for (Diff component: diff)
+		{
+			switch (component.operation)
+			{
+				case EQUAL:
+				{
+					expectedOffset += component.text.length();
+					actualOffset += component.text.length();
+					break;
+				}
+				case DELETE:
+				{
+					expected.insert(expectedOffset, "<");
+
+					// Skip '<' + text
+					expectedOffset += 1 + component.text.length();
+
+					expected.insert(expectedOffset, ">");
+
+					// Skip '>'
+					++expectedOffset;
+
+					actual.insert(actualOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
+
+					// Skip '<' + text + '>'
+					actualOffset += "<".length() + component.text.length() + ">".length();
+					break;
+				}
+				case INSERT:
+				{
+					actual.insert(actualOffset, "<");
+
+					// Skip '<' + text
+					actualOffset += 1 + component.text.length();
+
+					actual.insert(actualOffset, ">");
+
+					// Skip '>'
+					++actualOffset;
+
+					expected.insert(expectedOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
+
+					// Skip '<' + text + '>'
+					expectedOffset += "<".length() + component.text.length() + ">".length();
+					break;
+				}
+				default:
+					throw new AssertionError(component.operation.name());
+			}
+		}
+	}
 	protected final S self;
 	@SuppressWarnings("ProtectedField")
 	protected final T parameter;
@@ -160,71 +224,6 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 			String.format("%s must be equal to %s.\n" +
 				"Expected: %s\n" +
 				"Actual  : %s", this.name, name, expected, actual));
-	}
-
-	/**
-	 * Calculates the difference between two strings.
-	 * <p>
-	 * @param expected the expected value
-	 * @param actual   the actual value
-	 */
-	private static void diff(StringBuilder expected, StringBuilder actual)
-	{
-		DiffMatchPatch diffFactory = new DiffMatchPatch();
-		LinkedList<Diff> diff = diffFactory.diffMain(expected.toString(), actual.toString());
-		diffFactory.diffCleanupSemantic(diff);
-		int expectedOffset = 0;
-		int actualOffset = 0;
-		for (Diff component: diff)
-		{
-			switch (component.operation)
-			{
-				case EQUAL:
-				{
-					expectedOffset += component.text.length();
-					actualOffset += component.text.length();
-					break;
-				}
-				case DELETE:
-				{
-					expected.insert(expectedOffset, "<");
-
-					// Skip '<' + text
-					expectedOffset += 1 + component.text.length();
-
-					expected.insert(expectedOffset, ">");
-
-					// Skip '>'
-					++expectedOffset;
-
-					actual.insert(actualOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
-
-					// Skip '<' + text + '>'
-					actualOffset += "<".length() + component.text.length() + ">".length();
-					break;
-				}
-				case INSERT:
-				{
-					actual.insert(actualOffset, "<");
-
-					// Skip '<' + text
-					actualOffset += 1 + component.text.length();
-
-					actual.insert(actualOffset, ">");
-
-					// Skip '>'
-					++actualOffset;
-
-					expected.insert(expectedOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
-
-					// Skip '<' + text + '>'
-					expectedOffset += "<".length() + component.text.length() + ">".length();
-					break;
-				}
-				default:
-					throw new AssertionError(component.operation.name());
-			}
-		}
 	}
 
 	@Override
