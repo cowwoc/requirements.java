@@ -39,7 +39,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	{
 		if (parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty", name));
+		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
+			"Actual  : %s", name, parameter));
 	}
 
 	@Override
@@ -55,8 +56,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	{
 		if (parameter.contains(element))
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must contain %s. " +
-			"Was: %s", name, element, parameter));
+		return throwException(IllegalArgumentException.class, String.format("%s must contain %s.\n" +
+			"Actual  : %s", name, element, parameter));
 	}
 
 	@Override
@@ -64,8 +65,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	{
 		if (!parameter.contains(element))
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must not contain %s. " +
-			"Was: %s", name, element, parameter));
+		return throwException(IllegalArgumentException.class, String.format("%s must not contain %s.\n" +
+			"Actual  : %s", name, element, parameter));
 	}
 
 	@Override

@@ -36,6 +36,7 @@ final class UriPreconditionsImpl extends ObjectPreconditionsImpl<UriPrecondition
 		if (parameter.isAbsolute())
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be absolute: %s", name, parameter));
+			String.format("%s must be absolute.\n" +
+				"Actual  : %s", name, parameter));
 	}
 }

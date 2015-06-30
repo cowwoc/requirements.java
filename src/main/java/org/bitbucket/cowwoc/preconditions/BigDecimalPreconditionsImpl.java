@@ -38,7 +38,9 @@ final class BigDecimalPreconditionsImpl
 		// Number.longValue() truncates the fractional portion, which we need to take into account
 		if (parameter.signum() == 0)
 			return self;
-		return throwException(IllegalArgumentException.class, String.format("%s must be zero", name));
+		return throwException(IllegalArgumentException.class, String.format("%s must be zero\n" +
+			"Expected: %s\n" +
+			"Actual  : %s", name, 0, parameter));
 	}
 
 	@Override

@@ -44,8 +44,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d characters. It contained %d characters: \"%s\"",
-				name, value, parameter, string));
+			String.format("%s must contain at least %d characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", name, value, parameter, string));
 	}
 
 	@Override
@@ -57,8 +57,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %d (%s) characters. It contained " +
-				"%d characters: \"%s\"", this.name, value, name, parameter, string));
+			String.format("%s must contain at least %d (%s) characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", this.name, value, name, parameter, string));
 	}
 
 	@Override
@@ -68,8 +68,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %d characters. It contained %d characters: \"%s\"",
-				name, value, parameter, string));
+			String.format("%s must contain more than %d characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", name, value, parameter, string));
 	}
 
 	@Override
@@ -93,8 +93,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %d characters. It contained %d characters: \"%s\"",
-				name, value, parameter, string));
+			String.format("%s may contain at most %d characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", name, value, parameter, string));
 	}
 
 	@Override
@@ -117,8 +117,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %d characters. It contained %d characters: \"%s\"",
-				this.name, value, parameter, string));
+			String.format("%s must contain less than %d characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", this.name, value, parameter, string));
 	}
 
 	@Override
@@ -130,8 +130,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %d (%s) characters. It contained " +
-				"%d characters: \"%s\"", this.name, value, name, parameter, string));
+			String.format("%s must contain less than %d (%s) characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", this.name, value, name, parameter, string));
 	}
 
 	@Override
@@ -146,8 +146,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least one character. It contained %d characters: \"%s\"",
-				name, parameter, string));
+			String.format("%s must contain at least one character. It contained %d characters.\n" +
+				"Actual  : \"%s\"", name, parameter, string));
 	}
 
 	@Override
@@ -162,8 +162,8 @@ final class StringLengthPreconditionsImpl
 		if (parameter == 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.
-			format("%s must be empty. It contained %d characters: \"%s\"", name, parameter, string));
+			String.format("%s must be empty. It contained %d characters.\n" +
+				"Actual  : \"%s\"", name, parameter, string));
 	}
 
 	@Override
@@ -189,8 +189,8 @@ final class StringLengthPreconditionsImpl
 			return self;
 		StringBuilder message = new StringBuilder(name + " must contain ");
 		Ranges.appendRange(range, message);
-		message.append(String.format(" characters. It contained %d characters: \"%s\"", parameter,
-			string));
+		message.append(String.format(" characters. It contained %d characters.\n" +
+			"Actual  : \"%s\"", parameter, string));
 		return throwException(IllegalArgumentException.class, message.toString());
 	}
 
@@ -200,8 +200,8 @@ final class StringLengthPreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d characters. It contained %d characters: \"%s\"", name,
-				value, parameter, string));
+			String.format("%s must contain %d characters. It contained %d characters.\n" +
+				"Actual  : \"%s\"", name, value, parameter, string));
 	}
 
 	@Override
@@ -211,8 +211,8 @@ final class StringLengthPreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d characters (%s). It contained %d characters: \"%s\"",
-				this.name, value, name, parameter, string));
+			String.format("%s must contain %d characters (%s). It contained %d characters.\n" +
+				"Actual  : \"%s\"", this.name, value, name, parameter, string));
 	}
 
 	@Override
@@ -221,8 +221,8 @@ final class StringLengthPreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %d characters, but did. It contained \"%s\"", name,
-				value, string));
+			String.format("%s must not contain %d characters, but did.\n" +
+				"Actual  : \"%s\"", name, value, string));
 	}
 
 	@Override
@@ -232,7 +232,7 @@ final class StringLengthPreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %d characters (%s), but did. It contained \"%s\"",
-				this.name, value, name, string));
+			String.format("%s must not contain %d characters (%s), but did.\n" +
+				"Actual  : \"%s\"", this.name, value, name, string));
 	}
 }

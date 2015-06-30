@@ -4,9 +4,13 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import com.google.common.base.Strings;
 import java.lang.reflect.Constructor;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
+import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
+import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 
 /**
  * Default implementation of ObjectPreconditions.
@@ -118,7 +122,8 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 	{
 		if (parameter == null)
 			return self;
-		return throwException(IllegalArgumentException.class, String.format("%s must be null", name));
+		return throwException(IllegalArgumentException.class, String.format("%s must be null.\n" +
+			"Actual  : %s", name, parameter));
 	}
 
 	@Override
@@ -134,8 +139,13 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 	{
 		if (Objects.equals(parameter, value))
 			return self;
+		StringBuilder expected = new StringBuilder(value.toString());
+		StringBuilder actual = new StringBuilder(parameter.toString());
+		diff(expected, actual);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be equal to %s. Was: %s", name, value, parameter));
+			String.format("%s had an unexpected value.\n" +
+				"Expected: %s\n" +
+				"Actual  : %s", name, expected, actual));
 	}
 
 	@Override
@@ -143,8 +153,78 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 	{
 		if (Objects.equals(parameter, value))
 			return self;
+		StringBuilder expected = new StringBuilder(value.toString());
+		StringBuilder actual = new StringBuilder(parameter.toString());
+		diff(expected, actual);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be equal to %s (%s). Was: %s", this.name, value, name, parameter));
+			String.format("%s must be equal to %s.\n" +
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, expected, actual));
+	}
+
+	/**
+	 * Calculates the difference between two strings.
+	 * <p>
+	 * @param expected the expected value
+	 * @param actual   the actual value
+	 */
+	private static void diff(StringBuilder expected, StringBuilder actual)
+	{
+		DiffMatchPatch diffFactory = new DiffMatchPatch();
+		LinkedList<Diff> diff = diffFactory.diffMain(expected.toString(), actual.toString());
+		diffFactory.diffCleanupSemantic(diff);
+		int expectedOffset = 0;
+		int actualOffset = 0;
+		for (Diff component: diff)
+		{
+			switch (component.operation)
+			{
+				case EQUAL:
+				{
+					expectedOffset += component.text.length();
+					actualOffset += component.text.length();
+					break;
+				}
+				case DELETE:
+				{
+					expected.insert(expectedOffset, "<");
+
+					// Skip '<' + text
+					expectedOffset += 1 + component.text.length();
+
+					expected.insert(expectedOffset, ">");
+
+					// Skip '>'
+					++expectedOffset;
+
+					actual.insert(actualOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
+
+					// Skip '<' + text + '>'
+					actualOffset += "<".length() + component.text.length() + ">".length();
+					break;
+				}
+				case INSERT:
+				{
+					actual.insert(actualOffset, "<");
+
+					// Skip '<' + text
+					actualOffset += 1 + component.text.length();
+
+					actual.insert(actualOffset, ">");
+
+					// Skip '>'
+					++actualOffset;
+
+					expected.insert(expectedOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
+
+					// Skip '<' + text + '>'
+					expectedOffset += "<".length() + component.text.length() + ">".length();
+					break;
+				}
+				default:
+					throw new AssertionError(component.operation.name());
+			}
+		}
 	}
 
 	@Override
@@ -153,7 +233,7 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s, but was", name, value));
+			String.format("%s must not be equal to %s", name, value));
 	}
 
 	@Override
@@ -162,7 +242,7 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s (%s), but was", this.name, value, name));
+			String.format("%s must not be equal to %s (%s)", this.name, value, name));
 	}
 
 	@Override
@@ -173,6 +253,7 @@ class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 		if (type.isInstance(parameter))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be an instance of %s. Was: %s", name, type, parameter.getClass()));
+			String.format("%s must be an instance of %s.\n" +
+				"Actual  : %s", name, type, parameter.getClass()));
 	}
 }

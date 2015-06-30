@@ -63,7 +63,8 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 		if (!attrs.isRegularFile())
 		{
 			return throwException(IllegalArgumentException.class,
-				String.format("%s must refer to a file. Was: %s", name, parameter.toAbsolutePath()));
+				String.format("%s must refer to a file.\n" +
+					"Actual  : %s", name, parameter.toAbsolutePath()));
 		}
 		return this;
 	}
@@ -86,7 +87,8 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 		if (!attrs.isDirectory())
 		{
 			return throwException(IllegalArgumentException.class,
-				String.format("%s must refer to a directory. Was: %s", name, parameter.toAbsolutePath()));
+				String.format("%s must refer to a directory.\n" +
+					"Actual  : %s", name, parameter.toAbsolutePath()));
 		}
 		return this;
 	}
@@ -98,7 +100,8 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 		if (!parameter.isAbsolute())
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must refer to a relative path. Was: %s", name, parameter));
+			String.format("%s must refer to a relative path.\n" +
+				"Actual  : %s", name, parameter));
 	}
 
 	@Override
@@ -108,6 +111,7 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 		if (parameter.isAbsolute())
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must refer to an absolute path. Was: %s", name, parameter));
+			String.format("%s must refer to an absolute path.\n" +
+				"Actual  : %s", name, parameter));
 	}
 }

@@ -39,6 +39,7 @@ final class ClassPreconditionsImpl<T> extends ObjectPreconditionsImpl<ClassPreco
 		if (parameter.isAssignableFrom(type))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be a supertype of %s. Was: %s", name, type, parameter.getClass()));
+			String.format("%s must be a supertype of %s\n" +
+				"Actual  : %s", name, type, parameter.getClass()));
 	}
 }

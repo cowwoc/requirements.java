@@ -126,5 +126,10 @@
 			<version>6.8.8</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.bitbucket.cowwoc.diff-match-patch</groupId>
+			<artifactId>diff-match-patch</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>
