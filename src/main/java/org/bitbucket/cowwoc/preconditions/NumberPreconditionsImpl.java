@@ -15,7 +15,7 @@ import java.util.Optional;
  * @author Gili Tzabari
  */
 class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
-	extends ObjectPreconditionsImpl<S, T>
+	extends AbstractObjectPreconditions<S, T>
 	implements NumberPreconditions<S, T>
 {
 	/**
@@ -60,7 +60,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.longValue() >= 0L)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not be negative", name));
+			String.format("%s may not be negative.\n" +
+				"Actual  : %s", name, parameter));
 	}
 
 	@Override
@@ -95,7 +96,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.longValue() <= 0L)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not be positive", name));
+			String.format("%s may not be positive.\n" +
+				"Actual  : %s", name, parameter));
 	}
 
 	@Override
@@ -194,5 +196,14 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		return throwException(IllegalArgumentException.class,
 			String.format("%s (%d) must be greater than or equal to %d", name, parameter.longValue(),
 				value.longValue()));
+	}
+
+	@Override
+	protected S valueOf(T parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		@SuppressWarnings("unchecked")
+		S result = (S) new NumberPreconditionsImpl<>(parameter, name, exceptionOverride);
+		return result;
 	}
 }

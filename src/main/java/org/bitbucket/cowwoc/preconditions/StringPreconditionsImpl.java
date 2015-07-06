@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * <p>
  * @author Gili Tzabari
  */
-final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPreconditions, String>
+final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPreconditions, String>
 	implements StringPreconditions
 {
 	private final static Pattern EMAIL_PATTERN = Pattern.compile("[^@]+@[^@]+");
@@ -192,5 +192,12 @@ final class StringPreconditionsImpl extends ObjectPreconditionsImpl<StringPrecon
 	public StringLengthPreconditions length()
 	{
 		return new StringLengthPreconditionsImpl(parameter, name, exceptionOverride);
+	}
+
+	@Override
+	protected StringPreconditions valueOf(String parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new StringPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

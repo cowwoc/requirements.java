@@ -36,8 +36,8 @@ public final class Preconditions
 		throws NullPointerException, IllegalArgumentException
 	{
 		@SuppressWarnings("unchecked")
-		S self = (S) new ObjectPreconditionsImpl<>(parameter, name, Optional.empty());
-		return self;
+		S result = (S) new ObjectPreconditionsImpl<>(parameter, name, Optional.empty());
+		return result;
 	}
 
 	/**

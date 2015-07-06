@@ -11,7 +11,7 @@ import java.util.Optional;
  * <p>
  * @author Gili Tzabari
  */
-final class OptionalPreconditionsImpl extends ObjectPreconditionsImpl<OptionalPreconditions, Optional<?>>
+final class OptionalPreconditionsImpl extends AbstractObjectPreconditions<OptionalPreconditions, Optional<?>>
 	implements OptionalPreconditions
 {
 	/**
@@ -46,5 +46,12 @@ final class OptionalPreconditionsImpl extends ObjectPreconditionsImpl<OptionalPr
 		if (!parameter.isPresent())
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s must be empty", name));
+	}
+
+	@Override
+	protected OptionalPreconditions valueOf(Optional<?> parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new OptionalPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

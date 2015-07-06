@@ -15,7 +15,7 @@ import java.util.Optional;
  * @author Gili Tzabari
  */
 class CollectionPreconditionsImpl<E, T extends Collection<E>>
-	extends ObjectPreconditionsImpl<CollectionPreconditions<E, T>, T>
+	extends AbstractObjectPreconditions<CollectionPreconditions<E, T>, T>
 	implements CollectionPreconditions<E, T>
 {
 	/**
@@ -65,7 +65,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	{
 		if (!parameter.contains(element))
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must not contain %s.\n" +
+		return throwException(IllegalArgumentException.class, String.format(
+			"%s must not contain %s.\n" +
 			"Actual  : %s", name, element, parameter));
 	}
 
@@ -73,5 +74,12 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	public CollectionSizePreconditions size()
 	{
 		return new CollectionSizePreconditionsImpl(parameter, name, exceptionOverride);
+	}
+
+	@Override
+	protected CollectionPreconditions<E, T> valueOf(T parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new CollectionPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 }

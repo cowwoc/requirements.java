@@ -14,7 +14,7 @@ import java.util.Optional;
  * @param <V> the type of value in the map
  * @author Gili Tzabari
  */
-final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPreconditions<K, V>, Map<K, V>>
+final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPreconditions<K, V>, Map<K, V>>
 	implements MapPreconditions<K, V>
 {
 	/**
@@ -94,5 +94,12 @@ final class MapPreconditionsImpl<K, V> extends ObjectPreconditionsImpl<MapPrecon
 	public MapSizePreconditions size()
 	{
 		return new MapSizePreconditionsImpl(parameter, name, exceptionOverride);
+	}
+
+	@Override
+	protected MapPreconditions<K, V> valueOf(Map<K, V> parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new MapPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-final class ClassPreconditionsImpl<T> extends ObjectPreconditionsImpl<ClassPreconditions<T>, Class<T>>
+final class ClassPreconditionsImpl<T> extends AbstractObjectPreconditions<ClassPreconditions<T>, Class<T>>
 	implements ClassPreconditions<T>
 {
 	/**
@@ -41,5 +41,12 @@ final class ClassPreconditionsImpl<T> extends ObjectPreconditionsImpl<ClassPreco
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be a supertype of %s\n" +
 				"Actual  : %s", name, type, parameter.getClass()));
+	}
+
+	@Override
+	protected ClassPreconditions<T> valueOf(Class<T> parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new ClassPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 }

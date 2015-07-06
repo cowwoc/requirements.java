@@ -12,7 +12,7 @@ import java.util.Optional;
  * <p>
  * @author Gili Tzabari
  */
-final class UriPreconditionsImpl extends ObjectPreconditionsImpl<UriPreconditions, URI>
+final class UriPreconditionsImpl extends AbstractObjectPreconditions<UriPreconditions, URI>
 	implements UriPreconditions
 {
 	/**
@@ -38,5 +38,12 @@ final class UriPreconditionsImpl extends ObjectPreconditionsImpl<UriPrecondition
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be absolute.\n" +
 				"Actual  : %s", name, parameter));
+	}
+
+	@Override
+	protected UriPreconditions valueOf(URI parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new UriPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

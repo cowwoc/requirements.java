@@ -17,7 +17,7 @@ import java.util.Optional;
  * <p>
  * @author Gili Tzabari
  */
-final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditions, Path>
+final class PathPreconditionsImpl extends AbstractObjectPreconditions<PathPreconditions, Path>
 	implements PathPreconditions
 {
 	/**
@@ -113,5 +113,12 @@ final class PathPreconditionsImpl extends ObjectPreconditionsImpl<PathPreconditi
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must refer to an absolute path.\n" +
 				"Actual  : %s", name, parameter));
+	}
+
+	@Override
+	protected PathPreconditions valueOf(Path parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new PathPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

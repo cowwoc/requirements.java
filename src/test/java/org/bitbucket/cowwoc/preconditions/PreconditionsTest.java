@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 /**
  * @author Gili Tzabari
  */
-public class PreconditionsTest
+public final class PreconditionsTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
@@ -115,6 +115,19 @@ public class PreconditionsTest
 	public void isNotNullCustomException()
 	{
 		Object parameter = null;
+		Preconditions.requireThat(parameter, "parameter").usingException(IllegalStateException.class).
+			isNotNull();
+	}
+
+	/**
+	 * BUG: {@code Preconditions.usingException(Class<? extends RuntimeException>)} was throwing a
+	 * {@code ClassCastException} if the instance was anything other than
+	 * {@code ObjectPreconditionsImpl}.
+	 */
+	@Test
+	public void customExceptionPreconditionSubclass()
+	{
+		int parameter = 5;
 		Preconditions.requireThat(parameter, "parameter").usingException(IllegalStateException.class).
 			isNotNull();
 	}

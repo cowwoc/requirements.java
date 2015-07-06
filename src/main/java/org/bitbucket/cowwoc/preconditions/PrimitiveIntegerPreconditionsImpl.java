@@ -7,11 +7,11 @@ package org.bitbucket.cowwoc.preconditions;
 import java.util.Optional;
 
 /**
- * Verifies preconditions of an {@link Integer} parameter.
+ * Verifies preconditions of an {@link int} parameter.
  * <p>
+ * @param <S> the type of preconditions that was instantiated
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
 abstract class PrimitiveIntegerPreconditionsImpl<S extends PrimitiveIntegerPreconditions<S>>
 	extends NumberPreconditionsImpl<S, Integer>
 	implements PrimitiveIntegerPreconditions<S>

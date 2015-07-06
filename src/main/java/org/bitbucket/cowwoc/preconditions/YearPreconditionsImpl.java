@@ -13,7 +13,7 @@ import java.util.Optional;
  * <p>
  * @author Gili Tzabari
  */
-final class YearPreconditionsImpl extends ObjectPreconditionsImpl<YearPreconditions, Year>
+final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPreconditions, Year>
 	implements YearPreconditions
 {
 	/**
@@ -121,5 +121,12 @@ final class YearPreconditionsImpl extends ObjectPreconditionsImpl<YearPreconditi
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s (%s) must be greater than or equal to %d", name, parameter, value));
+	}
+
+	@Override
+	protected YearPreconditions valueOf(Year parameter, String name,
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	{
+		return new YearPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }
