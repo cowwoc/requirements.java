@@ -108,7 +108,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) < 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be less than %s (%d)", this.name, parameter.longValue(), name,
+			String.format("%s (%,d) must be less than %s (%,d)", this.name, parameter.longValue(), name,
 				value.longValue()));
 	}
 
@@ -119,7 +119,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) < 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be less than %d", this.name, parameter.longValue(),
+			String.format("%s (%,d) must be less than %,d", this.name, parameter.longValue(),
 				value.longValue()));
 	}
 
@@ -132,7 +132,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) <= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be less than or equal to %s (%d)", this.name,
+			String.format("%s (%,d) must be less than or equal to %s (%,d)", this.name,
 				parameter.longValue(), name, value.longValue()));
 	}
 
@@ -144,7 +144,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) <= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be less than or equal to %d", name, parameter.longValue(),
+			String.format("%s (%,d) must be less than or equal to %,d", name, parameter.longValue(),
 				value.longValue()));
 	}
 
@@ -157,7 +157,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be greater than %s (%d)", this.name, parameter.longValue(), name,
+			String.
+			format("%s (%,d) must be greater than %s (%,d)", this.name, parameter.longValue(), name,
 				value.longValue()));
 	}
 
@@ -169,7 +170,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be greater than %d", name, parameter.longValue(),
+			String.format("%s (%,d) must be greater than %,d", name, parameter.longValue(),
 				value.longValue()));
 	}
 
@@ -182,7 +183,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) >= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be greater than or equal to %s (%d)", this.name,
+			String.format("%s (%,d) must be greater than or equal to %s (%,d)", this.name,
 				parameter.longValue(), name, value.longValue()));
 	}
 
@@ -194,7 +195,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.compareTo(value) >= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%d) must be greater than or equal to %d", name, parameter.longValue(),
+			String.format("%s (%,d) must be greater than or equal to %,d", name, parameter.longValue(),
 				value.longValue()));
 	}
 
