@@ -51,10 +51,10 @@ final class MapSizePreconditionsImpl
 
 	@Override
 	public MapSizePreconditions isGreaterThanOrEqualTo(Integer value, String name)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -75,10 +75,10 @@ final class MapSizePreconditionsImpl
 
 	@Override
 	public MapSizePreconditions isGreaterThan(Integer value, String name)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -100,10 +100,10 @@ final class MapSizePreconditionsImpl
 
 	@Override
 	public MapSizePreconditions isLessThanOrEqualTo(Integer value, String name)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -124,10 +124,10 @@ final class MapSizePreconditionsImpl
 
 	@Override
 	public MapSizePreconditions isLessThan(Integer value, String name)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -207,10 +207,11 @@ final class MapSizePreconditionsImpl
 	}
 
 	@Override
-	public MapSizePreconditions isEqualTo(Integer value, String name) throws IllegalArgumentException
+	public MapSizePreconditions isEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -230,11 +231,11 @@ final class MapSizePreconditionsImpl
 	}
 
 	@Override
-	public MapSizePreconditions isNotEqualTo(Integer value, String name) throws
-		IllegalArgumentException
+	public MapSizePreconditions isNotEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,

@@ -28,8 +28,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <S extends ObjectPreconditions<S, Object>> S requireThat(Object parameter,
 		String name)
@@ -48,8 +48,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <E, T extends Collection<E>> CollectionPreconditions<E, T> requireThat(T parameter,
 		String name)
@@ -66,8 +66,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
 		NumberPreconditions<S, T> requireThat(T parameter, String name)
@@ -82,8 +82,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static BigDecimalPreconditions requireThat(BigDecimal parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -99,8 +99,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <K, V> MapPreconditions<K, V> requireThat(Map<K, V> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -114,8 +114,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static PathPreconditions requireThat(Path parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -129,8 +129,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static StringPreconditions requireThat(String parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -144,8 +144,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static UriPreconditions requireThat(URI parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -160,8 +160,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <T> ClassPreconditions<T> requireThat(Class<T> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -175,8 +175,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static YearPreconditions requireThat(Year parameter, String name)
 		throws NullPointerException, IllegalArgumentException
@@ -190,8 +190,8 @@ public final class Preconditions
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Preconditions for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static OptionalPreconditions requireThat(Optional<?> parameter, String name)
 		throws NullPointerException, IllegalArgumentException

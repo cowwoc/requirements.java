@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Gili.
+ * Copyright 2014 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.preconditions;
@@ -278,6 +278,13 @@ public class BigDecimalPreconditionsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isGreaterThanVariableEmptyName()
+	{
+		BigDecimal parameter = BigDecimal.ONE;
+		Preconditions.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.ZERO, " ");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isGreaterThanVariable_Equal()
 	{
 		BigDecimal parameter = BigDecimal.ONE;
@@ -319,6 +326,14 @@ public class BigDecimalPreconditionsTest
 		BigDecimal parameter = BigDecimal.ONE;
 		Preconditions.requireThat(parameter, "parameter").
 			isGreaterThanOrEqualTo(BigDecimal.ONE);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isGreaterThanOrEqualToVariableEmptyName()
+	{
+		BigDecimal parameter = BigDecimal.ONE;
+		Preconditions.requireThat(parameter, "parameter").
+			isGreaterThanOrEqualTo(BigDecimal.ONE, " ");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Gili.
+ * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.preconditions;
@@ -21,7 +21,7 @@ final class Ranges
 	 * @param <C>   the type of value
 	 * @param range the expected range
 	 * @return an exception message indicating that the value is out of range
-	 * @throws AssertionError if name, value or range are null
+	 * @throws AssertionError if {@code name}, {@code value} or {@code range} are null
 	 */
 	public static <C extends Comparable<? super C>> String getExceptionMessage(String name, C value,
 		Range<C> range)
@@ -42,7 +42,7 @@ final class Ranges
 	 * @param <C>   the type of value
 	 * @param range the expected range
 	 * @return an exception message indicating that the value is out of range
-	 * @throws AssertionError if name, value or range are null
+	 * @throws AssertionError if {@code name}, {@code value} or {@code range} are null
 	 */
 	public static <T extends Number & Comparable<? super T>> String getExceptionMessage(String name,
 		T value, Range<T> range)

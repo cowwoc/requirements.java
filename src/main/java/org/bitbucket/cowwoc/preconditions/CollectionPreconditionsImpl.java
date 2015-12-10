@@ -27,8 +27,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionPreconditionsImpl(T parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
@@ -64,33 +64,98 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	}
 
 	@Override
-	public CollectionPreconditions<E, T> containsAny(Collection<E> elements)
-		throws IllegalArgumentException
+	public CollectionPreconditions<E, T> contains(E element, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		for (E element: elements)
-			if (parameter.contains(element))
-				return this;
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (parameter.contains(element))
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %s.\n" +
+				"Actual : %s\n" +
+				"Missing: %s", this.name, name, parameter, element));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> containsAny(Collection<E> elements)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		if (parameterContainsAny(elements))
+			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain any of %s.\n" +
 				"Actual: %s", name, elements, parameter));
 	}
 
+	/**
+	 * @param elements a collection of elements
+	 * @return true if {@code parameter} contains any of {@code elements}
+	 */
+	private boolean parameterContainsAny(Collection<E> elements)
+	{
+		for (E element: elements)
+			if (parameter.contains(element))
+				return true;
+		return false;
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> containsAny(Collection<E> elements, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (parameterContainsAny(elements))
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain any of %s.\n" +
+				"Actual : %s\n" +
+				"Missing: %s", this.name, name, parameter, elements));
+	}
+
 	@Override
 	public CollectionPreconditions<E, T> containsAll(Collection<E> elements)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (parameter.containsAll(elements))
 			return this;
+		Set<E> missing = elementsMinusParameter(elements);
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %s.\n" +
+				"Actual : %s\n" +
+				"Missing: %s", name, elements, parameter, missing));
+	}
+
+	/**
+	 * @param elements a collection of elements
+	 * @return {@code elements} excluding the contents of {@code parameter}
+	 */
+	private Set<E> elementsMinusParameter(Collection<E> elements)
+	{
 		Set<E> missing = new HashSet<>(elements);
 		for (Iterator<E> i = missing.iterator(); i.hasNext();)
 		{
 			if (parameter.contains(i.next()))
 				i.remove();
 		}
+		return missing;
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> containsAll(Collection<E> elements, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (parameter.containsAll(elements))
+			return this;
+		Set<E> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %s.\n" +
+			String.format("%s must contain %s (%s).\n" +
 				"Actual : %s\n" +
-				"Missing: %s", name, elements, parameter, missing));
+				"Missing: %s", this.name, name, elements, parameter, missing));
 	}
 
 	@Override
@@ -104,41 +169,85 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	}
 
 	@Override
-	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements)
-		throws IllegalArgumentException
+	public CollectionPreconditions<E, T> doesNotContain(E element, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		boolean matchFound = false;
-		for (E element: elements)
-		{
-			if (parameter.contains(element))
-			{
-				matchFound = true;
-				break;
-			}
-		}
-		if (!matchFound)
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (!parameter.contains(element))
 			return this;
-		Set<E> unwanted = new HashSet<>(elements);
-		for (Iterator<E> i = unwanted.iterator(); i.hasNext();)
+		return throwException(IllegalArgumentException.class, String.format(
+			"%s must not contain %s (%s).\n" +
+			"Actual: %s", this.name, name, element, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		if (!parameterContainsAny(elements))
+			return this;
+		Set<E> unwanted = parameterIntersectWith(elements);
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain any of %s.\n" +
+				"Actual  : %s\n" +
+				"Unwanted: %s", name, elements, parameter, unwanted));
+	}
+
+	/**
+	 * @param elements a collection of elements
+	 * @return elements found both in {@code parameter} and {@code elements}
+	 */
+	private Set<E> parameterIntersectWith(Collection<E> elements)
+	{
+		Set<E> result = new HashSet<>(elements);
+		for (Iterator<E> i = result.iterator(); i.hasNext();)
 		{
 			if (!parameter.contains(i.next()))
 				i.remove();
 		}
-		return throwException(IllegalArgumentException.class, String.format(
-			"%s must not contain any of %s.\n" +
-			"Actual  : %s\n" +
-			"Unwanted: %s", name, elements, parameter, unwanted));
+		return result;
 	}
 
 	@Override
-	public CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements) throws
-		IllegalArgumentException
+	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (!parameterContainsAny(elements))
+			return this;
+		Set<E> unwanted = parameterIntersectWith(elements);
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain any of %s (%s).\n" +
+				"Actual  : %s\n" +
+				"Unwanted: %s", this.name, name, elements, parameter, unwanted));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
 			return this;
 		return throwException(IllegalArgumentException.class, String.format(
-			"%s must not contain all of %s.\n" +
+			"%s must not contain %s.\n" +
 			"Actual: %s", name, elements, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (!parameter.containsAll(elements))
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must not contain %s.\n" +
+				"Actual : %s\n" +
+				"Missing: %s", this.name, name, parameter, elements));
 	}
 
 	@Override

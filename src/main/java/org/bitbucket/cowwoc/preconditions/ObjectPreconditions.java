@@ -36,16 +36,18 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	 * @param value the value to compare to
 	 * @param name  the name of the variable
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is not equal to the variable
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code parameter} is not equal to the variable; if
+	 *                                  {@code name} is empty
 	 */
-	S isEqualTo(T value, String name) throws IllegalArgumentException;
+	S isEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is not equal to a value.
 	 * <p>
 	 * @param value the value to compare to
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is equal to value
+	 * @throws IllegalArgumentException if {@code parameter} is equal to value
 	 */
 	S isNotEqualTo(T value) throws IllegalArgumentException;
 
@@ -55,9 +57,11 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	 * @param value the value to compare to
 	 * @param name  the name of the variable
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is equal to the variable
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code parameter} is equal to the variable; if {@code name}
+	 *                                  is empty
 	 */
-	S isNotEqualTo(T value, String name) throws IllegalArgumentException;
+	S isNotEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is an instance of a class.

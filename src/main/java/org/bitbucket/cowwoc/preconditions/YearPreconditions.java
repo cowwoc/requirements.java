@@ -20,7 +20,7 @@ public interface YearPreconditions extends ObjectPreconditions<YearPreconditions
 	 * @param value the value the parameter must be greater than
 	 * @param name  the name of the variable
 	 * @return this
-	 * @throws IllegalArgumentException if the parameter is less than or equal to {@code value}
+	 * @throws IllegalArgumentException if {@code parameter} is less than or equal to {@code value}
 	 */
 	YearPreconditions isGreaterThan(Year value, String name) throws IllegalArgumentException;
 
@@ -39,7 +39,7 @@ public interface YearPreconditions extends ObjectPreconditions<YearPreconditions
 	 * @param value the value the parameter must be greater than or equal to
 	 * @param name  the name of the variable
 	 * @return this
-	 * @throws IllegalArgumentException if the {@code parameter} is less than to {@code value}
+	 * @throws IllegalArgumentException if {@code parameter} is less than to {@code value}
 	 */
 	YearPreconditions isGreaterThanOrEqualTo(Year value, String name)
 		throws IllegalArgumentException;
@@ -69,8 +69,7 @@ public interface YearPreconditions extends ObjectPreconditions<YearPreconditions
 	 * @param value the value the parameter must be less than
 	 * @param name  the name of the variable
 	 * @return this
-	 * @throws IllegalArgumentException if the {@code parameter} is greater than or equal to
-	 *                                  {@code value}
+	 * @throws IllegalArgumentException if {@code parameter} is greater than or equal to {@code value}
 	 */
 	YearPreconditions isLessThan(Year value, String name) throws IllegalArgumentException;
 
@@ -90,7 +89,7 @@ public interface YearPreconditions extends ObjectPreconditions<YearPreconditions
 	 * @param value the value the parameter must be less than or equal to
 	 * @param name  the name of the variable
 	 * @return this
-	 * @throws IllegalArgumentException if the {@code parameter} is greater than {@code value}
+	 * @throws IllegalArgumentException if {@code parameter} is greater than {@code value}
 	 */
 	YearPreconditions isLessThanOrEqualTo(Year value, String name) throws IllegalArgumentException;
 

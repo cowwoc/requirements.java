@@ -26,8 +26,8 @@ final class CollectionSizePreconditionsImpl
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionSizePreconditionsImpl(Collection<?> parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
@@ -54,7 +54,7 @@ final class CollectionSizePreconditionsImpl
 		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -78,7 +78,7 @@ final class CollectionSizePreconditionsImpl
 		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -103,7 +103,7 @@ final class CollectionSizePreconditionsImpl
 		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -127,7 +127,7 @@ final class CollectionSizePreconditionsImpl
 		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -211,7 +211,7 @@ final class CollectionSizePreconditionsImpl
 		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
@@ -235,7 +235,7 @@ final class CollectionSizePreconditionsImpl
 		throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
-		Preconditions.requireThat(name, "name").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,

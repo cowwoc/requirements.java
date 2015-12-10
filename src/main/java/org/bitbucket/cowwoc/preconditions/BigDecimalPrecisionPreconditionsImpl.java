@@ -16,20 +16,26 @@ final class BigDecimalPrecisionPreconditionsImpl
 	implements BigDecimalPrecisionPreconditions,
 	PrimitiveIntegerPreconditions<BigDecimalPrecisionPreconditions>
 {
+	private static String getName(String name) throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		return name + ".precision()";
+	}
+
 	/**
 	 * Creates new BigDecimalPrecisionPreconditionsImpl.
 	 * <p>
 	 * @param parameter         the value of BigDecimal.precision()
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	BigDecimalPrecisionPreconditionsImpl(int parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name + ".precision()", exceptionOverride);
+		super(parameter, getName(name), exceptionOverride);
 	}
 
 	@Deprecated

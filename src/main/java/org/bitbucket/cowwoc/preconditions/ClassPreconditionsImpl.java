@@ -21,8 +21,8 @@ final class ClassPreconditionsImpl<T> extends AbstractObjectPreconditions<ClassP
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	ClassPreconditionsImpl(Class<T> parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)

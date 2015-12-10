@@ -16,20 +16,26 @@ final class BigDecimalScalePreconditionsImpl
 	implements BigDecimalScalePreconditions,
 	PrimitiveIntegerPreconditions<BigDecimalScalePreconditions>
 {
+	private static String getName(String name) throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		return name + ".scale()";
+	}
+
 	/**
 	 * Creates new BigDecimalScalePreconditionsImpl.
 	 * <p>
 	 * @param parameter         the value of BigDecimal.scale()
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	BigDecimalScalePreconditionsImpl(int parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name + ".scale()", exceptionOverride);
+		super(parameter, getName(name), exceptionOverride);
 	}
 
 	@Deprecated

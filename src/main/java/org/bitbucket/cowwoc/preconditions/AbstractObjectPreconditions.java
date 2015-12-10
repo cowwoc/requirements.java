@@ -224,8 +224,9 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	}
 
 	@Override
-	public S isEqualTo(T value, String name) throws IllegalArgumentException
+	public S isEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException
 	{
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return self;
 		StringBuilder expected = new StringBuilder(value.toString());
@@ -249,8 +250,9 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	}
 
 	@Override
-	public S isNotEqualTo(T value, String name) throws IllegalArgumentException
+	public S isNotEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException
 	{
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(parameter, value))
 			return self;
 
