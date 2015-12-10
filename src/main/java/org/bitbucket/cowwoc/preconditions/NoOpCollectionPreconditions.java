@@ -85,8 +85,36 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Coll
 	}
 
 	@Override
+	public CollectionPreconditions<Object, Collection<Object>> containsAny(Collection<Object> elements)
+		throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionPreconditions<Object, Collection<Object>> containsAll(Collection<Object> elements)
+		throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionPreconditions<Object, Collection<Object>> doesNotContain(Object element)
 		throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionPreconditions<Object, Collection<Object>> doesNotContainAny(
+		Collection<Object> elements) throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionPreconditions<Object, Collection<Object>> doesNotContainAll(
+		Collection<Object> elements) throws IllegalArgumentException
 	{
 		return this;
 	}

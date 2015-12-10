@@ -5,7 +5,10 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Default implementation of CollectionPreconditions.
@@ -40,7 +43,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (parameter.isEmpty())
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -57,7 +60,37 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s must contain %s.\n" +
-			"Actual  : %s", name, element, parameter));
+			"Actual: %s", name, element, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> containsAny(Collection<E> elements)
+		throws IllegalArgumentException
+	{
+		for (E element: elements)
+			if (parameter.contains(element))
+				return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain any of %s.\n" +
+				"Actual: %s", name, elements, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> containsAll(Collection<E> elements)
+		throws IllegalArgumentException
+	{
+		if (parameter.containsAll(elements))
+			return this;
+		Set<E> missing = new HashSet<>(elements);
+		for (Iterator<E> i = missing.iterator(); i.hasNext();)
+		{
+			if (parameter.contains(i.next()))
+				i.remove();
+		}
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain %s.\n" +
+				"Actual : %s\n" +
+				"Missing: %s", name, elements, parameter, missing));
 	}
 
 	@Override
@@ -67,7 +100,45 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		return throwException(IllegalArgumentException.class, String.format(
 			"%s must not contain %s.\n" +
-			"Actual  : %s", name, element, parameter));
+			"Actual: %s", name, element, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements)
+		throws IllegalArgumentException
+	{
+		boolean matchFound = false;
+		for (E element: elements)
+		{
+			if (parameter.contains(element))
+			{
+				matchFound = true;
+				break;
+			}
+		}
+		if (!matchFound)
+			return this;
+		Set<E> unwanted = new HashSet<>(elements);
+		for (Iterator<E> i = unwanted.iterator(); i.hasNext();)
+		{
+			if (!parameter.contains(i.next()))
+				i.remove();
+		}
+		return throwException(IllegalArgumentException.class, String.format(
+			"%s must not contain any of %s.\n" +
+			"Actual  : %s\n" +
+			"Unwanted: %s", name, elements, parameter, unwanted));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements) throws
+		IllegalArgumentException
+	{
+		if (!parameter.containsAll(elements))
+			return this;
+		return throwException(IllegalArgumentException.class, String.format(
+			"%s must not contain all of %s.\n" +
+			"Actual: %s", name, elements, parameter));
 	}
 
 	@Override

@@ -48,7 +48,7 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 		if (parameter.isEmpty())
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	/**
@@ -134,7 +134,7 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must start with \"%s\".\n" +
-				"Actual  : \"%s\"", name, prefix, parameter));
+				"Actual: \"%s\"", name, prefix, parameter));
 	}
 
 	/**
@@ -151,7 +151,7 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must not start with \"%s\".\n" +
-				"Actual  : \"%s\"", name, prefix, parameter));
+				"Actual: \"%s\"", name, prefix, parameter));
 	}
 
 	/**
@@ -168,7 +168,7 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must end with \"%s\".\n" +
-				"Actual  : \"%s\"", name, suffix, parameter));
+				"Actual: \"%s\"", name, suffix, parameter));
 	}
 
 	/**
@@ -185,7 +185,7 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must not end with \"%s\".\n" +
-				"Actual  : \"%s\"", name, suffix, parameter));
+				"Actual: \"%s\"", name, suffix, parameter));
 	}
 
 	@Override

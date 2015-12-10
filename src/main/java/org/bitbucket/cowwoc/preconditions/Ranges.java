@@ -26,12 +26,34 @@ final class Ranges
 	public static <C extends Comparable<? super C>> String getExceptionMessage(String name, C value,
 		Range<C> range)
 	{
-		assert (name != null);
-		assert (value != null);
-		assert (range != null);
-		StringBuilder message = new StringBuilder(name + " (" + String.valueOf(value) +
-			") must be in the range ");
+		assert (name != null): "name may not be null";
+		assert (value != null): "value may not be null";
+		assert (range != null): "range may not be null";
+		StringBuilder message = new StringBuilder(name + " must be in the range ");
 		appendRange(range, message);
+		message.append(String.format("\n" +
+			"Actual: %s", value));
+		return message.toString();
+	}
+
+	/**
+	 * @param name  the name of the variable whose value is out of range
+	 * @param value the value that is out of range
+	 * @param <C>   the type of value
+	 * @param range the expected range
+	 * @return an exception message indicating that the value is out of range
+	 * @throws AssertionError if name, value or range are null
+	 */
+	public static <T extends Number & Comparable<? super T>> String getExceptionMessage(String name,
+		T value, Range<T> range)
+	{
+		assert (name != null): "name may not be null";
+		assert (value != null): "value may not be null";
+		assert (range != null): "range may not be null";
+		StringBuilder message = new StringBuilder(name + " must be in the range ");
+		appendRange(range, message);
+		message.append(String.format("\n" +
+			"Actual: %,d", value.longValue()));
 		return message.toString();
 	}
 

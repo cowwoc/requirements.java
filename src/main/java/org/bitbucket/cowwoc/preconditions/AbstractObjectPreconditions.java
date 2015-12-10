@@ -22,7 +22,7 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.INSER
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
+public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	implements ObjectPreconditions<S, T>
 {
 	/**
@@ -196,7 +196,7 @@ abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<S, T>, 
 			return self;
 
 		return throwException(IllegalArgumentException.class, String.format("%s must be null.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -268,7 +268,7 @@ abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<S, T>, 
 
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.\n" +
-				"Actual  : %s", name, type, parameter.getClass()));
+				"Actual: %s", name, type, parameter.getClass()));
 	}
 
 	/**

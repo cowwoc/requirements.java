@@ -37,18 +37,56 @@ public interface CollectionPreconditions<E, T extends Collection<E>>
 	 * <p>
 	 * @param element the element that must exist
 	 * @return this
-	 * @throws IllegalArgumentException if the collection does not contain element
+	 * @throws IllegalArgumentException if the collection does not contain the element
 	 */
 	CollectionPreconditions<E, T> contains(E element) throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter contains any of multiple elements.
+	 * <p>
+	 * @param elements the elements that must exist
+	 * @return this
+	 * @throws IllegalArgumentException if the collection does not contain any of the elements
+	 */
+	CollectionPreconditions<E, T> containsAny(Collection<E> elements) throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter contains all of multiple elements.
+	 * <p>
+	 * @param elements the elements that must exist
+	 * @return this
+	 * @throws IllegalArgumentException if the collection does not contain all of the elements
+	 */
+	CollectionPreconditions<E, T> containsAll(Collection<E> elements) throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter does not contain an element.
 	 * <p>
 	 * @param element the element that must not exist
 	 * @return this
-	 * @throws IllegalArgumentException if the collection contains element
+	 * @throws IllegalArgumentException if the collection contains the element
 	 */
 	CollectionPreconditions<E, T> doesNotContain(E element) throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter does not contain any of multiple elements.
+	 * <p>
+	 * @param elements the elements that must not exist
+	 * @return this
+	 * @throws IllegalArgumentException if the collection contains any of the elements
+	 */
+	CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements)
+		throws IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter does not contain all of multiple elements.
+	 * <p>
+	 * @param elements the elements that must not exist
+	 * @return this
+	 * @throws IllegalArgumentException if the collection contains all of the elements
+	 */
+	CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements)
+		throws IllegalArgumentException;
 
 	/**
 	 * @return preconditions over Collection.size()

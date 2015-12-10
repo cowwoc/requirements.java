@@ -40,7 +40,7 @@ final class ClassPreconditionsImpl<T> extends AbstractObjectPreconditions<ClassP
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be a supertype of %s\n" +
-				"Actual  : %s", name, type, parameter.getClass()));
+				"Actual: %s", name, type, parameter.getClass()));
 	}
 
 	@Override

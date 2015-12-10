@@ -40,7 +40,7 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain key: %s.\n" +
-				"Actual  : %s", name, key, parameter));
+				"Actual: %s", name, key, parameter));
 	}
 
 	@Override
@@ -50,7 +50,7 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must not contain key: %s.\n" +
-				"Actual  : %s", name, key, parameter));
+				"Actual: %s", name, key, parameter));
 	}
 
 	@Override
@@ -60,7 +60,7 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain value: %s.\n" +
-				"Actual  : %s", name, value, parameter));
+				"Actual: %s", name, value, parameter));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must not contain value: %s.\n" +
-				"Actual  : %s", name, value, parameter));
+				"Actual: %s", name, value, parameter));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 		if (parameter.isEmpty())
 			return this;
 		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	@Override

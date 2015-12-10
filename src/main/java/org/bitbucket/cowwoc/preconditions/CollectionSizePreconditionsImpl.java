@@ -46,7 +46,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d elements. It contained %,d elements.\n" +
-				"Actual  : %s", name, value, parameter, collection));
+				"Actual: %s", name, value, parameter, collection));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual  : %s", this.name, value, name, parameter, collection));
+				"Actual: %s", this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d elements. It contained %,d elements.\n" +
-				"Actual  : %s", name, value, parameter, collection));
+				"Actual: %s", name, value, parameter, collection));
 	}
 
 	@Override
@@ -83,7 +83,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual  : %s", this.name, value, name, parameter, collection));
+				"Actual: %s", this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may contain at most %,d elements. It contained %,d elements.\n" +
-				"Actual  : %s", name, value, parameter, collection));
+				"Actual: %s", name, value, parameter, collection));
 	}
 
 	@Override
@@ -108,7 +108,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may contain at most %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual  : %s", this.name, value, name, parameter, collection));
+				"Actual: %s", this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -119,7 +119,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d elements. It contained %,d elements.\n" +
-				"Actual  : %s", name, value, parameter, collection));
+				"Actual: %s", name, value, parameter, collection));
 	}
 
 	@Override
@@ -132,7 +132,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual  : %s", this.name, value, name, parameter, collection));
+				"Actual: %s", this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -148,7 +148,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain at least one entry. It contained %,d elements.\n" +
-				"Actual  : %s", name, parameter, collection));
+				"Actual: %s", name, parameter, collection));
 	}
 
 	@Override
@@ -164,7 +164,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be empty. It contained %,d elements.\n" +
-				"Actual  : %s", name, parameter, collection));
+				"Actual: %s", name, parameter, collection));
 	}
 
 	@Override
@@ -191,7 +191,7 @@ final class CollectionSizePreconditionsImpl
 		StringBuilder message = new StringBuilder(name + " must contain ");
 		Ranges.appendRange(range, message);
 		message.append(String.format(" elements. It contained %,d elements.\n" +
-			"Actual  : %s", parameter, collection));
+			"Actual: %s", parameter, collection));
 		return throwException(IllegalArgumentException.class, message.toString());
 	}
 
@@ -203,7 +203,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain %,d elements. It contained %,d elements.\n" +
-				"Actual  : %s", name, value, parameter, collection));
+				"Actual: %s", name, value, parameter, collection));
 	}
 
 	@Override
@@ -216,7 +216,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain %,d elements (%s). It contained %,d elements.\n" +
-				"Actual  : %s", this.name, value, name, parameter, collection));
+				"Actual: %s", this.name, value, name, parameter, collection));
 	}
 
 	@Override
@@ -227,7 +227,7 @@ final class CollectionSizePreconditionsImpl
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must not contain %,d elements, but did.\n" +
-				"Actual  : %s", name, value, collection));
+				"Actual: %s", name, value, collection));
 	}
 
 	@Override

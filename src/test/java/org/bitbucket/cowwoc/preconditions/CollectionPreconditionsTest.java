@@ -71,6 +71,34 @@ public class CollectionPreconditionsTest
 	}
 
 	@Test
+	public void containsAnyTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").containsAny(ImmutableList.of("two", "four"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsAnyFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").containsAny(ImmutableList.of("four", "five"));
+	}
+
+	@Test
+	public void containsAllTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").containsAll(ImmutableList.of("two", "three"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsAllFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").containsAll(ImmutableList.of("two", "four"));
+	}
+
+	@Test
 	public void doesNotContainTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("notElement");
@@ -82,6 +110,38 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("element");
 		Preconditions.requireThat(parameter, "parameter").doesNotContain("element");
+	}
+
+	@Test
+	public void doesNotContainAnyTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainAny(
+			ImmutableList.of("four", "five", "six"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainAnyFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainAny(
+			ImmutableList.of("three", "four", "five"));
+	}
+
+	@Test
+	public void doesNotContainAllTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainAll(
+			ImmutableList.of("one", "two", "four"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainAllFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three", "four");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainAll(
+			ImmutableList.of("one", "two", "three"));
 	}
 
 	@Test

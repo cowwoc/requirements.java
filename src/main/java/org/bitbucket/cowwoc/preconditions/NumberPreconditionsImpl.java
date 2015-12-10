@@ -51,7 +51,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.longValue() < 0L)
 			return self;
 		return throwException(IllegalArgumentException.class, String.format("%s must be negative.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -61,7 +61,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not be negative.\n" +
-				"Actual  : %s", name, parameter));
+				"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.longValue() == 0L)
 			return self;
 		return throwException(IllegalArgumentException.class, String.format("%s must be zero.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 		if (parameter.longValue() > 0L)
 			return self;
 		return throwException(IllegalArgumentException.class, String.format("%s must be positive.\n" +
-			"Actual  : %s", name, parameter));
+			"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -97,7 +97,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 			return self;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not be positive.\n" +
-				"Actual  : %s", name, parameter));
+				"Actual: %s", name, parameter));
 	}
 
 	@Override

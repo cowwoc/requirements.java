@@ -37,7 +37,7 @@ final class UriPreconditionsImpl extends AbstractObjectPreconditions<UriPrecondi
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be absolute.\n" +
-				"Actual  : %s", name, parameter));
+				"Actual: %s", name, parameter));
 	}
 
 	@Override
