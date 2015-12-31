@@ -4,39 +4,39 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * An implementation of MapPreconditions that does nothing.
  * <p>
  * @author Gili Tzabari
  */
-enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
+final class NoOpMapPreconditions implements MapPreconditions<Object, Object>
 {
-	INSTANCE;
+	// Cannot be implemented as an enum because of a collision with Enum.values() method
+	@SuppressWarnings("PackageVisibleField")
+	public static NoOpMapPreconditions INSTANCE = new NoOpMapPreconditions();
 
 	@Override
-	public MapPreconditions<Object, Object> containsKey(Object key)
+	public CollectionPreconditions<Object, Set<Object>> keySet()
 	{
-		return this;
+		return new NoOpCollectionPreconditions<>();
 	}
 
 	@Override
-	public MapPreconditions<Object, Object> doesNotContainKey(Object key)
+	public CollectionPreconditions<Object, Collection<Object>> values()
 	{
-		return this;
+		return new NoOpCollectionPreconditions<>();
 	}
 
 	@Override
-	public MapPreconditions<Object, Object> containsValue(Object value)
+	public CollectionPreconditions<Entry<Object, Object>, Collection<Entry<Object, Object>>> entrySet()
 	{
-		return this;
-	}
-
-	@Override
-	public MapPreconditions<Object, Object> doesNotContainValue(Object value)
-	{
-		return this;
+		return new NoOpCollectionPreconditions<>();
 	}
 
 	@Override
@@ -103,5 +103,12 @@ enum NoOpMapPreconditions implements MapPreconditions<Object, Object>
 	public MapSizePreconditions size()
 	{
 		return NoOpMapSizePreconditions.INSTANCE;
+	}
+
+	@Override
+	public MapPreconditions<Object, Object> isolate(
+		Consumer<MapPreconditions<Object, Object>> consumer)
+	{
+		return this;
 	}
 }

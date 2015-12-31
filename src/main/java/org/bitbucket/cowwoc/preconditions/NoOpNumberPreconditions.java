@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.Range;
+import java.util.function.Consumer;
 
 /**
  * An implementation of NumberPreconditions that does nothing.
@@ -159,6 +160,12 @@ final class NoOpNumberPreconditions<S extends NumberPreconditions<S, T>, T exten
 
 	@Override
 	public S isNotNull()
+	{
+		return self;
+	}
+
+	@Override
+	public S isolate(Consumer<S> consumer)
 	{
 		return self;
 	}

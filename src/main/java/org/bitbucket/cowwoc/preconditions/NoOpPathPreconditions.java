@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.preconditions;
 
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.function.Consumer;
 
 /**
  * An implementation of PathPreconditions that does nothing.
@@ -90,6 +91,12 @@ enum NoOpPathPreconditions implements PathPreconditions
 
 	@Override
 	public PathPreconditions isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public PathPreconditions isolate(Consumer<PathPreconditions> consumer)
 	{
 		return this;
 	}

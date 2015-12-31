@@ -47,6 +47,8 @@ final class ClassPreconditionsImpl<T> extends AbstractObjectPreconditions<ClassP
 	protected ClassPreconditions<T> valueOf(Class<T> parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return this;
 		return new ClassPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 }

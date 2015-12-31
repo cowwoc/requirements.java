@@ -82,9 +82,7 @@ public final class Assertions
 	{
 		if (enabled)
 			return Preconditions.requireThat(parameter, name);
-		@SuppressWarnings("unchecked")
-		CollectionPreconditions<E, T> result
-			= (CollectionPreconditions<E, T>) NoOpCollectionPreconditions.INSTANCE;
+		CollectionPreconditions<E, T> result = new NoOpCollectionPreconditions<>();
 		return result;
 	}
 

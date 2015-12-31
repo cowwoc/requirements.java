@@ -13,8 +13,7 @@ import java.util.Optional;
  */
 final class BigDecimalScalePreconditionsImpl
 	extends PrimitiveIntegerPreconditionsImpl<BigDecimalScalePreconditions>
-	implements BigDecimalScalePreconditions,
-	PrimitiveIntegerPreconditions<BigDecimalScalePreconditions>
+	implements BigDecimalScalePreconditions
 {
 	private static String getName(String name) throws NullPointerException, IllegalArgumentException
 	{

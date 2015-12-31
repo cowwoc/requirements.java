@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.Range;
 import java.time.Year;
+import java.util.function.Consumer;
 
 /**
  * An implementation of YearPreconditions that does nothing.
@@ -114,6 +115,12 @@ enum NoOpYearPreconditions implements YearPreconditions
 
 	@Override
 	public YearPreconditions isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public YearPreconditions isolate(Consumer<YearPreconditions> consumer)
 	{
 		return this;
 	}

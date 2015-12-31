@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.function.Consumer;
+
 /**
  * An implementation of StringPreconditions that does nothing.
  * <p>
@@ -119,5 +121,11 @@ enum NoOpStringPreconditions implements StringPreconditions
 	public StringLengthPreconditions length()
 	{
 		return NoOpStringLengthPreconditions.INSTANCE;
+	}
+
+	@Override
+	public StringPreconditions isolate(Consumer<StringPreconditions> consumer)
+	{
+		return this;
 	}
 }

@@ -13,8 +13,7 @@ import java.util.Optional;
  */
 final class BigDecimalPrecisionPreconditionsImpl
 	extends PrimitiveIntegerPreconditionsImpl<BigDecimalPrecisionPreconditions>
-	implements BigDecimalPrecisionPreconditions,
-	PrimitiveIntegerPreconditions<BigDecimalPrecisionPreconditions>
+	implements BigDecimalPrecisionPreconditions
 {
 	private static String getName(String name) throws NullPointerException, IllegalArgumentException
 	{

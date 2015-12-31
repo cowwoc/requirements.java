@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.DELETE;
@@ -257,7 +258,8 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 			return self;
 
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s (%s)", this.name, value, name));
+			String.format("%s must not be equal to %s.\n" +
+				"Actual: %s", this.name, name, value));
 	}
 
 	@Override
@@ -271,6 +273,13 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.\n" +
 				"Actual: %s", name, type, parameter.getClass()));
+	}
+
+	@Override
+	public S isolate(Consumer<S> consumer)
+	{
+		consumer.accept(self);
+		return self;
 	}
 
 	/**

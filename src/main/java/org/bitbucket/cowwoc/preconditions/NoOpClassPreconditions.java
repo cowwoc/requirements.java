@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.function.Consumer;
+
 /**
  * An implementation of ClassPreconditions that does nothing.
  * <p>
@@ -63,6 +65,12 @@ enum NoOpClassPreconditions implements ClassPreconditions<Object>
 
 	@Override
 	public ClassPreconditions<Object> isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public ClassPreconditions<Object> isolate(Consumer<ClassPreconditions<Object>> consumer)
 	{
 		return this;
 	}

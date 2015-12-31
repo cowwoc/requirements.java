@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 final class MapSizePreconditionsImpl
 	extends PrimitiveIntegerPreconditionsImpl<MapSizePreconditions>
-	implements MapSizePreconditions, PrimitiveIntegerPreconditions<MapSizePreconditions>
+	implements MapSizePreconditions
 {
 	private final Map<?, ?> map;
 
@@ -58,8 +58,8 @@ final class MapSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %,d (%s) entries. It contained %,d entries.\n" +
-				"Actual: %s", this.name, value, name, parameter, map));
+			String.format("%s must contain at least %s (%,d) entries. It contained %,d entries.\n" +
+				"Actual: %s", this.name, name, value, parameter, map));
 	}
 
 	@Override
@@ -82,8 +82,8 @@ final class MapSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %,d (%s) entries. It contained %,d entries.\n" +
-				"Actual: %s", this.name, value, name, parameter, map));
+			String.format("%s must contain more than %s (%,d) entries. It contained %,d entries.\n" +
+				"Actual: %s", this.name, name, value, parameter, map));
 	}
 
 	@Override
@@ -107,8 +107,8 @@ final class MapSizePreconditionsImpl
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %,d (%s) entries. It contained %,d entries.\n" +
-				"Actual: %s", this.name, value, name, parameter, map));
+			String.format("%s may contain at most %s (%,d) entries. It contained %,d entries.\n" +
+				"Actual: %s", this.name, name, value, parameter, map));
 	}
 
 	@Override
@@ -131,8 +131,8 @@ final class MapSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %,d (%s) entries. It contained %,d entries.\n" +
-				"Actual: %s", this.name, value, name, parameter, map));
+			String.format("%s must contain less than %s (%,d) entries. It contained %,d entries.\n" +
+				"Actual: %s", this.name, name, value, parameter, map));
 	}
 
 	@Override
@@ -215,8 +215,8 @@ final class MapSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %,d entries (%s). It contained %,d entries.\n" +
-				"Actual: %s", this.name, value, name, parameter, map));
+			String.format("%s must contain %s (%,d) entries. It contained %,d entries.\n" +
+				"Actual: %s", this.name, name, value, parameter, map));
 	}
 
 	@Override
@@ -239,7 +239,7 @@ final class MapSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %,d entries (%s), but did.\n" +
-				"Actual: %s", this.name, value, name, map));
+			String.format("%s must not contain %s (%,d) entries, but did.\n" +
+				"Actual: %s", this.name, name, value, map));
 	}
 }

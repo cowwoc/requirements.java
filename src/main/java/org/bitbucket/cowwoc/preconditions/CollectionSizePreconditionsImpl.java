@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 final class CollectionSizePreconditionsImpl
 	extends PrimitiveIntegerPreconditionsImpl<CollectionSizePreconditions>
-	implements CollectionSizePreconditions, PrimitiveIntegerPreconditions<CollectionSizePreconditions>
+	implements CollectionSizePreconditions
 {
 	private final Collection<?> collection;
 
@@ -58,8 +58,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, value, name, parameter, collection));
+			String.format("%s must contain at least %s (%,d) elements. It contained %,d elements.\n" +
+				"Actual: %s", this.name, name, value, parameter, collection));
 	}
 
 	@Override
@@ -82,8 +82,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, value, name, parameter, collection));
+			String.format("%s must contain more than %s (%,d) elements. It contained %,d elements.\n" +
+				"Actual: %s", this.name, name, value, parameter, collection));
 	}
 
 	@Override
@@ -215,8 +215,8 @@ final class CollectionSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %,d elements (%s). It contained %,d elements.\n" +
-				"Actual: %s", this.name, value, name, parameter, collection));
+			String.format("%s must contain %s (%,d) elements. It contained %,d elements.\n" +
+				"Actual: %s", this.name, name, value, parameter, collection));
 	}
 
 	@Override
@@ -239,7 +239,7 @@ final class CollectionSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %,d elements (%s), but did. It contained %s", this.name,
-				value, name, collection));
+			String.format("%s must not contain %s (%,d) elements, but did. It contained %s", this.name,
+				name, value, collection));
 	}
 }

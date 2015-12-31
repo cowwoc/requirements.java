@@ -5,153 +5,146 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * An implementation of CollectionPreconditions that does nothing.
  * <p>
+ * @param <E> the type of element in the collection
+ * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Collection<Object>>
+final class NoOpCollectionPreconditions<E, T extends Collection<E>>
+	implements CollectionPreconditions<E, T>
 {
-	INSTANCE;
-
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isEmpty()
+	public CollectionPreconditions<E, T> isEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isNotEmpty()
+	public CollectionPreconditions<E, T> isNotEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpCollectionPreconditions usingException(Class<? extends RuntimeException> exception)
+	public CollectionPreconditions<E, T> usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isEqualTo(Collection<Object> value)
+	public CollectionPreconditions<E, T> isEqualTo(T value)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isEqualTo(Collection<Object> value,
-		String name)
+	public CollectionPreconditions<E, T> isEqualTo(T value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isNotEqualTo(Collection<Object> value)
+	public CollectionPreconditions<E, T> isNotEqualTo(T value)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isNotEqualTo(Collection<Object> value,
-		String name)
+	public CollectionPreconditions<E, T> isNotEqualTo(T value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isInstanceOf(Class<?> type)
+	public CollectionPreconditions<E, T> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isNull()
+	public CollectionPreconditions<E, T> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> isNotNull()
+	public CollectionPreconditions<E, T> isNotNull()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> contains(Object element)
+	public CollectionPreconditions<E, T> contains(Object element)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> contains(Object element, String name)
+	public CollectionPreconditions<E, T> contains(Object element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> containsAny(Collection<Object> elements)
+	public CollectionPreconditions<E, T> containsAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> containsAny(Collection<Object> elements,
-		String name)
+	public CollectionPreconditions<E, T> containsAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> containsAll(Collection<Object> elements)
+	public CollectionPreconditions<E, T> containsAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> containsAll(Collection<Object> elements,
-		String name)
+	public CollectionPreconditions<E, T> containsAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> doesNotContain(Object element)
+	public CollectionPreconditions<E, T> doesNotContain(E element)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> doesNotContain(Object element,
-		String name)
+	public CollectionPreconditions<E, T> doesNotContain(E element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> doesNotContainAny(
-		Collection<Object> elements)
+	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> doesNotContainAny(
-		Collection<Object> elements, String name)
+	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> doesNotContainAll(
-		Collection<Object> elements)
+	public CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionPreconditions<Object, Collection<Object>> doesNotContainAll(
-		Collection<Object> elements, String name)
+	public CollectionPreconditions<E, T> doesNotContainAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
@@ -160,5 +153,11 @@ enum NoOpCollectionPreconditions implements CollectionPreconditions<Object, Coll
 	public CollectionSizePreconditions size()
 	{
 		return NoOpCollectionSizePreconditions.INSTANCE;
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> isolate(Consumer<CollectionPreconditions<E, T>> consumer)
+	{
+		return this;
 	}
 }

@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.Map;
 import org.testng.annotations.Test;
@@ -59,56 +60,88 @@ public class MapPreconditionsTest
 	public void containsKeyTrue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
-		Preconditions.requireThat(parameter, "parameter").containsKey("key");
+		Preconditions.requireThat(parameter, "parameter").keySet().contains("key");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void containsKeyFalse()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-		Preconditions.requireThat(parameter, "parameter").containsKey("key");
+		Preconditions.requireThat(parameter, "parameter").keySet().contains("key");
 	}
 
 	@Test
 	public void doesNotContainKeyTrue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
-		Preconditions.requireThat(parameter, "parameter").doesNotContainKey("notKey");
+		Preconditions.requireThat(parameter, "parameter").keySet().doesNotContain("notKey");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void doesNotContainKeyFalse()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-		Preconditions.requireThat(parameter, "parameter").doesNotContainKey("notKey");
+		Preconditions.requireThat(parameter, "parameter").keySet().doesNotContain("notKey");
 	}
 
 	@Test
 	public void containsValueTrue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
-		Preconditions.requireThat(parameter, "parameter").containsValue("value");
+		Preconditions.requireThat(parameter, "parameter").values().contains("value");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void containsValueFalse()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
-		Preconditions.requireThat(parameter, "parameter").containsValue("value");
+		Preconditions.requireThat(parameter, "parameter").values().contains("value");
 	}
 
 	@Test
 	public void doesNotContainValueTrue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
-		Preconditions.requireThat(parameter, "parameter").doesNotContainValue("notValue");
+		Preconditions.requireThat(parameter, "parameter").values().doesNotContain("notValue");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void doesNotContainValueFalse()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
-		Preconditions.requireThat(parameter, "parameter").doesNotContainValue("notValue");
+		Preconditions.requireThat(parameter, "parameter").values().doesNotContain("notValue");
+	}
+
+	@Test
+	public void containsEntryTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").entrySet().contains(new SimpleEntry<>("key",
+			"value"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsEntryFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
+		Preconditions.requireThat(parameter, "parameter").entrySet().contains(new SimpleEntry<>("key",
+			"value"));
+	}
+
+	@Test
+	public void doesNotContainEntryTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").entrySet().doesNotContain(
+			new SimpleEntry<>("notKey", "value"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainEntryFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
+		Preconditions.requireThat(parameter, "parameter").entrySet().doesNotContain(
+			new SimpleEntry<>("notKey", "value"));
 	}
 
 	@Test
@@ -145,5 +178,23 @@ public class MapPreconditionsTest
 		// Ensure that no exception is thrown if assertions are disabled
 		Map<?, ?> parameter = null;
 		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
+
+	@Test
+	public void isolateTrue()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").
+			isolate(p -> p.keySet().contains("key")).
+			isolate(p -> p.values().contains("value"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isolateFalse()
+	{
+		Map<String, String> parameter = Collections.singletonMap("key", "value");
+		Preconditions.requireThat(parameter, "parameter").
+			isolate(p -> p.keySet().contains("notTheKey")).
+			isolate(p -> p.values().contains("value"));
 	}
 }

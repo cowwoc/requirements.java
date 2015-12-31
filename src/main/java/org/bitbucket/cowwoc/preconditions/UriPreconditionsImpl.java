@@ -44,6 +44,8 @@ final class UriPreconditionsImpl extends AbstractObjectPreconditions<UriPrecondi
 	protected UriPreconditions valueOf(URI parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return this;
 		return new UriPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

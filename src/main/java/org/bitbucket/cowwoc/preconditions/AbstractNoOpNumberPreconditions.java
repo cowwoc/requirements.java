@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import com.google.common.collect.Range;
+import java.util.function.Consumer;
 
 /**
  * An implementation of NumberPreconditions that does nothing.
@@ -14,164 +15,155 @@ import com.google.common.collect.Range;
 abstract class AbstractNoOpNumberPreconditions<S extends NumberPreconditions<S, T>, T extends Number & Comparable<? super T>>
 	implements NumberPreconditions<S, T>
 {
-	@Override
+	private final S self;
+
 	@SuppressWarnings("unchecked")
+	AbstractNoOpNumberPreconditions()
+	{
+		this.self = (S) this;
+	}
+
+	@Override
 	public S isGreaterThan(T value, String name)
 	{
-		return (S) this;
+		return self;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public S isGreaterThan(T value)
 	{
-		return (S) this;
+		return self;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public S isGreaterThanOrEqualTo(T value, String name)
 	{
-		return (S) this;
+		return self;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public S isGreaterThanOrEqualTo(T value)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isIn(Range<T> range)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThan(T value, String name)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThan(T value)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThanOrEqualTo(T value, String name)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isLessThanOrEqualTo(T value)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNegative()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotNegative()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotPositive()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotZero()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isPositive()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isZero()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S usingException(Class<? extends RuntimeException> exception)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isEqualTo(T value)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isEqualTo(T value, String name)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotEqualTo(T value)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotEqualTo(T value, String name)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNull()
 	{
-		return (S) this;
+		return self;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public S isNotNull()
 	{
-		return (S) this;
+		return self;
+	}
+
+	@Override
+	public S isolate(Consumer<S> consumer)
+	{
+		return self;
 	}
 }

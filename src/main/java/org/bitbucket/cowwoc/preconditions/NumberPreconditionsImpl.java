@@ -203,6 +203,8 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	protected S valueOf(T parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return self;
 		@SuppressWarnings("unchecked")
 		S result = (S) new NumberPreconditionsImpl<>(parameter, name, exceptionOverride);
 		return result;

@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.function.Consumer;
+
 /**
  * Interface needed for Preconditions.assertThat().
  * <p>
@@ -88,4 +90,23 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	 * @throws NullPointerException if parameter is null
 	 */
 	S isNotNull() throws NullPointerException;
+
+	/**
+	 * Verifies preconditions without modifying the current instance. This can be used to combine
+	 * preconditions that operate on nested elements:
+	 * <pre><code>
+	 * Map&lt;String, Integer&gt; employeesToAge = ...;
+	 * Preconditions.requireThat(employeesToAge, "employeesToAge").keySet().contains("Homer Simpson");
+	 * Preconditions.requireThat(employeesToAge, "employeesToAge").values().doesNotContain(65, "retirement age");
+	 *
+	 * // Can be rewritten as:
+	 * Preconditions.requireThat(employeesToAge, "employeesToAge").
+	 *   isolate(p -> p.keySet().contains("Homer Simpson")).
+	 *   isolate(p -> p.values().doesNotContain(65, "retirement age"));
+	 * </code></pre>
+	 *
+	 * @param consumer the code to execute in isolation
+	 * @return this
+	 */
+	S isolate(Consumer<S> consumer);
 }

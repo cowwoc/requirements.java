@@ -37,6 +37,8 @@ final class ObjectPreconditionsImpl<S extends ObjectPreconditions<S, T>, T>
 	protected S valueOf(T parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return self;
 		@SuppressWarnings("unchecked")
 		S result = (S) new ObjectPreconditionsImpl<>(parameter, name, exceptionOverride);
 		return result;

@@ -49,7 +49,9 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) < 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %s (%d)", this.name, parameter, name, value));
+			String.format("%s must be less than %s.\n" +
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, value, parameter));
 	}
 
 	@Override
@@ -58,7 +60,8 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) < 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %d", name, parameter, value));
+			String.format("%s must be less than %s.\n" +
+				"Actual: %s", name, value, parameter));
 	}
 
 	@Override
@@ -68,8 +71,9 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) <= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than or equal to %s (%d)", this.name, parameter, name,
-				value));
+			String.format("%s must be less than or equal to %s.\n" +
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, value, parameter));
 	}
 
 	@Override
@@ -79,7 +83,8 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) <= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than or equal to %d", name, parameter, value));
+			String.format("%s must be less than or equal to %s.\n" +
+				"Actual: %s", name, value, parameter));
 	}
 
 	@Override
@@ -89,7 +94,9 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than %s (%d)", this.name, parameter, name, value));
+			String.format("%s must be greater than %s.\n" +
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, value, parameter));
 	}
 
 	@Override
@@ -99,7 +106,8 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %d", name, parameter, value));
+			String.format("%s must be less than %s.\n" +
+				"Actual: %s", name, value, parameter));
 	}
 
 	@Override
@@ -109,8 +117,9 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) >= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than or equal to %s (%d)", this.name, parameter, name,
-				value));
+			String.format("%s must be greater than or equal to %s.\n" +
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, value, parameter));
 	}
 
 	@Override
@@ -120,13 +129,16 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 		if (parameter.compareTo(value) >= 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than or equal to %d", name, parameter, value));
+			String.format("%s must be greater than or equal to %s.\n" +
+				"Actual: %s", name, value, parameter));
 	}
 
 	@Override
 	protected YearPreconditions valueOf(Year parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return this;
 		return new YearPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import java.net.URI;
+import java.util.function.Consumer;
 
 /**
  * An implementation of UriPreconditions that does nothing.
@@ -65,6 +66,12 @@ enum NoOpUriPreconditions implements UriPreconditions
 
 	@Override
 	public UriPreconditions isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public UriPreconditions isolate(Consumer<UriPreconditions> consumer)
 	{
 		return this;
 	}

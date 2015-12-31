@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.preconditions;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * An implementation of OptionalPreconditions that does nothing.
@@ -71,6 +72,12 @@ enum NoOpOptionalPreconditions implements OptionalPreconditions
 
 	@Override
 	public OptionalPreconditions isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public OptionalPreconditions isolate(Consumer<OptionalPreconditions> consumer)
 	{
 		return this;
 	}

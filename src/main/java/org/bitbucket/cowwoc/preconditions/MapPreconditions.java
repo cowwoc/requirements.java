@@ -4,7 +4,10 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Verifies preconditions of a {@link Map} parameter.
@@ -17,40 +20,19 @@ public interface MapPreconditions<K, V> extends
 	ObjectPreconditions<MapPreconditions<K, V>, Map<K, V>>
 {
 	/**
-	 * Ensures that the parameter contains a key.
-	 * <p>
-	 * @param key the key that must exist
-	 * @return this
-	 * @throws IllegalArgumentException if the map does not contain key
+	 * @return preconditions over {@link Map#keySet()}
 	 */
-	MapPreconditions<K, V> containsKey(K key) throws IllegalArgumentException;
+	CollectionPreconditions<K, Set<K>> keySet();
 
 	/**
-	 * Ensures that the parameter does not contain a key.
-	 * <p>
-	 * @param key the key that must not exist
-	 * @return this
-	 * @throws IllegalArgumentException if the map contains {@code key}
+	 * @return preconditions over {@link Map#values()}
 	 */
-	MapPreconditions<K, V> doesNotContainKey(K key) throws IllegalArgumentException;
+	CollectionPreconditions<V, Collection<V>> values();
 
 	/**
-	 * Ensures that the parameter contains a value.
-	 * <p>
-	 * @param value the value that must exist
-	 * @return this
-	 * @throws IllegalArgumentException if the map does not contain value
+	 * @return preconditions over {@link Map#entrySet()}
 	 */
-	MapPreconditions<K, V> containsValue(V value) throws IllegalArgumentException;
-
-	/**
-	 * Ensures that the parameter does not contain a value.
-	 * <p>
-	 * @param value the value that must not exist
-	 * @return this
-	 * @throws IllegalArgumentException if the map contains {@code value}
-	 */
-	MapPreconditions<K, V> doesNotContainValue(V value) throws IllegalArgumentException;
+	CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> entrySet();
 
 	/**
 	 * Ensures that the parameter is empty.
@@ -69,7 +51,7 @@ public interface MapPreconditions<K, V> extends
 	MapPreconditions<K, V> isNotEmpty() throws IllegalArgumentException;
 
 	/**
-	 * @return preconditions over Map.size()
+	 * @return preconditions over {@link Map#size()}
 	 */
 	MapSizePreconditions size();
 }

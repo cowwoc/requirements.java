@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Default implementation of MapPreconditions.
@@ -34,46 +36,25 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 	}
 
 	@Override
-	public MapPreconditions<K, V> containsKey(K key) throws IllegalArgumentException
+	public CollectionPreconditions<K, Set<K>> keySet()
 	{
-		if (parameter.containsKey(key))
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain key: %s.\n" +
-				"Actual: %s", name, key, parameter));
+		return new MapKeySetPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 
 	@Override
-	public MapPreconditions<K, V> doesNotContainKey(K key) throws IllegalArgumentException
+	public CollectionPreconditions<V, Collection<V>> values()
 	{
-		if (!parameter.containsKey(key))
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain key: %s.\n" +
-				"Actual: %s", name, key, parameter));
+		return new MapValuesPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 
 	@Override
-	public MapPreconditions<K, V> containsValue(V value) throws IllegalArgumentException
+	public CollectionPreconditions<Map.Entry<K, V>, Collection<Map.Entry<K, V>>> entrySet()
 	{
-		if (parameter.containsValue(value))
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain value: %s.\n" +
-				"Actual: %s", name, value, parameter));
+		return new MapEntrySetPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 
 	@Override
-	public MapPreconditions<K, V> doesNotContainValue(V value) throws IllegalArgumentException
-	{
-		if (!parameter.containsValue(value))
-			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain value: %s.\n" +
-				"Actual: %s", name, value, parameter));
-	}
 
-	@Override
 	public MapPreconditions<K, V> isEmpty() throws IllegalArgumentException
 	{
 		if (parameter.isEmpty())
@@ -100,6 +81,8 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 	protected MapPreconditions<K, V> valueOf(Map<K, V> parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return this;
 		return new MapPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
 }

@@ -52,6 +52,8 @@ final class OptionalPreconditionsImpl extends AbstractObjectPreconditions<Option
 	protected OptionalPreconditions valueOf(Optional<?> parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return this;
 		return new OptionalPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }

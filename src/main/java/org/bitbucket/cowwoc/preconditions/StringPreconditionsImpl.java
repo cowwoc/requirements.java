@@ -69,12 +69,15 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 	/**
 	 * Trims whitespace at the beginning and end of the parameter.
 	 * <p>
-	 * @return this
+	 * @return a StringPreconditions with {@code parameter} trimmed
 	 */
 	@Override
 	public StringPreconditions trim()
 	{
-		return new StringPreconditionsImpl(parameter.trim(), name, exceptionOverride);
+		String trimmed = parameter.trim();
+		if (trimmed.equals(parameter))
+			return this;
+		return new StringPreconditionsImpl(trimmed, name, exceptionOverride);
 	}
 
 	/**
@@ -198,6 +201,8 @@ final class StringPreconditionsImpl extends AbstractObjectPreconditions<StringPr
 	protected StringPreconditions valueOf(String parameter, String name,
 		Optional<Class<? extends RuntimeException>> exceptionOverride)
 	{
+		if (exceptionOverride.equals(this.exceptionOverride))
+			return this;
 		return new StringPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 }
