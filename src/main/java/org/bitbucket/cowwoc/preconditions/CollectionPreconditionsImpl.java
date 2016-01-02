@@ -42,8 +42,9 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	{
 		if (parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual: %s", name, parameter));
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must be empty.\n" +
+				"Actual: %s", name, parameter));
 	}
 
 	@Override
@@ -73,7 +74,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain: %s\n" +
+			String.format("%s must contain %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", this.name, name, parameter, element));
 	}
@@ -86,7 +87,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (parameterContainsAny(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain any of: %s\n" +
+			String.format("%s must contain any element in: %s\n" +
 				"Actual: %s", name, elements, parameter));
 	}
 
@@ -111,9 +112,9 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (parameterContainsAny(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain any of: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, parameter, elements));
+			String.format("%s must contain any element in %s\n" +
+				"Elements: %s\n" +
+				"Actual  : %s", this.name, name, elements, parameter));
 	}
 
 	@Override
@@ -125,7 +126,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		Set<E> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain all of: %s\n" +
+			String.format("%s must contain all elements in: %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", name, elements, parameter, missing));
 	}
@@ -155,8 +156,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		Set<E> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain all of: %s\n" +
-				"Wanted  : %s\n" +
+			String.format("%s must contain all elements in %s\n" +
+				"Elements: %s\n" +
 				"Actual  : %s\n" +
 				"Missing : %s", this.name, name, elements, parameter, missing));
 	}
@@ -179,9 +180,9 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (!parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain: %s\n" +
-				"Actual  : %s\n",
-				"Unwanted: %s", this.name, name, parameter, element));
+			String.format("%s may not contain %s\n" +
+				"Element: %s\n",
+				"Actual : %s", this.name, name, element, parameter));
 	}
 
 	@Override
@@ -193,7 +194,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		Set<E> unwanted = parameterIntersectWith(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain any of: %s\n" +
+			String.format("%s may not contain any element in: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", name, elements, parameter, unwanted));
 	}
@@ -224,10 +225,10 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		Set<E> unwanted = parameterIntersectWith(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain any of: %s\n" +
-				"Unwanted    : %s\n" +
-				"Actual      : %s\n" +
-				"Intersection: %s", this.name, name, elements, parameter, unwanted));
+			String.format("%s may not contain any element in %s\n" +
+				"Elements: %s\n" +
+				"Actual  : %s\n" +
+				"Unwanted: %s", this.name, name, elements, parameter, unwanted));
 	}
 
 	@Override
@@ -251,9 +252,9 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		if (!parameter.containsAll(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain all of: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, parameter, elements));
+			String.format("%s may not contain all elements in %s\n" +
+				"Elements: %s\n" +
+				"Actual  : %s", this.name, name, elements, parameter));
 	}
 
 	@Override

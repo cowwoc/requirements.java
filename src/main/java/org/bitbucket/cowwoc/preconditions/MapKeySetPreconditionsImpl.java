@@ -34,8 +34,8 @@ final class MapKeySetPreconditionsImpl<K, V>
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	MapKeySetPreconditionsImpl(Map<K, V> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride) throws NullPointerException,
-		IllegalArgumentException
+		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter.keySet(), name, exceptionOverride);
 		this.map = parameter;
@@ -47,8 +47,9 @@ final class MapKeySetPreconditionsImpl<K, V>
 	{
 		if (parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual: %s", name, map));
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must be empty.\n" +
+				"Actual: %s", name, map));
 	}
 
 	@Override
@@ -62,14 +63,14 @@ final class MapKeySetPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<K, Set<K>> contains(K element) throws
-		IllegalArgumentException
+	public CollectionPreconditions<K, Set<K>> contains(K element)
+		throws IllegalArgumentException
 	{
 		if (parameter.contains(element))
 			return this;
-		return throwException(IllegalArgumentException.class, String.format(
-			"%s must contain key: %s\n" +
-			"Actual: %s", name, element, map));
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must contain: %s\n" +
+				"Actual: %s", name, element, map));
 	}
 
 	@Override
@@ -80,7 +81,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 		if (parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain key: %s\n" +
+			String.format("%s must contain %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", this.name, name, map, element));
 	}
@@ -93,7 +94,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 		if (parameterContainsAny(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain any of the following keys: %s\n" +
+			String.format("%s must contain any key in: %s\n" +
 				"Actual: %s", name, elements, map));
 	}
 
@@ -119,9 +120,9 @@ final class MapKeySetPreconditionsImpl<K, V>
 		if (parameterContainsAny(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain any of the following keys: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, map, elements));
+			String.format("%s must contain any key in %s\n" +
+				"Keys  : %s\n" +
+				"Actual: %s", this.name, name, elements, map));
 	}
 
 	@Override
@@ -133,7 +134,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 			return this;
 		Set<K> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain key: %s\n" +
+			String.format("%s must contain all keys in: %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", name, elements, map, missing));
 	}
@@ -164,8 +165,8 @@ final class MapKeySetPreconditionsImpl<K, V>
 			return this;
 		Set<K> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain key: %s\n" +
-				"Key    : %s\n" +
+			String.format("%s must contain all keys in %s\n" +
+				"Keys   : %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", this.name, name, elements, map, missing));
 	}
@@ -176,9 +177,9 @@ final class MapKeySetPreconditionsImpl<K, V>
 	{
 		if (!parameter.contains(element))
 			return this;
-		return throwException(IllegalArgumentException.class, String.format(
-			"%s may not contain key: %s\n" +
-			"Actual: %s", name, element, map));
+		return throwException(IllegalArgumentException.class,
+			String.format("%s may not contain: %s\n" +
+				"Actual: %s", name, element, map));
 	}
 
 	@Override
@@ -188,10 +189,10 @@ final class MapKeySetPreconditionsImpl<K, V>
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.contains(element))
 			return this;
-		return throwException(IllegalArgumentException.class, String.format(
-			"%s may not contain key: %s\n" +
-			"Key   : %s\n",
-			"Actual: %s", this.name, name, element, map));
+		return throwException(IllegalArgumentException.class,
+			String.format("%s may not contain %s\n" +
+				"Key   : %s\n",
+				"Actual: %s", this.name, name, element, map));
 	}
 
 	@Override
@@ -204,7 +205,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 			return this;
 		Set<K> unwanted = parameterIntersectWith(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain any of the following keys: %s\n" +
+			String.format("%s may not contain any key in: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", name, elements, map, unwanted));
 	}
@@ -235,7 +236,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 			return this;
 		Set<K> unwanted = parameterIntersectWith(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain any of the following keys: %s\n" +
+			String.format("%s may not contain any key in %s\n" +
 				"Keys    : %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", this.name, name, elements, map, unwanted));
@@ -250,7 +251,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 		if (!parameter.containsAll(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain key: %s\n" +
+			String.format("%s may not contain all keys in: %s\n" +
 				"Actual: %s", name, elements, map));
 	}
 
@@ -264,9 +265,9 @@ final class MapKeySetPreconditionsImpl<K, V>
 		if (!parameter.containsAll(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain key: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, map, elements));
+			String.format("%s may not contain all keys in %s\n" +
+				"Keys  : %s\n" +
+				"Actual: %s", this.name, name, elements, map));
 	}
 
 	@Override

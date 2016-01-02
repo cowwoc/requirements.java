@@ -47,8 +47,9 @@ final class MapValuesPreconditionsImpl<K, V>
 	{
 		if (parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual: %s", name, map));
+		return throwException(IllegalArgumentException.class,
+			String.format("%s must be empty.\n" +
+				"Actual: %s", name, map));
 	}
 
 	@Override
@@ -62,13 +63,13 @@ final class MapValuesPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<V, Collection<V>> contains(V element) throws
-		IllegalArgumentException
+	public CollectionPreconditions<V, Collection<V>> contains(V element)
+		throws IllegalArgumentException
 	{
 		if (parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain value: %s\n" +
+			String.format("%s must contain: %s\n" +
 				"Actual: %s", name, element, map));
 	}
 
@@ -80,7 +81,7 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain value: %s\n" +
+			String.format("%s must contain %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", this.name, name, map, element));
 	}
@@ -93,7 +94,7 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (parameterContainsAny(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain any of the following values: %s\n" +
+			String.format("%s must contain any value in: %s\n" +
 				"Actual: %s", name, elements, map));
 	}
 
@@ -119,9 +120,9 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (parameterContainsAny(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain any of the following values: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, map, elements));
+			String.format("%s must contain any value in %s\n" +
+				"Values: %s\n" +
+				"Actual: %s", this.name, name, elements, map));
 	}
 
 	@Override
@@ -133,7 +134,7 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		Set<V> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain value: %s\n" +
+			String.format("%s must contain all values in: %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", name, elements, map, missing));
 	}
@@ -164,8 +165,8 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		Set<V> missing = elementsMinusParameter(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain value: %s\n" +
-				"Value  : %s\n" +
+			String.format("%s must contain all values in %s\n" +
+				"Values : %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", this.name, name, elements, map, missing));
 	}
@@ -177,7 +178,7 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (!parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain value: %s\n" +
+			String.format("%s may not contain: %s\n" +
 				"Actual: %s", name, element, map));
 	}
 
@@ -189,8 +190,8 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (!parameter.contains(element))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain value: %s\n" +
-				"Value : %s",
+			String.format("%s may not contain %s\n" +
+				"Value : %s\n",
 				"Actual: %s", this.name, name, element, map));
 	}
 
@@ -204,7 +205,7 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		Set<V> unwanted = parameterIntersectWith(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain any of the following values: %s\n" +
+			String.format("%s may not contain any value in: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", name, elements, map, unwanted));
 	}
@@ -235,7 +236,7 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		Set<V> unwanted = parameterIntersectWith(elements);
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain any of the following values: %s\n" +
+			String.format("%s may not contain any value in %s\n" +
 				"Values  : %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", this.name, name, elements, map, unwanted));
@@ -250,7 +251,7 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (!parameter.containsAll(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain value: %s\n" +
+			String.format("%s may not contain all values in: %s\n" +
 				"Actual: %s", name, elements, map));
 	}
 
@@ -264,9 +265,9 @@ final class MapValuesPreconditionsImpl<K, V>
 		if (!parameter.containsAll(elements))
 			return this;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may not contain value: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, map, elements));
+			String.format("%s may not contain all values in %s\n" +
+				"Values: %s\n" +
+				"Actual: %s", this.name, name, elements, map));
 	}
 
 	@Override
