@@ -173,6 +173,15 @@ public interface CollectionPreconditions<E, T extends Collection<E>>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
+	 * Ensures that the parameter does not contain any duplicate elements.
+	 * <p>
+	 * @return this
+	 * @throws IllegalArgumentException if the collection contains any duplicate elements
+	 */
+	CollectionPreconditions<E, T> doesNotContainDuplicates()
+		throws IllegalArgumentException;
+
+	/**
 	 * @return preconditions over Collection.size()
 	 */
 	CollectionSizePreconditions size();

@@ -182,8 +182,8 @@ final class StringLengthPreconditionsImpl
 	}
 
 	@Override
-	public StringLengthPreconditions isIn(Range<Integer> range) throws NullPointerException,
-		IllegalArgumentException
+	public StringLengthPreconditions isIn(Range<Integer> range)
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))

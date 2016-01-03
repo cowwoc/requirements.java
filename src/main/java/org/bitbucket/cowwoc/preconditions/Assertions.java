@@ -77,8 +77,7 @@ public final class Assertions
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	public <E, T extends Collection<E>> CollectionPreconditions<E, T> requireThat(T parameter,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
 			return Preconditions.requireThat(parameter, name);

@@ -43,8 +43,7 @@ public interface PathPreconditions extends ObjectPreconditions<PathPreconditions
 	 * @throws IllegalArgumentException if parameter refers to a non-existent or a non-directory path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */
-	PathPreconditions isDirectory(LinkOption... options)
-		throws IllegalArgumentException, IOException;
+	PathPreconditions isDirectory(LinkOption... options) throws IllegalArgumentException, IOException;
 
 	/**
 	 * Ensures that a path refers to a regular file.

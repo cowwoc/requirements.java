@@ -31,8 +31,7 @@ final class OptionalPreconditionsImpl extends AbstractObjectPreconditions<Option
 	}
 
 	@Override
-	public OptionalPreconditions isPresent()
-		throws IllegalArgumentException
+	public OptionalPreconditions isPresent() throws IllegalArgumentException
 	{
 		if (parameter.isPresent())
 			return this;
@@ -40,8 +39,7 @@ final class OptionalPreconditionsImpl extends AbstractObjectPreconditions<Option
 	}
 
 	@Override
-	public OptionalPreconditions isEmpty()
-		throws IllegalArgumentException
+	public OptionalPreconditions isEmpty() throws IllegalArgumentException
 	{
 		if (!parameter.isPresent())
 			return this;

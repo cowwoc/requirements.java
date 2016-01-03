@@ -35,8 +35,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isIn(Range<T> range)
-		throws NullPointerException, IllegalArgumentException
+	public S isIn(Range<T> range) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
@@ -124,8 +123,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(T value, String name)
-		throws IllegalArgumentException
+	public S isLessThanOrEqualTo(T value, String name) throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -137,8 +135,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(T value)
-		throws IllegalArgumentException
+	public S isLessThanOrEqualTo(T value) throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) <= 0)
@@ -149,8 +146,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isGreaterThan(T value, String name)
-		throws IllegalArgumentException
+	public S isGreaterThan(T value, String name) throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -163,8 +159,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isGreaterThan(T value)
-		throws IllegalArgumentException
+	public S isGreaterThan(T value) throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) > 0)
@@ -175,8 +170,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(T value, String name)
-		throws IllegalArgumentException
+	public S isGreaterThanOrEqualTo(T value, String name) throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -188,8 +182,7 @@ class NumberPreconditionsImpl<S extends NumberPreconditions<S, T>, T extends Num
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(T value)
-		throws IllegalArgumentException
+	public S isGreaterThanOrEqualTo(T value) throws IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter.compareTo(value) >= 0)

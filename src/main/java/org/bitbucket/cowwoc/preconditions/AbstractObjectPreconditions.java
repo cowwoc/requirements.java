@@ -174,8 +174,7 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	 * @throws RuntimeException the exception
 	 */
 	protected <E extends RuntimeException> S throwException(Class<E> exception, String message,
-		Throwable cause)
-		throws RuntimeException
+		Throwable cause) throws RuntimeException
 	{
 		try
 		{
@@ -263,8 +262,7 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	}
 
 	@Override
-	public S isInstanceOf(Class<?> type)
-		throws NullPointerException, IllegalArgumentException
+	public S isInstanceOf(Class<?> type) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(type, "type").isNotNull();
 		if (type.isInstance(parameter))

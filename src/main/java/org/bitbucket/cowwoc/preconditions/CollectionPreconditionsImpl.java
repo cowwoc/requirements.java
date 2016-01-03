@@ -216,8 +216,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 
 	@Override
 	public CollectionPreconditions<E, T> doesNotContainAny(Collection<E> elements,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -255,6 +254,27 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			String.format("%s may not contain all elements in %s\n" +
 				"Elements: %s\n" +
 				"Actual  : %s", this.name, name, elements, parameter));
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> doesNotContainDuplicates() throws IllegalArgumentException
+	{
+		if (parameter instanceof Set)
+			return this;
+		int size = parameter.size();
+		Set<E> unique = new HashSet<>(size);
+		Set<E> duplicates = new HashSet<>(size);
+		for (E element: parameter)
+		{
+			if (!unique.add(element))
+				duplicates.add(element);
+		}
+		if (duplicates.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s may not contain duplicate elements\n" +
+				"Actual: %s\n" +
+				"Duplicates: %s", name, parameter, duplicates));
 	}
 
 	@Override

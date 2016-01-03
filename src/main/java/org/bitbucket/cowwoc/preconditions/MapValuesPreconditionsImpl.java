@@ -42,8 +42,7 @@ final class MapValuesPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<V, Collection<V>> isEmpty()
-		throws IllegalArgumentException
+	public CollectionPreconditions<V, Collection<V>> isEmpty() throws IllegalArgumentException
 	{
 		if (parameter.isEmpty())
 			return this;
@@ -53,8 +52,7 @@ final class MapValuesPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<V, Collection<V>> isNotEmpty()
-		throws IllegalArgumentException
+	public CollectionPreconditions<V, Collection<V>> isNotEmpty() throws IllegalArgumentException
 	{
 		if (!parameter.isEmpty())
 			return this;
@@ -112,8 +110,7 @@ final class MapValuesPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<V, Collection<V>> containsAny(Collection<V> elements,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -156,8 +153,7 @@ final class MapValuesPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<V, Collection<V>> containsAll(Collection<V> elements,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -197,8 +193,7 @@ final class MapValuesPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<V, Collection<V>> doesNotContainAny(
-		Collection<V> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<V> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameterContainsAny(elements))
@@ -227,8 +222,7 @@ final class MapValuesPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<V, Collection<V>> doesNotContainAny(
-		Collection<V> elements, String name)
-		throws NullPointerException, IllegalArgumentException
+		Collection<V> elements, String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -244,8 +238,7 @@ final class MapValuesPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<V, Collection<V>> doesNotContainAll(
-		Collection<V> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<V> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
@@ -257,8 +250,7 @@ final class MapValuesPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<V, Collection<V>> doesNotContainAll(
-		Collection<V> elements, String name)
-		throws NullPointerException, IllegalArgumentException
+		Collection<V> elements, String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -268,6 +260,28 @@ final class MapValuesPreconditionsImpl<K, V>
 			String.format("%s may not contain all values in %s\n" +
 				"Values: %s\n" +
 				"Actual: %s", this.name, name, elements, map));
+	}
+
+	@Override
+	public CollectionPreconditions<V, Collection<V>> doesNotContainDuplicates()
+		throws IllegalArgumentException
+	{
+		if (parameter instanceof Set)
+			return this;
+		int size = parameter.size();
+		Set<V> unique = new HashSet<>(size);
+		Set<V> duplicates = new HashSet<>(size);
+		for (V value: parameter)
+		{
+			if (!unique.add(value))
+				duplicates.add(value);
+		}
+		if (duplicates.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s may not contain duplicate value\n" +
+				"Actual: %s\n" +
+				"Duplicates: %s", name, parameter, duplicates));
 	}
 
 	@Override

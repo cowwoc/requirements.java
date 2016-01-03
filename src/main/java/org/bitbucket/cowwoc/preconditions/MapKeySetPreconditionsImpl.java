@@ -42,8 +42,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<K, Set<K>> isEmpty()
-		throws IllegalArgumentException
+	public CollectionPreconditions<K, Set<K>> isEmpty() throws IllegalArgumentException
 	{
 		if (parameter.isEmpty())
 			return this;
@@ -53,8 +52,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<K, Set<K>> isNotEmpty()
-		throws IllegalArgumentException
+	public CollectionPreconditions<K, Set<K>> isNotEmpty() throws IllegalArgumentException
 	{
 		if (!parameter.isEmpty())
 			return this;
@@ -63,8 +61,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 	}
 
 	@Override
-	public CollectionPreconditions<K, Set<K>> contains(K element)
-		throws IllegalArgumentException
+	public CollectionPreconditions<K, Set<K>> contains(K element) throws IllegalArgumentException
 	{
 		if (parameter.contains(element))
 			return this;
@@ -112,8 +109,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<K, Set<K>> containsAny(Collection<K> elements,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -156,8 +152,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<K, Set<K>> containsAll(Collection<K> elements,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -197,8 +192,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<K, Set<K>> doesNotContainAny(
-		Collection<K> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<K> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameterContainsAny(elements))
@@ -227,8 +221,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<K, Set<K>> doesNotContainAny(
-		Collection<K> elements, String name)
-		throws NullPointerException, IllegalArgumentException
+		Collection<K> elements, String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -244,8 +237,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<K, Set<K>> doesNotContainAll(
-		Collection<K> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<K> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
@@ -257,8 +249,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<K, Set<K>> doesNotContainAll(
-		Collection<K> elements, String name)
-		throws NullPointerException, IllegalArgumentException
+		Collection<K> elements, String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -268,6 +259,13 @@ final class MapKeySetPreconditionsImpl<K, V>
 			String.format("%s may not contain all keys in %s\n" +
 				"Keys  : %s\n" +
 				"Actual: %s", this.name, name, elements, map));
+	}
+
+	@Override
+	public CollectionPreconditions<K, Set<K>> doesNotContainDuplicates()
+		throws IllegalArgumentException
+	{
+		return this;
 	}
 
 	@Override

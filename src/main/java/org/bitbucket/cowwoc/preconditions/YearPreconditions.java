@@ -41,8 +41,7 @@ public interface YearPreconditions extends ObjectPreconditions<YearPreconditions
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is less than to {@code value}
 	 */
-	YearPreconditions isGreaterThanOrEqualTo(Year value, String name)
-		throws IllegalArgumentException;
+	YearPreconditions isGreaterThanOrEqualTo(Year value, String name) throws IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is greater than or bigger than a constant.

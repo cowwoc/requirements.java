@@ -75,8 +75,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> contains(Entry<K, V> element,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.contains(element))
@@ -89,8 +88,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> containsAny(
-		Collection<Entry<K, V>> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<Entry<K, V>> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (parameterContainsAny(elements))
@@ -114,8 +112,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> containsAny(
-		Collection<Entry<K, V>> elements,
-		String name)
+		Collection<Entry<K, V>> elements, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
@@ -177,8 +174,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> doesNotContain(
-		Entry<K, V> element)
-		throws IllegalArgumentException
+		Entry<K, V> element) throws IllegalArgumentException
 	{
 		if (!parameter.contains(element))
 			return this;
@@ -189,8 +185,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> doesNotContain(
-		Entry<K, V> element, String name)
-		throws NullPointerException, IllegalArgumentException
+		Entry<K, V> element, String name) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.contains(element))
@@ -203,8 +198,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> doesNotContainAny(
-		Collection<Entry<K, V>> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<Entry<K, V>> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameterContainsAny(elements))
@@ -250,8 +244,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 
 	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> doesNotContainAll(
-		Collection<Entry<K, V>> elements)
-		throws NullPointerException, IllegalArgumentException
+		Collection<Entry<K, V>> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
@@ -274,6 +267,13 @@ final class MapEntrySetPreconditionsImpl<K, V>
 			String.format("%s may not contain all entries in %s\n" +
 				"Entries: %s\n" +
 				"Actual : %s", this.name, name, elements, map));
+	}
+
+	@Override
+	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> doesNotContainDuplicates()
+		throws IllegalArgumentException
+	{
+		return this;
 	}
 
 	@Override

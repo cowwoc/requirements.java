@@ -77,8 +77,7 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 	}
 
 	@Override
-	public YearPreconditions isLessThanOrEqualTo(Year value)
-		throws IllegalArgumentException
+	public YearPreconditions isLessThanOrEqualTo(Year value) throws IllegalArgumentException
 	{
 		if (parameter.compareTo(value) <= 0)
 			return self;
@@ -88,8 +87,7 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 	}
 
 	@Override
-	public YearPreconditions isGreaterThan(Year value, String name)
-		throws IllegalArgumentException
+	public YearPreconditions isGreaterThan(Year value, String name) throws IllegalArgumentException
 	{
 		if (parameter.compareTo(value) > 0)
 			return self;
@@ -100,8 +98,7 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 	}
 
 	@Override
-	public YearPreconditions isGreaterThan(Year value)
-		throws IllegalArgumentException
+	public YearPreconditions isGreaterThan(Year value) throws IllegalArgumentException
 	{
 		if (parameter.compareTo(value) > 0)
 			return self;
@@ -123,8 +120,7 @@ final class YearPreconditionsImpl extends AbstractObjectPreconditions<YearPrecon
 	}
 
 	@Override
-	public YearPreconditions isGreaterThanOrEqualTo(Year value)
-		throws IllegalArgumentException
+	public YearPreconditions isGreaterThanOrEqualTo(Year value) throws IllegalArgumentException
 	{
 		if (parameter.compareTo(value) >= 0)
 			return self;

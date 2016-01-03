@@ -150,6 +150,12 @@ final class NoOpCollectionPreconditions<E, T extends Collection<E>>
 	}
 
 	@Override
+	public CollectionPreconditions<E, T> doesNotContainDuplicates() throws IllegalArgumentException
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionSizePreconditions size()
 	{
 		return NoOpCollectionSizePreconditions.INSTANCE;

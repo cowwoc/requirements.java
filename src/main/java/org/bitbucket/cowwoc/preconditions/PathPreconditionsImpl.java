@@ -94,8 +94,7 @@ final class PathPreconditionsImpl extends AbstractObjectPreconditions<PathPrecon
 	}
 
 	@Override
-	public PathPreconditions isRelative()
-		throws IllegalArgumentException
+	public PathPreconditions isRelative() throws IllegalArgumentException
 	{
 		if (!parameter.isAbsolute())
 			return this;
@@ -105,8 +104,7 @@ final class PathPreconditionsImpl extends AbstractObjectPreconditions<PathPrecon
 	}
 
 	@Override
-	public PathPreconditions isAbsolute()
-		throws IllegalArgumentException
+	public PathPreconditions isAbsolute() throws IllegalArgumentException
 	{
 		if (parameter.isAbsolute())
 			return this;

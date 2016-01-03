@@ -32,8 +32,7 @@ public final class Preconditions
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <S extends ObjectPreconditions<S, Object>> S requireThat(Object parameter,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		@SuppressWarnings("unchecked")
 		S result = (S) new ObjectPreconditionsImpl<>(parameter, name, Optional.empty());
@@ -52,8 +51,7 @@ public final class Preconditions
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static <E, T extends Collection<E>> CollectionPreconditions<E, T> requireThat(T parameter,
-		String name)
-		throws NullPointerException, IllegalArgumentException
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		return new CollectionPreconditionsImpl<>(parameter, name, Optional.empty());
 	}

@@ -283,6 +283,20 @@ public class CollectionPreconditionsTest
 	}
 
 	@Test
+	public void doesNotContainDuplicatesTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainDuplicates();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainDuplicatesFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three", "two", "four");
+		Preconditions.requireThat(parameter, "parameter").doesNotContainDuplicates();
+	}
+
+	@Test
 	public void sizeIsEqualToTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("element");

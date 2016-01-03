@@ -59,8 +59,7 @@ public interface NumberPreconditions<S extends NumberPreconditions<S, T>, T exte
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if {@code parameter} is less than to {@code value}
 	 */
-	S isGreaterThanOrEqualTo(T value)
-		throws NullPointerException, IllegalArgumentException;
+	S isGreaterThanOrEqualTo(T value) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is within range.
