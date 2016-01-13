@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import com.google.common.collect.Sets;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import org.bitbucket.cowwoc.preconditions.util.Collections;
 
 /**
  * Default implementation of MapPreconditions.entrySet().
@@ -87,6 +87,45 @@ final class MapEntrySetPreconditionsImpl<K, V>
 	}
 
 	@Override
+	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> containsExactly(
+		Collection<Entry<K, V>> elements) throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
+		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
+		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
+		Set<Entry<K, V>> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
+		if (missing.isEmpty() && unwanted.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s entries must contain exactly: %s\n" +
+				"Actual  : %s\n" +
+				"Missing : %s\n" +
+				"Unwanted: %s", name, elements, parameter, missing, unwanted));
+	}
+
+	@Override
+	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> containsExactly(
+		Collection<Entry<K, V>> elements, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
+		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
+		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
+		Set<Entry<K, V>> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
+		if (missing.isEmpty() && unwanted.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s entries must contain exactly %s\n" +
+				"Elements: %s\n" +
+				"Actual  : %s\n" +
+				"Missing : %s\n" +
+				"Unwanted: %s", this.name, name, elements, parameter, missing, unwanted));
+	}
+
+	@Override
 	public CollectionPreconditions<Entry<K, V>, Collection<Entry<K, V>>> containsAny(
 		Collection<Entry<K, V>> elements) throws NullPointerException, IllegalArgumentException
 	{
@@ -131,28 +170,13 @@ final class MapEntrySetPreconditionsImpl<K, V>
 		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
-		if (parameter.containsAll(elements))
-			return this;
-		Set<Entry<K, V>> missing = elementsMinusParameter(elements);
+		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
+		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
+		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all entries in: %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", name, elements, map, missing));
-	}
-
-	/**
-	 * @param elements a collection of elements
-	 * @return {@code elements} excluding the contents of {@code parameter}
-	 */
-	private Set<Entry<K, V>> elementsMinusParameter(Collection<Entry<K, V>> elements)
-	{
-		Set<Entry<K, V>> missing = new HashSet<>(elements);
-		for (Iterator<Entry<K, V>> i = missing.iterator(); i.hasNext();)
-		{
-			if (parameter.contains(i.next()))
-				i.remove();
-		}
-		return missing;
 	}
 
 	@Override
@@ -164,7 +188,9 @@ final class MapEntrySetPreconditionsImpl<K, V>
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.containsAll(elements))
 			return this;
-		Set<Entry<K, V>> missing = elementsMinusParameter(elements);
+		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
+		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
+		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all entries in %s\n" +
 				"Entries: %s\n" +
@@ -192,7 +218,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain %s\n" +
-				"Entry : %s\n",
+				"Entry : %s\n" +
 				"Actual: %s", this.name, name, element, map));
 	}
 
@@ -201,28 +227,13 @@ final class MapEntrySetPreconditionsImpl<K, V>
 		Collection<Entry<K, V>> elements) throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
-		if (!parameterContainsAny(elements))
-			return this;
-		Set<Entry<K, V>> unwanted = parameterIntersectWith(elements);
+		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
+		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
+		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any entry in: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", name, elements, map, unwanted));
-	}
-
-	/**
-	 * @param elements a collection of elements
-	 * @return elements found both in {@code parameter} and {@code elements}
-	 */
-	private Set<Entry<K, V>> parameterIntersectWith(Collection<Entry<K, V>> elements)
-	{
-		Set<Entry<K, V>> result = new HashSet<>(elements);
-		for (Iterator<Entry<K, V>> i = result.iterator(); i.hasNext();)
-		{
-			if (!parameter.contains(i.next()))
-				i.remove();
-		}
-		return result;
 	}
 
 	@Override
@@ -232,9 +243,9 @@ final class MapEntrySetPreconditionsImpl<K, V>
 	{
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!parameterContainsAny(elements))
-			return this;
-		Set<Entry<K, V>> unwanted = parameterIntersectWith(elements);
+		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
+		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
+		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any entry in %s\n" +
 				"Entries : %s\n" +

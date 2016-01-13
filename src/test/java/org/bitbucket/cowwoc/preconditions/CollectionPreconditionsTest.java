@@ -74,14 +74,14 @@ public class CollectionPreconditionsTest
 	public void containsWithNameTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("element");
-		Preconditions.requireThat(parameter, "parameter").contains("element", "name");
+		Preconditions.requireThat(parameter, "parameter").contains("element", "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void containsWithNameFalse()
 	{
 		Collection<String> parameter = ImmutableList.of("notElement");
-		Preconditions.requireThat(parameter, "parameter").contains("element", "name");
+		Preconditions.requireThat(parameter, "parameter").contains("element", "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -89,6 +89,54 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("element");
 		Preconditions.requireThat(parameter, "parameter").contains(" ");
+	}
+
+	@Test
+	public void containsExactlyTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").containsExactly(
+			ImmutableList.of("one", "two", "three"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsExactlyFalseUnwantedElements()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").
+			containsExactly(ImmutableList.of("one", "two"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsExactlyFalseMissingElements()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two");
+		Preconditions.requireThat(parameter, "parameter").containsExactly(ImmutableList.of("one", "two",
+			"three"));
+	}
+
+	@Test
+	public void containsExactlyWithNameTrue()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").
+			containsExactly(ImmutableList.of("one", "two", "three"), "nameOfExpected");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsExactlyWithNameFalse()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").
+			containsExactly(ImmutableList.of("one", "two"), "nameOfExpected");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsExactlyWithEmptyName()
+	{
+		Collection<String> parameter = ImmutableList.of("one", "two", "three");
+		Preconditions.requireThat(parameter, "parameter").
+			containsExactly(ImmutableList.of("one", "two", "three"), " ");
 	}
 
 	@Test
@@ -110,7 +158,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			containsAny(ImmutableList.of("two", "four"), "name");
+			containsAny(ImmutableList.of("two", "four"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -118,7 +166,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			containsAny(ImmutableList.of("four", "five"), "name");
+			containsAny(ImmutableList.of("four", "five"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -148,7 +196,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			containsAll(ImmutableList.of("two", "three"), "name");
+			containsAll(ImmutableList.of("two", "three"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -156,7 +204,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			containsAll(ImmutableList.of("two", "four"), "name");
+			containsAll(ImmutableList.of("two", "four"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -185,14 +233,14 @@ public class CollectionPreconditionsTest
 	public void doesNotContainWithNameTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("notElement");
-		Preconditions.requireThat(parameter, "parameter").doesNotContain("element", "name");
+		Preconditions.requireThat(parameter, "parameter").doesNotContain("element", "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void doesNotContainWithNameFalse()
 	{
 		Collection<String> parameter = ImmutableList.of("element");
-		Preconditions.requireThat(parameter, "parameter").doesNotContain("element", "name");
+		Preconditions.requireThat(parameter, "parameter").doesNotContain("element", "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -223,7 +271,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			doesNotContainAny(ImmutableList.of("four", "five", "six"), "name");
+			doesNotContainAny(ImmutableList.of("four", "five", "six"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -231,7 +279,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			doesNotContainAny(ImmutableList.of("three", "four", "five"), "name");
+			doesNotContainAny(ImmutableList.of("three", "four", "five"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -263,7 +311,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three");
 		Preconditions.requireThat(parameter, "parameter").
-			doesNotContainAll(ImmutableList.of("one", "two", "four"), "name");
+			doesNotContainAll(ImmutableList.of("one", "two", "four"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -271,7 +319,7 @@ public class CollectionPreconditionsTest
 	{
 		Collection<String> parameter = ImmutableList.of("one", "two", "three", "four");
 		Preconditions.requireThat(parameter, "parameter").
-			doesNotContainAll(ImmutableList.of("one", "two", "three"), "name");
+			doesNotContainAll(ImmutableList.of("one", "two", "three"), "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -314,14 +362,14 @@ public class CollectionPreconditionsTest
 	public void sizeIsEqualToWithNameTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("element");
-		Preconditions.requireThat(parameter, "parameter").size().isEqualTo(1, "name");
+		Preconditions.requireThat(parameter, "parameter").size().isEqualTo(1, "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void sizeIsEqualToWithNameFalse()
 	{
 		Collection<String> parameter = ImmutableList.of("element");
-		Preconditions.requireThat(parameter, "parameter").size().isEqualTo(2, "name");
+		Preconditions.requireThat(parameter, "parameter").size().isEqualTo(2, "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -349,14 +397,14 @@ public class CollectionPreconditionsTest
 	public void sizeIsNotEqualToWithNameTrue()
 	{
 		Collection<String> parameter = ImmutableList.of("element");
-		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(2, "name");
+		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(2, "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void sizeIsNotEqualToWithNameFalse()
 	{
 		Collection<String> parameter = ImmutableList.of("element");
-		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(1, "name");
+		Preconditions.requireThat(parameter, "parameter").size().isNotEqualTo(1, "nameOfExpected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

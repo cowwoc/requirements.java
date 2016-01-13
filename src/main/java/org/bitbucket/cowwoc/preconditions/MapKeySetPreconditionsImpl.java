@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
+import com.google.common.collect.Sets;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import org.bitbucket.cowwoc.preconditions.util.Collections;
 
 /**
  * Default implementation of MapPreconditions.keySet().
@@ -84,6 +84,44 @@ final class MapKeySetPreconditionsImpl<K, V>
 	}
 
 	@Override
+	public CollectionPreconditions<K, Set<K>> containsExactly(Collection<K> elements)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Set<K> elementsAsSet = Collections.asSet(elements);
+		Set<K> parameterAsSet = Collections.asSet(parameter);
+		Set<K> missing = Sets.difference(elementsAsSet, parameterAsSet);
+		Set<K> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
+		if (missing.isEmpty() && unwanted.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s keys must contain exactly: %s\n" +
+				"Actual  : %s\n" +
+				"Missing : %s\n" +
+				"Unwanted: %s", name, elements, parameter, missing, unwanted));
+	}
+
+	@Override
+	public CollectionPreconditions<K, Set<K>> containsExactly(Collection<K> elements,
+		String name) throws NullPointerException, IllegalArgumentException
+	{
+		Preconditions.requireThat(elements, "elements").isNotNull();
+		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		Set<K> elementsAsSet = Collections.asSet(elements);
+		Set<K> parameterAsSet = Collections.asSet(parameter);
+		Set<K> missing = Sets.difference(elementsAsSet, parameterAsSet);
+		Set<K> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
+		if (missing.isEmpty() && unwanted.isEmpty())
+			return this;
+		return throwException(IllegalArgumentException.class,
+			String.format("%s keys must contain exactly %s\n" +
+				"Keys    : %s\n" +
+				"Actual  : %s\n" +
+				"Missing : %s\n" +
+				"Unwanted: %s", this.name, name, elements, parameter, missing, unwanted));
+	}
+
+	@Override
 	public CollectionPreconditions<K, Set<K>> containsAny(Collection<K> elements)
 		throws NullPointerException, IllegalArgumentException
 	{
@@ -128,26 +166,13 @@ final class MapKeySetPreconditionsImpl<K, V>
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (parameter.containsAll(elements))
 			return this;
-		Set<K> missing = elementsMinusParameter(elements);
+		Set<K> elementsAsSet = Collections.asSet(elements);
+		Set<K> parameterAsSet = Collections.asSet(parameter);
+		Set<K> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all keys in: %s\n" +
 				"Actual : %s\n" +
 				"Missing: %s", name, elements, map, missing));
-	}
-
-	/**
-	 * @param elements a collection of elements
-	 * @return {@code elements} excluding the contents of {@code parameter}
-	 */
-	private Set<K> elementsMinusParameter(Collection<K> elements)
-	{
-		Set<K> missing = new HashSet<>(elements);
-		for (Iterator<K> i = missing.iterator(); i.hasNext();)
-		{
-			if (parameter.contains(i.next()))
-				i.remove();
-		}
-		return missing;
 	}
 
 	@Override
@@ -158,7 +183,9 @@ final class MapKeySetPreconditionsImpl<K, V>
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.containsAll(elements))
 			return this;
-		Set<K> missing = elementsMinusParameter(elements);
+		Set<K> elementsAsSet = Collections.asSet(elements);
+		Set<K> parameterAsSet = Collections.asSet(parameter);
+		Set<K> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all keys in %s\n" +
 				"Keys   : %s\n" +
@@ -186,7 +213,7 @@ final class MapKeySetPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain %s\n" +
-				"Key   : %s\n",
+				"Key   : %s\n" +
 				"Actual: %s", this.name, name, element, map));
 	}
 
@@ -197,26 +224,13 @@ final class MapKeySetPreconditionsImpl<K, V>
 		Preconditions.requireThat(elements, "elements").isNotNull();
 		if (!parameterContainsAny(elements))
 			return this;
-		Set<K> unwanted = parameterIntersectWith(elements);
+		Set<K> elementsAsSet = Collections.asSet(elements);
+		Set<K> parameterAsSet = Collections.asSet(parameter);
+		Set<K> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any key in: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", name, elements, map, unwanted));
-	}
-
-	/**
-	 * @param elements a collection of elements
-	 * @return elements found both in {@code parameter} and {@code elements}
-	 */
-	private Set<K> parameterIntersectWith(Collection<K> elements)
-	{
-		Set<K> result = new HashSet<>(elements);
-		for (Iterator<K> i = result.iterator(); i.hasNext();)
-		{
-			if (!parameter.contains(i.next()))
-				i.remove();
-		}
-		return result;
 	}
 
 	@Override
@@ -227,7 +241,9 @@ final class MapKeySetPreconditionsImpl<K, V>
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameterContainsAny(elements))
 			return this;
-		Set<K> unwanted = parameterIntersectWith(elements);
+		Set<K> elementsAsSet = Collections.asSet(elements);
+		Set<K> parameterAsSet = Collections.asSet(parameter);
+		Set<K> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any key in %s\n" +
 				"Keys    : %s\n" +

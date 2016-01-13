@@ -90,6 +90,18 @@ final class NoOpCollectionPreconditions<E, T extends Collection<E>>
 	}
 
 	@Override
+	public CollectionPreconditions<E, T> containsExactly(Collection<E> elements)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionPreconditions<E, T> containsExactly(Collection<E> elements, String name)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionPreconditions<E, T> containsAny(Collection<E> elements)
 	{
 		return this;

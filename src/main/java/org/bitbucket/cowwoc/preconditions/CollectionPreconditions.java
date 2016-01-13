@@ -55,6 +55,33 @@ public interface CollectionPreconditions<E, T extends Collection<E>>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
+	 * Ensures that the parameter contains exactly the specified elements; nothing less, nothing more.
+	 * <p>
+	 * @param elements the elements that must exist
+	 * @return this
+	 * @throws NullPointerException     if {@code elements} is null
+	 * @throws IllegalArgumentException if the collection is missing any elements in {@code elements};
+	 *                                  if the collection contains elements not found in
+	 *                                  {@code elements}
+	 */
+	CollectionPreconditions<E, T> containsExactly(Collection<E> elements)
+		throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter contains exactly the specified elements; nothing less, nothing more.
+	 * <p>
+	 * @param elements the elements that must exist
+	 * @param name     the name of the elements
+	 * @return this
+	 * @throws NullPointerException     if {@code elements} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection is missing any elements in {@code elements};
+	 *                                  if the collection contains elements not found in
+	 *                                  {@code elements}; if {@code name} is empty
+	 */
+	CollectionPreconditions<E, T> containsExactly(Collection<E> elements, String name)
+		throws NullPointerException, IllegalArgumentException;
+
+	/**
 	 * Ensures that the parameter contains any of multiple elements.
 	 * <p>
 	 * @param elements the elements that must exist
