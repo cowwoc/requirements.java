@@ -112,7 +112,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s elements must contain exactly %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Missing : %s\n" +
 				"Unwanted: %s", this.name, name, elements, parameter, missing, unwanted));
@@ -152,7 +152,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain any element in %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s", this.name, name, elements, parameter));
 	}
 
@@ -185,7 +185,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all elements in %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Missing : %s", this.name, name, elements, parameter, missing));
 	}
@@ -209,8 +209,8 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain %s\n" +
-				"Element: %s\n" +
-				"Actual : %s", this.name, name, element, parameter));
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, element, parameter));
 	}
 
 	@Override
@@ -242,7 +242,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any element in %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", this.name, name, elements, parameter, unwanted));
 	}
@@ -269,7 +269,7 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain all elements in %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s", this.name, name, elements, parameter));
 	}
 

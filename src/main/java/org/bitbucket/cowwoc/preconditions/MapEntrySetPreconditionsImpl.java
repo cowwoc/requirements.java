@@ -119,7 +119,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s entries must contain exactly %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Missing : %s\n" +
 				"Unwanted: %s", this.name, name, elements, parameter, missing, unwanted));
@@ -160,7 +160,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain any entry in %s\n" +
-				"Elements: %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s", this.name, name, elements, map));
 	}
 
@@ -193,9 +193,9 @@ final class MapEntrySetPreconditionsImpl<K, V>
 		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all entries in %s\n" +
-				"Entries: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, elements, map, missing));
+				"Expected: %s\n" +
+				"Actual  : %s\n" +
+				"Missing : %s", this.name, name, elements, map, missing));
 	}
 
 	@Override
@@ -218,8 +218,8 @@ final class MapEntrySetPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain %s\n" +
-				"Entry : %s\n" +
-				"Actual: %s", this.name, name, element, map));
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, element, map));
 	}
 
 	@Override
@@ -248,7 +248,7 @@ final class MapEntrySetPreconditionsImpl<K, V>
 		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any entry in %s\n" +
-				"Entries : %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", this.name, name, elements, map, unwanted));
 	}
@@ -276,8 +276,8 @@ final class MapEntrySetPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain all entries in %s\n" +
-				"Entries: %s\n" +
-				"Actual : %s", this.name, name, elements, map));
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, elements, map));
 	}
 
 	@Override

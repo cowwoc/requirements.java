@@ -117,7 +117,7 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s values must contain exactly %s\n" +
-				"Values  : %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Missing : %s\n" +
 				"Unwanted: %s\n", this.name, name, elements, parameter, missing, unwanted));
@@ -157,8 +157,8 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain any value in %s\n" +
-				"Values: %s\n" +
-				"Actual: %s", this.name, name, elements, map));
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, elements, map));
 	}
 
 	@Override
@@ -190,9 +190,9 @@ final class MapValuesPreconditionsImpl<K, V>
 		Set<V> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s must contain all values in %s\n" +
-				"Values : %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, elements, map, missing));
+				"Expected: %s\n" +
+				"Actual  : %s\n" +
+				"Missing : %s", this.name, name, elements, map, missing));
 	}
 
 	@Override
@@ -215,8 +215,8 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain %s\n" +
-				"Value : %s\n" +
-				"Actual: %s", this.name, name, element, map));
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, element, map));
 	}
 
 	@Override
@@ -248,7 +248,7 @@ final class MapValuesPreconditionsImpl<K, V>
 		Set<V> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain any value in %s\n" +
-				"Values  : %s\n" +
+				"Expected: %s\n" +
 				"Actual  : %s\n" +
 				"Unwanted: %s", this.name, name, elements, map, unwanted));
 	}
@@ -275,8 +275,8 @@ final class MapValuesPreconditionsImpl<K, V>
 			return this;
 		return throwException(IllegalArgumentException.class,
 			String.format("%s may not contain all values in %s\n" +
-				"Values: %s\n" +
-				"Actual: %s", this.name, name, elements, map));
+				"Expected: %s\n" +
+				"Actual  : %s", this.name, name, elements, map));
 	}
 
 	@Override
