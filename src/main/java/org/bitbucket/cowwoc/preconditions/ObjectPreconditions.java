@@ -95,14 +95,14 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	 * Verifies preconditions without modifying the current instance. This can be used to combine
 	 * preconditions that operate on nested elements:
 	 * <pre><code>
-	 * Map&lt;String, Integer&gt; employeesToAge = ...;
-	 * Preconditions.requireThat(employeesToAge, "employeesToAge").keySet().contains("Homer Simpson");
-	 * Preconditions.requireThat(employeesToAge, "employeesToAge").values().doesNotContain(65, "retirement age");
+	 * Map&lt;String, Integer&gt; nameToId = ...;
+	 * Preconditions.requireThat(nameToId, "nameToId").keySet().contains("John Smith");
+	 * Preconditions.requireThat(nameToId, "nameToId").values().doesNotContain(0, "RESERVED_ID");
 	 *
 	 * // Can be rewritten as:
-	 * Preconditions.requireThat(employeesToAge, "employeesToAge").
-	 *   isolate(p -&gt; p.keySet().contains("Homer Simpson")).
-	 *   isolate(p -&gt; p.values().doesNotContain(65, "retirement age"));
+	 * Preconditions.requireThat(nameToId, "nameToId").
+	 *   isolate(p -&gt; p.keySet().contains("John Smith")).
+	 *   isolate(p -&gt; p.values().doesNotContain(0, "RESERVED_ID"));
 	 * </code></pre>
 	 *
 	 * @param consumer the code to execute in isolation
