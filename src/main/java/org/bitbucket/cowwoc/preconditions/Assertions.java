@@ -44,6 +44,14 @@ public final class Assertions
 	}
 
 	/**
+	 * @return true if assertions are enabled
+	 */
+	public boolean isEnabled()
+	{
+		return enabled;
+	}
+
+	/**
 	 * Same as {@link Preconditions#requireThat(Object, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
