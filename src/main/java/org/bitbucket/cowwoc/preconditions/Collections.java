@@ -1,4 +1,4 @@
-package org.bitbucket.cowwoc.preconditions.util;
+package org.bitbucket.cowwoc.preconditions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import java.util.Set;
  * <p>
  * @author Gili Tzabari
  */
-public final class Collections
+final class Collections
 {
 	/**
 	 * @param <E>        the type of elements held by the collection

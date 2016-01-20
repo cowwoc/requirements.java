@@ -101,8 +101,8 @@ public interface ObjectPreconditions<S extends ObjectPreconditions<S, T>, T>
 	 *
 	 * // Can be rewritten as:
 	 * Preconditions.requireThat(employeesToAge, "employeesToAge").
-	 *   isolate(p -> p.keySet().contains("Homer Simpson")).
-	 *   isolate(p -> p.values().doesNotContain(65, "retirement age"));
+	 *   isolate(p -&gt; p.keySet().contains("Homer Simpson")).
+	 *   isolate(p -&gt; p.values().doesNotContain(65, "retirement age"));
 	 * </code></pre>
 	 *
 	 * @param consumer the code to execute in isolation

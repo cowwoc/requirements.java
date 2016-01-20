@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import org.bitbucket.cowwoc.preconditions.util.Collections;
 
 /**
  * Default implementation of MapPreconditions.values().
