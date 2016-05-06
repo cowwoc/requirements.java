@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Default implementation of ClassPreconditions.
@@ -21,11 +21,11 @@ final class ClassPreconditionsImpl<T> extends AbstractObjectPreconditions<ClassP
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	ClassPreconditionsImpl(Class<T> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name, exceptionOverride);
@@ -44,10 +44,10 @@ final class ClassPreconditionsImpl<T> extends AbstractObjectPreconditions<ClassP
 	}
 
 	@Override
-	protected ClassPreconditions<T> valueOf(Class<T> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	public ClassPreconditions<T> usingException(
+		Class<? extends RuntimeException> exceptionOverride)
 	{
-		if (exceptionOverride.equals(this.exceptionOverride))
+		if (Objects.equals(exceptionOverride, this.exceptionOverride))
 			return this;
 		return new ClassPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.preconditions;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -27,11 +27,11 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionPreconditionsImpl(T parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name, exceptionOverride);
@@ -300,10 +300,10 @@ class CollectionPreconditionsImpl<E, T extends Collection<E>>
 	}
 
 	@Override
-	protected CollectionPreconditions<E, T> valueOf(T parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	public CollectionPreconditions<E, T> usingException(
+		Class<? extends RuntimeException> exceptionOverride)
 	{
-		if (exceptionOverride.equals(this.exceptionOverride))
+		if (Objects.equals(exceptionOverride, this.exceptionOverride))
 			return this;
 		return new CollectionPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}

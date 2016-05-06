@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.preconditions;
 import com.google.common.collect.Range;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Default implementation of MapSizePreconditions.
@@ -26,15 +25,24 @@ final class MapSizePreconditionsImpl
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	MapSizePreconditionsImpl(Map<?, ?> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter.size(), name, exceptionOverride);
 		this.map = parameter;
+	}
+
+	@Override
+	public MapSizePreconditions usingException(
+		Class<? extends RuntimeException> exceptionOverride)
+	{
+		if (Objects.equals(exceptionOverride, this.exceptionOverride))
+			return this;
+		return new MapSizePreconditionsImpl(map, name, exceptionOverride);
 	}
 
 	@Override
@@ -188,8 +196,7 @@ final class MapSizePreconditionsImpl
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return self;
-		StringBuilder message = new StringBuilder(name + " must contain ");
-		Ranges.appendRange(range, message);
+		StringBuilder message = new StringBuilder(name + " must contain " + range);
 		message.append(String.format(" entries. It contained %,d entries.\n" +
 			"Actual: %s", parameter, map));
 		return throwException(IllegalArgumentException.class, message.toString());

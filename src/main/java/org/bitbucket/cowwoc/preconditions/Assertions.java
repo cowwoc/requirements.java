@@ -94,6 +94,25 @@ public final class Assertions
 	}
 
 	/**
+	 * Same as {@link Preconditions#requireThat(Comparable, String)} but does nothing if assertions
+	 * are disabled.
+	 * <p>
+	 * @param <T>       the type of the number
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public <T extends Comparable<? super T>> ComparablePreconditions<T> requireThat(T parameter,
+		String name) throws NullPointerException, IllegalArgumentException
+	{
+		if (enabled)
+			return Preconditions.requireThat(parameter, name);
+		return new NoOpComparablePreconditions<>();
+	}
+
+	/**
 	 * Same as {@link Preconditions#requireThat(Number, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>

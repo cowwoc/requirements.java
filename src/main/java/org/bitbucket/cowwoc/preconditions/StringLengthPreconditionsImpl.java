@@ -25,11 +25,11 @@ final class StringLengthPreconditionsImpl
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	StringLengthPreconditionsImpl(String parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter.length(), name, exceptionOverride);
@@ -188,8 +188,7 @@ final class StringLengthPreconditionsImpl
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return self;
-		StringBuilder message = new StringBuilder(name + " must contain ");
-		Ranges.appendRange(range, message);
+		StringBuilder message = new StringBuilder(name + " must contain " + range);
 		message.append(String.format(" characters. It contained %,d characters.\n" +
 			"Actual: \"%s\"", parameter, string));
 		return throwException(IllegalArgumentException.class, message.toString());

@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.preconditions;
 import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Default implementation of CollectionSizePreconditions.
@@ -26,15 +25,24 @@ final class CollectionSizePreconditionsImpl
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionSizePreconditionsImpl(Collection<?> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter.size(), name, exceptionOverride);
 		this.collection = parameter;
+	}
+
+	@Override
+	public CollectionSizePreconditions usingException(
+		Class<? extends RuntimeException> exceptionOverride)
+	{
+		if (Objects.equals(exceptionOverride, this.exceptionOverride))
+			return this;
+		return new CollectionSizePreconditionsImpl(collection, name, exceptionOverride);
 	}
 
 	@Override
@@ -44,9 +52,22 @@ final class CollectionSizePreconditionsImpl
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter >= value)
 			return self;
+
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %,d elements. It contained %,d elements.\n" +
-				"Actual: %s", name, value, parameter, collection));
+			String.format("%s must contain at least %,d %s. It contained %,d %s.\n" +
+				"Actual: %s", name, value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter),
+				collection));
+	}
+
+	/**
+	 * @param amount an amount
+	 * @return "element" or "elements" depending on whether {@code amount} is plural
+	 */
+	private String getSingleOrPlural(int amount)
+	{
+		if (amount == 1)
+			return "element";
+		return "elements";
 	}
 
 	@Override
@@ -58,8 +79,9 @@ final class CollectionSizePreconditionsImpl
 		if (parameter >= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least %s (%,d) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, name, value, parameter, collection));
+			String.format("%s must contain at least %s (%,d) %s. It contained %,d %s.\n" +
+				"Actual: %s", this.name, name, value, getSingleOrPlural(value), parameter,
+				getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
@@ -69,8 +91,9 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %,d elements. It contained %,d elements.\n" +
-				"Actual: %s", name, value, parameter, collection));
+			String.format("%s must contain more than %,d %s. It contained %,d %s.\n" +
+				"Actual: %s", name, value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter),
+				collection));
 	}
 
 	@Override
@@ -82,33 +105,36 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain more than %s (%,d) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, name, value, parameter, collection));
+			String.format("%s must contain more than %s (%,d) %s. It contained %,d %s.\n" +
+				"Actual: %s", this.name, name, value, getSingleOrPlural(value), parameter,
+				getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
 	public CollectionSizePreconditions isLessThanOrEqualTo(Integer value)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %,d elements. It contained %,d elements.\n" +
-				"Actual: %s", name, value, parameter, collection));
+			String.format("%s may contain at most %,d %s. It contained %,d %s.\n" +
+				"Actual: %s", name, value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter),
+				collection));
 	}
 
 	@Override
 	public CollectionSizePreconditions isLessThanOrEqualTo(Integer value, String name)
-		throws IllegalArgumentException
+		throws NullPointerException, IllegalArgumentException
 	{
 		Preconditions.requireThat(value, "value").isNotNull();
 		Preconditions.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s may contain at most %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, value, name, parameter, collection));
+			String.format("%s may contain at most %,d (%s) %s. It contained %,d %s.\n" +
+				"Actual: %s", this.name, value, name, getSingleOrPlural(value), parameter,
+				getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
@@ -118,8 +144,9 @@ final class CollectionSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %,d elements. It contained %,d elements.\n" +
-				"Actual: %s", name, value, parameter, collection));
+			String.format("%s must contain less than %,d %s. It contained %,d %s.\n" +
+				"Actual: %s", name, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter),
+				collection));
 	}
 
 	@Override
@@ -131,8 +158,9 @@ final class CollectionSizePreconditionsImpl
 		if (parameter < value)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain less than %,d (%s) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, value, name, parameter, collection));
+			String.format("%s must contain less than %,d (%s) %s. It contained %,d %s.\n" +
+				"Actual: %s", this.name, value, name, getSingleOrPlural(value), parameter,
+				getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
@@ -147,8 +175,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter > 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain at least one entry. It contained %,d elements.\n" +
-				"Actual: %s", name, parameter, collection));
+			String.format("%s must contain at least one element. It contained %,d %s.\n" +
+				"Actual: %s", name, parameter, getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
@@ -163,8 +191,8 @@ final class CollectionSizePreconditionsImpl
 		if (parameter == 0)
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must be empty. It contained %,d elements.\n" +
-				"Actual: %s", name, parameter, collection));
+			String.format("%s must be empty. It contained %,d %s.\n" +
+				"Actual: %s", name, parameter, getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
@@ -188,10 +216,9 @@ final class CollectionSizePreconditionsImpl
 		Preconditions.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return self;
-		StringBuilder message = new StringBuilder(name + " must contain ");
-		Ranges.appendRange(range, message);
-		message.append(String.format(" elements. It contained %,d elements.\n" +
-			"Actual: %s", parameter, collection));
+		StringBuilder message = new StringBuilder(name + " must contain " + range);
+		message.append(String.format(" elements. It contained %,d %s.\n" +
+			"Actual: %s", parameter, getSingleOrPlural(parameter), collection));
 		return throwException(IllegalArgumentException.class, message.toString());
 	}
 
@@ -202,8 +229,9 @@ final class CollectionSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %,d elements. It contained %,d elements.\n" +
-				"Actual: %s", name, value, parameter, collection));
+			String.format("%s must contain %,d %s. It contained %,d %s.\n" +
+				"Actual: %s", name, value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter),
+				collection));
 	}
 
 	@Override
@@ -215,8 +243,9 @@ final class CollectionSizePreconditionsImpl
 		if (Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must contain %s (%,d) elements. It contained %,d elements.\n" +
-				"Actual: %s", this.name, name, value, parameter, collection));
+			String.format("%s must contain %s (%,d) %s. It contained %,d %s.\n" +
+				"Actual: %s", this.name, name, value, getSingleOrPlural(value), parameter,
+				getSingleOrPlural(parameter), collection));
 	}
 
 	@Override
@@ -226,8 +255,8 @@ final class CollectionSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %,d elements, but did.\n" +
-				"Actual: %s", name, value, collection));
+			String.format("%s must not contain %,d %s, but did.\n" +
+				"Actual: %s", name, value, getSingleOrPlural(value), collection));
 	}
 
 	@Override
@@ -239,7 +268,7 @@ final class CollectionSizePreconditionsImpl
 		if (!Objects.equals(parameter, value))
 			return self;
 		return throwException(IllegalArgumentException.class,
-			String.format("%s must not contain %s (%,d) elements, but did. It contained %s", this.name,
-				name, value, collection));
+			String.format("%s must not contain %s (%,d) %s, but did. It contained %s", this.name,
+				name, value, getSingleOrPlural(value), collection));
 	}
 }

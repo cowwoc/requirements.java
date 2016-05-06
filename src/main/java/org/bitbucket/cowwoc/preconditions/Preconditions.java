@@ -35,7 +35,7 @@ public final class Preconditions
 		String name) throws NullPointerException, IllegalArgumentException
 	{
 		@SuppressWarnings("unchecked")
-		S result = (S) new ObjectPreconditionsImpl<>(parameter, name, Optional.empty());
+		S result = (S) new ObjectPreconditionsImpl<>(parameter, name, null);
 		return result;
 	}
 
@@ -53,7 +53,23 @@ public final class Preconditions
 	public static <E, T extends Collection<E>> CollectionPreconditions<E, T> requireThat(T parameter,
 		String name) throws NullPointerException, IllegalArgumentException
 	{
-		return new CollectionPreconditionsImpl<>(parameter, name, Optional.empty());
+		return new CollectionPreconditionsImpl<>(parameter, name, null);
+	}
+
+	/**
+	 * Creates a precondition for a {@code Comparable}.
+	 * <p>
+	 * @param <T>       the type of objects that the parameter may be compared to
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Preconditions for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <T extends Comparable<? super T>> ComparablePreconditions<T> requireThat(T parameter,
+		String name) throws NullPointerException, IllegalArgumentException
+	{
+		return new ComparablePreconditionsImpl<>(parameter, name, null);
 	}
 
 	/**
@@ -71,7 +87,7 @@ public final class Preconditions
 		NumberPreconditions<S, T> requireThat(T parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new NumberPreconditionsImpl<>(parameter, name, Optional.empty());
+		return new NumberPreconditionsImpl<>(parameter, name, null);
 	}
 
 	/**
@@ -86,7 +102,7 @@ public final class Preconditions
 	public static BigDecimalPreconditions requireThat(BigDecimal parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new BigDecimalPreconditionsImpl(parameter, name, Optional.empty());
+		return new BigDecimalPreconditionsImpl(parameter, name, null);
 	}
 
 	/**
@@ -103,7 +119,7 @@ public final class Preconditions
 	public static <K, V> MapPreconditions<K, V> requireThat(Map<K, V> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new MapPreconditionsImpl<>(parameter, name, Optional.empty());
+		return new MapPreconditionsImpl<>(parameter, name, null);
 	}
 
 	/**
@@ -118,7 +134,7 @@ public final class Preconditions
 	public static PathPreconditions requireThat(Path parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new PathPreconditionsImpl(parameter, name, Optional.empty());
+		return new PathPreconditionsImpl(parameter, name, null);
 	}
 
 	/**
@@ -133,7 +149,7 @@ public final class Preconditions
 	public static StringPreconditions requireThat(String parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new StringPreconditionsImpl(parameter, name, Optional.empty());
+		return new StringPreconditionsImpl(parameter, name, null);
 	}
 
 	/**
@@ -148,7 +164,7 @@ public final class Preconditions
 	public static UriPreconditions requireThat(URI parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new UriPreconditionsImpl(parameter, name, Optional.empty());
+		return new UriPreconditionsImpl(parameter, name, null);
 	}
 
 	/**
@@ -164,7 +180,7 @@ public final class Preconditions
 	public static <T> ClassPreconditions<T> requireThat(Class<T> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new ClassPreconditionsImpl<>(parameter, name, Optional.empty());
+		return new ClassPreconditionsImpl<>(parameter, name, null);
 	}
 
 	/**
@@ -179,7 +195,7 @@ public final class Preconditions
 	public static YearPreconditions requireThat(Year parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new YearPreconditionsImpl(parameter, name, Optional.empty());
+		return new YearPreconditionsImpl(parameter, name, null);
 	}
 
 	/**
@@ -194,7 +210,7 @@ public final class Preconditions
 	public static OptionalPreconditions requireThat(Optional<?> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		return new OptionalPreconditionsImpl(parameter, name, Optional.empty());
+		return new OptionalPreconditionsImpl(parameter, name, null);
 	}
 
 	/**

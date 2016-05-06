@@ -8,7 +8,6 @@ import com.google.common.base.Strings;
 import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
@@ -94,7 +93,7 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	@SuppressWarnings("ProtectedField")
 	protected final T parameter;
 	protected final String name;
-	protected final Optional<Class<? extends RuntimeException>> exceptionOverride;
+	protected final Class<? extends RuntimeException> exceptionOverride;
 
 	/**
 	 * Creates new ObjectPreconditionsImpl.
@@ -102,19 +101,17 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	protected AbstractObjectPreconditions(T parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
-		if (exceptionOverride == null)
-			throw new NullPointerException("exceptionOverride may not be null");
 		@SuppressWarnings(
 			{
 				"unchecked", "LocalVariableHidesMemberVariable"
@@ -124,17 +121,6 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 		this.parameter = parameter;
 		this.name = name;
 		this.exceptionOverride = exceptionOverride;
-	}
-
-	@Override
-	public S usingException(Class<? extends RuntimeException> exception)
-	{
-		Optional<Class<? extends RuntimeException>> newExceptionOverride = Optional.
-			ofNullable(exception);
-		if (newExceptionOverride.equals(exceptionOverride))
-			return self;
-		return valueOf(parameter, name, newExceptionOverride);
-
 	}
 
 	/**
@@ -151,9 +137,13 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	{
 		try
 		{
-			Constructor<? extends RuntimeException> constructor = exceptionOverride.orElse(exception).
-				getConstructor(String.class
-				);
+			Class<? extends RuntimeException> overridenException;
+			if (exceptionOverride != null)
+				overridenException = exceptionOverride;
+			else
+				overridenException = exception;
+			Constructor<? extends RuntimeException> constructor = overridenException.
+				getConstructor(String.class);
 			throw constructor.newInstance(message);
 		}
 		catch (ReflectiveOperationException e)
@@ -178,7 +168,12 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 	{
 		try
 		{
-			Constructor<? extends RuntimeException> constructor = exceptionOverride.orElse(exception).
+			Class<? extends RuntimeException> overridenException;
+			if (exceptionOverride != null)
+				overridenException = exceptionOverride;
+			else
+				overridenException = exception;
+			Constructor<? extends RuntimeException> constructor = overridenException.
 				getConstructor(String.class, Throwable.class);
 			RuntimeException instance = constructor.newInstance(message, cause);
 			throw instance;
@@ -279,17 +274,4 @@ public abstract class AbstractObjectPreconditions<S extends ObjectPreconditions<
 		consumer.accept(self);
 		return self;
 	}
-
-	/**
-	 * Returns an instance of the current implementation.
-	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
-	 * @return an instance of the current implementation
-	 */
-	protected abstract S valueOf(T parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride);
 }

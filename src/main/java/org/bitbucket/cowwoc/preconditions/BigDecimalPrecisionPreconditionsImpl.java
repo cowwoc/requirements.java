@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.preconditions;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Default implementation of BigDecimalPrecisionPreconditions.
@@ -27,14 +27,23 @@ final class BigDecimalPrecisionPreconditionsImpl
 	 * @param parameter         the value of BigDecimal.precision()
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} or {@code exceptionOverride} are null
+	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	BigDecimalPrecisionPreconditionsImpl(int parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, getName(name), exceptionOverride);
+	}
+
+	@Override
+	public BigDecimalPrecisionPreconditions usingException(
+		Class<? extends RuntimeException> exception)
+	{
+		if (Objects.equals(exceptionOverride, this.exceptionOverride))
+			return self;
+		return new BigDecimalPrecisionPreconditionsImpl(parameter, name, exceptionOverride);
 	}
 
 	@Deprecated

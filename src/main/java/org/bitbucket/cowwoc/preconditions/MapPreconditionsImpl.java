@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.preconditions;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -25,11 +25,11 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 	 * @param parameter         the value of the parameter
 	 * @param name              the name of the parameter
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if name or exceptionOverride are null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	MapPreconditionsImpl(Map<K, V> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+		Class<? extends RuntimeException> exceptionOverride)
 		throws NullPointerException, IllegalArgumentException
 	{
 		super(parameter, name, exceptionOverride);
@@ -78,10 +78,10 @@ final class MapPreconditionsImpl<K, V> extends AbstractObjectPreconditions<MapPr
 	}
 
 	@Override
-	protected MapPreconditions<K, V> valueOf(Map<K, V> parameter, String name,
-		Optional<Class<? extends RuntimeException>> exceptionOverride)
+	public MapPreconditions<K, V> usingException(
+		Class<? extends RuntimeException> exceptionOverride)
 	{
-		if (exceptionOverride.equals(this.exceptionOverride))
+		if (Objects.equals(exceptionOverride, this.exceptionOverride))
 			return this;
 		return new MapPreconditionsImpl<>(parameter, name, exceptionOverride);
 	}
