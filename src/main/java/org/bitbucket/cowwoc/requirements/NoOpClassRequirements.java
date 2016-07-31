@@ -16,13 +16,13 @@ enum NoOpClassRequirements implements ClassRequirements<Object>
 	INSTANCE;
 
 	@Override
-	public ClassRequirements<Object> isSupertypeOf(Class<?> type)
+	public ClassRequirements<Object> withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpClassRequirements usingException(Class<? extends RuntimeException> exception)
+	public ClassRequirements<Object> isSupertypeOf(Class<?> type)
 	{
 		return this;
 	}

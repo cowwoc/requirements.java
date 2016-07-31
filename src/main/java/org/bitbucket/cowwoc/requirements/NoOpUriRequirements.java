@@ -17,13 +17,13 @@ enum NoOpUriRequirements implements UriRequirements
 	INSTANCE;
 
 	@Override
-	public UriRequirements isAbsolute()
+	public UriRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpUriRequirements usingException(Class<? extends RuntimeException> exception)
+	public UriRequirements isAbsolute()
 	{
 		return this;
 	}

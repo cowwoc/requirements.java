@@ -1,9 +1,10 @@
 /*
- * Copyright 2016 Gili.
+ * Copyright 2016 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.collect.Range;
 import java.util.function.Consumer;
 
 /**
@@ -14,6 +15,12 @@ import java.util.function.Consumer;
 final class NoOpComparableRequirements<T extends Comparable<? super T>>
 	implements ComparableRequirements<T>
 {
+	@Override
+	public ComparableRequirements<T> withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
 	@Override
 	public ComparableRequirements<T> isGreaterThan(T value, String name)
 	{
@@ -63,7 +70,7 @@ final class NoOpComparableRequirements<T extends Comparable<? super T>>
 	}
 
 	@Override
-	public ComparableRequirements<T> usingException(Class<? extends RuntimeException> exception)
+	public ComparableRequirements<T> isIn(Range<T> range)
 	{
 		return this;
 	}
@@ -115,5 +122,4 @@ final class NoOpComparableRequirements<T extends Comparable<? super T>>
 	{
 		return this;
 	}
-
 }

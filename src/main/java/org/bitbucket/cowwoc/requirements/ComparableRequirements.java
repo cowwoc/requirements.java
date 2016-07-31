@@ -1,17 +1,19 @@
 /*
- * Copyright 2016 Gili.
+ * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.ComparableRequirementsSpi;
+
 /**
  * Verifies requirements of a {@link Comparable}.
  * <p>
- * @param <T> the type of objects that the parameter may be compared to
+ * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
 public interface ComparableRequirements<T extends Comparable<? super T>>
-	extends CompareToRequirements<ComparableRequirements<T>, T>
+	extends ComparableRequirementsSpi<ComparableRequirements<T>, T>, 
+	Isolatable<ComparableRequirements<T>>
 {
 }

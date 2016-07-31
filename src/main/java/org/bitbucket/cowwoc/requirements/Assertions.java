@@ -7,16 +7,15 @@ package org.bitbucket.cowwoc.requirements;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
-import java.time.Year;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * Verifies requirements of a parameter if assertions are enabled.
+ * Verifies requirements of a parameter if assertions are enabled; otherwise, does nothing.
  * <p>
- * All implementations must be immutable and (when possible) final.
- * <p>
+ * All implementations must be immutable and final.
+ *
  * @author Gili Tzabari
  */
 public final class Assertions
@@ -55,21 +54,18 @@ public final class Assertions
 	 * Same as {@link Requirements#requireThat(Object, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
-	 * @param <S>       the type of requirements that was instantiated
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <S extends ObjectRequirements<S, Object>> S requireThat(Object parameter, String name)
+	public ObjectRequirements<Object> requireThat(Object parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
 			return Requirements.requireThat(parameter, name);
-		@SuppressWarnings("unchecked")
-		S result = (S) NoOpObjectRequirements.INSTANCE;
-		return result;
+		return NoOpObjectRequirements.INSTANCE;
 	}
 
 	/**
@@ -77,20 +73,18 @@ public final class Assertions
 	 * disabled.
 	 * <p>
 	 * @param <E>       the type of element in the collection
-	 * @param <T>       the type of the parameter
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E, T extends Collection<E>> CollectionRequirements<E, T> requireThat(T parameter,
-		String name) throws NullPointerException, IllegalArgumentException
+	public <E> CollectionRequirements<E> requireThat(Collection<E> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
 			return Requirements.requireThat(parameter, name);
-		CollectionRequirements<E, T> result = new NoOpCollectionRequirements<>();
-		return result;
+		return new NoOpCollectionRequirements<>();
 	}
 
 	/**
@@ -115,8 +109,7 @@ public final class Assertions
 	/**
 	 * Same as {@link Requirements#requireThat(Number, String)} but does nothing if assertions are
 	 * disabled.
-	 * <p>
-	 * @param <S>       the type of requirements that was instantiated
+	 *
 	 * @param <T>       the type of the number
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -124,9 +117,8 @@ public final class Assertions
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <S extends NumberRequirements<S, T>, T extends Number & Comparable<? super T>>
-		NumberRequirements<S, T> requireThat(T parameter, String name)
-		throws NullPointerException, IllegalArgumentException
+	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T parameter,
+		String name) throws NullPointerException, IllegalArgumentException
 	{
 		if (enabled)
 			return Requirements.requireThat(parameter, name);
@@ -246,24 +238,6 @@ public final class Assertions
 		@SuppressWarnings("unchecked")
 		ClassRequirements<T> result = (ClassRequirements<T>) NoOpClassRequirements.INSTANCE;
 		return result;
-	}
-
-	/**
-	 * Same as {@link Requirements#requireThat(Year, String)} but does nothing if assertions are
-	 * disabled.
-	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
-	 */
-	public YearRequirements requireThat(Year parameter, String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		if (enabled)
-			return Requirements.requireThat(parameter, name);
-		return NoOpYearRequirements.INSTANCE;
 	}
 
 	/**

@@ -16,6 +16,12 @@ enum NoOpStringRequirements implements StringRequirements
 	INSTANCE;
 
 	@Override
+	public StringRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
 	public StringRequirements doesNotEndWith(String suffix)
 	{
 		return this;
@@ -65,12 +71,6 @@ enum NoOpStringRequirements implements StringRequirements
 
 	@Override
 	public StringRequirements trim()
-	{
-		return this;
-	}
-
-	@Override
-	public NoOpStringRequirements usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

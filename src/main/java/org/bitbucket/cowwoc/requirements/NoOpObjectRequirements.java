@@ -11,60 +11,60 @@ import java.util.function.Consumer;
  * <p>
  * @author Gili Tzabari
  */
-enum NoOpObjectRequirements implements ObjectRequirements<NoOpObjectRequirements, Object>
+enum NoOpObjectRequirements implements ObjectRequirements<Object>
 {
 	INSTANCE;
 
 	@Override
-	public NoOpObjectRequirements usingException(Class<? extends RuntimeException> exception)
+	public ObjectRequirements<Object> withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isEqualTo(Object value)
+	public ObjectRequirements<Object> isEqualTo(Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isEqualTo(Object value, String name)
+	public ObjectRequirements<Object> isEqualTo(Object value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isNotEqualTo(Object value)
+	public ObjectRequirements<Object> isNotEqualTo(Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isNotEqualTo(Object value, String name)
+	public ObjectRequirements<Object> isNotEqualTo(Object value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isInstanceOf(Class<?> type)
+	public ObjectRequirements<Object> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isNull()
+	public ObjectRequirements<Object> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isNotNull()
+	public ObjectRequirements<Object> isNotNull()
 	{
 		return this;
 	}
 
 	@Override
-	public NoOpObjectRequirements isolate(Consumer<NoOpObjectRequirements> consumer)
+	public ObjectRequirements<Object> isolate(Consumer<ObjectRequirements<Object>> consumer)
 	{
 		return this;
 	}

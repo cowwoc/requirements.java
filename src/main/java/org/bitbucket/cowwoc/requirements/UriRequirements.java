@@ -5,13 +5,15 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.net.URI;
+import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
  * Interface needed for Requirements.assertThat().
  * <p>
  * @author Gili Tzabari
  */
-public interface UriRequirements extends ObjectRequirements<UriRequirements, URI>
+public interface UriRequirements
+	extends ObjectRequirementsSpi<UriRequirements, URI>, Isolatable<UriRequirements>
 {
 	/**
 	 * Ensures that the parameter is absolute.

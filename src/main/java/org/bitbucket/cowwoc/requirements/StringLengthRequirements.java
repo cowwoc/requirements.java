@@ -4,13 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
+
 /**
  * Verifies requirements of a {@link String#length()}.
  * <p>
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
 public interface StringLengthRequirements
-	extends PrimitiveIntegerRequirements<StringLengthRequirements>
+	extends PrimitiveIntegerRequirementsSpi<StringLengthRequirements>, 
+	Isolatable<StringLengthRequirements>
 {
 }

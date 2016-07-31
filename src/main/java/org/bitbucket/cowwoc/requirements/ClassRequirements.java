@@ -4,13 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
+
 /**
  * Verifies requirements of a {@link Class} parameter.
  * <p>
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-public interface ClassRequirements<T> extends ObjectRequirements<ClassRequirements<T>, Class<T>>
+public interface ClassRequirements<T>
+	extends ObjectRequirementsSpi<ClassRequirements<T>, Class<T>>, Isolatable<ClassRequirements<T>>
 {
 	/**
 	 * Ensures that the parameter is a superclass or super-interface of a class.

@@ -1,204 +1,243 @@
 /*
- * Copyright 2013 Gili Tzabari.
+ * Copyright 2016 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
-import java.util.Objects;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
- * Default implementation of NumberRequirements.
- * <p>
- * @param <S> the type of requirements that was instantiated
+ * Default implementation of {@code NumberRequirements}.
+ *
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-class NumberRequirementsImpl<S extends NumberRequirements<S, T>, T extends Number & Comparable<? super T>>
-	extends AbstractObjectRequirements<S, T>
-	implements NumberRequirements<S, T>
+final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
+	implements NumberRequirements<T>
 {
+	private final T parameter;
+	private final String name;
+	private final Configuration config;
+	private final ComparableRequirements<T> asComparable;
+
 	/**
-	 * Creates new NumberRequirementsImpl.
-	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * Creates a new NumberRequirementsImpl.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	NumberRequirementsImpl(T parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
+	NumberRequirementsImpl(T parameter, String name, Configuration config)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name, exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asComparable = new ComparableRequirementsImpl<>(parameter, name, config);
 	}
 
 	@Override
-	public S isIn(Range<T> range) throws NullPointerException, IllegalArgumentException
+	public NumberRequirements<T> withException(Class<? extends RuntimeException> exception)
 	{
-		Requirements.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter))
-			return self;
-		return throwException(IllegalArgumentException.class,
-			Ranges.getExceptionMessage(name, parameter, range));
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new NumberRequirementsImpl<>(parameter, name, newConfig);
 	}
 
 	@Override
-	public S isNegative() throws IllegalArgumentException
+	public NumberRequirements<T> isEqualTo(T value) throws IllegalArgumentException
+	{
+		asComparable.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isEqualTo(T value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isNotEqualTo(T value) throws IllegalArgumentException
+	{
+		asComparable.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isNotEqualTo(T value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isNull() throws IllegalArgumentException
+	{
+		asComparable.isNull();
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isNotNull() throws NullPointerException
+	{
+		asComparable.isNotNull();
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isNegative() throws IllegalArgumentException
 	{
 		if (parameter.longValue() < 0L)
-			return self;
-		return throwException(IllegalArgumentException.class, String.format("%s must be negative.\n" +
-			"Actual: %s", name, parameter));
+			return this;
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be negative.\n" +
+				"Actual: %s", name, parameter));
 	}
 
 	@Override
-	public S isNotNegative() throws IllegalArgumentException
+	public NumberRequirements<T> isNotNegative() throws IllegalArgumentException
 	{
 		if (parameter.longValue() >= 0L)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s may not be negative.\n" +
-				"Actual: %s", name, parameter));
+			return this;
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s may not be negative.", name),
+			"Actual", parameter);
 	}
 
 	@Override
-	public S isZero() throws IllegalArgumentException
+	public NumberRequirements<T> isZero() throws IllegalArgumentException
 	{
 		if (parameter.longValue() == 0L)
-			return self;
-		return throwException(IllegalArgumentException.class, String.format("%s must be zero.\n" +
-			"Actual: %s", name, parameter));
+			return this;
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be zero.", name),
+			"Actual", parameter);
 	}
 
 	@Override
-	public S isNotZero() throws IllegalArgumentException
+	public NumberRequirements<T> isNotZero() throws IllegalArgumentException
 	{
 		if (parameter.longValue() != 0L)
-			return self;
-		return throwException(IllegalArgumentException.class, String.format("%s may not be zero", name));
+			return this;
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s may not be zero", name));
 	}
 
 	@Override
-	public S isPositive() throws IllegalArgumentException
+	public NumberRequirements<T> isPositive() throws IllegalArgumentException
 	{
 		if (parameter.longValue() > 0L)
-			return self;
-		return throwException(IllegalArgumentException.class, String.format("%s must be positive.\n" +
-			"Actual: %s", name, parameter));
+			return this;
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be positive.", name),
+			"Actual", parameter);
 	}
 
 	@Override
-	public S isNotPositive() throws IllegalArgumentException
+	public NumberRequirements<T> isNotPositive() throws IllegalArgumentException
 	{
 		if (parameter.longValue() <= 0L)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s may not be positive.\n" +
-				"Actual: %s", name, parameter));
+			return this;
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s may not be positive.", name),
+			"Actual", parameter);
 	}
 
 	@Override
-	public S isLessThan(T value, String name) throws IllegalArgumentException
+	public NumberRequirements<T> isGreaterThan(T value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameter.compareTo(value) < 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be less than %s (%,d)", this.name, parameter.longValue(), name,
-				value.longValue()));
+		asComparable.isGreaterThan(value, name);
+		return this;
 	}
 
 	@Override
-	public S isLessThan(T value) throws IllegalArgumentException
+	public NumberRequirements<T> isGreaterThan(T value)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		if (parameter.compareTo(value) < 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be less than %,d", this.name, parameter.longValue(),
-				value.longValue()));
+		asComparable.isGreaterThan(value);
+		return this;
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(T value, String name) throws IllegalArgumentException
+	public NumberRequirements<T> isGreaterThanOrEqualTo(T value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameter.compareTo(value) <= 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be less than or equal to %s (%,d)", this.name,
-				parameter.longValue(), name, value.longValue()));
+		asComparable.isGreaterThanOrEqualTo(value, name);
+		return this;
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(T value) throws IllegalArgumentException
+	public NumberRequirements<T> isGreaterThanOrEqualTo(T value)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		if (parameter.compareTo(value) <= 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be less than or equal to %,d", name, parameter.longValue(),
-				value.longValue()));
+		asComparable.isGreaterThanOrEqualTo(value);
+		return this;
 	}
 
 	@Override
-	public S isGreaterThan(T value, String name) throws IllegalArgumentException
+	public NumberRequirements<T> isLessThan(T value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameter.compareTo(value) > 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.
-			format("%s (%,d) must be greater than %s (%,d)", this.name, parameter.longValue(), name,
-				value.longValue()));
+		asComparable.isLessThan(value, name);
+		return this;
 	}
 
 	@Override
-	public S isGreaterThan(T value) throws IllegalArgumentException
+	public NumberRequirements<T> isLessThan(T value)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		if (parameter.compareTo(value) > 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be greater than %,d", name, parameter.longValue(),
-				value.longValue()));
+		asComparable.isLessThan(value);
+		return this;
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(T value, String name) throws IllegalArgumentException
+	public NumberRequirements<T> isLessThanOrEqualTo(T value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameter.compareTo(value) >= 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be greater than or equal to %s (%,d)", this.name,
-				parameter.longValue(), name, value.longValue()));
+		asComparable.isLessThanOrEqualTo(value, name);
+		return this;
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(T value) throws IllegalArgumentException
+	public NumberRequirements<T> isLessThanOrEqualTo(T value)
+		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		if (parameter.compareTo(value) >= 0)
-			return self;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s (%,d) must be greater than or equal to %,d", name, parameter.longValue(),
-				value.longValue()));
+		asComparable.isLessThanOrEqualTo(value);
+		return this;
 	}
 
 	@Override
-	public S usingException(Class<? extends RuntimeException> exceptionOverride)
+	public NumberRequirements<T> isIn(Range<T> range)
+		throws NullPointerException, IllegalArgumentException
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return self;
-		@SuppressWarnings("unchecked")
-		S result = (S) new NumberRequirementsImpl<>(parameter, name, exceptionOverride);
-		return result;
+		asComparable.isIn(range);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isolate(Consumer<NumberRequirements<T>> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

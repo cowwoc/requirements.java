@@ -17,6 +17,12 @@ enum NoOpOptionalRequirements implements OptionalRequirements
 	INSTANCE;
 
 	@Override
+	public OptionalRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
 	public OptionalRequirements isEmpty()
 	{
 		return this;
@@ -24,12 +30,6 @@ enum NoOpOptionalRequirements implements OptionalRequirements
 
 	@Override
 	public OptionalRequirements isPresent()
-	{
-		return this;
-	}
-
-	@Override
-	public NoOpOptionalRequirements usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

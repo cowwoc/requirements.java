@@ -5,14 +5,15 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
+import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
 
 /**
  * Verifies requirements of a {@link Collection#size()}.
  * <p>
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
 public interface CollectionSizeRequirements
-	extends PrimitiveIntegerRequirements<CollectionSizeRequirements>
+	extends PrimitiveIntegerRequirementsSpi<CollectionSizeRequirements>, 
+	Isolatable<CollectionSizeRequirements>
 {
 }

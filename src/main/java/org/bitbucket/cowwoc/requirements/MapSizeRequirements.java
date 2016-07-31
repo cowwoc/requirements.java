@@ -5,14 +5,14 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Map;
+import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
 
 /**
  * Verifies requirements of a {@link Map#size()}.
  * <p>
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
 public interface MapSizeRequirements
-	extends PrimitiveIntegerRequirements<MapSizeRequirements>
+	extends PrimitiveIntegerRequirementsSpi<MapSizeRequirements>, Isolatable<MapSizeRequirements>
 {
 }

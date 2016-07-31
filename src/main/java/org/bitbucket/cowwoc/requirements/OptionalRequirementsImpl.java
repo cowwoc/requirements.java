@@ -4,31 +4,49 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of OptionalRequirements.
  * <p>
  * @author Gili Tzabari
  */
-final class OptionalRequirementsImpl extends AbstractObjectRequirements<OptionalRequirements, Optional<?>>
-	implements OptionalRequirements
+final class OptionalRequirementsImpl implements OptionalRequirements
 {
+	private final Optional<?> parameter;
+	private final String name;
+	private final Configuration config;
+	private final ObjectRequirements<Optional<?>> asObject;
+
 	/**
 	 * Creates new OptionalRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	OptionalRequirementsImpl(Optional<?> parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
-		throws NullPointerException, IllegalArgumentException
+		Configuration config) throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name, exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asObject = new ObjectRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
+	public OptionalRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new OptionalRequirementsImpl(parameter, name, newConfig);
 	}
 
 	@Override
@@ -36,7 +54,8 @@ final class OptionalRequirementsImpl extends AbstractObjectRequirements<Optional
 	{
 		if (parameter.isPresent())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be present", name));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be present", name));
 	}
 
 	@Override
@@ -44,14 +63,66 @@ final class OptionalRequirementsImpl extends AbstractObjectRequirements<Optional
 	{
 		if (!parameter.isPresent())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty", name));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be empty", name));
 	}
 
 	@Override
-	public OptionalRequirements usingException(Class<? extends RuntimeException> exceptionOverride)
+	public OptionalRequirements isNotNull() throws NullPointerException
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return this;
-		return new OptionalRequirementsImpl(parameter, name, exceptionOverride);
+		// Always true
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isNull() throws IllegalArgumentException
+	{
+		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isNotEqualTo(Optional<?> value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isNotEqualTo(Optional<?> value) throws IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isEqualTo(Optional<?> value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isEqualTo(Optional<?> value) throws IllegalArgumentException
+	{
+		asObject.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isolate(Consumer<OptionalRequirements> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

@@ -5,29 +5,48 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.net.URI;
-import java.util.Objects;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of UriRequirements.
  * <p>
  * @author Gili Tzabari
  */
-final class UriRequirementsImpl extends AbstractObjectRequirements<UriRequirements, URI>
-	implements UriRequirements
+final class UriRequirementsImpl implements UriRequirements
 {
+	private final URI parameter;
+	private final String name;
+	private final Configuration config;
+	private final ObjectRequirements<URI> asObject;
+
 	/**
 	 * Creates new UriRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	UriRequirementsImpl(URI parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
+		Configuration config)
 	{
-		super(parameter, name, exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name + ".length()";
+		this.config = config;
+		this.asObject = new ObjectRequirementsImpl<>(this.parameter, name, config);
+	}
+
+	@Override
+	public UriRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new UriRequirementsImpl(parameter, name, newConfig);
 	}
 
 	@Override
@@ -35,16 +54,67 @@ final class UriRequirementsImpl extends AbstractObjectRequirements<UriRequiremen
 	{
 		if (parameter.isAbsolute())
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must be absolute.\n" +
-				"Actual: %s", name, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be absolute.", name),
+			"Actual", parameter);
 	}
 
 	@Override
-	public UriRequirements usingException(Class<? extends RuntimeException> exceptionOverride)
+	public UriRequirements isNotNull() throws NullPointerException
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return this;
-		return new UriRequirementsImpl(parameter, name, exceptionOverride);
+		asObject.isNotNull();
+		return this;
+	}
+
+	@Override
+	public UriRequirements isNull() throws IllegalArgumentException
+	{
+		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public UriRequirements isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	public UriRequirements isNotEqualTo(URI value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public UriRequirements isNotEqualTo(URI value) throws IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public UriRequirements isEqualTo(URI value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public UriRequirements isEqualTo(URI value) throws IllegalArgumentException
+	{
+		asObject.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public UriRequirements isolate(Consumer<UriRequirements> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

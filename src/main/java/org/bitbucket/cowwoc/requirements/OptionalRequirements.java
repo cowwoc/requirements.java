@@ -5,13 +5,16 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
  * Verifies requirements of an {@link Optional} parameter.
  * <p>
  * @author Gili Tzabari
  */
-public interface OptionalRequirements extends ObjectRequirements<OptionalRequirements, Optional<?>>
+public interface OptionalRequirements
+	extends ObjectRequirementsSpi<OptionalRequirements, Optional<?>>, 
+	Isolatable<OptionalRequirements>
 {
 	/**
 	 * Ensures that the parameter is empty.

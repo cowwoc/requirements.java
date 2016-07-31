@@ -4,87 +4,242 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Objects;
+import com.google.common.collect.Range;
+import java.math.BigDecimal;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
- * Default implementation of BigDecimalPrecisionRequirements.
+ * Default implementation of {@code BigDecimalPrecisionRequirements}.
  * <p>
  * @author Gili Tzabari
  */
-final class BigDecimalPrecisionRequirementsImpl
-	extends PrimitiveIntegerRequirementsImpl<BigDecimalPrecisionRequirements>
-	implements BigDecimalPrecisionRequirements
+final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRequirements
 {
-	private static String getName(String name) throws NullPointerException, IllegalArgumentException
-	{
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		return name + ".precision()";
-	}
+	private final int parameter;
+	private final String name;
+	private final Configuration config;
+	private final PrimitiveIntegerRequirements asInt;
 
 	/**
 	 * Creates new BigDecimalPrecisionRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of BigDecimal.precision()
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	BigDecimalPrecisionRequirementsImpl(int parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
+	BigDecimalPrecisionRequirementsImpl(BigDecimal parameter, String name, Configuration config)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, getName(name), exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter.precision();
+		this.name = name + ".precision()";
+		this.config = config;
+		this.asInt = new PrimitiveIntegerRequirementsImpl(this.parameter, name, config);
+	}
+
+	/**
+	 * Constructor meant to be invoked by {@link #withException(Class)}.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 */
+	private BigDecimalPrecisionRequirementsImpl(int parameter, String name, Configuration config)
+	{
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asInt = new PrimitiveIntegerRequirementsImpl(this.parameter, name, config);
 	}
 
 	@Override
-	public BigDecimalPrecisionRequirements usingException(
-		Class<? extends RuntimeException> exception)
+	public BigDecimalPrecisionRequirements withException(Class<? extends RuntimeException> exception)
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return self;
-		return new BigDecimalPrecisionRequirementsImpl(parameter, name, exceptionOverride);
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new BigDecimalPrecisionRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isGreaterThan(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThan(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isGreaterThan(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThan(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isGreaterThanOrEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThanOrEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isGreaterThanOrEqualTo(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThanOrEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isLessThan(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThan(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isLessThan(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThan(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isLessThanOrEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThanOrEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isLessThanOrEqualTo(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThanOrEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isIn(Range<Integer> range)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(range);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isEqualTo(Integer value) throws IllegalArgumentException
+	{
+		asInt.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isNotEqualTo(Integer value)
+		throws IllegalArgumentException
+	{
+		asInt.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isNotEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	@Deprecated
+	public BigDecimalPrecisionRequirements isNull() throws IllegalArgumentException
+	{
+		asInt.isNull();
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isNotNull() throws NullPointerException
+	{
+		asInt.isNotNull();
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionRequirements isZero() throws IllegalArgumentException
 	{
-		throw new AssertionError(String.format("%s can never be zero", name));
+		throw new IllegalArgumentException(String.format("%s can never be zero", name));
 	}
 
 	@Override
 	public BigDecimalPrecisionRequirements isNotZero() throws IllegalArgumentException
 	{
 		// Always true
-		return self;
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionRequirements isNotPositive() throws IllegalArgumentException
 	{
-		throw new AssertionError(String.format("%s can never be non-positive", name));
+		throw new IllegalArgumentException(String.format("%s can never be non-positive", name));
 	}
 
 	@Override
 	public BigDecimalPrecisionRequirements isPositive() throws IllegalArgumentException
 	{
 		// Always true
-		return self;
+		return this;
 	}
 
 	@Override
 	public BigDecimalPrecisionRequirements isNotNegative() throws IllegalArgumentException
 	{
 		// Always true
-		return self;
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new AssertionError(String.format("%s can never be negative", name));
+		throw new IllegalArgumentException(String.format("%s can never be negative", name));
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isolate(
+		Consumer<BigDecimalPrecisionRequirements> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

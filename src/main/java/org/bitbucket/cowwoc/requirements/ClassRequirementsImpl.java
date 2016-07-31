@@ -4,31 +4,102 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Objects;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
- * Default implementation of ClassRequirements.
+ * Default implementation of {@code ClassRequirements}.
  * <p>
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-final class ClassRequirementsImpl<T> extends AbstractObjectRequirements<ClassRequirements<T>, Class<T>>
+final class ClassRequirementsImpl<T>
 	implements ClassRequirements<T>
 {
+	private final Class<T> parameter;
+	private final String name;
+	private final Configuration config;
+	private final ObjectRequirements<Class<T>> asObject;
+
 	/**
 	 * Creates new ClassRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	ClassRequirementsImpl(Class<T> parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
+	ClassRequirementsImpl(Class<T> parameter, String name, Configuration config)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name, exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asObject = new ObjectRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
+	public ClassRequirements<T> withException(Class<? extends RuntimeException> exception)
+	{
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new ClassRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ClassRequirements<T> isEqualTo(Class<T> value) throws IllegalArgumentException
+	{
+		asObject.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isEqualTo(Class<T> value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isNotEqualTo(Class<T> value) throws IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isNotEqualTo(Class<T> value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isNull() throws IllegalArgumentException
+	{
+		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isNotNull() throws NullPointerException
+	{
+		asObject.isNotNull();
+		return this;
 	}
 
 	@Override
@@ -38,17 +109,15 @@ final class ClassRequirementsImpl<T> extends AbstractObjectRequirements<ClassReq
 		Requirements.requireThat(type, "type").isNotNull();
 		if (parameter.isAssignableFrom(type))
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must be a supertype of %s\n" +
-				"Actual: %s", name, type, parameter.getClass()));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be a supertype of %s", name, type),
+			"Actual", parameter.getClass());
 	}
 
 	@Override
-	public ClassRequirements<T> usingException(
-		Class<? extends RuntimeException> exceptionOverride)
+	public ClassRequirements<T> isolate(Consumer<ClassRequirements<T>> consumer)
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return this;
-		return new ClassRequirementsImpl<>(parameter, name, exceptionOverride);
+		consumer.accept(this);
+		return this;
 	}
 }

@@ -4,87 +4,239 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Objects;
+import com.google.common.collect.Range;
+import java.math.BigDecimal;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
- * Default implementation of BigDecimalScaleRequirements.
- * <p>
+ * Default implementation of {@code BigDecimalScaleRequirements}.
+ *
  * @author Gili Tzabari
  */
-final class BigDecimalScaleRequirementsImpl
-	extends PrimitiveIntegerRequirementsImpl<BigDecimalScaleRequirements>
-	implements BigDecimalScaleRequirements
+final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequirements
 {
-	private static String getName(String name) throws NullPointerException, IllegalArgumentException
-	{
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		return name + ".scale()";
-	}
+	private final int parameter;
+	private final String name;
+	private final Configuration config;
+	private final PrimitiveIntegerRequirements asInt;
 
 	/**
 	 * Creates new BigDecimalScaleRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of BigDecimal.scale()
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	BigDecimalScaleRequirementsImpl(int parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
-		throws NullPointerException, IllegalArgumentException
+	BigDecimalScaleRequirementsImpl(BigDecimal parameter, String name,
+		Configuration config) throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, getName(name), exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter.scale();
+		this.name = name + ".scale()";
+		this.config = config;
+		this.asInt = new PrimitiveIntegerRequirementsImpl(this.parameter, name, config);
+	}
+
+	/**
+	 * Constructor meant to be invoked by {@link #withException(Class)}.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 */
+	private BigDecimalScaleRequirementsImpl(int parameter, String name,
+		Configuration config)
+	{
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asInt = new PrimitiveIntegerRequirementsImpl(this.parameter, name, config);
 	}
 
 	@Override
-	public BigDecimalScaleRequirements usingException(
-		Class<? extends RuntimeException> exceptionOverride)
+	public BigDecimalScaleRequirements withException(Class<? extends RuntimeException> exception)
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
 			return this;
-		return new BigDecimalScaleRequirementsImpl(parameter, name, exceptionOverride);
+		return new BigDecimalScaleRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	@Deprecated
+	public BigDecimalScaleRequirements isNull() throws IllegalArgumentException
+	{
+		asInt.isNull();
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isGreaterThan(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThan(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isGreaterThan(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThan(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isGreaterThanOrEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThanOrEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isGreaterThanOrEqualTo(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isGreaterThanOrEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isLessThan(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThan(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isLessThan(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThan(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isLessThanOrEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThanOrEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isLessThanOrEqualTo(Integer value)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isLessThanOrEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isIn(Range<Integer> range)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(range);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isEqualTo(Integer value) throws IllegalArgumentException
+	{
+		asInt.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isNotEqualTo(Integer value) throws IllegalArgumentException
+	{
+		asInt.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isNotEqualTo(Integer value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isNotNull() throws NullPointerException
+	{
+		asInt.isNotNull();
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalScaleRequirements isZero() throws IllegalArgumentException
 	{
-		throw new AssertionError(String.format("%s can never be zero", name));
+		throw new IllegalArgumentException(String.format("%s can never be zero", name));
 	}
 
 	@Override
 	public BigDecimalScaleRequirements isNotZero() throws IllegalArgumentException
 	{
 		// Always true
-		return self;
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalScaleRequirements isNotPositive() throws IllegalArgumentException
 	{
-		throw new AssertionError(String.format("%s can never be non-positive", name));
+		throw new IllegalArgumentException(String.format("%s can never be non-positive", name));
 	}
 
 	@Override
 	public BigDecimalScaleRequirements isPositive() throws IllegalArgumentException
 	{
 		// Always true
-		return self;
+		return this;
 	}
 
 	@Override
 	public BigDecimalScaleRequirements isNotNegative() throws IllegalArgumentException
 	{
 		// Always true
-		return self;
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalScaleRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new AssertionError(String.format("%s can never be negative", name));
+		throw new IllegalArgumentException(String.format("%s can never be negative", name));
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isolate(Consumer<BigDecimalScaleRequirements> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

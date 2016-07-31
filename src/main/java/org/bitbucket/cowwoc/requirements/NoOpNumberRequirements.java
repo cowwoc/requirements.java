@@ -12,161 +12,157 @@ import java.util.function.Consumer;
  * <p>
  * @author Gili Tzabari
  */
-final class NoOpNumberRequirements<S extends NumberRequirements<S, T>, T extends Number & Comparable<? super T>>
-	implements NumberRequirements<S, T>
+final class NoOpNumberRequirements<T extends Number & Comparable<? super T>>
+	implements NumberRequirements<T>
 {
-	private final S self;
-
 	/**
 	 * Creates a new NoOpNumberRequirements.
 	 */
-	@SuppressWarnings("unchecked")
 	NoOpNumberRequirements()
 	{
-		this.self = (S) this;
 	}
 
 	@Override
-	public S isGreaterThan(T value, String name)
+	public NumberRequirements<T> withException(Class<? extends RuntimeException> exception)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isGreaterThan(T value)
+	public NumberRequirements<T> isGreaterThan(T value, String name)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(T value, String name)
+	public NumberRequirements<T> isGreaterThan(T value)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(T value)
+	public NumberRequirements<T> isGreaterThanOrEqualTo(T value, String name)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isIn(Range<T> range)
+	public NumberRequirements<T> isGreaterThanOrEqualTo(T value)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isLessThan(T value, String name)
+	public NumberRequirements<T> isIn(Range<T> range)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isLessThan(T value)
+	public NumberRequirements<T> isLessThan(T value, String name)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(T value, String name)
+	public NumberRequirements<T> isLessThan(T value)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(T value)
+	public NumberRequirements<T> isLessThanOrEqualTo(T value, String name)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNegative()
+	public NumberRequirements<T> isLessThanOrEqualTo(T value)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNotNegative()
+	public NumberRequirements<T> isNegative()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNotPositive()
+	public NumberRequirements<T> isNotNegative()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNotZero()
+	public NumberRequirements<T> isNotPositive()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isPositive()
+	public NumberRequirements<T> isNotZero()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isZero()
+	public NumberRequirements<T> isPositive()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S usingException(Class<? extends RuntimeException> exception)
+	public NumberRequirements<T> isZero()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isEqualTo(T value)
+	public NumberRequirements<T> isEqualTo(T value)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isEqualTo(T value, String name)
+	public NumberRequirements<T> isEqualTo(T value, String name)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNotEqualTo(T value)
+	public NumberRequirements<T> isNotEqualTo(T value)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNotEqualTo(T value, String name)
+	public NumberRequirements<T> isNotEqualTo(T value, String name)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isInstanceOf(Class<?> type)
+	public NumberRequirements<T> isInstanceOf(Class<?> type)
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNull()
+	public NumberRequirements<T> isNull()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isNotNull()
+	public NumberRequirements<T> isNotNull()
 	{
-		return self;
+		return this;
 	}
 
 	@Override
-	public S isolate(Consumer<S> consumer)
+	public NumberRequirements<T> isolate(Consumer<NumberRequirements<T>> consumer)
 	{
-		return self;
+		return this;
 	}
 }

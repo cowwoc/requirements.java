@@ -14,155 +14,154 @@ import java.util.function.Consumer;
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-final class NoOpCollectionRequirements<E, T extends Collection<E>>
-	implements CollectionRequirements<E, T>
+final class NoOpCollectionRequirements<E> implements CollectionRequirements<E>
 {
 	@Override
-	public CollectionRequirements<E, T> isEmpty()
+	public CollectionRequirements<E> withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isNotEmpty()
+	public CollectionRequirements<E> isEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> usingException(Class<? extends RuntimeException> exception)
+	public CollectionRequirements<E> isNotEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isEqualTo(T value)
+	public CollectionRequirements<E> isEqualTo(Collection<E> value)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isEqualTo(T value, String name)
+	public CollectionRequirements<E> isEqualTo(Collection<E> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isNotEqualTo(T value)
+	public CollectionRequirements<E> isNotEqualTo(Collection<E> value)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isNotEqualTo(T value, String name)
+	public CollectionRequirements<E> isNotEqualTo(Collection<E> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isInstanceOf(Class<?> type)
+	public CollectionRequirements<E> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isNull()
+	public CollectionRequirements<E> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isNotNull()
+	public CollectionRequirements<E> isNotNull()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> contains(Object element)
+	public CollectionRequirements<E> contains(Object element)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> contains(Object element, String name)
+	public CollectionRequirements<E> contains(Object element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> containsExactly(Collection<E> elements)
+	public CollectionRequirements<E> containsExactly(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> containsExactly(Collection<E> elements, String name)
+	public CollectionRequirements<E> containsExactly(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> containsAny(Collection<E> elements)
+	public CollectionRequirements<E> containsAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> containsAny(Collection<E> elements, String name)
+	public CollectionRequirements<E> containsAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> containsAll(Collection<E> elements)
+	public CollectionRequirements<E> containsAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> containsAll(Collection<E> elements, String name)
+	public CollectionRequirements<E> containsAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContain(E element)
+	public CollectionRequirements<E> doesNotContain(E element)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContain(E element, String name)
+	public CollectionRequirements<E> doesNotContain(E element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContainAny(Collection<E> elements)
+	public CollectionRequirements<E> doesNotContainAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContainAny(Collection<E> elements, String name)
+	public CollectionRequirements<E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContainAll(Collection<E> elements)
+	public CollectionRequirements<E> doesNotContainAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContainAll(Collection<E> elements, String name)
+	public CollectionRequirements<E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionRequirements<E, T> doesNotContainDuplicates() throws IllegalArgumentException
+	public CollectionRequirements<E> doesNotContainDuplicates()
 	{
 		return this;
 	}
@@ -174,7 +173,7 @@ final class NoOpCollectionRequirements<E, T extends Collection<E>>
 	}
 
 	@Override
-	public CollectionRequirements<E, T> isolate(Consumer<CollectionRequirements<E, T>> consumer)
+	public CollectionRequirements<E> isolate(Consumer<CollectionRequirements<E>> consumer)
 	{
 		return this;
 	}

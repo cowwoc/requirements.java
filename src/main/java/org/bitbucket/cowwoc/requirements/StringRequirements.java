@@ -4,12 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
+
 /**
  * Interface needed for Requirements.assertThat().
  * <p>
  * @author Gili Tzabari
  */
-public interface StringRequirements extends ObjectRequirements<StringRequirements, String>
+public interface StringRequirements
+	extends ObjectRequirementsSpi<StringRequirements, String>, Isolatable<StringRequirements>
 {
 	/**
 	 * Ensures that the parameter does not end with a value.

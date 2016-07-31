@@ -5,15 +5,41 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.math.BigDecimal;
+import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
 
 /**
  * Verifies requirements of a {@link BigDecimal#precision()}.
  * <p>
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
-
 public interface BigDecimalPrecisionRequirements
-	extends PrimitiveIntegerRequirements<BigDecimalPrecisionRequirements>
+	extends PrimitiveIntegerRequirementsSpi<BigDecimalPrecisionRequirements>, 
+	Isolatable<BigDecimalPrecisionRequirements>
 {
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated {@code BigDecimal.precision()} cannot be zero
+	 */
+	@Deprecated
+	@Override
+	BigDecimalPrecisionRequirements isZero() throws IllegalArgumentException;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated {@code BigDecimal.precision()} cannot be non-positive
+	 */
+	@Override
+	@Deprecated
+	BigDecimalPrecisionRequirements isNotPositive() throws IllegalArgumentException;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated {@code BigDecimal.precision()} cannot be negative
+	 */
+	@Override
+	@Deprecated
+	BigDecimalPrecisionRequirements isNegative() throws IllegalArgumentException;
 }

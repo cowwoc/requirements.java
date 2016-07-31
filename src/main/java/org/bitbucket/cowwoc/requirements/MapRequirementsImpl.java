@@ -4,10 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of MapRequirements.
@@ -16,51 +16,120 @@ import java.util.Set;
  * @param <V> the type of value in the map
  * @author Gili Tzabari
  */
-final class MapRequirementsImpl<K, V> extends AbstractObjectRequirements<MapRequirements<K, V>, Map<K, V>>
-	implements MapRequirements<K, V>
+final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 {
+	private final Map<K, V> parameter;
+	private final String name;
+	private final Configuration config;
+	private final ObjectRequirements<Map<K, V>> asObject;
+
 	/**
 	 * Creates new MapRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	MapRequirementsImpl(Map<K, V> parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
+		Configuration config) throws NullPointerException, IllegalArgumentException
+	{
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asObject = new ObjectRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
+	public MapRequirements<K, V> withException(Class<? extends RuntimeException> exception)
+	{
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new MapRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public MapRequirements<K, V> isEqualTo(Map<K, V> value) throws IllegalArgumentException
+	{
+		asObject.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public MapRequirements<K, V> isEqualTo(Map<K, V> value, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name, exceptionOverride);
+		asObject.isEqualTo(value, name);
+		return this;
 	}
 
 	@Override
-	public CollectionRequirements<K, Set<K>> keySet()
+	public MapRequirements<K, V> isNotEqualTo(Map<K, V> value) throws IllegalArgumentException
 	{
-		return new MapKeySetRequirementsImpl<>(parameter, name, exceptionOverride);
+		asObject.isNotEqualTo(value);
+		return this;
 	}
 
 	@Override
-	public CollectionRequirements<V, Collection<V>> values()
+	public MapRequirements<K, V> isNotEqualTo(Map<K, V> value, String name)
+		throws NullPointerException, IllegalArgumentException
 	{
-		return new MapValuesRequirementsImpl<>(parameter, name, exceptionOverride);
+		asObject.isNotEqualTo(value, name);
+		return this;
 	}
 
 	@Override
-	public CollectionRequirements<Map.Entry<K, V>, Collection<Map.Entry<K, V>>> entrySet()
+	public MapRequirements<K, V> isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
 	{
-		return new MapEntrySetRequirementsImpl<>(parameter, name, exceptionOverride);
+		asObject.isInstanceOf(type);
+		return this;
 	}
 
 	@Override
+	public MapRequirements<K, V> isNull() throws IllegalArgumentException
+	{
+		asObject.isNull();
+		return this;
+	}
 
+	@Override
+	public MapRequirements<K, V> isNotNull() throws NullPointerException
+	{
+		asObject.isNotNull();
+		return this;
+	}
+
+	@Override
+	public CollectionRequirements<K> keySet()
+	{
+		return new MapKeySetRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
+	public CollectionRequirements<V> values()
+	{
+		return new MapValuesRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
+	public CollectionRequirements<Entry<K, V>> entrySet()
+	{
+		return new MapEntrySetRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
 	public MapRequirements<K, V> isEmpty() throws IllegalArgumentException
 	{
 		if (parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual: %s", name, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be empty.", name),
+			"Actual", parameter);
 	}
 
 	@Override
@@ -68,21 +137,20 @@ final class MapRequirementsImpl<K, V> extends AbstractObjectRequirements<MapRequ
 	{
 		if (!parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s may not be empty", name));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s may not be empty", name));
 	}
 
 	@Override
 	public MapSizeRequirements size()
 	{
-		return new MapSizeRequirementsImpl(parameter, name, exceptionOverride);
+		return new MapSizeRequirementsImpl(parameter, name, config);
 	}
 
 	@Override
-	public MapRequirements<K, V> usingException(
-		Class<? extends RuntimeException> exceptionOverride)
+	public MapRequirements<K, V> isolate(Consumer<MapRequirements<K, V>> consumer)
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return this;
-		return new MapRequirementsImpl<>(parameter, name, exceptionOverride);
+		consumer.accept(this);
+		return this;
 	}
 }

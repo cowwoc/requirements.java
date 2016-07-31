@@ -7,13 +7,15 @@ package org.bitbucket.cowwoc.requirements;
 import java.io.IOException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
  * Verifies requirements of a {@link Path} parameter.
  * <p>
  * @author Gili Tzabari
  */
-public interface PathRequirements extends ObjectRequirements<PathRequirements, Path>
+public interface PathRequirements
+	extends ObjectRequirementsSpi<PathRequirements, Path>, Isolatable<PathRequirements>
 {
 	/**
 	 * Ensures that a path exists.

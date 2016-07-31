@@ -5,15 +5,16 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.math.BigDecimal;
+import org.bitbucket.cowwoc.requirements.spi.NumberRequirementsSpi;
 
 /**
  * Verifies requirements of a {@link BigDecimal} parameter.
  * <p>
  * @author Gili Tzabari
  */
-@SuppressWarnings("MarkerInterface")
 public interface BigDecimalRequirements
-	extends NumberRequirements<BigDecimalRequirements, BigDecimal>
+	extends NumberRequirementsSpi<BigDecimalRequirements, BigDecimal>, 
+	Isolatable<BigDecimalRequirements>
 {
 	/**
 	 * @return requirements over BigDecimal.precision()

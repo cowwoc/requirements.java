@@ -2,17 +2,19 @@
  * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements;
+package org.bitbucket.cowwoc.requirements.spi;
+
+import com.google.common.collect.Range;
 
 /**
- * Interface needed for Requirements.assertThat().
+ * Verifies requirements of a {@link Comparable}.
  * <p>
- * @param <S> the type of requirements that was instantiated
+ * @param <S> the type of the non-SPI interface extending this interface
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends Comparable<? super T>>
-	extends ObjectRequirements<S, T>
+public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S, T>, T extends Comparable<? super T>>
+	extends ObjectRequirementsSpi<S, T>
 {
 	/**
 	 * Ensures that the parameter is greater than a variable.
@@ -24,7 +26,8 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws IllegalArgumentException if {@code parameter} is less than or equal to {@code value};
 	 *                                  if {@code name} is empty
 	 */
-	S isGreaterThan(T value, String name) throws NullPointerException, IllegalArgumentException;
+	S isGreaterThan(T value, String name)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is greater than a constant.
@@ -34,7 +37,8 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if {@code parameter} is less than or equal to {@code value}
 	 */
-	S isGreaterThan(T value) throws NullPointerException, IllegalArgumentException;
+	S isGreaterThan(T value)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is greater than or bigger than a variable.
@@ -57,7 +61,8 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if {@code parameter} is less than to {@code value}
 	 */
-	S isGreaterThanOrEqualTo(T value) throws NullPointerException, IllegalArgumentException;
+	S isGreaterThanOrEqualTo(T value)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than the value of a variable.
@@ -69,7 +74,8 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws IllegalArgumentException if {@code parameter} is greater than or equal to
 	 *                                  {@code value}; if {@code name} is empty
 	 */
-	S isLessThan(T value, String name) throws NullPointerException, IllegalArgumentException;
+	S isLessThan(T value, String name)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than a constant.
@@ -79,7 +85,8 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if {@code parameter} is greater than or equal to {@code value}
 	 */
-	S isLessThan(T value) throws NullPointerException, IllegalArgumentException;
+	S isLessThan(T value)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than or equal to a variable.
@@ -91,7 +98,8 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws IllegalArgumentException if {@code parameter} is greater than {@code value}; if
 	 *                                  {@code name} is empty
 	 */
-	S isLessThanOrEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException;
+	S isLessThanOrEqualTo(T value, String name)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is less than or equal to a constant.
@@ -101,5 +109,17 @@ interface CompareToRequirements<S extends CompareToRequirements<S, T>, T extends
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if {@code parameter} is greater than {@code value}
 	 */
-	S isLessThanOrEqualTo(T value) throws NullPointerException, IllegalArgumentException;
+	S isLessThanOrEqualTo(T value)
+		throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter is within range.
+	 * <p>
+	 * @param range the range
+	 * @return this
+	 * @throws NullPointerException     if {@code range} is null
+	 * @throws IllegalArgumentException if {@code parameter} is not in range
+	 */
+	S isIn(Range<T> range)
+		throws NullPointerException, IllegalArgumentException;
 }

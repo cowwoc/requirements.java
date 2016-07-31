@@ -18,6 +18,12 @@ enum NoOpPathRequirements implements PathRequirements
 	INSTANCE;
 
 	@Override
+	public PathRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
 	public PathRequirements exists()
 	{
 		return this;
@@ -43,12 +49,6 @@ enum NoOpPathRequirements implements PathRequirements
 
 	@Override
 	public PathRequirements isRelative()
-	{
-		return this;
-	}
-
-	@Override
-	public NoOpPathRequirements usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

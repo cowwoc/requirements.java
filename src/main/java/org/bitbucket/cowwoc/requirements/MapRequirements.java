@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
  * Verifies requirements of a {@link Map} parameter.
@@ -16,23 +15,24 @@ import java.util.Set;
  * @param <V> the type of value in the map
  * @author Gili Tzabari
  */
-public interface MapRequirements<K, V> extends
-	ObjectRequirements<MapRequirements<K, V>, Map<K, V>>
+public interface MapRequirements<K, V>
+	extends ObjectRequirementsSpi<MapRequirements<K, V>, Map<K, V>>,
+	Isolatable<MapRequirements<K, V>>
 {
 	/**
 	 * @return requirements over {@link Map#keySet()}
 	 */
-	CollectionRequirements<K, Set<K>> keySet();
+	CollectionRequirements<K> keySet();
 
 	/**
 	 * @return requirements over {@link Map#values()}
 	 */
-	CollectionRequirements<V, Collection<V>> values();
+	CollectionRequirements<V> values();
 
 	/**
 	 * @return requirements over {@link Map#entrySet()}
 	 */
-	CollectionRequirements<Entry<K, V>, Collection<Entry<K, V>>> entrySet();
+	CollectionRequirements<Entry<K, V>> entrySet();
 
 	/**
 	 * Ensures that the parameter is empty.

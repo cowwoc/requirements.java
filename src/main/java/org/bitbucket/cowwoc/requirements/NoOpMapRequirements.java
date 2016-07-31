@@ -4,10 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -17,24 +15,35 @@ import java.util.function.Consumer;
  */
 final class NoOpMapRequirements implements MapRequirements<Object, Object>
 {
-	// Cannot be implemented as an enum because of a collision with Enum.values() method
-	@SuppressWarnings("PackageVisibleField")
-	public static NoOpMapRequirements INSTANCE = new NoOpMapRequirements();
+	public static final NoOpMapRequirements INSTANCE = new NoOpMapRequirements();
+
+	/**
+	 * Prevent construction.
+	 */
+	private NoOpMapRequirements()
+	{
+	}
 
 	@Override
-	public CollectionRequirements<Object, Set<Object>> keySet()
+	public MapRequirements<Object, Object> withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionRequirements<Object> keySet()
 	{
 		return new NoOpCollectionRequirements<>();
 	}
 
 	@Override
-	public CollectionRequirements<Object, Collection<Object>> values()
+	public CollectionRequirements<Object> values()
 	{
 		return new NoOpCollectionRequirements<>();
 	}
 
 	@Override
-	public CollectionRequirements<Entry<Object, Object>, Collection<Entry<Object, Object>>> entrySet()
+	public CollectionRequirements<Entry<Object, Object>> entrySet()
 	{
 		return new NoOpCollectionRequirements<>();
 	}
@@ -47,12 +56,6 @@ final class NoOpMapRequirements implements MapRequirements<Object, Object>
 
 	@Override
 	public MapRequirements<Object, Object> isNotEmpty()
-	{
-		return this;
-	}
-
-	@Override
-	public NoOpMapRequirements usingException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}

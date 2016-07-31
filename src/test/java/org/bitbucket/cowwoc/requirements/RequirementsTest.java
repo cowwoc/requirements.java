@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import java.util.Random;
 import org.testng.annotations.Test;
 
@@ -117,20 +115,20 @@ public final class RequirementsTest
 	public void isNotNullCustomException()
 	{
 		Object parameter = null;
-		Requirements.requireThat(parameter, "parameter").usingException(IllegalStateException.class).
+		Requirements.requireThat(parameter, "parameter").withException(IllegalStateException.class).
 			isNotNull();
 	}
 
 	/**
-	 * BUG: {@code Requirements.usingException(Class<? extends RuntimeException>)} was throwing a
+	 * BUG: {@code Requirements.withException(Class<? extends RuntimeException>)} was throwing a
 	 * {@code ClassCastException} if the instance was anything other than
 	 * {@code ObjectRequirementsImpl}.
 	 */
 	@Test
-	public void customExceptionRequirementsubclass()
+	public void customExceptionRequirementSubclass()
 	{
 		int parameter = 5;
-		Requirements.requireThat(parameter, "parameter").usingException(IllegalStateException.class).
+		Requirements.requireThat(parameter, "parameter").withException(IllegalStateException.class).
 			isNotNull();
 	}
 

@@ -4,19 +4,166 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.collect.Range;
+import java.util.function.Consumer;
+
 /**
  * An implementation of MapSizeRequirements that does nothing.
  * <p>
  * @author Gili Tzabari
  */
-final class NoOpMapSizeRequirements
-	extends AbstractNoOpNumberRequirements<MapSizeRequirements, Integer>
-	implements MapSizeRequirements
+final class NoOpMapSizeRequirements implements MapSizeRequirements
 {
 	public static final NoOpMapSizeRequirements INSTANCE = new NoOpMapSizeRequirements();
 
+	/**
+	 * Prevent construction.
+	 */
+	private NoOpMapSizeRequirements()
+	{
+	}
+
 	@Override
-	public MapSizeRequirements usingException(Class<? extends RuntimeException> exception)
+	public MapSizeRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Deprecated
+	@Override
+	public MapSizeRequirements isNull()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNegative()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNotNegative()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNotPositive()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNotZero()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isPositive()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isZero()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isGreaterThan(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isGreaterThan(Integer value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isGreaterThanOrEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isGreaterThanOrEqualTo(Integer value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isLessThan(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isLessThan(Integer value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isLessThanOrEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isLessThanOrEqualTo(Integer value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isIn(Range<Integer> range)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isEqualTo(Integer value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNotEqualTo(Integer value)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNotEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isInstanceOf(Class<?> type)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isolate(Consumer<MapSizeRequirements> consumer)
 	{
 		return this;
 	}

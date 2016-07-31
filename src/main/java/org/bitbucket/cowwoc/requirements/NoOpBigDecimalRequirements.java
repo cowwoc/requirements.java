@@ -4,21 +4,28 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.collect.Range;
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 /**
- * An implementation of BigDecimalRequirements that does nothing.
- * <p>
+ * An implementation of {@code BigDecimalRequirements} that does nothing.
+ *
  * @author Gili Tzabari
  */
-final class NoOpBigDecimalRequirements
-	extends AbstractNoOpNumberRequirements<BigDecimalRequirements, BigDecimal>
-	implements BigDecimalRequirements
+final class NoOpBigDecimalRequirements implements BigDecimalRequirements
 {
 	public static final NoOpBigDecimalRequirements INSTANCE = new NoOpBigDecimalRequirements();
 
+	/**
+	 * Prevent construction.
+	 */
+	private NoOpBigDecimalRequirements()
+	{
+	}
+
 	@Override
-	public NoOpBigDecimalRequirements usingException(Class<? extends RuntimeException> exception)
+	public BigDecimalRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
@@ -33,5 +40,143 @@ final class NoOpBigDecimalRequirements
 	public BigDecimalScaleRequirements scale()
 	{
 		return NoOpBigDecimalScaleRequirements.INSTANCE;
+	}
+
+	@Override
+	public BigDecimalRequirements isNegative()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNotNegative()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNotPositive()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNotZero()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isPositive()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isZero()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isGreaterThan(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isGreaterThan(BigDecimal value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isGreaterThanOrEqualTo(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isGreaterThanOrEqualTo(BigDecimal value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isLessThan(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isLessThan(BigDecimal value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isLessThanOrEqualTo(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isLessThanOrEqualTo(BigDecimal value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isIn(Range<BigDecimal> range)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isEqualTo(BigDecimal value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isEqualTo(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNotEqualTo(BigDecimal value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNotEqualTo(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isInstanceOf(Class<?> type)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNull()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isNotNull()
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isolate(Consumer<BigDecimalRequirements> consumer)
+	{
+		return this;
 	}
 }

@@ -6,33 +6,50 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of StringRequirements.
  * <p>
  * @author Gili Tzabari
  */
-final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequirements, String>
-	implements StringRequirements
+final class StringRequirementsImpl implements StringRequirements
 {
 	private final static Pattern EMAIL_PATTERN = Pattern.compile("[^@]+@[^@]+");
+	private final String parameter;
+	private final String name;
+	private final Configuration config;
+	private final ObjectRequirements<String> asObject;
 
 	/**
 	 * Creates new StringRequirementsImpl.
 	 * <p>
-	 * @param parameter         the value of the parameter
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @throws NullPointerException     if {@code name} is null
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws NullPointerException     if {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	StringRequirementsImpl(String parameter, String name,
-		Class<? extends RuntimeException> exceptionOverride)
-		throws NullPointerException, IllegalArgumentException
+		Configuration config) throws NullPointerException, IllegalArgumentException
 	{
-		super(parameter, name, exceptionOverride);
+		assert (name != null);
+		assert (config != null);
+		this.parameter = parameter;
+		this.name = name;
+		this.config = config;
+		this.asObject = new ObjectRequirementsImpl<>(parameter, name, config);
+	}
+
+	@Override
+	public StringRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new StringRequirementsImpl(parameter, name, newConfig);
 	}
 
 	/**
@@ -47,8 +64,9 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s must be empty.\n" +
-			"Actual: %s", name, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be empty.", name),
+			"Actual", parameter);
 	}
 
 	/**
@@ -63,7 +81,8 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (!parameter.isEmpty())
 			return this;
-		return throwException(IllegalArgumentException.class, String.format("%s may not be empty", name));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s may not be empty", name));
 	}
 
 	/**
@@ -77,7 +96,7 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 		String trimmed = parameter.trim();
 		if (trimmed.equals(parameter))
 			return this;
-		return new StringRequirementsImpl(trimmed, name, exceptionOverride);
+		return new StringRequirementsImpl(trimmed, name, config);
 	}
 
 	/**
@@ -91,8 +110,9 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (EMAIL_PATTERN.matcher(parameter).matches())
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s does not contain a valid email format: %s", name, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s does not contain a valid email format", name),
+			"Actual", parameter);
 	}
 
 	/**
@@ -108,8 +128,9 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 		char firstCharacter = parameter.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
-			return throwException(IllegalArgumentException.class,
-				String.format("%s does not contain a valid IP address format: %s", name, parameter));
+			throw config.createException(IllegalArgumentException.class,
+				String.format("%s does not contain a valid IP address format", name),
+				"Actual", parameter);
 		}
 		try
 		{
@@ -117,8 +138,10 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 		}
 		catch (UnknownHostException e)
 		{
-			return throwException(IllegalArgumentException.class,
-				String.format("%s does not contain a valid IP address format: %s", name, parameter), e);
+			throw config.createException(IllegalArgumentException.class,
+				String.format("%s does not contain a valid IP address format", name),
+				"Actual", parameter,
+				e);
 		}
 		return this;
 	}
@@ -135,9 +158,9 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (parameter.startsWith(prefix))
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must start with \"%s\".\n" +
-				"Actual: \"%s\"", name, prefix, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must start with \"%s\".", name, prefix),
+			"Actual", parameter);
 	}
 
 	/**
@@ -152,9 +175,9 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (!parameter.startsWith(prefix))
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must not start with \"%s\".\n" +
-				"Actual: \"%s\"", name, prefix, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must not start with \"%s\".", name, prefix),
+			"Actual", parameter);
 	}
 
 	/**
@@ -169,9 +192,9 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (parameter.endsWith(suffix))
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must end with \"%s\".\n" +
-				"Actual: \"%s\"", name, suffix, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must end with \"%s\".", name, suffix),
+			"Actual", parameter);
 	}
 
 	/**
@@ -186,22 +209,73 @@ final class StringRequirementsImpl extends AbstractObjectRequirements<StringRequ
 	{
 		if (!parameter.endsWith(suffix))
 			return this;
-		return throwException(IllegalArgumentException.class,
-			String.format("%s must not end with \"%s\".\n" +
-				"Actual: \"%s\"", name, suffix, parameter));
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must not end with \"%s\".", name, suffix),
+			"Actual", parameter);
 	}
 
 	@Override
 	public StringLengthRequirements length()
 	{
-		return new StringLengthRequirementsImpl(parameter, name, exceptionOverride);
+		return new StringLengthRequirementsImpl(parameter, name, config);
 	}
 
 	@Override
-	public StringRequirements usingException(Class<? extends RuntimeException> exceptionOverride)
+	public StringRequirements isEqualTo(String value) throws IllegalArgumentException
 	{
-		if (Objects.equals(exceptionOverride, this.exceptionOverride))
-			return this;
-		return new StringRequirementsImpl(parameter, name, exceptionOverride);
+		asObject.isEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public StringRequirements isEqualTo(String value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public StringRequirements isNotEqualTo(String value) throws IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value);
+		return this;
+	}
+
+	@Override
+	public StringRequirements isNotEqualTo(String value, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public StringRequirements isInstanceOf(Class<?> type)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isInstanceOf(type);
+		return this;
+	}
+
+	@Override
+	public StringRequirements isNull() throws IllegalArgumentException
+	{
+		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public StringRequirements isNotNull() throws NullPointerException
+	{
+		asObject.isNotNull();
+		return this;
+	}
+
+	@Override
+	public StringRequirements isolate(Consumer<StringRequirements> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }
