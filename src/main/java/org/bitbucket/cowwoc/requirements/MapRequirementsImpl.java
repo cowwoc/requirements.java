@@ -53,6 +53,15 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	}
 
 	@Override
+	public MapRequirements<K, V> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
+		if (newConfig == config)
+			return this;
+		return new MapRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
 	public MapRequirements<K, V> isEqualTo(Map<K, V> value) throws IllegalArgumentException
 	{
 		asObject.isEqualTo(value);

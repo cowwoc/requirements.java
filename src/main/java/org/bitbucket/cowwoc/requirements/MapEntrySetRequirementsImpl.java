@@ -81,6 +81,15 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	}
 
 	@Override
+	public CollectionRequirements<Entry<K, V>> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
+		if (newConfig == config)
+			return this;
+		return new MapEntrySetRequirementsImpl<>(map, parameter, name, newConfig);
+	}
+
+	@Override
 	public CollectionRequirements<Entry<K, V>> isEqualTo(Collection<Entry<K, V>> value)
 		throws IllegalArgumentException
 	{

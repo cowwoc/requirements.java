@@ -31,6 +31,12 @@ final class NoOpMapRequirements implements MapRequirements<Object, Object>
 	}
 
 	@Override
+	public MapRequirements<Object, Object> withContext(Map<String, Object> context)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionRequirements<Object> keySet()
 	{
 		return new NoOpCollectionRequirements<>();

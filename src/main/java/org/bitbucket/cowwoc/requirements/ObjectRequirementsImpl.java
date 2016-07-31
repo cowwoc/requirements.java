@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.base.Strings;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
@@ -114,6 +115,15 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	public ObjectRequirements<T> withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new ObjectRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ObjectRequirements<T> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new ObjectRequirementsImpl<>(parameter, name, newConfig);

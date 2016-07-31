@@ -79,6 +79,15 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	}
 
 	@Override
+	public CollectionRequirements<K> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
+		if (newConfig == config)
+			return this;
+		return new MapKeySetRequirementsImpl<>(map, parameter, name, newConfig);
+	}
+
+	@Override
 	public CollectionRequirements<K> isEqualTo(Collection<K> value) throws IllegalArgumentException
 	{
 		collection.isEqualTo(value);

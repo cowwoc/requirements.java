@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -47,6 +48,15 @@ final class StringRequirementsImpl implements StringRequirements
 	public StringRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new StringRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public StringRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new StringRequirementsImpl(parameter, name, newConfig);

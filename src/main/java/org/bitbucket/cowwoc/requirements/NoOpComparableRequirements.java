@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -17,6 +18,12 @@ final class NoOpComparableRequirements<T extends Comparable<? super T>>
 {
 	@Override
 	public ComparableRequirements<T> withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public ComparableRequirements<T> withContext(Map<String, Object> context)
 	{
 		return this;
 	}

@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -68,6 +69,15 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	public StringLengthRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new StringLengthRequirementsImpl(string, parameter, name, newConfig);
+	}
+
+	@Override
+	public StringLengthRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new StringLengthRequirementsImpl(string, parameter, name, newConfig);

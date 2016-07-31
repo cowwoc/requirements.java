@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.time.Duration;
 import java.util.Set;
@@ -42,5 +43,24 @@ public final class UsageTest
 
 		assertions.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		assertions.requireThat(bucket, "bucket").contains(duration);
+	}
+
+	@Test
+	public void withContext()
+	{
+		Duration duration = Duration.ofDays(1);
+		Set<Duration> bucket = ImmutableSet.of();
+
+		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+		try
+		{
+			requireThat(bucket, "bucket").withContext(ImmutableMap.of("MyKey", "SomeContext")).
+				contains(duration);
+		}
+		catch (IllegalArgumentException e)
+		{
+			if (!e.getMessage().contains("MyKey") || !e.getMessage().contains("SomeContext"))
+				throw new AssertionError(e);
+		}
 	}
 }

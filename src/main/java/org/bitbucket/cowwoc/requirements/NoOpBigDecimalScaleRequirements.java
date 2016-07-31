@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -26,6 +27,12 @@ final class NoOpBigDecimalScaleRequirements implements BigDecimalScaleRequiremen
 
 	@Override
 	public BigDecimalScaleRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements withContext(Map<String, Object> context)
 	{
 		return this;
 	}

@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -44,6 +45,15 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	public OptionalRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new OptionalRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public OptionalRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new OptionalRequirementsImpl(parameter, name, newConfig);

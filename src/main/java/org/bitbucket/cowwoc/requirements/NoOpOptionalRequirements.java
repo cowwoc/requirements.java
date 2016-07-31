@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -18,6 +19,12 @@ enum NoOpOptionalRequirements implements OptionalRequirements
 
 	@Override
 	public OptionalRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements withContext(Map<String, Object> context)
 	{
 		return this;
 	}

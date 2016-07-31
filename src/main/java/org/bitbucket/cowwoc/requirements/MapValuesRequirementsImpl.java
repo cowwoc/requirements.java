@@ -80,6 +80,15 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	}
 
 	@Override
+	public CollectionRequirements<V> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
+		if (newConfig == config)
+			return this;
+		return new MapValuesRequirementsImpl<>(map, parameter, name, newConfig);
+	}
+
+	@Override
 	public CollectionRequirements<V> isEqualTo(Collection<V> value)
 		throws IllegalArgumentException
 	{

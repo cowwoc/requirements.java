@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
+import java.util.Map;
+
 /**
  * Verifies requirements of an {@link Object} parameter.
  * <p>
@@ -20,6 +22,15 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 * @return this
 	 */
 	S withException(Class<? extends RuntimeException> exception);
+
+	/**
+	 * Supplies additional key-value pairs to output if a requirement is not met.
+	 *
+	 * @param context a map of key-value pairs
+	 * @return this
+	 * @throws NullPointerException if {@code context} is null
+	 */
+	S withContext(Map<String, Object> context) throws NullPointerException;
 
 	/**
 	 * Ensures that the parameter is equal to a value.

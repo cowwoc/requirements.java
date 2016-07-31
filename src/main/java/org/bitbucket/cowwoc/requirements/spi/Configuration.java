@@ -35,15 +35,20 @@ public final class Configuration
 		return result.toString();
 	}
 	private final Class<? extends RuntimeException> exceptionOverride;
+	private final ImmutableMap<String, Object> context;
 
 	/**
 	 * Creates a new instance.
 	 *
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
+	 * @param context           key-value pairs to append to the exception message
 	 */
-	public Configuration(Class<? extends RuntimeException> exceptionOverride)
+	public Configuration(Class<? extends RuntimeException> exceptionOverride,
+		Map<String, Object> context)
 	{
+		assert (context != null);
 		this.exceptionOverride = exceptionOverride;
+		this.context = ImmutableMap.copyOf(context);
 	}
 
 	/**
@@ -56,7 +61,23 @@ public final class Configuration
 	{
 		if (Objects.equals(exception, exceptionOverride))
 			return this;
-		return new Configuration(exception);
+		return new Configuration(exception, context);
+	}
+
+	/**
+	 * Supplies additional key-value pairs to output if a requirement is not met.
+	 *
+	 * @param context a map of key-value pairs
+	 * @return this
+	 * @throws NullPointerException if {@code context} is null
+	 */
+	public Configuration withContext(Map<String, Object> context) throws NullPointerException
+	{
+		if (context == null)
+			throw new NullPointerException("context may not be null");
+		if (Objects.equals(this.context, context))
+			return this;
+		return new Configuration(exceptionOverride, context);
 	}
 
 	/**
@@ -65,6 +86,15 @@ public final class Configuration
 	public Class<? extends RuntimeException> getExceptionOverride()
 	{
 		return exceptionOverride;
+	}
+
+	/**
+	 * @return key-value pairs to append to the exception message
+	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public ImmutableMap<String, Object> getContext()
+	{
+		return context;
 	}
 
 	/**
@@ -278,26 +308,37 @@ public final class Configuration
 	/**
 	 * Creates a new exception.
 	 * <p>
-	 * @param <E>     the type of the exception
-	 * @param type    the type of the exception
-	 * @param message an explanation of what went wrong
-	 * @param context key-value pairs to append to the exception message
-	 * @param cause   the cause of the exception
+	 * @param <E>            the type of the exception
+	 * @param type           the type of the exception
+	 * @param message        an explanation of what went wrong
+	 * @param initialContext key-value pairs to append to the exception message before the context
+	 *                       passed into the constructor
+	 * @param cause          the cause of the exception
 	 * @throws NullPointerException if any of the arguments are null
 	 * @return the exception
 	 */
 	public <E extends RuntimeException> RuntimeException createException(Class<E> type, String message,
-		Map<String, Object> context, Throwable cause)
+		Map<String, Object> initialContext, Throwable cause)
 	{
 		assert (type != null);
 		assert (message != null);
-		assert (context != null);
+		assert (initialContext != null);
 		Class<? extends RuntimeException> winner;
 		if (exceptionOverride != null)
 			winner = exceptionOverride;
 		else
 			winner = type;
-		String messageWithContext = messageWithContext(message, context);
+		Map<String, Object> mergedContext;
+		if (initialContext.isEmpty())
+			mergedContext = context;
+		else
+		{
+			mergedContext = ImmutableMap.<String, Object>builder().
+				putAll(initialContext).
+				putAll(context).
+				build();
+		}
+		String messageWithContext = messageWithContext(message, mergedContext);
 		return Exceptions.createException(winner, messageWithContext, cause);
 	}
 }

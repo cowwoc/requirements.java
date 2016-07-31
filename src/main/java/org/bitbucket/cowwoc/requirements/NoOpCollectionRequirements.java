@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -18,6 +19,12 @@ final class NoOpCollectionRequirements<E> implements CollectionRequirements<E>
 {
 	@Override
 	public CollectionRequirements<E> withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionRequirements<E> withContext(Map<String, Object> context)
 	{
 		return this;
 	}

@@ -1,7 +1,9 @@
 package org.bitbucket.cowwoc.requirements.usage;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import java.time.Duration;
+import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.ComparableRequirements;
 import org.bitbucket.cowwoc.requirements.Requirements;
@@ -23,7 +25,7 @@ public final class DurationRequirements implements ComparableRequirements<Durati
 			throw new NullPointerException("name may not be null");
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
-		return new DurationRequirements(parameter, name, new Configuration(null));
+		return new DurationRequirements(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 	private final Duration parameter;
 	private final String name;
@@ -47,13 +49,23 @@ public final class DurationRequirements implements ComparableRequirements<Durati
 		this.name = name;
 		this.config = config;
 		this.asComparable = Requirements.requireThat(parameter, name).
-			withException(config.getExceptionOverride());
+			withException(config.getExceptionOverride()).
+			withContext(config.getContext());
 	}
 
 	@Override
 	public DurationRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new DurationRequirements(parameter, name, newConfig);
+	}
+
+	@Override
+	public DurationRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new DurationRequirements(parameter, name, newConfig);

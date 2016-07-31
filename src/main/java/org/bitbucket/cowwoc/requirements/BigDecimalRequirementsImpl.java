@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -45,6 +46,15 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 	public BigDecimalRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new BigDecimalRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public BigDecimalRequirements withContext(Map<String, Object> context) throws NullPointerException
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new BigDecimalRequirementsImpl(parameter, name, newConfig);

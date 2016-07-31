@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.collect.ImmutableMap;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
@@ -52,7 +53,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new ObjectRequirementsImpl<>(parameter, name, new Configuration(null));
+		return new ObjectRequirementsImpl<>(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -69,7 +70,8 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new CollectionRequirementsImpl<>(parameter, name, new Configuration(null));
+		return new CollectionRequirementsImpl<>(parameter, name,
+			new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -86,7 +88,8 @@ public final class Requirements
 		String name) throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new ComparableRequirementsImpl<>(parameter, name, new Configuration(null));
+		return new ComparableRequirementsImpl<>(parameter, name,
+			new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -103,7 +106,8 @@ public final class Requirements
 		T parameter, String name) throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new NumberRequirementsImpl<>(parameter, name, new Configuration(null));
+		return new NumberRequirementsImpl<>(parameter, name,
+			new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -119,7 +123,8 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new BigDecimalRequirementsImpl(parameter, name, new Configuration(null));
+		return new BigDecimalRequirementsImpl(parameter, name,
+			new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -137,7 +142,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new MapRequirementsImpl<>(parameter, name, new Configuration(null));
+		return new MapRequirementsImpl<>(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -153,7 +158,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new PathRequirementsImpl(parameter, name, new Configuration(null));
+		return new PathRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -169,7 +174,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new StringRequirementsImpl(parameter, name, new Configuration(null));
+		return new StringRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -185,7 +190,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new UriRequirementsImpl(parameter, name, new Configuration(null));
+		return new UriRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -202,7 +207,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new ClassRequirementsImpl<>(parameter, name, new Configuration(null));
+		return new ClassRequirementsImpl<>(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**
@@ -218,7 +223,7 @@ public final class Requirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		validateName(name);
-		return new OptionalRequirementsImpl(parameter, name, new Configuration(null));
+		return new OptionalRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
 	}
 
 	/**

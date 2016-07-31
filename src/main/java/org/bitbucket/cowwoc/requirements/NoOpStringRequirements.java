@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -17,6 +18,12 @@ enum NoOpStringRequirements implements StringRequirements
 
 	@Override
 	public StringRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public StringRequirements withContext(Map<String, Object> context)
 	{
 		return this;
 	}

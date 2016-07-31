@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
  * @author Gili Tzabari
  */
 public interface MapRequirements<K, V>
-	extends ObjectRequirementsSpi<MapRequirements<K, V>, Map<K, V>>,
+	extends ObjectRequirementsSpi<MapRequirements<K, V>, Map<K, V>>, 
 	Isolatable<MapRequirements<K, V>>
 {
 	/**

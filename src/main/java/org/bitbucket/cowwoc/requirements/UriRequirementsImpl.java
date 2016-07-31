@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -44,6 +45,15 @@ final class UriRequirementsImpl implements UriRequirements
 	public UriRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new UriRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public UriRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new UriRequirementsImpl(parameter, name, newConfig);

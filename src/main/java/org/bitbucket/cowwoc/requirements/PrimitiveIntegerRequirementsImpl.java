@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -44,6 +45,15 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 	public PrimitiveIntegerRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new PrimitiveIntegerRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public PrimitiveIntegerRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new PrimitiveIntegerRequirementsImpl(parameter, name, newConfig);

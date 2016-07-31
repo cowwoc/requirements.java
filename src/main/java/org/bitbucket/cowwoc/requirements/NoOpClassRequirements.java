@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -17,6 +18,12 @@ enum NoOpClassRequirements implements ClassRequirements<Object>
 
 	@Override
 	public ClassRequirements<Object> withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<Object> withContext(Map<String, Object> context)
 	{
 		return this;
 	}

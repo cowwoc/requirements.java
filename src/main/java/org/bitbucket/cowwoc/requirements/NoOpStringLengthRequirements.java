@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -25,6 +26,12 @@ final class NoOpStringLengthRequirements implements StringLengthRequirements
 
 	@Override
 	public StringLengthRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public StringLengthRequirements withContext(Map<String, Object> context)
 	{
 		return this;
 	}

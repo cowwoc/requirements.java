@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -48,6 +49,15 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new CollectionRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public CollectionRequirements<E> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new CollectionRequirementsImpl<>(parameter, name, newConfig);

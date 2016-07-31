@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -46,6 +47,15 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	public ComparableRequirements<T> withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new ComparableRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ComparableRequirements<T> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new ComparableRequirementsImpl<>(parameter, name, newConfig);

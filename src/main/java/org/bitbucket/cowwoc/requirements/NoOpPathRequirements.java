@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -19,6 +20,12 @@ enum NoOpPathRequirements implements PathRequirements
 
 	@Override
 	public PathRequirements withException(Class<? extends RuntimeException> exception)
+	{
+		return this;
+	}
+
+	@Override
+	public PathRequirements withContext(Map<String, Object> context)
 	{
 		return this;
 	}

@@ -54,6 +54,15 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	}
 
 	@Override
+	public MapSizeRequirements withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
+		if (newConfig == config)
+			return this;
+		return new MapSizeRequirementsImpl(map, name, newConfig);
+	}
+
+	@Override
 	@Deprecated
 	public MapSizeRequirements isNull() throws IllegalArgumentException
 	{

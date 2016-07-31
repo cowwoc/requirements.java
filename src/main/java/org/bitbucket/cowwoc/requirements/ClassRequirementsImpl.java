@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -45,6 +46,15 @@ final class ClassRequirementsImpl<T>
 	public ClassRequirements<T> withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new ClassRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ClassRequirements<T> withContext(Map<String, Object> context)
+	{
+		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
 		return new ClassRequirementsImpl<>(parameter, name, newConfig);
