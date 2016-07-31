@@ -10,12 +10,12 @@
 		<version>9</version>
 	</parent>
 	<groupId>org.bitbucket.cowwoc</groupId>
-	<artifactId>preconditions</artifactId>
-	<version>1.30-SNAPSHOT</version>
+	<artifactId>requirements</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Preconditions</name>
-	<description>A Java library for enforcing preconditions.</description>
-	<url>https://bitbucket.org/cowwoc/preconditions/</url>
+	<name>Requirements</name>
+	<description>A Java library for enforcing API requirements.</description>
+	<url>https://bitbucket.org/cowwoc/requirements/</url>
 
 	<licenses>
 		<license>
@@ -26,9 +26,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://bitbucket.org/cowwoc/preconditions/</url>
-		<connection>scm:hg:https://bitbucket.org/cowwoc/preconditions/</connection>
-		<developerConnection>scm:hg:https://bitbucket.org/cowwoc/preconditions/</developerConnection>
+		<url>https://bitbucket.org/cowwoc/requirements/</url>
+		<connection>scm:hg:https://bitbucket.org/cowwoc/requirements/</connection>
+		<developerConnection>scm:hg:https://bitbucket.org/cowwoc/requirements/</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -45,7 +45,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.5.1</version>
 				<configuration>
 					<showDeprecation>true</showDeprecation>
 					<compilerArgs>
@@ -60,14 +60,14 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
-					<!--<trimStackTrace>false</trimStackTrace>-->
-					<argLine>-Dfile.encoding=UTF-8</argLine>
+					<trimStackTrace>false</trimStackTrace>
+					<argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.5.201505241946</version>
+				<version>0.7.7.201606060606</version>
 				<executions>
 					<execution>
 						<goals>
@@ -75,7 +75,7 @@
 						</goals>
 						<configuration>
 							<includes>
-								<include>org/bitbucket/cowwoc/preconditions/**</include>
+								<include>org/bitbucket/cowwoc/requirements/**</include>
 							</includes>
 						</configuration>
 					</execution>
@@ -87,7 +87,7 @@
 						</goals>
 						<configuration>
 							<includes>
-								<include>org/bitbucket/cowwoc/preconditions/**</include>
+								<include>org/bitbucket/cowwoc/requirements/**</include>
 							</includes>
 						</configuration>
 					</execution>
@@ -105,7 +105,7 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.5</version>
+				<version>1.6.7</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>sonatype-nexus-staging</serverId>
@@ -116,12 +116,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.3</version>
+				<version>2.10.4</version>
 			</plugin>
 		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<argLine/>
 	</properties>
 	<dependencies>
 		<dependency>
