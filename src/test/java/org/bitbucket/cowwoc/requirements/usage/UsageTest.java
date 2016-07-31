@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import java.time.Duration;
 import java.util.Set;
 import org.bitbucket.cowwoc.requirements.Assertions;
+import static org.bitbucket.cowwoc.requirements.Requirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.Requirements.requireThat;
 import static org.bitbucket.cowwoc.requirements.usage.DurationRequirements.requireThat;
 import org.testng.annotations.Test;
@@ -26,6 +27,16 @@ public final class UsageTest
 
 		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		requireThat(bucket, "bucket").contains(duration);
+	}
+
+	@Test
+	public void globalAsserts()
+	{
+		Duration duration = Duration.ofDays(1);
+		Set<Duration> bucket = ImmutableSet.of(duration);
+
+		assertThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+		assertThat(bucket, "bucket").contains(duration);
 	}
 
 	@Test

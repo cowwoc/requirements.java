@@ -26,6 +26,15 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 	})
 public final class Requirements
 {
+	private static final Assertions ASSERTIONS;
+
+	static
+	{
+		boolean assertionsEnabled = false;
+		assert (assertionsEnabled = true);
+		ASSERTIONS = new Assertions(assertionsEnabled);
+	}
+
 	/**
 	 * @param name the name of the parameter
 	 * @throws NullPointerException     if {@code name} is null
@@ -57,6 +66,22 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static ObjectRequirements<Object> assertThat(Object parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Creates requirements for a {@code Collection}.
 	 *
 	 * @param <E>       the type of element in the collection
@@ -72,6 +97,23 @@ public final class Requirements
 		validateName(name);
 		return new CollectionRequirementsImpl<>(parameter, name,
 			new Configuration(null, ImmutableMap.of()));
+	}
+
+	/**
+	 * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled
+	 * for this class.
+	 *
+	 * @param <E>       the type of element in the collection
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <E> CollectionRequirements<E> assertThat(Collection<E> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
 	}
 
 	/**
@@ -93,6 +135,23 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled
+	 * for this class.
+	 *
+	 * @param <T>       the type of objects that the parameter may be compared to
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <T extends Comparable<? super T>> ComparableRequirements<T> assertThat(T parameter,
+		String name) throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Creates requirements for a {@code Number}.
 	 *
 	 * @param <T>       the type of the number
@@ -111,6 +170,23 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(Number, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param <T>       the type of the number
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <T extends Number & Comparable<? super T>> NumberRequirements<T> assertThat(
+		T parameter, String name) throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Creates requirements for a {@code BigDecimal}.
 	 *
 	 * @param parameter the value of the parameter
@@ -125,6 +201,22 @@ public final class Requirements
 		validateName(name);
 		return new BigDecimalRequirementsImpl(parameter, name,
 			new Configuration(null, ImmutableMap.of()));
+	}
+
+	/**
+	 * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled
+	 * for this class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static BigDecimalRequirements assertThat(BigDecimal parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
 	}
 
 	/**
@@ -146,6 +238,24 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(Map, String)} but does nothing if assertions are disabled for this
+	 * class.
+	 *
+	 * @param <K>       the type of key in the map
+	 * @param <V>       the type of value in the map
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <K, V> MapRequirements<K, V> assertThat(Map<K, V> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Creates requirements for a {@code Path}.
 	 *
 	 * @param parameter the value of the parameter
@@ -159,6 +269,22 @@ public final class Requirements
 	{
 		validateName(name);
 		return new PathRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
+	}
+
+	/**
+	 * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled for this
+	 * class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static PathRequirements assertThat(Path parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
 	}
 
 	/**
@@ -178,6 +304,22 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static StringRequirements assertThat(String parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Creates requirements for a {@code Uri}.
 	 *
 	 * @param parameter the value of the parameter
@@ -191,6 +333,22 @@ public final class Requirements
 	{
 		validateName(name);
 		return new UriRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
+	}
+
+	/**
+	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled for this
+	 * class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static UriRequirements assertThat(URI parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
 	}
 
 	/**
@@ -211,6 +369,23 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(Class, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param <T>       the type of class
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <T> ClassRequirements<T> assertThat(Class<T> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Creates requirements for an {@code Optional}.
 	 *
 	 * @param parameter the value of the parameter
@@ -224,6 +399,22 @@ public final class Requirements
 	{
 		validateName(name);
 		return new OptionalRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
+	}
+
+	/**
+	 * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static OptionalRequirements assertThat(Optional<?> parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
 	}
 
 	/**
