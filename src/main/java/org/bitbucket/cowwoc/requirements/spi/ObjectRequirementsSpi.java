@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
+import com.google.common.annotations.Beta;
 import java.util.Map;
 
 /**
@@ -30,6 +31,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 * @return this
 	 * @throws NullPointerException if {@code context} is null
 	 */
+	@Beta
 	S withContext(Map<String, Object> context) throws NullPointerException;
 
 	/**
