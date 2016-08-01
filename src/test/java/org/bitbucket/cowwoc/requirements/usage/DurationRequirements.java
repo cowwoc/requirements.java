@@ -6,10 +6,14 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.ComparableRequirements;
+import org.bitbucket.cowwoc.requirements.Isolatable;
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.spi.ComparableRequirementsSpi;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
-public final class DurationRequirements implements ComparableRequirements<Duration>
+public final class DurationRequirements
+	implements ComparableRequirementsSpi<DurationRequirements, Duration>,
+	Isolatable<DurationRequirements>
 {
 	/**
 	 * Creates new DurationRequirements.
@@ -211,7 +215,7 @@ public final class DurationRequirements implements ComparableRequirements<Durati
 	}
 
 	@Override
-	public DurationRequirements isolate(Consumer<ComparableRequirements<Duration>> consumer)
+	public DurationRequirements isolate(Consumer<DurationRequirements> consumer)
 	{
 		consumer.accept(this);
 		return this;
