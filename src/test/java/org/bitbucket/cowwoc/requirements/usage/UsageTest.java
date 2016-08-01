@@ -11,7 +11,8 @@ import java.util.Set;
 import org.bitbucket.cowwoc.requirements.Assertions;
 import static org.bitbucket.cowwoc.requirements.Requirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.Requirements.requireThat;
-import static org.bitbucket.cowwoc.requirements.usage.DurationRequirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.requireThat;
 import org.testng.annotations.Test;
 
 public final class UsageTest
@@ -25,9 +26,12 @@ public final class UsageTest
 		Duration duration = Duration.ofDays(1);
 		Set<Duration> bucket = ImmutableSet.of(duration);
 
-		// Java will invoke Requirements.requireThat() or DurationRequirements.requireThat() depending on the context
-		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+		// Java will invoke Requirements.requireThat() or TimeRequirements.requireThat() depending on the context
+		requireThat(duration, "duration").isPositive();
 		requireThat(bucket, "bucket").contains(duration);
+
+		// Assertions work too
+		assertThat(duration, "duration").isPositive();
 	}
 
 	@Test

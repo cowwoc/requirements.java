@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.spi;
 
 /**
- * Requirements for a {@code Number}.
+ * Requirements for a {@link Number}.
  *
  * @param <S> the type of the non-SPI interface extending this interface
  * @param <T> the type of the parameter
