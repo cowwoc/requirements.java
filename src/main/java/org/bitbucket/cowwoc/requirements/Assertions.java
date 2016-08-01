@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Verifies requirements of a parameter if assertions are enabled; otherwise, does nothing.
  * <p>
- * All implementations must be immutable and final.
+ * All verifier implementations must be immutable and final.
  *
  * @author Gili Tzabari
  */

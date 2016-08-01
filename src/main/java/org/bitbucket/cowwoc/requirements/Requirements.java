@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 /**
  * Verifies requirements of a parameter.
  * <p>
- * All implementations must be immutable and final.
+ * All verifier implementations must be immutable and final.
  *
  * @author Gili Tzabari
  */

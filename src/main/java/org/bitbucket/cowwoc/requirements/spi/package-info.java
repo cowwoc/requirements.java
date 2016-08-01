@@ -7,3 +7,5 @@
  * but may be extended.
  */
 package org.bitbucket.cowwoc.requirements.spi;
+
+import org.bitbucket.cowwoc.requirements.Isolatable;

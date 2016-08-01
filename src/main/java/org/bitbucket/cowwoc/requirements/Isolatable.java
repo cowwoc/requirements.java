@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * Requirements that can be verified in isolation of other instances.
  * <p>
- * Interfaces that extend {@code Isolatable] are not meant to be extended, but may be implemented.
+ * Interfaces that extend {@code Isolatable} are not meant to be extended, but may be implemented.
  *
  * @param <T> the type of requirements to isolate
  * @author Gili Tzabari

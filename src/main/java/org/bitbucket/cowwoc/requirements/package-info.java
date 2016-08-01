@@ -7,3 +7,5 @@
  * but may be implemented.
  */
 package org.bitbucket.cowwoc.requirements;
+
+import org.bitbucket.cowwoc.requirements.Isolatable;
