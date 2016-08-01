@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.annotations.Beta;
 import java.util.function.Consumer;
 
 /**
@@ -14,6 +15,7 @@ import java.util.function.Consumer;
  * @param <T> the type of requirements to isolate
  * @author Gili Tzabari
  */
+@Beta
 public interface Isolatable<T>
 {
 	/**

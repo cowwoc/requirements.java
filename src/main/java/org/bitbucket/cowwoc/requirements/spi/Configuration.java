@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ import org.bitbucket.cowwoc.requirements.util.Exceptions;
  *
  * @author Gili Tzabari
  */
+@Beta
 public final class Configuration
 {
 	/**
