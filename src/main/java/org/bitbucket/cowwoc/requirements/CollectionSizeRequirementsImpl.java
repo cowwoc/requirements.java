@@ -117,9 +117,9 @@ final class CollectionSizeRequirementsImpl
 			return this;
 
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain at least %,d %s. It contained %,d %s.\n" +
-				"Actual: %s", name, value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter),
-				collection));
+			String.format("%s must contain at least %,d %s. It contained %,d %s.", name, value,
+				getSingleOrPlural(value), parameter, getSingleOrPlural(parameter)),
+			"Actual", collection);
 	}
 
 	/**
@@ -281,11 +281,10 @@ final class CollectionSizeRequirementsImpl
 		Requirements.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return this;
-		StringBuilder message = new StringBuilder(name + " must contain " + range);
-		message.append(String.format(" elements. It contained %,d %s.\n" +
-			"Actual: %s", parameter, getSingleOrPlural(parameter), collection));
 		throw config.createException(IllegalArgumentException.class,
-			message.toString());
+			String.format("%s must contain %s elements. It contained %,d %s.", name, range, parameter,
+				getSingleOrPlural(parameter)),
+			"Actual", collection);
 	}
 
 	@Override

@@ -154,9 +154,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameter.contains(element))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", this.name, name, parameter, element));
+			String.format("%s must contain %s", this.name, name),
+			"Actual", parameter,
+			"Missing", element);
 	}
 
 	@Override
@@ -171,10 +171,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s elements must contain exactly: %s\n" +
-				"Actual  : %s\n" +
-				"Missing : %s\n" +
-				"Unwanted: %s", name, elements, parameter, missing, unwanted));
+			String.format("%s elements must contain exactly: %s", name, elements),
+			"Actual", parameter,
+			"Missing", missing,
+			"Unwanted", unwanted);
 	}
 
 	@Override
@@ -190,11 +190,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s elements must contain exactly %s\n" +
-				"Expected: %s\n" +
-				"Actual  : %s\n" +
-				"Missing : %s\n" +
-				"Unwanted: %s", this.name, name, elements, parameter, missing, unwanted));
+			String.format("%s elements must contain exactly %s", this.name, name),
+			"Expected", elements,
+			"Actual", parameter,
+			"Missing", missing,
+			"Unwanted", unwanted);
 	}
 
 	@Override
@@ -205,8 +205,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain any element in: %s\n" +
-				"Actual: %s", name, elements, parameter));
+			String.format("%s must contain any element in: %s", name, elements),
+			"Actual", parameter);
 	}
 
 	/**
@@ -230,9 +230,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain any element in %s\n" +
-				"Expected: %s\n" +
-				"Actual  : %s", this.name, name, elements, parameter));
+			String.format("%s must contain any element in %s", this.name, name),
+			"Expected", elements,
+			"Actual", parameter);
 	}
 
 	@Override
@@ -246,9 +246,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain all elements in: %s\n" +
-				"Actual : %s\n" +
-				"Missing: %s", name, elements, parameter, missing));
+			String.format("%s must contain all elements in: %s", name, elements),
+			"Actual", parameter,
+			"Missing", missing);
 	}
 
 	@Override
@@ -263,10 +263,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain all elements in %s\n" +
-				"Expected: %s\n" +
-				"Actual  : %s\n" +
-				"Missing : %s", this.name, name, elements, parameter, missing));
+			String.format("%s must contain all elements in %s", this.name, name),
+			"Expected", elements,
+			"Actual", parameter,
+			"Missing", missing);
 	}
 
 	@Override
@@ -275,8 +275,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.contains(element))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain: %s\n" +
-				"Actual: %s", name, element, parameter));
+			String.format("%s may not contain: %s", name, element),
+			"Actual", parameter);
 	}
 
 	@Override
@@ -287,9 +287,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.contains(element))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain %s\n" +
-				"Expected: %s\n" +
-				"Actual  : %s", this.name, name, element, parameter));
+			String.format("%s may not contain %s", this.name, name),
+			"Expected", element,
+			"Actual", parameter);
 	}
 
 	@Override
@@ -303,9 +303,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain any element in: %s\n" +
-				"Actual  : %s\n" +
-				"Unwanted: %s", name, elements, parameter, unwanted));
+			String.format("%s may not contain any element in: %s", name, elements),
+			"Actual", parameter,
+			"Unwanted", unwanted);
 	}
 
 	@Override
@@ -320,10 +320,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain any element in %s\n" +
-				"Expected: %s\n" +
-				"Actual  : %s\n" +
-				"Unwanted: %s", this.name, name, elements, parameter, unwanted));
+			String.format("%s may not contain any element in %s", this.name, name),
+			"Expected", elements,
+			"Actual", parameter,
+			"Unwanted", unwanted);
 	}
 
 	@Override
@@ -334,8 +334,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain all of: %s\n" +
-				"Actual: %s", name, elements, parameter));
+			String.format("%s may not contain all of: %s", name, elements),
+			"Actual", parameter);
 	}
 
 	@Override
@@ -347,9 +347,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain all elements in %s\n" +
-				"Expected: %s\n" +
-				"Actual  : %s", this.name, name, elements, parameter));
+			String.format("%s may not contain all elements in %s", this.name, name),
+			"Expected", elements,
+			"Actual", parameter);
 	}
 
 	@Override
@@ -368,9 +368,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (duplicates.isEmpty())
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain duplicate elements\n" +
-				"Actual: %s\n" +
-				"Duplicates: %s", name, parameter, duplicates));
+			String.format("%s may not contain duplicate elements", name),
+			"Actual", parameter,
+			"Duplicates", duplicates);
 	}
 
 	@Override

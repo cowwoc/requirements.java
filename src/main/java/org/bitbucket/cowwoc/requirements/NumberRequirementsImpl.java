@@ -119,8 +119,8 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 		if (parameter.longValue() < 0L)
 			return this;
 		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be negative.\n" +
-				"Actual: %s", name, parameter));
+			String.format("%s must be negative.", name),
+			"Actual", parameter);
 	}
 
 	@Override
