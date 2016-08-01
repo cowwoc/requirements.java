@@ -79,7 +79,7 @@ public final class DurationRequirements implements ComparableRequirements<Durati
 	 */
 	public DurationRequirements isPositive() throws IllegalArgumentException
 	{
-		if (parameter.getSeconds() > 0)
+		if (parameter.getNano() > 0 || parameter.getSeconds() > 0)
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must be positive.", name),

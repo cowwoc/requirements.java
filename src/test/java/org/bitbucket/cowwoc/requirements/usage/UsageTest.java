@@ -25,6 +25,7 @@ public final class UsageTest
 		Duration duration = Duration.ofDays(1);
 		Set<Duration> bucket = ImmutableSet.of(duration);
 
+		// Java will invoke Requirements.requireThat() or DurationRequirements.requireThat() depending on the context
 		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		requireThat(bucket, "bucket").contains(duration);
 	}
