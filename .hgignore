@@ -2,3 +2,4 @@ syntax: glob
 target
 release.properties
 pom.xml.releaseBackup
+nb-configuration.xml
