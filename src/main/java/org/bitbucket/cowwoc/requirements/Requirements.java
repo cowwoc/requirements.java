@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableMap;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -47,6 +48,15 @@ public final class Requirements
 			throw new NullPointerException("name may not be null");
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
+	}
+
+	/**
+	 * @return true if assertions are enabled for this class.
+	 */
+	@Beta
+	public static boolean assertionsAreEnabled()
+	{
+		return ASSERTIONS.isEnabled();
 	}
 
 	/**
