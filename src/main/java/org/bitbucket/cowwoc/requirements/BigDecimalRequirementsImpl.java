@@ -229,7 +229,6 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must be zero", name),
-			"Expected", 0,
 			"Actual", parameter);
 	}
 

@@ -30,31 +30,31 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	 * <p>
 	 * <h3>Syntax</h3>
 	 * <pre>
-	 * Expected: [text]
 	 * Actual  : &lt;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
+	 * Expected: [text]
 	 * </pre>
 	 * The rectangular brackets denote text that is present in one string but not the other.<br>
 	 * The angle brackets indicate the corresponding position in the other string. This zero-width placeholder does not contribute any characters to the string it is found in. If this confuses you, read on for more concrete examples.
 	 * <h3>Example 1</h3>
 	 * <pre>
-	 * Expected = "Bar"
 	 * Actual   = "Foo"
+	 * Expected = "Bar"
 	 * </pre>
 	 * results in the following diff:
 	 * <pre>
-	 * Expected: &lt;   &gt;[Bar]
 	 * Actual  : [Foo]&lt;   &gt;
+	 * Expected: &lt;   &gt;[Bar]
 	 * </pre>
 	 * Meaning, to go from {@code Actual} to {@code Expected} we need to delete "Foo" and insert "Bar".
 	 * <h3>Example 2</h3>
 	 * <pre>
-	 * Expected = "   Foo"
 	 * Actual   = "Foo"
+	 * Expected = "   Foo"
 	 * </pre>
 	 * results in the following diff:
 	 * <pre>
-	 * Expected: [   ]Foo
 	 * Actual  : &lt;   &gt;Foo
+	 * Expected: [   ]Foo
 	 * </pre>
 	 * Meaning, to go from {@code Actual} to {@code Expected} we need to insert three spaces to the beginning of {@code Actual}.
 	 *
@@ -64,11 +64,11 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	private static void diff(StringBuilder expected, StringBuilder actual)
 	{
 		DiffMatchPatch diffFactory = new DiffMatchPatch();
-		LinkedList<Diff> diff = diffFactory.diffMain(expected.toString(), actual.toString());
-		diffFactory.diffCleanupSemantic(diff);
+		LinkedList<Diff> components = diffFactory.diffMain(actual.toString(), expected.toString());
+		diffFactory.diffCleanupSemantic(components);
 		int expectedOffset = 0;
 		int actualOffset = 0;
-		for (Diff component: diff)
+		for (Diff component: components)
 		{
 			switch (component.operation)
 			{
@@ -78,7 +78,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 					actualOffset += component.text.length();
 					break;
 				}
-				case DELETE:
+				case INSERT:
 				{
 					expected.insert(expectedOffset, "[");
 
@@ -93,10 +93,10 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 					actual.insert(actualOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
 
 					// Skip '<' + spaces + '>'
-					actualOffset += "]".length() + component.text.length() + "[".length();
+					actualOffset += "<".length() + component.text.length() + ">".length();
 					break;
 				}
-				case INSERT:
+				case DELETE:
 				{
 					actual.insert(actualOffset, "[");
 
@@ -190,8 +190,8 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name),
-			"Expected", expected,
-			"Actual", actual);
+			"Actual", actual,
+			"Expected", expected);
 	}
 
 	@Override
@@ -207,8 +207,8 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name),
-			"Expected", expected,
-			"Actual", actual);
+			"Actual", actual,
+			"Expected", expected);
 	}
 
 	@Override

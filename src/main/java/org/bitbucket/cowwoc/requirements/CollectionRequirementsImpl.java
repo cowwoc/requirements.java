@@ -199,8 +199,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s elements must contain exactly %s", this.name, name),
-			"Expected", elements,
 			"Actual", parameter,
+			"Expected", elements,
 			"Missing", missing,
 			"Unwanted", unwanted);
 	}
@@ -239,8 +239,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must contain any element in %s", this.name, name),
-			"Expected", elements,
-			"Actual", parameter);
+			"Actual", parameter,
+			"Expected", elements);
 	}
 
 	@Override
@@ -272,8 +272,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must contain all elements in %s", this.name, name),
-			"Expected", elements,
 			"Actual", parameter,
+			"Expected", elements,
 			"Missing", missing);
 	}
 
@@ -296,8 +296,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s may not contain %s", this.name, name),
-			"Expected", element,
-			"Actual", parameter);
+			"Actual", parameter,
+			"Expected", element);
 	}
 
 	@Override
@@ -329,8 +329,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s may not contain any element in %s", this.name, name),
-			"Expected", elements,
 			"Actual", parameter,
+			"Expected", elements,
 			"Unwanted", unwanted);
 	}
 
@@ -356,8 +356,8 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s may not contain all elements in %s", this.name, name),
-			"Expected", elements,
-			"Actual", parameter);
+			"Actual", parameter,
+			"Expected", elements);
 	}
 
 	@Override

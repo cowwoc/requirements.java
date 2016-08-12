@@ -30,15 +30,15 @@ public final class ObjectRequirementsTest
 	@Test
 	public void isEqualsTrue()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "parameter").isEqualTo(parameter);
+		String actual = "actual";
+		Requirements.requireThat(actual, "actual").isEqualTo(actual);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualsFalse()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "parameter").isEqualTo(new Object());
+		String actual = "actual";
+		Requirements.requireThat(actual, "actual").isEqualTo("expected");
 	}
 
 	@Test

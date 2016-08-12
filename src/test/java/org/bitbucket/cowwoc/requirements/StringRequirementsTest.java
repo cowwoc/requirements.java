@@ -228,15 +228,15 @@ public class StringRequirementsTest
 	{
 		try
 		{
-			String expected = "int[5]";
 			String actual = "int[6]";
+			String expected = "int[5]";
 			Requirements.requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Expected: int[[5]< >]\n" +
-				"Actual  : int[< >[6]]";
+			String expectedMessage = "Actual  : int[[6]< >]\n" +
+				"Expected: int[< >[5]]";
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}
@@ -246,15 +246,15 @@ public class StringRequirementsTest
 	{
 		try
 		{
-			String expected = "expected";
 			String actual = "actual";
+			String expected = "expected";
 			Requirements.requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Expected: [expected]<      >\n" +
-				"Actual  : <        >[actual]";
+			String expectedMessage = "Actual  : [actual]<        >\n" +
+				"Expected: <      >[expected]";
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}
@@ -264,15 +264,15 @@ public class StringRequirementsTest
 	{
 		try
 		{
-			String expected = "\"key\": \"value\"";
 			String actual = "\"key\": \"value \"";
+			String expected = "\"key\": \"value\"";
 			Requirements.requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Expected: \"key\": \"value< >\"\n" +
-				"Actual  : \"key\": \"value[ ]\"";
+			String expectedMessage = "Actual  : \"key\": \"value[ ]\"\n" +
+				"Expected: \"key\": \"value< >\"";
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}

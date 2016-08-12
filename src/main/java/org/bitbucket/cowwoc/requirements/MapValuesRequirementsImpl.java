@@ -225,8 +225,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s values must contain exactly %s", this.name, name),
-			"Expected", elements,
 			"Actual", parameter,
+			"Expected", elements,
 			"Missing", missing,
 			"Unwanted", unwanted);
 	}
@@ -265,8 +265,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must contain any value in %s", this.name, name),
-			"Expected", elements,
-			"Actual", map);
+			"Actual", map,
+			"Expected", elements);
 	}
 
 	@Override
@@ -298,8 +298,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 		Set<V> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must contain all values in %s", this.name, name),
-			"Expected", elements,
 			"Actual", map,
+			"Expected", elements,
 			"Missing", missing);
 	}
 
@@ -323,8 +323,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s may not contain %s", this.name, name),
-			"Expected", element,
-			"Actual", map);
+			"Actual", map,
+			"Expected", element);
 	}
 
 	@Override
@@ -356,8 +356,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 		Set<V> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s may not contain any value in %s", this.name, name),
-			"Expected", elements,
 			"Actual", map,
+			"Expected", elements,
 			"Unwanted", unwanted);
 	}
 
@@ -383,8 +383,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s may not contain all values in %s", this.name, name),
-			"Expected", elements,
-			"Actual", map);
+			"Actual", map,
+			"Expected", elements);
 	}
 
 	@Override
