@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -153,6 +154,12 @@ final class NoOpMapSizeRequirements implements MapSizeRequirements
 
 	@Override
 	public MapSizeRequirements isNotEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isIn(Collection<Integer> collection)
 	{
 		return this;
 	}

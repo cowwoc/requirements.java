@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -80,6 +81,14 @@ final class UriRequirementsImpl implements UriRequirements
 	public UriRequirements isNull() throws IllegalArgumentException
 	{
 		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public UriRequirements isIn(Collection<URI> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
 		return this;
 	}
 

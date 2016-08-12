@@ -10,6 +10,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -152,6 +153,14 @@ final class PathRequirementsImpl implements PathRequirements
 	public PathRequirements isNull() throws IllegalArgumentException
 	{
 		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public PathRequirements isIn(Collection<Path> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
 		return this;
 	}
 

@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -48,6 +49,12 @@ enum NoOpObjectRequirements implements ObjectRequirements<Object>
 
 	@Override
 	public ObjectRequirements<Object> isNotEqualTo(Object value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public ObjectRequirements<Object> isIn(Collection<Object> collection)
 	{
 		return this;
 	}

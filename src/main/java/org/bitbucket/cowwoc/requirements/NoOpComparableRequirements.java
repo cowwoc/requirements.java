@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -102,6 +103,12 @@ final class NoOpComparableRequirements<T extends Comparable<? super T>>
 
 	@Override
 	public ComparableRequirements<T> isNotEqualTo(T value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public ComparableRequirements<T> isIn(Collection<T> collection)
 	{
 		return this;
 	}

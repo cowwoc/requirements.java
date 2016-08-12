@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import org.testng.annotations.Test;
 
 /**
@@ -13,7 +11,6 @@ import org.testng.annotations.Test;
  */
 public class StringRequirementsTest
 {
-
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
@@ -224,5 +221,59 @@ public class StringRequirementsTest
 		// Ensure that no exception is thrown if assertions are disabled
 		String parameter = null;
 		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+	}
+
+	@Test
+	void diffArraySize()
+	{
+		try
+		{
+			String expected = "int[5]";
+			String actual = "int[6]";
+			Requirements.requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Expected: int[[5]< >]\n" +
+				"Actual  : int[< >[6]]";
+			assert (actualMessage.contains(expectedMessage)): actualMessage;
+		}
+	}
+
+	@Test
+	void diffInsertThenDelete()
+	{
+		try
+		{
+			String expected = "expected";
+			String actual = "actual";
+			Requirements.requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Expected: [expected]<      >\n" +
+				"Actual  : <        >[actual]";
+			assert (actualMessage.contains(expectedMessage)): actualMessage;
+		}
+	}
+
+	@Test
+	void diffMissingWhitespace()
+	{
+		try
+		{
+			String expected = "\"key\": \"value\"";
+			String actual = "\"key\": \"value \"";
+			Requirements.requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Expected: \"key\": \"value< >\"\n" +
+				"Actual  : \"key\": \"value[ ]\"";
+			assert (actualMessage.contains(expectedMessage)): actualMessage;
+		}
 	}
 }

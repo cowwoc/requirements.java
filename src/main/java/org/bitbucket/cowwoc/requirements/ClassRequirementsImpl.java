@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -87,6 +88,14 @@ final class ClassRequirementsImpl<T>
 		throws NullPointerException, IllegalArgumentException
 	{
 		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public ClassRequirements<T> isIn(Collection<Class<T>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
 		return this;
 	}
 

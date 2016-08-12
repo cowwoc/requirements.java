@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -181,6 +182,14 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	}
 
 	@Override
+	public BigDecimalPrecisionRequirements isIn(Collection<Integer> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(collection);
+		return this;
+	}
+
+	@Override
 	public BigDecimalPrecisionRequirements isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{
@@ -246,8 +255,7 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	}
 
 	@Override
-	public BigDecimalPrecisionRequirements isolate(
-		Consumer<BigDecimalPrecisionRequirements> consumer)
+	public BigDecimalPrecisionRequirements isolate(Consumer<BigDecimalPrecisionRequirements> consumer)
 	{
 		consumer.accept(this);
 		return this;

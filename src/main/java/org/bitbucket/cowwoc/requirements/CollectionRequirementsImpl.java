@@ -96,6 +96,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	}
 
 	@Override
+	public CollectionRequirements<E> isIn(Collection<Collection<E>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
+		return this;
+	}
+
+	@Override
 	public CollectionRequirements<E> isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{

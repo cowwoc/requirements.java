@@ -66,6 +66,12 @@ final class NoOpCollectionRequirements<E> implements CollectionRequirements<E>
 	}
 
 	@Override
+	public CollectionRequirements<E> isIn(Collection<Collection<E>> collection)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionRequirements<E> isInstanceOf(Class<?> type)
 	{
 		return this;

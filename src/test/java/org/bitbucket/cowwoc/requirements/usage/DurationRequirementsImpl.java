@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.usage;
 
 import com.google.common.collect.Range;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.ComparableRequirements;
@@ -173,6 +174,14 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		asComparable.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public DurationRequirements isIn(Collection<Duration> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isIn(collection);
 		return this;
 	}
 

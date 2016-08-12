@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -88,6 +89,14 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 		throws NullPointerException, IllegalArgumentException
 	{
 		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public MapRequirements<K, V> isIn(Collection<Map<K, V>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
 		return this;
 	}
 

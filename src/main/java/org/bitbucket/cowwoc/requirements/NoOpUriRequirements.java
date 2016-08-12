@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -55,6 +56,12 @@ enum NoOpUriRequirements implements UriRequirements
 
 	@Override
 	public UriRequirements isNotEqualTo(URI value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public UriRequirements isIn(Collection<URI> collection)
 	{
 		return this;
 	}

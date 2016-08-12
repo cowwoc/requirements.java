@@ -4,13 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Random;
 import org.testng.annotations.Test;
 
 /**
  * @author Gili Tzabari
  */
-public final class RequirementsTest
+public final class ObjectRequirementsTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
@@ -52,6 +53,27 @@ public final class RequirementsTest
 	{
 		Object parameter = new Object();
 		Requirements.requireThat(parameter, "parameter").isNotEqualTo(parameter);
+	}
+
+	@Test
+	public void isInTrue()
+	{
+		String parameter = "value";
+
+		// Make sure that the collection uses equals()
+		@SuppressWarnings("RedundantStringConstructorCall")
+		String equivalent = new String(parameter);
+
+		Requirements.requireThat(parameter, "parameter").
+			isIn(ImmutableList.of("first", equivalent, "third"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInFalse()
+	{
+		String parameter = "value";
+		Requirements.requireThat(parameter, "parameter").
+			isIn(ImmutableList.of("first", "second", "third"));
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)

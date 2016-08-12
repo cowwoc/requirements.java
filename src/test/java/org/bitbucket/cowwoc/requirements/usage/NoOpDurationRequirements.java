@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.usage;
 
 import com.google.common.collect.Range;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -110,6 +111,12 @@ public enum NoOpDurationRequirements implements DurationRequirements
 
 	@Override
 	public DurationRequirements isNotEqualTo(Duration value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public DurationRequirements isIn(Collection<Duration> collection)
 	{
 		return this;
 	}

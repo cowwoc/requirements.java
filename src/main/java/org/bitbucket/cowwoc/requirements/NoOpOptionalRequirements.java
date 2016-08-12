@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -61,6 +62,12 @@ enum NoOpOptionalRequirements implements OptionalRequirements
 
 	@Override
 	public OptionalRequirements isNotEqualTo(Optional<?> value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isIn(Collection<Optional<?>> collection)
 	{
 		return this;
 	}

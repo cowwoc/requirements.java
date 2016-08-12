@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -153,6 +154,12 @@ final class NoOpStringLengthRequirements implements StringLengthRequirements
 
 	@Override
 	public StringLengthRequirements isNotEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public StringLengthRequirements isIn(Collection<Integer> collection)
 	{
 		return this;
 	}

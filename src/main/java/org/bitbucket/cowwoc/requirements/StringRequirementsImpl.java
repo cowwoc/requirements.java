@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -257,6 +258,14 @@ final class StringRequirementsImpl implements StringRequirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		asObject.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public StringRequirements isIn(Collection<String> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
 		return this;
 	}
 

@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.base.Strings;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
@@ -27,6 +28,36 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	/**
 	 * Calculates the difference between two strings.
 	 * <p>
+	 * <h3>Syntax</h3>
+	 * <pre>
+	 * Expected: [text]
+	 * Actual  : &lt;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
+	 * </pre>
+	 * The rectangular brackets denote text that is present in one string but not the other.<br>
+	 * The angle brackets indicate the corresponding position in the other string. This zero-width placeholder does not contribute any characters to the string it is found in. If this confuses you, read on for more concrete examples.
+	 * <h3>Example 1</h3>
+	 * <pre>
+	 * Expected = "Bar"
+	 * Actual   = "Foo"
+	 * </pre>
+	 * results in the following diff:
+	 * <pre>
+	 * Expected: &lt;   &gt;[Bar]
+	 * Actual  : [Foo]&lt;   &gt;
+	 * </pre>
+	 * Meaning, to go from {@code Actual} to {@code Expected} we need to delete "Foo" and insert "Bar".
+	 * <h3>Example 2</h3>
+	 * <pre>
+	 * Expected = "   Foo"
+	 * Actual   = "Foo"
+	 * </pre>
+	 * results in the following diff:
+	 * <pre>
+	 * Expected: [   ]Foo
+	 * Actual  : &lt;   &gt;Foo
+	 * </pre>
+	 * Meaning, to go from {@code Actual} to {@code Expected} we need to insert three spaces to the beginning of {@code Actual}.
+	 *
 	 * @param expected the expected value
 	 * @param actual   the actual value
 	 */
@@ -49,37 +80,37 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 				}
 				case DELETE:
 				{
-					expected.insert(expectedOffset, "<");
+					expected.insert(expectedOffset, "[");
 
-					// Skip '<' + text
+					// Skip '[' + text
 					expectedOffset += 1 + component.text.length();
 
-					expected.insert(expectedOffset, ">");
+					expected.insert(expectedOffset, "]");
 
-					// Skip '>'
+					// Skip ']'
 					++expectedOffset;
 
 					actual.insert(actualOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
 
-					// Skip '<' + text + '>'
-					actualOffset += "<".length() + component.text.length() + ">".length();
+					// Skip '<' + spaces + '>'
+					actualOffset += "]".length() + component.text.length() + "[".length();
 					break;
 				}
 				case INSERT:
 				{
-					actual.insert(actualOffset, "<");
+					actual.insert(actualOffset, "[");
 
-					// Skip '<' + text
+					// Skip '[' + text
 					actualOffset += 1 + component.text.length();
 
-					actual.insert(actualOffset, ">");
+					actual.insert(actualOffset, "]");
 
-					// Skip '>'
+					// Skip ']'
 					++actualOffset;
 
 					expected.insert(expectedOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
 
-					// Skip '<' + text + '>'
+					// Skip '<' + spaces + '>'
 					expectedOffset += "<".length() + component.text.length() + ">".length();
 					break;
 				}
@@ -201,6 +232,19 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must not be equal to %s.", this.name, name),
 			"Actual", value);
+	}
+
+	@Override
+	public ObjectRequirements<T> isIn(Collection<T> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Requirements.requireThat(collection, "collection").isNotNull();
+		if (collection.contains(parameter))
+			return this;
+
+		throw config.createException(IllegalArgumentException.class,
+			String.format("%s must be one of %s.", this.name, collection),
+			"Actual", parameter);
 	}
 
 	@Override

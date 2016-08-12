@@ -51,7 +51,7 @@ public final class Requirements
 	}
 
 	/**
-	 * @return true if assertions are enabled for this class.
+	 * @return true if assertions are enabled for this class
 	 */
 	@Beta
 	public static boolean assertionsAreEnabled()

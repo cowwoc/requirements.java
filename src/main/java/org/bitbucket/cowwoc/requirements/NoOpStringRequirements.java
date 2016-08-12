@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -102,6 +103,12 @@ enum NoOpStringRequirements implements StringRequirements
 
 	@Override
 	public StringRequirements isNotEqualTo(String value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public StringRequirements isIn(Collection<String> collection)
 	{
 		return this;
 	}

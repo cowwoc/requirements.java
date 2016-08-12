@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -86,6 +87,12 @@ final class NoOpMapRequirements implements MapRequirements<Object, Object>
 
 	@Override
 	public MapRequirements<Object, Object> isNotEqualTo(Map<Object, Object> value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public MapRequirements<Object, Object> isIn(Collection<Map<Object, Object>> collection)
 	{
 		return this;
 	}

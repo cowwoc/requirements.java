@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -80,6 +81,12 @@ enum NoOpPathRequirements implements PathRequirements
 
 	@Override
 	public PathRequirements isNotEqualTo(Path value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public PathRequirements isIn(Collection<Path> collection)
 	{
 		return this;
 	}

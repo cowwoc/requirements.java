@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -157,6 +158,12 @@ final class NoOpBigDecimalPrecisionRequirements implements BigDecimalPrecisionRe
 
 	@Override
 	public BigDecimalPrecisionRequirements isNotEqualTo(Integer value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isIn(Collection<Integer> collection)
 	{
 		return this;
 	}

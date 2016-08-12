@@ -24,7 +24,7 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	private final Collection<K> parameter;
 	private final String name;
 	private final Configuration config;
-	private final CollectionRequirements<K> collection;
+	private final CollectionRequirements<K> asCollection;
 
 	/**
 	 * Creates new MapKeySetRequirementsImpl.
@@ -44,7 +44,7 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 		this.parameter = parameter.keySet();
 		this.name = name + ".keySet()";
 		this.config = config;
-		this.collection = new CollectionRequirementsImpl<>(this.parameter, name, config);
+		this.asCollection = new CollectionRequirementsImpl<>(this.parameter, name, config);
 	}
 
 	/**
@@ -66,7 +66,7 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;
-		this.collection = new CollectionRequirementsImpl<>(this.parameter, name, config);
+		this.asCollection = new CollectionRequirementsImpl<>(this.parameter, name, config);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	@Override
 	public CollectionRequirements<K> isEqualTo(Collection<K> value) throws IllegalArgumentException
 	{
-		collection.isEqualTo(value);
+		asCollection.isEqualTo(value);
 		return this;
 	}
 
@@ -98,7 +98,7 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	public CollectionRequirements<K> isEqualTo(Collection<K> value, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		collection.isEqualTo(value, name);
+		asCollection.isEqualTo(value, name);
 		return this;
 	}
 
@@ -106,7 +106,7 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	public CollectionRequirements<K> isNotEqualTo(Collection<K> value)
 		throws IllegalArgumentException
 	{
-		collection.isNotEqualTo(value);
+		asCollection.isNotEqualTo(value);
 		return this;
 	}
 
@@ -114,7 +114,15 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	public CollectionRequirements<K> isNotEqualTo(Collection<K> value, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		collection.isNotEqualTo(value, name);
+		asCollection.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public CollectionRequirements<K> isIn(Collection<Collection<K>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asCollection.isIn(collection);
 		return this;
 	}
 
@@ -122,21 +130,21 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	public CollectionRequirements<K> isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{
-		collection.isInstanceOf(type);
+		asCollection.isInstanceOf(type);
 		return this;
 	}
 
 	@Override
 	public CollectionRequirements<K> isNull() throws IllegalArgumentException
 	{
-		collection.isNull();
+		asCollection.isNull();
 		return this;
 	}
 
 	@Override
 	public CollectionRequirements<K> isNotNull() throws NullPointerException
 	{
-		collection.isNotNull();
+		asCollection.isNotNull();
 		return this;
 	}
 

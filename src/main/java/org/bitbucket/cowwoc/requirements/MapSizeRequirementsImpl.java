@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -73,6 +74,14 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	public MapSizeRequirements isNotNull() throws NullPointerException
 	{
 		// Always true
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isIn(Collection<Integer> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(collection);
 		return this;
 	}
 

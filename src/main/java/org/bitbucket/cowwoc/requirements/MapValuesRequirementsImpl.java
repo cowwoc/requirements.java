@@ -121,6 +121,14 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	}
 
 	@Override
+	public CollectionRequirements<V> isIn(Collection<Collection<V>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asCollection.isIn(collection);
+		return this;
+	}
+
+	@Override
 	public CollectionRequirements<V> isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{

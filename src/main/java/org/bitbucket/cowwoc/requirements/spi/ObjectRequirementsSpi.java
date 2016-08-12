@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.spi;
 
 import com.google.common.annotations.Beta;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -18,6 +19,11 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 {
 	/**
 	 * Overrides the type of exception that will get thrown if a requirement fails.
+	 * <p>
+	 * The exception class must define the following constructors:
+	 * <p>
+	 * {@code <init>(String message)}<br>
+	 * {@code <init>(String message, Throwable cause)}
 	 *
 	 * @param exception the type of exception to throw, null to disable the override
 	 * @return this
@@ -40,6 +46,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 * @param value the value to compare to
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not equal to value
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
 	 */
 	S isEqualTo(T value) throws IllegalArgumentException;
 
@@ -52,6 +59,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code parameter} is not equal to the variable; if
 	 *                                  {@code name} is empty
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
 	 */
 	S isEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException;
 
@@ -75,6 +83,18 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 *                                  is empty
 	 */
 	S isNotEqualTo(T value, String name) throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Ensures that a collection contains the parameter.
+	 *
+	 * @param collection a collection
+	 * @return this
+	 * @throws NullPointerException     if {@code collection} is null
+	 * @throws IllegalArgumentException if {@code collection} does not contain {@code parameter}
+	 */
+	@Beta
+	S isIn(Collection<T> collection)
+		throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Ensures that the parameter is an instance of a class.

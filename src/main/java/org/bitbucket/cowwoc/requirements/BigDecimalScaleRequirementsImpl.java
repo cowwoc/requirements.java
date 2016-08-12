@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -183,6 +184,14 @@ final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequiremen
 		throws NullPointerException, IllegalArgumentException
 	{
 		asInt.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isIn(Collection<Integer> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(collection);
 		return this;
 	}
 

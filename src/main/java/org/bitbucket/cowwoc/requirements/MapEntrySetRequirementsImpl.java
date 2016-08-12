@@ -122,6 +122,14 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	}
 
 	@Override
+	public CollectionRequirements<Entry<K, V>> isIn(Collection<Collection<Entry<K, V>>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asCollection.isIn(collection);
+		return this;
+	}
+
+	@Override
 	public CollectionRequirements<Entry<K, V>> isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{

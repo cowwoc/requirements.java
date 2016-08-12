@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -88,6 +89,14 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	public OptionalRequirements isNull() throws IllegalArgumentException
 	{
 		asObject.isNull();
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements isIn(Collection<Optional<?>> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asObject.isIn(collection);
 		return this;
 	}
 

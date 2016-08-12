@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -88,6 +89,14 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 		throws NullPointerException, IllegalArgumentException
 	{
 		asComparable.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isIn(Collection<T> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isIn(collection);
 		return this;
 	}
 

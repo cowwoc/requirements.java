@@ -94,6 +94,14 @@ final class CollectionSizeRequirementsImpl
 	}
 
 	@Override
+	public CollectionSizeRequirements isIn(Collection<Integer> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(collection);
+		return this;
+	}
+
+	@Override
 	public CollectionSizeRequirements isInstanceOf(Class<?> type)
 		throws NullPointerException, IllegalArgumentException
 	{

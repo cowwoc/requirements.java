@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -88,6 +89,14 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 		throws NullPointerException, IllegalArgumentException
 	{
 		asNumber.isNotEqualTo(value, name);
+		return this;
+	}
+
+	@Override
+	public PrimitiveIntegerRequirements isIn(Collection<Integer> collection)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asNumber.isIn(collection);
 		return this;
 	}
 

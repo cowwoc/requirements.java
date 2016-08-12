@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -159,6 +160,12 @@ final class NoOpBigDecimalRequirements implements BigDecimalRequirements
 
 	@Override
 	public BigDecimalRequirements isNotEqualTo(BigDecimal value, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isIn(Collection<BigDecimal> collection)
 	{
 		return this;
 	}
