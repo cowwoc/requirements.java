@@ -224,8 +224,9 @@ public class StringRequirementsTest
 	}
 
 	@Test
-	void diffArraySize()
+	public void diffArraySize()
 	{
+		System.setProperty("org.bitbucket.cowwoc.requirements.terminal", "NONE");
 		try
 		{
 			String actual = "int[6]";
@@ -235,15 +236,17 @@ public class StringRequirementsTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : int[[6]< >]\n" +
-				"Expected: int[< >[5]]";
+			String expectedMessage = "Actual  : int[6 ]\n" +
+				"Diff    : ====^v=\n" +
+				"Expected: int[ 5]";
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}
 
 	@Test
-	void diffInsertThenDelete()
+	public void diffInsertThenDelete()
 	{
+		System.setProperty("org.bitbucket.cowwoc.requirements.terminal", "NONE");
 		try
 		{
 			String actual = "actual";
@@ -253,15 +256,17 @@ public class StringRequirementsTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : [actual]<        >\n" +
-				"Expected: <      >[expected]";
+			String expectedMessage = "Actual  : actual        \n" +
+				"Diff    : ^^^^^^vvvvvvvv\n" +
+				"Expected:       expected";
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}
 
 	@Test
-	void diffMissingWhitespace()
+	public void diffMissingWhitespace()
 	{
+		System.setProperty("org.bitbucket.cowwoc.requirements.terminal", "NONE");
 		try
 		{
 			String actual = "\"key\": \"value \"";
@@ -271,8 +276,9 @@ public class StringRequirementsTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : \"key\": \"value[ ]\"\n" +
-				"Expected: \"key\": \"value< >\"";
+			String expectedMessage = "Actual  : \"key\": \"value \"\n" +
+				"Diff    : =============^=\n" +
+				"Expected: \"key\": \"value \"";
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}

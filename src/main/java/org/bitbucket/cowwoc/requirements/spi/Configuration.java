@@ -116,6 +116,23 @@ public final class Configuration
 	/**
 	 * Creates a new exception.
 	 * <p>
+	 * @param <E>            the type of the exception
+	 * @param type           the type of the exception
+	 * @param message        an explanation of what went wrong
+	 * @param initialContext key-value pairs to append to the exception message before the context
+	 *                       passed into the constructor
+	 * @throws NullPointerException if {@code type} or {@code message} are null
+	 * @return the exception
+	 */
+	public <E extends RuntimeException> RuntimeException createException(Class<E> type, String message,
+		Map<String, Object> initialContext)
+	{
+		return createException(type, message, initialContext, null);
+	}
+
+	/**
+	 * Creates a new exception.
+	 * <p>
 	 * @param <E>     the type of the exception
 	 * @param type    the type of the exception
 	 * @param message an explanation of what went wrong
@@ -330,6 +347,9 @@ public final class Configuration
 			winner = exceptionOverride;
 		else
 			winner = type;
+
+		// NOTE: TextDiff assumes that context ordering is retained in order to insert "middle" between
+		//       "actual" and "expected".
 		Map<String, Object> mergedContext;
 		if (initialContext.isEmpty())
 			mergedContext = context;

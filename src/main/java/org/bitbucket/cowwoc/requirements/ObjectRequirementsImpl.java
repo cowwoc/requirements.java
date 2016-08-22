@@ -4,17 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.base.Strings;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.DELETE;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.EQUAL;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.INSERT;
+import org.bitbucket.cowwoc.requirements.diff.string.DiffGenerator;
+import org.bitbucket.cowwoc.requirements.diff.string.DiffResult;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
@@ -25,100 +21,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
  */
 final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 {
-	/**
-	 * Calculates the difference between two strings.
-	 * <p>
-	 * <h3>Syntax</h3>
-	 * <pre>
-	 * Actual  : &lt;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
-	 * Expected: [text]
-	 * </pre>
-	 * The rectangular brackets denote text that is present in one string but not the other.<br>
-	 * The angle brackets indicate the corresponding position in the other string. This zero-width placeholder does not contribute any characters to the string it is found in. If this confuses you, read on for more concrete examples.
-	 * <h3>Example 1</h3>
-	 * <pre>
-	 * Actual   = "Foo"
-	 * Expected = "Bar"
-	 * </pre>
-	 * results in the following diff:
-	 * <pre>
-	 * Actual  : [Foo]&lt;   &gt;
-	 * Expected: &lt;   &gt;[Bar]
-	 * </pre>
-	 * Meaning, to go from {@code Actual} to {@code Expected} we need to delete "Foo" and insert "Bar".
-	 * <h3>Example 2</h3>
-	 * <pre>
-	 * Actual   = "Foo"
-	 * Expected = "   Foo"
-	 * </pre>
-	 * results in the following diff:
-	 * <pre>
-	 * Actual  : &lt;   &gt;Foo
-	 * Expected: [   ]Foo
-	 * </pre>
-	 * Meaning, to go from {@code Actual} to {@code Expected} we need to insert three spaces to the beginning of {@code Actual}.
-	 *
-	 * @param expected the expected value
-	 * @param actual   the actual value
-	 */
-	private static void diff(StringBuilder expected, StringBuilder actual)
-	{
-		DiffMatchPatch diffFactory = new DiffMatchPatch();
-		LinkedList<Diff> components = diffFactory.diffMain(actual.toString(), expected.toString());
-		diffFactory.diffCleanupSemantic(components);
-		int expectedOffset = 0;
-		int actualOffset = 0;
-		for (Diff component: components)
-		{
-			switch (component.operation)
-			{
-				case EQUAL:
-				{
-					expectedOffset += component.text.length();
-					actualOffset += component.text.length();
-					break;
-				}
-				case INSERT:
-				{
-					expected.insert(expectedOffset, "[");
-
-					// Skip '[' + text
-					expectedOffset += 1 + component.text.length();
-
-					expected.insert(expectedOffset, "]");
-
-					// Skip ']'
-					++expectedOffset;
-
-					actual.insert(actualOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
-
-					// Skip '<' + spaces + '>'
-					actualOffset += "<".length() + component.text.length() + ">".length();
-					break;
-				}
-				case DELETE:
-				{
-					actual.insert(actualOffset, "[");
-
-					// Skip '[' + text
-					actualOffset += 1 + component.text.length();
-
-					actual.insert(actualOffset, "]");
-
-					// Skip ']'
-					++actualOffset;
-
-					expected.insert(expectedOffset, "<" + Strings.repeat(" ", component.text.length()) + ">");
-
-					// Skip '<' + spaces + '>'
-					expectedOffset += "<".length() + component.text.length() + ">".length();
-					break;
-				}
-				default:
-					throw new AssertionError(component.operation.name());
-			}
-		}
-	}
+	private static final DiffGenerator DIFF_GENERATOR = new DiffGenerator();
 	private final T parameter;
 	private final String name;
 	private final Configuration config;
@@ -184,14 +87,14 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	{
 		if (Objects.equals(parameter, value))
 			return this;
-		StringBuilder expected = new StringBuilder(value.toString());
-		StringBuilder actual = new StringBuilder(parameter.toString());
-		diff(expected, actual);
-
+		DiffResult result = DIFF_GENERATOR.diff(parameter.toString(), value.toString());
+		Map<String, Object> context = new LinkedHashMap<>(3);
+		context.put("Actual", result.getActual());
+		result.getMiddle().ifPresent(theValue -> context.put("Diff", theValue));
+		context.put("Expected", result.getExpected());
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name),
-			"Actual", actual,
-			"Expected", expected);
+			context);
 	}
 
 	@Override
@@ -201,14 +104,14 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return this;
-		StringBuilder expected = new StringBuilder(value.toString());
-		StringBuilder actual = new StringBuilder(parameter.toString());
-		diff(expected, actual);
-
+		DiffResult result = DIFF_GENERATOR.diff(parameter.toString(), value.toString());
+		Map<String, Object> context = new LinkedHashMap<>(3);
+		context.put("Actual", result.getActual());
+		result.getMiddle().ifPresent(theValue -> context.put("Diff", theValue));
+		context.put("Expected", result.getExpected());
 		throw config.createException(IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name),
-			"Actual", actual,
-			"Expected", expected);
+			context);
 	}
 
 	@Override
