@@ -4,11 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import java.net.URI;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of UriRequirements.
@@ -37,7 +38,7 @@ final class UriRequirementsImpl implements UriRequirements
 		assert (name != null);
 		assert (config != null);
 		this.parameter = parameter;
-		this.name = name + ".length()";
+		this.name = name;
 		this.config = config;
 		this.asObject = new ObjectRequirementsImpl<>(this.parameter, name, config);
 	}
@@ -52,7 +53,16 @@ final class UriRequirementsImpl implements UriRequirements
 	}
 
 	@Override
-	public UriRequirements withContext(Map<String, Object> context)
+	public UriRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new UriRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public UriRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -65,9 +75,10 @@ final class UriRequirementsImpl implements UriRequirements
 	{
 		if (parameter.isAbsolute())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be absolute.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be absolute.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override

@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -55,7 +56,16 @@ final class StringRequirementsImpl implements StringRequirements
 	}
 
 	@Override
-	public StringRequirements withContext(Map<String, Object> context)
+	public StringRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new StringRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public StringRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -75,9 +85,10 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be empty.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be empty.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	/**
@@ -92,8 +103,9 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (!parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be empty", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be empty", name)).
+			build();
 	}
 
 	/**
@@ -121,9 +133,10 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (EMAIL_PATTERN.matcher(parameter).matches())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s does not contain a valid email format", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s does not contain a valid email format", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	/**
@@ -139,9 +152,10 @@ final class StringRequirementsImpl implements StringRequirements
 		char firstCharacter = parameter.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
-			throw config.createException(IllegalArgumentException.class,
-				String.format("%s does not contain a valid IP address format", name),
-				"Actual", parameter);
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s does not contain a valid IP address format", name)).
+				addContext("Actual", parameter).
+				build();
 		}
 		try
 		{
@@ -149,10 +163,10 @@ final class StringRequirementsImpl implements StringRequirements
 		}
 		catch (UnknownHostException e)
 		{
-			throw config.createException(IllegalArgumentException.class,
-				String.format("%s does not contain a valid IP address format", name),
-				"Actual", parameter,
-				e);
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s does not contain a valid IP address format", name), e).
+				addContext("Actual", parameter).
+				build();
 		}
 		return this;
 	}
@@ -169,9 +183,10 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (parameter.startsWith(prefix))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must start with \"%s\".", name, prefix),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must start with \"%s\".", name, prefix)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	/**
@@ -186,9 +201,10 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (!parameter.startsWith(prefix))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must not start with \"%s\".", name, prefix),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must not start with \"%s\".", name, prefix)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	/**
@@ -203,9 +219,10 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (parameter.endsWith(suffix))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must end with \"%s\".", name, suffix),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must end with \"%s\".", name, suffix)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	/**
@@ -220,9 +237,10 @@ final class StringRequirementsImpl implements StringRequirements
 	{
 		if (!parameter.endsWith(suffix))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must not end with \"%s\".", name, suffix),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must not end with \"%s\".", name, suffix)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override

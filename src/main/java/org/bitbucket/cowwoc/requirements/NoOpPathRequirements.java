@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -26,7 +27,13 @@ enum NoOpPathRequirements implements PathRequirements
 	}
 
 	@Override
-	public PathRequirements withContext(Map<String, Object> context)
+	public PathRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public PathRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

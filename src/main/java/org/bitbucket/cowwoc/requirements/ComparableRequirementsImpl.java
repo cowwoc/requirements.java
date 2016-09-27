@@ -6,7 +6,8 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -54,7 +55,16 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	}
 
 	@Override
-	public ComparableRequirements<T> withContext(Map<String, Object> context)
+	public ComparableRequirements<T> addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new ComparableRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ComparableRequirements<T> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -131,9 +141,10 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual < 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %s (%s)", this.name, parameter, name, value),
-			"Actual", actual);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s (%s) must be less than %s (%s)", this.name, parameter, name, value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -144,9 +155,10 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual < 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %s", this.name, parameter, value),
-			"Actual", actual);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s (%s) must be less than %s", this.name, parameter, value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -158,10 +170,11 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual <= 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s (%s) must be less than or equal to %s (%s)", this.name, parameter, name,
-				value),
-			"Actual", actual);
+				value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -172,9 +185,10 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual <= 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than or equal to %s", name, parameter, value),
-			"Actual: %d", actual);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s (%s) must be less than or equal to %s", name, parameter, value)).
+			addContext("Actual: %d", actual).
+			build();
 	}
 
 	@Override
@@ -186,9 +200,10 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual > 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than %s (%s)", this.name, parameter, name, value),
-			"Actual", actual);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s (%s) must be greater than %s (%s)", this.name, parameter, name, value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -199,9 +214,10 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual > 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than %s", name, parameter, value),
-			"Actual", actual);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s (%s) must be greater than %s", name, parameter, value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -213,10 +229,11 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual >= 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s (%s) must be greater than or equal to %s (%s)", this.name, parameter, name,
-				value),
-			"Actual", actual);
+				value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -227,9 +244,10 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		int actual = parameter.compareTo(value);
 		if (actual >= 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than or equal to %s", name, parameter, value),
-			"Actual", actual);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s (%s) must be greater than or equal to %s", name, parameter, value)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
@@ -239,8 +257,9 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		Requirements.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			Ranges.getExceptionMessage(name, parameter, range));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			Ranges.getExceptionMessage(name, parameter, range)).
+			build();
 	}
 
 	@Override

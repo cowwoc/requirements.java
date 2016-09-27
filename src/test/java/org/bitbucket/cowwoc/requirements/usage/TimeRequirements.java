@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
-import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -46,7 +45,7 @@ public final class TimeRequirements
 			throw new NullPointerException("name may not be null");
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
-		return new DurationRequirementsImpl(parameter, name, new Configuration(null, ImmutableMap.of()));
+		return new DurationRequirementsImpl(parameter, name, Configuration.initial());
 	}
 
 	/**

@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -25,7 +26,13 @@ enum NoOpOptionalRequirements implements OptionalRequirements
 	}
 
 	@Override
-	public OptionalRequirements withContext(Map<String, Object> context)
+	public OptionalRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public OptionalRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

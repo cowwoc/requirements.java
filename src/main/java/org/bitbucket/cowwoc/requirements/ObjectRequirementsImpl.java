@@ -4,9 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.diff.string.DiffGenerator;
@@ -55,7 +57,15 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	}
 
 	@Override
-	public ObjectRequirements<T> withContext(Map<String, Object> context)
+	public ObjectRequirements<T> addContext(String key, Object value)
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new ObjectRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ObjectRequirements<T> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -68,9 +78,10 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	{
 		if (parameter == null)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be null.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be null.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -78,8 +89,9 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	{
 		if (parameter != null)
 			return this;
-		throw config.createException(NullPointerException.class,
-			String.format("%s may not be null", name));
+		throw config.exceptionBuilder(NullPointerException.class,
+			String.format("%s may not be null", name)).
+			build();
 	}
 
 	@Override
@@ -88,13 +100,107 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		if (Objects.equals(parameter, value))
 			return this;
 		DiffResult result = DIFF_GENERATOR.diff(parameter.toString(), value.toString());
-		Map<String, Object> context = new LinkedHashMap<>(3);
-		context.put("Actual", result.getActual());
-		result.getMiddle().ifPresent(theValue -> context.put("Diff", theValue));
-		context.put("Expected", result.getExpected());
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s had an unexpected value.", name),
-			context);
+		List<Entry<String, Object>> context = getContext(result);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s had an unexpected value.", name)).
+			addContext(context).
+			build();
+	}
+
+	private List<Entry<String, Object>> getContext(DiffResult diff)
+	{
+		List<String> actual = diff.getActual();
+		List<String> middle = diff.getMiddle();
+		List<String> expected = diff.getExpected();
+		int lines = actual.size();
+		List<Entry<String, Object>> result = new ArrayList<>(2 * lines);
+		if (lines == 1)
+		{
+			result.add(new SimpleImmutableEntry<>("Actual", actual.get(0)));
+			if (!middle.isEmpty())
+				result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
+			result.add(new SimpleImmutableEntry<>("Expected", expected.get(0)));
+		}
+		else
+		{
+			assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " + expected.size();
+			int actualLineNumber = 1;
+			int expectedLineNumber = 1;
+			// Indicates if the previous line was identical
+			boolean skippedDupicates = false;
+			for (int i = 0; i < lines; ++i)
+			{
+				String actualLine = actual.get(i);
+				String expectedLine = expected.get(i);
+				// TODO: line numbers will be incorrect if there is a difference in newlines.
+				String middleLine = middle.get(i);
+
+				if (i != 0 && i != lines - 1 && containsOnly(middleLine, '='))
+				{
+					// Skip identical lines, unless they are the first or last line.
+					skippedDupicates = true;
+					++actualLineNumber;
+					++expectedLineNumber;
+					continue;
+				}
+				String actualName;
+				if (actualLine.isEmpty())
+					actualName = "Actual";
+				else
+				{
+					actualName = "Actual@" + actualLineNumber;
+					++actualLineNumber;
+				}
+				if (skippedDupicates)
+				{
+					skippedDupicates = false;
+					skipDuplicateLines(result);
+				}
+
+				result.add(new SimpleImmutableEntry<>(actualName, actualLine));
+				if (!middle.isEmpty())
+					result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
+				String expectedName;
+				if (expectedLine.isEmpty())
+					expectedName = "Expected";
+				else
+				{
+					expectedName = "Expected@" + expectedLineNumber;
+					++expectedLineNumber;
+				}
+				if (i < lines - 1)
+					expectedLine += "\n";
+				result.add(new SimpleImmutableEntry<>(expectedName, expectedLine));
+			}
+			if (skippedDupicates)
+				skipDuplicateLines(result);
+		}
+		return result;
+	}
+
+	/**
+	 * Updates the last context entry to indicate that duplicate lines were skipped.
+	 *
+	 * @param entries the exception context
+	 */
+	private void skipDuplicateLines(List<Entry<String, Object>> entries)
+	{
+		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
+		String newValue = lastEntry.getValue() + "\n[...]\n";
+		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
+	}
+
+	/**
+	 * @param text a string
+	 * @param c    a character
+	 * @return true if the string only contains the specified character
+	 */
+	private boolean containsOnly(String text, char c)
+	{
+		for (int i = 0, size = text.length(); i < size; ++i)
+			if (text.charAt(i) != c)
+				return false;
+		return true;
 	}
 
 	@Override
@@ -105,13 +211,12 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		if (Objects.equals(parameter, value))
 			return this;
 		DiffResult result = DIFF_GENERATOR.diff(parameter.toString(), value.toString());
-		Map<String, Object> context = new LinkedHashMap<>(3);
-		context.put("Actual", result.getActual());
-		result.getMiddle().ifPresent(theValue -> context.put("Diff", theValue));
-		context.put("Expected", result.getExpected());
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be equal to %s.", this.name, name),
-			context);
+		List<Entry<String, Object>> context = getContext(result);
+
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be equal to %s.", this.name, name)).
+			addContext(context).
+			build();
 	}
 
 	@Override
@@ -120,8 +225,9 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		if (!Objects.equals(parameter, value))
 			return this;
 
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s", name, value));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must not be equal to %s", name, value)).
+			build();
 	}
 
 	@Override
@@ -132,9 +238,10 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		if (!Objects.equals(parameter, value))
 			return this;
 
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s.", this.name, name),
-			"Actual", value);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must not be equal to %s.", this.name, name)).
+			addContext("Actual", value).
+			build();
 	}
 
 	@Override
@@ -145,9 +252,10 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		if (collection.contains(parameter))
 			return this;
 
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be one of %s.", this.name, collection),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be one of %s.", this.name, collection)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -158,9 +266,10 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		if (type.isInstance(parameter))
 			return this;
 
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be an instance of %s.", name, type),
-			"Actual: %s", parameter.getClass());
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be an instance of %s.", name, type)).
+			addContext("Actual: %s", parameter.getClass()).
+			build();
 	}
 
 	@Override

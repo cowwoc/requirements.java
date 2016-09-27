@@ -4,12 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Range;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of StringLengthRequirements.
@@ -48,11 +49,10 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	/**
 	 * Constructor meant to be invoked by {@link #withException(Class)}.
 	 *
-	 * @param string            the {@code String}
-	 * @param parameter         the length of the {@code String}
-	 * @param name              the name of the parameter
-	 * @param exceptionOverride the type of exception to throw, null to disable the override
-	 * @param context           additional key-value pairs to output if a requirement is not met
+	 * @param string    the {@code String}
+	 * @param parameter the length of the {@code String}
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
 	 */
 	private StringLengthRequirementsImpl(String string, int parameter, String name,
 		Configuration config)
@@ -76,7 +76,16 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	}
 
 	@Override
-	public StringLengthRequirements withContext(Map<String, Object> context)
+	public StringLengthRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new StringLengthRequirementsImpl(string, parameter, name, newConfig);
+	}
+
+	@Override
+	public StringLengthRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -91,10 +100,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter >= value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d characters. It contained %,d characters.", name,
-				value, parameter),
-			"Actual", string);
+				value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -105,10 +115,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) characters. It contained %,d characters.",
-				this.name, name, value, parameter),
-			"Actual", string);
+				this.name, name, value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -117,10 +128,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter > value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d characters. It contained %,d characters.", name,
-				value, parameter),
-			"Actual", string);
+				value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -131,10 +143,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) characters. It contained " +
-				"%,d characters", this.name, name, value, parameter),
-			"Actual", string);
+				"%,d characters", this.name, name, value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -144,10 +157,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may contain at most %,d characters. It contained %,d characters.", name,
-				value, parameter),
-			"Actual", string);
+				value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -158,10 +172,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may contain at most %s (%,d) characters. It contained " +
-				"%,d characters", this.name, name, value, parameter),
-			"Actual", string);
+				"%,d characters", this.name, name, value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -170,10 +185,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter < value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d characters. It contained %,d characters.",
-				this.name, value, parameter),
-			"Actual", string);
+				this.name, value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -184,10 +200,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %s (%,d) characters. It contained %,d characters.",
-				this.name, name, value, parameter),
-			"Actual", string);
+				this.name, name, value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -201,10 +218,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (parameter > 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least one character. It contained %,d characters.", name,
-				parameter),
-			"Actual", string);
+				parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -218,9 +236,10 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (parameter == 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be empty. It contained %,d characters.", name, parameter),
-			"Actual", string);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be empty. It contained %,d characters.", name, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -244,10 +263,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s characters. It contained %,d characters.", name, range,
-				parameter),
-			"Actual", string);
+				parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -255,10 +275,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (Objects.equals(parameter, value))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %,d characters. It contained %,d characters.", name, value,
-				parameter),
-			"Actual", string);
+				parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -267,10 +288,11 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (Objects.equals(parameter, value))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
+		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s (%,d) characters. It contained %,d characters.", this.name,
-				name, value, parameter),
-			"Actual", string);
+				name, value, parameter)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -278,9 +300,10 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (!Objects.equals(parameter, value))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must not contain %,d characters, but did.", name, value),
-			"Actual", string);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must not contain %,d characters, but did.", name, value)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override
@@ -289,9 +312,10 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (!Objects.equals(parameter, value))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must not contain %s (%,d) characters, but did.", this.name, name, value),
-			"Actual", string);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must not contain %s (%,d) characters, but did.", this.name, name, value)).
+			addContext("Actual", string).
+			build();
 	}
 
 	@Override

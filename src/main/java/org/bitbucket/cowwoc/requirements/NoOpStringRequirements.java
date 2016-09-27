@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -24,7 +25,13 @@ enum NoOpStringRequirements implements StringRequirements
 	}
 
 	@Override
-	public StringRequirements withContext(Map<String, Object> context)
+	public StringRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public StringRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

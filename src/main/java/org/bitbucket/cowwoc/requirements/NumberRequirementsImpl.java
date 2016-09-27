@@ -4,11 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Range;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of {@code NumberRequirements}.
@@ -54,7 +55,16 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	}
 
 	@Override
-	public NumberRequirements<T> withContext(Map<String, Object> context)
+	public NumberRequirements<T> addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new NumberRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public NumberRequirements<T> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -127,9 +137,10 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	{
 		if (parameter.longValue() < 0L)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be negative.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be negative.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -137,9 +148,10 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	{
 		if (parameter.longValue() >= 0L)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be negative.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be negative.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -147,9 +159,10 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	{
 		if (parameter.longValue() == 0L)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be zero.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be zero.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -157,8 +170,9 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	{
 		if (parameter.longValue() != 0L)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be zero", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be zero", name)).
+			build();
 	}
 
 	@Override
@@ -166,9 +180,10 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	{
 		if (parameter.longValue() > 0L)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be positive.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be positive.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -176,9 +191,10 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	{
 		if (parameter.longValue() <= 0L)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be positive.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be positive.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override

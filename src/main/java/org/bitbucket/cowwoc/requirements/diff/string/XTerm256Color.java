@@ -4,6 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.POSTFIX;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.PREFIX;
+
 /**
  * An xterm terminal that supports a 256-color palette.
  *

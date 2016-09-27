@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -24,7 +25,13 @@ final class NoOpCollectionRequirements<E> implements CollectionRequirements<E>
 	}
 
 	@Override
-	public CollectionRequirements<E> withContext(Map<String, Object> context)
+	public CollectionRequirements<E> addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionRequirements<E> withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

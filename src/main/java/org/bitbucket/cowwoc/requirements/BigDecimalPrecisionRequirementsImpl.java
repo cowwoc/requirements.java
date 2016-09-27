@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements;
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -70,7 +71,16 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	}
 
 	@Override
-	public BigDecimalPrecisionRequirements withContext(Map<String, Object> context)
+	public BigDecimalPrecisionRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new BigDecimalPrecisionRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)

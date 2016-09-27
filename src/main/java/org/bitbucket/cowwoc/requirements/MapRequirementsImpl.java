@@ -4,11 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of MapRequirements.
@@ -54,7 +55,16 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	}
 
 	@Override
-	public MapRequirements<K, V> withContext(Map<String, Object> context)
+	public MapRequirements<K, V> addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new MapRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public MapRequirements<K, V> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -145,9 +155,10 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	{
 		if (parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be empty.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be empty.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -155,8 +166,9 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	{
 		if (!parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be empty", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be empty", name)).
+			build();
 	}
 
 	@Override

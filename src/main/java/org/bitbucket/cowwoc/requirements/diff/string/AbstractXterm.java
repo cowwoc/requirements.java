@@ -5,7 +5,14 @@
 package org.bitbucket.cowwoc.requirements.diff.string;
 
 import com.google.common.base.Strings;
-import java.util.Optional;
+import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.LINE_LENGTH;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_MARKER;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_PATTERN;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.POSTFIX;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.PREFIX;
 
 /**
  * Base implementation for all XTerm terminals.
@@ -15,20 +22,22 @@ import java.util.Optional;
 abstract class AbstractXterm implements ColoredDiff
 {
 	/**
-	 * The prefix for all ANSI sequences.
+	 * A padding character used to align values vertically.
 	 */
-	protected static final String PREFIX = "\033[";
-	/**
-	 * The postfix for all color sequences.
-	 */
-	protected static final String POSTFIX = "m";
-	private final StringBuilder actual;
-	private final StringBuilder expected;
+	private static final String PADDING_MARKER = "/";
+	private final StringBuilder actualLine;
+	private final StringBuilder expectedLine;
+	private final List<String> actualList;
+	private final List<String> expectedList;
+	private ImmutableList<String> actual;
+	private ImmutableList<String> expected;
+	private ImmutableList<String> middle;
 	private final String colorForInsert;
 	private final String colorForDelete;
 	private final String colorForNeutral;
 	private final String resetColor;
 	private boolean needToResetColor;
+	private boolean closed;
 
 	/**
 	 * Creates a new instance.
@@ -44,8 +53,10 @@ abstract class AbstractXterm implements ColoredDiff
 			throw new NullPointerException("actual may not be null");
 		if (expected == null)
 			throw new NullPointerException("expected may not be null");
-		this.actual = new StringBuilder((int) (actual.length() * 1.1));;
-		this.expected = new StringBuilder((int) (expected.length() * 1.1));
+		this.actualLine = new StringBuilder(LINE_LENGTH);
+		this.expectedLine = new StringBuilder(LINE_LENGTH);
+		this.actualList = new ArrayList<>(Math.max(1, actual.length() / LINE_LENGTH));
+		this.expectedList = new ArrayList<>(Math.max(1, expected.length() / LINE_LENGTH));
 		this.colorForNeutral = getColorForNeutral();
 		this.colorForInsert = getColorForInsert();
 		this.colorForDelete = getColorForDelete();
@@ -53,54 +64,172 @@ abstract class AbstractXterm implements ColoredDiff
 	}
 
 	@Override
-	public void unchanged(String text)
+	public void keep(String text) throws IllegalStateException
 	{
-		actual.append(resetColor).append(text);
-		expected.append(resetColor).append(text);
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
+		for (int i = 0, size = lines.length; i < size; ++i)
+		{
+			String line = lines[i];
+			if (i < size - 1)
+				line += NEWLINE_MARKER;
+			actualLine.append(resetColor).append(line);
+			expectedLine.append(resetColor).append(line);
+
+			if (i < size - 1)
+			{
+				// We're not sure whether the last line has actually ended
+				flushLine();
+			}
+		}
 		needToResetColor = false;
 	}
 
 	@Override
-	public void inserted(String text)
+	public void insert(String text) throws IllegalStateException
 	{
-		actual.append(colorForNeutral).append(Strings.repeat("/", text.length()));
-		expected.append(colorForInsert).append(text);
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
+		for (int i = 0, size = lines.length; i < size; ++i)
+		{
+			String line = lines[i];
+			if (i < size - 1)
+				line += NEWLINE_MARKER;
+			int length = line.length();
+			if (length > 0)
+			{
+				if (i == size - 1)
+					actualLine.append(colorForNeutral).append(Strings.repeat(PADDING_MARKER, length));
+				expectedLine.append(colorForInsert).append(line);
+			}
+			if (i < size - 1)
+			{
+				// We're not sure whether the last line has actually ended
+				flushLine();
+			}
+		}
 		needToResetColor = true;
 	}
 
 	@Override
-	public void deleted(String text)
+	public void delete(String text) throws IllegalStateException
 	{
-		actual.append(colorForDelete).append(text);
-		expected.append(colorForNeutral).append(Strings.repeat("/", text.length()));
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
+		for (int i = 0, size = lines.length; i < size; ++i)
+		{
+			String line = lines[i];
+			if (i < size - 1)
+				line += NEWLINE_MARKER;
+			int length = line.length();
+			if (length > 0)
+			{
+				actualLine.append(colorForDelete).append(line);
+				if (i == size - 1)
+					expectedLine.append(colorForNeutral).append(Strings.repeat(PADDING_MARKER, line.length()));
+			}
+			if (i < size - 1)
+			{
+				// We're not sure whether the last line has actually ended
+				flushLine();
+			}
+		}
 		needToResetColor = true;
+	}
+
+	/**
+	 * Flushes the contents of {@code actualLine}, {@code expectedLine} into {@code actualList},
+	 * {@code expectedList}.
+	 */
+	private void flushLine()
+	{
+		// Strip trailing whitespace to ensure that end of line markers are the last character.
+		// See http://stackoverflow.com/a/16974310/14731 for the regex.
+		String string = actualLine.toString();
+		int index = lastIndexNotOf(string, PADDING_MARKER);
+		if (index != -1)
+			string = string.substring(0, index);
+		actualList.add(string);
+		actualLine.delete(0, actualLine.length());
+
+		string = actualLine.toString();
+		index = lastIndexNotOf(string, PADDING_MARKER);
+		if (index != -1)
+			string = string.substring(0, index);
+		expectedList.add(string);
+		expectedLine.delete(0, expectedLine.length());
+	}
+
+	/**
+	 * @param source the string to search within
+	 * @param target the string to search for
+	 * @return the last index of {@code source} that does not start with {@code target}; -1 if
+	 *         {@code source} starts with {@code target}
+	 */
+	private int lastIndexNotOf(String source, String target)
+	{
+		int length = target.length();
+		if (length == 0)
+			return -1;
+
+		// Check for worse-case scenario
+		if (source.startsWith(target))
+			return -1;
+
+		// Check the rest of the string
+		for (int result = source.length() - length; result >= length; result -= length)
+			if (!source.startsWith(target, result))
+				return result;
+		return -1;
 	}
 
 	@Override
 	public void close()
 	{
+		if (closed)
+			return;
+		closed = true;
 		if (needToResetColor)
 		{
-			actual.append(resetColor);
-			expected.append(resetColor);
+			actualLine.append(resetColor);
+			expectedLine.append(resetColor);
 		}
+		flushLine();
+		this.actual = ImmutableList.copyOf(actualList);
+		this.expected = ImmutableList.copyOf(expectedList);
+		List<String> temp = new ArrayList<>(actual.size());
+		for (int i = 0, size = actual.size(); i < size; ++i)
+			temp.add("");
+		this.middle = ImmutableList.copyOf(temp);
 	}
 
 	@Override
-	public String getActual()
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public List<String> getActual() throws IllegalStateException
 	{
-		return actual.toString();
+		if (!closed)
+			throw new IllegalStateException("Writer must be closed");
+		return actual;
 	}
 
 	@Override
-	public String getExpected()
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public List<String> getExpected() throws IllegalStateException
 	{
-		return expected.toString();
+		if (!closed)
+			throw new IllegalStateException("Writer must be closed");
+		return expected;
 	}
 
 	@Override
-	public Optional<String> getMiddle()
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public List<String> getMiddle() throws IllegalStateException
 	{
-		return Optional.empty();
+		if (!closed)
+			throw new IllegalStateException("Writer must be closed");
+		return middle;
 	}
 }

@@ -34,12 +34,15 @@ public final class Exceptions
 	 * @param <E>     the type of the exception
 	 * @param type    the type of the exception
 	 * @param message an explanation of what went wrong
-	 * @param cause   the cause of the exception
+	 * @param cause   the cause of the exception ({@code null} if absent)
 	 * @return the exception
+	 * @throws NullPointerException if {@code type} is null
 	 */
 	public static <E extends RuntimeException> RuntimeException createException(Class<E> type,
 		String message, Throwable cause)
 	{
+		if (type == null)
+			throw new NullPointerException("type may not be null");
 		try
 		{
 			MethodType constructorType;

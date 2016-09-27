@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -53,7 +54,15 @@ final class ClassRequirementsImpl<T>
 	}
 
 	@Override
-	public ClassRequirements<T> withContext(Map<String, Object> context)
+	public ClassRequirements<T> addContext(String key, Object value) throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new ClassRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public ClassRequirements<T> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -128,9 +137,10 @@ final class ClassRequirementsImpl<T>
 		Requirements.requireThat(type, "type").isNotNull();
 		if (parameter.isAssignableFrom(type))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be a supertype of %s", name, type),
-			"Actual", parameter.getClass());
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be a supertype of %s", name, type)).
+			addContext("Actual", parameter.getClass()).
+			build();
 	}
 
 	@Override

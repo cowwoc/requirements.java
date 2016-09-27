@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements.usage;
 import com.google.common.collect.Range;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.ComparableRequirements;
 import org.bitbucket.cowwoc.requirements.Requirements;
@@ -57,7 +58,16 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	}
 
 	@Override
-	public DurationRequirements withContext(Map<String, Object> context)
+	public DurationRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new DurationRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public DurationRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -70,9 +80,10 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	{
 		if (parameter.getNano() > 0 || parameter.getSeconds() > 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be positive.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be positive.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override

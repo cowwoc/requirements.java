@@ -4,12 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of {@code BigDecimalScaleRequirements}.
@@ -69,7 +70,16 @@ final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequiremen
 	}
 
 	@Override
-	public BigDecimalScaleRequirements withContext(Map<String, Object> context)
+	public BigDecimalScaleRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new BigDecimalScaleRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public BigDecimalScaleRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)

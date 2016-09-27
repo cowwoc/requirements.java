@@ -12,6 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.EOS_MARKER;
+import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_PATTERN;
 import org.bitbucket.cowwoc.requirements.util.Strings;
 
 /**
@@ -55,7 +57,21 @@ public final class DiffGenerator
 	public DiffResult diff(String actual, String expected) throws NullPointerException
 	{
 		DiffMatchPatch diffEngine = new DiffMatchPatch();
-		LinkedList<Diff> components = diffEngine.diffMain(actual, expected);
+		String actualWithEos;
+		String expectedWithEos;
+		if (NEWLINE_PATTERN.matcher(actual).find() || NEWLINE_PATTERN.matcher(expected).find())
+		{
+			// If the input contains multiple lines, add the end of string character
+			actualWithEos = actual + EOS_MARKER;
+			expectedWithEos = expected + EOS_MARKER;
+		}
+		else
+		{
+			actualWithEos = actual;
+			expectedWithEos = expected;
+		}
+
+		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
 		DiffWriter writer = terminal.diff(actual, expected);
@@ -65,24 +81,25 @@ public final class DiffGenerator
 			{
 				case EQUAL:
 				{
-					writer.unchanged(component.text);
+					writer.keep(component.text);
 					break;
 				}
 				case INSERT:
 				{
-					writer.inserted(component.text);
+					writer.insert(component.text);
 					break;
 				}
 				case DELETE:
 				{
-					writer.deleted(component.text);
+					writer.delete(component.text);
 					break;
 				}
 				default:
 					throw new AssertionError(component.operation.name());
 			}
 		}
-		return new DiffResult(writer.getActual(), writer.getExpected(), writer.getMiddle().orElse(null));
+		writer.close();
+		return new DiffResult(writer.getActual(), writer.getMiddle(), writer.getExpected());
 	}
 
 	/**
@@ -161,22 +178,5 @@ public final class DiffGenerator
 		}
 		assert (false): "Unknown terminal: " + term;
 		return TerminalType.NONE;
-	}
-
-	/**
-	 * @param propertyName the name of a system property
-	 * @return null if the property is not set or is set to a non-boolean value; otherwise, returns
-	 *         the boolean value
-	 */
-	private Boolean getBoolean(String propertyName)
-	{
-		String value = System.getProperty(DiffGenerator.class.getName() + ".enabled");
-		if (value == null)
-			return null;
-		if (value.equalsIgnoreCase("true"))
-			return true;
-		if (value.equalsIgnoreCase("false"))
-			return false;
-		return null;
 	}
 }

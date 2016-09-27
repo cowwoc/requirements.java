@@ -6,7 +6,8 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -32,7 +33,13 @@ final class NoOpStringLengthRequirements implements StringLengthRequirements
 	}
 
 	@Override
-	public StringLengthRequirements withContext(Map<String, Object> context)
+	public StringLengthRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public StringLengthRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

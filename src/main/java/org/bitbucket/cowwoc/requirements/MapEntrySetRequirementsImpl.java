@@ -4,13 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Sets;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of MapRequirements.entrySet().
@@ -81,12 +82,21 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	}
 
 	@Override
-	public CollectionRequirements<Entry<K, V>> withContext(Map<String, Object> context)
+	public CollectionRequirements<Entry<K, V>> addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new MapEntrySetRequirementsImpl<>(map, parameter, name, newConfig);
+	}
+
+	@Override
+	public CollectionRequirements<Entry<K, V>> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new MapEntrySetRequirementsImpl<>(map, parameter, name, newConfig);
+		return new CollectionRequirementsImpl<>(parameter, name, newConfig);
 	}
 
 	@Override
@@ -157,9 +167,10 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	{
 		if (parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be empty.", name),
-			"Actual", map);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be empty.", name)).
+			addContext("Actual", map).
+			build();
 	}
 
 	@Override
@@ -168,8 +179,9 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	{
 		if (!parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be empty.", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be empty.", name)).
+			build();
 	}
 
 	@Override
@@ -178,9 +190,10 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	{
 		if (parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain: %s", name, element),
-			"Actual", map);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain: %s", name, element)).
+			addContext("Actual", map).
+			build();
 	}
 
 	@Override
@@ -190,10 +203,11 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain %s", this.name, name),
-			"Actual", map,
-			"Missing", element);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain %s", this.name, name)).
+			addContext("Actual", map).
+			addContext("Missing", element).
+			build();
 	}
 
 	@Override
@@ -207,11 +221,12 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Set<Entry<K, V>> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s entries must contain exactly: %s", name, elements),
-			"Actual", parameter,
-			"Missing", missing,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s entries must contain exactly: %s", name, elements)).
+			addContext("Actual", parameter).
+			addContext("Missing", missing).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -227,12 +242,13 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Set<Entry<K, V>> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s entries must contain exactly %s", this.name, name),
-			"Actual", parameter,
-			"Expected", elements,
-			"Missing", missing,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s entries must contain exactly %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", elements).
+			addContext("Missing", missing).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -242,9 +258,10 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Requirements.requireThat(elements, "elements").isNotNull();
 		if (parameterContainsAny(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain any entry in: %s", name, elements),
-			"Actual", map);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain any entry in: %s", name, elements)).
+			addContext("Actual", map).
+			build();
 	}
 
 	/**
@@ -268,10 +285,11 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameterContainsAny(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain any entry in %s", this.name, name),
-			"Actual", map,
-			"Expected", elements);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain any entry in %s", this.name, name)).
+			addContext("Actual", map).
+			addContext("Expected", elements).
+			build();
 	}
 
 	@Override
@@ -283,10 +301,11 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain all entries in: %s", name, elements),
-			"Actual", map,
-			"Missing", missing);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain all entries in: %s", name, elements)).
+			addContext("Actual", map).
+			addContext("Missing", missing).
+			build();
 	}
 
 	@Override
@@ -301,11 +320,12 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain all entries in %s", this.name, name),
-			"Actual", map,
-			"Expected", elements,
-			"Missing", missing);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain all entries in %s", this.name, name)).
+			addContext("Actual", map).
+			addContext("Expected", elements).
+			addContext("Missing", missing).
+			build();
 	}
 
 	@Override
@@ -314,9 +334,10 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	{
 		if (!parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain: %s", name, element),
-			"Actual", map);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain: %s", name, element)).
+			addContext("Actual", map).
+			build();
 	}
 
 	@Override
@@ -326,10 +347,11 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain %s", this.name, name),
-			"Actual", map,
-			"Expected", element);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain %s", this.name, name)).
+			addContext("Actual", map).
+			addContext("Expected", element).
+			build();
 	}
 
 	@Override
@@ -340,10 +362,11 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain any entry in: %s", name, elements),
-			"Actual", map,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain any entry in: %s", name, elements)).
+			addContext("Actual", map).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -356,11 +379,12 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain any entry in %s", this.name, name),
-			"Actual", map,
-			"Expected", elements,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain any entry in %s", this.name, name)).
+			addContext("Actual", map).
+			addContext("Expected", elements).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -370,9 +394,10 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Requirements.requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain all entries in: %s", name, elements),
-			"Actual", map);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain all entries in: %s", name, elements)).
+			addContext("Actual", map).
+			build();
 	}
 
 	@Override
@@ -384,10 +409,11 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.containsAll(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain all entries in %s", this.name, name),
-			"Actual", map,
-			"Expected", elements);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain all entries in %s", this.name, name)).
+			addContext("Actual", map).
+			addContext("Expected", elements).
+			build();
 	}
 
 	@Override

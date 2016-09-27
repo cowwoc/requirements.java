@@ -4,11 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Range;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Verifies requirements of an {@link int} parameter.
@@ -52,7 +53,16 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 	}
 
 	@Override
-	public PrimitiveIntegerRequirements withContext(Map<String, Object> context)
+	public PrimitiveIntegerRequirements addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new PrimitiveIntegerRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public PrimitiveIntegerRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)

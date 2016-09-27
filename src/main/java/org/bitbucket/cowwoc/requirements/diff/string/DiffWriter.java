@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.diff.string;
 
 import com.google.common.annotations.Beta;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Generates a String representing the diff of {@code actual} and {@code expected} Strings.
@@ -16,38 +16,42 @@ import java.util.Optional;
 public interface DiffWriter extends AutoCloseable
 {
 	/**
-	 * @param text the text that is present in both variables
+	 * @param text the text to keep in {@code actual}
+	 * @throws IllegalStateException if the writer was closed
 	 */
-	void unchanged(String text);
+	void keep(String text) throws IllegalStateException;
 
 	/**
 	 * @param text the text that needs to be inserted into {@code actual}
+	 * @throws IllegalStateException if the writer was closed
 	 */
-	void inserted(String text);
+	void insert(String text) throws IllegalStateException;
 
 	/**
 	 * @param text the text that needs to be deleted from {@code actual}
+	 * @throws IllegalStateException if the writer was closed
 	 */
-	void deleted(String text);
+	void delete(String text) throws IllegalStateException;
 
 	/**
-	 * @return the actual value
+	 * @return the lines of the actual value
+	 * @throws IllegalStateException if the writer is open
 	 */
-	String getActual();
+	List<String> getActual() throws IllegalStateException;
 
 	/**
-	 * @return the expected value
+	 * @return the lines of the expected value
+	 * @throws IllegalStateException if the writer is open
 	 */
-	String getExpected();
+	List<String> getExpected() throws IllegalStateException;
 
 	/**
-	 * @return a line to optionally display after "actual" and before "expected"
+	 * @return the lines to optionally display after "actual" and before "expected" (the lines are
+	 *         empty if they should not be displayed)
+	 * @throws IllegalStateException if the writer is open
 	 */
-	Optional<String> getMiddle();
+	List<String> getMiddle() throws IllegalStateException;
 
-	/**
-	 * @return the String produced by the writer
-	 */
 	@Override
-	String toString();
+	void close();
 }

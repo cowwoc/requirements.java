@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements.diff.string;
 
 import com.google.common.annotations.Beta;
-import java.util.Optional;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 /**
  * The result of calculating the difference between two strings.
@@ -15,50 +16,66 @@ import java.util.Optional;
 @Beta
 public final class DiffResult
 {
-	private final String actual;
-	private final String expected;
-	private final Optional<String> middle;
+	private final ImmutableList<String> actual;
+	private final ImmutableList<String> middle;
+	private final ImmutableList<String> expected;
 
 	/**
 	 * Creates a new instance.
 	 *
-	 * @param actual   the actual string
-	 * @param expected the expected string
-	 * @param middle   an optional line to display after "actual" and before "expected" (null if not present)
-	 * @throws NullPointerException if {@code actual} or {@code expected} are null
+	 * @param actual   the lines of the actual string
+	 * @param middle   an optional lines to display after "actual" and before "expected"
+	 * @param expected the lines of the expected string
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public DiffResult(String actual, String expected, String middle) throws NullPointerException
+	public DiffResult(List<String> actual, List<String> middle, List<String> expected)
+		throws NullPointerException
 	{
 		if (actual == null)
 			throw new NullPointerException("actual may not be null");
+		if (middle == null)
+			throw new NullPointerException("middle may not be null");
 		if (expected == null)
 			throw new NullPointerException("expected may not be null");
-		this.actual = actual;
-		this.expected = expected;
-		this.middle = Optional.ofNullable(middle);
+		this.actual = ImmutableList.copyOf(actual);
+		this.middle = ImmutableList.copyOf(middle);
+		this.expected = ImmutableList.copyOf(expected);
 	}
 
 	/**
-	 * @return the differences from {@code actual}'s perspective
+	 * @return the differences from {@code actual}'s perspective (each element corresponds to a line)
 	 */
-	public String getActual()
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public List<String> getActual()
 	{
 		return actual;
 	}
 
 	/**
-	 * @return the differences from {@code expected}'s perspective
+	 * @return an optional line to display after "actual" and before "expected" (each element
+	 *         corresponds to a line)
 	 */
-	public String getExpected()
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public List<String> getMiddle()
+	{
+		return middle;
+	}
+
+	/**
+	 * @return the differences from {@code expected}'s perspective (each element corresponds to a
+	 *         line)
+	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	public List<String> getExpected()
 	{
 		return expected;
 	}
 
-	/**
-	 * @return an optional line to display after "actual" and before "expected"
-	 */
-	public Optional<String> getMiddle()
+	@Override
+	public String toString()
 	{
-		return middle;
+		return "actual: " + actual + "\n" +
+			"middle: " + middle + "\n" +
+			"expected: " + expected;
 	}
 }

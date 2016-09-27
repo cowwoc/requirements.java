@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
@@ -55,7 +56,18 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	}
 
 	@Override
-	public CollectionRequirements<E> withContext(Map<String, Object> context)
+	public CollectionRequirements<E> addContext(String key, Object value)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		if (newConfig == config)
+			return this;
+		return new CollectionRequirementsImpl<>(parameter, name, newConfig);
+	}
+
+	@Override
+	public CollectionRequirements<E> withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -130,9 +142,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	{
 		if (parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be empty.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be empty.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -140,8 +153,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	{
 		if (!parameter.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be empty.", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be empty.", name)).
+			build();
 	}
 
 	@Override
@@ -149,9 +163,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	{
 		if (parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain: %s", name, element),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain: %s", name, element)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -161,10 +176,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain %s", this.name, name),
-			"Actual", parameter,
-			"Missing", element);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Missing", element).
+			build();
 	}
 
 	@Override
@@ -178,11 +194,12 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s elements must contain exactly: %s", name, elements),
-			"Actual", parameter,
-			"Missing", missing,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s elements must contain exactly: %s", name, elements)).
+			addContext("Actual", parameter).
+			addContext("Missing", missing).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -197,12 +214,13 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s elements must contain exactly %s", this.name, name),
-			"Actual", parameter,
-			"Expected", elements,
-			"Missing", missing,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s elements must contain exactly %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", elements).
+			addContext("Missing", missing).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -212,9 +230,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Requirements.requireThat(elements, "elements").isNotNull();
 		if (parameterContainsAny(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain any element in: %s", name, elements),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain any element in: %s", name, elements)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	/**
@@ -237,10 +256,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameterContainsAny(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain any element in %s", this.name, name),
-			"Actual", parameter,
-			"Expected", elements);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain any element in %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", elements).
+			build();
 	}
 
 	@Override
@@ -253,10 +273,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> elementsAsSet = Collections.asSet(elements);
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain all elements in: %s", name, elements),
-			"Actual", parameter,
-			"Missing", missing);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain all elements in: %s", name, elements)).
+			addContext("Actual", parameter).
+			addContext("Missing", missing).
+			build();
 	}
 
 	@Override
@@ -270,11 +291,12 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> elementsAsSet = Collections.asSet(elements);
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must contain all elements in %s", this.name, name),
-			"Actual", parameter,
-			"Expected", elements,
-			"Missing", missing);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain all elements in %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", elements).
+			addContext("Missing", missing).
+			build();
 	}
 
 	@Override
@@ -282,9 +304,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	{
 		if (!parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain: %s", name, element),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain: %s", name, element)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -294,10 +317,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.contains(element))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain %s", this.name, name),
-			"Actual", parameter,
-			"Expected", element);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", element).
+			build();
 	}
 
 	@Override
@@ -310,10 +334,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> elementsAsSet = Collections.asSet(elements);
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain any element in: %s", name, elements),
-			"Actual", parameter,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain any element in: %s", name, elements)).
+			addContext("Actual", parameter).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -327,11 +352,12 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> elementsAsSet = Collections.asSet(elements);
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain any element in %s", this.name, name),
-			"Actual", parameter,
-			"Expected", elements,
-			"Unwanted", unwanted);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain any element in %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", elements).
+			addContext("Unwanted", unwanted).
+			build();
 	}
 
 	@Override
@@ -341,9 +367,10 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Requirements.requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain all of: %s", name, elements),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain all of: %s", name, elements)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -354,10 +381,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.containsAll(elements))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain all elements in %s", this.name, name),
-			"Actual", parameter,
-			"Expected", elements);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain all elements in %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Expected", elements).
+			build();
 	}
 
 	@Override
@@ -375,10 +403,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		}
 		if (duplicates.isEmpty())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not contain duplicate elements", name),
-			"Actual", parameter,
-			"Duplicates", duplicates);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain duplicate elements", name)).
+			addContext("Actual", parameter).
+			addContext("Duplicates", duplicates).
+			build();
 	}
 
 	@Override

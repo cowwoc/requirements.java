@@ -70,7 +70,7 @@ public final class UsageTest
 		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		try
 		{
-			requireThat(bucket, "bucket").withContext(ImmutableMap.of("MyKey", "SomeContext")).
+			requireThat(bucket, "bucket").addContext("MyKey", "SomeContext").
 				contains(duration);
 		}
 		catch (IllegalArgumentException e)

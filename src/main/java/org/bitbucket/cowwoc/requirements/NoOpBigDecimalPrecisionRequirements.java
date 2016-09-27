@@ -6,7 +6,8 @@ package org.bitbucket.cowwoc.requirements;
 
 import com.google.common.collect.Range;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -33,7 +34,13 @@ final class NoOpBigDecimalPrecisionRequirements implements BigDecimalPrecisionRe
 	}
 
 	@Override
-	public BigDecimalPrecisionRequirements withContext(Map<String, Object> context)
+	public BigDecimalPrecisionRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

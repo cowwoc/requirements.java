@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements;
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -53,7 +54,15 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 	}
 
 	@Override
-	public BigDecimalRequirements withContext(Map<String, Object> context) throws NullPointerException
+	public BigDecimalRequirements addContext(String key, Object value) throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new BigDecimalRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public BigDecimalRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -227,9 +236,10 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 		// Number.longValue() truncates the fractional portion, which we need to take into account
 		if (parameter.signum() == 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be zero", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be zero", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -238,8 +248,9 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 		// Number.longValue() truncates the fractional portion, which we need to take into account
 		if (parameter.signum() != 0)
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s may not be zero", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not be zero", name)).
+			build();
 	}
 
 	@Override

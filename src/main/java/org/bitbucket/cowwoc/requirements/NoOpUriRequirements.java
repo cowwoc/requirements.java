@@ -6,7 +6,8 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -25,7 +26,13 @@ enum NoOpUriRequirements implements UriRequirements
 	}
 
 	@Override
-	public UriRequirements withContext(Map<String, Object> context)
+	public UriRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public UriRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

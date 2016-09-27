@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -11,9 +12,9 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of PathRequirements.
@@ -57,7 +58,15 @@ final class PathRequirementsImpl implements PathRequirements
 	}
 
 	@Override
-	public PathRequirements withContext(Map<String, Object> context)
+	public PathRequirements addContext(String key, Object value)
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new PathRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public PathRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -70,8 +79,9 @@ final class PathRequirementsImpl implements PathRequirements
 	{
 		if (Files.exists(parameter))
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath())).
+			build();
 	}
 
 	@Override
@@ -85,15 +95,16 @@ final class PathRequirementsImpl implements PathRequirements
 		}
 		catch (NoSuchFileException e)
 		{
-			throw config.createException(IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()),
-				e);
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()), e).
+				build();
 		}
 		if (!attrs.isRegularFile())
 		{
-			throw config.createException(IllegalArgumentException.class,
-				String.format("%s must refer to a file.", name),
-				"Actual", parameter.toAbsolutePath());
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s must refer to a file.", name)).
+				addContext("Actual", parameter.toAbsolutePath()).
+				build();
 		}
 		return this;
 	}
@@ -109,15 +120,16 @@ final class PathRequirementsImpl implements PathRequirements
 		}
 		catch (NoSuchFileException e)
 		{
-			throw config.createException(IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()),
-				e);
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()), e).
+				build();
 		}
 		if (!attrs.isDirectory())
 		{
-			throw config.createException(IllegalArgumentException.class,
-				String.format("%s must refer to a directory.", name),
-				"Actual", parameter.toAbsolutePath());
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s must refer to a directory.", name)).
+				addContext("Actual", parameter.toAbsolutePath()).
+				build();
 		}
 		return this;
 	}
@@ -127,9 +139,10 @@ final class PathRequirementsImpl implements PathRequirements
 	{
 		if (!parameter.isAbsolute())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must refer to a relative path.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must refer to a relative path.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override
@@ -137,9 +150,10 @@ final class PathRequirementsImpl implements PathRequirements
 	{
 		if (parameter.isAbsolute())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must refer to an absolute path.", name),
-			"Actual", parameter);
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must refer to an absolute path.", name)).
+			addContext("Actual", parameter).
+			build();
 	}
 
 	@Override

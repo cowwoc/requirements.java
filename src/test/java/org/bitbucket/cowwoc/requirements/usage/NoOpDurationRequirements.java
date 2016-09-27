@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements.usage;
 import com.google.common.collect.Range;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -86,7 +87,13 @@ public enum NoOpDurationRequirements implements DurationRequirements
 	}
 
 	@Override
-	public DurationRequirements withContext(Map<String, Object> context)
+	public DurationRequirements addContext(String key, Object value)
+	{
+		return this;
+	}
+
+	@Override
+	public DurationRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

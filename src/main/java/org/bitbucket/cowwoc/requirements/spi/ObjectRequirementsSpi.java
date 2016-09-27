@@ -6,7 +6,8 @@ package org.bitbucket.cowwoc.requirements.spi;
 
 import com.google.common.annotations.Beta;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * Verifies requirements of an {@link Object} parameter.
@@ -26,19 +27,30 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 * {@code <init>(String message, Throwable cause)}
 	 *
 	 * @param exception the type of exception to throw, null to disable the override
-	 * @return this
+	 * @return a verifier with the specified exception override
 	 */
 	S withException(Class<? extends RuntimeException> exception);
 
 	/**
-	 * Supplies additional key-value pairs to output if a requirement is not met.
+	 * Adds contextual information to append to the exception message.
 	 *
-	 * @param context a map of key-value pairs
-	 * @return this
+	 * @param key   a key
+	 * @param value a value
+	 * @return a verifier with the specified context
+	 * @throws NullPointerException if {@code key} is null
+	 */
+	@Beta
+	S addContext(String key, Object value) throws NullPointerException;
+
+	/**
+	 * Sets the contextual information to append to the exception message.
+	 *
+	 * @param context the contextual information
+	 * @return a verifier with the specified context
 	 * @throws NullPointerException if {@code context} is null
 	 */
 	@Beta
-	S withContext(Map<String, Object> context) throws NullPointerException;
+	S withContext(List<Entry<String, Object>> context) throws NullPointerException;
 
 	/**
 	 * Ensures that the parameter is equal to a value.

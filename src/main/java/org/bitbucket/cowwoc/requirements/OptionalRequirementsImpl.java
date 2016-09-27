@@ -4,11 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of OptionalRequirements.
@@ -52,7 +53,15 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	}
 
 	@Override
-	public OptionalRequirements withContext(Map<String, Object> context)
+	public OptionalRequirements addContext(String key, Object value)
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new OptionalRequirementsImpl(parameter, name, newConfig);
+	}
+
+	@Override
+	public OptionalRequirements withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
@@ -65,8 +74,9 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	{
 		if (parameter.isPresent())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be present", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be present", name)).
+			build();
 	}
 
 	@Override
@@ -74,8 +84,9 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	{
 		if (!parameter.isPresent())
 			return this;
-		throw config.createException(IllegalArgumentException.class,
-			String.format("%s must be empty", name));
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be empty", name)).
+			build();
 	}
 
 	@Override
