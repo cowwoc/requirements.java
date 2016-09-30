@@ -168,7 +168,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
+			addContext("Map", map).
 			build();
 	}
 
@@ -190,7 +191,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain: %s", name, element)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
+			addContext("Map", map).
 			build();
 	}
 
@@ -203,8 +205,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s", this.name, name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Missing", element).
+			addContext("Map", map).
 			build();
 	}
 
@@ -257,7 +260,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain any value in: %s", name, elements)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
+			addContext("Map", map).
 			build();
 	}
 
@@ -283,8 +287,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain any value in %s", this.name, name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Expected", elements).
+			addContext("Map", map).
 			build();
 	}
 
@@ -300,8 +305,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 		Set<V> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain all values in: %s", name, elements)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Missing", missing).
+			addContext("Map", map).
 			build();
 	}
 
@@ -318,9 +324,10 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 		Set<V> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain all values in %s", this.name, name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Expected", elements).
 			addContext("Missing", missing).
+			addContext("Map", map).
 			build();
 	}
 
@@ -332,7 +339,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain: %s", name, element)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
+			addContext("Map", map).
 			build();
 	}
 
@@ -345,8 +353,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain %s", this.name, name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Expected", element).
+			addContext("Map", map).
 			build();
 	}
 
@@ -362,8 +371,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 		Set<V> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain any value in: %s", name, elements)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Unwanted", unwanted).
+			addContext("Map", map).
 			build();
 	}
 
@@ -380,9 +390,10 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 		Set<V> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain any value in %s", this.name, name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Expected", elements).
 			addContext("Unwanted", unwanted).
+			addContext("Map", map).
 			build();
 	}
 
@@ -395,7 +406,8 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain all values in: %s", name, elements)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
+			addContext("Map", map).
 			build();
 	}
 
@@ -409,8 +421,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain all values in %s", this.name, name)).
-			addContext("Actual", map).
+			addContext("Actual", parameter).
 			addContext("Expected", elements).
+			addContext("Map", map).
 			build();
 	}
 

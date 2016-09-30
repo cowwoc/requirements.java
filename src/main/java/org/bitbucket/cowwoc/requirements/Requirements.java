@@ -427,6 +427,7 @@ public final class Requirements
 	 */
 	private Requirements()
 	{
-		// TODO: add DoubleRequirements.isNumber(), isNotNumber(), isFinite(), isInfinite()
+		// TODO: add DoubleRequirements.isNumber(), isNotNumber(), isFinite(), isInfinite().
+		//           Path.isEmpty(), isNotEmpty()
 	}
 }
