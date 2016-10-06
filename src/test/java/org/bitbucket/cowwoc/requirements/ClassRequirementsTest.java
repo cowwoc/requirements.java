@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import java.util.Random;
 import org.testng.annotations.Test;
 
@@ -61,6 +59,6 @@ public class ClassRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		Class<?> parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

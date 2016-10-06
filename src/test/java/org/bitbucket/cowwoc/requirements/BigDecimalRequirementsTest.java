@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
 import org.testng.annotations.Test;
@@ -390,6 +388,6 @@ public class BigDecimalRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		BigDecimal parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

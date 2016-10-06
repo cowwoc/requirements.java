@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import java.net.URI;
 import org.testng.annotations.Test;
 
@@ -47,6 +45,6 @@ public class UriRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		URI parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

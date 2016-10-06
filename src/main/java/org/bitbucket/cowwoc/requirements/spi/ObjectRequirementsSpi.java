@@ -8,6 +8,7 @@ import com.google.common.annotations.Beta;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import org.bitbucket.cowwoc.requirements.Verifier;
 
 /**
  * Verifies requirements of an {@link Object} parameter.
@@ -16,40 +17,15 @@ import java.util.Map.Entry;
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
+public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T> extends Verifier
 {
-	/**
-	 * Overrides the type of exception that will get thrown if a requirement fails.
-	 * <p>
-	 * The exception class must define the following constructors:
-	 * <p>
-	 * {@code <init>(String message)}<br>
-	 * {@code <init>(String message, Throwable cause)}
-	 *
-	 * @param exception the type of exception to throw, null to disable the override
-	 * @return a verifier with the specified exception override
-	 */
+	@Override
 	S withException(Class<? extends RuntimeException> exception);
 
-	/**
-	 * Adds contextual information to append to the exception message.
-	 *
-	 * @param key   a key
-	 * @param value a value
-	 * @return a verifier with the specified context
-	 * @throws NullPointerException if {@code key} is null
-	 */
-	@Beta
+	@Override
 	S addContext(String key, Object value) throws NullPointerException;
 
-	/**
-	 * Sets the contextual information to append to the exception message.
-	 *
-	 * @param context the contextual information
-	 * @return a verifier with the specified context
-	 * @throws NullPointerException if {@code context} is null
-	 */
-	@Beta
+	@Override
 	S withContext(List<Entry<String, Object>> context) throws NullPointerException;
 
 	/**

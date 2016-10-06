@@ -10,6 +10,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
+import org.bitbucket.cowwoc.requirements.Verifier;
 
 /**
  * Determines the behavior of a requirements verifier.
@@ -17,7 +18,7 @@ import java.util.Objects;
  * @author Gili Tzabari
  */
 @Beta
-public final class Configuration
+public final class Configuration implements Verifier
 {
 	private static Configuration initial = new Configuration();
 
@@ -50,17 +51,16 @@ public final class Configuration
 	public Configuration(Class<? extends RuntimeException> exceptionOverride,
 		List<Entry<String, Object>> context) throws NullPointerException
 	{
-		assert (context != null);
+		assert (context != null): "context may not be null";
 		this.exceptionOverride = exceptionOverride;
 		this.context = ImmutableList.copyOf(context);
 	}
 
 	/**
-	 * Overrides the type of exception that will get thrown if a requirement fails.
-	 * <p>
-	 * @param exception the type of exception to throw, null to disable the override
+	 * {@inheritDoc}
+	 *
 	 * @return a configuration with the specified exception override
-	 * @see #getExceptionOverride()
+	 * @see #getException()
 	 */
 	public Configuration withException(Class<? extends RuntimeException> exception)
 	{
@@ -70,23 +70,20 @@ public final class Configuration
 	}
 
 	/**
-	 * @return the type of exception to throw, null to disable the override
+	 * @return the type of exception to throw, {@code null} to throw the default exception type
 	 * @see #withException(Class)
 	 */
-	public Class<? extends RuntimeException> getExceptionOverride()
+	public Class<? extends RuntimeException> getException()
 	{
 		return exceptionOverride;
 	}
 
 	/**
-	 * Appends a key-value pair to the exception message.
+	 * {@inheritDoc}
 	 *
-	 * @param key   a key
-	 * @param value a value
-	 * @return this
-	 * @throws NullPointerException if {@code key} is null
 	 * @see #getContext()
 	 */
+	@Override
 	public Configuration addContext(String key, Object value) throws NullPointerException
 	{
 		if (key == null)
@@ -99,12 +96,12 @@ public final class Configuration
 	}
 
 	/**
-	 * Sets the contextual information to append to the exception message.
+	 * {@inheritDoc}
 	 *
-	 * @param context the contextual information
 	 * @return a configuration with the specified context
-	 * @throws NullPointerException
+	 * @see #getContext()
 	 */
+	@Override
 	public Configuration withContext(List<Entry<String, Object>> context) throws NullPointerException
 	{
 		if (context == null)

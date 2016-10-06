@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.Collections;
@@ -421,6 +419,6 @@ public class CollectionRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		Collection<?> parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

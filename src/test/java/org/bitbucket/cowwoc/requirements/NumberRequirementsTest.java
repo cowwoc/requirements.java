@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import com.google.common.collect.Range;
 import org.testng.annotations.Test;
 
@@ -324,20 +322,20 @@ public class NumberRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		Integer parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void assertionsEnabledInteger()
 	{
 		int parameter = 5;
-		new Assertions(true).requireThat(parameter, "parameter").isGreaterThan(10);
+		new AssertionVerifier(true).requireThat(parameter, "parameter").isGreaterThan(10);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void assertionsEnabledDouble()
 	{
 		double parameter = 5.5;
-		new Assertions(true).requireThat(parameter, "parameter").isGreaterThan(10.5);
+		new AssertionVerifier(true).requireThat(parameter, "parameter").isGreaterThan(10.5);
 	}
 }

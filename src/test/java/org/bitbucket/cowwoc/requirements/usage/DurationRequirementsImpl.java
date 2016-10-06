@@ -38,13 +38,13 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	 */
 	DurationRequirementsImpl(Duration parameter, String name, Configuration config)
 	{
-		assert (name != null);
-		assert (config != null);
+		assert (name != null): "name may not be null";
+		assert (config != null): "config may not be null";
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;
 		this.asComparable = Requirements.requireThat(parameter, name).
-			withException(config.getExceptionOverride()).
+			withException(config.getException()).
 			withContext(config.getContext());
 	}
 

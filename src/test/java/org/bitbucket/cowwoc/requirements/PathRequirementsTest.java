@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.Assertions;
-import org.bitbucket.cowwoc.requirements.Requirements;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -159,6 +157,6 @@ public class PathRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		Path parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

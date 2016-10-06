@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of {@code CollectionSizeRequirements}.
@@ -32,14 +32,14 @@ final class CollectionSizeRequirementsImpl
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @param config    determines the behavior of this verifier
-	 * @throws NullPointerException     if {@code name} or {@code config} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	CollectionSizeRequirementsImpl(Collection<?> parameter, String name,
-		Configuration config) throws NullPointerException, IllegalArgumentException
+	CollectionSizeRequirementsImpl(Collection<?> parameter, String name, Configuration config)
+		throws AssertionError
 	{
-		assert (name != null);
-		assert (config != null);
+		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
+		assert (config != null): "config may not be null";
 		this.collection = parameter;
 		this.parameter = parameter.size();
 		this.name = name + ".size()";
@@ -54,13 +54,15 @@ final class CollectionSizeRequirementsImpl
 	 * @param parameter  the size of the collection
 	 * @param name       the name of the parameter
 	 * @param config     determines the behavior of this verifier
+	 * @throws AssertionError if {@code collection}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	private CollectionSizeRequirementsImpl(Collection<?> collection, int parameter, String name,
-		Configuration config)
+		Configuration config) throws AssertionError
 	{
-		assert (collection != null);
-		assert (name != null);
-		assert (config != null);
+		assert (collection != null): "collection may not be null";
+		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
+		assert (config != null): "config may not be null";
 		this.collection = collection;
 		this.parameter = parameter;
 		this.name = name;

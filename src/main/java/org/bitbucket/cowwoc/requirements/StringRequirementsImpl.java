@@ -32,14 +32,14 @@ final class StringRequirementsImpl implements StringRequirements
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @param config    determines the behavior of this verifier
-	 * @throws NullPointerException     if {@code name} or {@code config} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	StringRequirementsImpl(String parameter, String name,
-		Configuration config) throws NullPointerException, IllegalArgumentException
+		Configuration config) throws AssertionError
 	{
-		assert (name != null);
-		assert (config != null);
+		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
+		assert (config != null): "config may not be null";
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;

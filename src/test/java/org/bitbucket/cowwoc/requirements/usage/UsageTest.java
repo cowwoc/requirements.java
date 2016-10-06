@@ -4,11 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.time.Duration;
 import java.util.Set;
-import org.bitbucket.cowwoc.requirements.Assertions;
+import org.bitbucket.cowwoc.requirements.AssertionVerifier;
 import static org.bitbucket.cowwoc.requirements.Requirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.Requirements.requireThat;
 import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.assertThat;
@@ -53,7 +52,7 @@ public final class UsageTest
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		Assertions assertions = new Assertions(assertionsEnabled);
+		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled);
 		Duration duration = Duration.ofDays(1);
 		Set<Duration> bucket = ImmutableSet.of(duration);
 

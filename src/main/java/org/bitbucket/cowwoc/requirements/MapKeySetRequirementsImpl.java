@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Default implementation of MapRequirements.keySet().
@@ -34,14 +34,14 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @param config    determines the behavior of this verifier
-	 * @throws NullPointerException     if {@code name} or {@code config} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	MapKeySetRequirementsImpl(Map<K, V> parameter, String name,
-		Configuration config) throws NullPointerException, IllegalArgumentException
+	MapKeySetRequirementsImpl(Map<K, V> parameter, String name, Configuration config)
+		throws AssertionError
 	{
-		assert (name != null);
-		assert (config != null);
+		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
+		assert (config != null): "config may not be null";
 		this.map = parameter;
 		this.parameter = parameter.keySet();
 		this.name = name + ".keySet()";
@@ -56,14 +56,17 @@ final class MapKeySetRequirementsImpl<K, V> implements CollectionRequirements<K>
 	 * @param parameter the {@code keySet()} of the map
 	 * @param name      the name of the {@code keySet()}
 	 * @param config    determines the behavior of this verifier
+	 * @throws AssertionError if {@code map}, {@code name} or {@code config} are null; if {@code name}
+	 *                        is empty
 	 */
 	private MapKeySetRequirementsImpl(Map<K, V> map, Collection<K> parameter, String name,
-		Configuration config)
+		Configuration config) throws AssertionError
 	{
-		assert (map != null);
-		assert (parameter != null);
-		assert (name != null);
-		assert (config != null);
+		assert (map != null): "map may not be null";
+		assert (parameter != null): "parameter may not be null";
+		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
+		assert (config != null): "config may not be null";
 		this.map = map;
 		this.parameter = parameter;
 		this.name = name;

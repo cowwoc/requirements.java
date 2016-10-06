@@ -159,6 +159,6 @@ public final class ObjectRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		Object parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

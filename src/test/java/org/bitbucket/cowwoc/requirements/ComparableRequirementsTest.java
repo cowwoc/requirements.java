@@ -183,6 +183,6 @@ public class ComparableRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		Instant parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }

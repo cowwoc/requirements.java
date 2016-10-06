@@ -24,9 +24,10 @@ final class Ranges
 	 * @throws AssertionError if {@code name}, {@code value} or {@code range} are null
 	 */
 	public static <C extends Comparable<? super C>> String getExceptionMessage(String name, C value,
-		Range<C> range)
+		Range<C> range) throws AssertionError
 	{
 		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
 		assert (value != null): "value may not be null";
 		assert (range != null): "range may not be null";
 		StringBuilder message = new StringBuilder(name + " must be in the range ");
@@ -45,9 +46,10 @@ final class Ranges
 	 * @throws AssertionError if {@code name}, {@code value} or {@code range} are null
 	 */
 	public static <T extends Number & Comparable<? super T>> String getExceptionMessage(String name,
-		T value, Range<T> range)
+		T value, Range<T> range) throws AssertionError
 	{
 		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
 		assert (value != null): "value may not be null";
 		assert (range != null): "range may not be null";
 		StringBuilder message = new StringBuilder(name + " must be in the range ");
@@ -62,13 +64,13 @@ final class Ranges
 	 * @param <C>     the type of the range
 	 * @param message the message to append to
 	 * @return an exception message indicating that the value is out of range
-	 * @throws AssertionError if range or message are null
+	 * @throws AssertionError if {@code range} or {@code message} are null
 	 */
 	public static <C extends Comparable<? super C>> String appendRange(Range<C> range,
-		StringBuilder message)
+		StringBuilder message) throws AssertionError
 	{
-		assert (range != null);
-		assert (message != null);
+		assert (range != null): "range may not be null";
+		assert (message != null): "message may not be null";
 		switch (range.lowerBoundType())
 		{
 			case OPEN:

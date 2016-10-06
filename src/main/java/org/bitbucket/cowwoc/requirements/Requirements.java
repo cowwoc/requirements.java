@@ -11,12 +11,13 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
- * Verifies requirements of a parameter.
+ * Verifies the requirements of a parameter.
  * <p>
- * All verifier implementations must be immutable and final.
+ * This convenience class constructs a {@link RequirementVerifier} or {@link AssertionVerifier} with
+ * a default configuration. The class's assertion status determines whether
+ * {@code AssertionVerifier} is enabled or not.
  *
  * @author Gili Tzabari
  */
@@ -26,27 +27,14 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 	})
 public final class Requirements
 {
-	private static final Assertions ASSERTIONS;
+	private static final AssertionVerifier ASSERTIONS;
+	private static final RequirementVerifier REQUIREMENTS = new RequirementVerifier();
 
 	static
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		ASSERTIONS = new Assertions(assertionsEnabled);
-	}
-
-	/**
-	 * @param name the name of the parameter
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	private static void validateName(String name)
-		throws NullPointerException, IllegalArgumentException
-	{
-		if (name == null)
-			throw new NullPointerException("name may not be null");
-		if (name.trim().isEmpty())
-			throw new IllegalArgumentException("name may not be empty");
+		ASSERTIONS = new AssertionVerifier(assertionsEnabled);
 	}
 
 	/**
@@ -59,7 +47,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for an {@code Object}.
+	 * Verifies requirements of an {@code Object}.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -70,8 +58,7 @@ public final class Requirements
 	public static ObjectRequirements<Object> requireThat(Object parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new ObjectRequirementsImpl<>(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -91,7 +78,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Collection}.
+	 * Verifies requirements of a {@code Collection}.
 	 *
 	 * @param <E>       the type of element in the collection
 	 * @param parameter the value of the parameter
@@ -103,8 +90,7 @@ public final class Requirements
 	public static <E> CollectionRequirements<E> requireThat(Collection<E> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new CollectionRequirementsImpl<>(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -125,7 +111,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Comparable}.
+	 * Verifies requirements of a {@code Comparable}.
 	 *
 	 * @param <T>       the type of objects that the parameter may be compared to
 	 * @param parameter the value of the parameter
@@ -137,8 +123,7 @@ public final class Requirements
 	public static <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T parameter,
 		String name) throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new ComparableRequirementsImpl<>(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -159,7 +144,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Number}.
+	 * Verifies requirements of a {@code Number}.
 	 *
 	 * @param <T>       the type of the number
 	 * @param parameter the value of the parameter
@@ -171,8 +156,7 @@ public final class Requirements
 	public static <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(
 		T parameter, String name) throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new NumberRequirementsImpl<>(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -193,7 +177,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code BigDecimal}.
+	 * Verifies requirements of a {@code BigDecimal}.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -204,8 +188,7 @@ public final class Requirements
 	public static BigDecimalRequirements requireThat(BigDecimal parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new BigDecimalRequirementsImpl(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -225,7 +208,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Map}.
+	 * Verifies requirements of a {@code Map}.
 	 *
 	 * @param <K>       the type of key in the map
 	 * @param <V>       the type of value in the map
@@ -238,8 +221,7 @@ public final class Requirements
 	public static <K, V> MapRequirements<K, V> requireThat(Map<K, V> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new MapRequirementsImpl<>(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -261,7 +243,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Path}.
+	 * Verifies requirements of a {@code Path}.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -272,8 +254,7 @@ public final class Requirements
 	public static PathRequirements requireThat(Path parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new PathRequirementsImpl(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -293,7 +274,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code String}.
+	 * Verifies requirements of a {@code String}.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -304,8 +285,7 @@ public final class Requirements
 	public static StringRequirements requireThat(String parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new StringRequirementsImpl(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -325,7 +305,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Uri}.
+	 * Verifies requirements of a {@code Uri}.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -336,8 +316,7 @@ public final class Requirements
 	public static UriRequirements requireThat(URI parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new UriRequirementsImpl(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -357,7 +336,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for a {@code Class}.
+	 * Verifies requirements of a {@code Class}.
 	 *
 	 * @param <T>       the type of class
 	 * @param parameter the value of the parameter
@@ -369,8 +348,7 @@ public final class Requirements
 	public static <T> ClassRequirements<T> requireThat(Class<T> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new ClassRequirementsImpl<>(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**
@@ -391,7 +369,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Creates requirements for an {@code Optional}.
+	 * Verifies requirements of an {@code Optional}.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
@@ -402,8 +380,7 @@ public final class Requirements
 	public static OptionalRequirements requireThat(Optional<?> parameter, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
-		validateName(name);
-		return new OptionalRequirementsImpl(parameter, name, Configuration.initial());
+		return REQUIREMENTS.requireThat(parameter, name);
 	}
 
 	/**

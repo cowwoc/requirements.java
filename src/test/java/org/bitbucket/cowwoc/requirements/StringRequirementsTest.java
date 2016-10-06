@@ -220,6 +220,6 @@ public class StringRequirementsTest
 	{
 		// Ensure that no exception is thrown if assertions are disabled
 		String parameter = null;
-		new Assertions(false).requireThat(parameter, "parameter").isNotNull();
+		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
 	}
 }
