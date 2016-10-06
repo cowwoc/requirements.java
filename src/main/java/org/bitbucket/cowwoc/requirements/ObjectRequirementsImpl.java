@@ -132,10 +132,8 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 			{
 				String actualLine = actual.get(i);
 				String expectedLine = expected.get(i);
-				// TODO: line numbers will be incorrect if there is a difference in newlines.
-				String middleLine = middle.get(i);
 
-				if (i != 0 && i != lines - 1 && containsOnly(middleLine, '='))
+				if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
 				{
 					// Skip identical lines, unless they are the first or last line.
 					skippedDupicates = true;
@@ -188,19 +186,6 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
 		String newValue = lastEntry.getValue() + "\n[...]\n";
 		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
-	}
-
-	/**
-	 * @param text a string
-	 * @param c    a character
-	 * @return true if the string only contains the specified character
-	 */
-	private boolean containsOnly(String text, char c)
-	{
-		for (int i = 0, size = text.length(); i < size; ++i)
-			if (text.charAt(i) != c)
-				return false;
-		return true;
 	}
 
 	@Override

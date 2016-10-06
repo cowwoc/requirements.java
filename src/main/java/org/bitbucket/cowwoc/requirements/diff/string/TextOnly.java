@@ -21,6 +21,9 @@ import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLIN
  * <li>Space (&nbsp;) indicates characters that needs to be deleted from Actual.</li>
  * <li>Equal sign ({@code =}) indicates characters that are equal in Actual and Expected.</li>
  * <li>Up arrowhead ({@code ^}) indicates characters that needs to be inserted into Actual.</li>
+ * <li>Characters in the opposite direction of '&nbsp;' or '{@code ^}' are padded to line up the
+ * strings vertically. This padding does not contribute any characters to the string it is found in.
+ * Read on for concrete examples.</li>
  * </ul>
  * <h3>Example 1: insert</h3>
  * <pre>{@code
@@ -96,11 +99,12 @@ import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLIN
  * <li>We display the diff on a per-line basis.</li>
  * <li>{@code Actual} and {@code Expected} are followed by a line number.</li>
  * <li>Lines that are identical (with the exception of the first and last line) are omitted.</li>
+ * </ul>
  * For example:
  * <pre>{@code
  *
- * Actual   = "first\nsecond\nfoo\forth\nfifth"
- * Expected = "first\nsecond\nbar\forth\nfifth"
+ * Actual   = "first\nsecond\nfoo\nforth\nfifth"
+ * Expected = "first\nsecond\nbar\nforth\nfifth"
  * }</pre>
  * results in the following diff:
  * <pre>{@code
@@ -128,6 +132,7 @@ import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLIN
  * <li>On line 3, we need to delete "foo" and insert "bar".</li>
  * <li>Lines 4-5 were equal.</li>
  * </ul>
+ * <p>
  * Lines always end with {@code \n} or {@code \0}. The former denotes a newline. The latter denotes
  * the end of the string.
  * <p>

@@ -36,7 +36,7 @@ final class XTerm256Color extends AbstractXterm
 	}
 
 	@Override
-	public String getColorForNeutral()
+	public String getColorForKeep()
 	{
 		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + GRAY_BACKGROUND + POSTFIX;
 	}

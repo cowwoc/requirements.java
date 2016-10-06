@@ -47,7 +47,8 @@ public final class DiffGenerator
 	 * Generates the diff of two strings.
 	 * <p>
 	 * NOTE: Colors are disabled when stdin or stdout are redirected. To override this behavior, set
-	 * the system property "org.bitbucket.cowwoc.requirements.forceAnsi" to "true".
+	 * the system property "org.bitbucket.cowwoc.requirements.terminal" to any value found in
+	 * {@link TerminalType} (e.g. XTERM).
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value

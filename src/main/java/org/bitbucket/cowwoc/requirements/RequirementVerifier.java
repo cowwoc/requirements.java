@@ -49,9 +49,7 @@ public final class RequirementVerifier
 	/**
 	 * Creates a new requirement verifier.
 	 *
-	 * @param enabled true if assertions are enabled for the class whose requirements are being
-	 *                verified
-	 * @param config  determines the behavior of this verifier
+	 * @param config determines the behavior of this verifier
 	 * @throws AssertionError if {@code config} is null
 	 */
 	RequirementVerifier(Configuration config) throws AssertionError

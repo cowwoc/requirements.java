@@ -72,7 +72,7 @@ public final class Exceptions
 	/**
 	 * Removes references to this library from an exception stacktrace.
 	 *
-	 * @throws throwable the {@code Throwable} to process
+	 * @param throwable the {@code Throwable} to process
 	 */
 	private static void removeLibraryFromStacktrace(Throwable throwable)
 	{

@@ -122,6 +122,7 @@
 						<link>http://docs.oracle.com/javase/8/docs/api/</link>
 						<link>http://google.github.io/guava/releases/19.0/api/docs/</link>
 					</links>
+					<docfilessubdirs>true</docfilessubdirs>
 				</configuration>
 			</plugin>
 			<!--

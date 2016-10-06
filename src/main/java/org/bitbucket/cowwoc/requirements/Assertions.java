@@ -16,7 +16,7 @@ import java.util.Optional;
  * <p>
  * All verifier implementations must be immutable and final.
  *
- * @Deprecated replaced by AssertionVerifier
+ * @deprecated replaced by AssertionVerifier
  * @author Gili Tzabari
  */
 @Deprecated

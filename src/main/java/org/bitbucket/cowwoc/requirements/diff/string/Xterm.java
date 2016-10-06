@@ -33,7 +33,7 @@ final class Xterm extends AbstractXterm
 	}
 
 	@Override
-	public String getColorForNeutral()
+	public String getColorForKeep()
 	{
 		return PREFIX + WHITE_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX;
 	}

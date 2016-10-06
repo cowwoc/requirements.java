@@ -12,17 +12,17 @@ package org.bitbucket.cowwoc.requirements.diff.string;
 interface ColoredDiff extends DiffWriter
 {
 	/**
-	 * @return the ANSI code to insert before neutral text
+	 * @return the ANSI code to insert before text that should be kept
 	 */
-	String getColorForNeutral();
+	String getColorForKeep();
 
 	/**
-	 * @return the ANSI code to insert before inserted text
+	 * @return the ANSI code to insert before text that should be inserted
 	 */
 	String getColorForInsert();
 
 	/**
-	 * @return the ANSI code to insert before deleted text
+	 * @return the ANSI code to insert before text that should be deleted
 	 */
 	String getColorForDelete();
 }

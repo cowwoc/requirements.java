@@ -40,7 +40,7 @@ final class Ranges
 	/**
 	 * @param name  the name of the variable whose value is out of range
 	 * @param value the value that is out of range
-	 * @param <C>   the type of value
+	 * @param <T>   the type of value
 	 * @param range the expected range
 	 * @return an exception message indicating that the value is out of range
 	 * @throws AssertionError if {@code name}, {@code value} or {@code range} are null

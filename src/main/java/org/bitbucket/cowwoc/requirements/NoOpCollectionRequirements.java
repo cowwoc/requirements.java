@@ -13,7 +13,6 @@ import java.util.function.Consumer;
  * An implementation of CollectionRequirements that does nothing.
  * <p>
  * @param <E> the type of element in the collection
- * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
 final class NoOpCollectionRequirements<E> implements CollectionRequirements<E>
