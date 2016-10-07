@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
  * @author Gili Tzabari
  */
 public interface MapRequirements<K, V>
-	extends ObjectRequirementsSpi<MapRequirements<K, V>, Map<K, V>>, 
+	extends ObjectRequirementsSpi<MapRequirements<K, V>, Map<K, V>>,
 	Isolatable<MapRequirements<K, V>>
 {
 	/**
@@ -36,7 +36,7 @@ public interface MapRequirements<K, V>
 
 	/**
 	 * Ensures that the parameter is empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not empty
 	 */
@@ -44,7 +44,7 @@ public interface MapRequirements<K, V>
 
 	/**
 	 * Ensures that the parameter is not empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is empty
 	 */

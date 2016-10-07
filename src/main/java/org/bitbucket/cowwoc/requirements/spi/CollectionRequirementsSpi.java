@@ -19,7 +19,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 {
 	/**
 	 * Ensures that the parameter is empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is not empty
 	 */
@@ -27,7 +27,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is not empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is empty
 	 */
@@ -35,7 +35,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains an element.
-	 * <p>
+	 *
 	 * @param element the element that must exist
 	 * @return this
 	 * @throws IllegalArgumentException if the collection does not contain {@code element}
@@ -44,7 +44,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains an element.
-	 * <p>
+	 *
 	 * @param element the element that must exist
 	 * @param name    the name of the element
 	 * @return this
@@ -57,7 +57,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains exactly the specified elements; nothing less, nothing more.
-	 * <p>
+	 *
 	 * @param elements the elements that must exist
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} is null
@@ -70,7 +70,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains exactly the specified elements; nothing less, nothing more.
-	 * <p>
+	 *
 	 * @param elements the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
@@ -84,7 +84,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains any of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must exist
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} is null
@@ -95,7 +95,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains any of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
@@ -108,7 +108,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains all of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must exist
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} is null
@@ -119,7 +119,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter contains all of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
@@ -132,7 +132,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain an element.
-	 * <p>
+	 *
 	 * @param element the element that must not exist
 	 * @return this
 	 * @throws IllegalArgumentException if the collection contains {@code element}
@@ -141,7 +141,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain an element.
-	 * <p>
+	 *
 	 * @param element the element that must not exist
 	 * @param name    the name of the element
 	 * @return this
@@ -154,7 +154,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain any of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} is null
@@ -165,7 +165,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain any of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
 	 * @return this
@@ -178,7 +178,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain all of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} is null
@@ -189,7 +189,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain all of multiple elements.
-	 * <p>
+	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
 	 * @return this
@@ -202,7 +202,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter does not contain any duplicate elements.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the collection contains any duplicate elements
 	 */

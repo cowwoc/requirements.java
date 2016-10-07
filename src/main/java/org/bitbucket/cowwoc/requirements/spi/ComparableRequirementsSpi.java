@@ -18,7 +18,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 {
 	/**
 	 * Ensures that the parameter is greater than a variable.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be greater than
 	 * @param name  the name of the variable
 	 * @return this
@@ -31,7 +31,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is greater than a constant.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be greater than
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
@@ -42,7 +42,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is greater than or bigger than a variable.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be greater than or equal to
 	 * @param name  the name of the variable
 	 * @return this
@@ -55,7 +55,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is greater than or bigger than a constant.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be greater than or equal to
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
@@ -66,7 +66,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is less than the value of a variable.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be less than
 	 * @param name  the name of the variable
 	 * @return this
@@ -79,7 +79,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is less than a constant.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be less than
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
@@ -90,7 +90,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is less than or equal to a variable.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be less than or equal to
 	 * @param name  the name of the variable
 	 * @return this
@@ -103,7 +103,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is less than or equal to a constant.
-	 * <p>
+	 *
 	 * @param value the value the parameter must be less than or equal to
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
@@ -114,7 +114,7 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 
 	/**
 	 * Ensures that the parameter is within range.
-	 * <p>
+	 *
 	 * @param range the range
 	 * @return this
 	 * @throws NullPointerException     if {@code range} is null

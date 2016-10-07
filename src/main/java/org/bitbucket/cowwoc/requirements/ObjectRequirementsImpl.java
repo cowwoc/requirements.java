@@ -30,7 +30,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 
 	/**
 	 * Creates new ObjectRequirementsImpl.
-	 * <p>
+	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @param config    determines the behavior of this verifier

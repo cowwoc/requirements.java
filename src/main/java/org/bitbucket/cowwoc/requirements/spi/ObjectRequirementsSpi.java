@@ -30,7 +30,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is equal to a value.
-	 * <p>
+	 *
 	 * @param value the value to compare to
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not equal to value
@@ -40,7 +40,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is equal to a variable.
-	 * <p>
+	 *
 	 * @param value the value to compare to
 	 * @param name  the name of the variable
 	 * @return this
@@ -53,7 +53,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is not equal to a value.
-	 * <p>
+	 *
 	 * @param value the value to compare to
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is equal to value
@@ -62,7 +62,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is not equal to a variable.
-	 * <p>
+	 *
 	 * @param value the value to compare to
 	 * @param name  the name of the variable
 	 * @return this
@@ -86,7 +86,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is an instance of a class.
-	 * <p>
+	 *
 	 * @param type the class to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code type} are null
@@ -96,7 +96,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is null.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not null
 	 */
@@ -104,7 +104,7 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 
 	/**
 	 * Ensures that the parameter is not null.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws NullPointerException if parameter is null
 	 */

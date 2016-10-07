@@ -16,7 +16,7 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 {
 	/**
 	 * Ensures that the parameter is negative.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is not negative
 	 */
@@ -24,7 +24,7 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 
 	/**
 	 * Ensures that the parameter is not negative.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is negative
 	 */
@@ -32,7 +32,7 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 
 	/**
 	 * Ensures that the parameter is not positive.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is positive
 	 */
@@ -40,7 +40,7 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 
 	/**
 	 * Ensures that the parameter is not zero.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is zero
 	 */
@@ -48,7 +48,7 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 
 	/**
 	 * Ensures that the parameter is positive.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is not positive
 	 */
@@ -56,7 +56,7 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 
 	/**
 	 * Ensures that the parameter is zero.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if {@code parameter} is not zero
 	 */

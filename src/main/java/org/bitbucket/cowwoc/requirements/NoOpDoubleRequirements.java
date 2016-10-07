@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * <p>
  * @author Gili Tzabari
  */
-public enum NoOpDoubleRequirements implements DoubleRequirements
+enum NoOpDoubleRequirements implements DoubleRequirements
 {
 	INSTANCE;
 

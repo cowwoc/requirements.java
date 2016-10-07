@@ -24,7 +24,7 @@ public final class DiffResult
 	 * Creates a new instance.
 	 *
 	 * @param actual   the lines of the actual string
-	 * @param middle   an optional lines to display after "actual" and before "expected"
+	 * @param middle   the optional lines to display between "actual" and "expected"
 	 * @param expected the lines of the expected string
 	 * @throws NullPointerException if any of the arguments are null
 	 */
@@ -43,7 +43,7 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the differences from {@code actual}'s perspective (each element corresponds to a line)
+	 * @return the lines of the actual string
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getActual()
@@ -52,8 +52,7 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return an optional line to display after "actual" and before "expected" (each element
-	 *         corresponds to a line)
+	 * @return the optional lines to display between "actual" and "expected"
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getMiddle()
@@ -62,8 +61,7 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the differences from {@code expected}'s perspective (each element corresponds to a
-	 *         line)
+	 * @return the lines of the expected string
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getExpected()

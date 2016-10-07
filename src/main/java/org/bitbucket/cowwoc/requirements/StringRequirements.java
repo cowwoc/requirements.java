@@ -16,7 +16,7 @@ public interface StringRequirements
 {
 	/**
 	 * Ensures that the parameter does not end with a value.
-	 * <p>
+	 *
 	 * @param suffix the value the string must not end with
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter ends with suffix
@@ -25,7 +25,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter does not start with a value.
-	 * <p>
+	 *
 	 * @param prefix the value the string must not start with
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter starts with prefix
@@ -34,7 +34,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter ends with a value.
-	 * <p>
+	 *
 	 * @param suffix the value the string must end with
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not end with suffix
@@ -43,7 +43,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter is empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is not empty
 	 * @see #trim()
@@ -52,7 +52,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter is not empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter is empty
 	 * @see #trim()
@@ -61,7 +61,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter contains a valid email format.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
 	 */
@@ -69,7 +69,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter contains a valid IP address format.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not contain a valid IP address format
 	 */
@@ -77,7 +77,7 @@ public interface StringRequirements
 
 	/**
 	 * Ensures that the parameter starts with a value.
-	 * <p>
+	 *
 	 * @param prefix the value the string must start with
 	 * @return this
 	 * @throws IllegalArgumentException if the parameter does not start with prefix
@@ -86,7 +86,7 @@ public interface StringRequirements
 
 	/**
 	 * Trims whitespace at the beginning and end of the parameter.
-	 * <p>
+	 *
 	 * @return this
 	 */
 	StringRequirements trim();

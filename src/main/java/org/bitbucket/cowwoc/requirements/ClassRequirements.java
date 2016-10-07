@@ -17,7 +17,7 @@ public interface ClassRequirements<T>
 {
 	/**
 	 * Ensures that the parameter is a superclass or super-interface of a class.
-	 * <p>
+	 *
 	 * @param type the class to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code type} is null

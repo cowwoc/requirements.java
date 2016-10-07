@@ -13,12 +13,12 @@ import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
  * @author Gili Tzabari
  */
 public interface OptionalRequirements
-	extends ObjectRequirementsSpi<OptionalRequirements, Optional<?>>, 
+	extends ObjectRequirementsSpi<OptionalRequirements, Optional<?>>,
 	Isolatable<OptionalRequirements>
 {
 	/**
 	 * Ensures that the parameter is empty.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the value is present
 	 */
@@ -26,7 +26,7 @@ public interface OptionalRequirements
 
 	/**
 	 * Ensures that the parameter is present.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not present
 	 */

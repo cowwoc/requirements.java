@@ -13,7 +13,7 @@ import java.util.List;
  * @author Gili Tzabari
  */
 @Beta
-public interface DiffWriter extends AutoCloseable
+interface DiffWriter extends AutoCloseable
 {
 	/**
 	 * @param text the text to keep in {@code actual}

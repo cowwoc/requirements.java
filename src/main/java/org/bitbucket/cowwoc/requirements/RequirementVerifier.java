@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -21,7 +23,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
  * @since 2.0.3
  * @author Gili Tzabari
  */
-public final class RequirementVerifier
+public final class RequirementVerifier implements Verifier
 {
 	/**
 	 * @param name the name of the parameter
@@ -58,6 +60,32 @@ public final class RequirementVerifier
 		this.config = config;
 	}
 
+	@Override
+	public RequirementVerifier withException(Class<? extends RuntimeException> exception)
+	{
+		Configuration newConfig = config.withException(exception);
+		if (newConfig == config)
+			return this;
+		return new RequirementVerifier(newConfig);
+	}
+
+	@Override
+	public RequirementVerifier addContext(String key, Object value) throws NullPointerException
+	{
+		Configuration newConfig = config.addContext(key, value);
+		return new RequirementVerifier(newConfig);
+	}
+
+	@Override
+	public RequirementVerifier withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
+	{
+		Configuration newConfig = config.withContext(context);
+		if (newConfig == config)
+			return this;
+		return new RequirementVerifier(newConfig);
+	}
+
 	/**
 	 * Verifies requirements of an {@code Object}.
 	 *
@@ -71,7 +99,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new ObjectRequirementsImpl<>(parameter, name, Configuration.initial());
+		return new ObjectRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**
@@ -88,7 +116,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new CollectionRequirementsImpl<>(parameter, name, Configuration.initial());
+		return new CollectionRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**
@@ -105,7 +133,7 @@ public final class RequirementVerifier
 		String name) throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new ComparableRequirementsImpl<>(parameter, name, Configuration.initial());
+		return new ComparableRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**
@@ -122,7 +150,7 @@ public final class RequirementVerifier
 		T parameter, String name) throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new NumberRequirementsImpl<>(parameter, name, Configuration.initial());
+		return new NumberRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**
@@ -138,7 +166,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new DoubleRequirementsImpl(parameter, name, Configuration.initial());
+		return new DoubleRequirementsImpl(parameter, name, config);
 	}
 
 	/**
@@ -154,7 +182,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new BigDecimalRequirementsImpl(parameter, name, Configuration.initial());
+		return new BigDecimalRequirementsImpl(parameter, name, config);
 	}
 
 	/**
@@ -172,7 +200,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new MapRequirementsImpl<>(parameter, name, Configuration.initial());
+		return new MapRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**
@@ -188,7 +216,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new PathRequirementsImpl(parameter, name, Configuration.initial());
+		return new PathRequirementsImpl(parameter, name, config);
 	}
 
 	/**
@@ -204,7 +232,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new StringRequirementsImpl(parameter, name, Configuration.initial());
+		return new StringRequirementsImpl(parameter, name, config);
 	}
 
 	/**
@@ -220,7 +248,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new UriRequirementsImpl(parameter, name, Configuration.initial());
+		return new UriRequirementsImpl(parameter, name, config);
 	}
 
 	/**
@@ -237,7 +265,7 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new ClassRequirementsImpl<>(parameter, name, Configuration.initial());
+		return new ClassRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**
@@ -253,6 +281,6 @@ public final class RequirementVerifier
 		throws NullPointerException, IllegalArgumentException
 	{
 		verifyName(name);
-		return new OptionalRequirementsImpl(parameter, name, Configuration.initial());
+		return new OptionalRequirementsImpl(parameter, name, config);
 	}
 }

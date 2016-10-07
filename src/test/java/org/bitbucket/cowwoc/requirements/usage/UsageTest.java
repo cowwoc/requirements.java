@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableSet;
 import java.time.Duration;
 import java.util.Set;
 import org.bitbucket.cowwoc.requirements.AssertionVerifier;
+import org.bitbucket.cowwoc.requirements.RequirementVerifier;
 import static org.bitbucket.cowwoc.requirements.Requirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.Requirements.requireThat;
 import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.assertThat;
@@ -43,6 +44,16 @@ public final class UsageTest
 		assertThat(bucket, "bucket").contains(duration);
 	}
 
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void localRequirements_Failure()
+	{
+		RequirementVerifier requirements = new RequirementVerifier().
+			addContext("key", "value").withException(IllegalStateException.class);
+		Duration duration = Duration.ofDays(1);
+
+		requirements.requireThat(duration, "duration").isNull();
+	}
+
 	@Test
 	@SuppressWarnings(
 		{
@@ -52,12 +63,29 @@ public final class UsageTest
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled);
+		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled).
+			addContext("key", "value").withException(IllegalStateException.class);
 		Duration duration = Duration.ofDays(1);
 		Set<Duration> bucket = ImmutableSet.of(duration);
 
 		assertions.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		assertions.requireThat(bucket, "bucket").contains(duration);
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	@SuppressWarnings(
+		{
+			"AssertWithSideEffects", "NestedAssignment"
+		})
+	public void localAsserts_Failure()
+	{
+		boolean assertionsEnabled = false;
+		assert (assertionsEnabled = true);
+		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled).
+			addContext("key", "value").withException(IllegalStateException.class);
+		Duration duration = Duration.ofDays(1);
+
+		assertions.requireThat(duration, "duration").isNull();
 	}
 
 	@Test

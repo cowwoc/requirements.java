@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @author Gili Tzabari
  */
 @Beta
-public final class DiffConstants
+final class DiffConstants
 {
 	/**
 	 * A performance hint indicating the expected length of a line.

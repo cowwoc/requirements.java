@@ -40,7 +40,7 @@ public final class AssertionVerifier implements Verifier
 	 * </code>
 	 * <p>
 	 * from within the class in question.
-	 * <p>
+	 *
 	 * @param enabled true if assertions are enabled for the class whose requirements are being
 	 *                verified
 	 */
@@ -76,7 +76,7 @@ public final class AssertionVerifier implements Verifier
 	}
 
 	@Override
-	public Verifier withException(Class<? extends RuntimeException> exception)
+	public AssertionVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
@@ -85,14 +85,15 @@ public final class AssertionVerifier implements Verifier
 	}
 
 	@Override
-	public Verifier addContext(String key, Object value) throws NullPointerException
+	public AssertionVerifier addContext(String key, Object value) throws NullPointerException
 	{
 		Configuration newConfig = config.addContext(key, value);
 		return new AssertionVerifier(enabled, newConfig);
 	}
 
 	@Override
-	public Verifier withContext(List<Entry<String, Object>> context) throws NullPointerException
+	public AssertionVerifier withContext(List<Entry<String, Object>> context)
+		throws NullPointerException
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)

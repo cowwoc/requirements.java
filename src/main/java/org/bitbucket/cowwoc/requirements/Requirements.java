@@ -192,8 +192,8 @@ public final class Requirements
 	}
 
 	/**
-	 * Same as {@link #requireThat(DoubleRequirements, String)} but does nothing if assertions are
-	 * disabled for this class.
+	 * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled for
+	 * this class.
 	 *
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter

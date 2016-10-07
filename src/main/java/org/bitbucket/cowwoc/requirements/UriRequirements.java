@@ -17,7 +17,7 @@ public interface UriRequirements
 {
 	/**
 	 * Ensures that the parameter is absolute.
-	 * <p>
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not absolute
 	 */
