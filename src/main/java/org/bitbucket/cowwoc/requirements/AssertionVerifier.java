@@ -176,6 +176,23 @@ public final class AssertionVerifier implements Verifier
 	}
 
 	/**
+	 * Verifies requirements of a {@code Double}.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public DoubleRequirements requireThat(Double parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		if (enabled)
+			return requirementVerifier.requireThat(parameter, name);
+		return NoOpDoubleRequirements.INSTANCE;
+	}
+
+	/**
 	 * Same as {@link RequirementVerifier#requireThat(BigDecimal, String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>

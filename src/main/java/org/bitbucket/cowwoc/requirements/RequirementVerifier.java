@@ -126,6 +126,22 @@ public final class RequirementVerifier
 	}
 
 	/**
+	 * Verifies requirements of a {@code Double}.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public DoubleRequirements requireThat(Double parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		verifyName(name);
+		return new DoubleRequirementsImpl(parameter, name, Configuration.initial());
+	}
+
+	/**
 	 * Verifies requirements of a {@code BigDecimal}.
 	 *
 	 * @param parameter the value of the parameter

@@ -177,6 +177,37 @@ public final class Requirements
 	}
 
 	/**
+	 * Verifies requirements of a {@code Double}.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static DoubleRequirements requireThat(Double parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return REQUIREMENTS.requireThat(parameter, name);
+	}
+
+	/**
+	 * Same as {@link #requireThat(DoubleRequirements, String)} but does nothing if assertions are
+	 * disabled for this class.
+	 *
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static DoubleRequirements assertThat(Double parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return ASSERTIONS.requireThat(parameter, name);
+	}
+
+	/**
 	 * Verifies requirements of a {@code BigDecimal}.
 	 *
 	 * @param parameter the value of the parameter
@@ -404,7 +435,5 @@ public final class Requirements
 	 */
 	private Requirements()
 	{
-		// TODO: add DoubleRequirements.isNumber(), isNotNumber(), isFinite(), isInfinite().
-		//           Path.isEmpty(), isNotEmpty()
 	}
 }

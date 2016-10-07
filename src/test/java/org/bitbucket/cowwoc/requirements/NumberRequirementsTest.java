@@ -318,6 +318,62 @@ public class NumberRequirementsTest
 	}
 
 	@Test
+	public void isFinite_True()
+	{
+		Double parameter = 1.0;
+		Requirements.requireThat(parameter, "parameter").isFinite();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isFinite_False()
+	{
+		Double parameter = 1.0 / 0.0;
+		Requirements.requireThat(parameter, "parameter").isFinite();
+	}
+
+	@Test
+	public void isNotFinite_True()
+	{
+		Double parameter = 1.0 / 0.0;
+		Requirements.requireThat(parameter, "parameter").isNotFinite();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotFinite_False()
+	{
+		Double parameter = 1.0;
+		Requirements.requireThat(parameter, "parameter").isNotFinite();
+	}
+
+	@Test
+	public void isNumber_True()
+	{
+		Double parameter = 1.0;
+		Requirements.requireThat(parameter, "parameter").isNumber();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNumber_False()
+	{
+		Double parameter = 0.0 / 0.0;
+		Requirements.requireThat(parameter, "parameter").isNumber();
+	}
+
+	@Test
+	public void isNotNumber_True()
+	{
+		Double parameter = 0.0 / 0.0;
+		Requirements.requireThat(parameter, "parameter").isNotNumber();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotNumber_False()
+	{
+		Double parameter = 1.0;
+		Requirements.requireThat(parameter, "parameter").isNotNumber();
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
