@@ -9,12 +9,12 @@ package org.bitbucket.cowwoc.requirements.diff.string;
  *
  * @author Gili Tzabari
  */
-interface ColoredDiff extends DiffWriter
+interface ColoredDiff
 {
 	/**
-	 * @return the ANSI code to insert before text that should be kept
+	 * @return the ANSI code to insert before padding
 	 */
-	String getColorForKeep();
+	String getColorForPadding();
 
 	/**
 	 * @return the ANSI code to insert before text that should be inserted

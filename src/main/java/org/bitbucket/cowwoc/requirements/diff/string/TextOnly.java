@@ -11,8 +11,6 @@ import java.util.List;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_INSERT;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.LINE_LENGTH;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_MARKER;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_PATTERN;
 
 /**
  * A diff representation that does not use ANSI escape codes.
@@ -166,22 +164,15 @@ import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLIN
  *
  * @author Gili Tzabari
  */
-final class TextOnly implements DiffWriter
+final class TextOnly extends AbstractDiffWriter
 {
 	/**
 	 * A padding character used to align values vertically.
 	 */
 	static final String PADDING_MARKER = " ";
-	private final StringBuilder actualLine;
-	private final StringBuilder expectedLine;
 	private final StringBuilder middleLine;
-	private final List<String> actualList;
 	private final List<String> middleList;
-	private final List<String> expectedList;
-	private ImmutableList<String> actual;
 	private ImmutableList<String> middle;
-	private ImmutableList<String> expected;
-	private boolean closed;
 
 	/**
 	 * Creates a new instance.
@@ -193,142 +184,59 @@ final class TextOnly implements DiffWriter
 	TextOnly(String actual, String expected)
 		throws NullPointerException
 	{
-		if (actual == null)
-			throw new NullPointerException("actual may not be null");
-		if (expected == null)
-			throw new NullPointerException("expected may not be null");
-		this.actualLine = new StringBuilder(LINE_LENGTH);
+		super(actual, expected, PADDING_MARKER);
 		this.middleLine = new StringBuilder(LINE_LENGTH);
-		this.expectedLine = new StringBuilder(LINE_LENGTH);
-		this.actualList = new ArrayList<>(Math.max(1, actual.length() / LINE_LENGTH));
 		this.middleList = new ArrayList<>(Math.max(1,
 			Math.max(actual.length(), expected.length()) / LINE_LENGTH));
-		this.expectedList = new ArrayList<>(Math.max(1, expected.length() / LINE_LENGTH));
 	}
 
 	@Override
-	public void keep(String text) throws IllegalStateException
+	protected void keepLine(String line)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			actualLine.append(line);
-			middleLine.append(Strings.repeat("=", line.length()));
-			expectedLine.append(line);
-
-			if (i < size - 1)
-			{
-				// We're not sure whether the last line has actually ended
-				flushLine();
-			}
-		}
+		actualLine.append(line);
+		middleLine.append(Strings.repeat("=", line.length()));
+		expectedLine.append(line);
 	}
 
 	@Override
-	public void insert(String text) throws IllegalStateException
+	protected void insertLine(String line)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			int length = line.length();
-			if (length > 0)
-			{
-				if (i == size - 1)
-					actualLine.append(Strings.repeat(PADDING_MARKER, length));;
-				middleLine.append(Strings.repeat(DIFF_INSERT, length));
-				expectedLine.append(line);
-			}
-			if (i < size - 1)
-			{
-				// We're not sure whether the last line has actually ended
-				flushLine();
-			}
-		}
+		int length = line.length();
+		actualLine.append(Strings.repeat(paddingMarker, length));
+		middleLine.append(Strings.repeat(DIFF_INSERT, length));
+		expectedLine.append(line);
 	}
 
 	@Override
-	public void delete(String text) throws IllegalStateException
+	protected void deleteLine(String line)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			int length = line.length();
-			if (length > 0)
-			{
-				actualLine.append(line);
-				middleLine.append(Strings.repeat(DIFF_DELETE, length));
-				if (i == size - 1)
-					expectedLine.append(Strings.repeat(PADDING_MARKER, length));
-			}
-			if (i < size - 1)
-			{
-				// We're not sure whether the last line has actually ended
-				flushLine();
-			}
-		}
+		actualLine.append(line);
+		int length = line.length();
+		middleLine.append(Strings.repeat(DIFF_DELETE, length));
+		expectedLine.append(Strings.repeat(paddingMarker, length));
 	}
 
 	/**
 	 * Flushes the contents of {@code actualLine}, {@code middleLine}, {@code expectedLine} into
 	 * {@code actualList}, {@code middleList}, {@code expectedList}.
 	 */
-	private void flushLine()
+	@Override
+	protected void flushLine()
 	{
-		// Strip trailing whitespace to ensure that end of line markers are the last character.
-		// See http://stackoverflow.com/a/16974310/14731 for the regex.
-		actualList.add(actualLine.toString().replaceAll("\\s++$", ""));
-		actualLine.delete(0, actualLine.length());
-
+		super.flushLine();
 		middleList.add(middleLine.toString());
 		middleLine.delete(0, middleLine.length());
-
-		expectedList.add(expectedLine.toString().replaceAll("\\s++$", ""));
-		expectedLine.delete(0, expectedLine.length());
 	}
 
 	@Override
-	public void close()
+	protected void beforeClose()
 	{
-		if (closed)
-			return;
-		this.closed = true;
-		flushLine();
-		this.actual = ImmutableList.copyOf(actualList);
-		this.expected = ImmutableList.copyOf(expectedList);
+	}
+
+	@Override
+	protected void afterClose()
+	{
 		this.middle = ImmutableList.copyOf(middleList);
-	}
-
-	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public List<String> getActual() throws IllegalStateException
-	{
-		if (!closed)
-			throw new IllegalStateException("Writer must be closed");
-		return actual;
-	}
-
-	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public List<String> getExpected() throws IllegalStateException
-	{
-		if (!closed)
-			throw new IllegalStateException("Writer must be closed");
-		return expected;
 	}
 
 	@Override

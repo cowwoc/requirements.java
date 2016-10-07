@@ -6,11 +6,7 @@ package org.bitbucket.cowwoc.requirements.diff.string;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
 import java.util.List;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.LINE_LENGTH;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_MARKER;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_PATTERN;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.POSTFIX;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.PREFIX;
 
@@ -126,24 +122,19 @@ import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.PREFIX
  *
  * @author Gili Tzabari
  */
-abstract class AbstractXterm implements ColoredDiff
+abstract class AbstractXterm extends AbstractDiffWriter
+	implements ColoredDiff
 {
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	private static final String PADDING_MARKER = "/";
+	static final String PADDING_MARKER = "/";
+	private final String colorForPadding;
 	private final String colorForKeep;
 	private final String colorForDelete;
-	private final String colorForNeutral;
 	private final String resetColor;
-	private final StringBuilder actualLine;
-	private final StringBuilder expectedLine;
-	private final List<String> actualList;
-	private final List<String> expectedList;
-	private ImmutableList<String> actual;
-	private ImmutableList<String> expected;
-	private boolean needToResetColor;
-	private boolean closed;
+	private boolean needToResetActual;
+	private boolean needToResetExpected;
 
 	/**
 	 * Creates a new instance.
@@ -155,182 +146,64 @@ abstract class AbstractXterm implements ColoredDiff
 	protected AbstractXterm(String actual, String expected)
 		throws NullPointerException
 	{
-		if (actual == null)
-			throw new NullPointerException("actual may not be null");
-		if (expected == null)
-			throw new NullPointerException("expected may not be null");
-		this.colorForNeutral = getColorForKeep();
+		super(actual, expected, PADDING_MARKER);
+		this.colorForPadding = getColorForPadding();
 		this.colorForKeep = getColorForInsert();
 		this.colorForDelete = getColorForDelete();
 		this.resetColor = PREFIX + "0" + POSTFIX;
-		this.actualLine = new StringBuilder(LINE_LENGTH);
-		this.expectedLine = new StringBuilder(LINE_LENGTH);
-		this.actualList = new ArrayList<>(Math.max(1, actual.length() / LINE_LENGTH));
-		this.expectedList = new ArrayList<>(Math.max(1, expected.length() / LINE_LENGTH));
 	}
 
 	@Override
-	public void keep(String text) throws IllegalStateException
+	protected void keepLine(String line)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			actualLine.append(resetColor).append(line);
-			expectedLine.append(resetColor).append(line);
-
-			if (i < size - 1)
-			{
-				// We're not sure whether the last line has actually ended
-				flushLine();
-			}
-		}
-		needToResetColor = false;
+		resetColors();
+		actualLine.append(line);
+		expectedLine.append(line);
 	}
 
 	@Override
-	public void insert(String text) throws IllegalStateException
+	protected void insertLine(String line)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			int length = line.length();
-			if (length > 0)
-			{
-				if (i == size - 1)
-					actualLine.append(colorForNeutral).append(Strings.repeat(PADDING_MARKER, length));
-				expectedLine.append(colorForKeep).append(line);
-			}
-			if (i < size - 1)
-			{
-				// We're not sure whether the last line has actually ended
-				flushLine();
-			}
-		}
-		needToResetColor = true;
+		actualLine.append(colorForPadding).append(Strings.repeat(paddingMarker, line.length()));
+		expectedLine.append(colorForKeep).append(line);
+		needToResetExpected = true;
 	}
 
 	@Override
-	public void delete(String text) throws IllegalStateException
+	protected void deleteLine(String line)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			int length = line.length();
-			if (length > 0)
-			{
-				actualLine.append(colorForDelete).append(line);
-				if (i == size - 1)
-					expectedLine.append(colorForNeutral).append(Strings.repeat(PADDING_MARKER, line.length()));
-			}
-			if (i < size - 1)
-			{
-				// We're not sure whether the last line has actually ended
-				flushLine();
-			}
-		}
-		needToResetColor = true;
+		actualLine.append(colorForDelete).append(line);
+		needToResetActual = true;
+		expectedLine.append(colorForPadding).append(Strings.repeat(paddingMarker, line.length()));
+	}
+
+	@Override
+	protected void beforeClose()
+	{
+		resetColors();
+	}
+
+	@Override
+	@SuppressWarnings("NoopMethodInAbstractClass")
+	protected void afterClose()
+	{
 	}
 
 	/**
-	 * Flushes the contents of {@code actualLine}, {@code expectedLine} into {@code actualList},
-	 * {@code expectedList}.
+	 * Resets the colors of {@code Expected} and {@code Actual}.
 	 */
-	private void flushLine()
+	private void resetColors()
 	{
-		// Strip trailing whitespace to ensure that end of line markers are the last character.
-		// See http://stackoverflow.com/a/16974310/14731 for the regex.
-		String string = actualLine.toString();
-		int index = lastConsecutiveIndexOf(string, PADDING_MARKER);
-		if (index != -1)
-			string = string.substring(0, index);
-		actualList.add(string);
-		actualLine.delete(0, actualLine.length());
-
-		string = expectedLine.toString();
-		index = lastConsecutiveIndexOf(string, PADDING_MARKER);
-		if (index != -1)
-			string = string.substring(0, index);
-		expectedList.add(string);
-		expectedLine.delete(0, expectedLine.length());
-	}
-
-	/**
-	 * Returns the index within {@code source} of the last consecutive occurrence of {@code target}.
-	 * The last occurrence of the empty string {@code ""} is considered to occur at the index value
-	 * {@code source.length()}.
-	 * <p>
-	 * The returned index is the largest value {@code k} for which {@code source.startsWith(target, k)}
-	 * consecutively. If no such value of {@code k} exists, then {@code -1} is returned.
-	 *
-	 * @param source the string to search within
-	 * @param target the string to search for
-	 * @return the index of the last consecutive occurrence of {@code target} in {@code source}, or
-	 *         {@code -1} if there is no such occurrence.
-	 */
-	private int lastConsecutiveIndexOf(String source, String target)
-	{
-		int length = target.length();
-		if (length == 0)
-			return -1;
-
-		// Check for worse-case scenario
-		if (source.startsWith(target))
-			return -1;
-
-		// Check the rest of the string
-		for (int result = source.length() - length; result >= length; result -= length)
-			if (!source.startsWith(target, result))
-				return result + 1;
-		return -1;
-	}
-
-	@Override
-	public void close()
-	{
-		if (closed)
-			return;
-		closed = true;
-		if (needToResetColor)
+		if (needToResetActual)
 		{
 			actualLine.append(resetColor);
-			expectedLine.append(resetColor);
+			needToResetActual = false;
 		}
-		flushLine();
-		this.actual = ImmutableList.copyOf(actualList);
-		this.expected = ImmutableList.copyOf(expectedList);
-	}
-
-	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public List<String> getActual() throws IllegalStateException
-	{
-		if (!closed)
-			throw new IllegalStateException("Writer must be closed");
-		return actual;
-	}
-
-	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public List<String> getExpected() throws IllegalStateException
-	{
-		if (!closed)
-			throw new IllegalStateException("Writer must be closed");
-		return expected;
+		if (needToResetExpected)
+		{
+			expectedLine.append(resetColor);
+			needToResetExpected = false;
+		}
 	}
 
 	@Override

@@ -33,7 +33,7 @@ final class Xterm extends AbstractXterm
 	}
 
 	@Override
-	public String getColorForKeep()
+	public String getColorForPadding()
 	{
 		return PREFIX + WHITE_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX;
 	}

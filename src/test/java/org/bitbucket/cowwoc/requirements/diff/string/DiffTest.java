@@ -218,4 +218,20 @@ public final class DiffTest
 			assert (actualMessage.contains(expectedMessage)): actualMessage;
 		}
 	}
+
+	@Test
+	public void lastConsecutiveIndexOf()
+	{
+		int result = AbstractDiffWriter.lastConsecutiveIndexOf("textex", " ");
+		assert (result == -1): result;
+
+		result = AbstractDiffWriter.lastConsecutiveIndexOf("  text", " ");
+		assert (result == -1): result;
+
+		result = AbstractDiffWriter.lastConsecutiveIndexOf("text  ", " ");
+		assert (result == 4): result;
+
+		result = AbstractDiffWriter.lastConsecutiveIndexOf("      ", " ");
+		assert (result == 0): result;
+	}
 }
