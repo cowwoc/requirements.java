@@ -151,7 +151,12 @@ public final class DiffGenerator
 				return TerminalType.NONE;
 			}
 			if (major > 10 || (major == 10 && build >= 10586))
+			{
+				// WORKAROUND: https://github.com/Microsoft/BashOnWindows/issues/1173
+				if (build == 14393)
+					return TerminalType.NONE;
 				return TerminalType.XTERM_16COLOR;
+			}
 			return TerminalType.NONE;
 		}
 		String term = System.getenv("TERM");
