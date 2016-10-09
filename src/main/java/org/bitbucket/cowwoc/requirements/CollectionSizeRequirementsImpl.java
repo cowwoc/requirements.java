@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of {@code CollectionSizeRequirements}.
@@ -301,7 +302,8 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never have a negative size", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never have a negative size", name), null);
 	}
 
 	@Override

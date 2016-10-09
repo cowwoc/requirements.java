@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of {@code BigDecimalPrecisionRequirements}.
@@ -229,7 +230,8 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	@Override
 	public BigDecimalPrecisionRequirements isZero() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be zero", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be zero", name), null);
 	}
 
 	@Override
@@ -243,7 +245,8 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	@Override
 	public BigDecimalPrecisionRequirements isNotPositive() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be non-positive", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be non-positive", name), null);
 	}
 
 	@Override
@@ -264,7 +267,8 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	@Override
 	public BigDecimalPrecisionRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be negative", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null);
 	}
 
 	@Override

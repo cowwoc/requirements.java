@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import com.google.common.annotations.Beta;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
@@ -69,6 +70,7 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(newConfig);
 	}
 
+	@Beta
 	@Override
 	public RequirementVerifier addContext(String key, Object value) throws NullPointerException
 	{
@@ -76,6 +78,7 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(newConfig);
 	}
 
+	@Beta
 	@Override
 	public RequirementVerifier withContext(List<Entry<String, Object>> context)
 		throws NullPointerException

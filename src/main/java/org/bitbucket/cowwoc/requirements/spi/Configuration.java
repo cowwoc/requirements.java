@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableList;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
@@ -17,7 +16,6 @@ import org.bitbucket.cowwoc.requirements.Verifier;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class Configuration implements Verifier
 {
 	private static Configuration initial = new Configuration();
@@ -46,10 +44,10 @@ public final class Configuration implements Verifier
 	 *
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
 	 * @param context           key-value pairs to append to the exception message
-	 * @throws NullPointerException if {@code context} is null
+	 * @throws AssertionError if {@code context} is null
 	 */
-	public Configuration(Class<? extends RuntimeException> exceptionOverride,
-		List<Entry<String, Object>> context) throws NullPointerException
+	private Configuration(Class<? extends RuntimeException> exceptionOverride,
+		List<Entry<String, Object>> context) throws AssertionError
 	{
 		assert (context != null): "context may not be null";
 		this.exceptionOverride = exceptionOverride;
@@ -62,6 +60,7 @@ public final class Configuration implements Verifier
 	 * @return a configuration with the specified exception override
 	 * @see #getException()
 	 */
+	@Override
 	public Configuration withException(Class<? extends RuntimeException> exception)
 	{
 		if (Objects.equals(exception, exceptionOverride))

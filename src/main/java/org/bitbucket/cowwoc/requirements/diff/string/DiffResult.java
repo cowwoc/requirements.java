@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class DiffResult
 {
 	private final ImmutableList<String> actual;
@@ -43,7 +41,9 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the lines of the actual string
+	 * Returns the lines of the actual string.
+	 *
+	 * @return an immutable list
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getActual()
@@ -52,7 +52,10 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the optional lines to display between "actual" and "expected"
+	 * Returns the lines to display between "actual" and "expected".
+	 * If the list is empty, no lines should be displayed.
+	 *
+	 * @return an immutable list
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getMiddle()
@@ -61,7 +64,9 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the lines of the expected string
+	 * Returns the lines of the expected string.
+	 *
+	 * @return an immutable list
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getExpected()

@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of MapSizeRequirements.
@@ -78,7 +79,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Deprecated
 	public MapSizeRequirements isNull() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be null", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be null", name), null);
 	}
 
 	@Override
@@ -271,7 +273,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never have a negative size", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never have a negative size", name), null);
 	}
 
 	@Override

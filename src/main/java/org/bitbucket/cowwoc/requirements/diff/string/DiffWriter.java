@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 
 /**
@@ -12,7 +11,6 @@ import java.util.List;
  *
  * @author Gili Tzabari
  */
-@Beta
 interface DiffWriter extends AutoCloseable
 {
 	/**

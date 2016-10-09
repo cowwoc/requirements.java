@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of {@code BigDecimalScaleRequirements}.
@@ -224,7 +225,8 @@ final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequiremen
 	@Override
 	public BigDecimalScaleRequirements isZero() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be zero", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be zero", name), null);
 	}
 
 	@Override
@@ -238,7 +240,8 @@ final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequiremen
 	@Override
 	public BigDecimalScaleRequirements isNotPositive() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be non-positive", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be non-positive", name), null);
 	}
 
 	@Override

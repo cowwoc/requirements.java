@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.util;
 
-import com.google.common.annotations.Beta;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
@@ -18,7 +17,6 @@ import org.bitbucket.cowwoc.requirements.Requirements;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class Exceptions
 {
 	private static final Lookup LOOKUP = MethodHandles.lookup();

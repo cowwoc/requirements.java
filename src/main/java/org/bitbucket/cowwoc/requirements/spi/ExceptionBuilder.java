@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableList;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import org.bitbucket.cowwoc.requirements.util.Exceptions;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class ExceptionBuilder
 {
 	private final String message;
