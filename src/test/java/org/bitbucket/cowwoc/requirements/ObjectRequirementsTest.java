@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
 import java.util.Random;
 import org.testng.annotations.Test;
 
@@ -65,7 +65,7 @@ public final class ObjectRequirementsTest
 		String equivalent = new String(parameter);
 
 		Requirements.requireThat(parameter, "parameter").
-			isIn(ImmutableList.of("first", equivalent, "third"));
+			isIn(Arrays.asList("first", equivalent, "third"));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -73,7 +73,7 @@ public final class ObjectRequirementsTest
 	{
 		String parameter = "value";
 		Requirements.requireThat(parameter, "parameter").
-			isIn(ImmutableList.of("first", "second", "third"));
+			isIn(Arrays.asList("first", "second", "third"));
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)

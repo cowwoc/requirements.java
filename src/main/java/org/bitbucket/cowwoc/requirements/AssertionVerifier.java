@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
@@ -84,6 +85,7 @@ public final class AssertionVerifier implements Verifier
 		return new AssertionVerifier(enabled, newConfig);
 	}
 
+	@Beta
 	@Override
 	public AssertionVerifier addContext(String key, Object value) throws NullPointerException
 	{
@@ -91,6 +93,7 @@ public final class AssertionVerifier implements Verifier
 		return new AssertionVerifier(enabled, newConfig);
 	}
 
+	@Beta
 	@Override
 	public AssertionVerifier withContext(List<Entry<String, Object>> context)
 		throws NullPointerException

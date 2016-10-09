@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
-import com.google.common.collect.Range;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
@@ -75,7 +74,7 @@ public enum NoOpDurationRequirements implements DurationRequirements
 	}
 
 	@Override
-	public DurationRequirements isIn(Range<Duration> range)
+	public DurationRequirements isIn(Duration first, Duration last)
 	{
 		return this;
 	}

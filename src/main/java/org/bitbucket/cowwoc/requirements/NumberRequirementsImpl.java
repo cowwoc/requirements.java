@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -262,10 +261,10 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	}
 
 	@Override
-	public NumberRequirements<T> isIn(Range<T> range)
+	public NumberRequirements<T> isIn(T first, T last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		asComparable.isIn(range);
+		asComparable.isIn(first, last);
 		return this;
 	}
 

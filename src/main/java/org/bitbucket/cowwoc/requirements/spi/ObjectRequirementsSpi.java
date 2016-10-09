@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
-import com.google.common.annotations.Beta;
+import org.bitbucket.cowwoc.requirements.annotations.Beta;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -22,9 +22,11 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	@Override
 	S withException(Class<? extends RuntimeException> exception);
 
+	@Beta
 	@Override
 	S addContext(String key, Object value) throws NullPointerException;
 
+	@Beta
 	@Override
 	S withContext(List<Entry<String, Object>> context) throws NullPointerException;
 

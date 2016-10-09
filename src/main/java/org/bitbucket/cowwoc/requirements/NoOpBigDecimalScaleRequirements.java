@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -137,7 +136,7 @@ final class NoOpBigDecimalScaleRequirements implements BigDecimalScaleRequiremen
 	}
 
 	@Override
-	public BigDecimalScaleRequirements isIn(Range<Integer> range)
+	public BigDecimalScaleRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

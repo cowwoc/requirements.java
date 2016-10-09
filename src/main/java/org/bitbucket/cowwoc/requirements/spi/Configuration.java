@@ -4,20 +4,20 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
-import com.google.common.annotations.Beta;
-import com.google.common.collect.ImmutableList;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import org.bitbucket.cowwoc.requirements.Verifier;
+import org.bitbucket.cowwoc.requirements.util.Lists;
 
 /**
  * Determines the behavior of a requirements verifier.
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class Configuration implements Verifier
 {
 	private static Configuration initial = new Configuration();
@@ -30,7 +30,7 @@ public final class Configuration implements Verifier
 		return initial;
 	}
 	private final Class<? extends RuntimeException> exceptionOverride;
-	private final ImmutableList<Entry<String, Object>> context;
+	private final List<Entry<String, Object>> context;
 
 	/**
 	 * Creates a new instance without an exception override or contextual information.
@@ -38,7 +38,7 @@ public final class Configuration implements Verifier
 	private Configuration()
 	{
 		this.exceptionOverride = null;
-		this.context = ImmutableList.of();
+		this.context = Collections.emptyList();
 	}
 
 	/**
@@ -46,14 +46,15 @@ public final class Configuration implements Verifier
 	 *
 	 * @param exceptionOverride the type of exception to throw, null to disable the override
 	 * @param context           key-value pairs to append to the exception message
-	 * @throws NullPointerException if {@code context} is null
+	 * @throws AssertionError if {@code context} is null; if {@code context} is modifiable
 	 */
-	public Configuration(Class<? extends RuntimeException> exceptionOverride,
-		List<Entry<String, Object>> context) throws NullPointerException
+	private Configuration(Class<? extends RuntimeException> exceptionOverride,
+		List<Entry<String, Object>> context) throws AssertionError
 	{
 		assert (context != null): "context may not be null";
+		assert (Lists.isUnmodifiable(context)): "context may not be modifiable";
 		this.exceptionOverride = exceptionOverride;
-		this.context = ImmutableList.copyOf(context);
+		this.context = context;
 	}
 
 	/**
@@ -62,6 +63,7 @@ public final class Configuration implements Verifier
 	 * @return a configuration with the specified exception override
 	 * @see #getException()
 	 */
+	@Override
 	public Configuration withException(Class<? extends RuntimeException> exception)
 	{
 		if (Objects.equals(exception, exceptionOverride))
@@ -88,11 +90,10 @@ public final class Configuration implements Verifier
 	{
 		if (key == null)
 			throw new NullPointerException("key may not be null");
-		List<Entry<String, Object>> newContext = ImmutableList.<Entry<String, Object>>builder().
-			addAll(context).
-			add(new SimpleImmutableEntry<>(key, value)).
-			build();
-		return new Configuration(exceptionOverride, newContext);
+		List<Entry<String, Object>> newContext = new ArrayList<>(context.size() + 1);
+		newContext.addAll(context);
+		newContext.add(new SimpleImmutableEntry<>(key, value));
+		return new Configuration(exceptionOverride, Collections.unmodifiableList(newContext));
 	}
 
 	/**
@@ -112,11 +113,11 @@ public final class Configuration implements Verifier
 	}
 
 	/**
-	 * @return key-value pairs to append to the exception message
+	 * @return an unmodifiable list of key-value pairs to append to the exception message
 	 * @see #addContext(String, Object)
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public ImmutableList<Entry<String, Object>> getContext()
+	public List<Entry<String, Object>> getContext()
 	{
 		return context;
 	}

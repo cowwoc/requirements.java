@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.annotations.Beta;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.annotations.Beta;
 
 /**
  * Requirements that can be verified in isolation of other instances.

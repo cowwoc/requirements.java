@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.util;
 
-import com.google.common.annotations.Beta;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
@@ -18,7 +17,6 @@ import org.bitbucket.cowwoc.requirements.Requirements;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class Exceptions
 {
 	private static final Lookup LOOKUP = MethodHandles.lookup();
@@ -94,6 +92,7 @@ public final class Exceptions
 	 */
 	public static void filterStacktrace(Throwable throwable, Predicate<String> classNameFilter)
 	{
+		// Method needs to be public to hide 3rd-party verifiers located in in other packages
 		StackTraceElement[] elements = throwable.getStackTrace();
 		int i = elements.length - 1;
 		while (true)

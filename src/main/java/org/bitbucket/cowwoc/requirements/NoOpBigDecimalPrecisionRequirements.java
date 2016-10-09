@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -140,7 +139,7 @@ final class NoOpBigDecimalPrecisionRequirements implements BigDecimalPrecisionRe
 	}
 
 	@Override
-	public BigDecimalPrecisionRequirements isIn(Range<Integer> range)
+	public BigDecimalPrecisionRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

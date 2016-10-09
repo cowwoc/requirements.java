@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import static org.bitbucket.cowwoc.requirements.util.ConsoleConstants.LINE_LENGTH;
 
 /**
  * Default implementation of ComparableRequirements.
@@ -251,14 +251,18 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	}
 
 	@Override
-	public ComparableRequirements<T> isIn(Range<T> range)
+	public ComparableRequirements<T> isIn(T first, T last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter))
+		Requirements.requireThat(first, "first").isNotNull();
+		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		if (parameter.compareTo(first) >= 0 && parameter.compareTo(last) <= 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
-			Ranges.getExceptionMessage(name, parameter, range)).
+		StringBuilder message = new StringBuilder(LINE_LENGTH);
+		message.append(name).append(" must be in the range [").append(first).append(", ").append(last).
+			append("]").append(String.format("\n" +
+			"Actual: %s", parameter));
+		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
 			build();
 	}
 

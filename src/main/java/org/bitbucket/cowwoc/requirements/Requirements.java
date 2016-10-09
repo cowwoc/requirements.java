@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.annotations.Beta;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.annotations.Beta;
 
 /**
  * Verifies the requirements of a parameter.

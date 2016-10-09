@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Sets;
 
 /**
  * Default implementation of MapRequirements.values().

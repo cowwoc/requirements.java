@@ -123,19 +123,23 @@
 						<link>http://google.github.io/guava/releases/19.0/api/docs/</link>
 					</links>
 					<docfilessubdirs>true</docfilessubdirs>
+					<!-- whitelist in order to exclude internal classes -->
+					<sourceFileIncludes>
+						<include>org/bitbucket/cowwoc/requirements/*.java</include>
+					</sourceFileIncludes>
 				</configuration>
 			</plugin>
 			<!--
 			<plugin>
 				<groupId>com.github.siom79.japicmp</groupId>
 				<artifactId>japicmp-maven-plugin</artifactId>
-				<version>0.8.1</version>
+				<version>0.9.1</version>
 				<configuration>
 					<oldVersion>
 						<dependency>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.0</version>
+							<version>2.0.2</version>
 							<type>jar</type>
 						</dependency>
 					</oldVersion>
@@ -145,6 +149,14 @@
 						<onlyModified>true</onlyModified>
 						<skipXmlReport>true</skipXmlReport>
 						<skipDiffReport>true</skipDiffReport>
+						<includes>
+							<include>org.bitbucket.cowwoc.requirements</include>
+						</includes>
+						<excludes>
+							<exclude>org.bitbucket.cowwoc.requirements.diff.string</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.spi</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.util</exclude>
+						</excludes>
 					</parameter>
 				</configuration>
 				<executions>
@@ -164,11 +176,6 @@
 		<argLine />
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>19.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>

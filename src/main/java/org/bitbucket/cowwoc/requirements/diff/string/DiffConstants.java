@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.annotations.Beta;
 import java.util.regex.Pattern;
 
 /**
@@ -12,13 +11,8 @@ import java.util.regex.Pattern;
  *
  * @author Gili Tzabari
  */
-@Beta
 final class DiffConstants
 {
-	/**
-	 * A performance hint indicating the expected length of a line.
-	 */
-	public static final int LINE_LENGTH = 80;
 	/**
 	 * A pattern matching newline characters anywhere in a string.
 	 */

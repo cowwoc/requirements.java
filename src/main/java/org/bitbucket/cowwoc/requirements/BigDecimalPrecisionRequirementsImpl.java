@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of {@code BigDecimalPrecisionRequirements}.
@@ -156,10 +156,10 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	}
 
 	@Override
-	public BigDecimalPrecisionRequirements isIn(Range<Integer> range)
+	public BigDecimalPrecisionRequirements isIn(Integer first, Integer last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		asInt.isIn(range);
+		asInt.isIn(first, last);
 		return this;
 	}
 
@@ -229,7 +229,8 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	@Override
 	public BigDecimalPrecisionRequirements isZero() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be zero", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be zero", name), null);
 	}
 
 	@Override
@@ -243,7 +244,8 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	@Override
 	public BigDecimalPrecisionRequirements isNotPositive() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be non-positive", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be non-positive", name), null);
 	}
 
 	@Override
@@ -264,7 +266,8 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	@Override
 	public BigDecimalPrecisionRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be negative", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null);
 	}
 
 	@Override

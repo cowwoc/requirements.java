@@ -4,11 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
+import java.util.Collections;
 import java.util.List;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.POSTFIX;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.PREFIX;
+import org.bitbucket.cowwoc.requirements.util.Strings;
 
 /**
  * Base implementation for all XTerm terminals.
@@ -212,6 +212,6 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");
-		return ImmutableList.of();
+		return Collections.emptyList();
 	}
 }

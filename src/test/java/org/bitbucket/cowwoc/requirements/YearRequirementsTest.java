@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.time.Year;
 import org.testng.annotations.Test;
 
@@ -31,40 +30,36 @@ public class YearRequirementsTest
 	public void isInLowerBound()
 	{
 		Year parameter = Year.of(0);
-		Range<Year> range = Range.closed(Year.of(0), Year.of(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Year first = Year.of(0);
+		Year last = Year.of(2);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
 	public void isInBounds()
 	{
 		Year parameter = Year.of(1);
-		Range<Year> range = Range.closed(Year.of(0), Year.of(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Year first = Year.of(0);
+		Year last = Year.of(2);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
 	public void isInUpperBound()
 	{
 		Year parameter = Year.of(2);
-		Range<Year> range = Range.closed(Year.of(0), Year.of(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseOpenRange()
-	{
-		Year parameter = Year.of(1);
-		Range<Year> range = Range.open(Year.of(10), Year.of(20));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Year first = Year.of(0);
+		Year last = Year.of(2);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInFalseClosedRange()
 	{
 		Year parameter = Year.of(1);
-		Range<Year> range = Range.closed(Year.of(10), Year.of(20));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Year first = Year.of(10);
+		Year last = Year.of(20);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test

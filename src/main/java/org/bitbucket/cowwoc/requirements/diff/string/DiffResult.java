@@ -4,21 +4,19 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.annotations.Beta;
-import com.google.common.collect.ImmutableList;
 import java.util.List;
+import org.bitbucket.cowwoc.requirements.util.Lists;
 
 /**
  * The result of calculating the difference between two strings.
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class DiffResult
 {
-	private final ImmutableList<String> actual;
-	private final ImmutableList<String> middle;
-	private final ImmutableList<String> expected;
+	private final List<String> actual;
+	private final List<String> middle;
+	private final List<String> expected;
 
 	/**
 	 * Creates a new instance.
@@ -37,13 +35,15 @@ public final class DiffResult
 			throw new NullPointerException("middle may not be null");
 		if (expected == null)
 			throw new NullPointerException("expected may not be null");
-		this.actual = ImmutableList.copyOf(actual);
-		this.middle = ImmutableList.copyOf(middle);
-		this.expected = ImmutableList.copyOf(expected);
+		this.actual = Lists.unmodifiable(actual);
+		this.middle = Lists.unmodifiable(middle);
+		this.expected = Lists.unmodifiable(expected);
 	}
 
 	/**
-	 * @return the lines of the actual string
+	 * Returns the lines of the actual string.
+	 *
+	 * @return an unmodifiable list
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getActual()
@@ -52,7 +52,10 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the optional lines to display between "actual" and "expected"
+	 * Returns the lines to display between "actual" and "expected".
+	 * If the list is empty, no lines should be displayed.
+	 *
+	 * @return an unmodifiable list
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getMiddle()
@@ -61,7 +64,9 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return the lines of the expected string
+	 * Returns the lines of the expected string.
+	 *
+	 * @return an unmodifiable list
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getExpected()

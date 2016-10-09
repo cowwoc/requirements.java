@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -137,7 +136,7 @@ final class NoOpCollectionSizeRequirements implements CollectionSizeRequirements
 	}
 
 	@Override
-	public CollectionSizeRequirements isIn(Range<Integer> range)
+	public CollectionSizeRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

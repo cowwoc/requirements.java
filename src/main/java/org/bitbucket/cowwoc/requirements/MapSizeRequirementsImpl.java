@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import static org.bitbucket.cowwoc.requirements.util.ConsoleConstants.LINE_LENGTH;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of MapSizeRequirements.
@@ -78,7 +79,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Deprecated
 	public MapSizeRequirements isNull() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be null", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be null", name), null);
 	}
 
 	@Override
@@ -271,17 +273,21 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never have a negative size", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never have a negative size", name), null);
 	}
 
 	@Override
-	public MapSizeRequirements isIn(Range<Integer> range)
+	public MapSizeRequirements isIn(Integer first, Integer last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter))
+		Requirements.requireThat(first, "first").isNotNull();
+		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		if (parameter >= first && parameter <= last)
 			return this;
-		StringBuilder message = new StringBuilder(name + " must contain " + range);
+		StringBuilder message = new StringBuilder(LINE_LENGTH);
+		message.append(name).append(" must contain [").append(first).append(", ").append(last).
+			append("]");
 		message.append(String.format(" entries. It contained %,d entries.", parameter));
 		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
 			addContext("Actual", map).

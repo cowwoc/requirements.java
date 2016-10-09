@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -176,10 +175,10 @@ public final class DoubleRequirementsImpl implements DoubleRequirements
 	}
 
 	@Override
-	public DoubleRequirements isIn(Range<Double> range)
+	public DoubleRequirements isIn(Double first, Double last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		asNumber.isIn(range);
+		asNumber.isIn(first, last);
 		return this;
 	}
 

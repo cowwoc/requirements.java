@@ -4,21 +4,19 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
-import com.google.common.annotations.Beta;
-import com.google.common.collect.ImmutableList;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.StringJoiner;
 import org.bitbucket.cowwoc.requirements.util.Exceptions;
+import org.bitbucket.cowwoc.requirements.util.Lists;
 
 /**
  * Builds an exception.
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class ExceptionBuilder
 {
 	private final String message;
@@ -43,6 +41,7 @@ public final class ExceptionBuilder
 	public ExceptionBuilder(Class<? extends RuntimeException> type, String message,
 		Throwable cause, List<Entry<String, Object>> contextPostfix) throws NullPointerException
 	{
+		assert (Lists.isUnmodifiable(contextPostfix)): "contextPostfix may not be modifiable";
 		if (type == null)
 			throw new NullPointerException("type may not be null");
 		if (message == null)
@@ -52,7 +51,7 @@ public final class ExceptionBuilder
 		this.type = type;
 		this.message = message;
 		this.cause = cause;
-		this.contextPostfix = ImmutableList.copyOf(contextPostfix);
+		this.contextPostfix = contextPostfix;
 	}
 
 	/**
@@ -113,10 +112,9 @@ public final class ExceptionBuilder
 			mergedContext = context;
 		else
 		{
-			mergedContext = ImmutableList.<Entry<String, Object>>builder().
-				addAll(context).
-				addAll(contextPostfix).
-				build();
+			mergedContext = new ArrayList<>(context.size() + contextPostfix.size());
+			mergedContext.addAll(context);
+			mergedContext.addAll(contextPostfix);
 		}
 
 		int maxKeyLength = mergedContext.stream().map(Entry::getKey).mapToInt(String::length).max().

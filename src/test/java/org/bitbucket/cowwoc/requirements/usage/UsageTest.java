@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
-import com.google.common.collect.ImmutableSet;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Set;
 import org.bitbucket.cowwoc.requirements.AssertionVerifier;
 import org.bitbucket.cowwoc.requirements.RequirementVerifier;
@@ -24,7 +24,7 @@ public final class UsageTest
 	public void requirementsFromMultipleModules()
 	{
 		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = ImmutableSet.of(duration);
+		Set<Duration> bucket = Collections.singleton(duration);
 
 		// Java will invoke Requirements.requireThat() or TimeRequirements.requireThat() depending on the context
 		requireThat(duration, "duration").isPositive();
@@ -38,7 +38,7 @@ public final class UsageTest
 	public void globalAsserts()
 	{
 		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = ImmutableSet.of(duration);
+		Set<Duration> bucket = Collections.singleton(duration);
 
 		assertThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		assertThat(bucket, "bucket").contains(duration);
@@ -66,7 +66,7 @@ public final class UsageTest
 		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled).
 			addContext("key", "value").withException(IllegalStateException.class);
 		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = ImmutableSet.of(duration);
+		Set<Duration> bucket = Collections.singleton(duration);
 
 		assertions.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		assertions.requireThat(bucket, "bucket").contains(duration);
@@ -92,7 +92,7 @@ public final class UsageTest
 	public void withContext()
 	{
 		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = ImmutableSet.of();
+		Set<Duration> bucket = Collections.emptySet();
 
 		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 		try

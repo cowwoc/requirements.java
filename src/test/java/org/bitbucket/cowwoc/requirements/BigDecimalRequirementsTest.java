@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.math.BigDecimal;
 import org.testng.annotations.Test;
 
@@ -31,40 +30,36 @@ public class BigDecimalRequirementsTest
 	public void isInLowerBound()
 	{
 		BigDecimal parameter = BigDecimal.ZERO;
-		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		BigDecimal first = BigDecimal.ZERO;
+		BigDecimal last = BigDecimal.valueOf(2);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
 	public void isInBounds()
 	{
 		BigDecimal parameter = BigDecimal.ONE;
-		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		BigDecimal first = BigDecimal.ZERO;
+		BigDecimal last = BigDecimal.valueOf(2);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
 	public void isInUpperBound()
 	{
 		BigDecimal parameter = BigDecimal.valueOf(2);
-		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseOpenRange()
-	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Range<BigDecimal> range = Range.open(BigDecimal.valueOf(10), BigDecimal.valueOf(20));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		BigDecimal first = BigDecimal.ZERO;
+		BigDecimal last = BigDecimal.valueOf(2);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInFalseClosedRange()
 	{
 		BigDecimal parameter = BigDecimal.ONE;
-		Range<BigDecimal> range = Range.closed(BigDecimal.valueOf(10), BigDecimal.valueOf(20));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		BigDecimal first = BigDecimal.valueOf(10);
+		BigDecimal last = BigDecimal.valueOf(20);
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
@@ -355,32 +350,36 @@ public class BigDecimalRequirementsTest
 	public void precisionIsInBounds()
 	{
 		BigDecimal parameter = BigDecimal.valueOf(1234, 2);
-		Range<Integer> range = Range.closed(3, 5);
-		Requirements.requireThat(parameter, "parameter").precision().isIn(range);
+		int first = 3;
+		int last = 5;
+		Requirements.requireThat(parameter, "parameter").precision().isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void precisionIsInFalseClosedRange()
 	{
 		BigDecimal parameter = BigDecimal.valueOf(123, 2);
-		Range<Integer> range = Range.closed(10, 20);
-		Requirements.requireThat(parameter, "parameter").precision().isIn(range);
+		int first = 10;
+		int last = 20;
+		Requirements.requireThat(parameter, "parameter").precision().isIn(first, last);
 	}
 
 	@Test
 	public void scaleInBounds()
 	{
 		BigDecimal parameter = BigDecimal.valueOf(1234, 4);
-		Range<Integer> range = Range.closed(3, 5);
-		Requirements.requireThat(parameter, "parameter").scale().isIn(range);
+		int first = 3;
+		int last = 5;
+		Requirements.requireThat(parameter, "parameter").scale().isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void scaleIsInFalseClosedRange()
 	{
 		BigDecimal parameter = BigDecimal.valueOf(123, 2);
-		Range<Integer> range = Range.closed(10, 20);
-		Requirements.requireThat(parameter, "parameter").scale().isIn(range);
+		int first = 10;
+		int last = 20;
+		Requirements.requireThat(parameter, "parameter").scale().isIn(first, last);
 	}
 
 	@Test

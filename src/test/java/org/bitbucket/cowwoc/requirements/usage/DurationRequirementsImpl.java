@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
-import com.google.common.collect.Range;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
@@ -151,10 +150,10 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	}
 
 	@Override
-	public DurationRequirements isIn(Range<Duration> range) throws NullPointerException,
-		IllegalArgumentException
+	public DurationRequirements isIn(Duration first, Duration last)
+		throws NullPointerException, IllegalArgumentException
 	{
-		asComparable.isIn(range);
+		asComparable.isIn(first, last);
 		return this;
 	}
 

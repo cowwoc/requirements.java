@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Verifies requirements of an {@link int} parameter.
@@ -232,10 +232,10 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 	}
 
 	@Override
-	public PrimitiveIntegerRequirements isIn(Range<Integer> range)
+	public PrimitiveIntegerRequirements isIn(Integer first, Integer last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		asNumber.isIn(range);
+		asNumber.isIn(first, last);
 		return this;
 	}
 
@@ -243,7 +243,8 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 	@Override
 	public PrimitiveIntegerRequirements isNull() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be null", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be null", name), null);
 	}
 
 	@Override

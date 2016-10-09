@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
  * Default implementation of {@code CollectionSizeRequirements}.
@@ -301,19 +301,21 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never have a negative size", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never have a negative size", name), null);
 	}
 
 	@Override
-	public CollectionSizeRequirements isIn(Range<Integer> range)
+	public CollectionSizeRequirements isIn(Integer first, Integer last)
 		throws NullPointerException, IllegalArgumentException
 	{
-		Requirements.requireThat(range, "range").isNotNull();
-		if (range.contains(parameter))
+		Requirements.requireThat(first, "first").isNotNull();
+		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		if (parameter >= first && parameter <= last)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %s elements. It contained %,d %s.", name, range, parameter,
-				getSingleOrPlural(parameter))).
+			String.format("%s must contain [%d, %d] elements. It contained %,d %s.", name, first, last,
+				parameter, getSingleOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}

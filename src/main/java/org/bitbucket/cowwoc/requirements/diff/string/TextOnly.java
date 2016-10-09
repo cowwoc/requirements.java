@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_INSERT;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.LINE_LENGTH;
+import static org.bitbucket.cowwoc.requirements.util.ConsoleConstants.LINE_LENGTH;
+import org.bitbucket.cowwoc.requirements.util.Strings;
 
 /**
  * A diff representation that does not use ANSI escape codes.
@@ -172,7 +172,7 @@ final class TextOnly extends AbstractDiffWriter
 	static final String PADDING_MARKER = " ";
 	private final StringBuilder middleLine;
 	private final List<String> middleList;
-	private ImmutableList<String> middle;
+	private List<String> middle;
 
 	/**
 	 * Creates a new instance.
@@ -236,7 +236,7 @@ final class TextOnly extends AbstractDiffWriter
 	@Override
 	protected void afterClose()
 	{
-		this.middle = ImmutableList.copyOf(middleList);
+		this.middle = Collections.unmodifiableList(middleList);
 	}
 
 	@Override

@@ -4,9 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import java.util.Map.Entry;
+import org.bitbucket.cowwoc.requirements.annotations.Beta;
 
 /**
  * Behavior common to all verifiers.

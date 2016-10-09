@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import org.testng.annotations.Test;
 
 /**
@@ -30,40 +29,36 @@ public class NumberRequirementsTest
 	public void isInLowerBound()
 	{
 		Integer parameter = 0;
-		Range<Integer> range = Range.closed(0, 2);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		int first = 0;
+		int last = 2;
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
 	public void isInBounds()
 	{
 		Integer parameter = 1;
-		Range<Integer> range = Range.closed(0, 2);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		int first = 0;
+		int last = 2;
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test
 	public void isInUpperBound()
 	{
 		Integer parameter = 2;
-		Range<Integer> range = Range.closed(0, 2);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseOpenRange()
-	{
-		Integer parameter = 1;
-		Range<Integer> range = Range.open(10, 20);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		int first = 0;
+		int last = 2;
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInFalseClosedRange()
 	{
 		Integer parameter = 1;
-		Range<Integer> range = Range.closed(10, 20);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		int first = 10;
+		int last = 20;
+		Requirements.requireThat(parameter, "parameter").isIn(first, last);
 	}
 
 	@Test

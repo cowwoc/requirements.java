@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
@@ -69,6 +70,7 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(newConfig);
 	}
 
+	@Beta
 	@Override
 	public RequirementVerifier addContext(String key, Object value) throws NullPointerException
 	{
@@ -76,6 +78,7 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(newConfig);
 	}
 
+	@Beta
 	@Override
 	public RequirementVerifier withContext(List<Entry<String, Object>> context)
 		throws NullPointerException

@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.base.Strings;
 import org.bitbucket.cowwoc.requirements.Requirements;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_EQUAL;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_INSERT;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_MARKER;
+import org.bitbucket.cowwoc.requirements.util.Strings;
 import org.testng.annotations.Test;
 
 /**

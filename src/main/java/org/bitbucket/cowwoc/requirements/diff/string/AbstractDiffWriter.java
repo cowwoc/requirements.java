@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.LINE_LENGTH;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.NEWLINE_PATTERN;
+import static org.bitbucket.cowwoc.requirements.util.ConsoleConstants.LINE_LENGTH;
 
 /**
  * Base implementation for all diff writers.
@@ -56,8 +56,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 	protected final StringBuilder expectedLine;
 	private final List<String> actualList;
 	private final List<String> expectedList;
-	private ImmutableList<String> actual;
-	private ImmutableList<String> expected;
+	private List<String> actual;
+	private List<String> expected;
 	protected boolean closed;
 
 	/**
@@ -207,8 +207,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 		closed = true;
 		beforeClose();
 		flushLine();
-		this.actual = ImmutableList.copyOf(actualList);
-		this.expected = ImmutableList.copyOf(expectedList);
+		this.actual = Collections.unmodifiableList(actualList);
+		this.expected = Collections.unmodifiableList(expectedList);
 		afterClose();
 	}
 

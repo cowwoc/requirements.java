@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Range;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -68,7 +67,7 @@ final class NoOpNumberRequirements<T extends Number & Comparable<? super T>>
 	}
 
 	@Override
-	public NumberRequirements<T> isIn(Range<T> range)
+	public NumberRequirements<T> isIn(T first, T last)
 	{
 		return this;
 	}

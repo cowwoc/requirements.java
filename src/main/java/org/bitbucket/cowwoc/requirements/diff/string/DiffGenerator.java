@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import com.google.common.annotations.Beta;
 import java.io.Console;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -21,7 +20,6 @@ import org.bitbucket.cowwoc.requirements.util.Strings;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class DiffGenerator
 {
 	/**

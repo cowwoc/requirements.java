@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.spi;
 
-import com.google.common.collect.Range;
-
 /**
  * Verifies requirements of a {@link Comparable}.
  * <p>
@@ -115,11 +113,13 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 	/**
 	 * Ensures that the parameter is within range.
 	 *
-	 * @param range the range
+	 * @param first the first element in the range (inclusive)
+	 * @param last  the last element in the range (inclusive)
 	 * @return this
-	 * @throws NullPointerException     if {@code range} is null
-	 * @throws IllegalArgumentException if {@code parameter} is not in range
+	 * @throws NullPointerException     if {@code first} or {@code last} are null
+	 * @throws IllegalArgumentException if {@code last} is less than {@code first}; if
+	 *                                  {@code parameter} is not in range
 	 */
-	S isIn(Range<T> range)
+	S isIn(T first, T last)
 		throws NullPointerException, IllegalArgumentException;
 }
