@@ -160,11 +160,20 @@ final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequiremen
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalScaleRequirements isIn(Range<Integer> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		asInt.isIn(range);
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isIn(Integer first, Integer last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(first, last);
 		return this;
 	}
 
@@ -262,7 +271,8 @@ final class BigDecimalScaleRequirementsImpl implements BigDecimalScaleRequiremen
 	@Override
 	public BigDecimalScaleRequirements isNegative() throws IllegalArgumentException
 	{
-		throw new IllegalArgumentException(String.format("%s can never be negative", name));
+		throw Exceptions.createException(IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null);
 	}
 
 	@Override

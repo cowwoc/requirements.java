@@ -175,11 +175,20 @@ public final class DoubleRequirementsImpl implements DoubleRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public DoubleRequirements isIn(Range<Double> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		asNumber.isIn(range);
+		return this;
+	}
+
+	@Override
+	public DoubleRequirements isIn(Double first, Double last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asNumber.isIn(first, last);
 		return this;
 	}
 

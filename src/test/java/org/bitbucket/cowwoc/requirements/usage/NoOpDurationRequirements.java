@@ -74,8 +74,15 @@ public enum NoOpDurationRequirements implements DurationRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public DurationRequirements isIn(Range<Duration> range)
+	{
+		return this;
+	}
+
+	@Override
+	public DurationRequirements isIn(Duration first, Duration last)
 	{
 		return this;
 	}

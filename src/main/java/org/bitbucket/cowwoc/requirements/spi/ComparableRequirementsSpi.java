@@ -119,7 +119,22 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 	 * @return this
 	 * @throws NullPointerException     if {@code range} is null
 	 * @throws IllegalArgumentException if {@code parameter} is not in range
+	 * @deprecated replaced by {@link #isIn(Comparable, Comparable)}
 	 */
+	@Deprecated
 	S isIn(Range<T> range)
+		throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Ensures that the parameter is within range.
+	 *
+	 * @param first the first element in the range
+	 * @param last  the last element in the range
+	 * @return this
+	 * @throws NullPointerException     if {@code first} or {@code last} are null
+	 * @throws IllegalArgumentException if {@code last} is less than {@code first}; if
+	 *                                  {@code parameter} is not in range
+	 */
+	S isIn(T first, T last)
 		throws NullPointerException, IllegalArgumentException;
 }

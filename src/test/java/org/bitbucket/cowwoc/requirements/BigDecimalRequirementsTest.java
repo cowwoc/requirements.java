@@ -16,378 +16,452 @@ public class BigDecimalRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, null);
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
-	public void isInLowerBound()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_actualIsLowerBoundRange()
 	{
-		BigDecimal parameter = BigDecimal.ZERO;
+		BigDecimal actual = BigDecimal.ZERO;
 		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test
-	public void isInBounds()
+	public void isIn_actualIsLowerBound()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		BigDecimal actual = BigDecimal.ZERO;
+		BigDecimal first = BigDecimal.ZERO;
+		BigDecimal last = BigDecimal.valueOf(2);
+		Requirements.requireThat(actual, "actual").isIn(first, last);
 	}
 
 	@Test
-	public void isInUpperBound()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(2);
+		BigDecimal actual = BigDecimal.ONE;
 		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
+	}
+
+	@Test
+	public void isInRange()
+	{
+		BigDecimal actual = BigDecimal.ONE;
+		BigDecimal first = BigDecimal.ZERO;
+		BigDecimal last = BigDecimal.valueOf(2);
+		Requirements.requireThat(actual, "actual").isIn(first, last);
+	}
+
+	@Test
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_actualIsUpperBound()
+	{
+		BigDecimal actual = BigDecimal.valueOf(2);
+		Range<BigDecimal> range = Range.closed(BigDecimal.ZERO, BigDecimal.valueOf(2));
+		Requirements.requireThat(actual, "actual").isIn(range);
+	}
+
+	@Test
+	public void isIn_actualIsLast()
+	{
+		BigDecimal actual = BigDecimal.valueOf(2);
+		BigDecimal first = BigDecimal.ZERO;
+		BigDecimal last = BigDecimal.valueOf(2);
+		Requirements.requireThat(actual, "actual").isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseOpenRange()
+	@SuppressWarnings("deprecation")
+	public void isInOpenRange_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
+		BigDecimal actual = BigDecimal.ONE;
 		Range<BigDecimal> range = Range.open(BigDecimal.valueOf(10), BigDecimal.valueOf(20));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseClosedRange()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
+		BigDecimal actual = BigDecimal.ONE;
 		Range<BigDecimal> range = Range.closed(BigDecimal.valueOf(10), BigDecimal.valueOf(20));
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInRange_actualIsBelow()
+	{
+		BigDecimal actual = BigDecimal.ONE;
+		BigDecimal first = BigDecimal.valueOf(10);
+		BigDecimal last = BigDecimal.valueOf(20);
+		Requirements.requireThat(actual, "actual").isIn(first, last);
 	}
 
 	@Test
-	public void isNegative_NegativeOne()
+	public void isNegative_actualIsNegativeOne()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(-1);
-		Requirements.requireThat(parameter, "parameter").isNegative();
+		BigDecimal actual = BigDecimal.valueOf(-1);
+		Requirements.requireThat(actual, "actual").isNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNegative_Zero()
+	public void isNegative_actualIsZero()
 	{
-		BigDecimal parameter = BigDecimal.ZERO;
-		Requirements.requireThat(parameter, "parameter").isNegative();
+		BigDecimal actual = BigDecimal.ZERO;
+		Requirements.requireThat(actual, "actual").isNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNegative_One()
+	public void isNegative_actualIsOne()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isNegative();
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isNegative();
 	}
 
 	@Test
 	public void isNotNegative()
 	{
-		Requirements.requireThat(BigDecimal.ZERO, "parameter").isNotNegative();
-		Requirements.requireThat(BigDecimal.ONE, "parameter").isNotNegative();
+		Requirements.requireThat(BigDecimal.ZERO, "actual").isNotNegative();
+		Requirements.requireThat(BigDecimal.ONE, "actual").isNotNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotNegative_NegativeOne()
+	public void isNotNegative_actualIsNegativeOne()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(-1);
-		Requirements.requireThat(parameter, "parameter").isNotNegative();
+		BigDecimal actual = BigDecimal.valueOf(-1);
+		Requirements.requireThat(actual, "actual").isNotNegative();
 	}
 
 	@Test
 	public void isZero()
 	{
-		Requirements.requireThat(BigDecimal.ZERO, "parameter").isZero();
+		Requirements.requireThat(BigDecimal.ZERO, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isZero_One()
+	public void isZero_actualIsOne()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isZero();
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isZero_NegativeOne()
+	public void isZero_actualIsNegativeOne()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(-1);
-		Requirements.requireThat(parameter, "parameter").isZero();
+		BigDecimal actual = BigDecimal.valueOf(-1);
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_ZeroPointOne()
+	public void isNotZero_actualIsZeroPointOne()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(0.1);
-		Requirements.requireThat(parameter, "parameter").isZero();
+		BigDecimal actual = BigDecimal.valueOf(0.1);
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_One()
+	public void isNotZero_actualIsOne()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isZero();
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test
 	public void isNotZero()
 	{
-		Requirements.requireThat(BigDecimal.valueOf(-1), "parameter").isNotZero();
-		Requirements.requireThat(BigDecimal.valueOf(0.1), "parameter").isNotZero();
-		Requirements.requireThat(BigDecimal.ONE, "parameter").isNotZero();
+		Requirements.requireThat(BigDecimal.valueOf(-1), "actual").isNotZero();
+		Requirements.requireThat(BigDecimal.valueOf(0.1), "actual").isNotZero();
+		Requirements.requireThat(BigDecimal.ONE, "actual").isNotZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_Integer()
+	public void isNotZero_False()
 	{
-		BigDecimal parameter = BigDecimal.ZERO;
-		Requirements.requireThat(parameter, "parameter").isNotZero();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_BigDecimal()
-	{
-		Requirements.requireThat(BigDecimal.ZERO, "parameter").isNotZero();
+		Requirements.requireThat(BigDecimal.ZERO, "actual").isNotZero();
 	}
 
 	@Test
 	public void isPositive()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isPositive();
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositive_Zero()
+	public void isPositive_actualIsZero()
 	{
-		BigDecimal parameter = BigDecimal.ZERO;
-		Requirements.requireThat(parameter, "parameter").isPositive();
+		BigDecimal actual = BigDecimal.ZERO;
+		Requirements.requireThat(actual, "actual").isPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositive_NegativeOne()
+	public void isPositive_actualIsNegativeOne()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(-1);
-		Requirements.requireThat(parameter, "parameter").isPositive();
+		BigDecimal actual = BigDecimal.valueOf(-1);
+		Requirements.requireThat(actual, "actual").isPositive();
 	}
 
 	@Test
 	public void isNotPositive()
 	{
-		Requirements.requireThat(BigDecimal.ZERO, "parameter").isNotPositive();
-		Requirements.requireThat(BigDecimal.valueOf(-1), "parameter").isNotPositive();
+		Requirements.requireThat(BigDecimal.ZERO, "actual").isNotPositive();
+		Requirements.requireThat(BigDecimal.valueOf(-1), "actual").isNotPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotPositive_One()
+	public void isNotPositive_actualIsOne()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isNotPositive();
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isNotPositive();
 	}
 
 	@Test
 	public void isLessThanVariable()
 	{
-		BigDecimal parameter = BigDecimal.ZERO;
-		Requirements.requireThat(parameter, "parameter").isLessThan(BigDecimal.ONE, "value");
+		BigDecimal actual = BigDecimal.ZERO;
+		Requirements.requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
 	}
 
 	@Test
 	public void isLessThanConstant()
 	{
-		BigDecimal parameter = BigDecimal.ZERO;
-		Requirements.requireThat(parameter, "parameter").isLessThan(BigDecimal.ONE);
+		BigDecimal actual = BigDecimal.ZERO;
+		Requirements.requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_Equal()
+	public void isLessThanVariable_actualIsEqual()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isLessThan(BigDecimal.ONE, "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_Equal()
+	public void isLessThanConstant_actualIsEqual()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isLessThan(BigDecimal.ONE);
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_Greater()
+	public void isLessThanVariable_actualIsAbove()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(2);
-		Requirements.requireThat(parameter, "parameter").isLessThan(BigDecimal.ONE, "value");
+		BigDecimal actual = BigDecimal.valueOf(2);
+		Requirements.requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_Greater()
+	public void isLessThanConstant_actualIsAbove()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(2);
-		Requirements.requireThat(parameter, "parameter").isLessThan(BigDecimal.ONE);
+		BigDecimal actual = BigDecimal.valueOf(2);
+		Requirements.requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
 	}
 
 	@Test
 	public void isLessThanOrEqualToVariable()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(BigDecimal.ONE, "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(BigDecimal.ONE, "expected");
 	}
 
 	@Test
 	public void isLessThanOrEqualToConstant()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(BigDecimal.ONE);
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(BigDecimal.ONE);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToVariable_Greater()
+	public void isLessThanOrEqualToVariable_actualIsAbove()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(3);
-		Requirements.requireThat(parameter, "parameter").
-			isLessThanOrEqualTo(BigDecimal.valueOf(2), "value");
+		BigDecimal actual = BigDecimal.valueOf(3);
+		Requirements.requireThat(actual, "actual").
+			isLessThanOrEqualTo(BigDecimal.valueOf(2), "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToConstant_Greater()
+	public void isLessThanOrEqualToConstant_actualIsAbove()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(3);
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(BigDecimal.valueOf(2));
+		BigDecimal actual = BigDecimal.valueOf(3);
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(BigDecimal.valueOf(2));
 	}
 
 	@Test
 	public void isGreaterThanVariable()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.ZERO, "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO, "expected");
 	}
 
 	@Test
 	public void isGreaterThanConstant()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.ZERO);
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariableEmptyName()
+	public void isGreaterThanVariable_expectedNameIsEmpty()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.ZERO, " ");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO, " ");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_Equal()
+	public void isGreaterThanVariable_actualIsEqual()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.ONE, "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.ONE, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_Equal()
+	public void isGreaterThanConstant_actualIsEqual()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.ONE);
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.ONE);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_Less()
+	public void isGreaterThanVariable_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.valueOf(2), "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.valueOf(2), "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_Less()
+	public void isGreaterThanConstant_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(BigDecimal.valueOf(2));
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThan(BigDecimal.valueOf(2));
 	}
 
 	@Test
 	public void isGreaterThanOrEqualToVariable()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").
-			isGreaterThanOrEqualTo(BigDecimal.ONE, "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").
+			isGreaterThanOrEqualTo(BigDecimal.ONE, "expected");
 	}
 
 	@Test
 	public void isGreaterThanOrEqualToConstant()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").
 			isGreaterThanOrEqualTo(BigDecimal.ONE);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToVariableEmptyName()
+	public void isGreaterThanOrEqualToVariable_expectedNameIsEmpty()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").
 			isGreaterThanOrEqualTo(BigDecimal.ONE, " ");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToVariable_Less()
+	public void isGreaterThanOrEqualToVariable_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").
-			isGreaterThanOrEqualTo(BigDecimal.valueOf(2), "value");
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").
+			isGreaterThanOrEqualTo(BigDecimal.valueOf(2), "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToConstant_Less()
+	public void isGreaterThanOrEqualToConstant_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.ONE;
-		Requirements.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(BigDecimal.valueOf(2));
+		BigDecimal actual = BigDecimal.ONE;
+		Requirements.requireThat(actual, "actual").isGreaterThanOrEqualTo(BigDecimal.valueOf(2));
 	}
 
 	@Test
-	public void precisionIsInBounds()
+	@SuppressWarnings("deprecation")
+	public void precisionIsInClosedRange()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(1234, 2);
+		BigDecimal actual = BigDecimal.valueOf(1234, 2);
 		Range<Integer> range = Range.closed(3, 5);
-		Requirements.requireThat(parameter, "parameter").precision().isIn(range);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void precisionIsInFalseClosedRange()
-	{
-		BigDecimal parameter = BigDecimal.valueOf(123, 2);
-		Range<Integer> range = Range.closed(10, 20);
-		Requirements.requireThat(parameter, "parameter").precision().isIn(range);
+		Requirements.requireThat(actual, "actual").precision().isIn(range);
 	}
 
 	@Test
-	public void scaleInBounds()
+	public void precisionIsInRange()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(1234, 4);
-		Range<Integer> range = Range.closed(3, 5);
-		Requirements.requireThat(parameter, "parameter").scale().isIn(range);
+		BigDecimal actual = BigDecimal.valueOf(1234, 2);
+		int first = 3;
+		int last = 5;
+		Requirements.requireThat(actual, "actual").precision().isIn(first, last);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void scaleIsInFalseClosedRange()
+	@SuppressWarnings("deprecation")
+	public void precisionIsInClosedRange_actualIsBelow()
 	{
-		BigDecimal parameter = BigDecimal.valueOf(123, 2);
+		BigDecimal actual = BigDecimal.valueOf(123, 2);
 		Range<Integer> range = Range.closed(10, 20);
-		Requirements.requireThat(parameter, "parameter").scale().isIn(range);
+		Requirements.requireThat(actual, "actual").precision().isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void precisionIsInClosedRange_actualIsAbove()
+	{
+		BigDecimal actual = BigDecimal.valueOf(123, 2);
+		int first = 10;
+		int last = 20;
+		Requirements.requireThat(actual, "actual").precision().isIn(first, last);
+	}
+
+	@Test
+	@SuppressWarnings("deprecation")
+	public void scaleInClosedRange()
+	{
+		BigDecimal actual = BigDecimal.valueOf(1234, 4);
+		Range<Integer> range = Range.closed(3, 5);
+		Requirements.requireThat(actual, "actual").scale().isIn(range);
+	}
+
+	@Test
+	public void scaleInRange()
+	{
+		BigDecimal actual = BigDecimal.valueOf(1234, 4);
+		int first = 3;
+		int last = 5;
+		Requirements.requireThat(actual, "actual").scale().isIn(first, last);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
+	public void scaleIsInClosedRange_actualIsAbove()
+	{
+		BigDecimal actual = BigDecimal.valueOf(123, 2);
+		Range<Integer> range = Range.closed(10, 20);
+		Requirements.requireThat(actual, "actual").scale().isIn(range);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsInRange_actualIsAbove()
+	{
+		BigDecimal actual = BigDecimal.valueOf(123, 2);
+		int first = 10;
+		int last = 20;
+		Requirements.requireThat(actual, "actual").scale().isIn(first, last);
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		BigDecimal parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		BigDecimal actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 }

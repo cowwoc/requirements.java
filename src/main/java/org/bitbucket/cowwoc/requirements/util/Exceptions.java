@@ -92,6 +92,7 @@ public final class Exceptions
 	 */
 	public static void filterStacktrace(Throwable throwable, Predicate<String> classNameFilter)
 	{
+		// Method needs to be public to hide 3rd-party verifiers located in in other packages
 		StackTraceElement[] elements = throwable.getStackTrace();
 		int i = elements.length - 1;
 		while (true)

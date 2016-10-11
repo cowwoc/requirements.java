@@ -21,6 +21,16 @@ import org.bitbucket.cowwoc.requirements.util.Exceptions;
 final class CollectionSizeRequirementsImpl
 	implements CollectionSizeRequirements
 {
+	/**
+	 * @param amount an amount
+	 * @return "element" or "elements" depending on whether {@code amount} is plural
+	 */
+	private static String getSingularOrPlural(int amount)
+	{
+		if (amount == 1)
+			return "element";
+		return "elements";
+	}
 	private final Collection<?> collection;
 	private final int parameter;
 	private final String name;
@@ -139,20 +149,9 @@ final class CollectionSizeRequirementsImpl
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d %s. It contained %,d %s.", name, value,
-				getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
-	}
-
-	/**
-	 * @param amount an amount
-	 * @return "element" or "elements" depending on whether {@code amount} is plural
-	 */
-	private String getSingleOrPlural(int amount)
-	{
-		if (amount == 1)
-			return "element";
-		return "elements";
 	}
 
 	@Override
@@ -165,7 +164,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) %s. It contained %,d %s.", this.name, name,
-				value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -178,7 +177,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d %s. It contained %,d %s.", name, value,
-				getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -193,7 +192,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) %s. It contained %,d %s.", this.name, name,
-				value, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -207,7 +206,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may contain at most %,d %s. It contained %,d %s.", name, value,
-				getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -222,7 +221,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may contain at most %,d (%s) %s. It contained %,d %s.", this.name, value,
-				name, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -235,7 +234,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d %s. It contained %,d %s.", name, value,
-				getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -250,7 +249,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d (%s) %s. It contained %,d %s.", this.name, value,
-				name, getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -268,7 +267,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least one element. It contained %,d %s.", name, parameter,
-				getSingleOrPlural(parameter))).
+				getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -286,7 +285,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty. It contained %,d %s.", name, parameter,
-				getSingleOrPlural(parameter))).
+				getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -306,6 +305,7 @@ final class CollectionSizeRequirementsImpl
 			String.format("%s can never have a negative size", name), null);
 	}
 
+	@Deprecated
 	@Override
 	public CollectionSizeRequirements isIn(Range<Integer> range)
 		throws NullPointerException, IllegalArgumentException
@@ -315,9 +315,20 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s elements. It contained %,d %s.", name, range, parameter,
-				getSingleOrPlural(parameter))).
+				getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
+	}
+
+	@Override
+	public CollectionSizeRequirements isIn(Integer first, Integer last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Requirements.requireThat(first, "first").isNotNull();
+		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		if (parameter >= first && parameter <= last)
+			return this;
+		return isIn(Range.closed(first, last));
 	}
 
 	@Override
@@ -327,8 +338,8 @@ final class CollectionSizeRequirementsImpl
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %,d %s. It contained %,d %s.", name, value, getSingleOrPlural(
-				value), parameter, getSingleOrPlural(parameter))).
+			String.format("%s must contain %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -343,7 +354,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s (%,d) %s. It contained %,d %s.", this.name, name, value,
-				getSingleOrPlural(value), parameter, getSingleOrPlural(parameter))).
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -355,7 +366,7 @@ final class CollectionSizeRequirementsImpl
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not contain %,d %s, but did.", name, value, getSingleOrPlural(value))).
+			String.format("%s must not contain %,d %s, but did.", name, value, getSingularOrPlural(value))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -370,7 +381,7 @@ final class CollectionSizeRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %s (%,d) %s, but did.", this.name,
-				name, value, getSingleOrPlural(value))).
+				name, value, getSingularOrPlural(value))).
 			addContext("Actual", collection).
 			build();
 	}

@@ -136,8 +136,15 @@ final class NoOpCollectionSizeRequirements implements CollectionSizeRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public CollectionSizeRequirements isIn(Range<Integer> range)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionSizeRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

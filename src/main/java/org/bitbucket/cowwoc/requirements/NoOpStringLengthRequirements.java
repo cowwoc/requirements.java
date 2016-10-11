@@ -135,8 +135,15 @@ final class NoOpStringLengthRequirements implements StringLengthRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public StringLengthRequirements isIn(Range<Integer> range)
+	{
+		return this;
+	}
+
+	@Override
+	public StringLengthRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

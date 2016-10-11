@@ -15,36 +15,36 @@ public class UriRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		URI parameter = URI.create("http://host.com/");
-		Requirements.requireThat(parameter, null);
+		URI actual = URI.create("http://host.com/");
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		URI parameter = URI.create("http://host.com/");
-		Requirements.requireThat(parameter, "");
+		URI actual = URI.create("http://host.com/");
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
-	public void isAbsoluteTrue()
+	public void isAbsolute()
 	{
-		URI parameter = URI.create("http://host.com/index.html");
-		Requirements.requireThat(parameter, "parameter").isAbsolute();
+		URI actual = URI.create("http://host.com/index.html");
+		Requirements.requireThat(actual, "actual").isAbsolute();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isAbsoluteFalse()
+	public void isAbsolute_False()
 	{
-		URI parameter = URI.create("../index.html");
-		Requirements.requireThat(parameter, "parameter").isAbsolute();
+		URI actual = URI.create("../index.html");
+		Requirements.requireThat(actual, "actual").isAbsolute();
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		URI parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		URI actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 }

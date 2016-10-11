@@ -139,8 +139,15 @@ final class NoOpBigDecimalPrecisionRequirements implements BigDecimalPrecisionRe
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalPrecisionRequirements isIn(Range<Integer> range)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

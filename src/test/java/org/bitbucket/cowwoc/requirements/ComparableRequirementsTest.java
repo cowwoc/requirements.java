@@ -43,21 +43,21 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_Equal()
+	public void isLessThanVariable_expectedIsEqual()
 	{
 		Instant instant = Instant.now();
 		Requirements.requireThat(instant, "instant").isLessThan(instant, "instant");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_Equal()
+	public void isLessThanConstant_expectedIsEqual()
 	{
 		Instant instant = Instant.now();
 		Requirements.requireThat(instant, "instant").isLessThan(instant);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_Greater()
+	public void isLessThanVariable_expectedIsBefore()
 	{
 		Instant before = Instant.now();
 		Instant after = before.plusMillis(1);
@@ -65,7 +65,7 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_Greater()
+	public void isLessThanConstant_expectedIsBefore()
 	{
 		Instant before = Instant.now();
 		Instant after = before.plusMillis(1);
@@ -87,15 +87,15 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToVariable_Greater()
+	public void isLessThanOrEqualToVariable_expectedIsBefore()
 	{
 		Instant before = Instant.now();
-		Instant after = before.minusMillis(1);
-		Requirements.requireThat(before, "before").isLessThanOrEqualTo(after, "after");
+		Instant after = before.plusMillis(1);
+		Requirements.requireThat(after, "after").isLessThanOrEqualTo(before, "before");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToConstant_Greater()
+	public void isLessThanOrEqualToConstant_expectedIsAfter()
 	{
 		Instant before = Instant.now();
 		Instant after = before.minusMillis(1);
@@ -119,21 +119,21 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_Equal()
+	public void isGreaterThanVariable_expectedIsEqual()
 	{
 		Instant instant = Instant.now();
 		Requirements.requireThat(instant, "instant").isGreaterThan(instant, "instant");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_Equal()
+	public void isGreaterThanConstant_expectedIsEqual()
 	{
 		Instant instant = Instant.now();
 		Requirements.requireThat(instant, "instant").isGreaterThan(instant);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_Less()
+	public void isGreaterThanVariable_expectedIsBefore()
 	{
 		Instant before = Instant.now();
 		Instant after = before.plusMillis(1);
@@ -141,7 +141,7 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_Less()
+	public void isGreaterThanConstant_expectedIsBefore()
 	{
 		Instant before = Instant.now();
 		Instant after = before.plusMillis(1);
@@ -163,7 +163,7 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToVariable_Less()
+	public void isGreaterThanOrEqualToVariable_expectedIsBefore()
 	{
 		Instant before = Instant.now();
 		Instant after = before.plusMillis(1);
@@ -171,7 +171,7 @@ public class ComparableRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToConstant_Less()
+	public void isGreaterThanOrEqualToConstant_expectedIsBefore()
 	{
 		Instant before = Instant.now();
 		Instant after = before.plusMillis(1);

@@ -16,128 +16,128 @@ public final class ObjectRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, null);
+		Object actual = new Object();
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "");
+		Object actual = new Object();
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
-	public void isEqualsTrue()
+	public void isEquals()
 	{
 		String actual = "actual";
 		Requirements.requireThat(actual, "actual").isEqualTo(actual);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEqualsFalse()
+	public void isEquals_False()
 	{
 		String actual = "actual";
 		Requirements.requireThat(actual, "actual").isEqualTo("expected");
 	}
 
 	@Test
-	public void isNotEqualsTrue()
+	public void isNotEquals()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "parameter").isNotEqualTo(new Object());
+		Object actual = new Object();
+		Requirements.requireThat(actual, "actual").isNotEqualTo(new Object());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotEqualsFalse()
+	public void isNotEquals_False()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "parameter").isNotEqualTo(parameter);
+		Object actual = new Object();
+		Requirements.requireThat(actual, "actual").isNotEqualTo(actual);
 	}
 
 	@Test
-	public void isInTrue()
+	public void isInCollection()
 	{
-		String parameter = "value";
+		String actual = "value";
 
 		// Make sure that the collection uses equals()
 		@SuppressWarnings("RedundantStringConstructorCall")
-		String equivalent = new String(parameter);
+		String equivalent = new String(actual);
 
-		Requirements.requireThat(parameter, "parameter").
+		Requirements.requireThat(actual, "actual").
 			isIn(ImmutableList.of("first", equivalent, "third"));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalse()
+	public void isInCollection_False()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, "parameter").
+		String actual = "value";
+		Requirements.requireThat(actual, "actual").
 			isIn(ImmutableList.of("first", "second", "third"));
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isInstanceOfNullParameter()
+	public void isInstanceOf_actualIsNull()
 	{
-		Random parameter = null;
-		Requirements.requireThat(parameter, "parameter").isInstanceOf(Random.class);
+		Random actual = null;
+		Requirements.requireThat(actual, "actual").isInstanceOf(Random.class);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isInstanceOfNullValue()
+	public void isInstanceOf_expectedIsNull()
 	{
-		Random parameter = new Random();
-		Requirements.requireThat(parameter, "parameter").isInstanceOf(null);
+		Random actual = new Random();
+		Requirements.requireThat(actual, "actual").isInstanceOf(null);
 	}
 
 	@Test
-	public void isInstanceOfTrue()
+	public void isInstanceOf()
 	{
-		Random parameter = new Random();
-		Requirements.requireThat(parameter, "parameter").isInstanceOf(Random.class).
+		Random actual = new Random();
+		Requirements.requireThat(actual, "actual").isInstanceOf(Random.class).
 			isInstanceOf(Object.class);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInstanceOfFalse()
+	public void isInstanceOf_False()
 	{
-		Random parameter = new Random();
-		Requirements.requireThat(parameter, "parameter").isInstanceOf(String.class);
+		Random actual = new Random();
+		Requirements.requireThat(actual, "actual").isInstanceOf(String.class);
 	}
 
 	@Test
-	public void isNullTrue()
+	public void isNull()
 	{
-		Object parameter = null;
-		Requirements.requireThat(parameter, "parameter").isNull();
+		Object actual = null;
+		Requirements.requireThat(actual, "actual").isNull();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNullFalse()
+	public void isNull_False()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "parameter").isNull();
+		Object actual = new Object();
+		Requirements.requireThat(actual, "actual").isNull();
 	}
 
 	@Test
-	public void isNotNullTrue()
+	public void isNotNull()
 	{
-		Object parameter = new Object();
-		Requirements.requireThat(parameter, "parameter").isNotNull();
+		Object actual = new Object();
+		Requirements.requireThat(actual, "actual").isNotNull();
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isNotNullFalse()
+	public void isNotNull_False()
 	{
-		Object parameter = null;
-		Requirements.requireThat(parameter, "parameter").isNotNull();
+		Object actual = null;
+		Requirements.requireThat(actual, "actual").isNotNull();
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
-	public void isNotNullCustomException()
+	public void isNotNull_CustomException()
 	{
-		Object parameter = null;
-		Requirements.requireThat(parameter, "parameter").withException(IllegalStateException.class).
+		Object actual = null;
+		Requirements.requireThat(actual, "actual").withException(IllegalStateException.class).
 			isNotNull();
 	}
 
@@ -149,8 +149,8 @@ public final class ObjectRequirementsTest
 	@Test
 	public void customExceptionRequirementSubclass()
 	{
-		int parameter = 5;
-		Requirements.requireThat(parameter, "parameter").withException(IllegalStateException.class).
+		int actual = 5;
+		Requirements.requireThat(actual, "actual").withException(IllegalStateException.class).
 			isNotNull();
 	}
 
@@ -158,7 +158,7 @@ public final class ObjectRequirementsTest
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		Object parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		Object actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 }

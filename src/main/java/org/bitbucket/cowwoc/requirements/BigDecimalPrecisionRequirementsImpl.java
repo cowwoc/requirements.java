@@ -156,11 +156,20 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalPrecisionRequirements isIn(Range<Integer> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		asInt.isIn(range);
+		return this;
+	}
+
+	@Override
+	public BigDecimalPrecisionRequirements isIn(Integer first, Integer last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asInt.isIn(first, last);
 		return this;
 	}
 

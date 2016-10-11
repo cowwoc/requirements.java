@@ -127,8 +127,15 @@ enum NoOpDoubleRequirements implements DoubleRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public DoubleRequirements isIn(Range<Double> range)
+	{
+		return this;
+	}
+
+	@Override
+	public DoubleRequirements isIn(Double first, Double last)
 	{
 		return this;
 	}

@@ -150,11 +150,20 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public DurationRequirements isIn(Range<Duration> range) throws NullPointerException,
 		IllegalArgumentException
 	{
 		asComparable.isIn(range);
+		return this;
+	}
+
+	@Override
+	public DurationRequirements isIn(Duration first, Duration last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isIn(first, last);
 		return this;
 	}
 

@@ -21,6 +21,16 @@ import org.bitbucket.cowwoc.requirements.util.Exceptions;
  */
 final class MapSizeRequirementsImpl implements MapSizeRequirements
 {
+	/**
+	 * @param amount an amount
+	 * @return "entry" or "entries" depending on whether {@code amount} is plural
+	 */
+	private static String getSingularOrPlural(int amount)
+	{
+		if (amount == 1)
+			return "entry";
+		return "entries";
+	}
 	private final Map<?, ?> map;
 	private final int parameter;
 	private final String name;
@@ -121,8 +131,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter >= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain at least %,d entries. It contained %,d entries.", name, value,
-				parameter)).
+			String.format("%s must contain at least %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -149,8 +159,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter > value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain more than %,d entries. It contained %,d entries.", name, value,
-				parameter)).
+			String.format("%s must contain more than %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -164,8 +174,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter > value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain more than %s (%,d) entries. It contained %,d entries.",
-				this.name, name, value, parameter)).
+			String.format("%s must contain more than %s (%,d) %s. It contained %,d %s.",
+				this.name, name, value, getSingularOrPlural(value), parameter,
+				getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -178,8 +189,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may contain at most %,d entries. It contained %,d entries.", name, value,
-				parameter)).
+			String.format("%s may contain at most %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -193,8 +204,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may contain at most %s (%,d) entries. It contained %,d entries.", this.name,
-				name, value, parameter)).
+			String.format("%s may contain at most %s (%,d) %s. It contained %,d %s.", this.name,
+				name, value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -206,8 +217,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter < value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain less than %,d entries. It contained %,d entries.", name, value,
-				parameter)).
+			String.format("%s must contain less than %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -221,8 +232,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter < value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain less than %s (%,d) entries. It contained %,d entries.",
-				this.name, name, value, parameter)).
+			String.format("%s must contain less than %s (%,d) %s. It contained %,d %s.",
+				this.name, name, value, getSingularOrPlural(value), parameter, getSingularOrPlural(value))).
 			addContext("Actual", map).
 			build();
 	}
@@ -257,7 +268,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (parameter == 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be empty. It contained %,d entries.", name, parameter)).
+			String.format("%s must be empty. It contained %,d %s.", name, parameter,
+				getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -277,6 +289,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 			String.format("%s can never have a negative size", name), null);
 	}
 
+	@Deprecated
 	@Override
 	public MapSizeRequirements isIn(Range<Integer> range)
 		throws NullPointerException, IllegalArgumentException
@@ -285,10 +298,22 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (range.contains(parameter))
 			return this;
 		StringBuilder message = new StringBuilder(name + " must contain " + range);
-		message.append(String.format(" entries. It contained %,d entries.", parameter));
+		message.append(String.format(" entries. It contained %,d %s.", parameter,
+			getSingularOrPlural(parameter)));
 		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
 			addContext("Actual", map).
 			build();
+	}
+
+	@Override
+	public MapSizeRequirements isIn(Integer first, Integer last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		Requirements.requireThat(first, "first").isNotNull();
+		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		if (parameter >= first && parameter <= last)
+			return this;
+		return isIn(Range.closed(first, last));
 	}
 
 	@Override
@@ -298,8 +323,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %,d entries. It contained %,d entries.", name, value,
-				parameter)).
+			String.format("%s must contain %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -313,8 +338,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %s (%,d) entries. It contained %,d entries.", this.name, name,
-				value, parameter)).
+			String.format("%s must contain %s (%,d) %s. It contained %,d %s.", this.name, name,
+				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", map).
 			build();
 	}
@@ -326,7 +351,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not contain %,d entries, but did.", name, value)).
+			String.format("%s must not contain %,d %s, but did.", name, value, getSingularOrPlural(value))).
 			addContext("Actual", map).
 			build();
 	}
@@ -340,7 +365,8 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not contain %s (%,d) entries, but did.", this.name, name, value)).
+			String.format("%s must not contain %s (%,d) %s, but did.", this.name, name, value,
+				getSingularOrPlural(value))).
 			addContext("Actual", map).
 			build();
 	}

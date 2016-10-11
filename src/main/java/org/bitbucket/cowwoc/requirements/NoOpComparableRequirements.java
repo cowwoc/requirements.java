@@ -84,8 +84,15 @@ final class NoOpComparableRequirements<T extends Comparable<? super T>>
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public ComparableRequirements<T> isIn(Range<T> range)
+	{
+		return this;
+	}
+
+	@Override
+	public ComparableRequirements<T> isIn(T first, T last)
 	{
 		return this;
 	}

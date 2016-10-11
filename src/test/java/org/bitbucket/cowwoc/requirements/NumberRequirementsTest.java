@@ -15,383 +15,388 @@ public class NumberRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, null);
+		Integer actual = 1;
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
-	public void isInLowerBound()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_expectedIsLowerBound()
 	{
-		Integer parameter = 0;
+		Integer actual = 0;
 		Range<Integer> range = Range.closed(0, 2);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test
-	public void isInBounds()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_expectedIsInBounds()
 	{
-		Integer parameter = 1;
+		Integer actual = 1;
 		Range<Integer> range = Range.closed(0, 2);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test
-	public void isInUpperBound()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_expectedIsUpperBound()
 	{
-		Integer parameter = 2;
+		Integer actual = 2;
 		Range<Integer> range = Range.closed(0, 2);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseOpenRange()
+	@SuppressWarnings("deprecation")
+	public void isInOpenRange_expectedIsBelow()
 	{
-		Integer parameter = 1;
+		Integer actual = 1;
 		Range<Integer> range = Range.open(10, 20);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInFalseClosedRange()
+	@SuppressWarnings("deprecation")
+	public void isInClosedRange_expectedIsBelow()
 	{
-		Integer parameter = 1;
+		Integer actual = 1;
 		Range<Integer> range = Range.closed(10, 20);
-		Requirements.requireThat(parameter, "parameter").isIn(range);
+		Requirements.requireThat(actual, "actual").isIn(range);
 	}
 
 	@Test
-	public void isNegative_NegativeOne()
+	public void isNegative_expectedIsNegativeOne()
 	{
-		Integer parameter = -1;
-		Requirements.requireThat(parameter, "parameter").isNegative();
+		Integer actual = -1;
+		Requirements.requireThat(actual, "actual").isNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNegative_Zero()
+	public void isNegative_expectedIsZero()
 	{
-		Integer parameter = 0;
-		Requirements.requireThat(parameter, "parameter").isNegative();
+		Integer actual = 0;
+		Requirements.requireThat(actual, "actual").isNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNegative_One()
+	public void isNegative_expectedIsOne()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isNegative();
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isNegative();
 	}
 
 	@Test
 	public void isNotNegative()
 	{
-		Requirements.requireThat(0, "parameter").isNotNegative();
-		Requirements.requireThat(1, "parameter").isNotNegative();
+		Requirements.requireThat(0, "actual").isNotNegative();
+		Requirements.requireThat(1, "actual").isNotNegative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotNegative_NegativeOne()
+	public void isNotNegative_expectedIsNegativeOne()
 	{
-		Integer parameter = -1;
-		Requirements.requireThat(parameter, "parameter").isNotNegative();
+		Integer actual = -1;
+		Requirements.requireThat(actual, "actual").isNotNegative();
 	}
 
 	@Test
 	public void isZero()
 	{
-		Requirements.requireThat(0, "parameter").isZero();
+		Requirements.requireThat(0, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isZero_One()
+	public void isZero_expectedIsOne()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isZero();
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isZero_NegativeOne()
+	public void isZero_expectedIsNegativeOne()
 	{
-		Integer parameter = -1;
-		Requirements.requireThat(parameter, "parameter").isZero();
+		Integer actual = -1;
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_One()
+	public void isNotZero_expectedIsOne()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isZero();
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isZero();
 	}
 
 	@Test
 	public void isNotZero()
 	{
-		Requirements.requireThat(-1, "parameter").isNotZero();
-		Requirements.requireThat(1, "parameter").isNotZero();
+		Requirements.requireThat(-1, "actual").isNotZero();
+		Requirements.requireThat(1, "actual").isNotZero();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_Integer()
+	public void isNotZero_False()
 	{
-		Integer parameter = 0;
-		Requirements.requireThat(parameter, "parameter").isNotZero();
+		Integer actual = 0;
+		Requirements.requireThat(actual, "actual").isNotZero();
 	}
 
 	@Test
 	public void isPositive()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isPositive();
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositive_Zero()
+	public void isPositive_expectedIsZero()
 	{
-		Integer parameter = 0;
-		Requirements.requireThat(parameter, "parameter").isPositive();
+		Integer actual = 0;
+		Requirements.requireThat(actual, "actual").isPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositive_NegativeOne()
+	public void isPositive_expectedIsNegativeOne()
 	{
-		Integer parameter = -1;
-		Requirements.requireThat(parameter, "parameter").isPositive();
+		Integer actual = -1;
+		Requirements.requireThat(actual, "actual").isPositive();
 	}
 
 	@Test
 	public void isNotPositive()
 	{
-		Requirements.requireThat(0, "parameter").isNotPositive();
-		Requirements.requireThat(-1, "parameter").isNotPositive();
+		Requirements.requireThat(0, "actual").isNotPositive();
+		Requirements.requireThat(-1, "actual").isNotPositive();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotPositive_One()
+	public void isNotPositive_expectedIsOne()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isNotPositive();
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isNotPositive();
 	}
 
 	@Test
 	public void isLessThanVariable()
 	{
-		Integer parameter = 0;
-		Requirements.requireThat(parameter, "parameter").isLessThan(1, "value");
+		Integer actual = 0;
+		Requirements.requireThat(actual, "actual").isLessThan(1, "expected");
 	}
 
 	@Test
 	public void isLessThanConstant()
 	{
-		Integer parameter = 0;
-		Requirements.requireThat(parameter, "parameter").isLessThan(1);
+		Integer actual = 0;
+		Requirements.requireThat(actual, "actual").isLessThan(1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_Equal()
+	public void isLessThanVariable_expectedIsEqual()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isLessThan(1, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isLessThan(1, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_Equal()
+	public void isLessThanConstant_expectedIsEqual()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isLessThan(1);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isLessThan(1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_Greater()
+	public void isLessThanVariable_expectedIsGreater()
 	{
-		Integer parameter = 2;
-		Requirements.requireThat(parameter, "parameter").isLessThan(1, "value");
+		Integer actual = 2;
+		Requirements.requireThat(actual, "actual").isLessThan(1, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_Greater()
+	public void isLessThanConstant_expectedIsGreater()
 	{
-		Integer parameter = 2;
-		Requirements.requireThat(parameter, "parameter").isLessThan(1);
+		Integer actual = 2;
+		Requirements.requireThat(actual, "actual").isLessThan(1);
 	}
 
 	@Test
 	public void isLessThanOrEqualToVariable()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(1, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(1, "expected");
 	}
 
 	@Test
 	public void isLessThanOrEqualToConstant()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(1);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToVariable_Greater()
+	public void isLessThanOrEqualToVariable_expectedIsGreater()
 	{
-		Integer parameter = 3;
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(2, "value");
+		Integer actual = 3;
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(2, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToConstant_Greater()
+	public void isLessThanOrEqualToConstant_expectedIsGreater()
 	{
-		Integer parameter = 3;
-		Requirements.requireThat(parameter, "parameter").isLessThanOrEqualTo(2);
+		Integer actual = 3;
+		Requirements.requireThat(actual, "actual").isLessThanOrEqualTo(2);
 	}
 
 	@Test
 	public void isGreaterThanVariable()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(0, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThan(0, "expected");
 	}
 
 	@Test
 	public void isGreaterThanConstant()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(0);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThan(0);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_Equal()
+	public void isGreaterThanVariable_expectedIsEqual()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(1, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThan(1, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_Equal()
+	public void isGreaterThanConstant_expectedIsEqual()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(1);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThan(1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_Less()
+	public void isGreaterThanVariable_expectedIsLess()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(2, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThan(2, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_Less()
+	public void isGreaterThanConstant_expectedIsLess()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThan(2);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThan(2);
 	}
 
 	@Test
 	public void isGreaterThanOrEqualToVariable()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(1, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThanOrEqualTo(1, "expected");
 	}
 
 	@Test
 	public void isGreaterThanOrEqualToConstant()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(1);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThanOrEqualTo(1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToVariable_Less()
+	public void isGreaterThanOrEqualToVariable_expectedIsLess()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(2, "value");
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThanOrEqualTo(2, "expected");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToConstant_Less()
+	public void isGreaterThanOrEqualToConstant_expectedIsLess()
 	{
-		Integer parameter = 1;
-		Requirements.requireThat(parameter, "parameter").isGreaterThanOrEqualTo(2);
+		Integer actual = 1;
+		Requirements.requireThat(actual, "actual").isGreaterThanOrEqualTo(2);
 	}
 
 	@Test
-	public void isFinite_True()
+	public void isFinite()
 	{
-		Double parameter = 1.0;
-		Requirements.requireThat(parameter, "parameter").isFinite();
+		Double actual = 1.0;
+		Requirements.requireThat(actual, "actual").isFinite();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isFinite_False()
 	{
-		Double parameter = 1.0 / 0.0;
-		Requirements.requireThat(parameter, "parameter").isFinite();
+		Double actual = 1.0 / 0.0;
+		Requirements.requireThat(actual, "actual").isFinite();
 	}
 
 	@Test
-	public void isNotFinite_True()
+	public void isNotFinite()
 	{
-		Double parameter = 1.0 / 0.0;
-		Requirements.requireThat(parameter, "parameter").isNotFinite();
+		Double actual = 1.0 / 0.0;
+		Requirements.requireThat(actual, "actual").isNotFinite();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotFinite_False()
 	{
-		Double parameter = 1.0;
-		Requirements.requireThat(parameter, "parameter").isNotFinite();
+		Double actual = 1.0;
+		Requirements.requireThat(actual, "actual").isNotFinite();
 	}
 
 	@Test
-	public void isNumber_True()
+	public void isNumber()
 	{
-		Double parameter = 1.0;
-		Requirements.requireThat(parameter, "parameter").isNumber();
+		Double actual = 1.0;
+		Requirements.requireThat(actual, "actual").isNumber();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNumber_False()
 	{
-		Double parameter = 0.0 / 0.0;
-		Requirements.requireThat(parameter, "parameter").isNumber();
+		Double actual = 0.0 / 0.0;
+		Requirements.requireThat(actual, "actual").isNumber();
 	}
 
 	@Test
-	public void isNotNumber_True()
+	public void isNotNumber()
 	{
-		Double parameter = 0.0 / 0.0;
-		Requirements.requireThat(parameter, "parameter").isNotNumber();
+		Double actual = 0.0 / 0.0;
+		Requirements.requireThat(actual, "actual").isNotNumber();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotNumber_False()
 	{
-		Double parameter = 1.0;
-		Requirements.requireThat(parameter, "parameter").isNotNumber();
+		Double actual = 1.0;
+		Requirements.requireThat(actual, "actual").isNotNumber();
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		Integer parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		Integer actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void assertionsEnabledInteger()
 	{
-		int parameter = 5;
-		new AssertionVerifier(true).requireThat(parameter, "parameter").isGreaterThan(10);
+		int actual = 5;
+		new AssertionVerifier(true).requireThat(actual, "actual").isGreaterThan(10);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void assertionsEnabledDouble()
 	{
-		double parameter = 5.5;
-		new AssertionVerifier(true).requireThat(parameter, "parameter").isGreaterThan(10.5);
+		double actual = 5.5;
+		new AssertionVerifier(true).requireThat(actual, "actual").isGreaterThan(10.5);
 	}
 }

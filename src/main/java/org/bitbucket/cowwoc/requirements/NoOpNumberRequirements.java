@@ -67,8 +67,15 @@ final class NoOpNumberRequirements<T extends Number & Comparable<? super T>>
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public NumberRequirements<T> isIn(Range<T> range)
+	{
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isIn(T first, T last)
 	{
 		return this;
 	}

@@ -136,8 +136,15 @@ final class NoOpBigDecimalScaleRequirements implements BigDecimalScaleRequiremen
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalScaleRequirements isIn(Range<Integer> range)
+	{
+		return this;
+	}
+
+	@Override
+	public BigDecimalScaleRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

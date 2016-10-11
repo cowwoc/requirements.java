@@ -261,11 +261,20 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public NumberRequirements<T> isIn(Range<T> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		asComparable.isIn(range);
+		return this;
+	}
+
+	@Override
+	public NumberRequirements<T> isIn(T first, T last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asComparable.isIn(first, last);
 		return this;
 	}
 

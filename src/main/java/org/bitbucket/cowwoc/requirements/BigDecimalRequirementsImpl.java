@@ -222,11 +222,20 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalRequirements isIn(Range<BigDecimal> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		asNumber.isIn(range);
+		return this;
+	}
+
+	@Override
+	public BigDecimalRequirements isIn(BigDecimal first, BigDecimal last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asNumber.isIn(first, last);
 		return this;
 	}
 

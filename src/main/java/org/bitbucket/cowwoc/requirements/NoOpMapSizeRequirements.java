@@ -135,8 +135,15 @@ final class NoOpMapSizeRequirements implements MapSizeRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public MapSizeRequirements isIn(Range<Integer> range)
+	{
+		return this;
+	}
+
+	@Override
+	public MapSizeRequirements isIn(Integer first, Integer last)
 	{
 		return this;
 	}

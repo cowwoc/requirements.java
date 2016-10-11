@@ -29,91 +29,91 @@ public class MapRequirementsTest
 	}
 
 	@Test
-	public void isEmptyTrue()
+	public void isEmpty()
 	{
 		Map<String, String> parameter = Collections.emptyMap();
 		Requirements.requireThat(parameter, "parameter").isEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEmptyFalse()
+	public void isEmpty_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").isEmpty();
 	}
 
 	@Test
-	public void isNotEmptyTrue()
+	public void isNotEmpty()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").isNotEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotEmptyFalse()
+	public void isNotEmpty_False()
 	{
 		Map<String, String> parameter = Collections.emptyMap();
 		Requirements.requireThat(parameter, "parameter").isNotEmpty();
 	}
 
 	@Test
-	public void containsKeyTrue()
+	public void containsKey()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").keySet().contains("key");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void containsKeyFalse()
+	public void containsKey_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
 		Requirements.requireThat(parameter, "parameter").keySet().contains("key");
 	}
 
 	@Test
-	public void doesNotContainKeyTrue()
+	public void doesNotContainKey()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").keySet().doesNotContain("notKey");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContainKeyFalse()
+	public void doesNotContainKey_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
 		Requirements.requireThat(parameter, "parameter").keySet().doesNotContain("notKey");
 	}
 
 	@Test
-	public void containsValueTrue()
+	public void containsValue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").values().contains("value");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void containsValueFalse()
+	public void containsValue_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
 		Requirements.requireThat(parameter, "parameter").values().contains("value");
 	}
 
 	@Test
-	public void doesNotContainValueTrue()
+	public void doesNotContainValue()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").values().doesNotContain("notValue");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContainValueFalse()
+	public void doesNotContainValue_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "notValue");
 		Requirements.requireThat(parameter, "parameter").values().doesNotContain("notValue");
 	}
 
 	@Test
-	public void containsEntryTrue()
+	public void containsEntry()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").entrySet().contains(new SimpleEntry<>("key",
@@ -121,7 +121,7 @@ public class MapRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void containsEntryFalse()
+	public void containsEntry_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
 		Requirements.requireThat(parameter, "parameter").entrySet().contains(new SimpleEntry<>("key",
@@ -129,7 +129,7 @@ public class MapRequirementsTest
 	}
 
 	@Test
-	public void doesNotContainEntryTrue()
+	public void doesNotContainEntry()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").entrySet().doesNotContain(
@@ -137,7 +137,7 @@ public class MapRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContainEntryFalse()
+	public void doesNotContainEntry_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
 		Requirements.requireThat(parameter, "parameter").entrySet().doesNotContain(
@@ -145,28 +145,28 @@ public class MapRequirementsTest
 	}
 
 	@Test
-	public void sizeIsEqualToTrue()
+	public void sizeIsEqualTo()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").size().isEqualTo(1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void sizeIsEqualToFalse()
+	public void sizeIsEqualTo_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
 		Requirements.requireThat(parameter, "parameter").size().isEqualTo(2);
 	}
 
 	@Test
-	public void sizeIsNotEqualToTrue()
+	public void sizeIsNotEqualTo()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").size().isNotEqualTo(2);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void sizeIsNotEqualToFalse()
+	public void sizeIsNotEqualTo_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("notKey", "value");
 		Requirements.requireThat(parameter, "parameter").size().isNotEqualTo(1);
@@ -181,7 +181,7 @@ public class MapRequirementsTest
 	}
 
 	@Test
-	public void isolateTrue()
+	public void isolate()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").
@@ -190,7 +190,7 @@ public class MapRequirementsTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isolateFalse()
+	public void isolate_False()
 	{
 		Map<String, String> parameter = Collections.singletonMap("key", "value");
 		Requirements.requireThat(parameter, "parameter").

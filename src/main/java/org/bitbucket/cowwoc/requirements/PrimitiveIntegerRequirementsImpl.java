@@ -232,11 +232,20 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public PrimitiveIntegerRequirements isIn(Range<Integer> range)
 		throws NullPointerException, IllegalArgumentException
 	{
 		asNumber.isIn(range);
+		return this;
+	}
+
+	@Override
+	public PrimitiveIntegerRequirements isIn(Integer first, Integer last)
+		throws NullPointerException, IllegalArgumentException
+	{
+		asNumber.isIn(first, last);
 		return this;
 	}
 
