@@ -138,12 +138,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int actual = parameter.compareTo(value);
-		if (actual < 0)
+		int difference = parameter.compareTo(value);
+		if (difference < 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %s (%s)", this.name, parameter, name, value)).
-			addContext("Actual", actual).
+			String.format("%s must be less than %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Max", value).
 			build();
 	}
 
@@ -152,12 +153,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		throws NullPointerException, IllegalArgumentException
 	{
 		Requirements.requireThat(value, "value").isNotNull();
-		int actual = parameter.compareTo(value);
-		if (actual < 0)
+		int difference = parameter.compareTo(value);
+		if (difference < 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than %s", this.name, parameter, value)).
-			addContext("Actual", actual).
+			String.format("%s must be less than %s", this.name, value)).
+			addContext("Actual", parameter).
+			addContext("Max", value).
 			build();
 	}
 
@@ -167,13 +169,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int actual = parameter.compareTo(value);
-		if (actual <= 0)
+		int difference = parameter.compareTo(value);
+		if (difference <= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than or equal to %s (%s)", this.name, parameter, name,
-				value)).
-			addContext("Actual", actual).
+			String.format("%s must be less than or equal to %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Max", value).
 			build();
 	}
 
@@ -182,12 +184,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		throws NullPointerException, IllegalArgumentException
 	{
 		Requirements.requireThat(value, "value").isNotNull();
-		int actual = parameter.compareTo(value);
-		if (actual <= 0)
+		int difference = parameter.compareTo(value);
+		if (difference <= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be less than or equal to %s", name, parameter, value)).
-			addContext("Actual: %d", actual).
+			String.format("%s must be less than or equal to %s", name, value)).
+			addContext("Actual", parameter).
+			addContext("Max", value).
 			build();
 	}
 
@@ -197,12 +200,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int actual = parameter.compareTo(value);
-		if (actual > 0)
+		int difference = parameter.compareTo(value);
+		if (difference > 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than %s (%s)", this.name, parameter, name, value)).
-			addContext("Actual", actual).
+			String.format("%s must be greater than %s", this.name, name)).
+			addContext("Actual", parameter).
+			addContext("Min", value).
 			build();
 	}
 
@@ -211,12 +215,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		throws NullPointerException, IllegalArgumentException
 	{
 		Requirements.requireThat(value, "value").isNotNull();
-		int actual = parameter.compareTo(value);
-		if (actual > 0)
+		int difference = parameter.compareTo(value);
+		if (difference > 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than %s", name, parameter, value)).
-			addContext("Actual", actual).
+			String.format("%s must be greater than %s", name, value)).
+			addContext("Actual", parameter).
+			addContext("Min", value).
 			build();
 	}
 
@@ -226,13 +231,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int actual = parameter.compareTo(value);
-		if (actual >= 0)
+		int difference = parameter.compareTo(value);
+		if (difference >= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than or equal to %s (%s)", this.name, parameter, name,
-				value)).
-			addContext("Actual", actual).
+			String.format("%s must be greater than or equal to %s", this.name, parameter, name, value)).
+			addContext("Actual", parameter).
+			addContext("Min", value).
 			build();
 	}
 
@@ -241,12 +246,13 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		throws NullPointerException, IllegalArgumentException
 	{
 		Requirements.requireThat(value, "value").isNotNull();
-		int actual = parameter.compareTo(value);
-		if (actual >= 0)
+		int difference = parameter.compareTo(value);
+		if (difference >= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s (%s) must be greater than or equal to %s", name, parameter, value)).
-			addContext("Actual", actual).
+			String.format("%s must be greater than or equal to %s", name, value)).
+			addContext("Actual", parameter).
+			addContext("Min", value).
 			build();
 	}
 

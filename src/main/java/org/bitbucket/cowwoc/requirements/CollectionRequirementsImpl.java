@@ -164,7 +164,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain: %s", name, element)).
+			String.format("%s must contain: %s.", name, element)).
 			addContext("Actual", parameter).
 			build();
 	}
@@ -177,7 +177,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %s", this.name, name)).
+			String.format("%s must contain %s.", this.name, name)).
 			addContext("Actual", parameter).
 			addContext("Missing", element).
 			build();
@@ -195,7 +195,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s elements must contain exactly: %s", name, elements)).
+			String.format("%s must contain exactly: %s.", name, elements)).
 			addContext("Actual", parameter).
 			addContext("Missing", missing).
 			addContext("Unwanted", unwanted).
@@ -215,7 +215,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s elements must contain exactly %s", this.name, name)).
+			String.format("%s must contain exactly the same elements as %s.", this.name, name)).
 			addContext("Actual", parameter).
 			addContext("Expected", elements).
 			addContext("Missing", missing).
@@ -231,7 +231,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain any element in: %s", name, elements)).
+			String.format("%s must contain any element in: %s.", name, elements)).
 			addContext("Actual", parameter).
 			build();
 	}
@@ -257,9 +257,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain any element in %s", this.name, name)).
+			String.format("%s must contain any element in %s.", this.name, name)).
 			addContext("Actual", parameter).
-			addContext("Expected", elements).
+			addContext("Missing", elements).
 			build();
 	}
 
@@ -274,7 +274,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain all elements in: %s", name, elements)).
+			String.format("%s must contain all elements in: %s.", name, elements)).
 			addContext("Actual", parameter).
 			addContext("Missing", missing).
 			build();
@@ -292,9 +292,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain all elements in %s", this.name, name)).
+			String.format("%s must contain all elements in %s.", this.name, name)).
 			addContext("Actual", parameter).
-			addContext("Expected", elements).
+			addContext("Required", elements).
 			addContext("Missing", missing).
 			build();
 	}
@@ -305,7 +305,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain: %s", name, element)).
+			String.format("%s may not contain: %s.", name, element)).
 			addContext("Actual", parameter).
 			build();
 	}
@@ -318,9 +318,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain %s", this.name, name)).
+			String.format("%s may not contain %s.", this.name, name)).
 			addContext("Actual", parameter).
-			addContext("Expected", element).
+			addContext("Unwanted", element).
 			build();
 	}
 
@@ -335,7 +335,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain any element in: %s", name, elements)).
+			String.format("%s may not contain any element in: %s.", name, elements)).
 			addContext("Actual", parameter).
 			addContext("Unwanted", unwanted).
 			build();
@@ -353,9 +353,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Set<E> parameterAsSet = Collections.asSet(parameter);
 		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain any element in %s", this.name, name)).
+			String.format("%s may not contain any element in %s.", this.name, name)).
 			addContext("Actual", parameter).
-			addContext("Expected", elements).
+			addContext("Elements", elements).
 			addContext("Unwanted", unwanted).
 			build();
 	}
@@ -368,7 +368,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain all of: %s", name, elements)).
+			String.format("%s may not contain all of: %s.", name, elements)).
 			addContext("Actual", parameter).
 			build();
 	}
@@ -382,9 +382,9 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain all elements in %s", this.name, name)).
+			String.format("%s may not contain all elements in %s.", this.name, name)).
 			addContext("Actual", parameter).
-			addContext("Expected", elements).
+			addContext("Unwanted", elements).
 			build();
 	}
 
@@ -404,7 +404,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		if (duplicates.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain duplicate elements", name)).
+			String.format("%s may not contain duplicate elements.", name)).
 			addContext("Actual", parameter).
 			addContext("Duplicates", duplicates).
 			build();

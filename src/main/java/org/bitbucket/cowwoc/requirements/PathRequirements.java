@@ -18,7 +18,7 @@ public interface PathRequirements
 	extends ObjectRequirementsSpi<PathRequirements, Path>, Isolatable<PathRequirements>
 {
 	/**
-	 * Ensures that a path exists.
+	 * Ensures that the parameter exists.
 	 * <p>
 	 * Note that the result of this method is immediately outdated. If this method indicates the file
 	 * exists then there is no guarantee that a subsequence access will succeed. Care should be taken
@@ -30,7 +30,7 @@ public interface PathRequirements
 	PathRequirements exists() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that a path is absolute.
+	 * Ensures that the parameter is absolute.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to an absolute path
@@ -38,7 +38,7 @@ public interface PathRequirements
 	PathRequirements isAbsolute() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that a path refers to a directory.
+	 * Ensures that the parameter refers to a directory.
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
@@ -48,7 +48,7 @@ public interface PathRequirements
 	PathRequirements isDirectory(LinkOption... options) throws IllegalArgumentException, IOException;
 
 	/**
-	 * Ensures that a path refers to a regular file.
+	 * Ensures that the parameter refers to a regular file.
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
@@ -59,7 +59,7 @@ public interface PathRequirements
 		throws IllegalArgumentException, IOException;
 
 	/**
-	 * Ensures that a path is relative.
+	 * Ensures that the parameter is relative.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter refers to an absolute path

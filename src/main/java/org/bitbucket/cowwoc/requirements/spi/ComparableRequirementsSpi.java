@@ -113,8 +113,8 @@ public interface ComparableRequirementsSpi<S extends ComparableRequirementsSpi<S
 	/**
 	 * Ensures that the parameter is within range.
 	 *
-	 * @param first the first element in the range (inclusive)
-	 * @param last  the last element in the range (inclusive)
+	 * @param first the first element in the range
+	 * @param last  the last element in the range
 	 * @return this
 	 * @throws NullPointerException     if {@code first} or {@code last} are null
 	 * @throws IllegalArgumentException if {@code last} is less than {@code first}; if

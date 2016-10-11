@@ -15,50 +15,50 @@ public class OptionalRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		Optional<?> parameter = Optional.empty();
-		Requirements.requireThat(parameter, null);
+		Optional<?> actual = Optional.empty();
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		Optional<?> parameter = Optional.empty();
-		Requirements.requireThat(parameter, "");
+		Optional<?> actual = Optional.empty();
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
 	public void isPresent()
 	{
-		Optional<?> parameter = Optional.of(5);
-		Requirements.requireThat(parameter, "parameter").isPresent();
+		Optional<?> actual = Optional.of(5);
+		Requirements.requireThat(actual, "actual").isPresent();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPresentFalse()
+	public void isPresent_False()
 	{
-		Optional<?> parameter = Optional.empty();
-		Requirements.requireThat(parameter, "parameter").isPresent();
+		Optional<?> actual = Optional.empty();
+		Requirements.requireThat(actual, "actual").isPresent();
 	}
 
 	@Test
 	public void isEmpty()
 	{
-		Optional<?> parameter = Optional.empty();
-		Requirements.requireThat(parameter, "parameter").isEmpty();
+		Optional<?> actual = Optional.empty();
+		Requirements.requireThat(actual, "actual").isEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEmptyFalse()
+	public void isEmpty_False()
 	{
-		Optional<?> parameter = Optional.of(5);
-		Requirements.requireThat(parameter, "parameter").isEmpty();
+		Optional<?> actual = Optional.of(5);
+		Requirements.requireThat(actual, "actual").isEmpty();
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		Optional<?> parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		Optional<?> actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 }

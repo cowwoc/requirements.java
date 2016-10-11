@@ -19,144 +19,144 @@ public class PathRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		Path parameter = Paths.get("/");
-		Requirements.requireThat(parameter, null);
+		Path actual = Paths.get("/");
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		Path parameter = Paths.get("/");
-		Requirements.requireThat(parameter, "");
+		Path actual = Paths.get("/");
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
 	public void existsTrue() throws IOException
 	{
-		Path parameter = Files.createTempFile(null, null);
+		Path actual = Files.createTempFile(null, null);
 		try
 		{
-			Requirements.requireThat(parameter, "parameter").exists();
+			Requirements.requireThat(actual, "actual").exists();
 		}
 		finally
 		{
-			Files.delete(parameter);
+			Files.delete(actual);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void existsFalse() throws IOException
+	public void exists_False() throws IOException
 	{
-		Path parameter = Files.createTempFile(null, null);
-		Files.delete(parameter);
-		Requirements.requireThat(parameter, "parameter").exists();
+		Path actual = Files.createTempFile(null, null);
+		Files.delete(actual);
+		Requirements.requireThat(actual, "actual").exists();
 	}
 
 	@Test
-	public void isDirectoryTrue() throws IOException
+	public void isDirectory() throws IOException
 	{
-		Path parameter = Files.createTempDirectory(null);
+		Path actual = Files.createTempDirectory(null);
 		try
 		{
-			Requirements.requireThat(parameter, "parameter").isDirectory();
+			Requirements.requireThat(actual, "actual").isDirectory();
 		}
 		finally
 		{
-			Files.delete(parameter);
+			Files.delete(actual);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isDirectoryFalseMissing() throws IOException
+	public void isDirectory_actualIsMissing() throws IOException
 	{
-		Path parameter = Files.createTempDirectory(null);
-		Files.delete(parameter);
-		Requirements.requireThat(parameter, "parameter").isDirectory();
+		Path actual = Files.createTempDirectory(null);
+		Files.delete(actual);
+		Requirements.requireThat(actual, "actual").isDirectory();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isDirectoryFalseFile() throws IOException
+	public void isDirectory_actualIsFile() throws IOException
 	{
-		Path parameter = Files.createTempFile(null, null);
+		Path actual = Files.createTempFile(null, null);
 		try
 		{
-			Requirements.requireThat(parameter, "parameter").isDirectory();
+			Requirements.requireThat(actual, "actual").isDirectory();
 		}
 		finally
 		{
-			Files.delete(parameter);
-		}
-	}
-
-	@Test
-	public void isRegularFileTrue() throws IOException
-	{
-		Path parameter = Files.createTempFile(null, null);
-		try
-		{
-			Requirements.requireThat(parameter, "parameter").isRegularFile();
-		}
-		finally
-		{
-			Files.delete(parameter);
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRegularFileFalseMissing() throws IOException
-	{
-		Path parameter = Files.createTempFile(null, null);
-		Files.delete(parameter);
-		Requirements.requireThat(parameter, "parameter").isRegularFile();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRegularFileFalseDirectory() throws IOException
-	{
-		Path parameter = Files.createTempDirectory(null);
-		try
-		{
-			Requirements.requireThat(parameter, "parameter").isRegularFile();
-		}
-		finally
-		{
-			Files.delete(parameter);
+			Files.delete(actual);
 		}
 	}
 
 	@Test
-	public void isRelativeTrue() throws IOException
+	public void isRegularFile() throws IOException
 	{
-		Path parameter = Paths.get("path1/path2");
-		Requirements.requireThat(parameter, "parameter").isRelative();
+		Path actual = Files.createTempFile(null, null);
+		try
+		{
+			Requirements.requireThat(actual, "actual").isRegularFile();
+		}
+		finally
+		{
+			Files.delete(actual);
+		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRelativeFalse() throws IOException
+	public void isRegularFile_actualIsMissing() throws IOException
 	{
-		Path parameter = Paths.get(new File("/paths1/path2").toURI());
-		Requirements.requireThat(parameter, "parameter").isRelative();
+		Path actual = Files.createTempFile(null, null);
+		Files.delete(actual);
+		Requirements.requireThat(actual, "actual").isRegularFile();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isRegularFile_actualIsDirectory() throws IOException
+	{
+		Path actual = Files.createTempDirectory(null);
+		try
+		{
+			Requirements.requireThat(actual, "actual").isRegularFile();
+		}
+		finally
+		{
+			Files.delete(actual);
+		}
 	}
 
 	@Test
-	public void isAbsoluteTrue() throws IOException
+	public void isRelative() throws IOException
 	{
-		Path parameter = Paths.get(new File("/paths1/path2").toURI());
-		Requirements.requireThat(parameter, "parameter").isAbsolute();
+		Path actual = Paths.get("path1/path2");
+		Requirements.requireThat(actual, "actual").isRelative();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isAbsoluteFalse() throws IOException
+	public void isRelative_False() throws IOException
 	{
-		Path parameter = Paths.get("path1/path2");
-		Requirements.requireThat(parameter, "parameter").isAbsolute();
+		Path actual = Paths.get(new File("/paths1/path2").toURI());
+		Requirements.requireThat(actual, "actual").isRelative();
+	}
+
+	@Test
+	public void isAbsolute() throws IOException
+	{
+		Path actual = Paths.get(new File("/paths1/path2").toURI());
+		Requirements.requireThat(actual, "actual").isAbsolute();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isAbsolute_False() throws IOException
+	{
+		Path actual = Paths.get("path1/path2");
+		Requirements.requireThat(actual, "actual").isAbsolute();
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		Path parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		Path actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 }

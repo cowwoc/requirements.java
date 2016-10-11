@@ -19,36 +19,29 @@ public class ClassRequirementsTest
 		Requirements.requireThat(parameter, null);
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void nameIsEmptyForCollection()
-	{
-		Class<Object> parameter = Object.class;
-		Requirements.requireThat(parameter, "");
-	}
-
 	@Test
-	public void isSupertypeOfTrue()
+	public void isSupertypeOf()
 	{
 		Class<Object> parameter = Object.class;
 		Requirements.requireThat(parameter, "parameter").isSupertypeOf(Random.class);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isSupertypeOfFalse()
+	public void isSupertypeOf_False()
 	{
 		Class<Random> parameter = Random.class;
 		Requirements.requireThat(parameter, "parameter").isSupertypeOf(Object.class);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isSupertypeOfNullType()
+	public void isSupertypeOf_expectedIsNull()
 	{
 		Class<Random> parameter = Random.class;
 		Requirements.requireThat(parameter, "parameter").isSupertypeOf(null);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isSupertypeOfNullParameter()
+	public void isSupertypeOf_actualIsNull()
 	{
 		Class<Random> parameter = null;
 		Requirements.requireThat(parameter, "parameter").isSupertypeOf(Random.class);

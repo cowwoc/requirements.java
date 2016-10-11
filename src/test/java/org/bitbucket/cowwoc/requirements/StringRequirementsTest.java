@@ -14,212 +14,212 @@ public class StringRequirementsTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, null);
+		String actual = "value";
+		Requirements.requireThat(actual, null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, "");
+		String actual = "value";
+		Requirements.requireThat(actual, "");
 	}
 
 	@Test
-	public void isEmptyTrue()
+	public void isEmpty()
 	{
-		String parameter = "";
-		Requirements.requireThat(parameter, "parameter").isEmpty();
+		String actual = "";
+		Requirements.requireThat(actual, "actual").isEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEmptyFalse()
+	public void isEmpty_False()
 	{
-		String parameter = "   ";
-		Requirements.requireThat(parameter, "parameter").isEmpty();
+		String actual = "   ";
+		Requirements.requireThat(actual, "actual").isEmpty();
 	}
 
 	@Test
-	public void isTrimEmptyTrue()
+	public void trimIsEmpty()
 	{
-		String parameter = "   ";
-		Requirements.requireThat(parameter, "parameter").trim().isEmpty();
+		String actual = "   ";
+		Requirements.requireThat(actual, "actual").trim().isEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isTrimEmptyFalse()
+	public void trimIsEmpty_False()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, "parameter").trim().isEmpty();
+		String actual = "value";
+		Requirements.requireThat(actual, "actual").trim().isEmpty();
 	}
 
 	@Test
 	public void isNotEmptyTrue()
 	{
-		String parameter = "   ";
-		Requirements.requireThat(parameter, "parameter").isNotEmpty();
+		String actual = "   ";
+		Requirements.requireThat(actual, "actual").isNotEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotEmptyFalse()
+	public void isNotEmpty_False()
 	{
-		String parameter = "";
-		Requirements.requireThat(parameter, "parameter").isNotEmpty();
+		String actual = "";
+		Requirements.requireThat(actual, "actual").isNotEmpty();
 	}
 
 	@Test
-	public void isTrimNotEmptyTrue()
+	public void trimIsNotEmpty()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, "parameter").trim().isNotEmpty();
+		String actual = "value";
+		Requirements.requireThat(actual, "actual").trim().isNotEmpty();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isTrimNotEmptyFalse()
+	public void trimIsNotEmpty_False()
 	{
-		String parameter = "   ";
-		Requirements.requireThat(parameter, "parameter").trim().isNotEmpty();
+		String actual = "   ";
+		Requirements.requireThat(actual, "actual").trim().isNotEmpty();
 	}
 
 	@Test
-	public void isEmailFormatTrue()
+	public void isEmailFormat()
 	{
-		String parameter = "name@gmail.com";
-		Requirements.requireThat(parameter, "parameter").isEmailFormat();
+		String actual = "name@gmail.com";
+		Requirements.requireThat(actual, "actual").isEmailFormat();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEmailFormatFalse()
+	public void isEmailFormat_False()
 	{
-		String parameter = "name.com";
-		Requirements.requireThat(parameter, "parameter").isEmailFormat();
+		String actual = "name.com";
+		Requirements.requireThat(actual, "actual").isEmailFormat();
 	}
 
 	@Test
-	public void isIpAddressFormatTrueIpV4()
+	public void isIpAddressFormat_actualIsIpV4()
 	{
-		String parameter = "1.2.3.4";
-		Requirements.requireThat(parameter, "parameter").isIpAddressFormat();
+		String actual = "1.2.3.4";
+		Requirements.requireThat(actual, "actual").isIpAddressFormat();
 	}
 
 	@Test
-	public void isIpAddressFormatTrueIpV6()
+	public void isIpAddressFormat_actualIsIpV6()
 	{
-		String parameter = "0000:0000:0000:0000:0000:0000:192.168.0.1";
-		Requirements.requireThat(parameter, "parameter").isIpAddressFormat();
+		String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1";
+		Requirements.requireThat(actual, "actual").isIpAddressFormat();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isIpAddressFormatFalseIpV4()
+	public void isIpAddressFormat_actualIsInvalidIpV4()
 	{
-		String parameter = "1.256.3.4";
-		Requirements.requireThat(parameter, "parameter").isIpAddressFormat();
+		String actual = "1.256.3.4";
+		Requirements.requireThat(actual, "actual").isIpAddressFormat();
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isIpAddressFormatFalseIpV6()
+	public void isIpAddressFormat_actualIsInvalidIpV6()
 	{
-		String parameter = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
-		Requirements.requireThat(parameter, "parameter").isIpAddressFormat();
+		String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
+		Requirements.requireThat(actual, "actual").isIpAddressFormat();
 	}
 
 	@Test
-	public void startsWithTrue()
+	public void startsWith()
 	{
 		String prefix = "home";
-		String parameter = prefix + "1234";
-		Requirements.requireThat(parameter, "parameter").startsWith(prefix);
+		String actual = prefix + "1234";
+		Requirements.requireThat(actual, "actual").startsWith(prefix);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void startsWithFalse()
+	public void startsWith_False()
 	{
 		String prefix = "home";
-		String parameter = "1234" + prefix;
-		Requirements.requireThat(parameter, "parameter").startsWith(prefix);
+		String actual = "1234" + prefix;
+		Requirements.requireThat(actual, "actual").startsWith(prefix);
 	}
 
 	@Test
-	public void doesNotStartWithTrue()
+	public void doesNotStartWith()
 	{
 		String prefix = "home";
-		String parameter = "1234" + prefix;
-		Requirements.requireThat(parameter, "parameter").doesNotStartWith(prefix);
+		String actual = "1234" + prefix;
+		Requirements.requireThat(actual, "actual").doesNotStartWith(prefix);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotStartWithFalse()
+	public void doesNotStartWith_False()
 	{
 		String prefix = "home";
-		String parameter = prefix + "1234";
-		Requirements.requireThat(parameter, "parameter").doesNotStartWith(prefix);
+		String actual = prefix + "1234";
+		Requirements.requireThat(actual, "actual").doesNotStartWith(prefix);
 	}
 
 	@Test
-	public void endsWithTrue()
+	public void endsWith()
 	{
 		String suffix = "home";
-		String parameter = "1234" + suffix;
-		Requirements.requireThat(parameter, "parameter").endsWith(suffix);
+		String actual = "1234" + suffix;
+		Requirements.requireThat(actual, "actual").endsWith(suffix);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void endsWithFalse()
+	public void endsWith_False()
 	{
 		String suffix = "home";
-		String parameter = suffix + "1234";
-		Requirements.requireThat(parameter, "parameter").endsWith(suffix);
+		String actual = suffix + "1234";
+		Requirements.requireThat(actual, "actual").endsWith(suffix);
 	}
 
 	@Test
-	public void doesNotEndWithTrue()
+	public void doesNotEndWith()
 	{
 		String suffix = "home";
-		String parameter = suffix + "1234";
-		Requirements.requireThat(parameter, "parameter").doesNotEndWith(suffix);
+		String actual = suffix + "1234";
+		Requirements.requireThat(actual, "actual").doesNotEndWith(suffix);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotEndWithFalse()
+	public void doesNotEndWith_False()
 	{
 		String suffix = "home";
-		String parameter = "1234" + suffix;
-		Requirements.requireThat(parameter, "parameter").doesNotEndWith(suffix);
+		String actual = "1234" + suffix;
+		Requirements.requireThat(actual, "actual").doesNotEndWith(suffix);
 	}
 
 	@Test
-	public void lengthIsEqualToTrue()
+	public void lengthIsEqualTo()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, "parameter").length().isEqualTo(parameter.length());
+		String actual = "value";
+		Requirements.requireThat(actual, "actual").length().isEqualTo(actual.length());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void lengthIsEqualToFalse()
+	public void lengthIsEqualTo_False()
 	{
-		String parameter = "1234567890";
-		Requirements.requireThat(parameter, "parameter").length().isEqualTo(parameter.length() + 1);
+		String actual = "1234567890";
+		Requirements.requireThat(actual, "actual").length().isEqualTo(actual.length() + 1);
 	}
 
 	@Test
-	public void lengthIsNotEqualToTrue()
+	public void lengthIsNotEqualTo()
 	{
-		String parameter = "value";
-		Requirements.requireThat(parameter, "parameter").length().isNotEqualTo(parameter.length() + 1);
+		String actual = "value";
+		Requirements.requireThat(actual, "actual").length().isNotEqualTo(actual.length() + 1);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void lengthIsNotEqualToFalse()
+	public void lengthIsNotEqualTo_False()
 	{
-		String parameter = "1234567890";
-		Requirements.requireThat(parameter, "parameter").length().isNotEqualTo(parameter.length());
+		String actual = "1234567890";
+		Requirements.requireThat(actual, "actual").length().isNotEqualTo(actual.length());
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
 		// Ensure that no exception is thrown if assertions are disabled
-		String parameter = null;
-		new AssertionVerifier(false).requireThat(parameter, "parameter").isNotNull();
+		String actual = null;
+		new AssertionVerifier(false).requireThat(actual, "actual").isNotNull();
 	}
 }

@@ -16,7 +16,7 @@ public interface DoubleRequirements
 	Isolatable<DoubleRequirements>
 {
 	/**
-	 * Ensures that a Double is a number.
+	 * Ensures that the parameter is a number.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not a number
@@ -25,7 +25,7 @@ public interface DoubleRequirements
 	DoubleRequirements isNumber() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that a Double is not a number.
+	 * Ensures that the parameter is not a number.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is a number
@@ -34,7 +34,7 @@ public interface DoubleRequirements
 	DoubleRequirements isNotNumber() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that a Double is finite.
+	 * Ensures that the parameter is finite.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is not finite
@@ -43,7 +43,7 @@ public interface DoubleRequirements
 	DoubleRequirements isFinite() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that a Double is not finite.
+	 * Ensures that the parameter is not finite.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if parameter is finite
