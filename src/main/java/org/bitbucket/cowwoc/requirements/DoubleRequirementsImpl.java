@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
  *
  * @author Gili Tzabari
  */
-public final class DoubleRequirementsImpl implements DoubleRequirements
+final class DoubleRequirementsImpl implements DoubleRequirements
 {
 	private final Double parameter;
 	private final String name;
