@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.spi.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
@@ -51,7 +52,7 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		assert (config != null): "config may not be null";
 		this.string = parameter;
 		this.parameter = parameter.length();
-		this.name = name + ".length()";
+		this.name = name;
 		this.config = config;
 		this.asInt = new PrimitiveIntegerRequirementsImpl(this.parameter, name, config);
 	}
@@ -112,11 +113,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter >= value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d %s. It contained %,d %s.", name, value,
-				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -127,12 +129,13 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) %s. It contained %,d %s.",
 				this.name, name, value, getSingularOrPlural(value), parameter,
-				getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -141,11 +144,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter > value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d %s. It contained %,d %s.", name, value,
-				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -156,11 +160,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) %s. It contained %,d %s", this.name, name,
-				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -170,11 +175,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may contain at most %,d %s. It contained %,d %s.", name, value,
-				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain more than %,d %s. It contained %,d %s.", name, value,
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -185,11 +191,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may contain at most %s (%,d) %s. It contained %,d %s", this.name, name,
-				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s may not contain more than %s (%,d) %s. It contained %,d %s", this.name,
+				name, value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -198,11 +205,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter < value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d %s. It contained %,d %s.",
-				this.name, value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				this.name, value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -213,12 +221,13 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %s (%,d) %s. It contained %,d %s.",
 				this.name, name, value, getSingularOrPlural(value), parameter,
-				getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -232,11 +241,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (parameter > 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least one character. It contained %,d characters.", name,
-				parameter)).
-			addContext("Actual", string).
-			build();
+				parameter));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -280,11 +290,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
 		if (parameter >= first && parameter <= last)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain [%d, %d] characters. It contained %,d %s.", name,
-				first, last, parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				first, last, parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -292,11 +303,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (Objects.equals(parameter, value))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %,d %s. It contained %,d %s.", name, value,
-				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -317,11 +329,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (!Objects.equals(parameter, value))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %,d %s, but did.", name, value,
-				getSingularOrPlural(value))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(value)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
@@ -330,11 +343,12 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	{
 		if (!Objects.equals(parameter, value))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %s (%,d) %s, but did.", this.name, name, value,
-				getSingularOrPlural(value))).
-			addContext("Actual", string).
-			build();
+				getSingularOrPlural(value)));
+		if (parameter > 0)
+			eb.addContext("Actual", string);
+		throw eb.build();
 	}
 
 	@Override
