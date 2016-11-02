@@ -36,6 +36,9 @@
 							<targetPath>${project.build.directory}/cmake</targetPath>
 							<generator>${cmake.generator}</generator>
 							<options>${cmake.options}</options>
+							<environmentVariables>
+								<BUILD_ARCHITECTURE>${build.architecture}</BUILD_ARCHITECTURE>
+							</environmentVariables>
 						</configuration>
 					</execution>
 					<execution>

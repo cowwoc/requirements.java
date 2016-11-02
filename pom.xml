@@ -119,8 +119,9 @@
 				<platform>windows-i386-msvc</platform>
 				<build.type>debug</build.type>
 				<cmake.config>${build.type}</cmake.config>
+				<build.architecture>i386</build.architecture>
 				<!--
-				CMake interprets the lack of a build architecture ("-A<platform>") as x86. There doesn't
+				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
 				seem to be any other way to specify it.
 				-->
 			</properties>
@@ -132,8 +133,9 @@
 				<platform>windows-i386-msvc</platform>
 				<build.type>release</build.type>
 				<cmake.config>${build.type}</cmake.config>
+				<build.architecture>i386</build.architecture>
 				<!--
-				CMake interprets the lack of a build architecture ("-A<platform>") as x86. There doesn't
+				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
 				seem to be any other way to specify it.
 				-->
 			</properties>
@@ -145,6 +147,7 @@
 				<platform>windows-amd64-msvc</platform>
 				<build.type>debug</build.type>
 				<cmake.config>${build.type}</cmake.config>
+				<build.architecture>amd64</build.architecture>
 				<cmake.options>-Ax64</cmake.options>
 			</properties>
 		</profile>
@@ -155,6 +158,7 @@
 				<platform>windows-amd64-msvc</platform>
 				<build.type>release</build.type>
 				<cmake.config>${build.type}</cmake.config>
+				<build.architecture>amd64</build.architecture>
 				<cmake.options>-Ax64</cmake.options>
 			</properties>
 		</profile>
@@ -164,6 +168,7 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-i386-gcc</platform>
 				<build.type>debug</build.type>
+				<build.architecture>i386</build.architecture>
 			</properties>
 		</profile>
 		<profile>
@@ -172,6 +177,7 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-i386-gcc</platform>
 				<build.type>release</build.type>
+				<build.architecture>i386</build.architecture>
 			</properties>
 		</profile>
 		<profile>
@@ -180,7 +186,7 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-amd64-gcc</platform>
 				<build.type>debug</build.type>
-				<cmake.options>-Ax64</cmake.options>
+				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 		<profile>
@@ -189,7 +195,7 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-amd64-gcc</platform>
 				<build.type>release</build.type>
-				<cmake.options>-Ax64</cmake.options>
+				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 		<profile>
@@ -198,7 +204,7 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>mac-amd64-gcc</platform>
 				<build.type>debug</build.type>
-				<cmake.options>-Ax64</cmake.options>
+				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 		<profile>
@@ -207,7 +213,7 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>mac-amd64-gcc</platform>
 				<build.type>release</build.type>
-				<cmake.options>-Ax64</cmake.options>
+				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 	</profiles>
