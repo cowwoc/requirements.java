@@ -12,7 +12,7 @@
 	<groupId>org.bitbucket.cowwoc</groupId>
 	<artifactId>requirements</artifactId>
 	<version>3.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A Java library for enforcing API requirements.</description>
 	<url>https://bitbucket.org/cowwoc/requirements/</url>
@@ -40,59 +40,14 @@
 		</developer>
 	</developers>
 
+	<modules>
+		<module>core</module>
+		<module>native</module>
+		<module>test</module>
+	</modules>
+
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<showDeprecation>true</showDeprecation>
-					<compilerArgs>
-						<arg>-Xlint</arg>
-					</compilerArgs>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<configuration>
-					<trimStackTrace>false</trimStackTrace>
-					<argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.7.201606060606</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>org/bitbucket/cowwoc/requirements/**</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>org/bitbucket/cowwoc/requirements/**</include>
-							</includes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -113,67 +68,12 @@
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
-				<configuration>
-					<links>
-						<link>http://docs.oracle.com/javase/8/docs/api/</link>
-						<link>http://google.github.io/guava/releases/19.0/api/docs/</link>
-					</links>
-					<docfilessubdirs>true</docfilessubdirs>
-					<!-- whitelist in order to exclude internal classes -->
-					<sourceFileIncludes>
-						<include>org/bitbucket/cowwoc/requirements/*.java</include>
-					</sourceFileIncludes>
-				</configuration>
-			</plugin>
-			<!--
-			<plugin>
-				<groupId>com.github.siom79.japicmp</groupId>
-				<artifactId>japicmp-maven-plugin</artifactId>
-				<version>0.9.1</version>
-				<configuration>
-					<oldVersion>
-						<dependency>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.2</version>
-							<type>jar</type>
-						</dependency>
-					</oldVersion>
-					<parameter>
-						<breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
-						<breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
-						<onlyModified>true</onlyModified>
-						<skipXmlReport>true</skipXmlReport>
-						<skipDiffReport>true</skipDiffReport>
-						<includes>
-							<include>org.bitbucket.cowwoc.requirements</include>
-						</includes>
-						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.diff.string</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.spi</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.util</exclude>
-						</excludes>
-					</parameter>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>cmp</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<argLine />
+		<cmake.version>3.6.2-b1</cmake.version>
+		<requirements.classifier>${platform}-${build.type}</requirements.classifier>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -188,4 +88,127 @@
 			<version>1.1</version>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>pick-a-profile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-help-plugin</artifactId>
+						<version>2.2</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>all-profiles</goal>
+								</goals>
+								<phase>validate</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>windows-i386-msvc-debug</id>
+			<properties>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<platform>windows-i386-msvc</platform>
+				<build.type>debug</build.type>
+				<cmake.config>${build.type}</cmake.config>
+				<!--
+				CMake interprets the lack of a build architecture ("-A<platform>") as x86. There doesn't
+				seem to be any other way to specify it.
+				-->
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-i386-msvc-release</id>
+			<properties>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<platform>windows-i386-msvc</platform>
+				<build.type>release</build.type>
+				<cmake.config>${build.type}</cmake.config>
+				<!--
+				CMake interprets the lack of a build architecture ("-A<platform>") as x86. There doesn't
+				seem to be any other way to specify it.
+				-->
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-amd64-msvc-debug</id>
+			<properties>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<platform>windows-amd64-msvc</platform>
+				<build.type>debug</build.type>
+				<cmake.config>${build.type}</cmake.config>
+				<cmake.options>-Ax64</cmake.options>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-amd64-msvc-release</id>
+			<properties>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<platform>windows-amd64-msvc</platform>
+				<build.type>release</build.type>
+				<cmake.config>${build.type}</cmake.config>
+				<cmake.options>-Ax64</cmake.options>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-i386-gcc-debug</id>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<platform>linux-i386-gcc</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-i386-gcc-release</id>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<platform>linux-i386-gcc</platform>
+				<build.type>release</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-amd64-gcc-debug</id>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<platform>linux-amd64-gcc</platform>
+				<build.type>debug</build.type>
+				<cmake.options>-Ax64</cmake.options>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-amd64-gcc-release</id>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<platform>linux-amd64-gcc</platform>
+				<build.type>release</build.type>
+				<cmake.options>-Ax64</cmake.options>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-amd64-gcc-debug</id>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<platform>mac-amd64-gcc</platform>
+				<build.type>debug</build.type>
+				<cmake.options>-Ax64</cmake.options>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-amd64-gcc-release</id>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<platform>mac-amd64-gcc</platform>
+				<build.type>release</build.type>
+				<cmake.options>-Ax64</cmake.options>
+			</properties>
+		</profile>
+	</profiles>
 </project>
