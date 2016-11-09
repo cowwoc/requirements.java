@@ -602,6 +602,46 @@ public class CollectionRequirementsTest
 	}
 
 	@Test
+	public void isInRange_expectedIsLowerBound()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Collection<Integer> actual = Arrays.asList(1, 2, 3);
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isIn(3, 5);
+		}
+	}
+
+	@Test
+	public void isInRange_expectedIsInBounds()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4);
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isIn(3, 5);
+		}
+	}
+
+	@Test
+	public void isInRange_expectedIsUpperBound()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isIn(3, 5);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInRange_expectedIsBelow()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Collection<Integer> actual = Arrays.asList(1, 2);
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isIn(3, 5);
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
