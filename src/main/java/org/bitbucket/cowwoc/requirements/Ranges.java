@@ -32,8 +32,8 @@ final class Ranges
 		assert (range != null): "range may not be null";
 		StringBuilder message = new StringBuilder(name + " must be in the range ");
 		appendRange(range, message);
-		message.append(String.format("\n" +
-			"Actual: %s", value));
+		message.append("\n").
+			append(String.format("Actual: %s", value));
 		return message.toString();
 	}
 
@@ -54,8 +54,8 @@ final class Ranges
 		assert (range != null): "range may not be null";
 		StringBuilder message = new StringBuilder(name + " must be in the range ");
 		appendRange(range, message);
-		message.append(String.format("\n" +
-			"Actual: %,d", value.longValue()));
+		message.append("\n").
+			append(String.format("Actual: %,d", value.longValue()));
 		return message.toString();
 	}
 
