@@ -72,8 +72,6 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cmake.version>3.6.2-b1</cmake.version>
-		<requirements.classifier>${platform}-${build.type}</requirements.classifier>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -91,21 +89,38 @@
 
 	<profiles>
 		<profile>
-			<id>pick-a-profile</id>
+			<id>list-profiles</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-help-plugin</artifactId>
-						<version>2.2</version>
+						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<goals>
-									<goal>all-profiles</goal>
-								</goals>
 								<phase>validate</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<echo>Please pick one of the following profiles:</echo>
+										<echo>* windows-i386-msvc-debug</echo>
+										<echo>* windows-i386-msvc-release</echo>
+										<echo>* windows-amd64-msvc-debug</echo>
+										<echo>* windows-amd64-msvc-release</echo>
+										<echo>* linux-i386-gcc-debug</echo>
+										<echo>* linux-i386-gcc-release</echo>
+										<echo>* linux-amd64-gcc-debug</echo>
+										<echo>* linux-amd64-gcc-release</echo>
+										<echo>* mac-amd64-gcc-debug</echo>
+										<echo>* mac-amd64-gcc-release</echo>
+										<echo></echo>
+										<echo>For instance: mvn -Pwindows-i386-msvc-debug install</echo>
+										<fail/>
+									</tasks>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -115,105 +130,71 @@
 		<profile>
 			<id>windows-i386-msvc-debug</id>
 			<properties>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<platform>windows-i386-msvc</platform>
 				<build.type>debug</build.type>
-				<cmake.config>${build.type}</cmake.config>
-				<build.architecture>i386</build.architecture>
-				<!--
-				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
-				seem to be any other way to specify it.
-				-->
 			</properties>
 		</profile>
 		<profile>
 			<id>windows-i386-msvc-release</id>
 			<properties>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<platform>windows-i386-msvc</platform>
 				<build.type>release</build.type>
-				<cmake.config>${build.type}</cmake.config>
-				<build.architecture>i386</build.architecture>
-				<!--
-				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
-				seem to be any other way to specify it.
-				-->
 			</properties>
 		</profile>
 		<profile>
 			<id>windows-amd64-msvc-debug</id>
 			<properties>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<platform>windows-amd64-msvc</platform>
 				<build.type>debug</build.type>
-				<cmake.config>${build.type}</cmake.config>
-				<build.architecture>amd64</build.architecture>
-				<cmake.options>-Ax64</cmake.options>
 			</properties>
 		</profile>
 		<profile>
 			<id>windows-amd64-msvc-release</id>
 			<properties>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<platform>windows-amd64-msvc</platform>
 				<build.type>release</build.type>
-				<cmake.config>${build.type}</cmake.config>
-				<build.architecture>amd64</build.architecture>
-				<cmake.options>-Ax64</cmake.options>
 			</properties>
 		</profile>
 		<profile>
 			<id>linux-i386-gcc-debug</id>
 			<properties>
-				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-i386-gcc</platform>
 				<build.type>debug</build.type>
-				<build.architecture>i386</build.architecture>
 			</properties>
 		</profile>
 		<profile>
 			<id>linux-i386-gcc-release</id>
 			<properties>
-				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-i386-gcc</platform>
 				<build.type>release</build.type>
-				<build.architecture>i386</build.architecture>
 			</properties>
 		</profile>
 		<profile>
 			<id>linux-amd64-gcc-debug</id>
 			<properties>
-				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-amd64-gcc</platform>
 				<build.type>debug</build.type>
-				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 		<profile>
 			<id>linux-amd64-gcc-release</id>
 			<properties>
-				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>linux-amd64-gcc</platform>
 				<build.type>release</build.type>
-				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 		<profile>
 			<id>mac-amd64-gcc-debug</id>
 			<properties>
-				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>mac-amd64-gcc</platform>
 				<build.type>debug</build.type>
-				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 		<profile>
 			<id>mac-amd64-gcc-release</id>
 			<properties>
-				<cmake.generator>Unix Makefiles</cmake.generator>
 				<platform>mac-amd64-gcc</platform>
 				<build.type>release</build.type>
-				<build.architecture>amd64</build.architecture>
 			</properties>
 		</profile>
 	</profiles>
