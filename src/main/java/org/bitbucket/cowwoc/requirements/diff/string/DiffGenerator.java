@@ -150,8 +150,9 @@ public final class DiffGenerator
 			}
 			if (major > 10 || (major == 10 && build >= 10586))
 			{
+				// In newer versions, ANSI support now disabled by default.
 				// WORKAROUND: https://github.com/Microsoft/BashOnWindows/issues/1173
-				if (build == 14393)
+				if (build >= 14393)
 					return TerminalType.NONE;
 				return TerminalType.XTERM_16COLOR;
 			}
