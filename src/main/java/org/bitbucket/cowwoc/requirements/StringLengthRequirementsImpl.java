@@ -292,8 +292,8 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 		if (range.contains(parameter))
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %s characters. It contained %,d %s.", name, range, parameter,
-				getSingularOrPlural(parameter)));
+			String.format("%s must contain %s characters. It contained %,d %s.", name,
+				Ranges.toString(range), parameter, getSingularOrPlural(parameter)));
 		if (parameter > 0)
 			eb.addContext("Actual", string);
 		throw eb.build();

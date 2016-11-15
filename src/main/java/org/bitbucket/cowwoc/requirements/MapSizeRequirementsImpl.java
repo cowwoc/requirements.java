@@ -297,7 +297,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 		Requirements.requireThat(range, "range").isNotNull();
 		if (range.contains(parameter))
 			return this;
-		StringBuilder message = new StringBuilder(name + " must contain " + range);
+		StringBuilder message = new StringBuilder(name + " must contain " + Ranges.toString(range));
 		message.append(String.format(" entries. It contained %,d %s.", parameter,
 			getSingularOrPlural(parameter)));
 		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
