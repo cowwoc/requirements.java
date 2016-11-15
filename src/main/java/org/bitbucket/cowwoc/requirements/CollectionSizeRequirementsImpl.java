@@ -220,8 +220,8 @@ final class CollectionSizeRequirementsImpl
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s may not contain more than %,d (%s) %s. It contained %,d %s.", this.name, value,
-				name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
+			String.format("%s may not contain more than %,d (%s) %s. It contained %,d %s.", this.name,
+				value, name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}
@@ -314,8 +314,8 @@ final class CollectionSizeRequirementsImpl
 		if (range.contains(parameter))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain %s elements. It contained %,d %s.", name, range, parameter,
-				getSingularOrPlural(parameter))).
+			String.format("%s must contain %s elements. It contained %,d %s.", name,
+				Ranges.toString(range), parameter, getSingularOrPlural(parameter))).
 			addContext("Actual", collection).
 			build();
 	}

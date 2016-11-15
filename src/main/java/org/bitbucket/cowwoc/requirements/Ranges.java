@@ -64,6 +64,19 @@ final class Ranges
 	 * @param <C>     the type of the range
 	 * @param message the message to append to
 	 * @return an exception message indicating that the value is out of range
+	 * @throws AssertionError if {@code range} is null
+	 */
+	public static <C extends Comparable<? super C>> String toString(Range<C> range)
+		throws AssertionError
+	{
+		return appendRange(range, new StringBuilder(16));
+	}
+
+	/**
+	 * @param range   the expected range
+	 * @param <C>     the type of the range
+	 * @param message the message to append to
+	 * @return {@code message.toString()}
 	 * @throws AssertionError if {@code range} or {@code message} are null
 	 */
 	public static <C extends Comparable<? super C>> String appendRange(Range<C> range,
