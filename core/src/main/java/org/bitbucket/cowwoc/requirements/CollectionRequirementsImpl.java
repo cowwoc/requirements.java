@@ -18,7 +18,7 @@ import org.bitbucket.cowwoc.requirements.util.Sets;
 /**
  * Default implementation of {@code CollectionRequirements}.
  * <p>
- * @param <E> the type of element in the collection
+ * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
 class CollectionRequirementsImpl<E> implements CollectionRequirements<E>

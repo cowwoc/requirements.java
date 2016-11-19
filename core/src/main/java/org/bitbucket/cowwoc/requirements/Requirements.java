@@ -75,7 +75,7 @@ public final class Requirements
 	/**
 	 * Verifies requirements of a {@code Collection}.
 	 *
-	 * @param <E>       the type of element in the collection
+	 * @param <E>       the type of elements in the collection
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
@@ -91,7 +91,7 @@ public final class Requirements
 	 * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param <E>       the type of element in the collection
+	 * @param <E>       the type of elements in the collection
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
@@ -101,6 +101,37 @@ public final class Requirements
 	public static <E> CollectionRequirements<E> assertThat(Collection<E> parameter, String name)
 	{
 		return DELEGATE.assertThat(parameter, name);
+	}
+
+	/**
+	 * Verifies requirements of an array.
+	 *
+	 * @param <E>       the type of elements in the array
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <E> ArrayRequirements<E> requireThat(E[] parameter, String name)
+	{
+		return DELEGATE.requireThat(parameter, name);
+	}
+
+	/**
+	 * Same as {@link #requireThat(E[], String)} but does nothing if assertions are disabled
+	 * for this class.
+	 *
+	 * @param <E>       the type of elements in the array
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static <E> ArrayRequirements<E> assertThat(E[] parameter, String name)
+	{
+		return DELEGATE.requireThat(parameter, name);
 	}
 
 	/**

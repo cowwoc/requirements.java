@@ -99,6 +99,12 @@ public final class OperatingSystem
 			this.minor = minor;
 			this.build = build;
 		}
+
+		@Override
+		public String toString()
+		{
+			return major + "." + minor + "." + build;
+		}
 	}
 	public final Type type;
 	public final Version version;
@@ -121,6 +127,8 @@ public final class OperatingSystem
 	public enum Type
 	{
 		WINDOWS,
+		LINUX,
+		MAC,
 		UNKNOWN;
 
 		/**
@@ -131,7 +139,17 @@ public final class OperatingSystem
 			String osName = System.getProperty("os.name");
 			if (Strings.startsWith(osName, "windows", true))
 				return WINDOWS;
+			if (Strings.startsWith(osName, "linux", true))
+				return LINUX;
+			if (Strings.startsWith(osName, "mac", true))
+				return MAC;
 			return UNKNOWN;
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return type + " " + version;
 	}
 }

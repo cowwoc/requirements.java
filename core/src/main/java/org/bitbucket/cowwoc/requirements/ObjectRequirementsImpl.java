@@ -101,6 +101,14 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	{
 		if (Objects.equals(parameter, value))
 			return this;
+		if (parameter == null || value == null)
+		{
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s had an unexpected value.", name)).
+				addContext("Actual", parameter).
+				addContext("Expected", value).
+				build();
+		}
 		DiffResult result = scope.getDiffGenerator().diff(parameter.toString(), value.toString());
 		List<Entry<String, Object>> context = getContext(result);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -196,6 +204,14 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return this;
+		if (parameter == null || value == null)
+		{
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s must be equal to %s.", this.name, name)).
+				addContext("Actual", parameter).
+				addContext("Expected", value).
+				build();
+		}
 		DiffResult result = scope.getDiffGenerator().diff(parameter.toString(), value.toString());
 		List<Entry<String, Object>> context = getContext(result);
 

@@ -41,62 +41,129 @@ public final class Terminal
 			return;
 		}
 
-		try
-		{
-			System.loadLibrary("requirements");
-		}
-		catch (UnsatisfiedLinkError e)
-		{
-			log.warn("Failed to load native library. Setting terminal type to NONE.", e);
-			this.type = NONE;
-			this.nativeData = 0;
-			return;
-		}
-		boolean stdoutIsTerminal = stdoutIsTerminal();
-
+		boolean stdoutIsTerminal = detectStdout(loadLibrary());
 		if (requestedType == null)
 		{
 			if (stdoutIsTerminal)
 				requestedType = TerminalType.detected();
 			else
+			{
+				log.warn("stdout not connected to a terminal. Setting type to NONE.");
 				requestedType = NONE;
+			}
 		}
 
 		long nativeData;
-		if (OperatingSystem.current().type == WINDOWS && requestedType != NONE && stdoutIsTerminal)
+		try
 		{
-			// No need/way to enable XTerm support if the console has been redirected
-			try
-			{
-				nativeData = start();
-			}
-			catch (IOException unused)
-			{
-				// An error occurred, disable XTERM support
-				requestedType = NONE;
-				nativeData = 0;
-			}
+			nativeData = initialize(requestedType, stdoutIsTerminal);
 		}
-		else
+		catch (IOException | UnsatisfiedLinkError e)
+		{
+			log.error("Error invoking start()", e);
 			nativeData = 0;
+			requestedType = NONE;
+		}
 		this.type = requestedType;
 		this.nativeData = nativeData;
+		addShutdownHook();
+	}
 
-		if (nativeData != 0)
+	/**
+	 * Loads the native library.
+	 *
+	 * @return true on success
+	 */
+	private boolean loadLibrary()
+	{
+		try
 		{
-			Runtime.getRuntime().addShutdownHook(new Thread(() ->
-			{
-				try
-				{
-					stop(this.nativeData);
-				}
-				catch (IOException | RuntimeException e)
-				{
-					Logger log = LoggerFactory.getLogger(DiffGenerator.class);
-					log.error("Failed to restore console state", e);
-				}
-			}));
+			System.loadLibrary("requirements");
+			return true;
 		}
+		catch (UnsatisfiedLinkError e)
+		{
+			log.warn("Failed to load native library", e);
+			return false;
+		}
+	}
+
+	/**
+	 * Attempts to detect if stdout is connected to a terminal, with and without using JNI.
+	 *
+	 * @param jniAvailable true if the native library is available
+	 * @return true if stdout is connected to a terminal
+	 */
+	private boolean detectStdout(boolean jniAvailable)
+	{
+		try
+		{
+			if (jniAvailable)
+				return stdoutIsTerminal();
+		}
+		catch (UnsatisfiedLinkError e)
+		{
+			log.error("Error invoking stdoutIsTerminal()", e);
+		}
+		switch (OperatingSystem.current().type)
+		{
+			case WINDOWS:
+			{
+				// No way to activate ANSI support without JNI
+				return false;
+			}
+			case LINUX:
+			case MAC:
+			{
+				// System.console() is not as accurate as isatty() in that it returns null when stdin
+				// is redirected (which we don't care about) but this check is good enough for our case.
+				return System.console() != null;
+			}
+			case UNKNOWN:
+			default:
+				throw new AssertionError(OperatingSystem.current().type.name());
+		}
+	}
+
+	/**
+	 * Initialize the terminal.
+	 *
+	 * @param requestedType    the requested terminal type
+	 * @param stdoutIsTerminal true if stdout is connected to a terminal
+	 * @return the address of the original terminal state
+	 * @throws IOException          if an I/O error occurs
+	 * @throws UnsatisfiedLinkError if the native method cannot be found
+	 */
+	private long initialize(TerminalType requestedType, boolean stdoutIsTerminal)
+		throws IOException, UnsatisfiedLinkError
+	{
+		// For Windows, requestedType != NONE implies that JNI is available
+		if (OperatingSystem.current().type == WINDOWS && requestedType != NONE && stdoutIsTerminal)
+		{
+			// No way to enable XTerm support if the terminal has been redirected
+			return start();
+		}
+		return 0;
+	}
+
+	/**
+	 * Invokes stop() on JVM shutdown.
+	 */
+	private void addShutdownHook()
+	{
+		if (nativeData == 0)
+			return;
+		Runtime.getRuntime().addShutdownHook(new Thread(() ->
+		{
+			try
+			{
+				stop(this.nativeData);
+			}
+			catch (IOException | UnsatisfiedLinkError e)
+			{
+				log.error("Error invoking stop()", e);
+			}
+		}));
 	}
 
 	/**
@@ -114,17 +181,17 @@ public final class Terminal
 	private native boolean stdoutIsTerminal();
 
 	/**
-	 * Initializes the console (enables Xterm support).
+	 * Initializes the terminal (enables Xterm support).
 	 *
-	 * @return the original console state
+	 * @return the address of the original terminal state
 	 * @throws IOException if an I/O error occurs
 	 */
 	private native long start() throws IOException;
 
 	/**
-	 * Restore the original console configuration.
+	 * Restore the original terminal configuration.
 	 *
-	 * @param state the original console state
+	 * @param state the address of the original terminal state
 	 * @throws IOException if an I/O error occurs
 	 */
 	private native void stop(long state) throws IOException;

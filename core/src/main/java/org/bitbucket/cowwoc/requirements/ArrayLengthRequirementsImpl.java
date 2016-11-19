@@ -14,12 +14,12 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
- * Default implementation of {@code CollectionSizeRequirements}.
+ * Default implementation of {@code ArrayLengthRequirements}.
  *
  * @author Gili Tzabari
  */
-final class CollectionSizeRequirementsImpl
-	implements CollectionSizeRequirements
+final class ArrayLengthRequirementsImpl
+	implements ArrayLengthRequirements
 {
 	/**
 	 * @param amount an amount
@@ -32,14 +32,14 @@ final class CollectionSizeRequirementsImpl
 		return "elements";
 	}
 	private final SingletonScope scope;
-	private final Collection<?> collection;
+	private final Object[] array;
 	private final int parameter;
 	private final String name;
 	private final Configuration config;
 	private final PrimitiveIntegerRequirements asInt;
 
 	/**
-	 * Creates new CollectionSizeRequirementsImpl.
+	 * Creates new ArrayLengthRequirementsImpl.
 	 * <p>
 	 * @param scope     the system configuration
 	 * @param parameter the value of the parameter
@@ -48,16 +48,16 @@ final class CollectionSizeRequirementsImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	CollectionSizeRequirementsImpl(SingletonScope scope, Collection<?> parameter, String name,
+	ArrayLengthRequirementsImpl(SingletonScope scope, Object[] parameter, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.collection = parameter;
-		this.parameter = parameter.size();
-		this.name = name + ".size()";
+		this.array = parameter;
+		this.parameter = parameter.length;
+		this.name = name + ".length";
 		this.config = config;
 		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.parameter, name, config);
 	}
@@ -65,23 +65,23 @@ final class CollectionSizeRequirementsImpl
 	/**
 	 * Constructor meant to be invoked by {@link #withException(Class)}.
 	 *
-	 * @param scope      the system configuration
-	 * @param collection a collection
-	 * @param parameter  the size of the collection
-	 * @param name       the name of the parameter
-	 * @param config     the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code collection}, {@code name} or {@code config}
-	 *                        are null; if {@code name} is empty
+	 * @param scope     the system configuration
+	 * @param array     an array
+	 * @param parameter the length of the array
+	 * @param name      the name of the parameter
+	 * @param config    determines the behavior of this verifier
+	 * @throws AssertionError if {@code array}, {@code name} or {@code config} are null; if
+	 *                        {@code name} is empty
 	 */
-	private CollectionSizeRequirementsImpl(SingletonScope scope, Collection<?> collection,
-		int parameter, String name, Configuration config)
+	private ArrayLengthRequirementsImpl(SingletonScope scope, Object[] array, int parameter,
+		String name, Configuration config)
 	{
-		assert (collection != null): "collection may not be null";
+		assert (array != null): "array may not be null";
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.collection = collection;
+		this.array = array;
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;
@@ -89,61 +89,61 @@ final class CollectionSizeRequirementsImpl
 	}
 
 	@Override
-	public CollectionSizeRequirements withException(Class<? extends RuntimeException> exception)
+	public ArrayLengthRequirements withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new CollectionSizeRequirementsImpl(scope, collection, parameter, name, newConfig);
+		return new ArrayLengthRequirementsImpl(scope, array, parameter, name, newConfig);
 	}
 
 	@Override
-	public CollectionSizeRequirements addContext(String key, Object value)
+	public ArrayLengthRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new CollectionSizeRequirementsImpl(scope, collection, parameter, name, newConfig);
+		return new ArrayLengthRequirementsImpl(scope, array, parameter, name, newConfig);
 	}
 
 	@Override
-	public CollectionSizeRequirements withContext(List<Entry<String, Object>> context)
+	public ArrayLengthRequirements withContext(List<Entry<String, Object>> context)
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new CollectionSizeRequirementsImpl(scope, collection, parameter, name, newConfig);
+		return new ArrayLengthRequirementsImpl(scope, array, parameter, name, newConfig);
 	}
 
 	@Override
 	@Deprecated
-	public CollectionSizeRequirements isNull()
+	public ArrayLengthRequirements isNull()
 	{
 		asInt.isNull();
 		return this;
 	}
 
 	@Override
-	public CollectionSizeRequirements isIn(Collection<Integer> collection)
+	public ArrayLengthRequirements isIn(Collection<Integer> collection)
 	{
 		asInt.isIn(collection);
 		return this;
 	}
 
 	@Override
-	public CollectionSizeRequirements isInstanceOf(Class<?> type)
+	public ArrayLengthRequirements isInstanceOf(Class<?> type)
 	{
 		asInt.isInstanceOf(type);
 		return this;
 	}
 
 	@Override
-	public CollectionSizeRequirements isNotNull()
+	public ArrayLengthRequirements isNotNull()
 	{
 		asInt.isNotNull();
 		return this;
 	}
 
 	@Override
-	public CollectionSizeRequirements isGreaterThanOrEqualTo(Integer value)
+	public ArrayLengthRequirements isGreaterThanOrEqualTo(Integer value)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter >= value)
@@ -152,12 +152,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isGreaterThanOrEqualTo(Integer value, String name)
+	public ArrayLengthRequirements isGreaterThanOrEqualTo(Integer value, String name)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -166,12 +166,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) %s. It contained %,d %s.", this.name, name,
 				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isGreaterThan(Integer value)
+	public ArrayLengthRequirements isGreaterThan(Integer value)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter > value)
@@ -179,12 +179,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isGreaterThan(Integer value, String name)
+	public ArrayLengthRequirements isGreaterThan(Integer value, String name)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -193,12 +193,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) %s. It contained %,d %s.", this.name, name,
 				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isLessThanOrEqualTo(Integer value)
+	public ArrayLengthRequirements isLessThanOrEqualTo(Integer value)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter <= value)
@@ -206,12 +206,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain more than %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isLessThanOrEqualTo(Integer value, String name)
+	public ArrayLengthRequirements isLessThanOrEqualTo(Integer value, String name)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -220,12 +220,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain more than %,d (%s) %s. It contained %,d %s.", this.name,
 				value, name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isLessThan(Integer value)
+	public ArrayLengthRequirements isLessThan(Integer value)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		if (parameter < value)
@@ -233,12 +233,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isLessThan(Integer value, String name)
+	public ArrayLengthRequirements isLessThan(Integer value, String name)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -247,48 +247,48 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d (%s) %s. It contained %,d %s.", this.name, value,
 				name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isNotPositive()
+	public ArrayLengthRequirements isNotPositive()
 	{
 		return isZero();
 	}
 
 	@Override
-	public CollectionSizeRequirements isPositive()
+	public ArrayLengthRequirements isPositive()
 	{
 		if (parameter > 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least one element. It contained %,d %s.", name, parameter,
 				getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isNotZero()
+	public ArrayLengthRequirements isNotZero()
 	{
 		return isPositive();
 	}
 
 	@Override
-	public CollectionSizeRequirements isZero()
+	public ArrayLengthRequirements isZero()
 	{
 		if (parameter == 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty. It contained %,d %s.", name, parameter,
 				getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isNotNegative()
+	public ArrayLengthRequirements isNotNegative()
 	{
 		// Always true
 		return this;
@@ -296,14 +296,14 @@ final class CollectionSizeRequirementsImpl
 
 	@Deprecated
 	@Override
-	public CollectionSizeRequirements isNegative()
+	public ArrayLengthRequirements isNegative()
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
 			String.format("%s can never have a negative size", name), null);
 	}
 
 	@Override
-	public CollectionSizeRequirements isIn(Integer first, Integer last)
+	public ArrayLengthRequirements isIn(Integer first, Integer last)
 	{
 		Requirements.requireThat(first, "first").isNotNull();
 		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
@@ -312,12 +312,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain [%d, %d] elements. It contained %,d %s.", name, first, last,
 				parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isEqualTo(Integer value)
+	public ArrayLengthRequirements isEqualTo(Integer value)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		if (Objects.equals(parameter, value))
@@ -325,12 +325,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isEqualTo(Integer value, String name)
+	public ArrayLengthRequirements isEqualTo(Integer value, String name)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -339,24 +339,24 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s (%,d) %s. It contained %,d %s.", this.name, name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isNotEqualTo(Integer value)
+	public ArrayLengthRequirements isNotEqualTo(Integer value)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %,d %s, but did.", name, value, getSingularOrPlural(value))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isNotEqualTo(Integer value, String name)
+	public ArrayLengthRequirements isNotEqualTo(Integer value, String name)
 	{
 		Requirements.requireThat(value, "value").isNotNull();
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -365,12 +365,12 @@ final class CollectionSizeRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %s (%,d) %s, but did.", this.name,
 				name, value, getSingularOrPlural(value))).
-			addContext("Actual", collection).
+			addContext("Actual", array).
 			build();
 	}
 
 	@Override
-	public CollectionSizeRequirements isolate(Consumer<CollectionSizeRequirements> consumer)
+	public ArrayLengthRequirements isolate(Consumer<ArrayLengthRequirements> consumer)
 	{
 		consumer.accept(this);
 		return this;
