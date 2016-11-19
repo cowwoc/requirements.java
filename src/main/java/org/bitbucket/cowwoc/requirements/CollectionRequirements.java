@@ -10,11 +10,11 @@ import org.bitbucket.cowwoc.requirements.spi.CollectionRequirementsSpi;
 /**
  * Verifies requirements of a {@link Collection} parameter.
  * <p>
- * @param <E> the type of element in the collection
+ * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
 public interface CollectionRequirements<E>
-	extends CollectionRequirementsSpi<CollectionRequirements<E>, E>, 
+	extends CollectionRequirementsSpi<CollectionRequirements<E>, E>,
 	Isolatable<CollectionRequirements<E>>
 {
 }

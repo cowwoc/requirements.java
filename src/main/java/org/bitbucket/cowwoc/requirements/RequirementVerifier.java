@@ -108,7 +108,7 @@ public final class RequirementVerifier implements Verifier
 	/**
 	 * Verifies requirements of a {@code Collection}.
 	 *
-	 * @param <E>       the type of element in the collection
+	 * @param <E>       the type of elements in the collection
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
@@ -120,6 +120,23 @@ public final class RequirementVerifier implements Verifier
 	{
 		verifyName(name);
 		return new CollectionRequirementsImpl<>(parameter, name, config);
+	}
+
+	/**
+	 * Verifies requirements of a primitive array.
+	 *
+	 * @param <E>       the type of elements in the array
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public <E> ArrayRequirements<E> requireThat(E[] parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		verifyName(name);
+		return new ArrayRequirementsImpl<>(parameter, name, config);
 	}
 
 	/**

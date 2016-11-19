@@ -17,8 +17,7 @@ import java.util.function.Consumer;
  */
 final class NoOpCollectionSizeRequirements implements CollectionSizeRequirements
 {
-	public static final NoOpCollectionSizeRequirements INSTANCE
-		= new NoOpCollectionSizeRequirements();
+	public static final NoOpCollectionSizeRequirements INSTANCE = new NoOpCollectionSizeRequirements();
 
 	/**
 	 * Prevent construction.

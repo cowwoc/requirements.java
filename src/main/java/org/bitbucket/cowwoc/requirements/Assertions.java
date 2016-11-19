@@ -74,7 +74,7 @@ public final class Assertions
 	 * Same as {@link Requirements#requireThat(Collection, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
-	 * @param <E>       the type of element in the collection
+	 * @param <E>       the type of elements in the collection
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter

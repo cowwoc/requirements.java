@@ -126,7 +126,7 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Collection, String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
-	 * @param <E>       the type of element in the collection
+	 * @param <E>       the type of elements in the collection
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
@@ -139,6 +139,25 @@ public final class AssertionVerifier implements Verifier
 		if (enabled)
 			return requirementVerifier.requireThat(parameter, name);
 		return new NoOpCollectionRequirements<>();
+	}
+
+	/**
+	 * Same as {@link RequirementVerifier#requireThat(E[], String)} but does nothing if
+	 * assertions are disabled.
+	 * <p>
+	 * @param <E>       the type of elements in the collection
+	 * @param parameter the value of the parameter
+	 * @param name      the name of the parameter
+	 * @return Requirements for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public <E> ArrayRequirements<E> requireThat(E[] parameter, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		if (enabled)
+			return requirementVerifier.requireThat(parameter, name);
+		return new NoOpArrayRequirements<>();
 	}
 
 	/**
