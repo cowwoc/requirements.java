@@ -127,6 +127,7 @@
 					<sourceFileIncludes>
 						<include>org/bitbucket/cowwoc/requirements/*.java</include>
 					</sourceFileIncludes>
+					<windowtitle>${project.name} ${project.version} API</windowtitle>
 				</configuration>
 			</plugin>
 			<!--
