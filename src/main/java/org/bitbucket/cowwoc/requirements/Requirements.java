@@ -127,7 +127,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Same as {@link #requireThat(E[], String)} but does nothing if assertions are disabled
+	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
 	 * @param <E>       the type of elements in the array
