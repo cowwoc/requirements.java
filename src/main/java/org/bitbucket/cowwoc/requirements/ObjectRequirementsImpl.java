@@ -24,6 +24,113 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 {
 	private static final DiffGenerator DIFF_GENERATOR = new DiffGenerator();
+
+	/**
+	 * Converts a DiffResult into a list of key-value pairs.
+	 *
+	 * @param diff           a DiffResult
+	 * @param actualToString the string representation of {@code actual}
+	 * @param actualName     the name of the actual value (e.g. "Actual" vs "Actual.class")
+	 * @param expectedName   the name of the expected value (e.g. "Expected" vs "Expected.class")
+	 * @return
+	 */
+	private static List<Entry<String, Object>> getContext(DiffResult diff, String actualToString,
+		String actualName, String expectedName)
+	{
+		List<String> actual = diff.getActual();
+		List<String> middle = diff.getMiddle();
+		List<String> expected = diff.getExpected();
+		int lines = actual.size();
+		List<Entry<String, Object>> result = new ArrayList<>(2 * lines);
+		if (!actualName.equals("Actual"))
+		{
+			// Include the string value even if it is equal
+			result.add(new SimpleImmutableEntry<>("Actual", actualToString));
+		}
+		if (lines == 1)
+		{
+			result.add(new SimpleImmutableEntry<>(actualName, actual.get(0)));
+			if (!middle.isEmpty())
+				result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
+			result.add(new SimpleImmutableEntry<>(expectedName, expected.get(0)));
+		}
+		else
+		{
+			assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " + expected.size();
+			int actualLineNumber = 1;
+			int expectedLineNumber = 1;
+			// Indicates if the previous line was identical
+			boolean skippedDupicates = false;
+			for (int i = 0; i < lines; ++i)
+			{
+				String actualLine = actual.get(i);
+				String expectedLine = expected.get(i);
+
+				if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
+				{
+					// Skip identical lines, unless they are the first or last line.
+					skippedDupicates = true;
+					++actualLineNumber;
+					++expectedLineNumber;
+					continue;
+				}
+				String actualNameForLine;
+				if (actualLine.isEmpty())
+					actualNameForLine = actualName;
+				else
+				{
+					actualNameForLine = actualName + "@" + actualLineNumber;
+					++actualLineNumber;
+				}
+				if (skippedDupicates)
+				{
+					skippedDupicates = false;
+					skipDuplicateLines(result);
+				}
+
+				result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
+				if (!middle.isEmpty())
+					result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
+				String expectedNameForLine;
+				if (expectedLine.isEmpty())
+					expectedNameForLine = expectedName;
+				else
+				{
+					expectedNameForLine = expectedName + "@" + expectedLineNumber;
+					++expectedLineNumber;
+				}
+				if (i < lines - 1)
+					expectedLine += "\n";
+				result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));
+			}
+			if (skippedDupicates)
+				skipDuplicateLines(result);
+		}
+		return result;
+	}
+
+	/**
+	 * Updates the last context entry to indicate that duplicate lines were skipped.
+	 *
+	 * @param entries the exception context
+	 */
+	private static void skipDuplicateLines(List<Entry<String, Object>> entries)
+	{
+		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
+		String newValue = lastEntry.getValue() + "\n[...]\n";
+		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
+	}
+
+	/**
+	 * @param o an object
+	 * @return {@code null} if the object is null; otherwise, {@code o.getClass().getName()}
+	 */
+	private static String getNullableType(Object o)
+	{
+		if (o == null)
+			return "null";
+		return o.getClass().getName();
+	}
 	private final T parameter;
 	private final String name;
 	private final Configuration config;
@@ -99,101 +206,40 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	{
 		if (Objects.equals(parameter, value))
 			return this;
-		if (parameter == null || value == null)
+		String actualName;
+		String expectedName;
+		String actualValue = Objects.toString(parameter);
+		String actualToString = actualValue;
+		String expectedValue = Objects.toString(value);
+		if (actualValue.equals(expectedValue))
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
-				String.format("%s had an unexpected value.", name)).
-				addContext("Actual", parameter).
-				addContext("Expected", value).
-				build();
+			actualValue = getNullableType(parameter);
+			expectedValue = getNullableType(value);
+			if (actualValue.equals(expectedValue))
+			{
+				actualValue = String.valueOf(Objects.hashCode(parameter));
+				expectedValue = String.valueOf(Objects.hashCode(value));
+				actualName = "Actual.hashCode";
+				expectedName = "Expected.hashCode";
+			}
+			else
+			{
+				actualName = "Actual.class";
+				expectedName = "Expected.class";
+			}
 		}
-		DiffResult result = DIFF_GENERATOR.diff(parameter.toString(), value.toString());
-		List<Entry<String, Object>> context = getContext(result);
+		else
+		{
+			actualName = "Actual";
+			expectedName = "Expected";
+		}
+		DiffResult result = DIFF_GENERATOR.diff(actualValue, expectedValue);
+		List<Entry<String, Object>> context = getContext(result, actualToString, actualName,
+			expectedName);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name)).
 			addContext(context).
 			build();
-	}
-
-	private List<Entry<String, Object>> getContext(DiffResult diff)
-	{
-		List<String> actual = diff.getActual();
-		List<String> middle = diff.getMiddle();
-		List<String> expected = diff.getExpected();
-		int lines = actual.size();
-		List<Entry<String, Object>> result = new ArrayList<>(2 * lines);
-		if (lines == 1)
-		{
-			result.add(new SimpleImmutableEntry<>("Actual", actual.get(0)));
-			if (!middle.isEmpty())
-				result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
-			result.add(new SimpleImmutableEntry<>("Expected", expected.get(0)));
-		}
-		else
-		{
-			assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " + expected.size();
-			int actualLineNumber = 1;
-			int expectedLineNumber = 1;
-			// Indicates if the previous line was identical
-			boolean skippedDupicates = false;
-			for (int i = 0; i < lines; ++i)
-			{
-				String actualLine = actual.get(i);
-				String expectedLine = expected.get(i);
-
-				if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
-				{
-					// Skip identical lines, unless they are the first or last line.
-					skippedDupicates = true;
-					++actualLineNumber;
-					++expectedLineNumber;
-					continue;
-				}
-				String actualName;
-				if (actualLine.isEmpty())
-					actualName = "Actual";
-				else
-				{
-					actualName = "Actual@" + actualLineNumber;
-					++actualLineNumber;
-				}
-				if (skippedDupicates)
-				{
-					skippedDupicates = false;
-					skipDuplicateLines(result);
-				}
-
-				result.add(new SimpleImmutableEntry<>(actualName, actualLine));
-				if (!middle.isEmpty())
-					result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
-				String expectedName;
-				if (expectedLine.isEmpty())
-					expectedName = "Expected";
-				else
-				{
-					expectedName = "Expected@" + expectedLineNumber;
-					++expectedLineNumber;
-				}
-				if (i < lines - 1)
-					expectedLine += "\n";
-				result.add(new SimpleImmutableEntry<>(expectedName, expectedLine));
-			}
-			if (skippedDupicates)
-				skipDuplicateLines(result);
-		}
-		return result;
-	}
-
-	/**
-	 * Updates the last context entry to indicate that duplicate lines were skipped.
-	 *
-	 * @param entries the exception context
-	 */
-	private void skipDuplicateLines(List<Entry<String, Object>> entries)
-	{
-		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
-		String newValue = lastEntry.getValue() + "\n[...]\n";
-		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
 	}
 
 	@Override
@@ -203,16 +249,37 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return this;
-		if (parameter == null || value == null)
+		String actualToString;
+		String actualName;
+		String expectedName;
+		String actualValue = Objects.toString(parameter);
+		actualToString = actualValue;
+		String expectedValue = Objects.toString(value);
+		if (actualValue.equals(expectedValue))
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
-				String.format("%s must be equal to %s.", this.name, name)).
-				addContext("Actual", parameter).
-				addContext("Expected", value).
-				build();
+			actualValue = getNullableType(parameter);
+			expectedValue = getNullableType(value);
+			if (actualValue.equals(expectedValue))
+			{
+				actualValue = String.valueOf(Objects.hashCode(parameter));
+				expectedValue = String.valueOf(Objects.hashCode(value));
+				actualName = "Actual.hashCode";
+				expectedName = "Expected.hashCode";
+			}
+			else
+			{
+				actualName = "Actual.class";
+				expectedName = "Expected.class";
+			}
 		}
-		DiffResult result = DIFF_GENERATOR.diff(parameter.toString(), value.toString());
-		List<Entry<String, Object>> context = getContext(result);
+		else
+		{
+			actualName = "Actual";
+			expectedName = "Expected";
+		}
+		DiffResult result = DIFF_GENERATOR.diff(actualValue, expectedValue);
+		List<Entry<String, Object>> context = getContext(result, actualToString, actualName,
+			expectedName);
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name)).

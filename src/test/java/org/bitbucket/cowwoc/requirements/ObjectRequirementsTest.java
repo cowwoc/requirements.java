@@ -13,6 +13,18 @@ import org.testng.annotations.Test;
  */
 public final class ObjectRequirementsTest
 {
+	/**
+	 * A class whose instances have the same toString() but are never equal.
+	 */
+	private static final class SameToStringDifferentHashCode
+	{
+		@Override
+		public String toString()
+		{
+			return "SameToStringDifferentHashCode";
+		}
+	}
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
@@ -39,6 +51,41 @@ public final class ObjectRequirementsTest
 	{
 		String actual = "actual";
 		Requirements.requireThat(actual, "actual").isEqualTo("expected");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_sameToStringDifferentTypes()
+	{
+		String actual = "null";
+		Requirements.requireThat(actual, "actual").isEqualTo(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_sameToStringAndTypeDifferentHashCode()
+	{
+		SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
+		Requirements.requireThat(actual, "actual").isEqualTo(new SameToStringDifferentHashCode());
+	}
+
+	@Test
+	public void isEquals_nullToNull()
+	{
+		String actual = null;
+		Requirements.requireThat(actual, "actual").isEqualTo(actual);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_nullToNotNull()
+	{
+		String actual = null;
+		Requirements.requireThat(actual, "actual").isEqualTo("expected");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_notNullToNull()
+	{
+		String actual = "actual";
+		Requirements.requireThat(actual, "actual").isEqualTo(null);
 	}
 
 	@Test
