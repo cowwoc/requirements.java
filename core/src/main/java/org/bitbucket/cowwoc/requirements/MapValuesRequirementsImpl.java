@@ -200,7 +200,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> contains(V element, String name)
 	{
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getDefaultVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -214,7 +214,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> containsExactly(Collection<V> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		Set<V> elementsAsSet = Collections.asSet(elements);
 		Set<V> parameterAsSet = Collections.asSet(parameter);
 		Set<V> missing = Sets.difference(elementsAsSet, parameterAsSet);
@@ -232,8 +232,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> containsExactly(Collection<V> elements, String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<V> elementsAsSet = Collections.asSet(elements);
 		Set<V> parameterAsSet = Collections.asSet(parameter);
 		Set<V> missing = Sets.difference(elementsAsSet, parameterAsSet);
@@ -252,7 +253,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> containsAny(Collection<V> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -277,8 +278,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> containsAny(Collection<V> elements, String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -292,7 +294,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> containsAll(Collection<V> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		if (parameter.containsAll(elements))
 			return this;
 		Set<V> elementsAsSet = Collections.asSet(elements);
@@ -309,8 +311,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> containsAll(Collection<V> elements, String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.containsAll(elements))
 			return this;
 		Set<V> elementsAsSet = Collections.asSet(elements);
@@ -340,7 +343,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> doesNotContain(V element, String name)
 	{
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getDefaultVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -354,7 +357,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> doesNotContainAny(Collection<V> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		if (!parameterContainsAny(elements))
 			return this;
 		Set<V> elementsAsSet = Collections.asSet(elements);
@@ -371,8 +374,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> doesNotContainAny(Collection<V> elements, String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameterContainsAny(elements))
 			return this;
 		Set<V> elementsAsSet = Collections.asSet(elements);
@@ -390,7 +394,7 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> doesNotContainAll(Collection<V> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -403,8 +407,9 @@ final class MapValuesRequirementsImpl<K, V> implements CollectionRequirements<V>
 	@Override
 	public CollectionRequirements<V> doesNotContainAll(Collection<V> elements, String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,

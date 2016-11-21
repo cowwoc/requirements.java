@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.scope;
 
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.RequirementVerifier;
 import org.bitbucket.cowwoc.requirements.diff.string.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.diff.string.Terminal;
 import org.bitbucket.cowwoc.requirements.diff.string.TerminalType;
@@ -28,6 +29,11 @@ public interface SingletonScope extends AutoCloseable
 	 * @return {@code Optional.empty()} if the terminal type should be auto-detected
 	 */
 	Optional<TerminalType> getRequestedTerminalType();
+
+	/**
+	 * @return the verifier we use to verify our own parameters
+	 */
+	RequirementVerifier getDefaultVerifier();
 
 	@Override
 	void close();

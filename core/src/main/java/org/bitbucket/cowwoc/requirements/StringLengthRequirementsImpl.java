@@ -115,7 +115,7 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isGreaterThanOrEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter >= value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -129,8 +129,9 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isGreaterThanOrEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -145,7 +146,7 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isGreaterThan(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter > value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -159,8 +160,9 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isGreaterThan(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -174,7 +176,7 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isLessThanOrEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -188,8 +190,9 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isLessThanOrEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -203,7 +206,7 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isLessThan(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter < value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -217,8 +220,9 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isLessThan(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
@@ -285,8 +289,9 @@ final class StringLengthRequirementsImpl implements StringLengthRequirements
 	@Override
 	public StringLengthRequirements isIn(Integer first, Integer last)
 	{
-		Requirements.requireThat(first, "first").isNotNull();
-		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(first, "first").isNotNull();
+		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
 		if (parameter >= first && parameter <= last)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,

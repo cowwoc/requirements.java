@@ -127,7 +127,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isGreaterThanOrEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter >= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -140,8 +140,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isGreaterThanOrEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -154,7 +155,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isGreaterThan(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter > value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -167,8 +168,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isGreaterThan(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -182,7 +184,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isLessThanOrEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -195,8 +197,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isLessThanOrEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -209,7 +212,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isLessThan(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter < value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -222,8 +225,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isLessThan(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -287,8 +291,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isIn(Integer first, Integer last)
 	{
-		Requirements.requireThat(first, "first").isNotNull();
-		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(first, "first").isNotNull();
+		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
 		if (parameter >= first && parameter <= last)
 			return this;
 		StringBuilder message = new StringBuilder(LINE_LENGTH);
@@ -303,7 +308,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -316,8 +321,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -330,7 +336,7 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isNotEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -342,8 +348,9 @@ final class MapSizeRequirementsImpl implements MapSizeRequirements
 	@Override
 	public MapSizeRequirements isNotEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,

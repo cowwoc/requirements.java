@@ -204,7 +204,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> contains(Entry<K, V> element, String name)
 	{
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getDefaultVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -218,7 +218,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> containsExactly(Collection<Entry<K, V>> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
@@ -237,8 +237,9 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	public CollectionRequirements<Entry<K, V>> containsExactly(Collection<Entry<K, V>> elements,
 		String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
@@ -257,7 +258,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> containsAny(Collection<Entry<K, V>> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -283,8 +284,9 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	public CollectionRequirements<Entry<K, V>> containsAny(Collection<Entry<K, V>> elements,
 		String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameterContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -298,7 +300,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> containsAll(Collection<Entry<K, V>> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> missing = Sets.difference(elementsAsSet, parameterAsSet);
@@ -314,8 +316,9 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	public CollectionRequirements<Entry<K, V>> containsAll(Collection<Entry<K, V>> elements,
 		String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter.containsAll(elements))
 			return this;
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
@@ -345,7 +348,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> doesNotContain(Entry<K, V> element, String name)
 	{
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getDefaultVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -359,7 +362,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> doesNotContainAny(Collection<Entry<K, V>> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
@@ -375,8 +378,9 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	public CollectionRequirements<Entry<K, V>> doesNotContainAny(Collection<Entry<K, V>> elements,
 		String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<Entry<K, V>> elementsAsSet = Collections.asSet(elements);
 		Set<Entry<K, V>> parameterAsSet = Collections.asSet(parameter);
 		Set<Entry<K, V>> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
@@ -392,7 +396,7 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	@Override
 	public CollectionRequirements<Entry<K, V>> doesNotContainAll(Collection<Entry<K, V>> elements)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
+		scope.getDefaultVerifier().requireThat(elements, "elements").isNotNull();
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -406,8 +410,9 @@ final class MapEntrySetRequirementsImpl<K, V> implements CollectionRequirements<
 	public CollectionRequirements<Entry<K, V>> doesNotContainAll(Collection<Entry<K, V>> elements,
 		String name)
 	{
-		Requirements.requireThat(elements, "elements").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!parameter.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,

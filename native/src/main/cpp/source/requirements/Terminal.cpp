@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <wchar.h>
 
+#include "requirements/Util.h"
+#include "requirements/Terminal.h"
+
 #ifdef _WIN32
 
 #ifndef VC_EXTRALEAN
@@ -19,8 +22,6 @@
 
 #include <windows.h>
 #include <wincon.h>
-#include "requirements/Util.h"
-#include "requirements/Terminal.h"
 
 jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stdoutIsTerminal
 (JNIEnv* env, jobject jthis)
@@ -86,10 +87,12 @@ void JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stop
 
 #elif defined (__linux__)
 
+#include <unistd.h>
+
 jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stdoutIsTerminal
 (JNIEnv* env, jobject jthis)
 {
 	return isatty(STDOUT_FILENO);
 }
 
-#endif
+#endif // _WIN32

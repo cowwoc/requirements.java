@@ -145,7 +145,7 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isGreaterThanOrEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter >= value)
 			return this;
 
@@ -159,8 +159,9 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isGreaterThanOrEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter >= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -173,7 +174,7 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isGreaterThan(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter > value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -186,8 +187,9 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isGreaterThan(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter > value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -200,7 +202,7 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isLessThanOrEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -213,8 +215,9 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isLessThanOrEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter <= value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -227,7 +230,7 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isLessThan(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (parameter < value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -240,8 +243,9 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isLessThan(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (parameter < value)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -305,8 +309,10 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isIn(Integer first, Integer last)
 	{
-		Requirements.requireThat(first, "first").isNotNull();
-		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(first, "first").isNotNull();
+		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first,
+			"first");
 		if (parameter >= first && parameter <= last)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -319,7 +325,7 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -332,8 +338,9 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -346,7 +353,7 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isNotEqualTo(Integer value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -358,8 +365,9 @@ final class CollectionSizeRequirementsImpl
 	@Override
 	public CollectionSizeRequirements isNotEqualTo(Integer value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(parameter, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,

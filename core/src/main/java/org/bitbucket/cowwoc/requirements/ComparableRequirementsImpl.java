@@ -133,8 +133,9 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThan(T value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference < 0)
 			return this;
@@ -148,7 +149,7 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThan(T value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference < 0)
 			return this;
@@ -162,8 +163,9 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThanOrEqualTo(T value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference <= 0)
 			return this;
@@ -177,7 +179,7 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThanOrEqualTo(T value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference <= 0)
 			return this;
@@ -191,8 +193,9 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThan(T value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference > 0)
 			return this;
@@ -206,7 +209,7 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThan(T value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference > 0)
 			return this;
@@ -220,8 +223,9 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThanOrEqualTo(T value, String name)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
-		Requirements.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference >= 0)
 			return this;
@@ -235,7 +239,7 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThanOrEqualTo(T value)
 	{
-		Requirements.requireThat(value, "value").isNotNull();
+		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference >= 0)
 			return this;
@@ -249,8 +253,9 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isIn(T first, T last)
 	{
-		Requirements.requireThat(first, "first").isNotNull();
-		Requirements.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
+		RequirementVerifier verifier = scope.getDefaultVerifier();
+		verifier.requireThat(first, "first").isNotNull();
+		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
 		if (parameter.compareTo(first) >= 0 && parameter.compareTo(last) <= 0)
 			return this;
 		StringBuilder message = new StringBuilder(LINE_LENGTH);

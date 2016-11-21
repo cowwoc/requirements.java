@@ -116,7 +116,7 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	@Override
 	public ArrayRequirements<E> isIn(Collection<E[]> collection)
 	{
-		Requirements.requireThat(collection, "collection").isNotNull();
+		scope.getDefaultVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(parameter))
 			return this;
 

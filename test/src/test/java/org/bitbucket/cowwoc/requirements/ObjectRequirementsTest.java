@@ -15,6 +15,18 @@ import org.testng.annotations.Test;
  */
 public final class ObjectRequirementsTest
 {
+	/**
+	 * A class whose instances have the same toString() but are never equal.
+	 */
+	private static final class SameToStringDifferentHashCode
+	{
+		@Override
+		public String toString()
+		{
+			return "SameToStringDifferentHashCode";
+		}
+	}
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
@@ -52,6 +64,57 @@ public final class ObjectRequirementsTest
 		{
 			String actual = "actual";
 			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo("expected");
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_sameToStringDifferentTypes()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			String actual = "null";
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_sameToStringAndTypeDifferentHashCode()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(
+				new SameToStringDifferentHashCode());
+		}
+	}
+
+	@Test
+	public void isEquals_nullToNull()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			String actual = null;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(actual);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_nullToNotNull()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			String actual = null;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo("expected");
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEquals_notNullToNull()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			String actual = "actual";
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(null);
 		}
 	}
 

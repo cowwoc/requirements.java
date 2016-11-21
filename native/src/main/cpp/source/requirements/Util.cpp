@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <wchar.h>
 
+#ifdef _WIN32
+
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
@@ -86,3 +88,5 @@ char* Exceptions::getFormatMessage(DWORD errorCode)
 	}
 	return 0;
 }
+
+#endif

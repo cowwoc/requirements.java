@@ -73,6 +73,25 @@ import org.bitbucket.cowwoc.requirements.util.Strings;
  * <li>There is no whitespace before "ballroom" or after "foosball". This padding is used to line up
  * the strings vertically.</li>
  * </ul>
+ * <h3>Example 5: Objects with the same toString() that are not equal</h3>
+ * <ul>
+ * <li>If objects are not equal, and their {@code toString()} values differ, we output their String
+ * representations.</li>
+ * <li>If the {@code toString()} values are equal, but their types differ, we output the string
+ * representation of {@code Actual} followed by the two types (i.e. {@code Actual.class} vs
+ * {@code Expected.class}).</li>
+ * <li>If their classes are equal, but their {@code hashCode()} values differ, we output the string
+ * representation of {@code Actual} followed by the two hashcodes (i.e. {@code Actual.hashCode()} vs
+ * {@code Expected.hashCode()}).</li>
+ * </ul>
+ * For example:
+ * <pre>{@code
+ * Actual   = "null"
+ * Expected = null
+ * }</pre>
+ * results in the following diff:
+ * <p>
+ * <img src="doc-files/xterm-example5.png" alt="diff output">
  * <h3>Multi-line Strings</h3>
  * When comparing multi-line strings:
  * <ul>
@@ -88,7 +107,7 @@ import org.bitbucket.cowwoc.requirements.util.Strings;
  * }</pre>
  * results in the following diff:
  * <p>
- * <img src="doc-files/xterm-example5.png" alt="diff output">
+ * <img src="doc-files/xterm-example6.png" alt="diff output">
  * <p>
  * Meaning:
  * <ul>

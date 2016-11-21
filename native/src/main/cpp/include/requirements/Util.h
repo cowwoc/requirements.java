@@ -1,9 +1,11 @@
 #ifndef requirements_Util
 #define requirements_Util
-#ifdef __cplusplus
+
+#ifdef _WIN32
 
 #include <jni.h>
 
+#ifdef __cplusplus
 extern "C" {
 #endif
 	class Exceptions
@@ -32,7 +34,9 @@ extern "C" {
 		Exceptions(JNIEnv* env);
 		void throwIOException(char* message);
 	};
+
 #ifdef __cplusplus
 }
-#endif
-#endif
+#endif // __cplusplus
+#endif // _WIN32
+#endif // requirements_Util

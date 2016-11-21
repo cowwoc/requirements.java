@@ -132,7 +132,7 @@ final class ClassRequirementsImpl<T>
 	@Override
 	public ClassRequirements<T> isSupertypeOf(Class<?> type)
 	{
-		Requirements.requireThat(type, "type").isNotNull();
+		scope.getDefaultVerifier().requireThat(type, "type").isNotNull();
 		if (parameter.isAssignableFrom(type))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
