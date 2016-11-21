@@ -51,7 +51,7 @@ public final class AssertionVerifier implements Verifier
 	 */
 	public AssertionVerifier(boolean enabled)
 	{
-		this.scope = new MainSingletonScope();
+		this.scope = MainSingletonScope.INSTANCE;
 		this.enabled = enabled;
 		this.config = Configuration.initial();
 		this.requirementVerifier = new RequirementVerifier(scope, config);
@@ -184,7 +184,7 @@ public final class AssertionVerifier implements Verifier
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(E[], String)} but does nothing if
+	 * Same as {@link RequirementVerifier#requireThat(Object[], String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
 	 * @param <E>       the type of elements in the collection

@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements;
 import java.util.List;
 import java.util.Map.Entry;
 import org.bitbucket.cowwoc.requirements.annotations.Beta;
-import org.bitbucket.cowwoc.requirements.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -27,7 +26,18 @@ public final class RequirementVerifier extends AbstractRequirementVerifier
 	 */
 	public RequirementVerifier()
 	{
-		super(MainSingletonScope.INSTANCE);
+		super();
+	}
+
+	/**
+	 * Creates a new requirement verifier.
+	 *
+	 * @param scope the system configuration
+	 * @throws AssertionError if {@code scope} is null
+	 */
+	public RequirementVerifier(SingletonScope scope)
+	{
+		super(scope);
 	}
 
 	/**

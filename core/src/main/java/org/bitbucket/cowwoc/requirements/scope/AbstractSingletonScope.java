@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.scope;
 
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.RequirementVerifier;
 import org.bitbucket.cowwoc.requirements.diff.string.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.diff.string.Terminal;
 
@@ -32,11 +31,5 @@ public abstract class AbstractSingletonScope implements SingletonScope
 	public DiffGenerator getDiffGenerator()
 	{
 		return diffGenerator.getValue();
-	}
-
-	@Override
-	public RequirementVerifier getDefaultVerifier()
-	{
-		return new RequirementVerifier(this);
 	}
 }

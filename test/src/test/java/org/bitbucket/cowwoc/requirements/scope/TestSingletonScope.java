@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.scope;
 
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.RequirementVerifier;
 import org.bitbucket.cowwoc.requirements.diff.string.TerminalType;
 
 /**
@@ -37,6 +38,12 @@ public final class TestSingletonScope extends AbstractSingletonScope
 	public Optional<TerminalType> getRequestedTerminalType()
 	{
 		return requestedTerminalType;
+	}
+
+	@Override
+	public RequirementVerifier getDefaultVerifier()
+	{
+		return new RequirementVerifier(this);
 	}
 
 	@Override

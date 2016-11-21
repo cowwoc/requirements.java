@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.scope;
 import java.util.Optional;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
+import org.bitbucket.cowwoc.requirements.RequirementVerifier;
 import org.bitbucket.cowwoc.requirements.diff.string.TerminalType;
 
 /**
@@ -16,6 +17,15 @@ import org.bitbucket.cowwoc.requirements.diff.string.TerminalType;
  */
 public final class MainSingletonScope extends AbstractSingletonScope
 {
+	public static final MainSingletonScope INSTANCE = new MainSingletonScope();
+
+	/**
+	 * Prevent construction.
+	 */
+	private MainSingletonScope()
+	{
+	}
+
 	private final Reference<Optional<TerminalType>> requestedTerminalType = ConcurrentLazyReference.
 		create(() ->
 		{
@@ -27,6 +37,12 @@ public final class MainSingletonScope extends AbstractSingletonScope
 	public Optional<TerminalType> getRequestedTerminalType()
 	{
 		return requestedTerminalType.getValue();
+	}
+
+	@Override
+	public RequirementVerifier getDefaultVerifier()
+	{
+		return new RequirementVerifier();
 	}
 
 	@Override

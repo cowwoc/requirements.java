@@ -48,7 +48,7 @@ public final class UnifiedVerifier implements Verifier
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		this.scope = new MainSingletonScope();
+		this.scope = MainSingletonScope.INSTANCE;
 		this.config = Configuration.initial();
 		this.assertions = new AssertionVerifier(scope, assertionsEnabled, config);
 		this.requirements = new RequirementVerifier(scope, config);
@@ -61,7 +61,7 @@ public final class UnifiedVerifier implements Verifier
 	 */
 	public UnifiedVerifier(boolean assertionsEnabled)
 	{
-		this.scope = new MainSingletonScope();
+		this.scope = MainSingletonScope.INSTANCE;
 		this.config = Configuration.initial();
 		this.assertions = new AssertionVerifier(scope, assertionsEnabled, config);
 		this.requirements = new RequirementVerifier(scope, config);
@@ -165,7 +165,7 @@ public final class UnifiedVerifier implements Verifier
 	}
 
 	/**
-	 * Same as {@link #requireThat(E[], String)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
 	 * <p>
 	 * @param <E>       the type of elements in the collection
 	 * @param parameter the value of the parameter
