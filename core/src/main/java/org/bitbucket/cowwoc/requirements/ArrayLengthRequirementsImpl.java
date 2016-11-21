@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -152,7 +153,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -167,7 +168,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) %s. It contained %,d %s.", this.name, name,
 				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -180,7 +181,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -195,7 +196,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) %s. It contained %,d %s.", this.name, name,
 				value, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -208,7 +209,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain more than %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -223,7 +224,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain more than %,d (%s) %s. It contained %,d %s.", this.name,
 				value, name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -236,7 +237,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -251,7 +252,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain less than %,d (%s) %s. It contained %,d %s.", this.name, value,
 				name, getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -269,7 +270,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain at least one element. It contained %,d %s.", name, parameter,
 				getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -287,7 +288,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty. It contained %,d %s.", name, parameter,
 				getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -318,7 +319,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain [%d, %d] elements. It contained %,d %s.", name, first, last,
 				parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -331,7 +332,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %,d %s. It contained %,d %s.", name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -346,7 +347,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s (%,d) %s. It contained %,d %s.", this.name, name, value,
 				getSingularOrPlural(value), parameter, getSingularOrPlural(parameter))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -358,7 +359,7 @@ final class ArrayLengthRequirementsImpl
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %,d %s, but did.", name, value, getSingularOrPlural(value))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
@@ -373,7 +374,7 @@ final class ArrayLengthRequirementsImpl
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not contain %s (%,d) %s, but did.", this.name,
 				name, value, getSingularOrPlural(value))).
-			addContext("Actual", array).
+			addContext("Actual", Arrays.toString(array)).
 			build();
 	}
 
