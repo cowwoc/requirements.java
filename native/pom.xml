@@ -23,7 +23,7 @@
 			<plugin>
 				<groupId>com.googlecode.cmake-maven-project</groupId>
 				<artifactId>cmake-maven-plugin</artifactId>
-				<version>3.7.0-b1-SNAPSHOT</version>
+				<version>3.7.0-b1</version>
 				<executions>
 					<execution>
 						<id>cmake-generate</id>
@@ -40,6 +40,7 @@
 							<environmentVariables>
 								<BUILD_ARCHITECTURE>${build.architecture}</BUILD_ARCHITECTURE>
 							</environmentVariables>
+							<skip>${skip.cmake}</skip>
 						</configuration>
 					</execution>
 					<execution>
@@ -255,6 +256,16 @@
 				<cmake.generator>Unix Makefiles</cmake.generator>
 				<build.architecture>amd64</build.architecture>
 				<cmake.classifier>mac-amd64</cmake.classifier>
+			</properties>
+		</profile>
+		<profile>
+			<id>empty-jar</id>
+			<!--
+			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
+			empty file.
+			-->
+			<properties>
+				<skip.cmake>true</skip.cmake>
 			</properties>
 		</profile>
 	</profiles>
