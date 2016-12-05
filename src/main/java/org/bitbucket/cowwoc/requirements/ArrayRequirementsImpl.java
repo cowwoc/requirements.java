@@ -126,7 +126,7 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
-			addContext("Actual", parameter).
+			addContext("Actual", Arrays.toString(parameter)).
 			build();
 	}
 
