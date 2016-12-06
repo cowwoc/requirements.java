@@ -7,10 +7,9 @@ package org.bitbucket.cowwoc.requirements.usage;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Set;
-import org.bitbucket.cowwoc.requirements.AssertionVerifier;
-import org.bitbucket.cowwoc.requirements.RequirementVerifier;
-import static org.bitbucket.cowwoc.requirements.Requirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.Requirements.requireThat;
+import org.bitbucket.cowwoc.requirements.UnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.scope.TestSingletonScope;
 import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.requireThat;
 import org.testng.annotations.Test;
@@ -23,87 +22,97 @@ public final class UsageTest
 	@Test
 	public void requirementsFromMultipleModules()
 	{
-		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = Collections.singleton(duration);
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			UnifiedVerifier verifier = new UnifiedVerifier(scope, true);
+			Duration duration = Duration.ofDays(1);
+			Set<Duration> bucket = Collections.singleton(duration);
 
-		// Java will invoke Requirements.requireThat() or TimeRequirements.requireThat() depending on the context
-		requireThat(duration, "duration").isPositive();
-		requireThat(bucket, "bucket").contains(duration);
+			// Java will invoke Requirements.requireThat() or TimeRequirements.requireThat() depending on the context
+			requireThat(duration, "duration").isPositive();
+			verifier.requireThat(bucket, "bucket").contains(duration);
 
-		// Assertions work too
-		assertThat(duration, "duration").isPositive();
-	}
-
-	@Test
-	public void globalAsserts()
-	{
-		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = Collections.singleton(duration);
-
-		assertThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
-		assertThat(bucket, "bucket").contains(duration);
+			// Assertions work too
+			assertThat(duration, "duration").isPositive();
+		}
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void localRequirements_Failure()
 	{
-		RequirementVerifier requirements = new RequirementVerifier().
-			addContext("key", "value").withException(IllegalStateException.class);
-		Duration duration = Duration.ofDays(1);
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
+				addContext("key", "value").withException(IllegalStateException.class);
+			Duration duration = Duration.ofDays(1);
 
-		requirements.requireThat(duration, "duration").isNull();
+			verifier.requireThat(duration, "duration").isNull();
+		}
 	}
 
 	@Test
-	@SuppressWarnings(
-		{
-			"AssertWithSideEffects", "NestedAssignment"
-		})
-	public void localAsserts()
+	public void assertsEnabled()
 	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled).
-			addContext("key", "value").withException(IllegalStateException.class);
-		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = Collections.singleton(duration);
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
+				addContext("key", "value").withException(IllegalStateException.class);
+			Duration duration = Duration.ofDays(1);
+			Set<Duration> bucket = Collections.singleton(duration);
 
-		assertions.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
-		assertions.requireThat(bucket, "bucket").contains(duration);
+			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+			verifier.requireThat(bucket, "bucket").contains(duration);
+		}
+	}
+
+	@Test
+	public void assertsDisabled()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
+				addContext("key", "value").withException(IllegalStateException.class);
+			Duration duration = Duration.ofDays(1);
+			Set<Duration> bucket = Collections.singleton(duration);
+
+			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+			verifier.requireThat(bucket, "bucket").contains(duration);
+		}
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
-	@SuppressWarnings(
-		{
-			"AssertWithSideEffects", "NestedAssignment"
-		})
-	public void localAsserts_Failure()
+	public void assertsEnabled_Failure()
 	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		AssertionVerifier assertions = new AssertionVerifier(assertionsEnabled).
-			addContext("key", "value").withException(IllegalStateException.class);
-		Duration duration = Duration.ofDays(1);
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
+				addContext("key", "value").withException(IllegalStateException.class);
+			Duration duration = Duration.ofDays(1);
 
-		assertions.requireThat(duration, "duration").isNull();
+			verifier.requireThat(duration, "duration").isNull();
+		}
 	}
 
 	@Test
 	public void withContext()
 	{
-		Duration duration = Duration.ofDays(1);
-		Set<Duration> bucket = Collections.emptySet();
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Duration duration = Duration.ofDays(1);
+			Set<Duration> bucket = Collections.emptySet();
 
-		requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
-		try
-		{
-			requireThat(bucket, "bucket").addContext("MyKey", "SomeContext").
-				contains(duration);
-		}
-		catch (IllegalArgumentException e)
-		{
-			if (!e.getMessage().contains("MyKey") || !e.getMessage().contains("SomeContext"))
-				throw new AssertionError(e);
+			UnifiedVerifier verifier = new UnifiedVerifier(scope, true);
+			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+			try
+			{
+				verifier.requireThat(bucket, "bucket").addContext("MyKey", "SomeContext").
+					contains(duration);
+			}
+			catch (IllegalArgumentException e)
+			{
+				if (!e.getMessage().contains("MyKey") || !e.getMessage().contains("SomeContext"))
+					throw new AssertionError(e);
+			}
 		}
 	}
 }

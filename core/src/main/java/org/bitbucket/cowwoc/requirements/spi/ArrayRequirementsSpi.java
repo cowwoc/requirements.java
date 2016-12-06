@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.spi;
 
 import java.util.Collection;
-import org.bitbucket.cowwoc.requirements.ArrayLengthRequirements;
+import org.bitbucket.cowwoc.requirements.ContainerSizeRequirements;
 
 /**
  * Verifies requirements of an array parameter.
@@ -210,7 +210,7 @@ public interface ArrayRequirementsSpi<S extends ArrayRequirementsSpi<S, E>, E>
 		throws IllegalArgumentException;
 
 	/**
-	 * @return requirements over an array's length
+	 * @return requirements over the array's length
 	 */
-	ArrayLengthRequirements length();
+	ContainerSizeRequirements length();
 }

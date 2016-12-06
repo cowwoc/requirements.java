@@ -186,9 +186,9 @@ final class NoOpArrayRequirements<E> implements ArrayRequirements<E>
 	}
 
 	@Override
-	public ArrayLengthRequirements length()
+	public ContainerSizeRequirements length()
 	{
-		return NoOpArrayLengthRequirements.INSTANCE;
+		return NoOpContainerSizeRequirements.INSTANCE;
 	}
 
 	@Override

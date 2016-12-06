@@ -186,9 +186,9 @@ final class NoOpCollectionRequirements<E> implements CollectionRequirements<E>
 	}
 
 	@Override
-	public CollectionSizeRequirements size()
+	public ContainerSizeRequirements size()
 	{
-		return NoOpCollectionSizeRequirements.INSTANCE;
+		return NoOpContainerSizeRequirements.INSTANCE;
 	}
 
 	@Override

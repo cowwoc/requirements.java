@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.diff.string;
 
-import org.bitbucket.cowwoc.requirements.RequirementVerifier;
+import org.bitbucket.cowwoc.requirements.UnifiedVerifier;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_EQUAL;
 import static org.bitbucket.cowwoc.requirements.diff.string.DiffConstants.DIFF_INSERT;
@@ -28,7 +28,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -48,7 +48,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -71,7 +71,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -94,7 +94,7 @@ public final class DiffTest
 		{
 			String actual = "actual";
 			String expected = "expected";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -114,7 +114,7 @@ public final class DiffTest
 		{
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -133,7 +133,7 @@ public final class DiffTest
 		{
 			String actual = "\nactual";
 			String expected = "expected";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -160,7 +160,7 @@ public final class DiffTest
 		{
 			String actual = "actual\n";
 			String expected = "expected";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -186,7 +186,7 @@ public final class DiffTest
 		{
 			String actual = "\n\nvalue";
 			String expected = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -213,7 +213,7 @@ public final class DiffTest
 		{
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -248,7 +248,7 @@ public final class DiffTest
 		{
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{

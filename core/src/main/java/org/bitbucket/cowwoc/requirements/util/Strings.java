@@ -45,6 +45,42 @@ public final class Strings
 	}
 
 	/**
+	 * Capitalizes the first letter of each word.
+	 *
+	 * @param str a string
+	 * @return a string with the first letter of each word capitalized
+	 * @throws NullPointerException if {@code str} is null
+	 */
+	public static String capitalize(String str)
+	{
+		StringBuilder result = new StringBuilder(str.length());
+		int codepoints = str.codePointCount(0, str.length());
+		boolean firstLetter = true;
+		for (int i = 0; i < codepoints; ++i)
+		{
+			int cp = str.codePointAt(i);
+			if (Character.isLetter(cp))
+			{
+				if (firstLetter)
+				{
+					firstLetter = false;
+					result.appendCodePoint(Character.toTitleCase(cp));
+					continue;
+				}
+				else
+				{
+					result.appendCodePoint(Character.toLowerCase(cp));
+					continue;
+				}
+			}
+			if (Character.isWhitespace(cp))
+				firstLetter = true;
+			result.appendCodePoint(cp);
+		}
+		return result.toString();
+	}
+
+	/**
 	 * Prevent construction.
 	 */
 	private Strings()

@@ -11,81 +11,84 @@ import java.util.function.Consumer;
 
 /**
  * An implementation of ObjectRequirements that does nothing.
- * <p>
+ *
+ * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
-enum NoOpObjectRequirements implements ObjectRequirements<Object>
+final class NoOpObjectRequirements<T> implements ObjectRequirements<T>
 {
-	INSTANCE;
+	NoOpObjectRequirements()
+	{
+	}
 
 	@Override
-	public ObjectRequirements<Object> withException(Class<? extends RuntimeException> exception)
+	public ObjectRequirements<T> withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> addContext(String key, Object value)
+	public ObjectRequirements<T> addContext(String key, Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> withContext(List<Entry<String, Object>> context)
+	public ObjectRequirements<T> withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isEqualTo(Object value)
+	public ObjectRequirements<T> isEqualTo(Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isEqualTo(Object value, String name)
+	public ObjectRequirements<T> isEqualTo(Object value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isNotEqualTo(Object value)
+	public ObjectRequirements<T> isNotEqualTo(Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isNotEqualTo(Object value, String name)
+	public ObjectRequirements<T> isNotEqualTo(Object value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isIn(Collection<Object> collection)
+	public ObjectRequirements<T> isIn(Collection<T> collection)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isInstanceOf(Class<?> type)
+	public ObjectRequirements<T> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isNull()
+	public ObjectRequirements<T> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isNotNull()
+	public ObjectRequirements<T> isNotNull()
 	{
 		return this;
 	}
 
 	@Override
-	public ObjectRequirements<Object> isolate(Consumer<ObjectRequirements<Object>> consumer)
+	public ObjectRequirements<T> isolate(Consumer<ObjectRequirements<T>> consumer)
 	{
 		return this;
 	}

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.ComparableRequirements;
-import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
@@ -21,6 +21,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
  */
 public final class DurationRequirementsImpl implements DurationRequirements
 {
+	private final SingletonScope scope;
 	private final Duration parameter;
 	private final String name;
 	private final Configuration config;
@@ -29,22 +30,26 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	/**
 	 * Creates new DurationRequirements.
 	 * <p>
+	 * @param scope     the system configuration
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @param config    determines how to handle a requirements violation
-	 * @throws NullPointerException     if {@code name} or {@code config} are null
+	 * @throws NullPointerException     if {@code scope}, {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	DurationRequirementsImpl(Duration parameter, String name, Configuration config)
+	DurationRequirementsImpl(SingletonScope scope, Duration parameter, String name,
+		Configuration config)
 	{
+		assert (scope != null): "scope may not be null";
 		assert (name != null): "name may not be null";
 		assert (config != null): "config may not be null";
+		this.scope = scope;
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;
-		this.asComparable = Requirements.requireThat(parameter, name).
-			withException(config.getException()).
-			withContext(config.getContext());
+		this.asComparable = scope.getInternalVerifier().requireThat(parameter, name).
+			withContext(config.getContext()).
+			withException(config.getException());
 	}
 
 	@Override
@@ -53,14 +58,14 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new DurationRequirementsImpl(parameter, name, newConfig);
+		return new DurationRequirementsImpl(scope, parameter, name, newConfig);
 	}
 
 	@Override
 	public DurationRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new DurationRequirementsImpl(parameter, name, newConfig);
+		return new DurationRequirementsImpl(scope, parameter, name, newConfig);
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new DurationRequirementsImpl(parameter, name, newConfig);
+		return new DurationRequirementsImpl(scope, parameter, name, newConfig);
 	}
 
 	@Override

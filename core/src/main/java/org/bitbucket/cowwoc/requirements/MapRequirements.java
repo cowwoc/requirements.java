@@ -54,5 +54,5 @@ public interface MapRequirements<K, V>
 	/**
 	 * @return requirements over {@link Map#size()}
 	 */
-	MapSizeRequirements size();
+	ContainerSizeRequirements size();
 }

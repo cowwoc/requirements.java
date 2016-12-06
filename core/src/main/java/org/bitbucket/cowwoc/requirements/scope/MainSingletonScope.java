@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.scope;
 import java.util.Optional;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.RequirementVerifier;
+import org.bitbucket.cowwoc.requirements.UnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.diff.string.TerminalType;
 
 /**
@@ -40,9 +40,9 @@ public final class MainSingletonScope extends AbstractSingletonScope
 	}
 
 	@Override
-	public RequirementVerifier getDefaultVerifier()
+	public UnifiedVerifier getInternalVerifier()
 	{
-		return new RequirementVerifier();
+		return new UnifiedVerifier();
 	}
 
 	@Override

@@ -5,6 +5,8 @@
 package org.bitbucket.cowwoc.requirements.usage;
 
 import java.time.Duration;
+import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.scope.TestSingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
@@ -44,7 +46,8 @@ public final class TimeRequirements
 			throw new NullPointerException("name may not be null");
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
-		return new DurationRequirementsImpl(parameter, name, Configuration.initial());
+		SingletonScope scope = new TestSingletonScope();
+		return new DurationRequirementsImpl(scope, parameter, name, Configuration.initial());
 	}
 
 	/**

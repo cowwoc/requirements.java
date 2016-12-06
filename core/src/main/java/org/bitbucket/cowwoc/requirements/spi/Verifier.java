@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.spi;
 
 import java.util.List;
 import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.annotations.Beta;
 
 /**
  * Behavior common to all verifiers.
@@ -36,10 +35,9 @@ public interface Verifier
 	 *
 	 * @param key   a key
 	 * @param value a value
-	 * @return a verifier with the specified context
+	 * @return a new verifier with the specified context
 	 * @throws NullPointerException if {@code key} is null
 	 */
-	@Beta
 	Verifier addContext(String key, Object value);
 
 	/**
@@ -49,6 +47,5 @@ public interface Verifier
 	 * @return a verifier with the specified context
 	 * @throws NullPointerException if {@code context} is null
 	 */
-	@Beta
 	Verifier withContext(List<Entry<String, Object>> context);
 }

@@ -123,9 +123,9 @@ final class NoOpMapRequirements implements MapRequirements<Object, Object>
 	}
 
 	@Override
-	public MapSizeRequirements size()
+	public ContainerSizeRequirements size()
 	{
-		return NoOpMapSizeRequirements.INSTANCE;
+		return NoOpContainerSizeRequirements.INSTANCE;
 	}
 
 	@Override

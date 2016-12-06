@@ -133,14 +133,14 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThan(T value, String name)
 	{
-		RequirementVerifier verifier = scope.getDefaultVerifier();
+		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference < 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be less than %s", this.name, name)).
+			String.format("%s must be less than %s.", this.name, name)).
 			addContext("Actual", parameter).
 			addContext("Max", value).
 			build();
@@ -149,12 +149,12 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThan(T value)
 	{
-		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference < 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be less than %s", this.name, value)).
+			String.format("%s must be less than %s.", this.name, value)).
 			addContext("Actual", parameter).
 			addContext("Max", value).
 			build();
@@ -163,14 +163,14 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThanOrEqualTo(T value, String name)
 	{
-		RequirementVerifier verifier = scope.getDefaultVerifier();
+		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference <= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be less than or equal to %s", this.name, name)).
+			String.format("%s must be less than or equal to %s.", this.name, name)).
 			addContext("Actual", parameter).
 			addContext("Max", value).
 			build();
@@ -179,12 +179,12 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isLessThanOrEqualTo(T value)
 	{
-		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference <= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be less than or equal to %s", name, value)).
+			String.format("%s must be less than or equal to %s.", name, value)).
 			addContext("Actual", parameter).
 			addContext("Max", value).
 			build();
@@ -193,14 +193,14 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThan(T value, String name)
 	{
-		RequirementVerifier verifier = scope.getDefaultVerifier();
+		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference > 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be greater than %s", this.name, name)).
+			String.format("%s must be greater than %s.", this.name, name)).
 			addContext("Actual", parameter).
 			addContext("Min", value).
 			build();
@@ -209,12 +209,12 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThan(T value)
 	{
-		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference > 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be greater than %s", name, value)).
+			String.format("%s must be greater than %s.", name, value)).
 			addContext("Actual", parameter).
 			addContext("Min", value).
 			build();
@@ -223,14 +223,14 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThanOrEqualTo(T value, String name)
 	{
-		RequirementVerifier verifier = scope.getDefaultVerifier();
+		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = parameter.compareTo(value);
 		if (difference >= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be greater than or equal to %s", this.name, name)).
+			String.format("%s must be greater than or equal to %s.", this.name, name)).
 			addContext("Actual", parameter).
 			addContext("Min", value).
 			build();
@@ -239,12 +239,12 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isGreaterThanOrEqualTo(T value)
 	{
-		scope.getDefaultVerifier().requireThat(value, "value").isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = parameter.compareTo(value);
 		if (difference >= 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be greater than or equal to %s", name, value)).
+			String.format("%s must be greater than or equal to %s.", name, value)).
 			addContext("Actual", parameter).
 			addContext("Min", value).
 			build();
@@ -253,7 +253,7 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableRequirements<T> isIn(T first, T last)
 	{
-		RequirementVerifier verifier = scope.getDefaultVerifier();
+		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(first, "first").isNotNull();
 		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
 		if (parameter.compareTo(first) >= 0 && parameter.compareTo(last) <= 0)
@@ -261,7 +261,7 @@ final class ComparableRequirementsImpl<T extends Comparable<? super T>>
 		StringBuilder message = new StringBuilder(LINE_LENGTH);
 		message.append(name).append(" must be in the range [").append(first).append(", ").append(last).
 			append("]\n").
-			append(String.format("Actual: %s", parameter));
+			append("Actual: ").append(parameter);
 		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
 			build();
 	}

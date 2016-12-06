@@ -5,9 +5,8 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import org.bitbucket.cowwoc.requirements.annotations.Beta;
-import org.bitbucket.cowwoc.requirements.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
@@ -24,38 +23,13 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 public final class UnifiedVerifier extends AbstractUnifiedVerifier
 {
 	/**
-	 * @return true if assertions are enabled for this class
-	 */
-	@SuppressWarnings(
-		{
-			"AssertWithSideEffects", "NestedAssignment"
-		})
-	private static boolean classAssertionsAreEnabled()
-	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		return assertionsEnabled;
-	}
-
-	/**
-	 * Creates a new verifier.
-	 * <p>
-	 * This class' assertion status determines whether {@code assertThat()} carries out a verification
-	 * or does nothing.
-	 */
-	public UnifiedVerifier()
-	{
-		super(MainSingletonScope.INSTANCE, Configuration.initial(), classAssertionsAreEnabled());
-	}
-
-	/**
-	 * Creates a new verifier.
-	 *
+	 * @param scope             the system configuration
 	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
+	 * @throws AssertionError if any of the arguments are null
 	 */
-	UnifiedVerifier(boolean assertionsEnabled)
+	public UnifiedVerifier(SingletonScope scope, boolean assertionsEnabled)
 	{
-		super(MainSingletonScope.INSTANCE, Configuration.initial(), assertionsEnabled);
+		this(scope, Configuration.initial(), assertionsEnabled);
 	}
 
 	/**
@@ -70,8 +44,7 @@ public final class UnifiedVerifier extends AbstractUnifiedVerifier
 	}
 
 	@Override
-	protected UnifiedVerifier newInstance(SingletonScope scope, Configuration config,
-		boolean enabled)
+	protected UnifiedVerifier newInstance(SingletonScope scope, Configuration config, boolean enabled)
 	{
 		return new UnifiedVerifier(scope, config, enabled);
 	}
@@ -89,7 +62,7 @@ public final class UnifiedVerifier extends AbstractUnifiedVerifier
 	}
 
 	@Override
-	public UnifiedVerifier withContext(List<Entry<String, Object>> context)
+	public UnifiedVerifier withContext(List<Map.Entry<String, Object>> context)
 	{
 		return (UnifiedVerifier) super.withContext(context);
 	}

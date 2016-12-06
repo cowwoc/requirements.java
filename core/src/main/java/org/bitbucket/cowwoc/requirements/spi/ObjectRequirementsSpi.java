@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.annotations.Beta;
 
 /**
  * Verifies requirements of an {@link Object} parameter.
@@ -21,11 +20,9 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	@Override
 	S withException(Class<? extends RuntimeException> exception);
 
-	@Beta
 	@Override
 	S addContext(String key, Object value);
 
-	@Beta
 	@Override
 	S withContext(List<Entry<String, Object>> context);
 
@@ -81,7 +78,6 @@ public interface ObjectRequirementsSpi<S extends ObjectRequirementsSpi<S, T>, T>
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} does not contain {@code parameter}
 	 */
-	@Beta
 	S isIn(Collection<T> collection);
 
 	/**

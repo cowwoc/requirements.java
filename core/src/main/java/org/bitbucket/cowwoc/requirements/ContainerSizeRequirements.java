@@ -4,16 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import java.util.Map;
 import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
 
 /**
- * Verifies requirements of a {@link Map#size()}.
+ * Verifies requirements of a container's size (e.g. size of a collection, length of a string).
  * <p>
  * @author Gili Tzabari
  */
-public interface MapSizeRequirements
-	extends PrimitiveIntegerRequirementsSpi<MapSizeRequirements>, Isolatable<MapSizeRequirements>
+public interface ContainerSizeRequirements
+	extends PrimitiveIntegerRequirementsSpi<ContainerSizeRequirements>,
+	Isolatable<ContainerSizeRequirements>
 {
 }

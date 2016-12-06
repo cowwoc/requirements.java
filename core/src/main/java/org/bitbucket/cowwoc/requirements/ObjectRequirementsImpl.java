@@ -246,7 +246,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	@Override
 	public ObjectRequirements<T> isEqualTo(T value, String name)
 	{
-		scope.getDefaultVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(parameter, value))
 			return this;
 		String actualName;
@@ -293,14 +293,14 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s", name, value)).
+			String.format("%s must not be equal to %s.", name, value)).
 			build();
 	}
 
 	@Override
 	public ObjectRequirements<T> isNotEqualTo(T value, String name)
 	{
-		scope.getDefaultVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(parameter, value))
 			return this;
 
@@ -313,7 +313,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	@Override
 	public ObjectRequirements<T> isIn(Collection<T> collection)
 	{
-		scope.getDefaultVerifier().requireThat(collection, "collection").isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(parameter))
 			return this;
 
@@ -326,13 +326,13 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	@Override
 	public ObjectRequirements<T> isInstanceOf(Class<?> type)
 	{
-		scope.getDefaultVerifier().requireThat(type, "type").isNotNull();
+		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (type.isInstance(parameter))
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.", name, type)).
-			addContext("Actual: %s", parameter.getClass()).
+			addContext("Actual", parameter.getClass()).
 			build();
 	}
 

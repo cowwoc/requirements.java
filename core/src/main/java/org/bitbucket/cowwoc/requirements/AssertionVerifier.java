@@ -152,17 +152,18 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Object, String)} but does nothing if assertions
 	 * are disabled.
 	 * <p>
+	 * @param <T>       the type of the parameter
 	 * @param parameter the value of the parameter
 	 * @param name      the name of the parameter
 	 * @return Requirements for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public ObjectRequirements<Object> requireThat(Object parameter, String name)
+	public <T> ObjectRequirements<T> requireThat(T parameter, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(parameter, name);
-		return NoOpObjectRequirements.INSTANCE;
+		return new NoOpObjectRequirements<>();
 	}
 
 	/**

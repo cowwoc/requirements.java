@@ -21,6 +21,7 @@ import org.bitbucket.cowwoc.requirements.util.Exceptions;
 final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRequirements
 {
 	private final SingletonScope scope;
+	private final BigDecimal bigDecimal;
 	private final int parameter;
 	private final String name;
 	private final Configuration config;
@@ -42,27 +43,34 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
+		this.bigDecimal = parameter;
 		this.parameter = parameter.precision();
 		this.name = name + ".precision()";
 		this.config = config;
-		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.parameter, name, config);
+		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.parameter, this.name, config);
 	}
 
 	/**
-	 * Constructor meant to be invoked by {@link #withException(Class)}.
+	 * Internal constructor that assumes that {@code name} has already been updated.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
+	 * @param scope      the system configuration
+	 * @param bigDecimal the BigDecimal
+	 * @param parameter  the precision of the BigDecimal
+	 * @param name       the name of the parameter
+	 * @param config     the instance configuration
+	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config}
+	 *                        are null; if {@code name} is empty
 	 */
-	private BigDecimalPrecisionRequirementsImpl(SingletonScope scope, int parameter, String name,
-		Configuration config)
+	private BigDecimalPrecisionRequirementsImpl(SingletonScope scope, BigDecimal bigDecimal,
+		int parameter, String name, Configuration config)
 	{
+		assert (scope != null): "scope may not be null";
+		assert (bigDecimal != null): "bigDecimal may not be null";
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
+		this.bigDecimal = bigDecimal;
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;
@@ -75,14 +83,14 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new BigDecimalPrecisionRequirementsImpl(scope, parameter, name, newConfig);
+		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, parameter, name, newConfig);
 	}
 
 	@Override
 	public BigDecimalPrecisionRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new BigDecimalPrecisionRequirementsImpl(scope, parameter, name, newConfig);
+		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, parameter, name, newConfig);
 	}
 
 	@Override
@@ -91,7 +99,7 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new BigDecimalPrecisionRequirementsImpl(scope, parameter, name, newConfig);
+		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, parameter, name, newConfig);
 	}
 
 	@Override

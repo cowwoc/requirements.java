@@ -95,5 +95,5 @@ public interface StringRequirements
 	/**
 	 * @return requirements over the String length
 	 */
-	StringLengthRequirements length();
+	ContainerSizeRequirements length();
 }

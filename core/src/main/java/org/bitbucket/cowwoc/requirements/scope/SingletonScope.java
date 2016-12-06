@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.scope;
 
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.RequirementVerifier;
+import org.bitbucket.cowwoc.requirements.UnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.diff.string.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.diff.string.Terminal;
 import org.bitbucket.cowwoc.requirements.diff.string.TerminalType;
@@ -31,9 +31,12 @@ public interface SingletonScope extends AutoCloseable
 	Optional<TerminalType> getRequestedTerminalType();
 
 	/**
-	 * @return the verifier we use to verify our own parameters
+	 * Returns a verifier that can be used to check a verifier's own parameters, or to delegate calls
+	 * to existing verifiers from external modules that don't have direct access to them.
+	 *
+	 * @return a {@link UnifiedVerifier} that uses this scope
 	 */
-	RequirementVerifier getDefaultVerifier();
+	UnifiedVerifier getInternalVerifier();
 
 	@Override
 	void close();

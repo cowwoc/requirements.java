@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.spi;
 
 import java.util.Collection;
-import org.bitbucket.cowwoc.requirements.CollectionSizeRequirements;
+import org.bitbucket.cowwoc.requirements.ContainerSizeRequirements;
 
 /**
  * Verifies requirements of a {@link Collection} parameter.
@@ -199,5 +199,5 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	/**
 	 * @return requirements over Collection.size()
 	 */
-	CollectionSizeRequirements size();
+	ContainerSizeRequirements size();
 }

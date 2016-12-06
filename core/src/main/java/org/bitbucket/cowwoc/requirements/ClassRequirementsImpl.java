@@ -17,8 +17,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-final class ClassRequirementsImpl<T>
-	implements ClassRequirements<T>
+final class ClassRequirementsImpl<T> implements ClassRequirements<T>
 {
 	private final SingletonScope scope;
 	private final Class<T> parameter;
@@ -132,11 +131,11 @@ final class ClassRequirementsImpl<T>
 	@Override
 	public ClassRequirements<T> isSupertypeOf(Class<?> type)
 	{
-		scope.getDefaultVerifier().requireThat(type, "type").isNotNull();
+		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (parameter.isAssignableFrom(type))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be a supertype of %s", name, type)).
+			String.format("%s must be a supertype of %s.", name, type)).
 			addContext("Actual", parameter.getClass()).
 			build();
 	}

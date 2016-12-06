@@ -121,7 +121,7 @@ final class StringRequirementsImpl implements StringRequirements
 		String trimmed = parameter.trim();
 		if (trimmed.equals(parameter))
 			return this;
-		return new StringRequirementsImpl(scope, trimmed, name, config);
+		return new StringRequirementsImpl(scope, trimmed, name + ".trim()", config);
 	}
 
 	/**
@@ -246,9 +246,10 @@ final class StringRequirementsImpl implements StringRequirements
 	}
 
 	@Override
-	public StringLengthRequirements length()
+	public ContainerSizeRequirements length()
 	{
-		return new StringLengthRequirementsImpl(scope, parameter, name, config);
+		return new ContainerSizeRequirementsImpl(scope, parameter, parameter.length(), name,
+			name + ".length()", Pluralizer.CHARACTER, config);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -145,7 +145,7 @@ enum NoOpDoubleRequirements implements DoubleRequirements
 	}
 
 	@Override
-	public DoubleRequirements withContext(List<Map.Entry<String, Object>> context)
+	public DoubleRequirements withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}

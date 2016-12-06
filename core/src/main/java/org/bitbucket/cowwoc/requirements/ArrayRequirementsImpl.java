@@ -55,7 +55,8 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 		this.parameter = parameter;
 		this.name = name;
 		this.config = config;
-		this.asCollection = new CollectionRequirementsImpl<>(scope, asList(parameter), name, config);
+		this.asCollection = new CollectionRequirementsImpl<>(scope, asList(parameter), name, config,
+			Pluralizer.ELEMENT);
 	}
 
 	@Override
@@ -71,8 +72,6 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	public ArrayRequirements<E> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		if (newConfig == config)
-			return this;
 		return new ArrayRequirementsImpl<>(scope, parameter, name, newConfig);
 	}
 
@@ -116,7 +115,7 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	@Override
 	public ArrayRequirements<E> isIn(Collection<E[]> collection)
 	{
-		scope.getDefaultVerifier().requireThat(collection, "collection").isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(parameter))
 			return this;
 
@@ -267,9 +266,10 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	}
 
 	@Override
-	public ArrayLengthRequirements length()
+	public ContainerSizeRequirements length()
 	{
-		return new ArrayLengthRequirementsImpl(scope, parameter, name, config);
+		return new ContainerSizeRequirementsImpl(scope, parameter, parameter.length, name,
+			name + ".length", Pluralizer.ELEMENT, config);
 	}
 
 	@Override

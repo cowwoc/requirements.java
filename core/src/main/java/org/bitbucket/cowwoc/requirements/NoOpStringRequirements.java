@@ -139,9 +139,9 @@ enum NoOpStringRequirements implements StringRequirements
 	}
 
 	@Override
-	public StringLengthRequirements length()
+	public ContainerSizeRequirements length()
 	{
-		return NoOpStringLengthRequirements.INSTANCE;
+		return NoOpContainerSizeRequirements.INSTANCE;
 	}
 
 	@Override
