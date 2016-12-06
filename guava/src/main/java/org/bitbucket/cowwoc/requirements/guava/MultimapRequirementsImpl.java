@@ -32,24 +32,24 @@ final class MultimapRequirementsImpl<K, V> implements MultimapRequirements<K, V>
 	/**
 	 * Creates new MultimapRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	MultimapRequirementsImpl(SingletonScope scope, Multimap<K, V> parameter, String name,
+	MultimapRequirementsImpl(SingletonScope scope, Multimap<K, V> actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.parameter = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = scope.getInternalVerifier().requireThat(parameter, name).
+		this.asObject = scope.getInternalVerifier().requireThat(actual, name).
 			withContext(config.getContext()).
 			withException(config.getException());
 	}

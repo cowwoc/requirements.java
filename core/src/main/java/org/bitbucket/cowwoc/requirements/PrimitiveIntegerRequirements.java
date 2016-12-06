@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
 
 /**
- * Verifies requirements of an {@link int} parameter.
+ * Verifies an {@link int} parameter.
  * <p>
  * @author Gili Tzabari
  */

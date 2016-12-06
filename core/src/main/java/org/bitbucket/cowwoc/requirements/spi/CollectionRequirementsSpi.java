@@ -8,7 +8,7 @@ import java.util.Collection;
 import org.bitbucket.cowwoc.requirements.ContainerSizeRequirements;
 
 /**
- * Verifies requirements of a {@link Collection} parameter.
+ * Verifies a {@link Collection} parameter.
  * <p>
  * @param <S> the type of the non-SPI interface extending this interface
  * @param <E> the type of element in the collection
@@ -18,23 +18,23 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	extends ObjectRequirementsSpi<S, Collection<E>>
 {
 	/**
-	 * Ensures that the parameter is empty.
+	 * Ensures that the actual value is empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is not empty
+	 * @throws IllegalArgumentException if the actual value is not empty
 	 */
 	S isEmpty();
 
 	/**
-	 * Ensures that the parameter is not empty.
+	 * Ensures that the actual value is not empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is empty
+	 * @throws IllegalArgumentException if the actual value is empty
 	 */
 	S isNotEmpty();
 
 	/**
-	 * Ensures that the parameter contains an element.
+	 * Ensures that the actual value contains an element.
 	 *
 	 * @param element the element that must exist
 	 * @return this
@@ -43,7 +43,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S contains(E element);
 
 	/**
-	 * Ensures that the parameter contains an element.
+	 * Ensures that the actual value contains an element.
 	 *
 	 * @param element the element that must exist
 	 * @param name    the name of the element
@@ -55,7 +55,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S contains(E element, String name);
 
 	/**
-	 * Ensures that the parameter contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
 	 *
 	 * @param elements the elements that must exist
 	 * @return this
@@ -67,7 +67,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S containsExactly(Collection<E> elements);
 
 	/**
-	 * Ensures that the parameter contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
 	 *
 	 * @param elements the elements that must exist
 	 * @param name     the name of the elements
@@ -80,7 +80,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S containsExactly(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the parameter contains any of multiple elements.
+	 * Ensures that the actual value contains any of multiple elements.
 	 *
 	 * @param elements the elements that must exist
 	 * @return this
@@ -90,7 +90,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S containsAny(Collection<E> elements);
 
 	/**
-	 * Ensures that the parameter contains any of multiple elements.
+	 * Ensures that the actual value contains any of multiple elements.
 	 *
 	 * @param elements the elements that must exist
 	 * @param name     the name of the elements
@@ -102,7 +102,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S containsAny(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the parameter contains all of multiple elements.
+	 * Ensures that the actual value contains all of multiple elements.
 	 *
 	 * @param elements the elements that must exist
 	 * @return this
@@ -112,7 +112,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S containsAll(Collection<E> elements);
 
 	/**
-	 * Ensures that the parameter contains all of multiple elements.
+	 * Ensures that the actual value contains all of multiple elements.
 	 *
 	 * @param elements the elements that must exist
 	 * @param name     the name of the elements
@@ -124,7 +124,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S containsAll(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the parameter does not contain an element.
+	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @return this
@@ -133,7 +133,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S doesNotContain(E element);
 
 	/**
-	 * Ensures that the parameter does not contain an element.
+	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @param name    the name of the element
@@ -145,7 +145,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S doesNotContain(E element, String name);
 
 	/**
-	 * Ensures that the parameter does not contain any of multiple elements.
+	 * Ensures that the actual value does not contain any of multiple elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -155,7 +155,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S doesNotContainAny(Collection<E> elements);
 
 	/**
-	 * Ensures that the parameter does not contain any of multiple elements.
+	 * Ensures that the actual value does not contain any of multiple elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -167,7 +167,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S doesNotContainAny(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the parameter does not contain all of multiple elements.
+	 * Ensures that the actual value does not contain all of multiple elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -177,7 +177,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S doesNotContainAll(Collection<E> elements);
 
 	/**
-	 * Ensures that the parameter does not contain all of multiple elements.
+	 * Ensures that the actual value does not contain all of multiple elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -189,7 +189,7 @@ public interface CollectionRequirementsSpi<S extends CollectionRequirementsSpi<S
 	S doesNotContainAll(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the parameter does not contain any duplicate elements.
+	 * Ensures that the actual value does not contain any duplicate elements.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the collection contains any duplicate elements

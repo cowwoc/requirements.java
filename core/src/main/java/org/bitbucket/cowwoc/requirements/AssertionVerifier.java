@@ -19,7 +19,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import org.bitbucket.cowwoc.requirements.spi.Verifier;
 
 /**
- * Verifies requirements of a parameter if assertions are enabled; otherwise, does nothing.
+ * Verifies a parameter if assertions are enabled; otherwise, does nothing.
  * <p>
  * Unlike {@link Requirements}, instances of this class can be configured prior to initiating
  * verification. Doing so causes the same configuration to get reused across runs.
@@ -152,17 +152,17 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Object, String)} but does nothing if assertions
 	 * are disabled.
 	 * <p>
-	 * @param <T>       the type of the parameter
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T> ObjectRequirements<T> requireThat(T parameter, String name)
+	public <T> ObjectRequirements<T> requireThat(T actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return new NoOpObjectRequirements<>();
 	}
 
@@ -170,17 +170,17 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Collection, String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
-	 * @param <E>       the type of elements in the collection
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <E>    the type of elements in the collection
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> CollectionRequirements<E> requireThat(Collection<E> parameter, String name)
+	public <E> CollectionRequirements<E> requireThat(Collection<E> actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return new NoOpCollectionRequirements<>();
 	}
 
@@ -188,17 +188,17 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Object[], String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
-	 * @param <E>       the type of elements in the collection
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <E>    the type of elements in the collection
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> ArrayRequirements<E> requireThat(E[] parameter, String name)
+	public <E> ArrayRequirements<E> requireThat(E[] actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return new NoOpArrayRequirements<>();
 	}
 
@@ -206,18 +206,18 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Comparable, String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
-	 * @param <T>       the type of the number
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of the number
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T parameter,
+	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T actual,
 		String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return new NoOpComparableRequirements<>();
 	}
 
@@ -225,34 +225,34 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Number, String)} but does nothing if assertions
 	 * are disabled.
 	 *
-	 * @param <T>       the type of the number
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of the number
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T parameter,
+	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T actual,
 		String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return new NoOpNumberRequirements<>();
 	}
 
 	/**
-	 * Verifies requirements of a {@code Double}.
+	 * Verifies a {@code Double}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements requireThat(Double parameter, String name)
+	public DoubleRequirements requireThat(Double actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return NoOpDoubleRequirements.INSTANCE;
 	}
 
@@ -260,16 +260,16 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(BigDecimal, String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public BigDecimalRequirements requireThat(BigDecimal parameter, String name)
+	public BigDecimalRequirements requireThat(BigDecimal actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return NoOpBigDecimalRequirements.INSTANCE;
 	}
 
@@ -277,18 +277,18 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Map, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
-	 * @param <K>       the type of key in the map
-	 * @param <V>       the type of value in the map
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <K>    the type of key in the map
+	 * @param <V>    the type of value in the map
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> parameter, String name)
+	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		@SuppressWarnings("unchecked")
 		MapRequirements<K, V> result = (MapRequirements<K, V>) NoOpMapRequirements.INSTANCE;
 		return result;
@@ -298,16 +298,16 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Path, String)} but does nothing if assertions
 	 * are disabled.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public PathRequirements requireThat(Path parameter, String name)
+	public PathRequirements requireThat(Path actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return NoOpPathRequirements.INSTANCE;
 	}
 
@@ -315,16 +315,16 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(String, String)} but does nothing if assertions
 	 * are disabled.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public StringRequirements requireThat(String parameter, String name)
+	public StringRequirements requireThat(String actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return NoOpStringRequirements.INSTANCE;
 	}
 
@@ -332,16 +332,16 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(URI, String)} but does nothing if assertions are
 	 * disabled.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public UriRequirements requireThat(URI parameter, String name)
+	public UriRequirements requireThat(URI actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return NoOpUriRequirements.INSTANCE;
 	}
 
@@ -349,17 +349,17 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Class, String)} but does nothing if assertions
 	 * are disabled.
 	 * <p>
-	 * @param <T>       the type of class
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of class
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T> ClassRequirements<T> requireThat(Class<T> parameter, String name)
+	public <T> ClassRequirements<T> requireThat(Class<T> actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		@SuppressWarnings("unchecked")
 		ClassRequirements<T> result = (ClassRequirements<T>) NoOpClassRequirements.INSTANCE;
 		return result;
@@ -369,16 +369,16 @@ public final class AssertionVerifier implements Verifier
 	 * Same as {@link RequirementVerifier#requireThat(Optional, String)} but does nothing if
 	 * assertions are disabled.
 	 * <p>
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public OptionalRequirements requireThat(Optional<?> parameter, String name)
+	public OptionalRequirements requireThat(Optional<?> actual, String name)
 	{
 		if (enabled)
-			return requirementVerifier.requireThat(parameter, name);
+			return requirementVerifier.requireThat(actual, name);
 		return NoOpOptionalRequirements.INSTANCE;
 	}
 }

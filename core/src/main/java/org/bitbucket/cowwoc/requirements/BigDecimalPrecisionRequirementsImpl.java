@@ -22,7 +22,7 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 {
 	private final SingletonScope scope;
 	private final BigDecimal bigDecimal;
-	private final int parameter;
+	private final int actual;
 	private final String name;
 	private final Configuration config;
 	private final PrimitiveIntegerRequirements asInt;
@@ -30,24 +30,24 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	/**
 	 * Creates new BigDecimalPrecisionRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	BigDecimalPrecisionRequirementsImpl(SingletonScope scope, BigDecimal parameter, String name,
+	BigDecimalPrecisionRequirementsImpl(SingletonScope scope, BigDecimal actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.bigDecimal = parameter;
-		this.parameter = parameter.precision();
+		this.bigDecimal = actual;
+		this.actual = actual.precision();
 		this.name = name + ".precision()";
 		this.config = config;
-		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.parameter, this.name, config);
+		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.actual, this.name, config);
 	}
 
 	/**
@@ -55,14 +55,14 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 	 *
 	 * @param scope      the system configuration
 	 * @param bigDecimal the BigDecimal
-	 * @param parameter  the precision of the BigDecimal
+	 * @param actual     the precision of the BigDecimal
 	 * @param name       the name of the parameter
 	 * @param config     the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config}
 	 *                        are null; if {@code name} is empty
 	 */
 	private BigDecimalPrecisionRequirementsImpl(SingletonScope scope, BigDecimal bigDecimal,
-		int parameter, String name, Configuration config)
+		int actual, String name, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
 		assert (bigDecimal != null): "bigDecimal may not be null";
@@ -71,10 +71,10 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		assert (config != null): "config may not be null";
 		this.scope = scope;
 		this.bigDecimal = bigDecimal;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.parameter, name, config);
+		this.asInt = new PrimitiveIntegerRequirementsImpl(scope, this.actual, name, config);
 	}
 
 	@Override
@@ -83,14 +83,14 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, parameter, name, newConfig);
+		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, actual, name, newConfig);
 	}
 
 	@Override
 	public BigDecimalPrecisionRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, parameter, name, newConfig);
+		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, actual, name, newConfig);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ final class BigDecimalPrecisionRequirementsImpl implements BigDecimalPrecisionRe
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, parameter, name, newConfig);
+		return new BigDecimalPrecisionRequirementsImpl(scope, bigDecimal, actual, name, newConfig);
 	}
 
 	@Override

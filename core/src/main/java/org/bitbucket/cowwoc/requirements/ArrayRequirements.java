@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.ArrayRequirementsSpi;
 import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 
 /**
- * Verifies requirements of an array parameter.
+ * Verifies an array parameter.
  * <p>
  * @param <E> the type of elements in the array
  * @author Gili Tzabari

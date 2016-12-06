@@ -17,10 +17,10 @@ public interface UriRequirements
 	extends ObjectRequirementsSpi<UriRequirements, URI>, Isolatable<UriRequirements>
 {
 	/**
-	 * Ensures that the parameter is absolute.
+	 * Ensures that the actual value is absolute.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is not absolute
+	 * @throws IllegalArgumentException if actual value is not absolute
 	 */
 	UriRequirements isAbsolute();
 }

@@ -9,10 +9,10 @@ public interface DurationRequirements
 	Isolatable<DurationRequirements>
 {
 	/**
-	 * Ensures that the parameter is positive.
+	 * Ensures that the actual value is positive.
 	 * <p>
 	 * @return this
-	 * @throws IllegalArgumentException if the parameter is not positive
+	 * @throws IllegalArgumentException if the actual value is not positive
 	 */
 	DurationRequirements isPositive();
 }

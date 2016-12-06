@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
- * Verifies requirements of an {@link Object} parameter.
+ * Verifies an {@link Object} parameter.
  * <p>
  * @param <T> the type of the parameter
  * @author Gili Tzabari

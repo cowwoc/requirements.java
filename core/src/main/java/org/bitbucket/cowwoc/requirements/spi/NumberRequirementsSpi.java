@@ -15,50 +15,50 @@ public interface NumberRequirementsSpi<S extends NumberRequirementsSpi<S, T>, T 
 	extends ComparableRequirementsSpi<S, T>
 {
 	/**
-	 * Ensures that the parameter is negative.
+	 * Ensures that the actual value is negative.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is not negative
+	 * @throws IllegalArgumentException if the actual value is not negative
 	 */
 	S isNegative();
 
 	/**
-	 * Ensures that the parameter is not negative.
+	 * Ensures that the actual value is not negative.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is negative
+	 * @throws IllegalArgumentException if the actual value is negative
 	 */
 	S isNotNegative();
 
 	/**
-	 * Ensures that the parameter is not positive.
+	 * Ensures that the actual value is not positive.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is positive
+	 * @throws IllegalArgumentException if the actual value is positive
 	 */
 	S isNotPositive();
 
 	/**
-	 * Ensures that the parameter is not zero.
+	 * Ensures that the actual value is not zero.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is zero
+	 * @throws IllegalArgumentException if the actual value is zero
 	 */
 	S isNotZero();
 
 	/**
-	 * Ensures that the parameter is positive.
+	 * Ensures that the actual value is positive.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is not positive
+	 * @throws IllegalArgumentException if the actual value is not positive
 	 */
 	S isPositive();
 
 	/**
-	 * Ensures that the parameter is zero.
+	 * Ensures that the actual value is zero.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if {@code parameter} is not zero
+	 * @throws IllegalArgumentException if the actual value is not zero
 	 */
 	S isZero();
 }

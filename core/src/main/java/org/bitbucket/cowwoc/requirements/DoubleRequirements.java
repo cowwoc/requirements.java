@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.NumberRequirementsSpi;
 
 /**
- * Verifies requirements of a {@link Double} parameter.
+ * Verifies a {@link Double} parameter.
  * <p>
  * @author Gili Tzabari
  */
@@ -17,37 +17,37 @@ public interface DoubleRequirements
 	Isolatable<DoubleRequirements>
 {
 	/**
-	 * Ensures that the parameter is a number.
+	 * Ensures that the actual value is a number.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is not a number
+	 * @throws IllegalArgumentException if actual value is not a number
 	 * @see Double#isNaN()
 	 */
 	DoubleRequirements isNumber();
 
 	/**
-	 * Ensures that the parameter is not a number.
+	 * Ensures that the actual value is not a number.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is a number
+	 * @throws IllegalArgumentException if actual value is a number
 	 * @see Double#isNaN()
 	 */
 	DoubleRequirements isNotNumber();
 
 	/**
-	 * Ensures that the parameter is finite.
+	 * Ensures that the actual value is finite.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is not finite
+	 * @throws IllegalArgumentException if actual value is not finite
 	 * @see Double#isInfinite()
 	 */
 	DoubleRequirements isFinite();
 
 	/**
-	 * Ensures that the parameter is not finite.
+	 * Ensures that the actual value is not finite.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is finite
+	 * @throws IllegalArgumentException if actual value is finite
 	 * @see Double#isInfinite()
 	 */
 	DoubleRequirements isNotFinite();

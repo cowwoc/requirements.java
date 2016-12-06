@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.spi;
 
 /**
- * Verifies requirements of an {@link int} parameter.
+ * Verifies an {@link int} parameter.
  * <p>
  * @param <S> the type of the non-SPI interface extending this interface
  * @author Gili Tzabari
@@ -16,7 +16,7 @@ public interface PrimitiveIntegerRequirementsSpi<S extends PrimitiveIntegerRequi
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @deprecated the parameter cannot be null
+	 * @deprecated the actual value cannot be null
 	 */
 	@Deprecated
 	@Override

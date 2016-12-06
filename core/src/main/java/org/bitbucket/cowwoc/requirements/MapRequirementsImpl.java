@@ -22,7 +22,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 {
 	private final SingletonScope scope;
-	private final Map<K, V> parameter;
+	private final Map<K, V> actual;
 	private final String name;
 	private final Configuration config;
 	private final ObjectRequirements<Map<K, V>> asObject;
@@ -30,23 +30,23 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	/**
 	 * Creates new MapRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	MapRequirementsImpl(SingletonScope scope, Map<K, V> parameter, String name, Configuration config)
+	MapRequirementsImpl(SingletonScope scope, Map<K, V> actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = new ObjectRequirementsImpl<>(scope, parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -55,14 +55,14 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new MapRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new MapRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public MapRequirements<K, V> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new MapRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new MapRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new MapRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new MapRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -133,39 +133,39 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	@Override
 	public CollectionRequirements<K> keySet()
 	{
-		return new CollectionRequirementsImpl<>(scope, parameter.keySet(), name + ".keySet()", config,
+		return new CollectionRequirementsImpl<>(scope, actual.keySet(), name + ".keySet()", config,
 			Pluralizer.KEY);
 	}
 
 	@Override
 	public CollectionRequirements<V> values()
 	{
-		return new CollectionRequirementsImpl<>(scope, parameter.values(), name + ".values()", config,
+		return new CollectionRequirementsImpl<>(scope, actual.values(), name + ".values()", config,
 			Pluralizer.VALUE);
 	}
 
 	@Override
 	public CollectionRequirements<Entry<K, V>> entrySet()
 	{
-		return new CollectionRequirementsImpl<>(scope, parameter.entrySet(), name + ".entrySet()",
+		return new CollectionRequirementsImpl<>(scope, actual.entrySet(), name + ".entrySet()",
 			config, Pluralizer.ENTRY);
 	}
 
 	@Override
 	public MapRequirements<K, V> isEmpty()
 	{
-		if (parameter.isEmpty())
+		if (actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public MapRequirements<K, V> isNotEmpty()
 	{
-		if (!parameter.isEmpty())
+		if (!actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be empty", name)).
@@ -175,7 +175,7 @@ final class MapRequirementsImpl<K, V> implements MapRequirements<K, V>
 	@Override
 	public ContainerSizeRequirements size()
 	{
-		return new ContainerSizeRequirementsImpl(scope, parameter, parameter.size(), name,
+		return new ContainerSizeRequirementsImpl(scope, actual, actual.size(), name,
 			name + ".size()", Pluralizer.ENTRY, config);
 	}
 

@@ -20,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class OptionalRequirementsImpl implements OptionalRequirements
 {
 	private final SingletonScope scope;
-	private final Optional<?> parameter;
+	private final Optional<?> actual;
 	private final String name;
 	private final Configuration config;
 	private final ObjectRequirements<Optional<?>> asObject;
@@ -28,24 +28,24 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	/**
 	 * Creates new OptionalRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	OptionalRequirementsImpl(SingletonScope scope, Optional<?> parameter, String name,
+	OptionalRequirementsImpl(SingletonScope scope, Optional<?> actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = new ObjectRequirementsImpl<>(scope, parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -54,14 +54,14 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new OptionalRequirementsImpl(scope, parameter, name, newConfig);
+		return new OptionalRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public OptionalRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new OptionalRequirementsImpl(scope, parameter, name, newConfig);
+		return new OptionalRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -70,13 +70,13 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new OptionalRequirementsImpl(scope, parameter, name, newConfig);
+		return new OptionalRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public OptionalRequirements isPresent()
 	{
-		if (parameter.isPresent())
+		if (actual.isPresent())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be present", name)).
@@ -86,7 +86,7 @@ final class OptionalRequirementsImpl implements OptionalRequirements
 	@Override
 	public OptionalRequirements isEmpty()
 	{
-		if (!parameter.isPresent())
+		if (!actual.isPresent())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty", name)).

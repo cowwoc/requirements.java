@@ -13,14 +13,14 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import org.bitbucket.cowwoc.requirements.util.Exceptions;
 
 /**
- * Verifies requirements of an {@link int} parameter.
+ * Verifies an {@link int} parameter.
  * <p>
  * @author Gili Tzabari
  */
 class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 {
 	private final SingletonScope scope;
-	private final int parameter;
+	private final int actual;
 	private final String name;
 	private final Configuration config;
 	private final NumberRequirements<Integer> asNumber;
@@ -28,24 +28,24 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 	/**
 	 * Creates new PrimitiveIntegerRequirementsImpl.
 	 *
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	protected PrimitiveIntegerRequirementsImpl(SingletonScope scope, int parameter, String name,
+	protected PrimitiveIntegerRequirementsImpl(SingletonScope scope, int actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asNumber = new NumberRequirementsImpl<>(scope, parameter, name, config);
+		this.asNumber = new NumberRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -54,14 +54,14 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new PrimitiveIntegerRequirementsImpl(scope, parameter, name, newConfig);
+		return new PrimitiveIntegerRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public PrimitiveIntegerRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new PrimitiveIntegerRequirementsImpl(scope, parameter, name, newConfig);
+		return new PrimitiveIntegerRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ class PrimitiveIntegerRequirementsImpl implements PrimitiveIntegerRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new PrimitiveIntegerRequirementsImpl(scope, parameter, name, newConfig);
+		return new PrimitiveIntegerRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override

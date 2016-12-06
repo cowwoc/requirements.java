@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.ComparableRequirementsSpi;
 import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 
 /**
- * Verifies requirements of a {@link Comparable}.
+ * Verifies a {@link Comparable}.
  * <p>
  * @param <T> the type of the parameter
  * @author Gili Tzabari

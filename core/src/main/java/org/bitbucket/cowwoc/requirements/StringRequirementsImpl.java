@@ -23,7 +23,7 @@ final class StringRequirementsImpl implements StringRequirements
 {
 	private final static Pattern EMAIL_PATTERN = Pattern.compile("[^@]+@[^@]+");
 	private final SingletonScope scope;
-	private final String parameter;
+	private final String actual;
 	private final String name;
 	private final Configuration config;
 	private final ObjectRequirements<String> asObject;
@@ -31,23 +31,23 @@ final class StringRequirementsImpl implements StringRequirements
 	/**
 	 * Creates new StringRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	StringRequirementsImpl(SingletonScope scope, String parameter, String name, Configuration config)
+	StringRequirementsImpl(SingletonScope scope, String actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = new ObjectRequirementsImpl<>(scope, parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -56,14 +56,14 @@ final class StringRequirementsImpl implements StringRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new StringRequirementsImpl(scope, parameter, name, newConfig);
+		return new StringRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public StringRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new StringRequirementsImpl(scope, parameter, name, newConfig);
+		return new StringRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -72,183 +72,124 @@ final class StringRequirementsImpl implements StringRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new StringRequirementsImpl(scope, parameter, name, newConfig);
+		return new StringRequirementsImpl(scope, actual, name, newConfig);
 	}
 
-	/**
-	 * Ensures that the parameter is empty.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter is not empty
-	 * @see #trim()
-	 */
 	@Override
 	public StringRequirements isEmpty()
 	{
-		if (parameter.isEmpty())
+		if (actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
-	/**
-	 * Ensures that the parameter is not empty.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter is empty
-	 * @see #trim()
-	 */
 	@Override
 	public StringRequirements isNotEmpty()
 	{
-		if (!parameter.isEmpty())
+		if (!actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be empty", name)).
 			build();
 	}
 
-	/**
-	 * Trims whitespace at the beginning and end of the parameter.
-	 * <p>
-	 * @return a StringRequirements with {@code parameter} trimmed
-	 */
 	@Override
 	public StringRequirements trim()
 	{
-		String trimmed = parameter.trim();
-		if (trimmed.equals(parameter))
+		String trimmed = actual.trim();
+		if (trimmed.equals(actual))
 			return this;
 		return new StringRequirementsImpl(scope, trimmed, name + ".trim()", config);
 	}
 
-	/**
-	 * Ensures that the parameter contains a valid email format.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter does not contain a valid email format
-	 */
 	@Override
 	public StringRequirements isEmailFormat()
 	{
-		if (EMAIL_PATTERN.matcher(parameter).matches())
+		if (EMAIL_PATTERN.matcher(actual).matches())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s does not contain a valid email format", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
-	/**
-	 * Ensures that the parameter contains a valid IP address format.
-	 * <p>
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter does not contain a valid IP address format
-	 */
 	@Override
 	public StringRequirements isIpAddressFormat()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.
-		char firstCharacter = parameter.charAt(0);
+		char firstCharacter = actual.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
 				String.format("%s does not contain a valid IP address format", name)).
-				addContext("Actual", parameter).
+				addContext("Actual", actual).
 				build();
 		}
 		try
 		{
-			InetAddress.getByName(parameter);
+			InetAddress.getByName(actual);
 		}
 		catch (UnknownHostException e)
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
 				String.format("%s does not contain a valid IP address format", name), e).
-				addContext("Actual", parameter).
+				addContext("Actual", actual).
 				build();
 		}
 		return this;
 	}
 
-	/**
-	 * Ensures that the parameter starts with a value.
-	 * <p>
-	 * @param prefix the value the string must start with
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter does not start with prefix
-	 */
 	@Override
 	public StringRequirements startsWith(String prefix)
 	{
-		if (parameter.startsWith(prefix))
+		if (actual.startsWith(prefix))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must start with \"%s\".", name, prefix)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
-	/**
-	 * Ensures that the parameter does not start with a value.
-	 * <p>
-	 * @param prefix the value the string must not start with
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter starts with prefix
-	 */
 	@Override
 	public StringRequirements doesNotStartWith(String prefix)
 	{
-		if (!parameter.startsWith(prefix))
+		if (!actual.startsWith(prefix))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not start with \"%s\".", name, prefix)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
-	/**
-	 * Ensures that the parameter ends with a value.
-	 * <p>
-	 * @param suffix the value the string must end with
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter does not end with suffix
-	 */
 	@Override
 	public StringRequirements endsWith(String suffix)
 	{
-		if (parameter.endsWith(suffix))
+		if (actual.endsWith(suffix))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must end with \"%s\".", name, suffix)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
-	/**
-	 * Ensures that the parameter does not end with a value.
-	 * <p>
-	 * @param suffix the value the string must not end with
-	 * @return this
-	 * @throws IllegalArgumentException if the parameter ends with suffix
-	 */
 	@Override
 	public StringRequirements doesNotEndWith(String suffix)
 	{
-		if (!parameter.endsWith(suffix))
+		if (!actual.endsWith(suffix))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must not end with \"%s\".", name, suffix)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public ContainerSizeRequirements length()
 	{
-		return new ContainerSizeRequirementsImpl(scope, parameter, parameter.length(), name,
+		return new ContainerSizeRequirementsImpl(scope, actual, actual.length(), name,
 			name + ".length()", Pluralizer.CHARACTER, config);
 	}
 

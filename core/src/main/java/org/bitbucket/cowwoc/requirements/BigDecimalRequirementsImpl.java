@@ -20,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 {
 	private final SingletonScope scope;
-	private final BigDecimal parameter;
+	private final BigDecimal actual;
 	private final String name;
 	private final Configuration config;
 	private final NumberRequirements<BigDecimal> asNumber;
@@ -28,24 +28,24 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 	/**
 	 * Creates new BigDecimalRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	BigDecimalRequirementsImpl(SingletonScope scope, BigDecimal parameter, String name,
+	BigDecimalRequirementsImpl(SingletonScope scope, BigDecimal actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asNumber = new NumberRequirementsImpl<>(scope, parameter, name, config);
+		this.asNumber = new NumberRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -54,14 +54,14 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new BigDecimalRequirementsImpl(scope, parameter, name, newConfig);
+		return new BigDecimalRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public BigDecimalRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new BigDecimalRequirementsImpl(scope, parameter, name, newConfig);
+		return new BigDecimalRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new BigDecimalRequirementsImpl(scope, parameter, name, newConfig);
+		return new BigDecimalRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -224,11 +224,11 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 	public BigDecimalRequirements isZero()
 	{
 		// Number.longValue() truncates the fractional portion, which we need to take into account
-		if (parameter.signum() == 0)
+		if (actual.signum() == 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be zero", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -236,7 +236,7 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 	public BigDecimalRequirements isNotZero()
 	{
 		// Number.longValue() truncates the fractional portion, which we need to take into account
-		if (parameter.signum() != 0)
+		if (actual.signum() != 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be zero", name)).
@@ -246,13 +246,13 @@ final class BigDecimalRequirementsImpl implements BigDecimalRequirements
 	@Override
 	public BigDecimalPrecisionRequirements precision()
 	{
-		return new BigDecimalPrecisionRequirementsImpl(scope, parameter, name, config);
+		return new BigDecimalPrecisionRequirementsImpl(scope, actual, name, config);
 	}
 
 	@Override
 	public BigDecimalScaleRequirements scale()
 	{
-		return new BigDecimalScaleRequirementsImpl(scope, parameter, name, config);
+		return new BigDecimalScaleRequirementsImpl(scope, actual, name, config);
 	}
 
 	@Override

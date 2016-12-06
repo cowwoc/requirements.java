@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.spi.CollectionRequirementsSpi;
 import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 
 /**
- * Verifies requirements of a {@link Collection} parameter.
+ * Verifies a {@link Collection} parameter.
  * <p>
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari

@@ -19,7 +19,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class DoubleRequirementsImpl implements DoubleRequirements
 {
 	private final SingletonScope scope;
-	private final Double parameter;
+	private final Double actual;
 	private final String name;
 	private final Configuration config;
 	private final NumberRequirements<Double> asNumber;
@@ -27,23 +27,23 @@ final class DoubleRequirementsImpl implements DoubleRequirements
 	/**
 	 * Creates new DoubleRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	DoubleRequirementsImpl(SingletonScope scope, Double parameter, String name, Configuration config)
+	DoubleRequirementsImpl(SingletonScope scope, Double actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asNumber = new NumberRequirementsImpl<>(scope, parameter, name, config);
+		this.asNumber = new NumberRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -52,14 +52,14 @@ final class DoubleRequirementsImpl implements DoubleRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new DoubleRequirementsImpl(scope, parameter, name, newConfig);
+		return new DoubleRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public DoubleRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new DoubleRequirementsImpl(scope, parameter, name, newConfig);
+		return new DoubleRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ final class DoubleRequirementsImpl implements DoubleRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new DoubleRequirementsImpl(scope, parameter, name, newConfig);
+		return new DoubleRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -235,44 +235,44 @@ final class DoubleRequirementsImpl implements DoubleRequirements
 	@Override
 	public DoubleRequirements isNumber()
 	{
-		if (!parameter.isNaN())
+		if (!actual.isNaN())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be a number.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public DoubleRequirements isNotNumber()
 	{
-		if (parameter.isNaN())
+		if (actual.isNaN())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be a number.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public DoubleRequirements isFinite()
 	{
-		if (!parameter.isInfinite())
+		if (!actual.isInfinite())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be finite.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public DoubleRequirements isNotFinite()
 	{
-		if (parameter.isInfinite())
+		if (actual.isInfinite())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be infinite.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 

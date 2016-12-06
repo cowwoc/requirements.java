@@ -21,7 +21,7 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	implements NumberRequirements<T>
 {
 	private final SingletonScope scope;
-	private final T parameter;
+	private final T actual;
 	private final String name;
 	private final Configuration config;
 	private final ComparableRequirements<T> asComparable;
@@ -29,23 +29,23 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	/**
 	 * Creates a new NumberRequirementsImpl.
 	 *
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	NumberRequirementsImpl(SingletonScope scope, T parameter, String name, Configuration config)
+	NumberRequirementsImpl(SingletonScope scope, T actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asComparable = new ComparableRequirementsImpl<>(scope, parameter, name, config);
+		this.asComparable = new ComparableRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -54,14 +54,14 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new NumberRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new NumberRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public NumberRequirements<T> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new NumberRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new NumberRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new NumberRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new NumberRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -132,40 +132,40 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	@Override
 	public NumberRequirements<T> isNegative()
 	{
-		if (parameter.longValue() < 0L)
+		if (actual.longValue() < 0L)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be negative.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public NumberRequirements<T> isNotNegative()
 	{
-		if (parameter.longValue() >= 0L)
+		if (actual.longValue() >= 0L)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be negative.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public NumberRequirements<T> isZero()
 	{
-		if (parameter.longValue() == 0L)
+		if (actual.longValue() == 0L)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be zero.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public NumberRequirements<T> isNotZero()
 	{
-		if (parameter.longValue() != 0L)
+		if (actual.longValue() != 0L)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be zero", name)).
@@ -175,22 +175,22 @@ final class NumberRequirementsImpl<T extends Number & Comparable<? super T>>
 	@Override
 	public NumberRequirements<T> isPositive()
 	{
-		if (parameter.longValue() > 0L)
+		if (actual.longValue() > 0L)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be positive.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public NumberRequirements<T> isNotPositive()
 	{
-		if (parameter.longValue() <= 0L)
+		if (actual.longValue() <= 0L)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be positive.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 

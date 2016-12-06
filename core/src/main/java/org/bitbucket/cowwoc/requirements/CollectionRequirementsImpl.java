@@ -25,7 +25,7 @@ import org.bitbucket.cowwoc.requirements.util.Strings;
 class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 {
 	private final SingletonScope scope;
-	private final Collection<E> parameter;
+	private final Collection<E> actual;
 	private final String name;
 	private final Configuration config;
 	private final Pluralizer pluralizer;
@@ -35,13 +35,13 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	 * Creates new CollectionRequirementsImpl.
 	 * <p>
 	 * @param scope      the system configuration
-	 * @param parameter  the value of the parameter
+	 * @param actual     the value of the parameter
 	 * @param name       the name of the parameter
 	 * @param config     the instance configuration
 	 * @param pluralizer returns the singular or plural form of an element type
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	CollectionRequirementsImpl(SingletonScope scope, Collection<E> parameter, String name,
+	CollectionRequirementsImpl(SingletonScope scope, Collection<E> actual, String name,
 		Configuration config, Pluralizer pluralizer)
 	{
 		assert (name != null): "name may not be null";
@@ -49,11 +49,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		assert (config != null): "config may not be null";
 		assert (pluralizer != null): "pluralizer may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
 		this.pluralizer = pluralizer;
-		this.asObject = new ObjectRequirementsImpl<>(scope, parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -62,14 +62,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new CollectionRequirementsImpl<>(scope, parameter, name, newConfig, pluralizer);
+		return new CollectionRequirementsImpl<>(scope, actual, name, newConfig, pluralizer);
 	}
 
 	@Override
 	public CollectionRequirements<E> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new CollectionRequirementsImpl<>(scope, parameter, name, newConfig, pluralizer);
+		return new CollectionRequirementsImpl<>(scope, actual, name, newConfig, pluralizer);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new CollectionRequirementsImpl<>(scope, parameter, name, newConfig, pluralizer);
+		return new CollectionRequirementsImpl<>(scope, actual, name, newConfig, pluralizer);
 	}
 
 	@Override
@@ -140,18 +140,18 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	@Override
 	public CollectionRequirements<E> isEmpty()
 	{
-		if (parameter.isEmpty())
+		if (actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public CollectionRequirements<E> isNotEmpty()
 	{
-		if (!parameter.isEmpty())
+		if (!actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be empty.", name)).
@@ -161,11 +161,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	@Override
 	public CollectionRequirements<E> contains(E element)
 	{
-		if (parameter.contains(element))
+		if (actual.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain: %s", name, element)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -173,11 +173,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> contains(E element, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameter.contains(element))
+		if (actual.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s.", this.name, name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Missing", element).
 			build();
 	}
@@ -187,14 +187,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
 		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> parameterAsSet = Collections.asSet(parameter);
-		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
-		Set<E> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
+		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
+		Set<E> unwanted = Sets.difference(actualAsSet, elementsAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain exactly: %s", name, elements)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Missing", missing).
 			addContext("Unwanted", unwanted).
 			build();
@@ -207,15 +207,15 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> parameterAsSet = Collections.asSet(parameter);
-		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
-		Set<E> unwanted = Sets.difference(parameterAsSet, elementsAsSet);
+		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
+		Set<E> unwanted = Sets.difference(actualAsSet, elementsAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain exactly the same %s as %s.", this.name, pluralizer.nameOf(2),
 				name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Expected", elements).
 			addContext("Missing", missing).
 			addContext("Unwanted", unwanted).
@@ -226,22 +226,22 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> containsAny(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		if (parameterContainsAny(elements))
+		if (actualContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain any %s in: %s", name, pluralizer.nameOf(1), elements)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	/**
 	 * @param elements a collection of elements
-	 * @return true if {@code parameter} contains any of {@code elements}
+	 * @return true if actual value contains any of {@code elements}
 	 */
-	private boolean parameterContainsAny(Collection<E> elements)
+	private boolean actualContainsAny(Collection<E> elements)
 	{
 		for (E element: elements)
-			if (parameter.contains(element))
+			if (actual.contains(element))
 				return true;
 		return false;
 	}
@@ -252,11 +252,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameterContainsAny(elements))
+		if (actualContainsAny(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain any %s in %s.", this.name, pluralizer.nameOf(1), name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Missing", elements).
 			build();
 	}
@@ -265,14 +265,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> containsAll(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		if (parameter.containsAll(elements))
+		if (actual.containsAll(elements))
 			return this;
 		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> parameterAsSet = Collections.asSet(parameter);
-		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
+		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain all %s in: %s", name, pluralizer.nameOf(2), elements)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Missing", missing).
 			build();
 	}
@@ -283,14 +283,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (parameter.containsAll(elements))
+		if (actual.containsAll(elements))
 			return this;
 		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> parameterAsSet = Collections.asSet(parameter);
-		Set<E> missing = Sets.difference(elementsAsSet, parameterAsSet);
+		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain all %s in %s.", this.name, pluralizer.nameOf(2), name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Required", elements).
 			addContext("Missing", missing).
 			build();
@@ -299,11 +299,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	@Override
 	public CollectionRequirements<E> doesNotContain(E element)
 	{
-		if (!parameter.contains(element))
+		if (!actual.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain: %s", name, element)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -311,11 +311,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> doesNotContain(E element, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!parameter.contains(element))
+		if (!actual.contains(element))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain %s.", this.name, name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Unwanted", element).
 			build();
 	}
@@ -324,14 +324,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> doesNotContainAny(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		if (!parameterContainsAny(elements))
+		if (!actualContainsAny(elements))
 			return this;
 		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> parameterAsSet = Collections.asSet(parameter);
-		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
+		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> unwanted = Sets.intersection(actualAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain any %s in: %s", name, pluralizer.nameOf(1), elements)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Unwanted", unwanted).
 			build();
 	}
@@ -342,14 +342,14 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!parameterContainsAny(elements))
+		if (!actualContainsAny(elements))
 			return this;
 		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> parameterAsSet = Collections.asSet(parameter);
-		Set<E> unwanted = Sets.intersection(parameterAsSet, elementsAsSet);
+		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> unwanted = Sets.intersection(actualAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain any %s in %s.", this.name, pluralizer.nameOf(1), name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext(Strings.capitalize(pluralizer.nameOf(2)), elements).
 			addContext("Unwanted", unwanted).
 			build();
@@ -359,11 +359,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	public CollectionRequirements<E> doesNotContainAll(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		if (!parameter.containsAll(elements))
+		if (!actual.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain all of: %s", name, elements)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -373,11 +373,11 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 		UnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!parameter.containsAll(elements))
+		if (!actual.containsAll(elements))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain all %s in %s.", this.name, pluralizer.nameOf(2), name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Unwanted", elements).
 			build();
 	}
@@ -385,12 +385,12 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	@Override
 	public CollectionRequirements<E> doesNotContainDuplicates()
 	{
-		if (parameter instanceof Set)
+		if (actual instanceof Set)
 			return this;
-		int size = parameter.size();
+		int size = actual.size();
 		Set<E> unique = new HashSet<>(size);
 		Set<E> duplicates = new HashSet<>(size);
-		for (E element: parameter)
+		for (E element: actual)
 		{
 			if (!unique.add(element))
 				duplicates.add(element);
@@ -399,7 +399,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain duplicate %s.", name, pluralizer.nameOf(2))).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			addContext("Duplicates", duplicates).
 			build();
 	}
@@ -407,7 +407,7 @@ class CollectionRequirementsImpl<E> implements CollectionRequirements<E>
 	@Override
 	public ContainerSizeRequirements size()
 	{
-		return new ContainerSizeRequirementsImpl(scope, parameter, parameter.size(), name,
+		return new ContainerSizeRequirementsImpl(scope, actual, actual.size(), name,
 			name + ".size()", pluralizer, config);
 	}
 

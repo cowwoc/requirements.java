@@ -20,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class ClassRequirementsImpl<T> implements ClassRequirements<T>
 {
 	private final SingletonScope scope;
-	private final Class<T> parameter;
+	private final Class<T> actual;
 	private final String name;
 	private final Configuration config;
 	private final ObjectRequirements<Class<T>> asObject;
@@ -28,23 +28,23 @@ final class ClassRequirementsImpl<T> implements ClassRequirements<T>
 	/**
 	 * Creates new ClassRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	ClassRequirementsImpl(SingletonScope scope, Class<T> parameter, String name, Configuration config)
+	ClassRequirementsImpl(SingletonScope scope, Class<T> actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = new ObjectRequirementsImpl<>(scope, parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -53,14 +53,14 @@ final class ClassRequirementsImpl<T> implements ClassRequirements<T>
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new ClassRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ClassRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public ClassRequirements<T> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new ClassRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ClassRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ final class ClassRequirementsImpl<T> implements ClassRequirements<T>
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new ClassRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ClassRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -132,11 +132,11 @@ final class ClassRequirementsImpl<T> implements ClassRequirements<T>
 	public ClassRequirements<T> isSupertypeOf(Class<?> type)
 	{
 		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
-		if (parameter.isAssignableFrom(type))
+		if (actual.isAssignableFrom(type))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be a supertype of %s.", name, type)).
-			addContext("Actual", parameter.getClass()).
+			addContext("Actual", actual.getClass()).
 			build();
 	}
 

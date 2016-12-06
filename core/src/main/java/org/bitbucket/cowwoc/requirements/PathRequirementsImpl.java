@@ -25,7 +25,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class PathRequirementsImpl implements PathRequirements
 {
 	private final SingletonScope scope;
-	private final Path parameter;
+	private final Path actual;
 	private final String name;
 	private final Configuration config;
 	private final ObjectRequirements<Path> asObject;
@@ -33,23 +33,23 @@ final class PathRequirementsImpl implements PathRequirements
 	/**
 	 * Creates new PathRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	PathRequirementsImpl(SingletonScope scope, Path parameter, String name, Configuration config)
+	PathRequirementsImpl(SingletonScope scope, Path actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = new ObjectRequirementsImpl<>(scope, parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, actual, name, config);
 	}
 
 	@Override
@@ -58,14 +58,14 @@ final class PathRequirementsImpl implements PathRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new PathRequirementsImpl(scope, parameter, name, newConfig);
+		return new PathRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public PathRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new PathRequirementsImpl(scope, parameter, name, newConfig);
+		return new PathRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -74,16 +74,16 @@ final class PathRequirementsImpl implements PathRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new PathRequirementsImpl(scope, parameter, name, newConfig);
+		return new PathRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public PathRequirements exists()
 	{
-		if (Files.exists(parameter))
+		if (Files.exists(actual))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath())).
+			String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath())).
 			build();
 	}
 
@@ -93,19 +93,19 @@ final class PathRequirementsImpl implements PathRequirements
 		BasicFileAttributes attrs;
 		try
 		{
-			attrs = Files.readAttributes(parameter, BasicFileAttributes.class, options);
+			attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
 		}
 		catch (NoSuchFileException e)
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()), e).
+				String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath()), e).
 				build();
 		}
 		if (!attrs.isRegularFile())
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
 				String.format("%s must refer to a file.", name)).
-				addContext("Actual", parameter.toAbsolutePath()).
+				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
 		return this;
@@ -117,19 +117,19 @@ final class PathRequirementsImpl implements PathRequirements
 		BasicFileAttributes attrs;
 		try
 		{
-			attrs = Files.readAttributes(parameter, BasicFileAttributes.class, options);
+			attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
 		}
 		catch (NoSuchFileException e)
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path: %s", name, parameter.toAbsolutePath()), e).
+				String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath()), e).
 				build();
 		}
 		if (!attrs.isDirectory())
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
 				String.format("%s must refer to a directory.", name)).
-				addContext("Actual", parameter.toAbsolutePath()).
+				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
 		return this;
@@ -138,22 +138,22 @@ final class PathRequirementsImpl implements PathRequirements
 	@Override
 	public PathRequirements isRelative()
 	{
-		if (!parameter.isAbsolute())
+		if (!actual.isAbsolute())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must refer to a relative path.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public PathRequirements isAbsolute()
 	{
-		if (parameter.isAbsolute())
+		if (actual.isAbsolute())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must refer to an absolute path.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 

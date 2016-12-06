@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.PrimitiveIntegerRequirementsSpi;
 
 /**
- * Verifies requirements of a container's size (e.g. size of a collection, length of a string).
+ * Verifies a container's size (e.g. size of a collection, length of a string).
  * <p>
  * @author Gili Tzabari
  */

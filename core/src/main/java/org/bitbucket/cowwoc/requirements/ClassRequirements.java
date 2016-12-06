@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
- * Verifies requirements of a {@link Class} parameter.
+ * Verifies a {@link Class} parameter.
  * <p>
  * @param <T> the type of the class
  * @author Gili Tzabari
@@ -22,7 +22,7 @@ public interface ClassRequirements<T>
 	 * @param type the class to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code type} is null
-	 * @throws IllegalArgumentException if {@code parameter} is not a supertype of {@code type}
+	 * @throws IllegalArgumentException if actual value is not a supertype of {@code type}
 	 */
 	ClassRequirements<T> isSupertypeOf(Class<?> type);
 }

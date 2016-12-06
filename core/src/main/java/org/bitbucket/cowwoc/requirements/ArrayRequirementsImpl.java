@@ -32,7 +32,7 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 		return Arrays.asList(array);
 	}
 	private final SingletonScope scope;
-	private final E[] parameter;
+	private final E[] actual;
 	private final String name;
 	private final Configuration config;
 	private final CollectionRequirements<E> asCollection;
@@ -40,22 +40,22 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	/**
 	 * Creates new ArrayRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	ArrayRequirementsImpl(SingletonScope scope, E[] parameter, String name, Configuration config)
+	ArrayRequirementsImpl(SingletonScope scope, E[] actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asCollection = new CollectionRequirementsImpl<>(scope, asList(parameter), name, config,
+		this.asCollection = new CollectionRequirementsImpl<>(scope, asList(actual), name, config,
 			Pluralizer.ELEMENT);
 	}
 
@@ -65,14 +65,14 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new ArrayRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ArrayRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public ArrayRequirements<E> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new ArrayRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ArrayRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new ArrayRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ArrayRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -116,12 +116,12 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	public ArrayRequirements<E> isIn(Collection<E[]> collection)
 	{
 		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
-		if (collection.contains(parameter))
+		if (collection.contains(actual))
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
-			addContext("Actual", Arrays.toString(parameter)).
+			addContext("Actual", Arrays.toString(actual)).
 			build();
 	}
 
@@ -268,7 +268,7 @@ class ArrayRequirementsImpl<E> implements ArrayRequirements<E>
 	@Override
 	public ContainerSizeRequirements length()
 	{
-		return new ContainerSizeRequirementsImpl(scope, parameter, parameter.length, name,
+		return new ContainerSizeRequirementsImpl(scope, actual, actual.length, name,
 			name + ".length", Pluralizer.ELEMENT, config);
 	}
 

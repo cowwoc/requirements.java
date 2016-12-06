@@ -20,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 final class UriRequirementsImpl implements UriRequirements
 {
 	private final SingletonScope scope;
-	private final URI parameter;
+	private final URI actual;
 	private final String name;
 	private final Configuration config;
 	private final ObjectRequirements<URI> asObject;
@@ -28,23 +28,23 @@ final class UriRequirementsImpl implements UriRequirements
 	/**
 	 * Creates new UriRequirementsImpl.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	UriRequirementsImpl(SingletonScope scope, URI parameter, String name, Configuration config)
+	UriRequirementsImpl(SingletonScope scope, URI actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = new ObjectRequirementsImpl<>(scope, this.parameter, name, config);
+		this.asObject = new ObjectRequirementsImpl<>(scope, this.actual, name, config);
 	}
 
 	@Override
@@ -53,14 +53,14 @@ final class UriRequirementsImpl implements UriRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new UriRequirementsImpl(scope, parameter, name, newConfig);
+		return new UriRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public UriRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new UriRequirementsImpl(scope, parameter, name, newConfig);
+		return new UriRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -69,17 +69,17 @@ final class UriRequirementsImpl implements UriRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new UriRequirementsImpl(scope, parameter, name, newConfig);
+		return new UriRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public UriRequirements isAbsolute()
 	{
-		if (parameter.isAbsolute())
+		if (actual.isAbsolute())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be absolute.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 

@@ -27,7 +27,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	 * Converts a DiffResult into a list of key-value pairs.
 	 *
 	 * @param diff           a DiffResult
-	 * @param actualToString the string representation of {@code actual}
+	 * @param actualToString the string representation of actual value
 	 * @param actualName     the name of the actual value (e.g. "Actual" vs "Actual.class")
 	 * @param expectedName   the name of the expected value (e.g. "Expected" vs "Expected.class")
 	 * @return
@@ -130,28 +130,28 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		return o.getClass().getName();
 	}
 	private final SingletonScope scope;
-	private final T parameter;
+	private final T actual;
 	private final String name;
 	private final Configuration config;
 
 	/**
 	 * Creates new ObjectRequirementsImpl.
 	 *
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    the instance configuration
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	ObjectRequirementsImpl(SingletonScope scope, T parameter, String name, Configuration config)
+	ObjectRequirementsImpl(SingletonScope scope, T actual, String name, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
 	}
@@ -162,14 +162,14 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new ObjectRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ObjectRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public ObjectRequirements<T> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new ObjectRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ObjectRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -178,24 +178,24 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new ObjectRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new ObjectRequirementsImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public ObjectRequirements<T> isNull()
 	{
-		if (parameter == null)
+		if (actual == null)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be null.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
 	public ObjectRequirements<T> isNotNull()
 	{
-		if (parameter != null)
+		if (actual != null)
 			return this;
 		throw config.exceptionBuilder(NullPointerException.class,
 			String.format("%s may not be null", name)).
@@ -205,20 +205,20 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	@Override
 	public ObjectRequirements<T> isEqualTo(T value)
 	{
-		if (Objects.equals(parameter, value))
+		if (Objects.equals(actual, value))
 			return this;
 		String actualName;
 		String expectedName;
-		String actualValue = Objects.toString(parameter);
+		String actualValue = Objects.toString(actual);
 		String actualToString = actualValue;
 		String expectedValue = Objects.toString(value);
 		if (actualValue.equals(expectedValue))
 		{
-			actualValue = getNullableType(parameter);
+			actualValue = getNullableType(actual);
 			expectedValue = getNullableType(value);
 			if (actualValue.equals(expectedValue))
 			{
-				actualValue = String.valueOf(Objects.hashCode(parameter));
+				actualValue = String.valueOf(Objects.hashCode(actual));
 				expectedValue = String.valueOf(Objects.hashCode(value));
 				actualName = "Actual.hashCode";
 				expectedName = "Expected.hashCode";
@@ -247,20 +247,20 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	public ObjectRequirements<T> isEqualTo(T value, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (Objects.equals(parameter, value))
+		if (Objects.equals(actual, value))
 			return this;
 		String actualName;
 		String expectedName;
-		String actualValue = Objects.toString(parameter);
+		String actualValue = Objects.toString(actual);
 		String actualToString = actualValue;
 		String expectedValue = Objects.toString(value);
 		if (actualValue.equals(expectedValue))
 		{
-			actualValue = getNullableType(parameter);
+			actualValue = getNullableType(actual);
 			expectedValue = getNullableType(value);
 			if (actualValue.equals(expectedValue))
 			{
-				actualValue = String.valueOf(Objects.hashCode(parameter));
+				actualValue = String.valueOf(Objects.hashCode(actual));
 				expectedValue = String.valueOf(Objects.hashCode(value));
 				actualName = "Actual.hashCode";
 				expectedName = "Expected.hashCode";
@@ -289,7 +289,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	@Override
 	public ObjectRequirements<T> isNotEqualTo(T value)
 	{
-		if (!Objects.equals(parameter, value))
+		if (!Objects.equals(actual, value))
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -301,7 +301,7 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	public ObjectRequirements<T> isNotEqualTo(T value, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!Objects.equals(parameter, value))
+		if (!Objects.equals(actual, value))
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
@@ -314,12 +314,12 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	public ObjectRequirements<T> isIn(Collection<T> collection)
 	{
 		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
-		if (collection.contains(parameter))
+		if (collection.contains(actual))
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -327,12 +327,12 @@ final class ObjectRequirementsImpl<T> implements ObjectRequirements<T>
 	public ObjectRequirements<T> isInstanceOf(Class<?> type)
 	{
 		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
-		if (type.isInstance(parameter))
+		if (type.isInstance(actual))
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.", name, type)).
-			addContext("Actual", parameter.getClass()).
+			addContext("Actual", actual.getClass()).
 			build();
 	}
 

@@ -19,8 +19,8 @@ public class ClassRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Class<Object> parameter = Object.class;
-			new RequirementVerifier(scope).requireThat(parameter, null);
+			Class<Object> actual = Object.class;
+			new RequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
@@ -29,8 +29,8 @@ public class ClassRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Class<Object> parameter = Object.class;
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isSupertypeOf(Random.class);
+			Class<Object> actual = Object.class;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -39,8 +39,8 @@ public class ClassRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Class<Random> parameter = Random.class;
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isSupertypeOf(Object.class);
+			Class<Random> actual = Random.class;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
 		}
 	}
 
@@ -49,8 +49,8 @@ public class ClassRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Class<Random> parameter = Random.class;
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isSupertypeOf(null);
+			Class<Random> actual = Random.class;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(null);
 		}
 	}
 
@@ -59,8 +59,8 @@ public class ClassRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Class<Random> parameter = null;
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isSupertypeOf(Random.class);
+			Class<Random> actual = null;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -70,8 +70,8 @@ public class ClassRequirementsTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			// Ensure that no exception is thrown if assertions are disabled
-			Class<?> parameter = null;
-			new AssertionVerifier(scope, false).requireThat(parameter, "parameter").isNotNull();
+			Class<?> actual = null;
+			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 }

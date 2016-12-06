@@ -19,8 +19,8 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, null);
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
@@ -29,8 +29,8 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "");
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "");
 		}
 	}
 
@@ -109,9 +109,9 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
-				isLessThan(parameter, "parameter");
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				isLessThan(actual, "actual");
 		}
 	}
 
@@ -120,8 +120,8 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isLessThan(parameter);
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isLessThan(actual);
 		}
 	}
 
@@ -152,9 +152,9 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
-				isLessThanOrEqualTo(parameter, "parameter");
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				isLessThanOrEqualTo(actual, "actual");
 		}
 	}
 
@@ -163,9 +163,9 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
-				isLessThanOrEqualTo(parameter);
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				isLessThanOrEqualTo(actual);
 		}
 	}
 
@@ -219,9 +219,9 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
-				isGreaterThan(parameter, "parameter");
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				isGreaterThan(actual, "actual");
 		}
 	}
 
@@ -230,8 +230,8 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "paramter").isGreaterThan(parameter);
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "paramter").isGreaterThan(actual);
 		}
 	}
 
@@ -262,9 +262,9 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
-				isGreaterThanOrEqualTo(parameter, "parameter");
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				isGreaterThanOrEqualTo(actual, "actual");
 		}
 	}
 
@@ -273,9 +273,9 @@ public class ComparableRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Year parameter = Year.of(0);
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
-				isGreaterThanOrEqualTo(parameter);
+			Year actual = Year.of(0);
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				isGreaterThanOrEqualTo(actual);
 		}
 	}
 
@@ -308,8 +308,8 @@ public class ComparableRequirementsTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			// Ensure that no exception is thrown if assertions are disabled
-			Year parameter = null;
-			new AssertionVerifier(scope, false).requireThat(parameter, "parameter").isNotNull();
+			Year actual = null;
+			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 }

@@ -7,26 +7,26 @@ package org.bitbucket.cowwoc.requirements.diff.string;
 import java.util.List;
 
 /**
- * Generates a String representing the diff of {@code actual} and {@code expected} Strings.
+ * Generates a String representing the diff of {@code Actual} and {@code Expected} Strings.
  *
  * @author Gili Tzabari
  */
 public interface DiffWriter extends AutoCloseable
 {
 	/**
-	 * @param text the text to keep in {@code actual}
+	 * @param text the text to keep in {@code Actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
 	void keep(String text);
 
 	/**
-	 * @param text the text that needs to be inserted into {@code actual}
+	 * @param text the text that needs to be inserted into {@code Actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
 	void insert(String text);
 
 	/**
-	 * @param text the text that needs to be deleted from {@code actual}
+	 * @param text the text that needs to be deleted from {@code Actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
 	void delete(String text);

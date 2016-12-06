@@ -40,7 +40,7 @@ final class ContainerSizeRequirementsImpl implements ContainerSizeRequirements
 	 * @param sizeName      the name of the container's size
 	 * @param pluralizer    returns the singular or plural form of the container's element type
 	 * @param config        the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code actual}, {@code name} or {@code config} are
+	 * @throws AssertionError if {@code scope}, {@code container}, {@code name} or {@code config} are
 	 *                        null; if {@code name} is empty
 	 */
 	ContainerSizeRequirementsImpl(SingletonScope scope, Object container, int size,

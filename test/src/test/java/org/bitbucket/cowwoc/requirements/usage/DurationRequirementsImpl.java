@@ -22,7 +22,7 @@ import org.bitbucket.cowwoc.requirements.spi.Configuration;
 public final class DurationRequirementsImpl implements DurationRequirements
 {
 	private final SingletonScope scope;
-	private final Duration parameter;
+	private final Duration actual;
 	private final String name;
 	private final Configuration config;
 	private final ComparableRequirements<Duration> asComparable;
@@ -30,24 +30,24 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	/**
 	 * Creates new DurationRequirements.
 	 * <p>
-	 * @param scope     the system configuration
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @param config    determines how to handle a requirements violation
+	 * @param scope  the system configuration
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @param config determines how to handle a requirements violation
 	 * @throws NullPointerException     if {@code scope}, {@code name} or {@code config} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	DurationRequirementsImpl(SingletonScope scope, Duration parameter, String name,
+	DurationRequirementsImpl(SingletonScope scope, Duration actual, String name,
 		Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
 		assert (name != null): "name may not be null";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = parameter;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asComparable = scope.getInternalVerifier().requireThat(parameter, name).
+		this.asComparable = scope.getInternalVerifier().requireThat(actual, name).
 			withContext(config.getContext()).
 			withException(config.getException());
 	}
@@ -58,14 +58,14 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new DurationRequirementsImpl(scope, parameter, name, newConfig);
+		return new DurationRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public DurationRequirements addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new DurationRequirementsImpl(scope, parameter, name, newConfig);
+		return new DurationRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -74,17 +74,17 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new DurationRequirementsImpl(scope, parameter, name, newConfig);
+		return new DurationRequirementsImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
 	public DurationRequirements isPositive()
 	{
-		if (parameter.getNano() > 0 || parameter.getSeconds() > 0)
+		if (actual.getNano() > 0 || actual.getSeconds() > 0)
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be positive.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 

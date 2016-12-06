@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
- * Verifies requirements of an {@link Optional} parameter.
+ * Verifies an {@link Optional} parameter.
  * <p>
  * @author Gili Tzabari
  */
@@ -18,7 +18,7 @@ public interface OptionalRequirements
 	Isolatable<OptionalRequirements>
 {
 	/**
-	 * Ensures that the parameter is empty.
+	 * Ensures that the actual value is empty.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the value is present
@@ -26,7 +26,7 @@ public interface OptionalRequirements
 	OptionalRequirements isEmpty();
 
 	/**
-	 * Ensures that the parameter is present.
+	 * Ensures that the actual value is present.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not present

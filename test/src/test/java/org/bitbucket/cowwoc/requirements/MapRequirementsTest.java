@@ -21,8 +21,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.emptyMap();
-			new RequirementVerifier(scope).requireThat(parameter, null);
+			Map<String, String> actual = Collections.emptyMap();
+			new RequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
@@ -31,8 +31,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.emptyMap();
-			new RequirementVerifier(scope).requireThat(parameter, "");
+			Map<String, String> actual = Collections.emptyMap();
+			new RequirementVerifier(scope).requireThat(actual, "");
 		}
 	}
 
@@ -41,8 +41,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.emptyMap();
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isEmpty();
+			Map<String, String> actual = Collections.emptyMap();
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -51,8 +51,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isEmpty();
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -61,8 +61,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isNotEmpty();
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -71,8 +71,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.emptyMap();
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").isNotEmpty();
+			Map<String, String> actual = Collections.emptyMap();
+			new RequirementVerifier(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -81,8 +81,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").keySet().contains("key");
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -91,8 +91,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").keySet().contains("key");
+			Map<String, String> actual = Collections.singletonMap("notKey", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -101,8 +101,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").keySet().
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -112,8 +112,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").keySet().
+			Map<String, String> actual = Collections.singletonMap("notKey", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -123,8 +123,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").values().contains("value");
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -133,8 +133,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "notValue");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").values().contains("value");
+			Map<String, String> actual = Collections.singletonMap("key", "notValue");
+			new RequirementVerifier(scope).requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -143,8 +143,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").values().
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -154,8 +154,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "notValue");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").values().
+			Map<String, String> actual = Collections.singletonMap("key", "notValue");
+			new RequirementVerifier(scope).requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -165,8 +165,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").entrySet().
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
 				contains(new SimpleEntry<>("key", "value"));
 		}
 	}
@@ -176,8 +176,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").entrySet().
+			Map<String, String> actual = Collections.singletonMap("notKey", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
 				contains(new SimpleEntry<>("key", "value"));
 		}
 	}
@@ -187,8 +187,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").entrySet().
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
 				doesNotContain(new SimpleEntry<>("notKey", "value"));
 		}
 	}
@@ -198,8 +198,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").entrySet().
+			Map<String, String> actual = Collections.singletonMap("notKey", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
 				doesNotContain(new SimpleEntry<>("notKey", "value"));
 		}
 	}
@@ -209,8 +209,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").size().isEqualTo(1);
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -219,8 +219,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").size().isEqualTo(2);
+			Map<String, String> actual = Collections.singletonMap("notKey", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -229,8 +229,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").size().isNotEqualTo(2);
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -239,8 +239,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("notKey", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").size().isNotEqualTo(1);
+			Map<String, String> actual = Collections.singletonMap("notKey", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -250,8 +250,8 @@ public class MapRequirementsTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			// Ensure that no exception is thrown if assertions are disabled
-			Map<?, ?> parameter = null;
-			new AssertionVerifier(scope, false).requireThat(parameter, "parameter").isNotNull();
+			Map<?, ?> actual = null;
+			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 
@@ -260,8 +260,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").
 				isolate(p -> p.keySet().contains("key")).
 				isolate(p -> p.values().contains("value"));
 		}
@@ -272,8 +272,8 @@ public class MapRequirementsTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			Map<String, String> parameter = Collections.singletonMap("key", "value");
-			new RequirementVerifier(scope).requireThat(parameter, "parameter").
+			Map<String, String> actual = Collections.singletonMap("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").
 				isolate(p -> p.keySet().contains("notTheKey")).
 				isolate(p -> p.values().contains("value"));
 		}

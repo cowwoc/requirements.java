@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.ObjectRequirementsSpi;
 
 /**
- * Verifies requirements of a {@link Map} parameter.
+ * Verifies a {@link Map} parameter.
  * <p>
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map
@@ -36,18 +36,18 @@ public interface MapRequirements<K, V>
 	CollectionRequirements<Entry<K, V>> entrySet();
 
 	/**
-	 * Ensures that the parameter is empty.
+	 * Ensures that the actual value is empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is not empty
+	 * @throws IllegalArgumentException if actual value is not empty
 	 */
 	MapRequirements<K, V> isEmpty();
 
 	/**
-	 * Ensures that the parameter is not empty.
+	 * Ensures that the actual value is not empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is empty
+	 * @throws IllegalArgumentException if actual value is empty
 	 */
 	MapRequirements<K, V> isNotEmpty();
 

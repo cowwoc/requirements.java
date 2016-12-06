@@ -62,398 +62,398 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	}
 
 	/**
-	 * Verifies requirements of an {@code Object}.
+	 * Verifies an {@code Object}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ObjectRequirements<T> requireThat(T parameter, String name)
+	public <T> ObjectRequirements<T> requireThat(T actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param <T>       the type of the parameter
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ObjectRequirements<T> assertThat(T parameter, String name)
+	public <T> ObjectRequirements<T> assertThat(T actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Collection}.
+	 * Verifies a {@code Collection}.
 	 *
-	 * @param <E>       the type of elements in the collection
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <E>    the type of elements in the collection
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <E> CollectionRequirements<E> requireThat(Collection<E> parameter, String name)
+	public <E> CollectionRequirements<E> requireThat(Collection<E> actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param <E>       the type of elements in the collection
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <E>    the type of elements in the collection
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <E> CollectionRequirements<E> assertThat(Collection<E> parameter, String name)
+	public <E> CollectionRequirements<E> assertThat(Collection<E> actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of an array.
+	 * Verifies an array.
 	 * <p>
-	 * @param <E>       the type of elements in the array
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <E>    the type of elements in the array
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> ArrayRequirements<E> requireThat(E[] parameter, String name)
+	public <E> ArrayRequirements<E> requireThat(E[] actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
 	 * <p>
-	 * @param <E>       the type of elements in the collection
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <E>    the type of elements in the collection
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> ArrayRequirements<E> assertThat(E[] parameter, String name)
+	public <E> ArrayRequirements<E> assertThat(E[] actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Comparable}.
+	 * Verifies a {@code Comparable}.
 	 *
-	 * @param <T>       the type of objects that the parameter may be compared to
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of objects that the parameter may be compared to
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T parameter,
+	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T actual,
 		String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param <T>       the type of objects that the parameter may be compared to
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of objects that the parameter may be compared to
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> assertThat(T parameter,
+	public <T extends Comparable<? super T>> ComparableRequirements<T> assertThat(T actual,
 		String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Number}.
+	 * Verifies a {@code Number}.
 	 *
-	 * @param <T>       the type of the number
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of the number
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T parameter,
+	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T actual,
 		String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Number, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param <T>       the type of the number
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of the number
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> assertThat(T parameter,
+	public <T extends Number & Comparable<? super T>> NumberRequirements<T> assertThat(T actual,
 		String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Double}.
+	 * Verifies a {@code Double}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements requireThat(Double parameter, String name)
+	public DoubleRequirements requireThat(Double actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements assertThat(Double parameter, String name)
+	public DoubleRequirements assertThat(Double actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code BigDecimal}.
+	 * Verifies a {@code BigDecimal}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public BigDecimalRequirements requireThat(BigDecimal parameter, String name)
+	public BigDecimalRequirements requireThat(BigDecimal actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public BigDecimalRequirements assertThat(BigDecimal parameter, String name)
+	public BigDecimalRequirements assertThat(BigDecimal actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Map}.
+	 * Verifies a {@code Map}.
 	 *
-	 * @param <K>       the type of key in the map
-	 * @param <V>       the type of value in the map
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <K>    the type of key in the map
+	 * @param <V>    the type of value in the map
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> parameter, String name)
+	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Map, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param <K>       the type of key in the map
-	 * @param <V>       the type of value in the map
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <K>    the type of key in the map
+	 * @param <V>    the type of value in the map
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <K, V> MapRequirements<K, V> assertThat(Map<K, V> parameter, String name)
+	public <K, V> MapRequirements<K, V> assertThat(Map<K, V> actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Path}.
+	 * Verifies a {@code Path}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public PathRequirements requireThat(Path parameter, String name)
+	public PathRequirements requireThat(Path actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public PathRequirements assertThat(Path parameter, String name)
+	public PathRequirements assertThat(Path actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code String}.
+	 * Verifies a {@code String}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public StringRequirements requireThat(String parameter, String name)
+	public StringRequirements requireThat(String actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public StringRequirements assertThat(String parameter, String name)
+	public StringRequirements assertThat(String actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Uri}.
+	 * Verifies a {@code Uri}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public UriRequirements requireThat(URI parameter, String name)
+	public UriRequirements requireThat(URI actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public UriRequirements assertThat(URI parameter, String name)
+	public UriRequirements assertThat(URI actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of a {@code Class}.
+	 * Verifies a {@code Class}.
 	 *
-	 * @param <T>       the type of class
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of class
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ClassRequirements<T> requireThat(Class<T> parameter, String name)
+	public <T> ClassRequirements<T> requireThat(Class<T> actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Class, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param <T>       the type of class
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param <T>    the type of class
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ClassRequirements<T> assertThat(Class<T> parameter, String name)
+	public <T> ClassRequirements<T> assertThat(Class<T> actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
-	 * Verifies requirements of an {@code Optional}.
+	 * Verifies an {@code Optional}.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public OptionalRequirements requireThat(Optional<?> parameter, String name)
+	public OptionalRequirements requireThat(Optional<?> actual, String name)
 	{
-		return requirements.requireThat(parameter, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param parameter the value of the parameter
-	 * @param name      the name of the parameter
-	 * @return Requirements for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public OptionalRequirements assertThat(Optional<?> parameter, String name)
+	public OptionalRequirements assertThat(Optional<?> actual, String name)
 	{
-		return assertions.requireThat(parameter, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	@Override

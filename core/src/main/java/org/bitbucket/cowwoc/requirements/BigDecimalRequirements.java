@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.NumberRequirementsSpi;
 
 /**
- * Verifies requirements of a {@link BigDecimal} parameter.
+ * Verifies a {@link BigDecimal} parameter.
  * <p>
  * @author Gili Tzabari
  */
