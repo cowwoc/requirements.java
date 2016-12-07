@@ -70,9 +70,9 @@
 							<include>org.bitbucket.cowwoc.requirements</include>
 						</includes>
 						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.diff.string</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.spi</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.util</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.core.diff</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.core.spi</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.core.util</exclude>
 						</excludes>
 					</parameter>
 				</configuration>

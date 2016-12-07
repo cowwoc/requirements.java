@@ -83,7 +83,8 @@ public final class Terminal
 		}
 		catch (UnsatisfiedLinkError e)
 		{
-			log.warn("Failed to load native library", e);
+			log.warn("Failed to load native library. Please see " +
+				"https://bitbucket.org/cowwoc/requirements/wiki/String%20diff for more information.", e);
 			return false;
 		}
 	}
