@@ -13,7 +13,7 @@ import java.util.Objects;
 import org.bitbucket.cowwoc.requirements.util.Lists;
 
 /**
- * Determines the behavior of a requirements verifier.
+ * Determines the behavior of a verifier.
  *
  * @author Gili Tzabari
  */

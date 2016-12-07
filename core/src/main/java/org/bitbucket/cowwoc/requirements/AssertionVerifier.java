@@ -46,8 +46,7 @@ public final class AssertionVerifier implements Verifier
 	 * <p>
 	 * from within the class in question.
 	 *
-	 * @param enabled true if assertions are enabled for the class whose requirements are being
-	 *                verified
+	 * @param enabled true if assertions are enabled for the class being verified
 	 */
 	public AssertionVerifier(boolean enabled)
 	{
@@ -70,8 +69,7 @@ public final class AssertionVerifier implements Verifier
 	 * from within the class in question.
 	 *
 	 * @param scope   the system configuration
-	 * @param enabled true if assertions are enabled for the class whose requirements are being
-	 *                verified
+	 * @param enabled true if assertions are enabled for the class being verified
 	 * @throws AssertionError if {@code scope} is null
 	 */
 	AssertionVerifier(SingletonScope scope, boolean enabled)
@@ -85,8 +83,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Creates a new assertion verifier.
 	 *
-	 * @param enabled true if assertions are enabled for the class whose requirements are being
-	 *                verified
+	 * @param enabled true if assertions are enabled for the class being verified
 	 * @param config  the instance configuration
 	 * @throws AssertionError if {@code scope} or {@code config} are null
 	 */
@@ -159,11 +156,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T> ObjectRequirements<T> requireThat(T actual, String name)
+	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpObjectRequirements<>();
+		return new NoOpObjectVerifier<>();
 	}
 
 	/**
@@ -177,11 +174,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> CollectionRequirements<E> requireThat(Collection<E> actual, String name)
+	public <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpCollectionRequirements<>();
+		return new NoOpCollectionVerifier<>();
 	}
 
 	/**
@@ -195,11 +192,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> ArrayRequirements<E> requireThat(E[] actual, String name)
+	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpArrayRequirements<>();
+		return new NoOpArrayVerifier<>();
 	}
 
 	/**
@@ -213,12 +210,12 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T actual,
+	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
 		String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpComparableRequirements<>();
+		return new NoOpComparableVerifier<>();
 	}
 
 	/**
@@ -232,12 +229,12 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T actual,
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual,
 		String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpNumberRequirements<>();
+		return new NoOpNumberVerifier<>();
 	}
 
 	/**
@@ -249,11 +246,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements requireThat(Double actual, String name)
+	public DoubleVerifier requireThat(Double actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpDoubleRequirements.INSTANCE;
+		return NoOpDoubleVerifier.INSTANCE;
 	}
 
 	/**
@@ -266,11 +263,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public BigDecimalRequirements requireThat(BigDecimal actual, String name)
+	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpBigDecimalRequirements.INSTANCE;
+		return NoOpBigDecimalVerifier.INSTANCE;
 	}
 
 	/**
@@ -285,12 +282,12 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> actual, String name)
+	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
 		@SuppressWarnings("unchecked")
-		MapRequirements<K, V> result = (MapRequirements<K, V>) NoOpMapRequirements.INSTANCE;
+		MapVerifier<K, V> result = (MapVerifier<K, V>) NoOpMapVerifier.INSTANCE;
 		return result;
 	}
 
@@ -304,11 +301,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public PathRequirements requireThat(Path actual, String name)
+	public PathVerifier requireThat(Path actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpPathRequirements.INSTANCE;
+		return NoOpPathVerifier.INSTANCE;
 	}
 
 	/**
@@ -321,11 +318,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public StringRequirements requireThat(String actual, String name)
+	public StringVerifier requireThat(String actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpStringRequirements.INSTANCE;
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	/**
@@ -338,11 +335,11 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public UriRequirements requireThat(URI actual, String name)
+	public UriVerifier requireThat(URI actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpUriRequirements.INSTANCE;
+		return NoOpUriVerifier.INSTANCE;
 	}
 
 	/**
@@ -356,12 +353,12 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <T> ClassRequirements<T> requireThat(Class<T> actual, String name)
+	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
 		@SuppressWarnings("unchecked")
-		ClassRequirements<T> result = (ClassRequirements<T>) NoOpClassRequirements.INSTANCE;
+		ClassVerifier<T> result = (ClassVerifier<T>) NoOpClassVerifier.INSTANCE;
 		return result;
 	}
 
@@ -375,10 +372,10 @@ public final class AssertionVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public OptionalRequirements requireThat(Optional<?> actual, String name)
+	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpOptionalRequirements.INSTANCE;
+		return NoOpOptionalVerifier.INSTANCE;
 	}
 }

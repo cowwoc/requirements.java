@@ -2,35 +2,33 @@
  * Copyright 2013 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.guava;
+package org.bitbucket.cowwoc.requirements;
 
-import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
-import org.bitbucket.cowwoc.requirements.ObjectVerifier;
-import org.bitbucket.cowwoc.requirements.CollectionVerifier;
 
 /**
- * Default implementation of MultimapRequirements.
+ * Default implementation of MapVerifier.
  * <p>
- * @param <K> the type of key in the multimap
- * @param <V> the type of value in the multimap
+ * @param <K> the type of key in the map
+ * @param <V> the type of value in the map
  * @author Gili Tzabari
  */
-final class MultimapRequirementsImpl<K, V> implements MultimapRequirements<K, V>
+final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 {
 	private final SingletonScope scope;
-	private final Multimap<K, V> parameter;
+	private final Map<K, V> actual;
 	private final String name;
 	private final Configuration config;
-	private final ObjectVerifier<Multimap<K, V>> asObject;
+	private final ObjectVerifier<Map<K, V>> asObject;
 
 	/**
-	 * Creates new MultimapRequirementsImpl.
+	 * Creates new MapVerifierImpl.
 	 * <p>
 	 * @param scope  the system configuration
 	 * @param actual the actual value of the parameter
@@ -39,97 +37,94 @@ final class MultimapRequirementsImpl<K, V> implements MultimapRequirements<K, V>
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	MultimapRequirementsImpl(SingletonScope scope, Multimap<K, V> actual, String name,
-		Configuration config)
+	MapVerifierImpl(SingletonScope scope, Map<K, V> actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.parameter = actual;
+		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asObject = scope.getInternalVerifier().requireThat(actual, name).
-			withContext(config.getContext()).
-			withException(config.getException());
+		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
 	}
 
 	@Override
-	public MultimapRequirements<K, V> withException(Class<? extends RuntimeException> exception)
+	public MapVerifier<K, V> withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new MultimapRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new MapVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
-	public MultimapRequirements<K, V> addContext(String key, Object value)
+	public MapVerifier<K, V> addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new MultimapRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new MapVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
-	public MultimapRequirements<K, V> withContext(List<Entry<String, Object>> context)
+	public MapVerifier<K, V> withContext(List<Entry<String, Object>> context)
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new MultimapRequirementsImpl<>(scope, parameter, name, newConfig);
+		return new MapVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isEqualTo(Multimap<K, V> value)
+	public MapVerifier<K, V> isEqualTo(Map<K, V> value)
 	{
 		asObject.isEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isEqualTo(Multimap<K, V> value, String name)
+	public MapVerifier<K, V> isEqualTo(Map<K, V> value, String name)
 	{
 		asObject.isEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isNotEqualTo(Multimap<K, V> value)
+	public MapVerifier<K, V> isNotEqualTo(Map<K, V> value)
 	{
 		asObject.isNotEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isNotEqualTo(Multimap<K, V> value, String name)
+	public MapVerifier<K, V> isNotEqualTo(Map<K, V> value, String name)
 	{
 		asObject.isNotEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isIn(Collection<Multimap<K, V>> collection)
+	public MapVerifier<K, V> isIn(Collection<Map<K, V>> collection)
 	{
 		asObject.isIn(collection);
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isInstanceOf(Class<?> type)
+	public MapVerifier<K, V> isInstanceOf(Class<?> type)
 	{
 		asObject.isInstanceOf(type);
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isNull()
+	public MapVerifier<K, V> isNull()
 	{
 		asObject.isNull();
 		return this;
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isNotNull()
+	public MapVerifier<K, V> isNotNull()
 	{
 		asObject.isNotNull();
 		return this;
@@ -138,38 +133,39 @@ final class MultimapRequirementsImpl<K, V> implements MultimapRequirements<K, V>
 	@Override
 	public CollectionVerifier<K> keySet()
 	{
-		return new CollectionRequirementsImpl<>(scope, parameter.keySet(), name + ".keySet()", config,
-			Pluralizer.KEY).
-			addContext(name, parameter);
+		return new CollectionVerifierImpl<>(scope, actual.keySet(), name + ".keySet()", config,
+			Pluralizer.KEY);
 	}
 
 	@Override
 	public CollectionVerifier<V> values()
 	{
-		return new MultimapValuesRequirementsImpl<>(scope, parameter, name, config);
+		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()", config,
+			Pluralizer.VALUE);
 	}
 
 	@Override
 	public CollectionVerifier<Entry<K, V>> entrySet()
 	{
-		return new MultimapEntrySetRequirementsImpl<>(scope, parameter, name, config);
+		return new CollectionVerifierImpl<>(scope, actual.entrySet(), name + ".entrySet()",
+			config, Pluralizer.ENTRY);
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isEmpty()
+	public MapVerifier<K, V> isEmpty()
 	{
-		if (parameter.isEmpty())
+		if (actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
-			addContext("Actual", parameter).
+			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isNotEmpty()
+	public MapVerifier<K, V> isNotEmpty()
 	{
-		if (!parameter.isEmpty())
+		if (!actual.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not be empty", name)).
@@ -177,13 +173,14 @@ final class MultimapRequirementsImpl<K, V> implements MultimapRequirements<K, V>
 	}
 
 	@Override
-	public MultimapSizeRequirements size()
+	public ContainerSizeVerifier size()
 	{
-		return new MultimapSizeRequirementsImpl(scope, parameter, name, config);
+		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name,
+			name + ".size()", Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MultimapRequirements<K, V> isolate(Consumer<MultimapRequirements<K, V>> consumer)
+	public MapVerifier<K, V> isolate(Consumer<MapVerifier<K, V>> consumer)
 	{
 		consumer.accept(this);
 		return this;

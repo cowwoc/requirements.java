@@ -9,9 +9,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.ComparableRequirements;
 import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.ComparableVerifier;
 
 /**
  * Normally we shouldn't implement SPI interfaces directly, but since there is only one
@@ -25,7 +25,7 @@ public final class DurationRequirementsImpl implements DurationRequirements
 	private final Duration actual;
 	private final String name;
 	private final Configuration config;
-	private final ComparableRequirements<Duration> asComparable;
+	private final ComparableVerifier<Duration> asComparable;
 
 	/**
 	 * Creates new DurationRequirements.

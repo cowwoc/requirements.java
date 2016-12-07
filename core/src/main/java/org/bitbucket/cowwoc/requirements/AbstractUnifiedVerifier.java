@@ -44,8 +44,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 
 	/**
 	 * @param scope   the system configuration
-	 * @param enabled true if assertions are enabled for the class whose requirements are being
-	 *                verified
+	 * @param enabled true if assertions are enabled for the class being verified
 	 * @param config  the instance configuration
 	 * @return a new assertion verifier
 	 * @throws AssertionError if {@code scope} or {@code config} are null
@@ -70,7 +69,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ObjectRequirements<T> requireThat(T actual, String name)
+	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -86,7 +85,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ObjectRequirements<T> assertThat(T actual, String name)
+	public <T> ObjectVerifier<T> assertThat(T actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -101,7 +100,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <E> CollectionRequirements<E> requireThat(Collection<E> actual, String name)
+	public <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -117,7 +116,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <E> CollectionRequirements<E> assertThat(Collection<E> actual, String name)
+	public <E> CollectionVerifier<E> assertThat(Collection<E> actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -132,7 +131,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> ArrayRequirements<E> requireThat(E[] actual, String name)
+	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -147,7 +146,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public <E> ArrayRequirements<E> assertThat(E[] actual, String name)
+	public <E> ArrayVerifier<E> assertThat(E[] actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -162,7 +161,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T actual,
+	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
 		String name)
 	{
 		return requirements.requireThat(actual, name);
@@ -179,7 +178,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> assertThat(T actual,
+	public <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual,
 		String name)
 	{
 		return assertions.requireThat(actual, name);
@@ -195,7 +194,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T actual,
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual,
 		String name)
 	{
 		return requirements.requireThat(actual, name);
@@ -212,7 +211,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> assertThat(T actual,
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual,
 		String name)
 	{
 		return assertions.requireThat(actual, name);
@@ -227,7 +226,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements requireThat(Double actual, String name)
+	public DoubleVerifier requireThat(Double actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -242,7 +241,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements assertThat(Double actual, String name)
+	public DoubleVerifier assertThat(Double actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -256,7 +255,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public BigDecimalRequirements requireThat(BigDecimal actual, String name)
+	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -271,7 +270,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public BigDecimalRequirements assertThat(BigDecimal actual, String name)
+	public BigDecimalVerifier assertThat(BigDecimal actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -287,7 +286,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> actual, String name)
+	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -304,7 +303,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <K, V> MapRequirements<K, V> assertThat(Map<K, V> actual, String name)
+	public <K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -318,7 +317,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public PathRequirements requireThat(Path actual, String name)
+	public PathVerifier requireThat(Path actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -333,7 +332,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public PathRequirements assertThat(Path actual, String name)
+	public PathVerifier assertThat(Path actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -347,7 +346,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public StringRequirements requireThat(String actual, String name)
+	public StringVerifier requireThat(String actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -362,7 +361,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public StringRequirements assertThat(String actual, String name)
+	public StringVerifier assertThat(String actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -376,7 +375,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public UriRequirements requireThat(URI actual, String name)
+	public UriVerifier requireThat(URI actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -391,7 +390,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public UriRequirements assertThat(URI actual, String name)
+	public UriVerifier assertThat(URI actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -406,7 +405,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ClassRequirements<T> requireThat(Class<T> actual, String name)
+	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -422,7 +421,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ClassRequirements<T> assertThat(Class<T> actual, String name)
+	public <T> ClassVerifier<T> assertThat(Class<T> actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}
@@ -436,7 +435,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public OptionalRequirements requireThat(Optional<?> actual, String name)
+	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
 		return requirements.requireThat(actual, name);
 	}
@@ -451,7 +450,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public OptionalRequirements assertThat(Optional<?> actual, String name)
+	public OptionalVerifier assertThat(Optional<?> actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}

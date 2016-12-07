@@ -7,18 +7,19 @@ package org.bitbucket.cowwoc.requirements.spi;
 import java.util.function.Consumer;
 
 /**
- * Requirements that can be verified in isolation of other instances.
+ * Verifies requirements using a duplicate verifier reference. Regardless of what operations are
+ * run, the original reference remains unmodified.
  * <p>
- * Interfaces that extend {@code Isolatable} are not meant to be extended, but may be implemented.
+ * Interfaces that extend {@code Isolatable} may be implemented, but are not meant to be extended.
  *
- * @param <T> the type of requirements to isolate
+ * @param <T> the type of verifier to isolate
  * @author Gili Tzabari
  */
 public interface Isolatable<T>
 {
 	/**
-	 * Verifies requirements without modifying the current instance. This can be used to combine
-	 * requirements that operate on nested elements:
+	 * Verifies requirements without modifying the verifier reference. This can be used to combine
+	 * verifications on nested elements:
 	 * <pre><code>
 	 * Map&lt;String, Integer&gt; nameToId = ...;
 	 * Requirements.requireThat(nameToId, "nameToId").keySet().contains("John Smith");

@@ -119,10 +119,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ObjectRequirements<T> requireThat(T actual, String name)
+	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
 		verifyName(name);
-		return new ObjectRequirementsImpl<>(scope, actual, name, config);
+		return new ObjectVerifierImpl<>(scope, actual, name, config);
 	}
 
 	/**
@@ -135,10 +135,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <E> CollectionRequirements<E> requireThat(Collection<E> actual, String name)
+	public <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
 	{
 		verifyName(name);
-		return new CollectionRequirementsImpl<>(scope, actual, name, config, Pluralizer.ELEMENT);
+		return new CollectionVerifierImpl<>(scope, actual, name, config, Pluralizer.ELEMENT);
 	}
 
 	/**
@@ -151,10 +151,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <E> ArrayRequirements<E> requireThat(E[] actual, String name)
+	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
 		verifyName(name);
-		return new ArrayRequirementsImpl<>(scope, actual, name, config);
+		return new ArrayVerifierImpl<>(scope, actual, name, config);
 	}
 
 	/**
@@ -167,11 +167,11 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T actual,
+	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
 		String name)
 	{
 		verifyName(name);
-		return new ComparableRequirementsImpl<>(scope, actual, name, config);
+		return new ComparableVerifierImpl<>(scope, actual, name, config);
 	}
 
 	/**
@@ -184,11 +184,11 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(T actual,
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual,
 		String name)
 	{
 		verifyName(name);
-		return new NumberRequirementsImpl<>(scope, actual, name, config);
+		return new NumberVerifierImpl<>(scope, actual, name, config);
 	}
 
 	/**
@@ -200,10 +200,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public DoubleRequirements requireThat(Double actual, String name)
+	public DoubleVerifier requireThat(Double actual, String name)
 	{
 		verifyName(name);
-		return new DoubleRequirementsImpl(scope, actual, name, config);
+		return new DoubleVerifierImpl(scope, actual, name, config);
 	}
 
 	/**
@@ -215,10 +215,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public BigDecimalRequirements requireThat(BigDecimal actual, String name)
+	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
 		verifyName(name);
-		return new BigDecimalRequirementsImpl(scope, actual, name, config);
+		return new BigDecimalVerifierImpl(scope, actual, name, config);
 	}
 
 	/**
@@ -232,10 +232,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <K, V> MapRequirements<K, V> requireThat(Map<K, V> actual, String name)
+	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
 		verifyName(name);
-		return new MapRequirementsImpl<>(scope, actual, name, config);
+		return new MapVerifierImpl<>(scope, actual, name, config);
 	}
 
 	/**
@@ -247,10 +247,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public PathRequirements requireThat(Path actual, String name)
+	public PathVerifier requireThat(Path actual, String name)
 	{
 		verifyName(name);
-		return new PathRequirementsImpl(scope, actual, name, config);
+		return new PathVerifierImpl(scope, actual, name, config);
 	}
 
 	/**
@@ -262,10 +262,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public StringRequirements requireThat(String actual, String name)
+	public StringVerifier requireThat(String actual, String name)
 	{
 		verifyName(name);
-		return new StringRequirementsImpl(scope, actual, name, config);
+		return new StringVerifierImpl(scope, actual, name, config);
 	}
 
 	/**
@@ -277,10 +277,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public UriRequirements requireThat(URI actual, String name)
+	public UriVerifier requireThat(URI actual, String name)
 	{
 		verifyName(name);
-		return new UriRequirementsImpl(scope, actual, name, config);
+		return new UriVerifierImpl(scope, actual, name, config);
 	}
 
 	/**
@@ -293,10 +293,10 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T> ClassRequirements<T> requireThat(Class<T> actual, String name)
+	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
 		verifyName(name);
-		return new ClassRequirementsImpl<>(scope, actual, name, config);
+		return new ClassVerifierImpl<>(scope, actual, name, config);
 	}
 
 	/**
@@ -308,9 +308,9 @@ public final class RequirementVerifier implements Verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public OptionalRequirements requireThat(Optional<?> actual, String name)
+	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
 		verifyName(name);
-		return new OptionalRequirementsImpl(scope, actual, name, config);
+		return new OptionalVerifierImpl(scope, actual, name, config);
 	}
 }

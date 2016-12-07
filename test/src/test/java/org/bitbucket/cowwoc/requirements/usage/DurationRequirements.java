@@ -1,11 +1,11 @@
 package org.bitbucket.cowwoc.requirements.usage;
 
 import java.time.Duration;
-import org.bitbucket.cowwoc.requirements.spi.ComparableRequirementsSpi;
 import org.bitbucket.cowwoc.requirements.spi.Isolatable;
+import org.bitbucket.cowwoc.requirements.spi.ComparableVerifierSpi;
 
 public interface DurationRequirements
-	extends ComparableRequirementsSpi<DurationRequirements, Duration>,
+	extends ComparableVerifierSpi<DurationRequirements, Duration>,
 	Isolatable<DurationRequirements>
 {
 	/**

@@ -52,7 +52,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static ObjectRequirements<Object> requireThat(Object actual, String name)
+	public static ObjectVerifier<Object> requireThat(Object actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -67,7 +67,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static ObjectRequirements<Object> assertThat(Object actual, String name)
+	public static ObjectVerifier<Object> assertThat(Object actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -82,7 +82,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <E> CollectionRequirements<E> requireThat(Collection<E> actual, String name)
+	public static <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -98,7 +98,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <E> CollectionRequirements<E> assertThat(Collection<E> actual, String name)
+	public static <E> CollectionVerifier<E> assertThat(Collection<E> actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -113,7 +113,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <E> ArrayRequirements<E> requireThat(E[] actual, String name)
+	public static <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -129,7 +129,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <E> ArrayRequirements<E> assertThat(E[] actual, String name)
+	public static <E> ArrayVerifier<E> assertThat(E[] actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -144,7 +144,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Comparable<? super T>> ComparableRequirements<T> requireThat(T actual,
+	public static <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
 		String name)
 	{
 		return DELEGATE.requireThat(actual, name);
@@ -161,7 +161,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Comparable<? super T>> ComparableRequirements<T> assertThat(T actual,
+	public static <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual,
 		String name)
 	{
 		return DELEGATE.assertThat(actual, name);
@@ -177,7 +177,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Number & Comparable<? super T>> NumberRequirements<T> requireThat(
+	public static <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(
 		T actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
@@ -194,7 +194,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Number & Comparable<? super T>> NumberRequirements<T> assertThat(
+	public static <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(
 		T actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
@@ -209,7 +209,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static DoubleRequirements requireThat(Double actual, String name)
+	public static DoubleVerifier requireThat(Double actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -224,7 +224,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static DoubleRequirements assertThat(Double actual, String name)
+	public static DoubleVerifier assertThat(Double actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -238,7 +238,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static BigDecimalRequirements requireThat(BigDecimal actual, String name)
+	public static BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -253,7 +253,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static BigDecimalRequirements assertThat(BigDecimal actual, String name)
+	public static BigDecimalVerifier assertThat(BigDecimal actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -269,7 +269,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <K, V> MapRequirements<K, V> requireThat(Map<K, V> actual, String name)
+	public static <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -286,7 +286,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <K, V> MapRequirements<K, V> assertThat(Map<K, V> actual, String name)
+	public static <K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -300,7 +300,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PathRequirements requireThat(Path actual, String name)
+	public static PathVerifier requireThat(Path actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -315,7 +315,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PathRequirements assertThat(Path actual, String name)
+	public static PathVerifier assertThat(Path actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -329,7 +329,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static StringRequirements requireThat(String actual, String name)
+	public static StringVerifier requireThat(String actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -344,7 +344,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static StringRequirements assertThat(String actual, String name)
+	public static StringVerifier assertThat(String actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -358,7 +358,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static UriRequirements requireThat(URI actual, String name)
+	public static UriVerifier requireThat(URI actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -373,7 +373,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static UriRequirements assertThat(URI actual, String name)
+	public static UriVerifier assertThat(URI actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -388,7 +388,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T> ClassRequirements<T> requireThat(Class<T> actual, String name)
+	public static <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -404,7 +404,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T> ClassRequirements<T> assertThat(Class<T> actual, String name)
+	public static <T> ClassVerifier<T> assertThat(Class<T> actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
@@ -418,7 +418,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static OptionalRequirements requireThat(Optional<?> actual, String name)
+	public static OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -433,7 +433,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static OptionalRequirements assertThat(Optional<?> actual, String name)
+	public static OptionalVerifier assertThat(Optional<?> actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
