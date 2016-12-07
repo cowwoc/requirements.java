@@ -63,6 +63,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	/**
 	 * Verifies an {@code Object}.
 	 *
+	 * @param <T>    the type of the parameter
 	 * @param actual the actual value
 	 * @param name   the name of the parameter
 	 * @return a verifier for the parameter

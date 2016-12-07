@@ -33,9 +33,9 @@ public interface MultimapVerifier<K, V>
 	CollectionVerifier<V> values();
 
 	/**
-	 * @return verifier over {@link Multimap#entrySet()}
+	 * @return verifier over {@link Multimap#entries()}
 	 */
-	CollectionVerifier<Entry<K, V>> entrySet();
+	CollectionVerifier<Entry<K, V>> entries();
 
 	/**
 	 * Ensures that the parameter is empty.

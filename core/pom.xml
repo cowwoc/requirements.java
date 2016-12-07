@@ -40,7 +40,7 @@
 					<docfilessubdirs>true</docfilessubdirs>
 					<!-- whitelist in order to exclude internal classes -->
 					<sourceFileIncludes>
-						<include>org/bitbucket/cowwoc/requirements/*.java</include>
+						<include>org/bitbucket/cowwoc/requirements/core/*.java</include>
 					</sourceFileIncludes>
 					<show>public</show>
 					<windowtitle>${project.name} ${project.version} API</windowtitle>

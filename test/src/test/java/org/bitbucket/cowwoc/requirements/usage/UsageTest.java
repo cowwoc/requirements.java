@@ -34,7 +34,7 @@ public final class UsageTest
 		// Java will invoke core.Requirements.requireThat() or guava.Requirements.requireThat()
 		// depending on the context
 		requireThat(map, "map").size().isPositive();
-		requireThat(multimap, "multimap").entrySet().containsAll(ImmutableList.of(
+		requireThat(multimap, "multimap").entries().containsAll(ImmutableList.of(
 			Maps.immutableEntry(1, 5), Maps.immutableEntry(1, 6)));
 
 		// Assertions work too

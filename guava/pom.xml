@@ -36,7 +36,16 @@
 				<configuration>
 					<links>
 						<link>http://docs.oracle.com/javase/8/docs/api/</link>
+						<link>http://google.github.io/guava/releases/20.0/api/docs/</link>
 					</links>
+					<!-- TODO: Figure out how to include public APIs and exclude SPI
+					<offlineLinks>
+						<offlineLink>
+							<url>http://cowwoc.bitbucket.org/requirements-core/javadoc/latest/</url>
+							<location>../../../../core/target/site/apidocs/</location>
+						</offlineLink>
+					</offlineLinks>
+					-->
 					<docfilessubdirs>true</docfilessubdirs>
 					<!-- whitelist in order to exclude internal classes -->
 					<sourceFileIncludes>
@@ -44,6 +53,7 @@
 					</sourceFileIncludes>
 					<show>public</show>
 					<windowtitle>${project.name} ${project.version} API</windowtitle>
+					<noqualifier>org.bitbucket.cowwoc.requirements.core.*</noqualifier>
 				</configuration>
 			</plugin>
 			<!--

@@ -164,7 +164,7 @@ public final class MultimapTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
+			new RequirementVerifier(scope).requireThat(actual, "actual").entries().
 				contains(new SimpleEntry<>("key", "value"));
 		}
 	}
@@ -175,7 +175,7 @@ public final class MultimapTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
+			new RequirementVerifier(scope).requireThat(actual, "actual").entries().
 				contains(new SimpleEntry<>("key", "value"));
 		}
 	}
@@ -186,7 +186,7 @@ public final class MultimapTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
+			new RequirementVerifier(scope).requireThat(actual, "actual").entries().
 				doesNotContain(new SimpleEntry<>("notKey", "value"));
 		}
 	}
@@ -197,7 +197,7 @@ public final class MultimapTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new RequirementVerifier(scope).requireThat(actual, "actual").entrySet().
+			new RequirementVerifier(scope).requireThat(actual, "actual").entries().
 				doesNotContain(new SimpleEntry<>("notKey", "value"));
 		}
 	}

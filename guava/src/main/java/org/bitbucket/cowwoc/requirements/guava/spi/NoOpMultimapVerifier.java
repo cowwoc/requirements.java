@@ -43,7 +43,7 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	}
 
 	@Override
-	public CollectionVerifier<Map.Entry<Object, Object>> entrySet()
+	public CollectionVerifier<Map.Entry<Object, Object>> entries()
 	{
 		return new NoOpCollectionVerifier<>();
 	}

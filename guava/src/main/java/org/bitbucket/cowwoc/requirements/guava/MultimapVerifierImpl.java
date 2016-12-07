@@ -153,7 +153,7 @@ final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	}
 
 	@Override
-	public CollectionVerifier<Entry<K, V>> entrySet()
+	public CollectionVerifier<Entry<K, V>> entries()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.entries(), name + ".entries()",
 			Pluralizer.ENTRY, config);
