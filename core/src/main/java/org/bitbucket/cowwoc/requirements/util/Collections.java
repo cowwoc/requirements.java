@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * Collection helper functions.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public final class Collections

@@ -16,6 +16,19 @@ import org.bitbucket.cowwoc.requirements.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.spi.NoOpArrayVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpBigDecimalVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpClassVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpCollectionVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpComparableVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpDoubleVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpMapVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpNumberVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpObjectVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpOptionalVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpPathVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpStringVerifier;
+import org.bitbucket.cowwoc.requirements.spi.NoOpUriVerifier;
 import org.bitbucket.cowwoc.requirements.spi.Verifier;
 
 /**
@@ -148,7 +161,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Object, String)} but does nothing if assertions
 	 * are disabled.
-	 * <p>
+	 *
 	 * @param <T>    the type of the parameter
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
@@ -166,7 +179,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Collection, String)} but does nothing if
 	 * assertions are disabled.
-	 * <p>
+	 *
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
@@ -184,7 +197,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Object[], String)} but does nothing if
 	 * assertions are disabled.
-	 * <p>
+	 *
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
@@ -202,7 +215,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Comparable, String)} but does nothing if
 	 * assertions are disabled.
-	 * <p>
+	 *
 	 * @param <T>    the type of the number
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
@@ -256,7 +269,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(BigDecimal, String)} but does nothing if
 	 * assertions are disabled.
-	 * <p>
+	 *
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
 	 * @return a verifier for the parameter
@@ -273,7 +286,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Map, String)} but does nothing if assertions are
 	 * disabled.
-	 * <p>
+	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
 	 * @param actual the actual value of the parameter
@@ -294,7 +307,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Path, String)} but does nothing if assertions
 	 * are disabled.
-	 * <p>
+	 *
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
 	 * @return a verifier for the parameter
@@ -311,7 +324,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(String, String)} but does nothing if assertions
 	 * are disabled.
-	 * <p>
+	 *
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
 	 * @return a verifier for the parameter
@@ -328,7 +341,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(URI, String)} but does nothing if assertions are
 	 * disabled.
-	 * <p>
+	 *
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
 	 * @return a verifier for the parameter
@@ -345,7 +358,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Class, String)} but does nothing if assertions
 	 * are disabled.
-	 * <p>
+	 *
 	 * @param <T>    the type of class
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
@@ -365,7 +378,7 @@ public final class AssertionVerifier implements Verifier
 	/**
 	 * Same as {@link RequirementVerifier#requireThat(Optional, String)} but does nothing if
 	 * assertions are disabled.
-	 * <p>
+	 *
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
 	 * @return a verifier for the parameter

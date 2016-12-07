@@ -123,7 +123,7 @@ public final class Configuration implements Verifier
 
 	/**
 	 * Builds an exception.
-	 * <p>
+	 *
 	 * @param type    the type of the exception
 	 * @param message an explanation of what went wrong
 	 * @throws NullPointerException if {@code type} or {@code message} are null
@@ -136,7 +136,7 @@ public final class Configuration implements Verifier
 
 	/**
 	 * Builds an exception.
-	 * <p>
+	 *
 	 * @param type    the type of the exception
 	 * @param message an explanation of what went wrong
 	 * @param cause   the underlying cause of the exception ({@code null} if absent)

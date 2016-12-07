@@ -9,9 +9,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.spi.Configuration;
 import org.bitbucket.cowwoc.requirements.ComparableVerifier;
+import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.spi.ComparableVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.Configuration;
 
 /**
  * Normally we shouldn't implement SPI interfaces directly, but since there is only one
@@ -29,7 +30,7 @@ public final class DurationRequirementsImpl implements DurationRequirements
 
 	/**
 	 * Creates new DurationRequirements.
-	 * <p>
+	 *
 	 * @param scope  the system configuration
 	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
@@ -47,9 +48,7 @@ public final class DurationRequirementsImpl implements DurationRequirements
 		this.actual = actual;
 		this.name = name;
 		this.config = config;
-		this.asComparable = scope.getInternalVerifier().requireThat(actual, name).
-			withContext(config.getContext()).
-			withException(config.getException());
+		this.asComparable = new ComparableVerifierImpl<>(scope, actual, name, config);
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public final class Exceptions
 
 	/**
 	 * Throws an exception with the specified message and cause.
-	 * <p>
+	 *
 	 * @param <E>     the type of the exception
 	 * @param type    the type of the exception
 	 * @param message an explanation of what went wrong

@@ -15,7 +15,21 @@ import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.spi.ArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.BigDecimalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.ClassVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.CollectionVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.ComparableVerifierImpl;
 import org.bitbucket.cowwoc.requirements.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.spi.DoubleVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.MapVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.NumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.ObjectVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.OptionalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.PathVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.Pluralizer;
+import org.bitbucket.cowwoc.requirements.spi.StringVerifierImpl;
+import org.bitbucket.cowwoc.requirements.spi.UriVerifierImpl;
 import org.bitbucket.cowwoc.requirements.spi.Verifier;
 
 /**
@@ -138,7 +152,7 @@ public final class RequirementVerifier implements Verifier
 	public <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
 	{
 		verifyName(name);
-		return new CollectionVerifierImpl<>(scope, actual, name, config, Pluralizer.ELEMENT);
+		return new CollectionVerifierImpl<>(scope, actual, name, Pluralizer.ELEMENT, config);
 	}
 
 	/**

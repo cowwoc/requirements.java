@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.ArrayVerifierSpi;
+import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 
 /**
  * Verifies an array parameter.
@@ -14,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.spi.ArrayVerifierSpi;
  * @author Gili Tzabari
  */
 public interface ArrayVerifier<E>
-	extends ArrayVerifierSpi<ArrayVerifier<E>, E>, 
+	extends ArrayVerifierSpi<ArrayVerifier<E>, E>,
 	Isolatable<ArrayVerifier<E>>
 {
 }

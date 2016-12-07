@@ -19,19 +19,19 @@ public final class MainSingletonScope extends AbstractSingletonScope
 {
 	public static final MainSingletonScope INSTANCE = new MainSingletonScope();
 
-	/**
-	 * Prevent construction.
-	 */
-	private MainSingletonScope()
-	{
-	}
-
 	private final Reference<Optional<TerminalType>> requestedTerminalType = ConcurrentLazyReference.
 		create(() ->
 		{
 			String property = System.getProperty("org.bitbucket.cowwoc.requirements.terminal");
 			return Optional.ofNullable(property).map(TerminalType::valueOf);
 		});
+
+	/**
+	 * Prevent construction.
+	 */
+	private MainSingletonScope()
+	{
+	}
 
 	@Override
 	public Optional<TerminalType> getRequestedTerminalType()

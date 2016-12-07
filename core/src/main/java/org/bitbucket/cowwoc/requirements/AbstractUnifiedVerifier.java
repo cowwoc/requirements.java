@@ -123,7 +123,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 
 	/**
 	 * Verifies an array.
-	 * <p>
+	 *
 	 * @param <E>    the type of elements in the array
 	 * @param actual the actual value
 	 * @param name   the name of the parameter
@@ -138,7 +138,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 
 	/**
 	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
-	 * <p>
+	 *
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
 	 * @param name   the name of the parameter

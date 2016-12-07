@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 /**
  * An implementation of DurationRequirements that does nothing.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public enum NoOpDurationRequirements implements DurationRequirements

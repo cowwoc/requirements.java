@@ -121,6 +121,12 @@ public final class OperatingSystem
 		this.version = version;
 	}
 
+	@Override
+	public String toString()
+	{
+		return type + " " + version;
+	}
+
 	/**
 	 * Operating system types.
 	 */
@@ -145,11 +151,5 @@ public final class OperatingSystem
 				return MAC;
 			return UNKNOWN;
 		}
-	}
-
-	@Override
-	public String toString()
-	{
-		return type + " " + version;
 	}
 }

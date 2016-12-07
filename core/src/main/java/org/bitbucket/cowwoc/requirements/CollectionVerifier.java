@@ -5,8 +5,8 @@
 package org.bitbucket.cowwoc.requirements;
 
 import java.util.Collection;
-import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.CollectionVerifierSpi;
+import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 
 /**
  * Verifies a {@link Collection} parameter.
@@ -15,7 +15,6 @@ import org.bitbucket.cowwoc.requirements.spi.CollectionVerifierSpi;
  * @author Gili Tzabari
  */
 public interface CollectionVerifier<E>
-	extends CollectionVerifierSpi<CollectionVerifier<E>, E>, 
-	Isolatable<CollectionVerifier<E>>
+	extends CollectionVerifierSpi<CollectionVerifier<E>, E>, Isolatable<CollectionVerifier<E>>
 {
 }

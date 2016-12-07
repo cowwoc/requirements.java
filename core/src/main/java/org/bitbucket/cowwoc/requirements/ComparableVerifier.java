@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
-import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.spi.ComparableVerifierSpi;
+import org.bitbucket.cowwoc.requirements.spi.Isolatable;
 
 /**
  * Verifies a {@link Comparable}.
@@ -14,7 +14,6 @@ import org.bitbucket.cowwoc.requirements.spi.ComparableVerifierSpi;
  * @author Gili Tzabari
  */
 public interface ComparableVerifier<T extends Comparable<? super T>>
-	extends ComparableVerifierSpi<ComparableVerifier<T>, T>, 
-	Isolatable<ComparableVerifier<T>>
+	extends ComparableVerifierSpi<ComparableVerifier<T>, T>, Isolatable<ComparableVerifier<T>>
 {
 }

@@ -9,11 +9,11 @@ import org.bitbucket.cowwoc.requirements.spi.NumberVerifierSpi;
 
 /**
  * Verifies a {@link Double} parameter.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public interface DoubleVerifier
-	extends NumberVerifierSpi<DoubleVerifier, Double>, 
+	extends NumberVerifierSpi<DoubleVerifier, Double>,
 	Isolatable<DoubleVerifier>
 {
 	/**
