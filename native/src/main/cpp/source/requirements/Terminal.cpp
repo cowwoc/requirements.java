@@ -23,7 +23,7 @@
 #include <windows.h>
 #include <wincon.h>
 
-jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stdoutIsTerminal
+jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_stdoutIsTerminal
 (JNIEnv* env, jobject jthis)
 {
 	// See http://stackoverflow.com/a/3650507/14731
@@ -38,11 +38,11 @@ struct State
 };
 
 /*
-* org.bitbucket.cowwoc.requirements.diff.string.Terminal.start()
+* org.bitbucket.cowwoc.requirements.core.diff.Terminal.start()
 *
 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 */
-jlong JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_start
+jlong JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_start
 (JNIEnv* env, jobject jthis)
 {
 	Exceptions exceptions(env);
@@ -73,11 +73,11 @@ jlong JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_start
 }
 
 /*
-* org.bitbucket.cowwoc.requirements.diff.string.Terminal.stop()
+* org.bitbucket.cowwoc.requirements.core.diff.Terminal.stop()
 *
 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 */
-void JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stop
+void JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_stop
 (JNIEnv* env, jobject jthis, jlong nativeData)
 {
 	State* state = reinterpret_cast<State*>(nativeData);
@@ -89,7 +89,7 @@ void JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stop
 
 #include <unistd.h>
 
-jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_diff_string_Terminal_stdoutIsTerminal
+jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_stdoutIsTerminal
 (JNIEnv* env, jobject jthis)
 {
 	return isatty(STDOUT_FILENO);

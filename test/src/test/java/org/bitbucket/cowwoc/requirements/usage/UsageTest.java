@@ -4,14 +4,20 @@
  */
 package org.bitbucket.cowwoc.requirements.usage;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
-import org.bitbucket.cowwoc.requirements.UnifiedVerifier;
-import org.bitbucket.cowwoc.requirements.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.scope.TestSingletonScope;
-import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.usage.TimeRequirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
 import org.testng.annotations.Test;
 
 public final class UsageTest
@@ -20,77 +26,19 @@ public final class UsageTest
 	 * Demonstrate the ability to statically import the same method name from different modules.
 	 */
 	@Test
-	public void requirementsFromMultipleModules()
+	public void verifiersFromMultipleModules()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			UnifiedVerifier verifier = new UnifiedVerifier(scope, true);
-			Duration duration = Duration.ofDays(1);
-			Set<Duration> bucket = Collections.singleton(duration);
+		Map<Integer, Integer> map = Collections.singletonMap(1, 5);
+		Multimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5, 1, 6);
 
-			// Java will invoke Requirements.requireThat() or TimeRequirements.requireThat() depending on the context
-			requireThat(duration, "duration").isPositive();
-			verifier.requireThat(bucket, "bucket").contains(duration);
+		// Java will invoke core.Requirements.requireThat() or guava.Requirements.requireThat()
+		// depending on the context
+		requireThat(map, "map").size().isPositive();
+		requireThat(multimap, "multimap").entrySet().containsAll(ImmutableList.of(
+			Maps.immutableEntry(1, 5), Maps.immutableEntry(1, 6)));
 
-			// Assertions work too
-			assertThat(duration, "duration").isPositive();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void localRequirements_Failure()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
-				addContext("key", "value").withException(IllegalStateException.class);
-			Duration duration = Duration.ofDays(1);
-
-			verifier.requireThat(duration, "duration").isNull();
-		}
-	}
-
-	@Test
-	public void assertsEnabled()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
-				addContext("key", "value").withException(IllegalStateException.class);
-			Duration duration = Duration.ofDays(1);
-			Set<Duration> bucket = Collections.singleton(duration);
-
-			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
-			verifier.requireThat(bucket, "bucket").contains(duration);
-		}
-	}
-
-	@Test
-	public void assertsDisabled()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
-				addContext("key", "value").withException(IllegalStateException.class);
-			Duration duration = Duration.ofDays(1);
-			Set<Duration> bucket = Collections.singleton(duration);
-
-			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
-			verifier.requireThat(bucket, "bucket").contains(duration);
-		}
-	}
-
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void assertsEnabled_Failure()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			UnifiedVerifier verifier = new UnifiedVerifier(scope, true).
-				addContext("key", "value").withException(IllegalStateException.class);
-			Duration duration = Duration.ofDays(1);
-
-			verifier.requireThat(duration, "duration").isNull();
-		}
+		// Assertions work too
+		assertThat(multimap, "multimap").size().isPositive();
 	}
 
 	@Test
