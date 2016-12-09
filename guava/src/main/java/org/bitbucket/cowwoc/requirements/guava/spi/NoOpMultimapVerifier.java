@@ -11,8 +11,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpCollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.spi.NoOpStringVerifier;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 
 /**
@@ -132,6 +134,12 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	public MultimapVerifier<Object, Object> isNotNull()
 	{
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
@@ -368,6 +369,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	{
 		asInt.isInstanceOf(type);
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, String.valueOf(size), sizeName, config);
 	}
 
 	@Override

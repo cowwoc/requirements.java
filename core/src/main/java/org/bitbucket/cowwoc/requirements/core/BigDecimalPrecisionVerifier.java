@@ -10,11 +10,11 @@ import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
 
 /**
  * Verifies a {@link BigDecimal#precision()}.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public interface BigDecimalPrecisionVerifier
-	extends PrimitiveIntegerVerifierSpi<BigDecimalPrecisionVerifier>, 
+	extends PrimitiveIntegerVerifierSpi<BigDecimalPrecisionVerifier>,
 	Isolatable<BigDecimalPrecisionVerifier>
 {
 	/**

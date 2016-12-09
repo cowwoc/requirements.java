@@ -13,6 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
 /**
@@ -180,6 +181,12 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name,
 			name + ".size()", Pluralizer.ENTRY, config);
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

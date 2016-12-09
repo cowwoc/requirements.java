@@ -12,12 +12,14 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.spi.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
 import org.bitbucket.cowwoc.requirements.core.spi.ContainerSizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.Pluralizer;
+import org.bitbucket.cowwoc.requirements.core.spi.StringVerifierImpl;
 
 /**
  * Default implementation of MultimapRequirements.
@@ -185,6 +187,12 @@ final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name, name + ".size()",
 			Pluralizer.ENTRY, config);
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
 
 /**
  * Verifies a {@link Map} parameter.
- * <p>
+ *
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map
  * @author Gili Tzabari

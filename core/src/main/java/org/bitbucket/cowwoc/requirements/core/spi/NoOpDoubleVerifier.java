@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.DoubleVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of DoubleVerifier that does nothing.
@@ -200,9 +201,14 @@ public enum NoOpDoubleVerifier implements DoubleVerifier
 	}
 
 	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
 	public DoubleVerifier isolate(Consumer<DoubleVerifier> consumer)
 	{
 		return this;
 	}
-
 }

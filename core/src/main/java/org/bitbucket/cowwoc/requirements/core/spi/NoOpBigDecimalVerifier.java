@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of BigDecimalVerifier that does nothing.
@@ -188,6 +189,12 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	public BigDecimalVerifier isNotNull()
 	{
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

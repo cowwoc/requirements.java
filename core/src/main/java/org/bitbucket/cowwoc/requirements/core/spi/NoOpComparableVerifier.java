@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of ComparableVerifier that does nothing.
@@ -137,6 +138,12 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	public ComparableVerifier<T> isNotNull()
 	{
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

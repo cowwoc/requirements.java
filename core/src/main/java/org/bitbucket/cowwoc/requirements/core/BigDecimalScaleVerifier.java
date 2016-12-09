@@ -10,11 +10,11 @@ import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
 
 /**
  * Verifies a {@link BigDecimal#scale()}.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public interface BigDecimalScaleVerifier
-	extends PrimitiveIntegerVerifierSpi<BigDecimalScaleVerifier>, 
+	extends PrimitiveIntegerVerifierSpi<BigDecimalScaleVerifier>,
 	Isolatable<BigDecimalScaleVerifier>
 {
 }

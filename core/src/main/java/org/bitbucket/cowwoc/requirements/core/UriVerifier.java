@@ -9,8 +9,8 @@ import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
 import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
 
 /**
- * Interface needed for Requirements.assertThat().
- * <p>
+ * Verifies a {@code URI} parameter.
+ *
  * @author Gili Tzabari
  */
 public interface UriVerifier

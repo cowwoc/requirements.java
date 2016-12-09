@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Collections;
@@ -413,6 +414,12 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name,
 			name + ".size()", pluralizer, config);
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

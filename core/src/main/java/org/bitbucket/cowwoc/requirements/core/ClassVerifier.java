@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
 
 /**
  * Verifies a {@link Class} parameter.
- * <p>
+ *
  * @param <T> the type of the class
  * @author Gili Tzabari
  */

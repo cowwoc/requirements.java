@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of ArrayVerifier that does nothing.
@@ -191,6 +192,12 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	public ContainerSizeVerifier length()
 	{
 		return NoOpContainerSizeVerifier.INSTANCE;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
 /**
@@ -256,6 +257,12 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	public BigDecimalScaleVerifier scale()
 	{
 		return new BigDecimalScaleVerifierImpl(scope, actual, name, config);
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

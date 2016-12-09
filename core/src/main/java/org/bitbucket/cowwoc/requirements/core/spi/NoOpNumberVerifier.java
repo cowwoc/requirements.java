@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of NumberVerifier that does nothing.
@@ -180,6 +181,12 @@ public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	public NumberVerifier<T> isNotNull()
 	{
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

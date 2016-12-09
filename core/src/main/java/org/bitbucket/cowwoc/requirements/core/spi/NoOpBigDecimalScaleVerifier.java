@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of BigDecimalScaleVerifier that does nothing.
@@ -182,6 +183,12 @@ public final class NoOpBigDecimalScaleVerifier implements BigDecimalScaleVerifie
 	public BigDecimalScaleVerifier isNotNull()
 	{
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

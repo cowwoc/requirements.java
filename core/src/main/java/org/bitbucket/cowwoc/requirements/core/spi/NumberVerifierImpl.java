@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
 /**
@@ -256,6 +257,12 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		asComparable.isIn(first, last);
 		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

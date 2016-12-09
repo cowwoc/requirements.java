@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of BigDecimalPrecisionVerifier that does nothing.
@@ -188,9 +189,14 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	}
 
 	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
 	public BigDecimalPrecisionVerifier isolate(Consumer<BigDecimalPrecisionVerifier> consumer)
 	{
 		return this;
 	}
-
 }

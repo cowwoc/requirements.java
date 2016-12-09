@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.DoubleVerifier;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
 /**
@@ -275,6 +276,12 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 			String.format("%s must be infinite.", name)).
 			addContext("Actual", actual).
 			build();
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

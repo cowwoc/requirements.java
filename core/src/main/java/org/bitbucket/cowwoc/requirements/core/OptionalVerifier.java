@@ -10,11 +10,11 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
 
 /**
  * Verifies an {@link Optional} parameter.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public interface OptionalVerifier
-	extends ObjectVerifierSpi<OptionalVerifier, Optional<?>>, 
+	extends ObjectVerifierSpi<OptionalVerifier, Optional<?>>,
 	Isolatable<OptionalVerifier>
 {
 	/**

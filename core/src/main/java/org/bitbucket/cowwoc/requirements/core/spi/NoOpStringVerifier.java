@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -57,15 +59,15 @@ public enum NoOpStringVerifier implements StringVerifier
 	}
 
 	@Override
-	public StringVerifier isEmailFormat()
+	public EmailAddressVerifier asEmailAddress()
 	{
-		return this;
+		return NoOpEmailAddressVerifier.INSTANCE;
 	}
 
 	@Override
-	public StringVerifier isIpAddressFormat()
+	public IpAddressVerifier asIpAddress()
 	{
-		return this;
+		return NoOpIpAddressVerifier.INSTANCE;
 	}
 
 	@Override
@@ -144,6 +146,12 @@ public enum NoOpStringVerifier implements StringVerifier
 	public ContainerSizeVerifier length()
 	{
 		return NoOpContainerSizeVerifier.INSTANCE;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return this;
 	}
 
 	@Override

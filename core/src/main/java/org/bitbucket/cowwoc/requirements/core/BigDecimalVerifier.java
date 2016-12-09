@@ -10,20 +10,19 @@ import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierSpi;
 
 /**
  * Verifies a {@link BigDecimal} parameter.
- * <p>
+ *
  * @author Gili Tzabari
  */
 public interface BigDecimalVerifier
-	extends NumberVerifierSpi<BigDecimalVerifier, BigDecimal>,
-	Isolatable<BigDecimalVerifier>
+	extends NumberVerifierSpi<BigDecimalVerifier, BigDecimal>, Isolatable<BigDecimalVerifier>
 {
 	/**
-	 * @return verifier for BigDecimal.precision()
+	 * @return verifier for {@code BigDecimal.precision()}
 	 */
 	BigDecimalPrecisionVerifier precision();
 
 	/**
-	 * @return verifier for BigDecimal.scale()
+	 * @return verifier for {@code BigDecimal.scale()}
 	 */
 	BigDecimalScaleVerifier scale();
 }

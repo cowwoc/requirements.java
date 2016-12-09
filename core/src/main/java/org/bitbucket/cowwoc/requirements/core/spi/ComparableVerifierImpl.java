@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import static org.bitbucket.cowwoc.requirements.core.util.ConsoleConstants.LINE_LENGTH;
@@ -266,6 +267,12 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 			append("Actual: ").append(actual);
 		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
 			build();
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

@@ -4,91 +4,85 @@
  */
 package org.bitbucket.cowwoc.requirements.core.spi;
 
-import java.net.URI;
+import java.net.InetAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 
 /**
- * An implementation of UriVerifier that does nothing.
+ * An implementation of NoOpIpAddressVerifier that does nothing.
  *
  * @author Gili Tzabari
  */
-public enum NoOpUriVerifier implements UriVerifier
+public enum NoOpIpAddressVerifier implements IpAddressVerifier
 {
 	INSTANCE;
 
 	@Override
-	public UriVerifier withException(Class<? extends RuntimeException> exception)
+	public IpAddressVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier addContext(String key, Object value)
+	public IpAddressVerifier addContext(String key, Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier withContext(List<Entry<String, Object>> context)
+	public IpAddressVerifier withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isAbsolute()
+	public IpAddressVerifier isEqualTo(InetAddress value)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isEqualTo(URI value)
+	public IpAddressVerifier isEqualTo(InetAddress value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isEqualTo(URI value, String name)
+	public IpAddressVerifier isNotEqualTo(InetAddress value)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isNotEqualTo(URI value)
+	public IpAddressVerifier isNotEqualTo(InetAddress value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isNotEqualTo(URI value, String name)
+	public IpAddressVerifier isIn(Collection<InetAddress> collection)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isIn(Collection<URI> collection)
+	public IpAddressVerifier isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isInstanceOf(Class<?> type)
+	public IpAddressVerifier isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isNull()
-	{
-		return this;
-	}
-
-	@Override
-	public UriVerifier isNotNull()
+	public IpAddressVerifier isNotNull()
 	{
 		return this;
 	}
@@ -100,7 +94,7 @@ public enum NoOpUriVerifier implements UriVerifier
 	}
 
 	@Override
-	public UriVerifier isolate(Consumer<UriVerifier> consumer)
+	public IpAddressVerifier isolate(Consumer<IpAddressVerifier> consumer)
 	{
 		return this;
 	}

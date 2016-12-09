@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of MapVerifier that does nothing.
@@ -130,6 +131,12 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	public ContainerSizeVerifier size()
 	{
 		return NoOpContainerSizeVerifier.INSTANCE;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return NoOpStringVerifier.INSTANCE;
 	}
 
 	@Override

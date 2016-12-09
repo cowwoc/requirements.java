@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
 /**
@@ -272,6 +273,12 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.length, name,
 			name + ".length", Pluralizer.ELEMENT, config);
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

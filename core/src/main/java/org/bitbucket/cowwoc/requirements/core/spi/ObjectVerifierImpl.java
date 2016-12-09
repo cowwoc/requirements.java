@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.diff.DiffResult;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
@@ -334,6 +335,12 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 			String.format("%s must be an instance of %s.", name, type)).
 			addContext("Actual", actual.getClass()).
 			build();
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, actual.toString(), name, config);
 	}
 
 	@Override

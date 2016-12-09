@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * Verifies an {@link Object} parameter.
@@ -105,4 +106,9 @@ public interface ObjectVerifierSpi<S extends ObjectVerifierSpi<S, T>, T> extends
 	 * @throws NullPointerException if the actual value is null
 	 */
 	S isNotNull();
+
+	/**
+	 * @return a verifier for the String representation of the value
+	 */
+	StringVerifier asString();
 }

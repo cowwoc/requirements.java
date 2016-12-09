@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
 
 /**
  * Verifies a {@link Collection} parameter.
- * <p>
+ *
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */

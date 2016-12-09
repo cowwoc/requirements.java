@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
@@ -265,6 +266,12 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
 			String.format("%s can never be negative", name), null);
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		return new StringVerifierImpl(scope, String.valueOf(actual), name, config);
 	}
 
 	@Override

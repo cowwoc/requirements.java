@@ -9,12 +9,11 @@ import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
 
 /**
  * Verifies an array parameter.
- * <p>
+ *
  * @param <E> the type of elements in the array
  * @author Gili Tzabari
  */
 public interface ArrayVerifier<E>
-	extends ArrayVerifierSpi<ArrayVerifier<E>, E>,
-	Isolatable<ArrayVerifier<E>>
+	extends ArrayVerifierSpi<ArrayVerifier<E>, E>, Isolatable<ArrayVerifier<E>>
 {
 }

@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
@@ -108,10 +110,10 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
-	public StringVerifier isEmailFormat()
+	public EmailAddressVerifier asEmailAddress()
 	{
 		if (EMAIL_PATTERN.matcher(actual).matches())
-			return this;
+			return new EmailAddressVerifierImpl(scope, actual, name, config);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s does not contain a valid email format", name)).
 			addContext("Actual", actual).
@@ -119,7 +121,7 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
-	public StringVerifier isIpAddressFormat()
+	public IpAddressVerifier asIpAddress()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.
 		char firstCharacter = actual.charAt(0);
@@ -130,9 +132,10 @@ public final class StringVerifierImpl implements StringVerifier
 				addContext("Actual", actual).
 				build();
 		}
+		InetAddress address;
 		try
 		{
-			InetAddress.getByName(actual);
+			address = InetAddress.getByName(actual);
 		}
 		catch (UnknownHostException e)
 		{
@@ -141,7 +144,7 @@ public final class StringVerifierImpl implements StringVerifier
 				addContext("Actual", actual).
 				build();
 		}
-		return this;
+		return new IpAddressVerifierImpl(scope, address, name, config);
 	}
 
 	@Override
@@ -248,6 +251,12 @@ public final class StringVerifierImpl implements StringVerifier
 	public StringVerifier isNotNull()
 	{
 		asObject.isNotNull();
+		return this;
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
 		return this;
 	}
 

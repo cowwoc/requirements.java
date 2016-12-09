@@ -9,11 +9,11 @@ import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
 
 /**
  * Verifies a container's size (e.g. size of a collection, length of a string).
- * <p>
+ *
  * @author Gili Tzabari
  */
 public interface ContainerSizeVerifier
-	extends PrimitiveIntegerVerifierSpi<ContainerSizeVerifier>, 
+	extends PrimitiveIntegerVerifierSpi<ContainerSizeVerifier>,
 	Isolatable<ContainerSizeVerifier>
 {
 }

@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
 
 /**
  * Verifies a {@link Comparable}.
- * <p>
+ *
  * @param <T> the type of the parameter
  * @author Gili Tzabari
  */
