@@ -7,11 +7,14 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+import org.bitbucket.cowwoc.requirements.core.UriVerifier;
+import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 
 /**
  * An implementation of StringVerifier that does nothing.
@@ -65,9 +68,15 @@ public enum NoOpStringVerifier implements StringVerifier
 	}
 
 	@Override
-	public IpAddressVerifier asIpAddress()
+	public InetAddressVerifier asInetAddress()
 	{
-		return NoOpIpAddressVerifier.INSTANCE;
+		return NoOpInetAddressVerifier.INSTANCE;
+	}
+
+	@Override
+	public UriVerifier asUri()
+	{
+		return NoOpUriVerifier.INSTANCE;
 	}
 
 	@Override
@@ -152,6 +161,18 @@ public enum NoOpStringVerifier implements StringVerifier
 	public StringVerifier asString()
 	{
 		return this;
+	}
+
+	@Override
+	public Optional<String> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public String getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

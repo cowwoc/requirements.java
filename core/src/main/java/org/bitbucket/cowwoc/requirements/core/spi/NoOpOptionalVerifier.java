@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
@@ -103,6 +104,18 @@ public enum NoOpOptionalVerifier implements OptionalVerifier
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<Optional<?>> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public Optional<?> getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

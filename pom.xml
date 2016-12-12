@@ -124,6 +124,16 @@
 		</profile>
 		<profile>
 			<id>windows-i386-msvc-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>x86</arch>
+				</os>
+			</activation>
 			<properties>
 				<platform>windows-i386-msvc</platform>
 				<build.type>release</build.type>
@@ -138,6 +148,16 @@
 		</profile>
 		<profile>
 			<id>windows-amd64-msvc-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
 			<properties>
 				<platform>windows-amd64-msvc</platform>
 				<build.type>release</build.type>
@@ -152,6 +172,16 @@
 		</profile>
 		<profile>
 			<id>linux-i386-gcc-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>linux</family>
+					<arch>i386</arch>
+				</os>
+			</activation>
 			<properties>
 				<platform>linux-i386-gcc</platform>
 				<build.type>release</build.type>
@@ -166,6 +196,16 @@
 		</profile>
 		<profile>
 			<id>linux-amd64-gcc-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>linux</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
 			<properties>
 				<platform>linux-amd64-gcc</platform>
 				<build.type>release</build.type>
@@ -180,6 +220,16 @@
 		</profile>
 		<profile>
 			<id>mac-amd64-gcc-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>mac</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
 			<properties>
 				<platform>mac-amd64-gcc</platform>
 				<build.type>release</build.type>

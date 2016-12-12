@@ -5,18 +5,21 @@
 package org.bitbucket.cowwoc.requirements.core.spi;
 
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 
 /**
  * Default implementation of StringVerifier.
@@ -121,7 +124,7 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
-	public IpAddressVerifier asIpAddress()
+	public InetAddressVerifier asInetAddress()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.
 		char firstCharacter = actual.charAt(0);
@@ -144,7 +147,24 @@ public final class StringVerifierImpl implements StringVerifier
 				addContext("Actual", actual).
 				build();
 		}
-		return new IpAddressVerifierImpl(scope, address, name, config);
+		return new InetAddressVerifierImpl(scope, address, name, config);
+	}
+
+	@Override
+	public UriVerifier asUri()
+	{
+		try
+		{
+			URI uri = URI.create(actual);
+			return new UriVerifierImpl(scope, uri, name, config);
+		}
+		catch (IllegalArgumentException e)
+		{
+			throw config.exceptionBuilder(IllegalArgumentException.class,
+				String.format("%s does not contain a valid URI format", name)).
+				addContext("Actual", actual).
+				build();
+		}
 	}
 
 	@Override
@@ -258,6 +278,18 @@ public final class StringVerifierImpl implements StringVerifier
 	public StringVerifier asString()
 	{
 		return this;
+	}
+
+	@Override
+	public Optional<String> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public String getActual()
+	{
+		return actual;
 	}
 
 	@Override

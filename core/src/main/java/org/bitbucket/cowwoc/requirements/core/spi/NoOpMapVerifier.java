@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
@@ -137,6 +139,18 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<Map<Object, Object>> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public Map<Object, Object> getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

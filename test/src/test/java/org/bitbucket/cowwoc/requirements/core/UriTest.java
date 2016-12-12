@@ -55,6 +55,19 @@ public final class UriTest
 	}
 
 	@Test
+	public void fromString()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			String actual = "../index.html";
+			URI actualAsUri = new RequirementVerifier(scope).requireThat(actual, "actual").asUri().
+				getActual();
+			assert (actualAsUri.toString().equals(actual)): "actualAsUri: " + actualAsUri + ", actual: " +
+				actual;
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (SingletonScope scope = new TestSingletonScope())

@@ -114,66 +114,6 @@ public final class StringTest
 	}
 
 	@Test
-	public void asEmailAddress()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			String actual = "name@gmail.com";
-			new RequirementVerifier(scope).requireThat(actual, "actual").asEmailAddress();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asEmailAddress_False()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			String actual = "name.com";
-			new RequirementVerifier(scope).requireThat(actual, "actual").asEmailAddress();
-		}
-	}
-
-	@Test
-	public void asIpAddress_actualIsIpV4()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			String actual = "1.2.3.4";
-			new RequirementVerifier(scope).requireThat(actual, "actual").asIpAddress();
-		}
-	}
-
-	@Test
-	public void asIpAddress_actualIsIpV6()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1";
-			new RequirementVerifier(scope).requireThat(actual, "actual").asIpAddress();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asIpAddress_actualIsInvalidIpV4()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			String actual = "1.256.3.4";
-			new RequirementVerifier(scope).requireThat(actual, "actual").asIpAddress();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asIpAddress_actualIsInvalidIpV6()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
-			new RequirementVerifier(scope).requireThat(actual, "actual").asIpAddress();
-		}
-	}
-
-	@Test
 	public void startsWith()
 	{
 		try (SingletonScope scope = new TestSingletonScope())

@@ -7,6 +7,9 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.core.Requirements;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -111,4 +114,28 @@ public interface ObjectVerifierSpi<S extends ObjectVerifierSpi<S, T>, T> extends
 	 * @return a verifier for the String representation of the value
 	 */
 	StringVerifier asString();
+
+	/**
+	 * Returns the actual value.
+	 * <p>
+	 * Beware: the return value may be wrapped to prevent modification.
+	 *
+	 * @return {@code Optional.empty()} if the verifier does not have access to the actual value (e.g.
+	 *         if {@link Requirements#assertThat(Object, String) assertThat()} is used when assertions
+	 *         are disabled, the verifier does not need to retain a reference to the actual value)
+	 */
+	Optional<T> getActualIfPresent();
+
+	/**
+	 * Returns the actual value.
+	 * <p>
+	 * Beware: the return value may be wrapped to prevent modification.
+	 *
+	 * @return the actual value
+	 * @throws NoSuchElementException if the verifier does not have access to the actual value (e.g.
+	 *                                if {@link Requirements#assertThat(Object, String) assertThat()}
+	 *                                is used when assertions are disabled, the verifier does not need
+	 *                                to retain a reference to the actual value)
+	 */
+	T getActual();
 }

@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
@@ -193,6 +194,18 @@ final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public Optional<Multimap<K, V>> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Multimap<K, V> getActual()
+	{
+		return actual;
 	}
 
 	@Override

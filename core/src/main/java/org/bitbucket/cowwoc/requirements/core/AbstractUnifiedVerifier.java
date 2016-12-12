@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -452,6 +453,35 @@ abstract class AbstractUnifiedVerifier implements Verifier
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public OptionalVerifier assertThat(Optional<?> actual, String name)
+	{
+		return assertions.requireThat(actual, name);
+	}
+
+	/**
+	 * Verifies an {@code InetAddress}.
+	 *
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public InetAddressVerifier requireThat(InetAddress actual, String name)
+	{
+		return requirements.requireThat(actual, name);
+	}
+
+	/**
+	 * Same as {@link #requireThat(InetAddress, String)} but does nothing if assertions are disabled
+	 * for this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public InetAddressVerifier assertThat(InetAddress actual, String name)
 	{
 		return assertions.requireThat(actual, name);
 	}

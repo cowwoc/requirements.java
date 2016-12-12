@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -240,6 +241,18 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, String.valueOf(actual), name, config);
+	}
+
+	@Override
+	public Optional<Integer> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Integer getActual()
+	{
+		return actual;
 	}
 
 	@Override

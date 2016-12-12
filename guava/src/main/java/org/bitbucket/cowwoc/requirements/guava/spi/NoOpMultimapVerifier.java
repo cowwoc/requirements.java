@@ -8,6 +8,8 @@ import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
@@ -140,6 +142,18 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<Multimap<Object, Object>> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public Multimap<Object, Object> getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

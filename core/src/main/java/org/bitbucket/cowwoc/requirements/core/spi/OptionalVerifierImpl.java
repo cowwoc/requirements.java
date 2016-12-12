@@ -158,6 +158,18 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	}
 
 	@Override
+	public Optional<Optional<?>> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Optional<?> getActual()
+	{
+		return actual;
+	}
+
+	@Override
 	public OptionalVerifier isolate(Consumer<OptionalVerifier> consumer)
 	{
 		consumer.accept(this);

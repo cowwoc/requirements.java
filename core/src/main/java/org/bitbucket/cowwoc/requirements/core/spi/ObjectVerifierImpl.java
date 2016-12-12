@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -341,6 +342,18 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public Optional<T> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public T getActual()
+	{
+		return actual;
 	}
 
 	@Override

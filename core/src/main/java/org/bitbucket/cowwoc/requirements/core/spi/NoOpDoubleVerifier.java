@@ -7,6 +7,8 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.DoubleVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -204,6 +206,18 @@ public enum NoOpDoubleVerifier implements DoubleVerifier
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<Double> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public Double getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

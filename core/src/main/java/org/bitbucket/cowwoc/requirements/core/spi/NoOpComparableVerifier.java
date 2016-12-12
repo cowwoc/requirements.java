@@ -7,6 +7,8 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -144,6 +146,18 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<T> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public T getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

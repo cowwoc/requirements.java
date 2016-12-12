@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
@@ -146,6 +147,18 @@ public final class ClassVerifierImpl<T> implements ClassVerifier<T>
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public Optional<Class<T>> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Class<T> getActual()
+	{
+		return actual;
 	}
 
 	@Override

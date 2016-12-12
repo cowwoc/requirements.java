@@ -7,6 +7,8 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
@@ -198,6 +200,18 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<Collection<E>> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public Collection<E> getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
@@ -420,6 +421,18 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public Optional<Collection<E>> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Collection<E> getActual()
+	{
+		return java.util.Collections.unmodifiableCollection(actual);
 	}
 
 	@Override

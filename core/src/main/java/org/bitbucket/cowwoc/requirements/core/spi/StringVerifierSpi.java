@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements.core.spi;
 
 import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 
 /**
  * Verifier for a {@link String}.
@@ -31,10 +32,19 @@ public interface StringVerifierSpi<S extends StringVerifierSpi<S, T>, T extends 
 	EmailAddressVerifier asEmailAddress();
 
 	/**
-	 * Ensures that the actual value contains a valid IP address format.
+	 * Ensures that the actual value contains a valid Internet address format.
 	 *
-	 * @return a verifier for IP addresses
-	 * @throws IllegalArgumentException if the actual value does not contain a valid IP address format
+	 * @return a verifier for Internet addresses
+	 * @throws IllegalArgumentException if the actual value does not contain a valid Internet address
+	 *                                  format
 	 */
-	IpAddressVerifier asIpAddress();
+	InetAddressVerifier asInetAddress();
+
+	/**
+	 * Ensures that the actual value contains a valid URI format.
+	 *
+	 * @return a verifier for URIs
+	 * @throws IllegalArgumentException if the actual value does not contain a valid URI format
+	 */
+	UriVerifier asUri();
 }

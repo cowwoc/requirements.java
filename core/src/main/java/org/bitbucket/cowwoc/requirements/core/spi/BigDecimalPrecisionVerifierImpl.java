@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -272,6 +273,18 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, String.valueOf(actual), name, config);
+	}
+
+	@Override
+	public Optional<Integer> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Integer getActual()
+	{
+		return actual;
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
@@ -97,6 +99,18 @@ public enum NoOpUriVerifier implements UriVerifier
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<URI> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public URI getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

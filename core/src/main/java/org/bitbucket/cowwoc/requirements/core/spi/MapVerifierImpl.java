@@ -5,9 +5,11 @@
 package org.bitbucket.cowwoc.requirements.core.spi;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
@@ -187,6 +189,18 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public Optional<Map<K, V>> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public Map<K, V> getActual()
+	{
+		return Collections.unmodifiableMap(actual);
 	}
 
 	@Override

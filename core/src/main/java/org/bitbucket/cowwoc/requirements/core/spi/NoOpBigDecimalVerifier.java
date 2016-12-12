@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
@@ -195,6 +197,18 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<BigDecimal> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public BigDecimal getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

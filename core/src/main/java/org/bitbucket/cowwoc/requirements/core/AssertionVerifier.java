@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.NoOpClassVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpCollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpComparableVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpDoubleVerifier;
+import org.bitbucket.cowwoc.requirements.core.spi.NoOpInetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpMapVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.spi.NoOpObjectVerifier;
@@ -390,5 +392,22 @@ public final class AssertionVerifier implements Verifier
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
 		return NoOpOptionalVerifier.INSTANCE;
+	}
+
+	/**
+	 * Same as {@link RequirementVerifier#requireThat(InetAddress, String)} but does nothing if
+	 * assertions are disabled.
+	 *
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public InetAddressVerifier requireThat(InetAddress actual, String name)
+	{
+		if (enabled)
+			return requirementVerifier.requireThat(actual, name);
+		return NoOpInetAddressVerifier.INSTANCE;
 	}
 }

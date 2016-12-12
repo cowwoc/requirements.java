@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
@@ -278,7 +279,21 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public StringVerifier asString()
 	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
+		return new StringVerifierImpl(scope, Arrays.toString(actual), name, config);
+	}
+
+	@Override
+	public Optional<E[]> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public E[] getActual()
+	{
+		if (actual == null)
+			return null;
+		return Arrays.copyOf(actual, actual.length);
 	}
 
 	@Override

@@ -4,22 +4,25 @@
  */
 package org.bitbucket.cowwoc.requirements.core.spi;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.IpAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 
 /**
- * Default implementation of IpAddressVerifier.
+ * Default implementation of InetAddressVerifier.
  *
  * @author Gili Tzabari
  */
-public final class IpAddressVerifierImpl implements IpAddressVerifier
+public final class InetAddressVerifierImpl implements InetAddressVerifier
 {
 	private final SingletonScope scope;
 	private final InetAddress actual;
@@ -28,7 +31,7 @@ public final class IpAddressVerifierImpl implements IpAddressVerifier
 	private final ObjectVerifier<InetAddress> asObject;
 
 	/**
-	 * Creates new IpAddressVerifierImpl.
+	 * Creates new InetAddressVerifierImpl.
 	 *
 	 * @param scope  the system configuration
 	 * @param actual the actual value of the parameter
@@ -36,7 +39,7 @@ public final class IpAddressVerifierImpl implements IpAddressVerifier
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public IpAddressVerifierImpl(SingletonScope scope, InetAddress actual, String name,
+	public InetAddressVerifierImpl(SingletonScope scope, InetAddress actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
@@ -50,94 +53,131 @@ public final class IpAddressVerifierImpl implements IpAddressVerifier
 	}
 
 	@Override
-	public IpAddressVerifier withException(Class<? extends RuntimeException> exception)
+	public InetAddressVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
 			return this;
-		return new IpAddressVerifierImpl(scope, actual, name, newConfig);
+		return new InetAddressVerifierImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
-	public IpAddressVerifier addContext(String key, Object value)
+	public InetAddressVerifier addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
-		return new IpAddressVerifierImpl(scope, actual, name, newConfig);
+		return new InetAddressVerifierImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
-	public IpAddressVerifier withContext(List<Entry<String, Object>> context)
+	public InetAddressVerifier withContext(List<Entry<String, Object>> context)
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)
 			return this;
-		return new IpAddressVerifierImpl(scope, actual, name, newConfig);
+		return new InetAddressVerifierImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
-	public IpAddressVerifier isEqualTo(InetAddress value)
+	public InetAddressVerifier isEqualTo(InetAddress value)
 	{
 		asObject.isEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isEqualTo(InetAddress value, String name)
+	public InetAddressVerifier isEqualTo(InetAddress value, String name)
 	{
 		asObject.isEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isNotEqualTo(InetAddress value)
+	public InetAddressVerifier isNotEqualTo(InetAddress value)
 	{
 		asObject.isNotEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isNotEqualTo(InetAddress value, String name)
+	public InetAddressVerifier isNotEqualTo(InetAddress value, String name)
 	{
 		asObject.isNotEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isIn(Collection<InetAddress> collection)
+	public InetAddressVerifier isIn(Collection<InetAddress> collection)
 	{
 		asObject.isIn(collection);
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isInstanceOf(Class<?> type)
+	public InetAddressVerifier isInstanceOf(Class<?> type)
 	{
 		asObject.isInstanceOf(type);
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isNull()
+	public InetAddressVerifier isNull()
 	{
 		asObject.isNull();
 		return this;
 	}
 
 	@Override
-	public IpAddressVerifier isNotNull()
+	public InetAddressVerifier isNotNull()
 	{
 		asObject.isNotNull();
 		return this;
 	}
 
 	@Override
-	public StringVerifier asString()
+	public InetAddressVerifier isIpV4()
 	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
+		if (actual instanceof Inet4Address)
+			return this;
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be an IP v4 address.", name)).
+			addContext("Actual", actual).
+			build();
 	}
 
 	@Override
-	public IpAddressVerifier isolate(Consumer<IpAddressVerifier> consumer)
+	public InetAddressVerifier isIpV6()
+	{
+		if (actual instanceof Inet6Address)
+			return this;
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must be an IP v6 address.", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public StringVerifier asString()
+	{
+		// InetAddress.toString() returns hostname/ip-address, but this cannot be fed back into
+		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which can.
+		String hostName = actual.getHostName();
+		return new StringVerifierImpl(scope, hostName, name, config);
+	}
+
+	@Override
+	public Optional<InetAddress> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public InetAddress getActual()
+	{
+		return actual;
+	}
+
+	@Override
+	public InetAddressVerifier isolate(Consumer<InetAddressVerifier> consumer)
 	{
 		consumer.accept(this);
 		return this;

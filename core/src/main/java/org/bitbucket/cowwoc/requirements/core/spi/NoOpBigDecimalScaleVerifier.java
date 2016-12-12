@@ -7,6 +7,8 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -189,6 +191,18 @@ public final class NoOpBigDecimalScaleVerifier implements BigDecimalScaleVerifie
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public Optional<Integer> getActualIfPresent()
+	{
+		return Optional.empty();
+	}
+
+	@Override
+	public Integer getActual()
+	{
+		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override

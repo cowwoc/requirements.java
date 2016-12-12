@@ -4,92 +4,99 @@
  */
 package org.bitbucket.cowwoc.requirements.core.spi;
 
+import java.net.InetAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ClassVerifier;
+import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * An implementation of ClassVerifier that does nothing.
+ * An implementation of NoOpInetAddressVerifier that does nothing.
  *
  * @author Gili Tzabari
  */
-public enum NoOpClassVerifier implements ClassVerifier<Object>
+public enum NoOpInetAddressVerifier implements InetAddressVerifier
 {
 	INSTANCE;
 
 	@Override
-	public ClassVerifier<Object> withException(Class<? extends RuntimeException> exception)
+	public InetAddressVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> addContext(String key, Object value)
+	public InetAddressVerifier addContext(String key, Object value)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> withContext(List<Entry<String, Object>> context)
+	public InetAddressVerifier withContext(List<Entry<String, Object>> context)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isSupertypeOf(Class<?> type)
+	public InetAddressVerifier isEqualTo(InetAddress value)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isEqualTo(Class<Object> value)
+	public InetAddressVerifier isEqualTo(InetAddress value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isEqualTo(Class<Object> value, String name)
+	public InetAddressVerifier isNotEqualTo(InetAddress value)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isNotEqualTo(Class<Object> value)
+	public InetAddressVerifier isNotEqualTo(InetAddress value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isNotEqualTo(Class<Object> value, String name)
+	public InetAddressVerifier isIn(Collection<InetAddress> collection)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isIn(Collection<Class<Object>> collection)
+	public InetAddressVerifier isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isInstanceOf(Class<?> type)
+	public InetAddressVerifier isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isNull()
+	public InetAddressVerifier isNotNull()
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isNotNull()
+	public InetAddressVerifier isIpV4()
+	{
+		return this;
+	}
+
+	@Override
+	public InetAddressVerifier isIpV6()
 	{
 		return this;
 	}
@@ -101,19 +108,19 @@ public enum NoOpClassVerifier implements ClassVerifier<Object>
 	}
 
 	@Override
-	public Optional<Class<Object>> getActualIfPresent()
+	public Optional<InetAddress> getActualIfPresent()
 	{
 		return Optional.empty();
 	}
 
 	@Override
-	public Class<Object> getActual()
+	public InetAddress getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
 
 	@Override
-	public ClassVerifier<Object> isolate(Consumer<ClassVerifier<Object>> consumer)
+	public InetAddressVerifier isolate(Consumer<InetAddressVerifier> consumer)
 	{
 		return this;
 	}

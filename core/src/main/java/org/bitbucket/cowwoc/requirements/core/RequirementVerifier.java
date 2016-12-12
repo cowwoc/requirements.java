@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.ComparableVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
 import org.bitbucket.cowwoc.requirements.core.spi.DoubleVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.spi.InetAddressVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.MapVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierImpl;
@@ -326,5 +328,20 @@ public final class RequirementVerifier implements Verifier
 	{
 		verifyName(name);
 		return new OptionalVerifierImpl(scope, actual, name, config);
+	}
+
+	/**
+	 * Verifies an {@code InetAddress}.
+	 *
+	 * @param actual the actual value of the parameter
+	 * @param name   the name of the parameter
+	 * @return a verifier for the parameter
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public InetAddressVerifier requireThat(InetAddress actual, String name)
+	{
+		verifyName(name);
+		return new InetAddressVerifierImpl(scope, actual, name, config);
 	}
 }

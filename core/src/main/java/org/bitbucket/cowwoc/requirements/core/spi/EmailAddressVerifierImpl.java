@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.spi;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
@@ -181,6 +182,18 @@ public final class EmailAddressVerifierImpl implements EmailAddressVerifier
 	public StringVerifier asString()
 	{
 		return asString;
+	}
+
+	@Override
+	public Optional<String> getActualIfPresent()
+	{
+		return Optional.of(actual);
+	}
+
+	@Override
+	public String getActual()
+	{
+		return actual;
 	}
 
 	@Override
