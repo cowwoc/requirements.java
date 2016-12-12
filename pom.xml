@@ -94,18 +94,18 @@
 								<configuration>
 									<tasks>
 										<echo>Please pick one of the following profiles:</echo>
-										<echo>* windows-i386-msvc-debug</echo>
-										<echo>* windows-i386-msvc-release</echo>
-										<echo>* windows-amd64-msvc-debug</echo>
-										<echo>* windows-amd64-msvc-release</echo>
-										<echo>* linux-i386-gcc-debug</echo>
-										<echo>* linux-i386-gcc-release</echo>
-										<echo>* linux-amd64-gcc-debug</echo>
-										<echo>* linux-amd64-gcc-release</echo>
-										<echo>* mac-amd64-gcc-debug</echo>
-										<echo>* mac-amd64-gcc-release</echo>
+										<echo>* windows-i386-debug</echo>
+										<echo>* windows-i386-release</echo>
+										<echo>* windows-amd64-debug</echo>
+										<echo>* windows-amd64-release</echo>
+										<echo>* linux-i386-debug</echo>
+										<echo>* linux-i386-release</echo>
+										<echo>* linux-amd64-debug</echo>
+										<echo>* linux-amd64-release</echo>
+										<echo>* mac-amd64-debug</echo>
+										<echo>* mac-amd64-release</echo>
 										<echo></echo>
-										<echo>For instance: mvn -Pwindows-i386-msvc-debug install</echo>
+										<echo>For instance: mvn -Pwindows-i386-debug install</echo>
 										<fail/>
 									</tasks>
 								</configuration>
@@ -116,14 +116,14 @@
 			</build>
 		</profile>
 		<profile>
-			<id>windows-i386-msvc-debug</id>
+			<id>windows-i386-debug</id>
 			<properties>
-				<platform>windows-i386-msvc</platform>
+				<platform>windows-i386</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-i386-msvc-release</id>
+			<id>windows-i386-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -135,19 +135,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>windows-i386-msvc</platform>
+				<platform>windows-i386</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-amd64-msvc-debug</id>
+			<id>windows-amd64-debug</id>
 			<properties>
-				<platform>windows-amd64-msvc</platform>
+				<platform>windows-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-amd64-msvc-release</id>
+			<id>windows-amd64-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -159,19 +159,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>windows-amd64-msvc</platform>
+				<platform>windows-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-i386-gcc-debug</id>
+			<id>linux-i386-debug</id>
 			<properties>
-				<platform>linux-i386-gcc</platform>
+				<platform>linux-i386</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-i386-gcc-release</id>
+			<id>linux-i386-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -183,19 +183,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>linux-i386-gcc</platform>
+				<platform>linux-i386</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-amd64-gcc-debug</id>
+			<id>linux-amd64-debug</id>
 			<properties>
-				<platform>linux-amd64-gcc</platform>
+				<platform>linux-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-amd64-gcc-release</id>
+			<id>linux-amd64-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -207,19 +207,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>linux-amd64-gcc</platform>
+				<platform>linux-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>mac-amd64-gcc-debug</id>
+			<id>mac-amd64-debug</id>
 			<properties>
-				<platform>mac-amd64-gcc</platform>
+				<platform>mac-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>mac-amd64-gcc-release</id>
+			<id>mac-amd64-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -231,7 +231,7 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>mac-amd64-gcc</platform>
+				<platform>mac-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
