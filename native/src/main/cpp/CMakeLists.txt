@@ -18,7 +18,7 @@ ENDFUNCTION ()
 # Build script #
 ################
 
-CMAKE_MINIMUM_REQUIRED (VERSION 3.6.2)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.5.2)
 PROJECT (requirements)
 
 SET (requirements_VERSION_MAJOR 1)
