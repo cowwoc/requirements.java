@@ -40,6 +40,7 @@
 							<environmentVariables>
 								<CMAKE_CLASSIFIER>${cmake.classifier}</CMAKE_CLASSIFIER>
 							</environmentVariables>
+							<downloadBinaries>${download.cmake}</downloadBinaries>
 							<skip>${skip.cmake}</skip>
 						</configuration>
 					</execution>
@@ -124,6 +125,7 @@
 	</build>
 	<properties>
 		<classifier>${platform}</classifier>
+		<download.cmake>true</download.cmake>
 	</properties>
 	<profiles>
 		<profile>
@@ -242,6 +244,7 @@
 				<build.type>debug</build.type>
 				<cmake.classifier>linux-i386</cmake.classifier>
 				<cmake.generator>Unix Makefiles</cmake.generator>
+				<download.cmake>false</download.cmake>
 			</properties>
 		</profile>
 		<profile>
@@ -261,6 +264,7 @@
 				<build.type>release</build.type>
 				<cmake.classifier>linux-i386</cmake.classifier>
 				<cmake.generator>Unix Makefiles</cmake.generator>
+				<download.cmake>false</download.cmake>
 			</properties>
 		</profile>
 		<profile>
