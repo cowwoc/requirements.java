@@ -124,7 +124,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<argLine />
-		<requirements.classifier>${platform}-${build.type}</requirements.classifier>
+		<requirements.classifier>${platform}</requirements.classifier>
 	</properties>
 	<dependencies>
 		<dependency>
