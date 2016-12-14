@@ -121,6 +121,10 @@ public final class Terminal
 				return System.console() != null;
 			}
 			case UNKNOWN:
+			{
+				throw new AssertionError(OperatingSystem.current().type.name() + ", os.name: " +
+					System.getProperty("os.name"));
+			}
 			default:
 				throw new AssertionError(OperatingSystem.current().type.name());
 		}

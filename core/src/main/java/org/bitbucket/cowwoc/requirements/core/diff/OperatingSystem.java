@@ -71,7 +71,7 @@ public final class OperatingSystem
 				return new OperatingSystem(type, version);
 			}
 			default:
-				return new OperatingSystem(UNKNOWN, null);
+				return new OperatingSystem(type, null);
 		}
 	}
 
