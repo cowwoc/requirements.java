@@ -72,11 +72,18 @@ get_sources ("${CMAKE_CURRENT_SOURCE_DIR}/source" SOURCE_FILES)
 # Configure single-configuration (e.g. Unix makefiles) and multi-configuration generators
 # (e.g. Visual Studio and XCode) to output to the same path regardless of the build type:
 # http://stackoverflow.com/a/6595001/14731
+#
+# Archive = lib, Library = so, runtime = dll: https://cmake.org/cmake/help/v3.0/prop_tgt/LIBRARY_OUTPUT_DIRECTORY.html
 SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+
 SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build)
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build)
 SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build)
+
 SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build)
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build)
 SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build)
 
 ADD_LIBRARY (requirements SHARED ${SOURCE_FILES} ${HEADER_FILES})
