@@ -69,6 +69,13 @@ INCLUDE_DIRECTORIES (include $ENV{JAVA_HOME}/include ${java_include_path} "${PRO
 get_headers ("${CMAKE_CURRENT_SOURCE_DIR}/include" HEADER_FILES)
 get_sources ("${CMAKE_CURRENT_SOURCE_DIR}/source" SOURCE_FILES)
 
+# Configure multi-configuration generators (e.g. Visual Studio and XCode) to output to the same
+# path regardless of the build type: http://stackoverflow.com/a/6595001/14731
+SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build)
+SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/build)
+SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build)
+SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build)
+
 ADD_LIBRARY (requirements SHARED ${SOURCE_FILES} ${HEADER_FILES})
 
 TARGET_LINK_LIBRARIES (requirements ${CMAKE_DL_LIBS})

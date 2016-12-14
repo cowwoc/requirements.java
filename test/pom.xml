@@ -91,6 +91,7 @@
 									<type>jar</type>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/unpack</outputDirectory>
+									<includes>*.dll,*.pdb,*.so</includes>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -111,7 +112,7 @@
 							<outputDirectory>${project.build.directory}</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.build.directory}/unpack/lib</directory>
+									<directory>${project.build.directory}/unpack</directory>
 								</resource>
 							</resources>
 						</configuration>

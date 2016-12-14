@@ -87,8 +87,7 @@
 							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.build.directory}/cmake</directory>
-									<targetPath>lib</targetPath>
+									<directory>${project.build.directory}/cmake/build</directory>
 									<includes>
 										<include>*.lib</include>
 										<include>*.dll</include>
