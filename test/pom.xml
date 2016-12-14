@@ -35,7 +35,7 @@
 				<version>2.19.1</version>
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
-					<argLine>${argLine} -Dfile.encoding=UTF-8 -Djava.library.path=${project.build.directory}</argLine>
+					<argLine>${argLine} -Dfile.encoding=UTF-8 "-Djava.library.path=${project.build.directory}"</argLine>
 					<!--
 					Tests run faster sequentially than in parallel for me, but they are fast regardless.
 
