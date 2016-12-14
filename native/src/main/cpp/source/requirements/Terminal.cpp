@@ -62,6 +62,7 @@ jlong JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_start
 		return 0;
 	}
 
+	// ENABLE_VIRTUAL_TERMINAL_PROCESSING requires Windows SDK 10.0.14393
 	DWORD newStdoutMode = state->stdoutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 	if (!SetConsoleMode(state->hStdout, newStdoutMode))
 	{
