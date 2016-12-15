@@ -38,10 +38,10 @@ struct State
 };
 
 /*
-* org.bitbucket.cowwoc.requirements.core.diff.Terminal.start()
-*
-* @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
-*/
+ * org.bitbucket.cowwoc.requirements.core.diff.Terminal.start()
+ *
+ * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
+ */
 jlong JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_start
 (JNIEnv* env, jobject jthis)
 {
@@ -74,10 +74,10 @@ jlong JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_start
 }
 
 /*
-* org.bitbucket.cowwoc.requirements.core.diff.Terminal.stop()
-*
-* @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
-*/
+ * org.bitbucket.cowwoc.requirements.core.diff.Terminal.stop()
+ *
+ * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
+ */
 void JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_stop
 (JNIEnv* env, jobject jthis, jlong nativeData)
 {
@@ -86,7 +86,7 @@ void JNICALL Java_org_bitbucket_cowwoc_requirements_core_diff_Terminal_stop
 	delete state;
 }
 
-#elif defined (__linux__)
+#elif defined (__linux__) || defined (__APPLE__)
 
 #include <unistd.h>
 
