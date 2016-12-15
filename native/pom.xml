@@ -89,10 +89,14 @@
 								<resource>
 									<directory>${project.build.directory}/cmake/build</directory>
 									<includes>
+										<!-- windows -->
 										<include>*.lib</include>
 										<include>*.dll</include>
 										<include>*.pdb</include>
+										<!-- linux -->
 										<include>*.so</include>
+										<!-- mac -->
+										<include>*.dylib</include>
 									</includes>
 								</resource>
 								<!--
