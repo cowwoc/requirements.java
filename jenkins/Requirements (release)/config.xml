@@ -95,9 +95,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
                         sh script: &quot;mvn --batch-mode -V -e versions:set -DnewVersion=${releaseVersion} -DgenerateBackupPoms=false&quot;
                         def hgSummary = sh(returnStdout: true, script: &apos;hg summary&apos;)
                         if (!hgSummary.contains(&quot;commit: (clean)&quot;))
-                        {
                             sh script: &quot;hg commit -m \&quot;[jenkins] Releasing version ${releaseVersion}\&quot;&quot;
-                        }
 
                         sh script: &quot;&quot;&quot;hg tag release-${releaseVersion}
                             hg update ${branch}
@@ -122,14 +120,13 @@ try
 {
     parallel linux_i386:
     {
-        // Linux-i386 deploys the portable modules (which is convenient since it doesn&apos;t deploy platform-specific binaries).
-        // Remaining platforms only deploy cmake-binaries module.
         node(&quot;linux &amp;&amp; i386&quot;)
         {
             timeout(2)
             {
                 stage(&quot;Checkout (linux-i386)&quot;)
                 {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
                     checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
                 }
@@ -140,12 +137,12 @@ try
                 {
                     stage(&quot;Build (linux-i386)&quot;)
                     {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Plinux-i386 clean install&apos;
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Plinux-i386-release clean install&apos;
                     }
                     stage(&quot;Deploy (linux-i386)&quot;)
                     {
-                        sh script: &quot;mvn --batch-mode -e -Plinux-i386,empty-jar,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
-                        archiveArtifacts artifacts: &apos;**/target/*.jar&apos;, excludes: &apos;**/target/test-classes/**&apos;
+                        sh script: &quot;mvn --batch-mode -e -Plinux-i386-release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
             }
@@ -158,6 +155,7 @@ try
             {
                 stage(&quot;Checkout (linux-amd64)&quot;)
                 {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
                     checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
                 }
@@ -168,13 +166,12 @@ try
                 {
                     stage(&quot;Build (linux-amd64)&quot;)
                     {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Plinux-amd64 clean install&apos;
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Plinux-amd64-release clean install&apos;
                     }
                     stage(&quot;Deploy (linux-amd64)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;cd cmake-binaries
-                            mvn --batch-mode -e -Plinux-amd64,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                            archiveArtifacts artifacts: &apos;**/target/*.jar&apos;, excludes: &apos;**/target/test-classes/**&apos;
+                        sh script: &quot;mvn --batch-mode -e -Plinux-amd64-release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
             }
@@ -187,6 +184,7 @@ try
             {
                 stage(&quot;Checkout (mac)&quot;)
                 {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
                     checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
                 }
@@ -197,13 +195,12 @@ try
                 {
                     stage(&quot;Build (mac-amd64)&quot;)
                     {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Pmac-amd64 clean install&apos;
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Pmac-amd64-release clean install&apos;
                     }
                     stage(&quot;Deploy (mac-amd64)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;cd cmake-binaries
-                            mvn --batch-mode -e -Pmac-amd64,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                            archiveArtifacts artifacts: &apos;**/target/*.jar&apos;, excludes: &apos;**/target/test-classes/**&apos;
+                        sh script: &quot;mvn --batch-mode -e -Pmac-amd64-release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
             }
@@ -216,6 +213,7 @@ try
             {
                 stage(&quot;Checkout (windows)&quot;)
                 {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
                     checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
                 }
@@ -226,13 +224,12 @@ try
                 {
                     stage(&quot;Build (windows-i386)&quot;)
                     {
-                        bat script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Pwindows-i386 clean install&apos;
+                        bat script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Pwindows-i386-release clean install&apos;
                     }
                     stage(&quot;Deploy (windows-i386)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;cd cmake-binaries
-                            mvn --batch-mode -e -Pwindows-i386,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                            archiveArtifacts artifacts: &apos;**/target/*.jar&apos;, excludes: &apos;**/target/test-classes/**&apos;
+                        bat script: &quot;mvn --batch-mode -e -Pwindows-i386-release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
             }
@@ -242,13 +239,12 @@ try
                 {
                     stage(&quot;Build (windows-amd64)&quot;)
                     {
-                        bat script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Pwindows-amd64 clean install&apos;
+                        bat script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -Pwindows-amd64-release clean install&apos;
                     }
                     stage(&quot;Deploy (windows-amd64)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;cd cmake-binaries
-                            mvn --batch-mode -e -Pwindows-amd64,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                            archiveArtifacts artifacts: &apos;**/target/*.jar&apos;, excludes: &apos;**/target/test-classes/**&apos;
+                        bat script: &quot;mvn --batch-mode -e -Pwindows-amd64-release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
             }
@@ -268,6 +264,7 @@ catch (e)
             {
                 stage(&quot;Checkout (linux-amd64)&quot;)
                 {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
                     checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
                 }
@@ -295,6 +292,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
     {
         stage(&quot;Checkout (linux-amd64)&quot;)
         {
+            // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
             checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
         }

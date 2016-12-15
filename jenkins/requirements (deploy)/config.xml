@@ -36,6 +36,8 @@ parallel windows:
         {
             stage(&quot;Checkout (windows)&quot;)
             {
+                // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                deleteDir()
                 checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;${branch}&quot;]
             }
         }
@@ -78,6 +80,8 @@ parallel windows:
         {
             stage(&quot;Checkout (linux-i386)&quot;)
             {
+                // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                deleteDir()
                 checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &apos;dev-3.0.0&apos;]
             }
         }
@@ -102,6 +106,8 @@ parallel windows:
         {
             stage(&quot;Checkout (linux-amd64)&quot;)
             {
+                // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                deleteDir()
                 checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;${branch}&quot;]
             }
         }
@@ -125,7 +131,9 @@ parallel windows:
         {
             stage(&quot;Checkout (mac)&quot;)
             {
-                    checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;${branch}&quot;]
+                // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                deleteDir()
+                checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;${branch}&quot;]
             }
         }
         timeout(15)
