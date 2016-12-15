@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<!-- %ex is a workaround for https://netbeans.org/bugzilla/show_bug.cgi?id=183938 -->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %class{}.%method\(\) - %msg%n%ex</pattern>
+		</encoder>
+	</appender>
+	<root level="debug">
+		<appender-ref ref="stdout"/>
+	</root>
+</configuration>
