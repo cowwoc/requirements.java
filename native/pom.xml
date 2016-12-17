@@ -89,7 +89,6 @@
 									<directory>${project.build.directory}/cmake/build</directory>
 									<includes>
 										<!-- windows -->
-										<include>*.lib</include>
 										<include>*.dll</include>
 										<include>*.pdb</include>
 										<!-- linux -->
