@@ -125,15 +125,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<argLine />
 		<requirements.classifier>${platform}</requirements.classifier>
-		<!-- Not possible to skip deploy of this module because according to
-		https://books.sonatype.com/nexus-book/reference/staging-deployment.html "In multi-module
-		builds the staging of all components is performed in the last module based on the reactor order.
-		If this property is set to true in the module, all staging will be skipped. You have to ensure
-		that this property evaluates as true in the last module of the reactor. If necessary, you can
-		add a dummy module." In other words, even if we were to skip the deployment of this module,
-		we'd have to deploy a dummy module in its place
 		<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-		-->
 	</properties>
 	<dependencies>
 		<dependency>
