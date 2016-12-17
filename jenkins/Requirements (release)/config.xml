@@ -120,6 +120,8 @@ try
 {
     parallel linux_i386:
     {
+        // Linux-i386 deploys the portable modules as well as its platform-specific binaries.
+        // Remaining platforms only deploy platform-specific binaries.
         node(&quot;linux &amp;&amp; i386&quot;)
         {
             timeout(2)
@@ -145,7 +147,8 @@ try
                         sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pempty-jar,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
                         
                         // Deploy platform-specific JAR
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Plinux-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        sh script: &quot;&quot;&quot;cd requirements-native
+                            mvn --batch-mode -e -DosDetection=false -Plinux-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -174,7 +177,8 @@ try
                     }
                     stage(&quot;Deploy (linux-amd64)&quot;)
                     {
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        sh script: &quot;&quot;&quot;cd requirements-native
+                            mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -203,7 +207,8 @@ try
                     }
                     stage(&quot;Deploy (mac-amd64)&quot;)
                     {
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pmac-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        sh script: &quot;&quot;&quot;cd requirements-native
+                            mvn --batch-mode -e -DosDetection=false -Pmac-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -232,7 +237,8 @@ try
                     }
                     stage(&quot;Deploy (windows-i386)&quot;)
                     {
-                        bat script: &quot;mvn --batch-mode -e -DosDetection=false -Pwindows-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        bat script: &quot;&quot;&quot;cd requirements-native
+                            mvn --batch-mode -e -DosDetection=false -Pwindows-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -247,7 +253,8 @@ try
                     }
                     stage(&quot;Deploy (windows-amd64)&quot;)
                     {
-                        bat script: &quot;mvn --batch-mode -e -DosDetection=false -Pwindows-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        bat script: &quot;&quot;&quot;cd requirements-native
+                            mvn --batch-mode -e -DosDetection=false -Pwindows-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
