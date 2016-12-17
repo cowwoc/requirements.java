@@ -43,7 +43,6 @@
 	<modules>
 		<module>core</module>
 		<module>native</module>
-		<module>test</module>
 		<module>guava</module>
 	</modules>
 
@@ -120,6 +119,9 @@
 				<platform>windows-i386</platform>
 				<build.type>debug</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>windows-i386-release</id>
@@ -137,6 +139,9 @@
 				<platform>windows-i386</platform>
 				<build.type>release</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>windows-amd64-debug</id>
@@ -144,6 +149,9 @@
 				<platform>windows-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>windows-amd64-release</id>
@@ -161,6 +169,9 @@
 				<platform>windows-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>linux-i386-debug</id>
@@ -168,6 +179,9 @@
 				<platform>linux-i386</platform>
 				<build.type>debug</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>linux-i386-release</id>
@@ -185,6 +199,9 @@
 				<platform>linux-i386</platform>
 				<build.type>release</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>linux-amd64-debug</id>
@@ -192,6 +209,9 @@
 				<platform>linux-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>linux-amd64-release</id>
@@ -209,6 +229,9 @@
 				<platform>linux-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>mac-amd64-debug</id>
@@ -216,6 +239,9 @@
 				<platform>mac-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>mac-amd64-release</id>
@@ -233,6 +259,9 @@
 				<platform>mac-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
+			<modules>
+				<module>test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>release</id>

@@ -41,7 +41,6 @@
 								<CMAKE_CLASSIFIER>${cmake.classifier}</CMAKE_CLASSIFIER>
 							</environmentVariables>
 							<downloadBinaries>${download.cmake}</downloadBinaries>
-							<skip>${skip.cmake}</skip>
 						</configuration>
 					</execution>
 					<execution>
@@ -99,15 +98,6 @@
 										<include>*.dylib</include>
 									</includes>
 								</resource>
-								<!--
-								<resource>
-									<directory>${project.build.directory}/sources/include</directory>
-									<targetPath>include</targetPath>
-									<includes>
-										<include>**/*.h</include>
-									</includes>
-								</resource>
-								-->
 							</resources>
 						</configuration>
 					</execution>
@@ -330,9 +320,25 @@
 			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
 			empty file.
 			-->
-			<properties>
-				<skip.cmake>true</skip.cmake>
-			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.cmake-maven-project</groupId>
+						<artifactId>cmake-maven-plugin</artifactId>
+						<version>3.7.0-b2</version>
+						<executions>
+							<execution>
+								<id>cmake-generate</id>
+								<phase>none</phase>
+							</execution>
+							<execution>
+								<id>cmake-compile</id>
+								<phase>none</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>

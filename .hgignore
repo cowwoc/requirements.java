@@ -2,4 +2,7 @@ syntax: glob
 target
 release.properties
 pom.xml.releaseBackup
+
+# Netbeans files
+nbactions*.xml
 nb-configuration.xml
