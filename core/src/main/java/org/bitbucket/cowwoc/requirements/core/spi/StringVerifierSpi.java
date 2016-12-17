@@ -26,6 +26,20 @@ public interface StringVerifierSpi<S extends StringVerifierSpi<S, T>, T extends 
 	S trim();
 
 	/**
+	 * {@inheritDoc}
+	 * @see #trim() 
+	 */
+	@Override
+	S isEmpty();
+
+	/**
+	 * {@inheritDoc}
+	 * @see #trim() 
+	 */
+	@Override
+	S isNotEmpty();
+	
+	/**
 	 * @return a verifier for email addresses
 	 * @throws IllegalArgumentException if the actual value does not contain a valid email format
 	 */

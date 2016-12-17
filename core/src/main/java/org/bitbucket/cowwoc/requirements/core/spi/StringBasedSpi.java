@@ -48,7 +48,6 @@ public interface StringBasedSpi<S extends StringBasedSpi<S, T>, T extends String
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not empty
-	 * @see #trim()
 	 */
 	S isEmpty();
 
@@ -57,7 +56,6 @@ public interface StringBasedSpi<S extends StringBasedSpi<S, T>, T extends String
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is empty
-	 * @see #trim()
 	 */
 	S isNotEmpty();
 

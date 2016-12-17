@@ -37,7 +37,12 @@
 					<links>
 						<link>http://docs.oracle.com/javase/8/docs/api/</link>
 					</links>
+					<!--
+					NOTE: <docfilessubdirs> is only needed when generating Javadoc for color diffs
+					
 					<docfilessubdirs>true</docfilessubdirs>
+					-->
+
 					<!-- whitelist in order to exclude internal classes -->
 					<sourceFileIncludes>
 						<include>org/bitbucket/cowwoc/requirements/core/*.java</include>

@@ -30,7 +30,6 @@ import java.lang.annotation.Target;
  * about the quality or performance of the API in question, only the fact that
  * it is not "API-frozen."
  * <p>
- * <p>
  * It is generally safe for <i>applications</i> to depend on beta APIs, at
  * the cost of some extra work during upgrades. However it is generally
  * inadvisable for <i>libraries</i> (which get included on users' CLASSPATHs,
