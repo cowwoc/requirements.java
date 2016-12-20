@@ -4,8 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.StringBasedSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 
 /**
  * Verifies an email address.
@@ -13,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.core.spi.StringBasedSpi;
  * @author Gili Tzabari
  */
 public interface EmailAddressVerifier
-	extends StringBasedSpi<EmailAddressVerifier, String>,
-	Isolatable<EmailAddressVerifier>
+	extends StringBasedExtension<EmailAddressVerifier, String>, Verifier<EmailAddressVerifier>
 {
 }

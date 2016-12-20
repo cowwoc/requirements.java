@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
 
 /**
@@ -34,7 +33,6 @@ public final class Requirements
 	/**
 	 * @return true if assertions are enabled for this class
 	 */
-	@Beta
 	public static boolean assertionsAreEnabled()
 	{
 		return DELEGATE.assertionsAreEnabled();

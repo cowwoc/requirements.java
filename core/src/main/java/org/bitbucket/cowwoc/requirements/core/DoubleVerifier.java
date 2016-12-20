@@ -4,8 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
 
 /**
  * Verifies a {@link Double} parameter.
@@ -13,8 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierSpi;
  * @author Gili Tzabari
  */
 public interface DoubleVerifier
-	extends NumberVerifierSpi<DoubleVerifier, Double>,
-	Isolatable<DoubleVerifier>
+	extends NumberVerifierExtension<DoubleVerifier, Double>, Verifier<DoubleVerifier>
 {
 	/**
 	 * Ensures that the actual value is a number.

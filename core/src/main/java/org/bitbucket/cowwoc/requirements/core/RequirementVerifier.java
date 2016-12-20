@@ -13,26 +13,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.impl.ArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.BigDecimalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.ClassVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.CollectionVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.ComparableVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.DoubleVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.InetAddressVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.MapVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.NumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.ObjectVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.OptionalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.PathVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.Pluralizer;
+import org.bitbucket.cowwoc.requirements.core.impl.StringVerifierImpl;
+import org.bitbucket.cowwoc.requirements.core.impl.UriVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.spi.ArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.BigDecimalVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.ClassVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.CollectionVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.ComparableVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
-import org.bitbucket.cowwoc.requirements.core.spi.DoubleVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.InetAddressVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.MapVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.OptionalVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.PathVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.Pluralizer;
-import org.bitbucket.cowwoc.requirements.core.spi.StringVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.UriVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
+import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
 /**
  * Verifies a parameter.
@@ -43,7 +42,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
  * @since 2.0.3
  * @author Gili Tzabari
  */
-public final class RequirementVerifier implements Verifier
+public final class RequirementVerifier implements Verifier<RequirementVerifier>
 {
 	/**
 	 * @param name the name of the actual value
@@ -107,7 +106,6 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(scope, newConfig);
 	}
 
-	@Beta
 	@Override
 	public RequirementVerifier addContext(String key, Object value)
 	{
@@ -115,7 +113,6 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(scope, newConfig);
 	}
 
-	@Beta
 	@Override
 	public RequirementVerifier withContext(List<Entry<String, Object>> context)
 	{
@@ -343,5 +340,12 @@ public final class RequirementVerifier implements Verifier
 	{
 		verifyName(name);
 		return new InetAddressVerifierImpl(scope, actual, name, config);
+	}
+
+	@Override
+	public RequirementVerifier isolate(Consumer<RequirementVerifier> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

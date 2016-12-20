@@ -13,25 +13,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpArrayVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpBigDecimalVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpClassVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpCollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpComparableVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpDoubleVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpInetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpMapVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpNumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpOptionalVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpPathVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpStringVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpUriVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpArrayVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpBigDecimalVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpClassVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpCollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpComparableVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpDoubleVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpInetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpMapVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpNumberVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpObjectVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpOptionalVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpPathVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpStringVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.NoOpUriVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
+import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
 /**
  * Verifies a parameter if assertions are enabled; otherwise, does nothing.
@@ -42,7 +41,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
  * @since 2.0.3
  * @author Gili Tzabari
  */
-public final class AssertionVerifier implements Verifier
+public final class AssertionVerifier implements Verifier<AssertionVerifier>
 {
 	private final SingletonScope scope;
 	private final boolean enabled;
@@ -125,7 +124,6 @@ public final class AssertionVerifier implements Verifier
 	 * @param enabled true if assertions are enabled
 	 * @return a verifier with the specified assertion state
 	 */
-	@Beta
 	public AssertionVerifier withEnabled(boolean enabled)
 	{
 		if (enabled == this.enabled)
@@ -142,7 +140,6 @@ public final class AssertionVerifier implements Verifier
 		return new AssertionVerifier(scope, enabled, newConfig);
 	}
 
-	@Beta
 	@Override
 	public AssertionVerifier addContext(String key, Object value)
 	{
@@ -150,7 +147,6 @@ public final class AssertionVerifier implements Verifier
 		return new AssertionVerifier(scope, enabled, newConfig);
 	}
 
-	@Beta
 	@Override
 	public AssertionVerifier withContext(List<Entry<String, Object>> context)
 	{
@@ -409,5 +405,12 @@ public final class AssertionVerifier implements Verifier
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
 		return NoOpInetAddressVerifier.INSTANCE;
+	}
+
+	@Override
+	public AssertionVerifier isolate(Consumer<AssertionVerifier> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

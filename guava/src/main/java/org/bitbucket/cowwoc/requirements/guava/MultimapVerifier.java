@@ -8,8 +8,8 @@ import com.google.common.collect.Multimap;
 import java.util.Map.Entry;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.Verifier;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies a {@link Multimap} parameter.
@@ -19,8 +19,8 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface MultimapVerifier<K, V>
-	extends ObjectVerifierSpi<MultimapVerifier<K, V>, Multimap<K, V>>,
-	Isolatable<MultimapVerifier<K, V>>
+	extends ObjectVerifierExtension<MultimapVerifier<K, V>, Multimap<K, V>>,
+	Verifier<MultimapVerifier<K, V>>
 {
 	/**
 	 * @return verifier over {@link Multimap#keySet()}

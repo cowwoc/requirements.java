@@ -6,9 +6,8 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.List;
 import java.util.Map;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
+import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
 /**
  * Combines the functionality of {@link RequirementVerifier} and {@link AssertionVerifier} into a
@@ -19,7 +18,6 @@ import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
  *
  * @author Gili Tzabari
  */
-@Beta
 public final class UnifiedVerifier extends AbstractUnifiedVerifier
 {
 	/**

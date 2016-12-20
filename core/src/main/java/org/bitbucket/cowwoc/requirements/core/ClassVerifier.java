@@ -4,8 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies a {@link Class} parameter.
@@ -14,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface ClassVerifier<T>
-	extends ObjectVerifierSpi<ClassVerifier<T>, Class<T>>, Isolatable<ClassVerifier<T>>
+	extends ObjectVerifierExtension<ClassVerifier<T>, Class<T>>, Verifier<ClassVerifier<T>>
 {
 	/**
 	 * Ensures that the parameter is a superclass or super-interface of a class.

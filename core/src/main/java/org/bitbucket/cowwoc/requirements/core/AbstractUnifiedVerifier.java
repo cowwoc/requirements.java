@@ -14,15 +14,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
-import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
+import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
 /**
  * An abstract class used to hide test methods from end-users.
  *
  * @author Gili Tzabari
  */
-abstract class AbstractUnifiedVerifier implements Verifier
+abstract class AbstractUnifiedVerifier
 {
 	private final SingletonScope scope;
 	private final Configuration config;
@@ -486,8 +485,7 @@ abstract class AbstractUnifiedVerifier implements Verifier
 		return assertions.requireThat(actual, name);
 	}
 
-	@Override
-	public AbstractUnifiedVerifier withException(Class<? extends RuntimeException> exception)
+	protected AbstractUnifiedVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
 		if (newConfig == config)
@@ -495,15 +493,13 @@ abstract class AbstractUnifiedVerifier implements Verifier
 		return newInstance(scope, newConfig, assertions.isEnabled());
 	}
 
-	@Override
-	public AbstractUnifiedVerifier addContext(String key, Object value)
+	protected AbstractUnifiedVerifier addContext(String key, Object value)
 	{
 		Configuration newConfig = config.addContext(key, value);
 		return newInstance(scope, newConfig, assertions.isEnabled());
 	}
 
-	@Override
-	public AbstractUnifiedVerifier withContext(List<Entry<String, Object>> context)
+	protected AbstractUnifiedVerifier withContext(List<Entry<String, Object>> context)
 	{
 		Configuration newConfig = config.withContext(context);
 		if (newConfig == config)

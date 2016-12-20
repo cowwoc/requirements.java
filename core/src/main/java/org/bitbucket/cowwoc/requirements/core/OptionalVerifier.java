@@ -5,8 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies an {@link Optional} parameter.
@@ -14,8 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface OptionalVerifier
-	extends ObjectVerifierSpi<OptionalVerifier, Optional<?>>,
-	Isolatable<OptionalVerifier>
+	extends ObjectVerifierExtension<OptionalVerifier, Optional<?>>, Verifier<OptionalVerifier>
 {
 	/**
 	 * Ensures that the actual value is empty.

@@ -5,8 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.net.InetAddress;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies an IP address or hostname.
@@ -14,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface InetAddressVerifier
-	extends ObjectVerifierSpi<InetAddressVerifier, InetAddress>, Isolatable<InetAddressVerifier>
+	extends ObjectVerifierExtension<InetAddressVerifier, InetAddress>, Verifier<InetAddressVerifier>
 {
 	/**
 	 * Ensures that the actual value is an IP v4 address.

@@ -7,12 +7,12 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 import java.util.List;
 import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Verifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
-import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
-import org.bitbucket.cowwoc.requirements.guava.spi.NoOpMultimapVerifier;
+import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.guava.impl.NoOpMultimapVerifier;
 
 /**
  * Verifies a parameter if assertions are enabled; otherwise, does nothing.
@@ -23,7 +23,7 @@ import org.bitbucket.cowwoc.requirements.guava.spi.NoOpMultimapVerifier;
  * @since 3.0.0
  * @author Gili Tzabari
  */
-public final class AssertionVerifier implements Verifier
+public final class AssertionVerifier implements Verifier<AssertionVerifier>
 {
 	private final SingletonScope scope;
 	private final boolean enabled;
@@ -106,7 +106,6 @@ public final class AssertionVerifier implements Verifier
 	 * @param enabled true if assertions are enabled
 	 * @return a verifier with the specified assertion state
 	 */
-	@Beta
 	public AssertionVerifier withEnabled(boolean enabled)
 	{
 		if (enabled == this.enabled)
@@ -123,7 +122,6 @@ public final class AssertionVerifier implements Verifier
 		return new AssertionVerifier(scope, enabled, newConfig);
 	}
 
-	@Beta
 	@Override
 	public AssertionVerifier addContext(String key, Object value)
 	{
@@ -131,7 +129,6 @@ public final class AssertionVerifier implements Verifier
 		return new AssertionVerifier(scope, enabled, newConfig);
 	}
 
-	@Beta
 	@Override
 	public AssertionVerifier withContext(List<Entry<String, Object>> context)
 	{
@@ -160,5 +157,12 @@ public final class AssertionVerifier implements Verifier
 		@SuppressWarnings("unchecked")
 		MultimapVerifier<K, V> result = (MultimapVerifier<K, V>) NoOpMultimapVerifier.INSTANCE;
 		return result;
+	}
+
+	@Override
+	public AssertionVerifier isolate(Consumer<AssertionVerifier> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

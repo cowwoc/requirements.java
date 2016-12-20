@@ -38,7 +38,7 @@
 						<link>http://docs.oracle.com/javase/8/docs/api/</link>
 						<link>http://google.github.io/guava/releases/20.0/api/docs/</link>
 					</links>
-					<!-- TODO: Figure out how to include public APIs and exclude SPI
+					<!-- TODO: Figure out how to include public APIs and exclude impl
 					<offlineLinks>
 						<offlineLink>
 							<url>http://cowwoc.bitbucket.org/requirements-core/javadoc/latest/</url>
@@ -80,7 +80,7 @@
 							<include>org.bitbucket.cowwoc.requirements</include>
 						</includes>
 						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.guava.spi</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.guava.impl</exclude>
 						</excludes>
 					</parameter>
 				</configuration>

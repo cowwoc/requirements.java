@@ -5,8 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.net.URI;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies a {@code URI} parameter.
@@ -14,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface UriVerifier
-	extends ObjectVerifierSpi<UriVerifier, URI>, Isolatable<UriVerifier>
+	extends ObjectVerifierExtension<UriVerifier, URI>, Verifier<UriVerifier>
 {
 	/**
 	 * Ensures that the actual value is absolute.

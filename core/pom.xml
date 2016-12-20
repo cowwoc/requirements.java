@@ -39,7 +39,7 @@
 					</links>
 					<!--
 					NOTE: <docfilessubdirs> is only needed when generating Javadoc for color diffs
-					
+
 					<docfilessubdirs>true</docfilessubdirs>
 					-->
 
@@ -76,7 +76,8 @@
 						</includes>
 						<excludes>
 							<exclude>org.bitbucket.cowwoc.requirements.core.diff</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.core.spi</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.core.impl</exclude>
+							<exclude>org.bitbucket.cowwoc.requirements.core.ext</exclude>
 							<exclude>org.bitbucket.cowwoc.requirements.core.util</exclude>
 						</excludes>
 					</parameter>

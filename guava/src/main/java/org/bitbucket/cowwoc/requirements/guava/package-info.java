@@ -3,9 +3,11 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 /**
- * Interfaces in this package may be implemented, but are not meant to be extended (because they
- * extend {@link Isolatable}).
+ * Classes that enable developers to enforce method contracts.
+ *
+ * Interfaces in this package may be implemented but may not be extended (because methods contain
+ * a hard-coded return type).
+ *
+ * @see org.bitbucket.cowwoc.requirements.core.Verifier
  */
 package org.bitbucket.cowwoc.requirements.guava;
-
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;

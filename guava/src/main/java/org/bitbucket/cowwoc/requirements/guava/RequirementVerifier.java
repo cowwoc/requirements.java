@@ -7,11 +7,12 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 import java.util.List;
 import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Verifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.spi.Configuration;
-import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
+import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.guava.impl.MultimapVerifierImpl;
 
 /**
  * Verifies a parameter.
@@ -22,7 +23,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.Verifier;
  * @since 3.0.0
  * @author Gili Tzabari
  */
-public final class RequirementVerifier implements Verifier
+public final class RequirementVerifier implements Verifier<RequirementVerifier>
 {
 	/**
 	 * @param name the name of the actual value
@@ -86,7 +87,6 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(scope, newConfig);
 	}
 
-	@Beta
 	@Override
 	public RequirementVerifier addContext(String key, Object value)
 	{
@@ -94,7 +94,6 @@ public final class RequirementVerifier implements Verifier
 		return new RequirementVerifier(scope, newConfig);
 	}
 
-	@Beta
 	@Override
 	public RequirementVerifier withContext(List<Entry<String, Object>> context)
 	{
@@ -119,5 +118,12 @@ public final class RequirementVerifier implements Verifier
 	{
 		verifyName(name);
 		return new MultimapVerifierImpl<>(scope, actual, name, config);
+	}
+
+	@Override
+	public RequirementVerifier isolate(Consumer<RequirementVerifier> consumer)
+	{
+		consumer.accept(this);
+		return this;
 	}
 }

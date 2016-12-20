@@ -4,8 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
 
 /**
  * Verifier for a {@code Number}.
@@ -14,6 +13,6 @@ import org.bitbucket.cowwoc.requirements.core.spi.NumberVerifierSpi;
  * @author Gili Tzabari
  */
 public interface NumberVerifier<T extends Number & Comparable<? super T>>
-	extends NumberVerifierSpi<NumberVerifier<T>, T>, Isolatable<NumberVerifier<T>>
+	extends NumberVerifierExtension<NumberVerifier<T>, T>, Verifier<NumberVerifier<T>>
 {
 }

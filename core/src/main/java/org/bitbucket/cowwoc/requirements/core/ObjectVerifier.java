@@ -4,8 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies an {@link Object} parameter.
@@ -14,6 +13,6 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface ObjectVerifier<T>
-	extends ObjectVerifierSpi<ObjectVerifier<T>, T>, Isolatable<ObjectVerifier<T>>
+	extends ObjectVerifierExtension<ObjectVerifier<T>, T>, Verifier<ObjectVerifier<T>>
 {
 }

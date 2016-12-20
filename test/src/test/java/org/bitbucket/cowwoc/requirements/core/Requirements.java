@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.annotations.Beta;
 import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
 
 /**
@@ -38,7 +37,6 @@ public final class Requirements
 	/**
 	 * @return true if assertions are enabled for this class
 	 */
-	@Beta
 	public static boolean assertionsAreEnabled()
 	{
 		return DELEGATE.assertionsAreEnabled();

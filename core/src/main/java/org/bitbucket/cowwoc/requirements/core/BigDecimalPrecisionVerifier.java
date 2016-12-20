@@ -5,8 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.math.BigDecimal;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtension;
 
 /**
  * Verifies a {@link BigDecimal#precision()}.
@@ -14,8 +13,8 @@ import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
  * @author Gili Tzabari
  */
 public interface BigDecimalPrecisionVerifier
-	extends PrimitiveIntegerVerifierSpi<BigDecimalPrecisionVerifier>,
-	Isolatable<BigDecimalPrecisionVerifier>
+	extends PrimitiveIntegerVerifierExtension<BigDecimalPrecisionVerifier>,
+	Verifier<BigDecimalPrecisionVerifier>
 {
 	/**
 	 * {@inheritDoc}

@@ -7,8 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import java.io.IOException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies a {@link Path} parameter.
@@ -16,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface PathVerifier
-	extends ObjectVerifierSpi<PathVerifier, Path>, Isolatable<PathVerifier>
+	extends ObjectVerifierExtension<PathVerifier, Path>, Verifier<PathVerifier>
 {
 	/**
 	 * Ensures that the actual value exists.

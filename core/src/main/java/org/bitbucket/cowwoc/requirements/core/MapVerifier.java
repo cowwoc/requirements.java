@@ -6,8 +6,7 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
  * Verifies a {@link Map} parameter.
@@ -17,8 +16,7 @@ import org.bitbucket.cowwoc.requirements.core.spi.ObjectVerifierSpi;
  * @author Gili Tzabari
  */
 public interface MapVerifier<K, V>
-	extends ObjectVerifierSpi<MapVerifier<K, V>, Map<K, V>>,
-	Isolatable<MapVerifier<K, V>>
+	extends ObjectVerifierExtension<MapVerifier<K, V>, Map<K, V>>, Verifier<MapVerifier<K, V>>
 {
 	/**
 	 * @return verifier for {@link Map#keySet()}

@@ -4,8 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.spi.Isolatable;
-import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
+import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtension;
 
 /**
  * Verifies a container's size (e.g. size of a collection, length of a string).
@@ -13,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.core.spi.PrimitiveIntegerVerifierSpi;
  * @author Gili Tzabari
  */
 public interface ContainerSizeVerifier
-	extends PrimitiveIntegerVerifierSpi<ContainerSizeVerifier>,
-	Isolatable<ContainerSizeVerifier>
+	extends PrimitiveIntegerVerifierExtension<ContainerSizeVerifier>, Verifier<ContainerSizeVerifier>
 {
 }
