@@ -419,9 +419,23 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
+	public CollectionVerifier<E> size(Consumer<ContainerSizeVerifier> consumer)
+	{
+		consumer.accept(size());
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public CollectionVerifier<E> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
 	}
 
 	@Override
@@ -434,12 +448,5 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	public Collection<E> getActual()
 	{
 		return java.util.Collections.unmodifiableCollection(actual);
-	}
-
-	@Override
-	public CollectionVerifier<E> isolate(Consumer<CollectionVerifier<E>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

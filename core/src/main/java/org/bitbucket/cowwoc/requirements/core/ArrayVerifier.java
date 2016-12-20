@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
@@ -209,7 +210,13 @@ public interface ArrayVerifier<E>
 		throws IllegalArgumentException;
 
 	/**
-	 * @return verifier for the array's length
+	 * @return a verifier for the array's length
 	 */
 	ContainerSizeVerifier length();
+
+	/**
+	 * @param consumer verifies the array's length
+	 * @return this
+	 */
+	ArrayVerifier<E> length(Consumer<ContainerSizeVerifier> consumer);
 }

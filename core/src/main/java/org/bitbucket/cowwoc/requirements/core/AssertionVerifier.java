@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpBigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpClassVerifier;
@@ -405,12 +404,5 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
 		return NoOpInetAddressVerifier.INSTANCE;
-	}
-
-	@Override
-	public AssertionVerifier isolate(Consumer<AssertionVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

@@ -149,6 +149,12 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	}
 
 	@Override
+	public ComparableVerifier<T> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<T> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -158,11 +164,5 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public ComparableVerifier<T> isolate(Consumer<ComparableVerifier<T>> consumer)
-	{
-		return this;
 	}
 }

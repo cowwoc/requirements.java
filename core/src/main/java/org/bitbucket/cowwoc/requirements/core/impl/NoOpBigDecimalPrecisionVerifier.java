@@ -197,6 +197,12 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	}
 
 	@Override
+	public BigDecimalPrecisionVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -206,11 +212,5 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	public Integer getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier isolate(Consumer<BigDecimalPrecisionVerifier> consumer)
-	{
-		return this;
 	}
 }

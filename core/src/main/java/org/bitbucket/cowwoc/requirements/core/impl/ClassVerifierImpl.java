@@ -151,6 +151,13 @@ public final class ClassVerifierImpl<T> implements ClassVerifier<T>
 	}
 
 	@Override
+	public ClassVerifier<T> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Class<T>> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -160,12 +167,5 @@ public final class ClassVerifierImpl<T> implements ClassVerifier<T>
 	public Class<T> getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public ClassVerifier<T> isolate(Consumer<ClassVerifier<T>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

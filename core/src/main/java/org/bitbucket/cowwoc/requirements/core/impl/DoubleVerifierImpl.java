@@ -287,6 +287,13 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	}
 
 	@Override
+	public DoubleVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Double> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -296,12 +303,5 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	public Double getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public DoubleVerifier isolate(Consumer<DoubleVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

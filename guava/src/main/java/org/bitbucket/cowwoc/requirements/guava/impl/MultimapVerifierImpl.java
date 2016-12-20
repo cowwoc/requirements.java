@@ -150,6 +150,13 @@ public final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	}
 
 	@Override
+	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
+	{
+		consumer.accept(keySet());
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<V> values()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()", Pluralizer.VALUE,
@@ -157,10 +164,24 @@ public final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	}
 
 	@Override
+	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
+	{
+		consumer.accept(values());
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<Entry<K, V>> entries()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.entries(), name + ".entries()",
 			Pluralizer.ENTRY, config);
+	}
+
+	@Override
+	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	{
+		consumer.accept(entries());
+		return this;
 	}
 
 	@Override
@@ -198,6 +219,13 @@ public final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	}
 
 	@Override
+	public MultimapVerifier<K, V> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Multimap<K, V>> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -207,12 +235,5 @@ public final class MultimapVerifierImpl<K, V> implements MultimapVerifier<K, V>
 	public Multimap<K, V> getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public MultimapVerifier<K, V> isolate(Consumer<MultimapVerifier<K, V>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 
 /**
  * An implementation of EmailAddressVerifier that does nothing.
@@ -66,8 +67,14 @@ public enum NoOpEmailAddressVerifier implements EmailAddressVerifier
 	}
 
 	@Override
-	public EmailAddressVerifier withException(
-		Class<? extends RuntimeException> exception)
+	public StringBasedExtension<EmailAddressVerifier, String> length(
+		Consumer<ContainerSizeVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
+	public EmailAddressVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		return this;
 	}
@@ -140,6 +147,12 @@ public enum NoOpEmailAddressVerifier implements EmailAddressVerifier
 	}
 
 	@Override
+	public EmailAddressVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<String> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -149,11 +162,5 @@ public enum NoOpEmailAddressVerifier implements EmailAddressVerifier
 	public String getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public EmailAddressVerifier isolate(Consumer<EmailAddressVerifier> consumer)
-	{
-		return this;
 	}
 }

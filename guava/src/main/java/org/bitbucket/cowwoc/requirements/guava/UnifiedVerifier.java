@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.guava;
 
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Verifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
@@ -94,12 +93,5 @@ public final class UnifiedVerifier extends AbstractUnifiedVerifier
 	public UnifiedVerifier withContext(List<Entry<String, Object>> context)
 	{
 		return (UnifiedVerifier) super.withContext(context);
-	}
-
-	@Override
-	public UnifiedVerifier isolate(Consumer<UnifiedVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

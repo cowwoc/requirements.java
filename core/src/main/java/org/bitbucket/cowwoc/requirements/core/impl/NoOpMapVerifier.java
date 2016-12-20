@@ -58,15 +58,34 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	}
 
 	@Override
+	public MapVerifier<Object, Object> keySet(Consumer<CollectionVerifier<Object>> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<Object> values()
 	{
 		return new NoOpCollectionVerifier<>();
 	}
 
 	@Override
+	public MapVerifier<Object, Object> values(Consumer<CollectionVerifier<Object>> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<Entry<Object, Object>> entrySet()
 	{
 		return new NoOpCollectionVerifier<>();
+	}
+
+	@Override
+	public MapVerifier<Object, Object> entrySet(
+		Consumer<CollectionVerifier<Entry<Object, Object>>> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -136,9 +155,21 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	}
 
 	@Override
+	public MapVerifier<Object, Object> size(Consumer<ContainerSizeVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public MapVerifier<Object, Object> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -151,11 +182,5 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	public Map<Object, Object> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public MapVerifier<Object, Object> isolate(Consumer<MapVerifier<Object, Object>> consumer)
-	{
-		return this;
 	}
 }

@@ -278,6 +278,13 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	}
 
 	@Override
+	public ComparableVerifier<T> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<T> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -287,12 +294,5 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	public T getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public ComparableVerifier<T> isolate(Consumer<ComparableVerifier<T>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

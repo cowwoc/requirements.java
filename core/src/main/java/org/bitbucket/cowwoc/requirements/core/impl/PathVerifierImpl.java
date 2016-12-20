@@ -224,6 +224,13 @@ public final class PathVerifierImpl implements PathVerifier
 	}
 
 	@Override
+	public PathVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Path> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -233,12 +240,5 @@ public final class PathVerifierImpl implements PathVerifier
 	public Path getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public PathVerifier isolate(Consumer<PathVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Verifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
@@ -118,12 +117,5 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	{
 		verifyName(name);
 		return new MultimapVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public RequirementVerifier isolate(Consumer<RequirementVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

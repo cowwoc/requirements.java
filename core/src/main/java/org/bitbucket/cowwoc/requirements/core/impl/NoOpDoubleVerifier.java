@@ -209,6 +209,12 @@ public enum NoOpDoubleVerifier implements DoubleVerifier
 	}
 
 	@Override
+	public DoubleVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Double> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -218,11 +224,5 @@ public enum NoOpDoubleVerifier implements DoubleVerifier
 	public Double getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public DoubleVerifier isolate(Consumer<DoubleVerifier> consumer)
-	{
-		return this;
 	}
 }

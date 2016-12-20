@@ -166,6 +166,13 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 	}
 
 	@Override
+	public InetAddressVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<InetAddress> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -175,12 +182,5 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 	public InetAddress getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public InetAddressVerifier isolate(Consumer<InetAddressVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

@@ -279,6 +279,13 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	}
 
 	@Override
+	public BigDecimalScaleVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -288,12 +295,5 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	public Integer getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public BigDecimalScaleVerifier isolate(Consumer<BigDecimalScaleVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

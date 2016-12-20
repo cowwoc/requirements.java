@@ -19,6 +19,7 @@ import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
+import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
@@ -125,6 +126,13 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
+	public StringVerifier asEmailAddress(Consumer<EmailAddressVerifier> consumer)
+	{
+		consumer.accept(asEmailAddress());
+		return this;
+	}
+
+	@Override
 	public InetAddressVerifier asInetAddress()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.
@@ -152,6 +160,13 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
+	public StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer)
+	{
+		consumer.accept(asInetAddress());
+		return this;
+	}
+
+	@Override
 	public UriVerifier asUri()
 	{
 		try
@@ -166,6 +181,13 @@ public final class StringVerifierImpl implements StringVerifier
 				addContext("Actual", actual).
 				build();
 		}
+	}
+
+	@Override
+	public StringVerifier asUri(Consumer<UriVerifier> consumer)
+	{
+		consumer.accept(asUri());
+		return this;
 	}
 
 	@Override
@@ -217,6 +239,14 @@ public final class StringVerifierImpl implements StringVerifier
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.length(), name,
 			name + ".length()", Pluralizer.CHARACTER, config);
+	}
+
+	@Override
+	public StringBasedExtension<StringVerifier, String> length(
+		Consumer<ContainerSizeVerifier> consumer)
+	{
+		consumer.accept(length());
+		return this;
 	}
 
 	@Override
@@ -282,6 +312,13 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
+	public StringVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(this);
+		return this;
+	}
+
+	@Override
 	public Optional<String> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -291,12 +328,5 @@ public final class StringVerifierImpl implements StringVerifier
 	public String getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public StringVerifier isolate(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

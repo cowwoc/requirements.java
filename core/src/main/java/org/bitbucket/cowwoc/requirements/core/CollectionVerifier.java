@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
@@ -197,7 +198,13 @@ public interface CollectionVerifier<E>
 	CollectionVerifier<E> doesNotContainDuplicates();
 
 	/**
-	 * @return verifier for {@code Collection.size()}
+	 * @return a verifier for the collection's size
 	 */
 	ContainerSizeVerifier size();
+
+	/**
+	 * @param consumer verifies the collection's size
+	 * @return this
+	 */
+	CollectionVerifier<E> size(Consumer<ContainerSizeVerifier> consumer);
 }

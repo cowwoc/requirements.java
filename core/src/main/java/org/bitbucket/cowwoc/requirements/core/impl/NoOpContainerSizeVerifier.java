@@ -186,6 +186,12 @@ public enum NoOpContainerSizeVerifier implements ContainerSizeVerifier
 	}
 
 	@Override
+	public ContainerSizeVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -195,11 +201,5 @@ public enum NoOpContainerSizeVerifier implements ContainerSizeVerifier
 	public Integer getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public ContainerSizeVerifier isolate(Consumer<ContainerSizeVerifier> consumer)
-	{
-		return this;
 	}
 }

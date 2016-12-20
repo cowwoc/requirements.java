@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Verifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
@@ -157,12 +156,5 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 		@SuppressWarnings("unchecked")
 		MultimapVerifier<K, V> result = (MultimapVerifier<K, V>) NoOpMultimapVerifier.INSTANCE;
 		return result;
-	}
-
-	@Override
-	public AssertionVerifier isolate(Consumer<AssertionVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

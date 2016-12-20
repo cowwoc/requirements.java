@@ -269,6 +269,13 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	}
 
 	@Override
+	public NumberVerifier<T> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<T> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -278,12 +285,5 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public NumberVerifier<T> isolate(Consumer<NumberVerifier<T>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

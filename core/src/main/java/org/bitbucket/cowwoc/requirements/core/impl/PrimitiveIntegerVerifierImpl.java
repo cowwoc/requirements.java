@@ -246,6 +246,13 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	}
 
 	@Override
+	public PrimitiveIntegerVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -255,12 +262,5 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	public Integer getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier isolate(Consumer<PrimitiveIntegerVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

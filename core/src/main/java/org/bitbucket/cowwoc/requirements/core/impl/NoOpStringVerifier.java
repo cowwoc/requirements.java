@@ -15,6 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
+import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 
 /**
  * An implementation of StringVerifier that does nothing.
@@ -68,15 +69,33 @@ public enum NoOpStringVerifier implements StringVerifier
 	}
 
 	@Override
+	public StringVerifier asEmailAddress(Consumer<EmailAddressVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public InetAddressVerifier asInetAddress()
 	{
 		return NoOpInetAddressVerifier.INSTANCE;
 	}
 
 	@Override
+	public StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public UriVerifier asUri()
 	{
 		return NoOpUriVerifier.INSTANCE;
+	}
+
+	@Override
+	public StringVerifier asUri(Consumer<UriVerifier> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -158,7 +177,20 @@ public enum NoOpStringVerifier implements StringVerifier
 	}
 
 	@Override
+	public StringBasedExtension<StringVerifier, String> length(
+		Consumer<ContainerSizeVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
+	{
+		return this;
+	}
+
+	@Override
+	public StringVerifier asString(Consumer<StringVerifier> consumer)
 	{
 		return this;
 	}
@@ -173,11 +205,5 @@ public enum NoOpStringVerifier implements StringVerifier
 	public String getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public StringVerifier isolate(Consumer<StringVerifier> consumer)
-	{
-		return this;
 	}
 }

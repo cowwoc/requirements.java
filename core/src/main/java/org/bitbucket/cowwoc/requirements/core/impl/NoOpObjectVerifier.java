@@ -98,6 +98,12 @@ public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>
 	}
 
 	@Override
+	public ObjectVerifier<T> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<T> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -107,11 +113,5 @@ public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public ObjectVerifier<T> isolate(Consumer<ObjectVerifier<T>> consumer)
-	{
-		return this;
 	}
 }

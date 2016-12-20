@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.Verifier;
@@ -23,9 +24,15 @@ public interface MultimapVerifier<K, V>
 	Verifier<MultimapVerifier<K, V>>
 {
 	/**
-	 * @return verifier over {@link Multimap#keySet()}
+	 * @return a verifier over {@link Multimap#keySet()}
 	 */
 	CollectionVerifier<K> keySet();
+
+	/**
+	 * @param consumer verifies the {@link Multimap#keySet()}
+	 * @return this
+	 */
+	MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer);
 
 	/**
 	 * @return verifier over {@link Multimap#values()}
@@ -33,9 +40,21 @@ public interface MultimapVerifier<K, V>
 	CollectionVerifier<V> values();
 
 	/**
+	 * @param consumer verifies the {@link Multimap#values()}
+	 * @return this
+	 */
+	MultimapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer);
+
+	/**
 	 * @return verifier over {@link Multimap#entries()}
 	 */
 	CollectionVerifier<Entry<K, V>> entries();
+
+	/**
+	 * @param consumer verifies the {@link Multimap#entries()}
+	 * @return this
+	 */
+	MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Entry<K, V>>> consumer);
 
 	/**
 	 * Ensures that the parameter is empty.

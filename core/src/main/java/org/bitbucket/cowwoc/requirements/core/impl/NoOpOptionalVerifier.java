@@ -107,6 +107,12 @@ public enum NoOpOptionalVerifier implements OptionalVerifier
 	}
 
 	@Override
+	public OptionalVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Optional<?>> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -116,11 +122,5 @@ public enum NoOpOptionalVerifier implements OptionalVerifier
 	public Optional<?> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public OptionalVerifier isolate(Consumer<OptionalVerifier> consumer)
-	{
-		return this;
 	}
 }

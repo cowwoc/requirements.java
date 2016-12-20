@@ -145,6 +145,13 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	}
 
 	@Override
+	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
+	{
+		consumer.accept(keySet());
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<V> values()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()",
@@ -152,10 +159,24 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	}
 
 	@Override
+	public MapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
+	{
+		consumer.accept(values());
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<Entry<K, V>> entrySet()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.entrySet(), name + ".entrySet()",
 			Pluralizer.ENTRY, config);
+	}
+
+	@Override
+	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	{
+		consumer.accept(entrySet());
+		return this;
 	}
 
 	@Override
@@ -187,9 +208,23 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	}
 
 	@Override
+	public MapVerifier<K, V> size(Consumer<ContainerSizeVerifier> consumer)
+	{
+		consumer.accept(size());
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public MapVerifier<K, V> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
 	}
 
 	@Override
@@ -202,12 +237,5 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	public Map<K, V> getActual()
 	{
 		return Collections.unmodifiableMap(actual);
-	}
-
-	@Override
-	public MapVerifier<K, V> isolate(Consumer<MapVerifier<K, V>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

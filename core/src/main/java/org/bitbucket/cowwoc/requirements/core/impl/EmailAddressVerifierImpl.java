@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
@@ -124,6 +125,14 @@ public final class EmailAddressVerifierImpl implements EmailAddressVerifier
 	}
 
 	@Override
+	public StringBasedExtension<EmailAddressVerifier, String> length(
+		Consumer<ContainerSizeVerifier> consumer)
+	{
+		consumer.accept(length());
+		return this;
+	}
+
+	@Override
 	public EmailAddressVerifier isEqualTo(String value)
 	{
 		asString.isEqualTo(value);
@@ -186,6 +195,13 @@ public final class EmailAddressVerifierImpl implements EmailAddressVerifier
 	}
 
 	@Override
+	public EmailAddressVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<String> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -195,12 +211,5 @@ public final class EmailAddressVerifierImpl implements EmailAddressVerifier
 	public String getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public EmailAddressVerifier isolate(Consumer<EmailAddressVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

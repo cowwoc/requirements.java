@@ -256,15 +256,36 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	}
 
 	@Override
+	public BigDecimalVerifier precision(Consumer<BigDecimalPrecisionVerifier> consumer)
+	{
+		consumer.accept(precision());
+		return this;
+	}
+
+	@Override
 	public BigDecimalScaleVerifier scale()
 	{
 		return new BigDecimalScaleVerifierImpl(scope, actual, name, config);
 	}
 
 	@Override
+	public BigDecimalVerifier scale(Consumer<BigDecimalScaleVerifier> consumer)
+	{
+		consumer.accept(scale());
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, actual.toString(), name, config);
+	}
+
+	@Override
+	public BigDecimalVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
 	}
 
 	@Override
@@ -277,12 +298,5 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	public BigDecimal getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public BigDecimalVerifier isolate(Consumer<BigDecimalVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.ext;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Requirements;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -100,9 +101,15 @@ public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>
 	S isNotNull();
 
 	/**
-	 * @return a verifier for the String representation of the value
+	 * @return a verifier for the String representation of the actual value
 	 */
 	StringVerifier asString();
+
+	/**
+	 * @param consumer verifies the String representation of the actual value
+	 * @return this
+	 */
+	S asString(Consumer<StringVerifier> consumer);
 
 	/**
 	 * Returns the actual value.

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.impl.ArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.BigDecimalVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.ClassVerifierImpl;
@@ -340,12 +339,5 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	{
 		verifyName(name);
 		return new InetAddressVerifierImpl(scope, actual, name, config);
-	}
-
-	@Override
-	public RequirementVerifier isolate(Consumer<RequirementVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

@@ -382,6 +382,13 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
+	public ContainerSizeVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.of(size);
@@ -391,12 +398,5 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	public Integer getActual()
 	{
 		return size;
-	}
-
-	@Override
-	public ContainerSizeVerifier isolate(Consumer<ContainerSizeVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

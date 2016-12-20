@@ -278,6 +278,13 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	}
 
 	@Override
+	public BigDecimalPrecisionVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -287,12 +294,5 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	public Integer getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier isolate(Consumer<BigDecimalPrecisionVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

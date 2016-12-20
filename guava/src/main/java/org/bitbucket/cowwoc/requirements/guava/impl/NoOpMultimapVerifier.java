@@ -41,15 +41,34 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	}
 
 	@Override
+	public MultimapVerifier<Object, Object> keySet(Consumer<CollectionVerifier<Object>> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<Object> values()
 	{
 		return new NoOpCollectionVerifier<>();
 	}
 
 	@Override
+	public MultimapVerifier<Object, Object> values(Consumer<CollectionVerifier<Object>> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<Map.Entry<Object, Object>> entries()
 	{
 		return new NoOpCollectionVerifier<>();
+	}
+
+	@Override
+	public MultimapVerifier<Object, Object> entries(
+		Consumer<CollectionVerifier<Map.Entry<Object, Object>>> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -145,6 +164,12 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	}
 
 	@Override
+	public MultimapVerifier<Object, Object> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Multimap<Object, Object>> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -154,12 +179,5 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	public Multimap<Object, Object> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public MultimapVerifier<Object, Object> isolate(
-		Consumer<MultimapVerifier<Object, Object>> consumer)
-	{
-		return this;
 	}
 }

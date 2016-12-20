@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 
 /**
  * Behavior common to all verifiers.
@@ -53,23 +52,4 @@ public interface Verifier<S>
 	 * @throws NullPointerException if {@code context} is null
 	 */
 	S withContext(List<Entry<String, Object>> context);
-
-	/**
-	 * Verifies without modifying the verifier reference. This can be used to combine verifications
-	 * on nested elements:
-	 * <pre><code>
-	 * Map&lt;String, Integer&gt; nameToId = ...;
-	 * Requirements.requireThat(nameToId, "nameToId").keySet().contains("John Smith");
-	 * Requirements.requireThat(nameToId, "nameToId").values().doesNotContain(0, "RESERVED_ID");
-	 *
-	 * // Can be rewritten as:
-	 * Requirements.requireThat(nameToId, "nameToId").
-	 *   isolate(p -&gt; p.keySet().contains("John Smith")).
-	 *   isolate(p -&gt; p.values().doesNotContain(0, "RESERVED_ID"));
-	 * </code></pre>
-	 *
-	 * @param consumer the code to execute in isolation
-	 * @return this
-	 */
-	S isolate(Consumer<S> consumer);
 }

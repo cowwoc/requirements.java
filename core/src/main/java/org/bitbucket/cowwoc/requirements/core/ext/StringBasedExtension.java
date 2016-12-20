@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core.ext;
 
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 
 /**
@@ -69,7 +70,13 @@ public interface StringBasedExtension<S extends StringBasedExtension<S, T>, T ex
 	S startsWith(String prefix);
 
 	/**
-	 * @return verifier for the length of the actual value
+	 * @return a verifier for the length of the actual value
 	 */
 	ContainerSizeVerifier length();
+
+	/**
+	 * @param consumer verifies the length of the actual value
+	 * @return this
+	 */
+	StringBasedExtension<S, T> length(Consumer<ContainerSizeVerifier> consumer);
 }

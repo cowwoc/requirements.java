@@ -102,6 +102,12 @@ public enum NoOpUriVerifier implements UriVerifier
 	}
 
 	@Override
+	public UriVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<URI> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -111,11 +117,5 @@ public enum NoOpUriVerifier implements UriVerifier
 	public URI getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public UriVerifier isolate(Consumer<UriVerifier> consumer)
-	{
-		return this;
 	}
 }

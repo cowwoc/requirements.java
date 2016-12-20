@@ -197,9 +197,21 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	}
 
 	@Override
+	public CollectionVerifier<E> size(Consumer<ContainerSizeVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public CollectionVerifier<E> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -212,11 +224,5 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	public Collection<E> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public CollectionVerifier<E> isolate(Consumer<CollectionVerifier<E>> consumer)
-	{
-		return this;
 	}
 }

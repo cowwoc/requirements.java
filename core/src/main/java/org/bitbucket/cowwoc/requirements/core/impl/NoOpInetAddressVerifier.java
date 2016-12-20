@@ -108,6 +108,12 @@ public enum NoOpInetAddressVerifier implements InetAddressVerifier
 	}
 
 	@Override
+	public InetAddressVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<InetAddress> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -117,11 +123,5 @@ public enum NoOpInetAddressVerifier implements InetAddressVerifier
 	public InetAddress getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public InetAddressVerifier isolate(Consumer<InetAddressVerifier> consumer)
-	{
-		return this;
 	}
 }

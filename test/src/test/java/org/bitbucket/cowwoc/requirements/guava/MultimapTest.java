@@ -254,26 +254,38 @@ public final class MultimapTest
 	}
 
 	@Test
-	public void isolate()
+	public void childConsumers()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
 			new RequirementVerifier(scope).requireThat(actual, "actual").
-				isolate(p -> p.keySet().contains("key")).
-				isolate(p -> p.values().contains("value"));
+				keySet(k -> k.contains("key")).
+				values(v -> v.contains("value"));
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isolate_False()
+	public void keySetConsumer_False()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
 			new RequirementVerifier(scope).requireThat(actual, "actual").
-				isolate(p -> p.keySet().contains("notTheKey")).
-				isolate(p -> p.values().contains("value"));
+				keySet(k -> k.contains("notTheKey")).
+				values(v -> v.contains("value"));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void valuesConsumer_False()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
+			new RequirementVerifier(scope).requireThat(actual, "actual").
+				keySet(k -> k.contains("key")).
+				values(v -> v.contains("notTheValue"));
 		}
 	}
 }

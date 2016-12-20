@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 
 /**
@@ -44,6 +45,13 @@ public interface StringVerifier
 	EmailAddressVerifier asEmailAddress();
 
 	/**
+	 * @param consumer verifies email addresses
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not contain a valid email format
+	 */
+	StringVerifier asEmailAddress(Consumer<EmailAddressVerifier> consumer);
+
+	/**
 	 * Ensures that the actual value contains a valid Internet address format.
 	 *
 	 * @return a verifier for Internet addresses
@@ -53,10 +61,29 @@ public interface StringVerifier
 	InetAddressVerifier asInetAddress();
 
 	/**
+	 * Ensures that the actual value contains a valid Internet address format.
+	 *
+	 * @param consumer verifies Internet addresses
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not contain a valid Internet address
+	 *                                  format
+	 */
+	StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer);
+
+	/**
 	 * Ensures that the actual value contains a valid URI format.
 	 *
 	 * @return a verifier for URIs
 	 * @throws IllegalArgumentException if the actual value does not contain a valid URI format
 	 */
 	UriVerifier asUri();
+
+	/**
+	 * Ensures that the actual value contains a valid URI format.
+	 *
+	 * @param consumer verifies URIs
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not contain a valid URI format
+	 */
+	StringVerifier asUri(Consumer<UriVerifier> consumer);
 }

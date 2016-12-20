@@ -195,6 +195,12 @@ public final class NoOpBigDecimalScaleVerifier implements BigDecimalScaleVerifie
 	}
 
 	@Override
+	public BigDecimalScaleVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Integer> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -204,11 +210,5 @@ public final class NoOpBigDecimalScaleVerifier implements BigDecimalScaleVerifie
 	public Integer getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public BigDecimalScaleVerifier isolate(Consumer<BigDecimalScaleVerifier> consumer)
-	{
-		return this;
 	}
 }

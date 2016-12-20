@@ -127,6 +127,12 @@ public enum NoOpPathVerifier implements PathVerifier
 	}
 
 	@Override
+	public PathVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Path> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -136,11 +142,5 @@ public enum NoOpPathVerifier implements PathVerifier
 	public Path getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public PathVerifier isolate(Consumer<PathVerifier> consumer)
-	{
-		return this;
 	}
 }

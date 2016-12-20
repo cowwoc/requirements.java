@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
@@ -19,19 +20,37 @@ public interface MapVerifier<K, V>
 	extends ObjectVerifierExtension<MapVerifier<K, V>, Map<K, V>>, Verifier<MapVerifier<K, V>>
 {
 	/**
-	 * @return verifier for {@link Map#keySet()}
+	 * @return a verifier for the {@link Map#keySet()}
 	 */
 	CollectionVerifier<K> keySet();
 
 	/**
-	 * @return verifier for {@link Map#values()}
+	 * @param consumer verifies the {@link Map#keySet()}
+	 * @return this;
+	 */
+	MapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer);
+
+	/**
+	 * @return a verifier for the {@link Map#values()}
 	 */
 	CollectionVerifier<V> values();
 
 	/**
-	 * @return verifier for {@link Map#entrySet()}
+	 * @param consumer verifies the {@link Map#values()}
+	 * @return this
+	 */
+	MapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer);
+
+	/**
+	 * @return a verifier for the {@link Map#entrySet()}
 	 */
 	CollectionVerifier<Entry<K, V>> entrySet();
+
+	/**
+	 * @param consumer verifies the {@link Map#entrySet()}
+	 * @return this
+	 */
+	MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Entry<K, V>>> consumer);
 
 	/**
 	 * Ensures that the actual value is empty.
@@ -50,7 +69,13 @@ public interface MapVerifier<K, V>
 	MapVerifier<K, V> isNotEmpty();
 
 	/**
-	 * @return verifier for {@link Map#size()}
+	 * @return a verifier for {@link Map#size()}
 	 */
 	ContainerSizeVerifier size();
+
+	/**
+	 * @param consumer verifies the {@link Map#size()}
+	 * @return this
+	 */
+	MapVerifier<K, V> size(Consumer<ContainerSizeVerifier> consumer);
 }

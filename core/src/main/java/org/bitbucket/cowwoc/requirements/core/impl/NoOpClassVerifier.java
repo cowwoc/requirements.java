@@ -101,6 +101,12 @@ public enum NoOpClassVerifier implements ClassVerifier<Object>
 	}
 
 	@Override
+	public ClassVerifier<Object> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<Class<Object>> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -110,11 +116,5 @@ public enum NoOpClassVerifier implements ClassVerifier<Object>
 	public Class<Object> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public ClassVerifier<Object> isolate(Consumer<ClassVerifier<Object>> consumer)
-	{
-		return this;
 	}
 }

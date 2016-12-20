@@ -198,9 +198,21 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	}
 
 	@Override
+	public ArrayVerifier<E> length(Consumer<ContainerSizeVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return NoOpStringVerifier.INSTANCE;
+	}
+
+	@Override
+	public ArrayVerifier<E> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -213,11 +225,5 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	public E[] getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public ArrayVerifier<E> isolate(Consumer<ArrayVerifier<E>> consumer)
-	{
-		return this;
 	}
 }

@@ -50,9 +50,21 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	}
 
 	@Override
+	public BigDecimalVerifier precision(Consumer<BigDecimalPrecisionVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public BigDecimalScaleVerifier scale()
 	{
 		return NoOpBigDecimalScaleVerifier.INSTANCE;
+	}
+
+	@Override
+	public BigDecimalVerifier scale(Consumer<BigDecimalScaleVerifier> consumer)
+	{
+		return this;
 	}
 
 	@Override
@@ -200,6 +212,12 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	}
 
 	@Override
+	public BigDecimalVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
 	public Optional<BigDecimal> getActualIfPresent()
 	{
 		return Optional.empty();
@@ -209,11 +227,5 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	public BigDecimal getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
-	}
-
-	@Override
-	public BigDecimalVerifier isolate(Consumer<BigDecimalVerifier> consumer)
-	{
-		return this;
 	}
 }

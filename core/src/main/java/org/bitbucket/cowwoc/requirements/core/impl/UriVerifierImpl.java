@@ -150,6 +150,13 @@ public final class UriVerifierImpl implements UriVerifier
 	}
 
 	@Override
+	public UriVerifier asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
 	public Optional<URI> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -159,12 +166,5 @@ public final class UriVerifierImpl implements UriVerifier
 	public URI getActual()
 	{
 		return actual;
-	}
-
-	@Override
-	public UriVerifier isolate(Consumer<UriVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }

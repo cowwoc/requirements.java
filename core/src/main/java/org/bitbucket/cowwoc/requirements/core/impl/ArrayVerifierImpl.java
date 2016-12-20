@@ -278,9 +278,23 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
+	public ArrayVerifier<E> length(Consumer<ContainerSizeVerifier> verifier)
+	{
+		verifier.accept(length());
+		return this;
+	}
+
+	@Override
 	public StringVerifier asString()
 	{
 		return new StringVerifierImpl(scope, Arrays.toString(actual), name, config);
+	}
+
+	@Override
+	public ArrayVerifier<E> asString(Consumer<StringVerifier> consumer)
+	{
+		consumer.accept(asString());
+		return this;
 	}
 
 	@Override
@@ -295,12 +309,5 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		if (actual == null)
 			return null;
 		return Arrays.copyOf(actual, actual.length);
-	}
-
-	@Override
-	public ArrayVerifier<E> isolate(Consumer<ArrayVerifier<E>> consumer)
-	{
-		consumer.accept(this);
-		return this;
 	}
 }
