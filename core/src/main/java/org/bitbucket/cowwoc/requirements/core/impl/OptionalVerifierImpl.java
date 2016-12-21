@@ -92,7 +92,35 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 		if (!actual.isPresent())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must be empty", name)).
+			String.format("%s must be empty.", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public OptionalVerifier contains(Object value)
+	{
+		if (value == null)
+			return isEmpty();
+		Optional<?> expected = Optional.of(value);
+		if (actual.equals(expected))
+			return this;
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain %s.", name, value)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public OptionalVerifier contains(Object value, String name)
+	{
+		Optional<?> expected = Optional.ofNullable(value);
+		if (actual.equals(expected))
+			return this;
+		throw config.exceptionBuilder(IllegalArgumentException.class,
+			String.format("%s must contain %s.", this.name, name)).
+			addContext("Actual", actual).
+			addContext("Expected", expected).
 			build();
 	}
 

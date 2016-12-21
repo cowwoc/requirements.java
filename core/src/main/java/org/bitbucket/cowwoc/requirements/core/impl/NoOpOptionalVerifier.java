@@ -41,15 +41,27 @@ public enum NoOpOptionalVerifier implements OptionalVerifier
 	}
 
 	@Override
+	public OptionalVerifier isPresent()
+	{
+		return this;
+	}
+
+	@Override
 	public OptionalVerifier isEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public OptionalVerifier isPresent()
+	public OptionalVerifier contains(Object value)
 	{
 		return this;
+	}
+
+	@Override
+	public OptionalVerifier contains(Object value, String name)
+	{
+		return null;
 	}
 
 	@Override

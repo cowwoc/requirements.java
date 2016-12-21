@@ -161,7 +161,6 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be less than %s.", this.name, value)).
 			addContext("Actual", actual).
-			addContext("Max", value).
 			build();
 	}
 
@@ -191,7 +190,6 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be less than or equal to %s.", name, value)).
 			addContext("Actual", actual).
-			addContext("Max", value).
 			build();
 	}
 
@@ -221,7 +219,6 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be greater than %s.", name, value)).
 			addContext("Actual", actual).
-			addContext("Min", value).
 			build();
 	}
 
@@ -251,7 +248,6 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be greater than or equal to %s.", name, value)).
 			addContext("Actual", actual).
-			addContext("Min", value).
 			build();
 	}
 

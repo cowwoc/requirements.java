@@ -75,6 +75,66 @@ public final class OptionalTest
 	}
 
 	@Test
+	public void contains()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Optional<?> actual = Optional.of(5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").contains(5);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_False()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Optional<?> actual = Optional.of(5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").contains(6);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_actualIsEmpty()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Optional<?> actual = Optional.empty();
+			new RequirementVerifier(scope).requireThat(actual, "actual").contains(5);
+		}
+	}
+
+	@Test
+	public void containsEmpty()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Optional<?> actual = Optional.empty();
+			new RequirementVerifier(scope).requireThat(actual, "actual").contains(null);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_expectedIsEmpty()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Optional<?> actual = Optional.of(5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").contains(null);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_expectedIsEmptyVariable()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Optional<?> actual = Optional.of(5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").contains(null, "expected");
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
