@@ -25,8 +25,8 @@ final class XTerm16Color extends AbstractXterm
 	/**
 	 * Creates a new instance.
 	 *
-	 * @param actual   the actual value of a parameter
-	 * @param expected the expected value of a parameter
+	 * @param actual   the actual value
+	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	XTerm16Color(String actual, String expected)

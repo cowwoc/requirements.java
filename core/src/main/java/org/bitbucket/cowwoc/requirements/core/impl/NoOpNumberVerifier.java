@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 /**
  * An implementation of NumberVerifier that does nothing.
  *
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
@@ -72,7 +72,7 @@ public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	}
 
 	@Override
-	public NumberVerifier<T> isIn(T first, T last)
+	public NumberVerifier<T> isBetween(T min, T max)
 	{
 		return this;
 	}

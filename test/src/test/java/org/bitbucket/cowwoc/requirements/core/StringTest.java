@@ -74,7 +74,7 @@ public final class StringTest
 	}
 
 	@Test
-	public void isNotEmptyTrue()
+	public void isNotEmpty()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{

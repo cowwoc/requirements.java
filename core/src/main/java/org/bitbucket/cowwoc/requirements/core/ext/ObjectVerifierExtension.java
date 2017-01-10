@@ -12,43 +12,43 @@ import org.bitbucket.cowwoc.requirements.core.Requirements;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * Verifies an {@link Object} parameter.
+ * Verifies an {@link Object}.
  * <p>
  * @param <S> the type of the non-extension interface extending this interface
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>, T>
 {
 	/**
-	 * Ensures that the actual value is equal to a value.
+	 * Ensures that the actual value is equal to an expected value.
 	 *
-	 * @param value the value to compare to
+	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not equal to value
 	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
 	 */
-	S isEqualTo(T value);
+	S isEqualTo(T expected);
 
 	/**
-	 * Ensures that the actual value is equal to a variable.
+	 * Ensures that the actual value is equal to the expected value.
 	 *
-	 * @param value the value to compare to
-	 * @param name  the name of the variable
+	 * @param expected the expected value
+	 * @param name     the name of the expected value
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the actual value is not equal to the variable; if
 	 *                                  {@code name} is empty
 	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
 	 */
-	S isEqualTo(T value, String name);
+	S isEqualTo(T expected, String name);
 
 	/**
 	 * Ensures that the actual value is not equal to a value.
 	 *
 	 * @param value the value to compare to
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value is equal to value
+	 * @throws IllegalArgumentException if the actual value is equal to {@code value}
 	 */
 	S isNotEqualTo(T value);
 
@@ -79,7 +79,7 @@ public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>
 	 *
 	 * @param type the class to compare to
 	 * @return this
-	 * @throws NullPointerException     if {@code type} are null
+	 * @throws NullPointerException     if {@code type} is null
 	 * @throws IllegalArgumentException if the actual value is not an instance of {@code type}
 	 */
 	S isInstanceOf(Class<?> type);
@@ -124,10 +124,8 @@ public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>
 
 	/**
 	 * Returns the actual value.
-	 * <p>
-	 * Beware: the return value may be wrapped to prevent modification.
 	 *
-	 * @return the actual value
+	 * @return the actual value (may be wrapped to prevent modification)
 	 * @throws NoSuchElementException if the verifier does not have access to the actual value (e.g.
 	 *                                if {@link Requirements#assertThat(Object, String) assertThat()}
 	 *                                is used when assertions are disabled, the verifier does not need

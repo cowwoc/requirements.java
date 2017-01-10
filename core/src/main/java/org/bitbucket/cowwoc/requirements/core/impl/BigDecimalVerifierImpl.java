@@ -35,8 +35,8 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	 * Creates new BigDecimalVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -220,9 +220,9 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	}
 
 	@Override
-	public BigDecimalVerifier isIn(BigDecimal first, BigDecimal last)
+	public BigDecimalVerifier isBetween(BigDecimal min, BigDecimal max)
 	{
-		asNumber.isIn(first, last);
+		asNumber.isBetween(min, max);
 		return this;
 	}
 

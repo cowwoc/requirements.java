@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
 import org.testng.annotations.Test;
@@ -832,7 +834,7 @@ public final class ArrayTest
 				2,
 				3
 			};
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().isIn(3, 5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -848,7 +850,7 @@ public final class ArrayTest
 				3,
 				4
 			};
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().isIn(3, 5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -865,7 +867,7 @@ public final class ArrayTest
 				4,
 				5
 			};
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().isIn(3, 5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -879,7 +881,44 @@ public final class ArrayTest
 				1,
 				2
 			};
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().isIn(3, 5);
+			new RequirementVerifier(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+		}
+	}
+
+	@Test
+	public void asCollection()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			RequirementVerifier verifier = new RequirementVerifier(scope);
+			Integer[] actual =
+			{
+				1, 2, 3, 4, 5
+			};
+			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
+			List<Integer> output = new ArrayList<>(verifier.requireThat(actual, "actual").
+				asCollection().getActual());
+			verifier.requireThat(input, "Input").isEqualTo(output, "Output");
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void asArray_False()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			RequirementVerifier verifier = new RequirementVerifier(scope);
+			Integer[] actual =
+			{
+				1, 2, 3, 4, 5
+			};
+			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(new Integer[]
+			{
+				5, 4, 3, 2, 1
+			}));
+			List<Integer> actualOutput = new ArrayList<>(verifier.requireThat(actual, "actual").
+				asCollection().getActual());
+			verifier.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}
 

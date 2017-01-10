@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
- * Verifies an {@link Optional} parameter.
+ * Verifies an {@link Optional}.
  *
  * @author Gili Tzabari
  */
@@ -41,12 +41,12 @@ public interface OptionalVerifier
 	OptionalVerifier contains(Object value);
 
 	/**
-	 * Ensures that the optional contains a variable.
+	 * Ensures that the optional contains the expected value.
 	 *
-	 * @param value the value of the variable; {@code null} matches an empty optional
-	 * @param name  the name of the variable
+	 * @param expected the expected value; {@code null} matches an empty optional
+	 * @param name     the name of the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the optional does not contain the specified value
 	 */
-	OptionalVerifier contains(Object value, String name);
+	OptionalVerifier contains(Object expected, String name);
 }

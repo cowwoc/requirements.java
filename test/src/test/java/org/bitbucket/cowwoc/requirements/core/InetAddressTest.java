@@ -26,7 +26,7 @@ public final class InetAddressTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isIpV4_expectedIsV6() throws UnknownHostException
+	public void isIpV4_actualIsV6() throws UnknownHostException
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -46,7 +46,7 @@ public final class InetAddressTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isIpV6_expectedIsV4() throws UnknownHostException
+	public void isIpV6_actualIsV4() throws UnknownHostException
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{

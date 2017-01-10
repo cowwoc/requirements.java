@@ -35,8 +35,8 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	 * Creates new BigDecimalPrecisionVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
@@ -60,7 +60,7 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	 * @param scope      the system configuration
 	 * @param bigDecimal the BigDecimal
 	 * @param actual     the precision of the BigDecimal
-	 * @param name       the name of the parameter
+	 * @param name       the name of the value
 	 * @param config     the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config}
 	 *                        are null; if {@code name} is empty
@@ -163,9 +163,9 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	}
 
 	@Override
-	public BigDecimalPrecisionVerifier isIn(Integer first, Integer last)
+	public BigDecimalPrecisionVerifier isBetween(Integer min, Integer max)
 	{
-		asInt.isIn(first, last);
+		asInt.isBetween(min, max);
 		return this;
 	}
 

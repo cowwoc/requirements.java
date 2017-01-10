@@ -48,7 +48,7 @@ public final class ObjectTest
 	}
 
 	@Test
-	public void isEquals()
+	public void isEqualTo()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -58,7 +58,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEquals_False()
+	public void isEqualTo_False()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -68,7 +68,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEquals_sameToStringDifferentTypes()
+	public void isEqualTo_sameToStringDifferentTypes()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -78,7 +78,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEquals_sameToStringAndTypeDifferentHashCode()
+	public void isEqualTo_sameToStringAndTypeDifferentHashCode()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -89,7 +89,7 @@ public final class ObjectTest
 	}
 
 	@Test
-	public void isEquals_nullToNull()
+	public void isEqualTo_nullToNull()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -99,7 +99,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEquals_nullToNotNull()
+	public void isEqualTo_nullToNotNull()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -109,7 +109,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEquals_notNullToNull()
+	public void isEqualTo_notNullToNull()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -119,7 +119,7 @@ public final class ObjectTest
 	}
 
 	@Test
-	public void isNotEquals()
+	public void isNotEqualTo()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -129,7 +129,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotEquals_False()
+	public void isNotEqualTo_False()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -149,8 +149,7 @@ public final class ObjectTest
 			@SuppressWarnings("RedundantStringConstructorCall")
 			String equivalent = new String(actual);
 
-			new RequirementVerifier(scope).requireThat(actual, "actual").
-				isIn(Arrays.asList("first", equivalent, "third"));
+			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(Arrays.asList("first", equivalent, "third"));
 		}
 	}
 
@@ -160,12 +159,22 @@ public final class ObjectTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").
-				isIn(Arrays.asList("first", "second", "third"));
+			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(Arrays.asList("first", "second", "third"));
 		}
 	}
 
-	@Test(expectedExceptions = NullPointerException.class)
+	@Test
+	public void isInstanceOf()
+	{
+		try (SingletonScope scope = new TestSingletonScope())
+		{
+			Random actual = new Random();
+			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(Random.class).
+				isInstanceOf(Object.class);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInstanceOf_actualIsNull()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
@@ -182,17 +191,6 @@ public final class ObjectTest
 		{
 			Random actual = new Random();
 			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(null);
-		}
-	}
-
-	@Test
-	public void isInstanceOf()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			Random actual = new Random();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(Random.class).
-				isInstanceOf(Object.class);
 		}
 	}
 

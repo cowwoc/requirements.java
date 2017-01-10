@@ -31,8 +31,7 @@ public interface SingletonScope extends AutoCloseable
 	Optional<TerminalType> getRequestedTerminalType();
 
 	/**
-	 * Returns a verifier that can be used to check a verifier's own parameters, or to delegate calls
-	 * to existing verifiers from external modules that don't have direct access to them.
+	 * Returns a verifier that can be used to check a verifier's own parameters.
 	 *
 	 * @return a {@link UnifiedVerifier} that uses this scope
 	 */

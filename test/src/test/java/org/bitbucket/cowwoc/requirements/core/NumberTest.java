@@ -34,55 +34,55 @@ public final class NumberTest
 	}
 
 	@Test
-	public void isInRange_expectedIsLowerBound()
+	public void isInRange_actualIsLowerBound()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Integer actual = 0;
 			int first = 0;
 			int last = 2;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
 	@Test
-	public void isInRange_expectedIsInBounds()
+	public void isInRange_actualIsInBounds()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Integer actual = 1;
 			int first = 0;
 			int last = 2;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
 	@Test
-	public void isInRange_expectedIsUpperBound()
+	public void isInRange_actualIsUpperBound()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Integer actual = 2;
 			int first = 0;
 			int last = 2;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_expectedIsBelow()
+	public void isInRange_actualIsBelow()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Integer actual = 1;
 			int first = 10;
 			int last = 20;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
 	@Test
-	public void isNegative_expectedIsNegativeOne()
+	public void isNegative_actualIsNegativeOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -92,7 +92,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNegative_expectedIsZero()
+	public void isNegative_actualIsZero()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -102,7 +102,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNegative_expectedIsOne()
+	public void isNegative_actualIsOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -117,13 +117,16 @@ public final class NumberTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			RequirementVerifier verifier = new RequirementVerifier(scope);
-			verifier.requireThat(0, "actual").isNotNegative();
-			verifier.requireThat(1, "actual").isNotNegative();
+			Integer actual = 0;
+			verifier.requireThat(actual, "actual").isNotNegative();
+
+			actual = 1;
+			verifier.requireThat(actual, "actual").isNotNegative();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotNegative_expectedIsNegativeOne()
+	public void isNotNegative_actualIsNegativeOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -137,12 +140,13 @@ public final class NumberTest
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
-			new RequirementVerifier(scope).requireThat(0, "actual").isZero();
+			Integer actual = 0;
+			new RequirementVerifier(scope).requireThat(actual, "actual").isZero();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isZero_expectedIsOne()
+	public void isZero_actualIsOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -152,21 +156,11 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isZero_expectedIsNegativeOne()
+	public void isZero_actualIsNegativeOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			Integer actual = -1;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isZero();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotZero_expectedIsOne()
-	{
-		try (SingletonScope scope = new TestSingletonScope())
-		{
-			Integer actual = 1;
 			new RequirementVerifier(scope).requireThat(actual, "actual").isZero();
 		}
 	}
@@ -177,8 +171,11 @@ public final class NumberTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			RequirementVerifier verifier = new RequirementVerifier(scope);
-			verifier.requireThat(-1, "actual").isNotZero();
-			verifier.requireThat(1, "actual").isNotZero();
+			Integer actual = -1;
+			verifier.requireThat(actual, "actual").isNotZero();
+
+			actual = 1;
+			verifier.requireThat(actual, "actual").isNotZero();
 		}
 	}
 
@@ -203,7 +200,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositive_expectedIsZero()
+	public void isPositive_actualIsZero()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -213,7 +210,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isPositive_expectedIsNegativeOne()
+	public void isPositive_actualIsNegativeOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -228,13 +225,16 @@ public final class NumberTest
 		try (SingletonScope scope = new TestSingletonScope())
 		{
 			RequirementVerifier verifier = new RequirementVerifier(scope);
-			verifier.requireThat(0, "actual").isNotPositive();
-			verifier.requireThat(-1, "actual").isNotPositive();
+			Integer actual = 0;
+			verifier.requireThat(actual, "actual").isNotPositive();
+
+			actual = -1;
+			verifier.requireThat(actual, "actual").isNotPositive();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isNotPositive_expectedIsOne()
+	public void isNotPositive_actualIsOne()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -264,7 +264,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_expectedIsEqual()
+	public void isLessThanVariable_actualIsEqual()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -274,7 +274,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_expectedIsEqual()
+	public void isLessThanConstant_actualIsEqual()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -284,7 +284,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_expectedIsGreater()
+	public void isLessThanVariable_actualIsGreater()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -294,7 +294,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_expectedIsGreater()
+	public void isLessThanConstant_actualIsGreater()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -325,7 +325,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToVariable_expectedIsGreater()
+	public void isLessThanOrEqualToVariable_actualIsGreater()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -336,7 +336,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToConstant_expectedIsGreater()
+	public void isLessThanOrEqualToConstant_actualIsGreater()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -366,7 +366,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_expectedIsEqual()
+	public void isGreaterThanVariable_actualIsEqual()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -376,7 +376,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_expectedIsEqual()
+	public void isGreaterThanConstant_actualIsEqual()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -386,7 +386,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_expectedIsLess()
+	public void isGreaterThanVariable_actualIsLess()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -396,7 +396,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_expectedIsLess()
+	public void isGreaterThanConstant_actualIsLess()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -427,7 +427,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToVariable_expectedIsLess()
+	public void isGreaterThanOrEqualToVariable_actualIsLess()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{
@@ -438,7 +438,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToConstant_expectedIsLess()
+	public void isGreaterThanOrEqualToConstant_actualIsLess()
 	{
 		try (SingletonScope scope = new TestSingletonScope())
 		{

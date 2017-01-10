@@ -177,8 +177,8 @@ final class TextOnly extends AbstractDiffWriter
 	/**
 	 * Creates a new instance.
 	 *
-	 * @param actual   the actual value of a parameter
-	 * @param expected the expected value of a parameter
+	 * @param actual   the actual value
+	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	TextOnly(String actual, String expected)

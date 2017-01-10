@@ -42,7 +42,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.ZERO;
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -54,7 +54,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.ONE;
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -66,7 +66,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.valueOf(2);
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -78,7 +78,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.ONE;
 			BigDecimal first = BigDecimal.valueOf(10);
 			BigDecimal last = BigDecimal.valueOf(20);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -498,7 +498,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.valueOf(1234, 2);
 			int first = 3;
 			int last = 5;
-			new RequirementVerifier(scope).requireThat(actual, "actual").precision().isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").precision().isBetween(first, last);
 		}
 	}
 
@@ -510,7 +510,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.valueOf(123, 2);
 			int first = 10;
 			int last = 20;
-			new RequirementVerifier(scope).requireThat(actual, "actual").precision().isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").precision().isBetween(first, last);
 		}
 	}
 
@@ -522,7 +522,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.valueOf(1234, 4);
 			int first = 3;
 			int last = 5;
-			new RequirementVerifier(scope).requireThat(actual, "actual").scale().isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").scale().isBetween(first, last);
 		}
 	}
 
@@ -534,7 +534,7 @@ public final class BigDecimalTest
 			BigDecimal actual = BigDecimal.valueOf(123, 2);
 			int first = 10;
 			int last = 20;
-			new RequirementVerifier(scope).requireThat(actual, "actual").scale().isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").scale().isBetween(first, last);
 		}
 	}
 

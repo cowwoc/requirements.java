@@ -131,7 +131,7 @@ public enum NoOpDoubleVerifier implements DoubleVerifier
 	}
 
 	@Override
-	public DoubleVerifier isIn(Double first, Double last)
+	public DoubleVerifier isBetween(Double min, Double max)
 	{
 		return this;
 	}

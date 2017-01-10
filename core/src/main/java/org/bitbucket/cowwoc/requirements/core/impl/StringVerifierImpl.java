@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
-import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -30,7 +28,6 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class StringVerifierImpl implements StringVerifier
 {
-	private final static Pattern EMAIL_PATTERN = Pattern.compile("[^@]+@[^@]+");
 	private final SingletonScope scope;
 	private final String actual;
 	private final String name;
@@ -41,8 +38,8 @@ public final class StringVerifierImpl implements StringVerifier
 	 * Creates new StringVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -115,24 +112,6 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
-	public EmailAddressVerifier asEmailAddress()
-	{
-		if (EMAIL_PATTERN.matcher(actual).matches())
-			return new EmailAddressVerifierImpl(scope, actual, name, config);
-		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s does not contain a valid email format", name)).
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public StringVerifier asEmailAddress(Consumer<EmailAddressVerifier> consumer)
-	{
-		consumer.accept(asEmailAddress());
-		return this;
-	}
-
-	@Override
 	public InetAddressVerifier asInetAddress()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.
@@ -140,7 +119,7 @@ public final class StringVerifierImpl implements StringVerifier
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
-				String.format("%s does not contain a valid IP address format", name)).
+				String.format("%s must contain a valid IP address or hostname format.", name)).
 				addContext("Actual", actual).
 				build();
 		}
@@ -152,7 +131,7 @@ public final class StringVerifierImpl implements StringVerifier
 		catch (UnknownHostException e)
 		{
 			throw config.exceptionBuilder(IllegalArgumentException.class,
-				String.format("%s does not contain a valid IP address format", name), e).
+				String.format("%s must contain a valid IP address or hostname format.", name), e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -207,7 +186,7 @@ public final class StringVerifierImpl implements StringVerifier
 		if (!actual.startsWith(prefix))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not start with \"%s\".", name, prefix)).
+			String.format("%s may not start with \"%s\".", name, prefix)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -229,7 +208,7 @@ public final class StringVerifierImpl implements StringVerifier
 		if (!actual.endsWith(suffix))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not end with \"%s\".", name, suffix)).
+			String.format("%s may not end with \"%s\".", name, suffix)).
 			addContext("Actual", actual).
 			build();
 	}

@@ -32,7 +32,7 @@ extern "C" {
 		/**
 		* Returns the String representation of the error. The caller must the LocalFree() function to free the buffer when it is no longer needed.
 		*
-		* @param errorCode an error code returned by GetLastError().
+		* @param errorCode an error code returned by GetLastError()
 		* @return 0 on failure
 		*/
 		char* getFormatMessage(DWORD errorCode);

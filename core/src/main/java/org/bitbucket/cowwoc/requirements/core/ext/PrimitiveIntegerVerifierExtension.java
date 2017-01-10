@@ -5,8 +5,8 @@
 package org.bitbucket.cowwoc.requirements.core.ext;
 
 /**
- * Verifies an {@link int} parameter.
- * <p>
+ * Verifies an {@link int}.
+ *
  * @param <S> the type of the non-extension interface extending this interface
  * @author Gili Tzabari
  */

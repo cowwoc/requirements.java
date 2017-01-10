@@ -39,7 +39,7 @@ public final class UnifiedVerifier extends AbstractUnifiedVerifier
 	/**
 	 * Creates a new verifier.
 	 * <p>
-	 * This class' assertion status determines whether {@code assertThat()} carries out a verification
+	 * This class' assertion state determines whether {@code assertThat()} carries out a verification
 	 * or does nothing.
 	 */
 	public UnifiedVerifier()

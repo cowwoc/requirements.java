@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 /**
  * An implementation of ObjectVerifier that does nothing.
  *
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>

@@ -11,38 +11,47 @@ import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
  * Verifier for String-based types that aren't actually strings (e.g. email address).
  *
  * @param <S> the type of the non-extension interface extending this interface
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public interface StringBasedExtension<S extends StringBasedExtension<S, T>, T extends String>
 	extends ObjectVerifierExtension<S, T>
 {
 	/**
-	 * Ensures that the actual value does not end with a value.
+	 * Ensures that the actual value starts with a value.
 	 *
-	 * @param suffix the value the string must not end with
+	 * @param prefix the value that the string must start with
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value ends with suffix
+	 * @throws IllegalArgumentException if the actual value does not start with {@code prefix}
 	 */
-	S doesNotEndWith(String suffix);
+	S startsWith(String prefix);
 
 	/**
 	 * Ensures that the actual value does not start with a value.
 	 *
-	 * @param prefix the value the string must not start with
+	 * @param prefix the value that the string may not start with
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value starts with prefix
+	 * @throws IllegalArgumentException if the actual value starts with {@code prefix}
 	 */
 	S doesNotStartWith(String prefix);
 
 	/**
 	 * Ensures that the actual value ends with a value.
 	 *
-	 * @param suffix the value the string must end with
+	 * @param suffix the value that the string must end with
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not end with suffix
+	 * @throws IllegalArgumentException if the actual value does not end with {@code suffix}
 	 */
 	S endsWith(String suffix);
+
+	/**
+	 * Ensures that the actual value does not end with a value.
+	 *
+	 * @param suffix the value that the string may not end with
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value ends with {@code suffix}
+	 */
+	S doesNotEndWith(String suffix);
 
 	/**
 	 * Ensures that the actual value is empty.
@@ -59,15 +68,6 @@ public interface StringBasedExtension<S extends StringBasedExtension<S, T>, T ex
 	 * @throws IllegalArgumentException if the actual value is empty
 	 */
 	S isNotEmpty();
-
-	/**
-	 * Ensures that the actual value starts with a value.
-	 *
-	 * @param prefix the value the string must start with
-	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not start with prefix
-	 */
-	S startsWith(String prefix);
 
 	/**
 	 * @return a verifier for the length of the actual value

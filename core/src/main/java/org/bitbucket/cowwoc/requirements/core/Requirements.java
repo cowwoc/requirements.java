@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * This convenience class constructs a {@link UnifiedVerifier} with the default configuration.
- * This class' assertion status determines whether {@code assertThat()} carries out a verification
+ * This class' assertion state determines whether {@code assertThat()} carries out a verification
  * or does nothing.
  *
  * @author Gili Tzabari
@@ -45,9 +45,9 @@ public final class Requirements
 	/**
 	 * Verifies an {@code Object}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -60,9 +60,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -75,9 +75,9 @@ public final class Requirements
 	 * Verifies a {@code Collection}.
 	 *
 	 * @param <E>    the type of elements in the collection
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -91,9 +91,9 @@ public final class Requirements
 	 * for this class.
 	 *
 	 * @param <E>    the type of elements in the collection
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -106,9 +106,9 @@ public final class Requirements
 	 * Verifies an array.
 	 *
 	 * @param <E>    the type of elements in the array
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -122,9 +122,9 @@ public final class Requirements
 	 * for this class.
 	 *
 	 * @param <E>    the type of elements in the array
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -136,10 +136,10 @@ public final class Requirements
 	/**
 	 * Verifies a {@code Comparable}.
 	 *
-	 * @param <T>    the type of objects that the parameter may be compared to
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param <T>    the type of objects that the value may be compared to
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -153,10 +153,10 @@ public final class Requirements
 	 * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param <T>    the type of objects that the parameter may be compared to
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param <T>    the type of objects that the value may be compared to
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -170,9 +170,9 @@ public final class Requirements
 	 * Verifies a {@code Number}.
 	 *
 	 * @param <T>    the type of the number
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -187,9 +187,9 @@ public final class Requirements
 	 * this class.
 	 *
 	 * @param <T>    the type of the number
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -202,9 +202,9 @@ public final class Requirements
 	/**
 	 * Verifies a {@code Double}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -217,9 +217,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -231,9 +231,9 @@ public final class Requirements
 	/**
 	 * Verifies a {@code BigDecimal}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -246,9 +246,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -262,9 +262,9 @@ public final class Requirements
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -279,9 +279,9 @@ public final class Requirements
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -293,9 +293,9 @@ public final class Requirements
 	/**
 	 * Verifies a {@code Path}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -308,9 +308,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -322,9 +322,9 @@ public final class Requirements
 	/**
 	 * Verifies a {@code String}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -337,9 +337,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -351,9 +351,9 @@ public final class Requirements
 	/**
 	 * Verifies a {@code Uri}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -366,9 +366,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -381,9 +381,9 @@ public final class Requirements
 	 * Verifies a {@code Class}.
 	 *
 	 * @param <T>    the type of class
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -397,9 +397,9 @@ public final class Requirements
 	 * this class.
 	 *
 	 * @param <T>    the type of class
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -411,9 +411,9 @@ public final class Requirements
 	/**
 	 * Verifies an {@code Optional}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -426,9 +426,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -440,9 +440,9 @@ public final class Requirements
 	/**
 	 * Verifies an {@code InetAddress}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -455,9 +455,9 @@ public final class Requirements
 	 * Same as {@link #requireThat(InetAddress, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */

@@ -19,7 +19,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 /**
  * Default implementation of {@code NumberVerifier}.
  *
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
@@ -35,8 +35,8 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	 * Creates a new NumberVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -256,9 +256,9 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	}
 
 	@Override
-	public NumberVerifier<T> isIn(T first, T last)
+	public NumberVerifier<T> isBetween(T min, T max)
 	{
-		asComparable.isIn(first, last);
+		asComparable.isBetween(min, max);
 		return this;
 	}
 

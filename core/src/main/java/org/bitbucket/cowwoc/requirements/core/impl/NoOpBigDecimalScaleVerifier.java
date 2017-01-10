@@ -141,7 +141,7 @@ public final class NoOpBigDecimalScaleVerifier implements BigDecimalScaleVerifie
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isIn(Integer first, Integer last)
+	public BigDecimalScaleVerifier isBetween(Integer min, Integer max)
 	{
 		return this;
 	}

@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
-import org.bitbucket.cowwoc.requirements.core.EmailAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
@@ -58,18 +57,6 @@ public enum NoOpStringVerifier implements StringVerifier
 
 	@Override
 	public StringVerifier endsWith(String suffix)
-	{
-		return this;
-	}
-
-	@Override
-	public EmailAddressVerifier asEmailAddress()
-	{
-		return NoOpEmailAddressVerifier.INSTANCE;
-	}
-
-	@Override
-	public StringVerifier asEmailAddress(Consumer<EmailAddressVerifier> consumer)
 	{
 		return this;
 	}

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
- * Verifies an array parameter.
+ * Verifies an array.
  *
  * @param <E> the type of elements in the array
  * @author Gili Tzabari
@@ -18,120 +18,120 @@ public interface ArrayVerifier<E>
 	extends ObjectVerifierExtension<ArrayVerifier<E>, E[]>, Verifier<ArrayVerifier<E>>
 {
 	/**
-	 * Ensures that the actual value is empty.
+	 * Ensures that the array is empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value is not empty
+	 * @throws IllegalArgumentException if the array is not empty
 	 */
 	ArrayVerifier<E> isEmpty() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value is not empty.
+	 * Ensures that the array is not empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value is empty
+	 * @throws IllegalArgumentException if the array is empty
 	 */
 	ArrayVerifier<E> isNotEmpty() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains an element.
+	 * Ensures that the array contains an element.
 	 *
-	 * @param element the element that must exist
+	 * @param expected the element
 	 * @return this
-	 * @throws IllegalArgumentException if the array does not contain {@code element}
+	 * @throws IllegalArgumentException if the array does not contain {@code expected}
 	 */
-	ArrayVerifier<E> contains(E element) throws IllegalArgumentException;
+	ArrayVerifier<E> contains(E expected) throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains an element.
+	 * Ensures that the array contains an element.
 	 *
-	 * @param element the element that must exist
-	 * @param name    the name of the element
+	 * @param expected the element
+	 * @param name     the name of the element
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array does not contain {@code element}; if
+	 * @throws IllegalArgumentException if the array does not contain {@code expected}; if
 	 *                                  {@code name} is empty
 	 */
-	ArrayVerifier<E> contains(E element, String name)
+	ArrayVerifier<E> contains(E expected, String name)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the array contains the specified elements; nothing less, nothing more.
 	 *
-	 * @param elements the elements that must exist
+	 * @param expected the elements that must exist
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} is null
-	 * @throws IllegalArgumentException if the array is missing any elements in {@code elements};
-	 *                                  if the array contains elements not found in
-	 *                                  {@code elements}
+	 * @throws NullPointerException     if {@code expected} is null
+	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected};
+	 *                                  if the array contains any element not found in
+	 *                                  {@code expected}
 	 */
-	ArrayVerifier<E> containsExactly(Collection<E> elements)
+	ArrayVerifier<E> containsExactly(Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the array contains the specified elements; nothing less, nothing more.
 	 *
-	 * @param elements the elements that must exist
+	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array is missing any elements in {@code elements};
-	 *                                  if the array contains elements not found in
-	 *                                  {@code elements}; if {@code name} is empty
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected};
+	 *                                  if the array contains any element not found in
+	 *                                  {@code expected}; if {@code name} is empty
 	 */
-	ArrayVerifier<E> containsExactly(Collection<E> elements, String name)
+	ArrayVerifier<E> containsExactly(Collection<E> expected, String name)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains any of multiple elements.
+	 * Ensures that the array contains any of the specified elements.
 	 *
-	 * @param elements the elements that must exist
+	 * @param expected the elements that must exist
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} is null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code elements}
+	 * @throws NullPointerException     if {@code expected} is null
+	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}
 	 */
-	ArrayVerifier<E> containsAny(Collection<E> elements)
+	ArrayVerifier<E> containsAny(Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains any of multiple elements.
+	 * Ensures that the array contains any of the specified elements.
 	 *
-	 * @param elements the elements that must exist
+	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code elements}; if
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}; if
 	 *                                  {@code name} is empty
 	 */
-	ArrayVerifier<E> containsAny(Collection<E> elements, String name)
+	ArrayVerifier<E> containsAny(Collection<E> expected, String name)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains all of multiple elements.
+	 * Ensures that the array contains all of the specified elements.
 	 *
-	 * @param elements the elements that must exist
+	 * @param expected the elements that must exist
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} is null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code elements}
+	 * @throws NullPointerException     if {@code expected} is null
+	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}
 	 */
-	ArrayVerifier<E> containsAll(Collection<E> elements)
+	ArrayVerifier<E> containsAll(Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value contains all of multiple elements.
+	 * Ensures that the array contains all of the specified elements.
 	 *
-	 * @param elements the elements that must exist
+	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code elements}; if
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}; if
 	 *                                  {@code name} is empty
 	 */
-	ArrayVerifier<E> containsAll(Collection<E> elements, String name)
+	ArrayVerifier<E> containsAll(Collection<E> expected, String name)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain an element.
+	 * Ensures that the array does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @return this
@@ -140,7 +140,7 @@ public interface ArrayVerifier<E>
 	ArrayVerifier<E> doesNotContain(E element) throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain an element.
+	 * Ensures that the array does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @param name    the name of the element
@@ -153,7 +153,7 @@ public interface ArrayVerifier<E>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain any of multiple elements.
+	 * Ensures that the array does not contain any of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -164,7 +164,7 @@ public interface ArrayVerifier<E>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain any of multiple elements.
+	 * Ensures that the array does not contain any of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -177,7 +177,7 @@ public interface ArrayVerifier<E>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain all of multiple elements.
+	 * Ensures that the array does not contain all of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -188,7 +188,7 @@ public interface ArrayVerifier<E>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain all of multiple elements.
+	 * Ensures that the array does not contain all of specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -201,7 +201,7 @@ public interface ArrayVerifier<E>
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the actual value does not contain any duplicate elements.
+	 * Ensures that the array does not contain any duplicate elements.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array contains any duplicate elements
@@ -219,4 +219,15 @@ public interface ArrayVerifier<E>
 	 * @return this
 	 */
 	ArrayVerifier<E> length(Consumer<ContainerSizeVerifier> consumer);
+
+	/**
+	 * @return a verifier for the actual value as a collection
+	 */
+	CollectionVerifier<E> asCollection();
+
+	/**
+	 * @param consumer verifies the actual value as a collection
+	 * @return this
+	 */
+	ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer);
 }

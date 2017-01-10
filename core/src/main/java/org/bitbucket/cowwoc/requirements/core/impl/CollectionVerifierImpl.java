@@ -4,20 +4,22 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Collections;
 import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 import org.bitbucket.cowwoc.requirements.core.util.Sets;
 import org.bitbucket.cowwoc.requirements.core.util.Strings;
@@ -41,8 +43,8 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	 * Creates new CollectionVerifierImpl.
 	 *
 	 * @param scope      the system configuration
-	 * @param actual     the value of the parameter
-	 * @param name       the name of the parameter
+	 * @param actual     the actual value
+	 * @param name       the name of the value
 	 * @param pluralizer returns the singular or plural form of an element type
 	 * @param config     the instance configuration
 	 * @throws AssertionError if {@code name}, {@code pluralizer} or {@code config} are null; if
@@ -190,17 +192,17 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsExactly(Collection<E> elements)
+	public CollectionVerifier<E> containsExactly(Collection<E> expected)
 	{
-		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> actualAsSet = Collections.asSet(actual);
-		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
-		Set<E> unwanted = Sets.difference(actualAsSet, elementsAsSet);
+		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
+		Set<E> expectedAsSet = Sets.fromCollection(expected);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
+		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
+		Set<E> unwanted = Sets.difference(actualAsSet, expectedAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain exactly: %s", name, elements)).
+			String.format("%s must contain exactly: %s", name, expected)).
 			addContext("Actual", actual).
 			addContext("Missing", missing).
 			addContext("Unwanted", unwanted).
@@ -208,35 +210,35 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsExactly(Collection<E> elements, String name)
+	public CollectionVerifier<E> containsExactly(Collection<E> expected, String name)
 	{
 		UnifiedVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> actualAsSet = Collections.asSet(actual);
-		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
-		Set<E> unwanted = Sets.difference(actualAsSet, elementsAsSet);
+		Set<E> expectedAsSet = Sets.fromCollection(expected);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
+		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
+		Set<E> unwanted = Sets.difference(actualAsSet, expectedAsSet);
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain exactly the same %s as %s.", this.name, pluralizer.nameOf(2),
 				name)).
 			addContext("Actual", actual).
-			addContext("Expected", elements).
+			addContext("Expected", expected).
 			addContext("Missing", missing).
 			addContext("Unwanted", unwanted).
 			build();
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAny(Collection<E> elements)
+	public CollectionVerifier<E> containsAny(Collection<E> expected)
 	{
-		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		if (actualContainsAny(elements))
+		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
+		if (actualContainsAny(expected))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain any %s in: %s", name, pluralizer.nameOf(1), elements)).
+			String.format("%s must contain any %s in: %s", name, pluralizer.nameOf(1), expected)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -254,51 +256,51 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAny(Collection<E> elements, String name)
+	public CollectionVerifier<E> containsAny(Collection<E> expected, String name)
 	{
 		UnifiedVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (actualContainsAny(elements))
+		if (actualContainsAny(expected))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain any %s in %s.", this.name, pluralizer.nameOf(1), name)).
 			addContext("Actual", actual).
-			addContext("Missing", elements).
+			addContext("Missing", expected).
 			build();
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAll(Collection<E> elements)
+	public CollectionVerifier<E> containsAll(Collection<E> expected)
 	{
-		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
-		if (actual.containsAll(elements))
+		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
+		if (actual.containsAll(expected))
 			return this;
-		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> actualAsSet = Collections.asSet(actual);
-		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
+		Set<E> expectedAsSet = Sets.fromCollection(expected);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
+		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain all %s in: %s", name, pluralizer.nameOf(2), elements)).
+			String.format("%s must contain all %s in: %s", name, pluralizer.nameOf(2), expected)).
 			addContext("Actual", actual).
 			addContext("Missing", missing).
 			build();
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAll(Collection<E> elements, String name)
+	public CollectionVerifier<E> containsAll(Collection<E> expected, String name)
 	{
 		UnifiedVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(elements, "elements").isNotNull();
+		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (actual.containsAll(elements))
+		if (actual.containsAll(expected))
 			return this;
-		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> actualAsSet = Collections.asSet(actual);
-		Set<E> missing = Sets.difference(elementsAsSet, actualAsSet);
+		Set<E> expectedAsSet = Sets.fromCollection(expected);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
+		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain all %s in %s.", this.name, pluralizer.nameOf(2), name)).
 			addContext("Actual", actual).
-			addContext("Required", elements).
+			addContext("Expected", expected).
 			addContext("Missing", missing).
 			build();
 	}
@@ -333,8 +335,8 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
 		if (!actualContainsAny(elements))
 			return this;
-		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> elementsAsSet = Sets.fromCollection(elements);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> unwanted = Sets.intersection(actualAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain any %s in: %s", name, pluralizer.nameOf(1), elements)).
@@ -351,8 +353,8 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!actualContainsAny(elements))
 			return this;
-		Set<E> elementsAsSet = Collections.asSet(elements);
-		Set<E> actualAsSet = Collections.asSet(actual);
+		Set<E> elementsAsSet = Sets.fromCollection(elements);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> unwanted = Sets.intersection(actualAsSet, elementsAsSet);
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s may not contain any %s in %s.", this.name, pluralizer.nameOf(1), name)).
@@ -439,6 +441,21 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
+	public ArrayVerifier<E> asArray(Class<E> type)
+	{
+		@SuppressWarnings("unchecked")
+		E[] array = (E[]) Array.newInstance(type, actual.size());
+		return new ArrayVerifierImpl<>(scope, actual.toArray(array), name, config);
+	}
+
+	@Override
+	public CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
+	{
+		consumer.accept(asArray(type));
+		return this;
+	}
+
+	@Override
 	public Optional<Collection<E>> getActualIfPresent()
 	{
 		return Optional.of(actual);
@@ -447,6 +464,6 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	@Override
 	public Collection<E> getActual()
 	{
-		return java.util.Collections.unmodifiableCollection(actual);
+		return Collections.unmodifiableCollection(actual);
 	}
 }

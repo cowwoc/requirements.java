@@ -21,7 +21,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 /**
  * Default implementation of ObjectVerifier.
  * <p>
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
@@ -141,8 +141,8 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	 * Creates new ObjectVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -206,23 +206,23 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	}
 
 	@Override
-	public ObjectVerifier<T> isEqualTo(T value)
+	public ObjectVerifier<T> isEqualTo(T expected)
 	{
-		if (Objects.equals(actual, value))
+		if (Objects.equals(actual, expected))
 			return this;
 		String actualName;
 		String expectedName;
 		String actualValue = Objects.toString(actual);
 		String actualToString = actualValue;
-		String expectedValue = Objects.toString(value);
+		String expectedValue = Objects.toString(expected);
 		if (actualValue.equals(expectedValue))
 		{
 			actualValue = getNullableType(actual);
-			expectedValue = getNullableType(value);
+			expectedValue = getNullableType(expected);
 			if (actualValue.equals(expectedValue))
 			{
 				actualValue = String.valueOf(Objects.hashCode(actual));
-				expectedValue = String.valueOf(Objects.hashCode(value));
+				expectedValue = String.valueOf(Objects.hashCode(expected));
 				actualName = "Actual.hashCode";
 				expectedName = "Expected.hashCode";
 			}
@@ -247,24 +247,24 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	}
 
 	@Override
-	public ObjectVerifier<T> isEqualTo(T value, String name)
+	public ObjectVerifier<T> isEqualTo(T expected, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (Objects.equals(actual, value))
+		if (Objects.equals(actual, expected))
 			return this;
 		String actualName;
 		String expectedName;
 		String actualValue = Objects.toString(actual);
 		String actualToString = actualValue;
-		String expectedValue = Objects.toString(value);
+		String expectedValue = Objects.toString(expected);
 		if (actualValue.equals(expectedValue))
 		{
 			actualValue = getNullableType(actual);
-			expectedValue = getNullableType(value);
+			expectedValue = getNullableType(expected);
 			if (actualValue.equals(expectedValue))
 			{
 				actualValue = String.valueOf(Objects.hashCode(actual));
-				expectedValue = String.valueOf(Objects.hashCode(value));
+				expectedValue = String.valueOf(Objects.hashCode(expected));
 				actualName = "Actual.hashCode";
 				expectedName = "Expected.hashCode";
 			}
@@ -296,7 +296,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s.", name, value)).
+			String.format("%s may not be equal to %s.", name, value)).
 			build();
 	}
 
@@ -308,7 +308,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 			return this;
 
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not be equal to %s.", this.name, name)).
+			String.format("%s may not be equal to %s.", this.name, name)).
 			addContext("Actual", value).
 			build();
 	}
@@ -333,9 +333,14 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 		if (type.isInstance(actual))
 			return this;
 
+		Class<?> actualClass;
+		if (actual == null)
+			actualClass = null;
+		else
+			actualClass = actual.getClass();
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.", name, type)).
-			addContext("Actual", actual.getClass()).
+			addContext("Actual", actualClass).
 			build();
 	}
 

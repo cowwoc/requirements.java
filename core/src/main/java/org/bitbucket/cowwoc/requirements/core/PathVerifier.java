@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
- * Verifies a {@link Path} parameter.
+ * Verifies a {@link Path}.
  *
  * @author Gili Tzabari
  */

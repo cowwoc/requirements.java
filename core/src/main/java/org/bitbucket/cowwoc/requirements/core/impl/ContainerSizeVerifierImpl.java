@@ -275,15 +275,15 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isIn(Integer first, Integer last)
+	public ContainerSizeVerifier isBetween(Integer min, Integer max)
 	{
 		UnifiedVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(first, "first").isNotNull();
-		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
-		if (size >= first && size <= last)
+		verifier.requireThat(min, "min").isNotNull();
+		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
+		if (size >= min && size <= max)
 			return this;
 		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d] characters.", sizeName, first, last)).
+			String.format("%s must contain [%d, %d] %s.", sizeName, min, max, pluralizer.nameOf(2))).
 			addContext("Actual", size);
 		if (size > 0)
 			eb.addContext(containerName, container);
@@ -326,7 +326,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 		if (!Objects.equals(size, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not contain %,d %s.", sizeName, value, pluralizer.nameOf(value))).
+			String.format("%s may not contain %,d %s.", sizeName, value, pluralizer.nameOf(value))).
 			addContext("Actual", container).
 			build();
 	}
@@ -340,7 +340,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 		if (!Objects.equals(size, value))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
-			String.format("%s must not contain %s (%,d) %s.", this.sizeName, name, value,
+			String.format("%s may not contain %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", container).
 			build();

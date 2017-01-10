@@ -20,7 +20,7 @@ import static org.bitbucket.cowwoc.requirements.core.util.ConsoleConstants.LINE_
 /**
  * Default implementation of ComparableVerifier.
  *
- * @param <T> the type of objects that the parameter may be compared to
+ * @param <T> the type of objects that the value may be compared to
  * @author Gili Tzabari
  */
 public final class ComparableVerifierImpl<T extends Comparable<? super T>>
@@ -36,8 +36,8 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	 * Creates new ComparableVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -147,7 +147,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be less than %s.", this.name, name)).
 			addContext("Actual", actual).
-			addContext("Max", value).
+			addContext("Maximum", value).
 			build();
 	}
 
@@ -176,7 +176,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be less than or equal to %s.", this.name, name)).
 			addContext("Actual", actual).
-			addContext("Max", value).
+			addContext("Maximum", value).
 			build();
 	}
 
@@ -205,7 +205,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be greater than %s.", this.name, name)).
 			addContext("Actual", actual).
-			addContext("Min", value).
+			addContext("Minimum", value).
 			build();
 	}
 
@@ -234,7 +234,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must be greater than or equal to %s.", this.name, name)).
 			addContext("Actual", actual).
-			addContext("Min", value).
+			addContext("Minimum", value).
 			build();
 	}
 
@@ -252,15 +252,15 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	}
 
 	@Override
-	public ComparableVerifier<T> isIn(T first, T last)
+	public ComparableVerifier<T> isBetween(T min, T max)
 	{
 		UnifiedVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(first, "first").isNotNull();
-		verifier.requireThat(last, "last").isNotNull().isGreaterThanOrEqualTo(first, "first");
-		if (actual.compareTo(first) >= 0 && actual.compareTo(last) <= 0)
+		verifier.requireThat(min, "min").isNotNull();
+		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
+		if (actual.compareTo(min) >= 0 && actual.compareTo(max) <= 0)
 			return this;
 		StringBuilder message = new StringBuilder(LINE_LENGTH);
-		message.append(name).append(" must be in the range [").append(first).append(", ").append(last).
+		message.append(name).append(" must be in range [").append(min).append(", ").append(max).
 			append("]\n").
 			append("Actual: ").append(actual);
 		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).

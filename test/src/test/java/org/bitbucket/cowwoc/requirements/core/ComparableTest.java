@@ -42,7 +42,7 @@ public final class ComparableTest
 			Year actual = Year.of(0);
 			Year first = Year.of(0);
 			Year last = Year.of(2);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -54,7 +54,7 @@ public final class ComparableTest
 			Year actual = Year.of(1);
 			Year first = Year.of(0);
 			Year last = Year.of(2);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -66,7 +66,7 @@ public final class ComparableTest
 			Year actual = Year.of(2);
 			Year first = Year.of(0);
 			Year last = Year.of(2);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -78,7 +78,7 @@ public final class ComparableTest
 			Year actual = Year.of(1);
 			Year first = Year.of(10);
 			Year last = Year.of(20);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(first, last);
+			new RequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 

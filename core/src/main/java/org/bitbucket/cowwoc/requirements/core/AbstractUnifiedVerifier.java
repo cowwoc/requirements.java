@@ -63,10 +63,10 @@ abstract class AbstractUnifiedVerifier
 	/**
 	 * Verifies an {@code Object}.
 	 *
-	 * @param <T>    the type of the parameter
+	 * @param <T>    the type of the value
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -79,10 +79,10 @@ abstract class AbstractUnifiedVerifier
 	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param <T>    the type of the parameter
+	 * @param <T>    the type of the value
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -96,8 +96,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -112,8 +112,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -127,8 +127,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <E>    the type of elements in the array
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -142,8 +142,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -155,10 +155,10 @@ abstract class AbstractUnifiedVerifier
 	/**
 	 * Verifies a {@code Comparable}.
 	 *
-	 * @param <T>    the type of objects that the parameter may be compared to
+	 * @param <T>    the type of objects that the value may be compared to
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -172,10 +172,10 @@ abstract class AbstractUnifiedVerifier
 	 * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled
 	 * for this class.
 	 *
-	 * @param <T>    the type of objects that the parameter may be compared to
+	 * @param <T>    the type of objects that the value may be compared to
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -190,8 +190,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <T>    the type of the number
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -207,8 +207,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <T>    the type of the number
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -222,8 +222,8 @@ abstract class AbstractUnifiedVerifier
 	 * Verifies a {@code Double}.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -237,8 +237,8 @@ abstract class AbstractUnifiedVerifier
 	 * this class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -251,8 +251,8 @@ abstract class AbstractUnifiedVerifier
 	 * Verifies a {@code BigDecimal}.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -266,8 +266,8 @@ abstract class AbstractUnifiedVerifier
 	 * for this class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -282,8 +282,8 @@ abstract class AbstractUnifiedVerifier
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -299,8 +299,8 @@ abstract class AbstractUnifiedVerifier
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -313,8 +313,8 @@ abstract class AbstractUnifiedVerifier
 	 * Verifies a {@code Path}.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -328,8 +328,8 @@ abstract class AbstractUnifiedVerifier
 	 * class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -342,8 +342,8 @@ abstract class AbstractUnifiedVerifier
 	 * Verifies a {@code String}.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -357,8 +357,8 @@ abstract class AbstractUnifiedVerifier
 	 * this class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -371,8 +371,8 @@ abstract class AbstractUnifiedVerifier
 	 * Verifies a {@code Uri}.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -386,8 +386,8 @@ abstract class AbstractUnifiedVerifier
 	 * class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -401,8 +401,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <T>    the type of class
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -417,8 +417,8 @@ abstract class AbstractUnifiedVerifier
 	 *
 	 * @param <T>    the type of class
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -430,9 +430,9 @@ abstract class AbstractUnifiedVerifier
 	/**
 	 * Verifies an {@code Optional}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value of the value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -446,8 +446,8 @@ abstract class AbstractUnifiedVerifier
 	 * this class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -459,9 +459,9 @@ abstract class AbstractUnifiedVerifier
 	/**
 	 * Verifies an {@code InetAddress}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value of the value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -475,8 +475,8 @@ abstract class AbstractUnifiedVerifier
 	 * for this class.
 	 *
 	 * @param actual the actual value
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */

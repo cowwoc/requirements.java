@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
- * Verifies a {@link Class} parameter.
+ * Verifies a {@link Class} value.
  *
  * @param <T> the type of the class
  * @author Gili Tzabari
@@ -16,7 +16,7 @@ public interface ClassVerifier<T>
 	extends ObjectVerifierExtension<ClassVerifier<T>, Class<T>>, Verifier<ClassVerifier<T>>
 {
 	/**
-	 * Ensures that the parameter is a superclass or super-interface of a class.
+	 * Ensures that the value is a superclass or super-interface of a class.
 	 *
 	 * @param type the class to compare to
 	 * @return this

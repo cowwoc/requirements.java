@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
- * Verifies a {@link Map} parameter.
+ * Verifies a {@link Map}.
  *
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map

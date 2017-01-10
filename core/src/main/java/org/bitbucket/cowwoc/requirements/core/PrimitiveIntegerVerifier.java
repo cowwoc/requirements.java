@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtension;
 
 /**
- * Verifies an {@link int} parameter.
+ * Verifies an {@link int}.
  *
  * @author Gili Tzabari
  */

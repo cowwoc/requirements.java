@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
 
 /**
- * Verifies a {@link Double} parameter.
+ * Verifies a {@link Double} value.
  *
  * @author Gili Tzabari
  */

@@ -17,10 +17,10 @@ import java.util.StringJoiner;
  */
 public final class ExceptionBuilder
 {
+	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final List<Entry<String, Object>> contextPostfix;
 	private final Throwable cause;
-	private Class<? extends RuntimeException> type;
 	/**
 	 * Contextual information associated with the exception (key-value pairs).
 	 */
@@ -39,13 +39,13 @@ public final class ExceptionBuilder
 	public ExceptionBuilder(Class<? extends RuntimeException> type, String message,
 		Throwable cause, List<Entry<String, Object>> contextPostfix)
 	{
-		assert (Lists.isUnmodifiable(contextPostfix)): "contextPostfix may not be modifiable";
 		if (type == null)
 			throw new NullPointerException("type may not be null");
 		if (message == null)
 			throw new NullPointerException("message may not be null");
 		if (contextPostfix == null)
 			throw new NullPointerException("contextPostfix may not be null");
+		assert (Lists.isUnmodifiable(contextPostfix)): "contextPostfix may not be modifiable";
 		this.type = type;
 		this.message = message;
 		this.cause = cause;

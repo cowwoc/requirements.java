@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -210,6 +211,18 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 
 	@Override
 	public CollectionVerifier<E> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
+	public ArrayVerifier<E> asArray(Class<E> type)
+	{
+		return new NoOpArrayVerifier<>();
+	}
+
+	@Override
+	public CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
 	{
 		return this;
 	}

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
 
 /**
- * Verifies a {@link BigDecimal} parameter.
+ * Verifies a {@link BigDecimal} value.
  *
  * @author Gili Tzabari
  */

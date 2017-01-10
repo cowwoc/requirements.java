@@ -17,7 +17,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
- * Verifies an {@link int} parameter.
+ * Verifies an {@link int}.
  * <p>
  * @author Gili Tzabari
  */
@@ -33,8 +33,8 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	 * Creates new PrimitiveIntegerVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -225,9 +225,9 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isIn(Integer first, Integer last)
+	public PrimitiveIntegerVerifier isBetween(Integer min, Integer max)
 	{
-		asNumber.isIn(first, last);
+		asNumber.isBetween(min, max);
 		return this;
 	}
 

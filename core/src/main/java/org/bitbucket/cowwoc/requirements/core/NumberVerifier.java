@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
 /**
  * Verifier for a {@code Number}.
  *
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public interface NumberVerifier<T extends Number & Comparable<? super T>>

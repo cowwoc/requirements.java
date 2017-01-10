@@ -32,8 +32,8 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	 * Creates new OptionalVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
@@ -112,15 +112,15 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	}
 
 	@Override
-	public OptionalVerifier contains(Object value, String name)
+	public OptionalVerifier contains(Object expected, String name)
 	{
-		Optional<?> expected = Optional.ofNullable(value);
-		if (actual.equals(expected))
+		Optional<?> expectedOptional = Optional.ofNullable(expected);
+		if (actual.equals(expectedOptional))
 			return this;
 		throw config.exceptionBuilder(IllegalArgumentException.class,
 			String.format("%s must contain %s.", this.name, name)).
 			addContext("Actual", actual).
-			addContext("Expected", expected).
+			addContext("Expected", expectedOptional).
 			build();
 	}
 

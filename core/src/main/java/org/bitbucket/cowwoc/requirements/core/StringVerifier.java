@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 
 /**
- * Verifies a {@link String} parameter.
+ * Verifies a {@link String}.
  *
  * @author Gili Tzabari
  */
@@ -39,19 +39,6 @@ public interface StringVerifier
 	StringVerifier isNotEmpty();
 
 	/**
-	 * @return a verifier for email addresses
-	 * @throws IllegalArgumentException if the actual value does not contain a valid email format
-	 */
-	EmailAddressVerifier asEmailAddress();
-
-	/**
-	 * @param consumer verifies email addresses
-	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not contain a valid email format
-	 */
-	StringVerifier asEmailAddress(Consumer<EmailAddressVerifier> consumer);
-
-	/**
 	 * Ensures that the actual value contains a valid Internet address format.
 	 *
 	 * @return a verifier for Internet addresses
@@ -71,10 +58,18 @@ public interface StringVerifier
 	StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer);
 
 	/**
-	 * Ensures that the actual value contains a valid URI format.
+	 * Returns a verifier for the URI representation of the value.
+	 * <p>
+	 * Technically-speaking, there is no such thing as an invalid URI format. Per
+	 * <a href="https://tools.ietf.org/html/rfc3986#appendix-A">RFC3986</a>, any String can be
+	 * represented as a relative URI, but Java's implementation is based on an
+	 * <a href="https://tools.ietf.org/html/rfc2396">older specification</a> where this was not
+	 * the case.
 	 *
-	 * @return a verifier for URIs
-	 * @throws IllegalArgumentException if the actual value does not contain a valid URI format
+	 * @return a verifier for the URI representation of the value
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a Java URI
+	 * @see <a href="http://stackoverflow.com/a/27644491/14731">Discussion of Java URI vs
+	 * RFC3986</a>
 	 */
 	UriVerifier asUri();
 

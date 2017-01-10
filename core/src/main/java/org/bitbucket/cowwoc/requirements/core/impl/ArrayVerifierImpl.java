@@ -46,8 +46,8 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	 * Creates new ArrayVerifierImpl.
 	 *
 	 * @param scope  the system configuration
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
@@ -166,37 +166,37 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> contains(E element)
+	public ArrayVerifier<E> contains(E expected)
 	{
-		asCollection.contains(element);
+		asCollection.contains(expected);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> contains(E element, String name)
+	public ArrayVerifier<E> contains(E expected, String name)
 	{
-		asCollection.contains(element, name);
+		asCollection.contains(expected, name);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> containsExactly(Collection<E> elements)
+	public ArrayVerifier<E> containsExactly(Collection<E> expected)
 	{
-		asCollection.containsExactly(elements);
+		asCollection.containsExactly(expected);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> containsExactly(Collection<E> elements, String name)
+	public ArrayVerifier<E> containsExactly(Collection<E> expected, String name)
 	{
-		asCollection.containsExactly(elements, name);
+		asCollection.containsExactly(expected, name);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAny(Collection<E> elements)
+	public ArrayVerifier<E> containsAny(Collection<E> expected)
 	{
-		asCollection.containsAny(elements);
+		asCollection.containsAny(expected);
 		return this;
 	}
 
@@ -208,16 +208,16 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAll(Collection<E> elements)
+	public ArrayVerifier<E> containsAll(Collection<E> expected)
 	{
-		asCollection.containsAll(elements);
+		asCollection.containsAll(expected);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAll(Collection<E> elements, String name)
+	public ArrayVerifier<E> containsAll(Collection<E> expected, String name)
 	{
-		asCollection.containsAll(elements, name);
+		asCollection.containsAll(expected, name);
 		return this;
 	}
 
@@ -294,6 +294,19 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	public ArrayVerifier<E> asString(Consumer<StringVerifier> consumer)
 	{
 		consumer.accept(asString());
+		return this;
+	}
+
+	@Override
+	public CollectionVerifier<E> asCollection()
+	{
+		return asCollection;
+	}
+
+	@Override
+	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer)
+	{
+		consumer.accept(asCollection());
 		return this;
 	}
 

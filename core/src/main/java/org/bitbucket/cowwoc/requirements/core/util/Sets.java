@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.core.util;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,6 +16,19 @@ import java.util.Set;
  */
 public final class Sets
 {
+	/**
+	 * @param <E>        the type of elements held by the collection
+	 * @param collection a collection
+	 * @return {@code collection} if it is already a {@code Set}; otherwise, a new {@code Set}
+	 *         containing {@code collection}'s elements
+	 */
+	public static <E> Set<E> fromCollection(Collection<E> collection)
+	{
+		if (collection instanceof Set)
+			return (Set<E>) collection;
+		return new HashSet<>(collection);
+	}
+
 	/**
 	 * Returns the difference of {@code first} minus {@code second}, retaining the iteration order.
 	 *

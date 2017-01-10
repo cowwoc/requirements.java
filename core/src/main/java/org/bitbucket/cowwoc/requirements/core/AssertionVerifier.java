@@ -32,7 +32,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
 /**
- * Verifies a parameter if assertions are enabled; otherwise, does nothing.
+ * Verifies a value if assertions are enabled; otherwise, does nothing.
  * <p>
  * Unlike {@link Requirements}, instances of this class can be configured prior to initiating
  * verification. Doing so causes the same configuration to get reused across runs.
@@ -159,10 +159,10 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(Object, String)} but does nothing if assertions
 	 * are disabled.
 	 *
-	 * @param <T>    the type of the parameter
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param <T>    the type of the value
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -178,9 +178,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * assertions are disabled.
 	 *
 	 * @param <E>    the type of elements in the collection
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -196,9 +196,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * assertions are disabled.
 	 *
 	 * @param <E>    the type of elements in the collection
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -214,9 +214,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * assertions are disabled.
 	 *
 	 * @param <T>    the type of the number
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -233,9 +233,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * are disabled.
 	 *
 	 * @param <T>    the type of the number
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -250,9 +250,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	/**
 	 * Verifies a {@code Double}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -267,9 +267,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(BigDecimal, String)} but does nothing if
 	 * assertions are disabled.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -286,9 +286,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -305,9 +305,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(Path, String)} but does nothing if assertions
 	 * are disabled.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -322,9 +322,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(String, String)} but does nothing if assertions
 	 * are disabled.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -339,9 +339,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(URI, String)} but does nothing if assertions are
 	 * disabled.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -357,9 +357,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * are disabled.
 	 *
 	 * @param <T>    the type of class
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -376,9 +376,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(Optional, String)} but does nothing if
 	 * assertions are disabled.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
@@ -393,9 +393,9 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * Same as {@link RequirementVerifier#requireThat(InetAddress, String)} but does nothing if
 	 * assertions are disabled.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */

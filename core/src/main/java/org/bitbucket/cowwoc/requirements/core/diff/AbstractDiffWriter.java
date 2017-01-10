@@ -63,8 +63,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 	/**
 	 * Creates a new instance.
 	 *
-	 * @param actual        the actual value of a parameter
-	 * @param expected      the expected value of a parameter
+	 * @param actual        the actual value
+	 * @param expected      the expected value
 	 * @param paddingMarker a padding character used to align values vertically
 	 * @throws NullPointerException if any of the arguments are null
 	 */

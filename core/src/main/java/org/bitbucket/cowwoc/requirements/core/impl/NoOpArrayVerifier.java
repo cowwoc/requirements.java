@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
+import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -211,6 +212,18 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 
 	@Override
 	public ArrayVerifier<E> asString(Consumer<StringVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionVerifier<E> asCollection()
+	{
+		return new NoOpCollectionVerifier<>();
+	}
+
+	@Override
+	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer)
 	{
 		return this;
 	}

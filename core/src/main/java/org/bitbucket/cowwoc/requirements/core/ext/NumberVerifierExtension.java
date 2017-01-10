@@ -8,7 +8,7 @@ package org.bitbucket.cowwoc.requirements.core.ext;
  * Verifier for a {@link Number}.
  *
  * @param <S> the type of the non-extension interface extending this interface
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public interface NumberVerifierExtension<S extends NumberVerifierExtension<S, T>, T extends Number & Comparable<? super T>>
@@ -31,12 +31,12 @@ public interface NumberVerifierExtension<S extends NumberVerifierExtension<S, T>
 	S isNotNegative();
 
 	/**
-	 * Ensures that the actual value is not positive.
+	 * Ensures that the actual value is zero.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value is positive
+	 * @throws IllegalArgumentException if the actual value is not zero
 	 */
-	S isNotPositive();
+	S isZero();
 
 	/**
 	 * Ensures that the actual value is not zero.
@@ -55,10 +55,10 @@ public interface NumberVerifierExtension<S extends NumberVerifierExtension<S, T>
 	S isPositive();
 
 	/**
-	 * Ensures that the actual value is zero.
+	 * Ensures that the actual value is not positive.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value is not zero
+	 * @throws IllegalArgumentException if the actual value is positive
 	 */
-	S isZero();
+	S isNotPositive();
 }

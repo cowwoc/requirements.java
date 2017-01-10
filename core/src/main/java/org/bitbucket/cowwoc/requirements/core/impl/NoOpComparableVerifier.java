@@ -16,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 /**
  * An implementation of ComparableVerifier that does nothing.
  *
- * @param <T> the type of parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public final class NoOpComparableVerifier<T extends Comparable<? super T>>
@@ -89,7 +89,7 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	}
 
 	@Override
-	public ComparableVerifier<T> isIn(T first, T last)
+	public ComparableVerifier<T> isBetween(T min, T max)
 	{
 		return this;
 	}

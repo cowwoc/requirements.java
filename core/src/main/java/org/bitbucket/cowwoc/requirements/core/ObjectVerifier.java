@@ -7,9 +7,9 @@ package org.bitbucket.cowwoc.requirements.core;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
- * Verifies an {@link Object} parameter.
+ * Verifies an {@link Object}.
  *
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public interface ObjectVerifier<T>

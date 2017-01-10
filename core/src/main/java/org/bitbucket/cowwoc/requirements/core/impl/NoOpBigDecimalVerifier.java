@@ -152,7 +152,7 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	}
 
 	@Override
-	public BigDecimalVerifier isIn(BigDecimal first, BigDecimal last)
+	public BigDecimalVerifier isBetween(BigDecimal min, BigDecimal max)
 	{
 		return this;
 	}

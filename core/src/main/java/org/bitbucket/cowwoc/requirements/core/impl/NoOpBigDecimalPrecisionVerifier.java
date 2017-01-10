@@ -143,7 +143,7 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	}
 
 	@Override
-	public BigDecimalPrecisionVerifier isIn(Integer first, Integer last)
+	public BigDecimalPrecisionVerifier isBetween(Integer min, Integer max)
 	{
 		return this;
 	}

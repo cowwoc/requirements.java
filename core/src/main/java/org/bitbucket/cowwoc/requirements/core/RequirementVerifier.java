@@ -33,7 +33,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 
 /**
- * Verifies a parameter.
+ * Verifies a value.
  * <p>
  * Unlike {@link Requirements}, instances of this class can be configured prior to initiating
  * verification. Doing so causes the same configuration to get reused across runs.
@@ -124,10 +124,10 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies an {@code Object}.
 	 *
-	 * @param <T>    the type of the parameter
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param <T>    the type of the value
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -141,9 +141,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	 * Verifies a {@code Collection}.
 	 *
 	 * @param <E>    the type of elements in the collection
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -157,9 +157,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	 * Verifies a primitive array.
 	 *
 	 * @param <E>    the type of elements in the array
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -172,10 +172,10 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies a {@code Comparable}.
 	 *
-	 * @param <T>    the type of objects that the parameter may be compared to
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param <T>    the type of objects that the value may be compared to
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -190,9 +190,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	 * Verifies a {@code Number}.
 	 *
 	 * @param <T>    the type of the number
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -206,9 +206,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies a {@code Double}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -221,9 +221,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies a {@code BigDecimal}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -238,9 +238,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -253,9 +253,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies a {@code Path}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -268,9 +268,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies a {@code String}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -283,9 +283,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies a {@code Uri}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -299,9 +299,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	 * Verifies a {@code Class}.
 	 *
 	 * @param <T>    the type of class
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -314,9 +314,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies an {@code Optional}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -329,9 +329,9 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	/**
 	 * Verifies an {@code InetAddress}.
 	 *
-	 * @param actual the actual value of the parameter
-	 * @param name   the name of the parameter
-	 * @return a verifier for the parameter
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */

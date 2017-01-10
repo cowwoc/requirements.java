@@ -132,7 +132,7 @@ public enum NoOpContainerSizeVerifier implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isIn(Integer first, Integer last)
+	public ContainerSizeVerifier isBetween(Integer min, Integer max)
 	{
 		return this;
 	}

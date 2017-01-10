@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ComparableVerifierExtension;
 /**
  * Verifies a {@link Comparable}.
  *
- * @param <T> the type of the parameter
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
 public interface ComparableVerifier<T extends Comparable<? super T>>

@@ -38,11 +38,11 @@ public final class Lists
 	}
 
 	/**
-	 * The same as {@link java.util.Collections#unmodifiableList(List)} except that the input list
+	 * The same as {@link Collections#unmodifiableList(List)} except that the input list
 	 * is returned unmodified if it is already unmodifiable.
 	 *
 	 * @param <T>  the class of the objects in the list
-	 * @param list the list for which an unmodifiable view is to be returned.
+	 * @param list the list for which an unmodifiable view is to be returned
 	 * @return {@code list} if the list is already unmodifiable; otherwise, a new unmodifiable view
 	 *         of the specified list
 	 */
@@ -50,7 +50,7 @@ public final class Lists
 	{
 		if (isUnmodifiable(list))
 			return list;
-		return java.util.Collections.unmodifiableList(list);
+		return Collections.unmodifiableList(list);
 	}
 
 	/**
