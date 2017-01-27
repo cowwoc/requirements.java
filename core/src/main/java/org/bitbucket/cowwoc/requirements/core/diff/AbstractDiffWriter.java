@@ -40,13 +40,13 @@ abstract class AbstractDiffWriter implements DiffWriter
 		if (lengthOfTarget == 0)
 			return result;
 
-		for (int i = source.length() - lengthOfTarget; i >= lengthOfTarget; i -= lengthOfTarget)
+		for (int i = source.length() - lengthOfTarget; i >= 0; i -= lengthOfTarget)
 		{
 			if (!source.startsWith(target, i))
 				return result;
 			result = i;
 		}
-		return 0;
+		return result;
 	}
 	/**
 	 * A padding character used to align values vertically.

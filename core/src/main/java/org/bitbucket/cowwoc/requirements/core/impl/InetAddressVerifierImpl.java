@@ -8,15 +8,14 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of InetAddressVerifier.
@@ -25,7 +24,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class InetAddressVerifierImpl implements InetAddressVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final InetAddress actual;
 	private final String name;
 	private final Configuration config;
@@ -34,13 +33,13 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 	/**
 	 * Creates new InetAddressVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public InetAddressVerifierImpl(SingletonScope scope, InetAddress actual, String name,
+	public InetAddressVerifierImpl(ApplicationScope scope, InetAddress actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
@@ -51,31 +50,6 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 		this.name = name;
 		this.config = config;
 		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public InetAddressVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new InetAddressVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public InetAddressVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new InetAddressVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public InetAddressVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new InetAddressVerifierImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -139,7 +113,7 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 	{
 		if (actual instanceof Inet4Address)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be an IP v4 address.", name)).
 			addContext("Actual", actual).
 			build();
@@ -150,7 +124,7 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 	{
 		if (actual instanceof Inet6Address)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be an IP v6 address.", name)).
 			addContext("Actual", actual).
 			build();
@@ -182,5 +156,18 @@ public final class InetAddressVerifierImpl implements InetAddressVerifier
 	public InetAddress getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public InetAddressVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

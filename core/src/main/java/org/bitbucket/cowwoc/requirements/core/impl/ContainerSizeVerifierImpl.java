@@ -5,17 +5,15 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
@@ -26,7 +24,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
  */
 public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final Object container;
 	private final int size;
 	private final String containerName;
@@ -38,7 +36,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	/**
 	 * Creates new ContainerSizeVerifierImpl.
 	 *
-	 * @param scope         the system configuration
+	 * @param scope         the application configuration
 	 * @param container     the container
 	 * @param size          the size of the container
 	 * @param containerName the name of the container
@@ -48,7 +46,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	 * @throws AssertionError if {@code scope}, {@code container}, {@code name} or {@code config} are
 	 *                        null; if {@code name} is empty
 	 */
-	public ContainerSizeVerifierImpl(SingletonScope scope, Object container, int size,
+	public ContainerSizeVerifierImpl(ApplicationScope scope, Object container, int size,
 		String containerName, String sizeName, Pluralizer pluralizer, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
@@ -68,40 +66,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new ContainerSizeVerifierImpl(scope, container, size, containerName, sizeName,
-			pluralizer, newConfig);
-	}
-
-	@Override
-	public ContainerSizeVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new ContainerSizeVerifierImpl(scope, container, size, containerName, sizeName,
-			pluralizer, newConfig);
-	}
-
-	@Override
-	public ContainerSizeVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new ContainerSizeVerifierImpl(scope, container, size, containerName, sizeName,
-			pluralizer, newConfig);
-	}
-
-	@Override
 	public ContainerSizeVerifier isGreaterThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size >= value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain at least %,d %s.", sizeName, value, pluralizer.nameOf(value))).
 			addContext("Actual", size);
 		if (size > 0)
@@ -112,12 +82,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isGreaterThanOrEqualTo(Integer value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (size >= value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", size);
@@ -132,7 +102,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size > value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain more than %,d %s.", sizeName, value, pluralizer.nameOf(value))).
 			addContext("Actual", size);
 		if (size > 0)
@@ -143,12 +113,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isGreaterThan(Integer value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (size > value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", size);
@@ -163,7 +133,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size <= value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not contain more than %,d %s.", sizeName, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", size);
@@ -175,12 +145,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isLessThanOrEqualTo(Integer value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (size <= value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not contain more than %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", size);
@@ -195,7 +165,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size < value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain less than %,d %s.", this.sizeName, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", size);
@@ -207,12 +177,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isLessThan(Integer value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (size < value)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain less than %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value), size, pluralizer.nameOf(size))).
 			addContext("Actual", size);
@@ -232,7 +202,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	{
 		if (size > 0)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain at least one %s.", sizeName, pluralizer.nameOf(1))).
 			addContext("Actual", size);
 		if (size > 0)
@@ -251,7 +221,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	{
 		if (size == 0)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be empty.", sizeName)).
 			addContext("Actual", size);
 		if (size > 0)
@@ -277,12 +247,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isBetween(Integer min, Integer max)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
 		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
 		if (size >= min && size <= max)
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain [%d, %d] %s.", sizeName, min, max, pluralizer.nameOf(2))).
 			addContext("Actual", size);
 		if (size > 0)
@@ -295,7 +265,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	{
 		if (Objects.equals(size, value))
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain %,d %s.", sizeName, value, pluralizer.nameOf(value))).
 			addContext("Actual", size);
 		if (size > 0)
@@ -306,12 +276,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isEqualTo(Integer value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(size, value))
 			return this;
-		ExceptionBuilder eb = config.exceptionBuilder(IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", size);
@@ -325,7 +295,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	{
 		if (!Objects.equals(size, value))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not contain %,d %s.", sizeName, value, pluralizer.nameOf(value))).
 			addContext("Actual", container).
 			build();
@@ -334,12 +304,12 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	@Override
 	public ContainerSizeVerifier isNotEqualTo(Integer value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(size, value))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not contain %s (%,d) %s.", this.sizeName, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", container).
@@ -398,5 +368,18 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	public Integer getActual()
 	{
 		return size;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ContainerSizeVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

@@ -12,11 +12,12 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.diff.DiffResult;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of ObjectVerifier.
@@ -132,7 +133,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 			return "null";
 		return o.getClass().getName();
 	}
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final T actual;
 	private final String name;
 	private final Configuration config;
@@ -140,14 +141,14 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	/**
 	 * Creates new ObjectVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ObjectVerifierImpl(SingletonScope scope, T actual, String name, Configuration config)
+	public ObjectVerifierImpl(ApplicationScope scope, T actual, String name, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
 		assert (name != null): "name may not be null";
@@ -160,36 +161,11 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	}
 
 	@Override
-	public ObjectVerifier<T> withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new ObjectVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public ObjectVerifier<T> addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new ObjectVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public ObjectVerifier<T> withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new ObjectVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
 	public ObjectVerifier<T> isNull()
 	{
 		if (actual == null)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be null.", name)).
 			addContext("Actual", actual).
 			build();
@@ -200,7 +176,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	{
 		if (actual != null)
 			return this;
-		throw config.exceptionBuilder(NullPointerException.class,
+		throw new ExceptionBuilder(config, NullPointerException.class,
 			String.format("%s may not be null", name)).
 			build();
 	}
@@ -240,7 +216,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 		DiffResult result = scope.getDiffGenerator().diff(actualValue, expectedValue);
 		List<Entry<String, Object>> context = getContext(result, actualToString, actualName,
 			expectedName);
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name)).
 			addContext(context).
 			build();
@@ -283,7 +259,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 		List<Entry<String, Object>> context = getContext(result, actualToString, actualName,
 			expectedName);
 
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name)).
 			addContext(context).
 			build();
@@ -295,7 +271,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 		if (!Objects.equals(actual, value))
 			return this;
 
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be equal to %s.", name, value)).
 			build();
 	}
@@ -307,7 +283,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 		if (!Objects.equals(actual, value))
 			return this;
 
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be equal to %s.", this.name, name)).
 			addContext("Actual", value).
 			build();
@@ -320,7 +296,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 		if (collection.contains(actual))
 			return this;
 
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
 			addContext("Actual", actual).
 			build();
@@ -338,7 +314,7 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 			actualClass = null;
 		else
 			actualClass = actual.getClass();
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.", name, type)).
 			addContext("Actual", actualClass).
 			build();
@@ -367,5 +343,18 @@ public final class ObjectVerifierImpl<T> implements ObjectVerifier<T>
 	public T getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ObjectVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

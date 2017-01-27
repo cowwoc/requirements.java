@@ -12,12 +12,12 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 /**
  * Verifies a {@link Map}.
  *
- * @param <K> the type of key in the map
- * @param <V> the type of value in the map
+ * @param <K> the type of keys in the map
+ * @param <V> the type of values in the map
  * @author Gili Tzabari
  */
 public interface MapVerifier<K, V>
-	extends ObjectVerifierExtension<MapVerifier<K, V>, Map<K, V>>, Verifier<MapVerifier<K, V>>
+	extends ObjectVerifierExtension<MapVerifier<K, V>, Map<K, V>>
 {
 	/**
 	 * @return a verifier for the {@link Map#keySet()}

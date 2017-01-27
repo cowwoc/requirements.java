@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.testng.annotations.Test;
 
 /**
@@ -16,198 +17,198 @@ public final class StringTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, null);
+			new CoreRequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "");
+			new CoreRequirementVerifier(scope).requireThat(actual, "");
 		}
 	}
 
 	@Test
 	public void isEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEmpty_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
 	@Test
 	public void trimIsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new RequirementVerifier(scope).requireThat(actual, "actual").trim().isEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").trim().isEmpty();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void trimIsEmpty_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").trim().isEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").trim().isEmpty();
 		}
 	}
 
 	@Test
 	public void isNotEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNotEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotEmpty_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNotEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
 	@Test
 	public void trimIsNotEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").trim().isNotEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void trimIsNotEmpty_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new RequirementVerifier(scope).requireThat(actual, "actual").trim().isNotEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
 	@Test
 	public void startsWith()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String prefix = "home";
 			String actual = prefix + "1234";
-			new RequirementVerifier(scope).requireThat(actual, "actual").startsWith(prefix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").startsWith(prefix);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void startsWith_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String prefix = "home";
 			String actual = "1234" + prefix;
-			new RequirementVerifier(scope).requireThat(actual, "actual").startsWith(prefix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").startsWith(prefix);
 		}
 	}
 
 	@Test
 	public void doesNotStartWith()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String prefix = "home";
 			String actual = "1234" + prefix;
-			new RequirementVerifier(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void doesNotStartWith_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String prefix = "home";
 			String actual = prefix + "1234";
-			new RequirementVerifier(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
 		}
 	}
 
 	@Test
 	public void endsWith()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String suffix = "home";
 			String actual = "1234" + suffix;
-			new RequirementVerifier(scope).requireThat(actual, "actual").endsWith(suffix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").endsWith(suffix);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void endsWith_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String suffix = "home";
 			String actual = suffix + "1234";
-			new RequirementVerifier(scope).requireThat(actual, "actual").endsWith(suffix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").endsWith(suffix);
 		}
 	}
 
 	@Test
 	public void doesNotEndWith()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String suffix = "home";
 			String actual = suffix + "1234";
-			new RequirementVerifier(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void doesNotEndWith_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String suffix = "home";
 			String actual = "1234" + suffix;
-			new RequirementVerifier(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
 		}
 	}
 
 	@Test
 	public void lengthIsEqualTo()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").length().
 				isEqualTo(actual.length());
 		}
 	}
@@ -215,10 +216,10 @@ public final class StringTest
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void lengthIsEqualTo_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1234567890";
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").length().
 				isEqualTo(actual.length() + 1);
 		}
 	}
@@ -226,10 +227,10 @@ public final class StringTest
 	@Test
 	public void lengthIsNotEqualTo()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").length().
 				isNotEqualTo(actual.length() + 1);
 		}
 	}
@@ -237,10 +238,10 @@ public final class StringTest
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void lengthIsNotEqualTo_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1234567890";
-			new RequirementVerifier(scope).requireThat(actual, "actual").length().
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").length().
 				isNotEqualTo(actual.length());
 		}
 	}
@@ -248,11 +249,11 @@ public final class StringTest
 	@Test
 	public void assertionsDisabled()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			String actual = null;
-			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
+			new CoreAssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 }

@@ -1,0 +1,38 @@
+/*
+ * Copyright 2016 Gili Tzabari.
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package org.bitbucket.cowwoc.requirements.core.ext;
+
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+
+/**
+ * An object whose behavior is configurable.
+ *
+ * @param <S> the type being configured
+ * @author Gili Tzabari
+ */
+public interface Configurable<S>
+{
+	/**
+	 * Returns the verifier's configuration.
+	 * <p>
+	 * Modifying the configuration affect the behavior of this verifier, and any other verifier
+	 * created by it.
+	 *
+	 * @return the verifier's configuration
+	 */
+	Configuration configuration();
+
+	/**
+	 * Returns the verifier's configuration.
+	 * <p>
+	 * Modifying the configuration affect the behavior of this verifier, and any other verifier
+	 * created by it.
+	 *
+	 * @param consumer consumes the verifier's configuration
+	 * @return this
+	 */
+	S configuration(Consumer<Configuration> consumer);
+}

@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
  * @author Gili Tzabari
  */
 public interface DoubleVerifier
-	extends NumberVerifierExtension<DoubleVerifier, Double>, Verifier<DoubleVerifier>
+	extends NumberVerifierExtension<DoubleVerifier, Double>
 {
 	/**
 	 * Ensures that the actual value is a number.

@@ -6,15 +6,13 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
@@ -24,7 +22,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
  */
 public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisionVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final BigDecimal bigDecimal;
 	private final int actual;
 	private final String name;
@@ -34,13 +32,13 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	/**
 	 * Creates new BigDecimalPrecisionVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public BigDecimalPrecisionVerifierImpl(SingletonScope scope, BigDecimal actual, String name,
+	public BigDecimalPrecisionVerifierImpl(ApplicationScope scope, BigDecimal actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
@@ -57,15 +55,15 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	/**
 	 * Internal constructor that assumes that {@code name} has already been updated.
 	 *
-	 * @param scope      the system configuration
+	 * @param scope      the application configuration
 	 * @param bigDecimal the BigDecimal
 	 * @param actual     the precision of the BigDecimal
 	 * @param name       the name of the value
 	 * @param config     the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config}
-	 *                        are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config} are
+	 *                        null; if {@code name} is empty
 	 */
-	private BigDecimalPrecisionVerifierImpl(SingletonScope scope, BigDecimal bigDecimal,
+	private BigDecimalPrecisionVerifierImpl(ApplicationScope scope, BigDecimal bigDecimal,
 		int actual, String name, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
@@ -79,31 +77,6 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 		this.name = name;
 		this.config = config;
 		this.asInt = new PrimitiveIntegerVerifierImpl(scope, this.actual, name, config);
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new BigDecimalPrecisionVerifierImpl(scope, bigDecimal, actual, name, newConfig);
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new BigDecimalPrecisionVerifierImpl(scope, bigDecimal, actual, name, newConfig);
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new BigDecimalPrecisionVerifierImpl(scope, bigDecimal, actual, name, newConfig);
 	}
 
 	@Override
@@ -294,5 +267,18 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 	public Integer getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public BigDecimalPrecisionVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

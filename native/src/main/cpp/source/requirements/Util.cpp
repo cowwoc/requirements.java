@@ -35,38 +35,53 @@ void Exceptions::throwException(char* type, char* message)
 	env->ThrowNew(exception, message);
 }
 
-void Exceptions::throwIOException(char* message)
+void Exceptions::throwIOException(const char* message)
+{
+	throwIOException(message, 0);
+}
+
+void Exceptions::throwIOException(const char* message, DWORD lastError)
 {
 	assert(message != 0);
-	char* context = getFormatMessage(GetLastError());
-	if (!context)
-		throwException("java/lang/AssertionError", "FormatMessage failed");
+	char* context;
+	size_t len;
+	if (lastError == 0)
+		len = strlen(message) + 1;
+	else
+	{
+		context = getFormatMessage(lastError);
+		if (!context)
+			throwException("java/lang/AssertionError", "FormatMessage failed");
+		len = strlen(message) + strlen(": ") + strlen(context) + 1;
+	}
 
-	// printf("Attach debugger...\n");
-	// fgetc(stdin);
-
-	size_t len = strlen(message) + strlen(": ") + strlen(context) + 1;
 	char* joinedMessage = new char[len];
 	joinedMessage[0] = '\0';
 	errno_t rc = strcat_s(joinedMessage, len, message);
 	assert(rc == 0);
-	rc = strcat_s(joinedMessage, len, ": ");
-	assert(rc == 0);
-	rc = strcat_s(joinedMessage, len, context);
-	assert(rc == 0);
+	if (lastError != 0)
+	{
+		rc = strcat_s(joinedMessage, len, ": ");
+		assert(rc == 0);
+		rc = strcat_s(joinedMessage, len, context);
+		assert(rc == 0);
+	}
 
 	throwException("java/io/IOException", joinedMessage);
 
-	HLOCAL address = LocalFree(context);
-	assert(address == 0);
+	if (lastError != 0)
+	{
+		HLOCAL address = LocalFree(context);
+		assert(address == 0);
+	}
 }
 
 /**
-* Returns the String representation of the error. The caller must the LocalFree() function to free the buffer when it is no longer needed.
-*
-* @param errorCode an error code returned by GetLastError()
-* @return 0 on failure
-*/
+ * Returns the String representation of the error. The caller must the LocalFree() function to free the buffer when it is no longer needed.
+ *
+ * @param errorCode an error code returned by GetLastError()
+ * @return 0 on failure
+ */
 char* Exceptions::getFormatMessage(DWORD errorCode)
 {
 	char* result;

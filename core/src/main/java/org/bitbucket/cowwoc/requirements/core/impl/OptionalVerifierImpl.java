@@ -5,15 +5,14 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of OptionalVerifier.
@@ -22,7 +21,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class OptionalVerifierImpl implements OptionalVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final Optional<?> actual;
 	private final String name;
 	private final Configuration config;
@@ -31,14 +30,14 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	/**
 	 * Creates new OptionalVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public OptionalVerifierImpl(SingletonScope scope, Optional<?> actual, String name,
+	public OptionalVerifierImpl(ApplicationScope scope, Optional<?> actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
@@ -52,36 +51,11 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	}
 
 	@Override
-	public OptionalVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new OptionalVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public OptionalVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new OptionalVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public OptionalVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new OptionalVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
 	public OptionalVerifier isPresent()
 	{
 		if (actual.isPresent())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be present", name)).
 			build();
 	}
@@ -91,7 +65,7 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	{
 		if (!actual.isPresent())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
 			addContext("Actual", actual).
 			build();
@@ -105,7 +79,7 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 		Optional<?> expected = Optional.of(value);
 		if (actual.equals(expected))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -117,7 +91,7 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 		Optional<?> expectedOptional = Optional.ofNullable(expected);
 		if (actual.equals(expectedOptional))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must contain %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Expected", expectedOptional).
@@ -203,5 +177,18 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	public Optional<?> getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public OptionalVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

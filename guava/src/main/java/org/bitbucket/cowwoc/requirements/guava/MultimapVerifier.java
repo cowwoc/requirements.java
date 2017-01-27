@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
-import org.bitbucket.cowwoc.requirements.core.Verifier;
 import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
 
 /**
@@ -20,8 +19,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface MultimapVerifier<K, V>
-	extends ObjectVerifierExtension<MultimapVerifier<K, V>, Multimap<K, V>>,
-	Verifier<MultimapVerifier<K, V>>
+	extends ObjectVerifierExtension<MultimapVerifier<K, V>, Multimap<K, V>>
 {
 	/**
 	 * @return a verifier over {@link Multimap#keySet()}

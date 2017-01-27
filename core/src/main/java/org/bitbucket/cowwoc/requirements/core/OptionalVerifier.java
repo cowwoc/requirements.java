@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface OptionalVerifier
-	extends ObjectVerifierExtension<OptionalVerifier, Optional<?>>, Verifier<OptionalVerifier>
+	extends ObjectVerifierExtension<OptionalVerifier, Optional<?>>
 {
 	/**
 	 * Ensures that the actual value is present.

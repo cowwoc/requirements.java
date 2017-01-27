@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.Requirements;
+import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -19,6 +19,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  * @author Gili Tzabari
  */
 public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>, T>
+	extends Configurable<S>
 {
 	/**
 	 * Ensures that the actual value is equal to an expected value.
@@ -26,7 +27,8 @@ public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not equal to value
-	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of
+	 * the output format</a>
 	 */
 	S isEqualTo(T expected);
 
@@ -39,7 +41,8 @@ public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the actual value is not equal to the variable; if
 	 *                                  {@code name} is empty
-	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of
+	 * the output format</a>
 	 */
 	S isEqualTo(T expected, String name);
 
@@ -114,22 +117,30 @@ public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>
 	/**
 	 * Returns the actual value.
 	 * <p>
-	 * Beware: the return value may be wrapped to prevent modification.
+	 * NOTE: The behavior of verifiers whose value is modified is undefined. Special care should be
+	 * taken to avoid modifying the returned value, or avoid the use of verifiers after their value is
+	 * modified.
 	 *
-	 * @return {@code Optional.empty()} if the verifier does not have access to the actual value (e.g.
-	 *         if {@link Requirements#assertThat(Object, String) assertThat()} is used when assertions
-	 *         are disabled, the verifier does not need to retain a reference to the actual value)
+	 * @return {@code Optional.empty()} if the actual value is not available (e.g. if
+	 *         {@link CoreRequirements#assertThat(Object, String) assertThat()} is used when
+	 *         assertions are disabled, the verifier does not retain a reference to the actual value)
 	 */
 	Optional<T> getActualIfPresent();
 
 	/**
 	 * Returns the actual value.
+	 * <p>
+	 * NOTE: The behavior of verifiers whose value is modified is undefined. Special care should be
+	 * taken to avoid modifying the returned value, or avoid the use of verifiers after their value is
+	 * modified.
 	 *
-	 * @return the actual value (may be wrapped to prevent modification)
+	 * @return the actual value
 	 * @throws NoSuchElementException if the verifier does not have access to the actual value (e.g.
-	 *                                if {@link Requirements#assertThat(Object, String) assertThat()}
+	 *                                if
+	 *                                {@link CoreRequirements#assertThat(Object, String) assertThat()}
 	 *                                is used when assertions are disabled, the verifier does not need
 	 *                                to retain a reference to the actual value)
+	 * @see #getActualIfPresent()
 	 */
 	T getActual();
 }

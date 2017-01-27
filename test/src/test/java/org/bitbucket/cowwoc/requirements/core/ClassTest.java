@@ -5,8 +5,9 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Random;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.testng.annotations.Test;
 
 /**
@@ -17,61 +18,61 @@ public final class ClassTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Object> actual = Object.class;
-			new RequirementVerifier(scope).requireThat(actual, null);
+			new CoreRequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
 	@Test
 	public void isSupertypeOf()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Object> actual = Object.class;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isSupertypeOf_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = Random.class;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isSupertypeOf_expectedIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = Random.class;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(null);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(null);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isSupertypeOf_actualIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Class<?> actual = null;
-			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
+			new CoreAssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 }

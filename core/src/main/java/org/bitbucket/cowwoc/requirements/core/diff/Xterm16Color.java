@@ -12,7 +12,7 @@ import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.PREFIX;
  *
  * @author Gili Tzabari
  */
-final class XTerm16Color extends AbstractXterm
+public final class Xterm16Color extends AbstractXterm
 {
 	// On Ubuntu 16.04 and Netbeans 8.1, if we omit ;0 then the bold attribute of the previous
 	// character gets used.
@@ -29,7 +29,7 @@ final class XTerm16Color extends AbstractXterm
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	XTerm16Color(String actual, String expected)
+	public Xterm16Color(String actual, String expected)
 	{
 		super(actual, expected);
 	}

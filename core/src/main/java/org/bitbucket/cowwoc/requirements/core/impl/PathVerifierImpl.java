@@ -11,15 +11,14 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of PathVerifier.
@@ -28,7 +27,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class PathVerifierImpl implements PathVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final Path actual;
 	private final String name;
 	private final Configuration config;
@@ -37,14 +36,14 @@ public final class PathVerifierImpl implements PathVerifier
 	/**
 	 * Creates new PathVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PathVerifierImpl(SingletonScope scope, Path actual, String name, Configuration config)
+	public PathVerifierImpl(ApplicationScope scope, Path actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -57,36 +56,11 @@ public final class PathVerifierImpl implements PathVerifier
 	}
 
 	@Override
-	public PathVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new PathVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public PathVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new PathVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public PathVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new PathVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
 	public PathVerifier exists()
 	{
 		if (Files.exists(actual))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath())).
 			build();
 	}
@@ -101,13 +75,13 @@ public final class PathVerifierImpl implements PathVerifier
 		}
 		catch (NoSuchFileException e)
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath()), e).
 				build();
 		}
 		if (!attrs.isRegularFile())
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s must refer to a file.", name)).
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
@@ -125,13 +99,13 @@ public final class PathVerifierImpl implements PathVerifier
 		}
 		catch (NoSuchFileException e)
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath()), e).
 				build();
 		}
 		if (!attrs.isDirectory())
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s must refer to a directory.", name)).
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
@@ -144,7 +118,7 @@ public final class PathVerifierImpl implements PathVerifier
 	{
 		if (!actual.isAbsolute())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must refer to a relative path.", name)).
 			addContext("Actual", actual).
 			build();
@@ -155,7 +129,7 @@ public final class PathVerifierImpl implements PathVerifier
 	{
 		if (actual.isAbsolute())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must refer to an absolute path.", name)).
 			addContext("Actual", actual).
 			build();
@@ -240,5 +214,18 @@ public final class PathVerifierImpl implements PathVerifier
 	public Path getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public PathVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

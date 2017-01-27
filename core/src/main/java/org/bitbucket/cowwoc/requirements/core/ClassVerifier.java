@@ -12,8 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-public interface ClassVerifier<T>
-	extends ObjectVerifierExtension<ClassVerifier<T>, Class<T>>, Verifier<ClassVerifier<T>>
+public interface ClassVerifier<T> extends ObjectVerifierExtension<ClassVerifier<T>, Class<T>>
 {
 	/**
 	 * Ensures that the value is a superclass or super-interface of a class.

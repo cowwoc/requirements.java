@@ -6,8 +6,9 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.testng.annotations.Test;
 
 /**
@@ -30,60 +31,60 @@ public final class ObjectTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new RequirementVerifier(scope).requireThat(actual, null);
+			new CoreRequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new RequirementVerifier(scope).requireThat(actual, "");
+			new CoreRequirementVerifier(scope).requireThat(actual, "");
 		}
 	}
 
 	@Test
 	public void isEqualTo()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(actual);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(actual);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualTo_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo("expected");
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo("expected");
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualTo_sameToStringDifferentTypes()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "null";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(null);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualTo_sameToStringAndTypeDifferentHashCode()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(
 				new SameToStringDifferentHashCode());
 		}
 	}
@@ -91,57 +92,57 @@ public final class ObjectTest
 	@Test
 	public void isEqualTo_nullToNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(actual);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(actual);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualTo_nullToNotNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo("expected");
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo("expected");
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEqualTo_notNullToNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(null);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEqualTo(null);
 		}
 	}
 
 	@Test
 	public void isNotEqualTo()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNotEqualTo(new Object());
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNotEqualTo(new Object());
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNotEqualTo_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNotEqualTo(actual);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNotEqualTo(actual);
 		}
 	}
 
 	@Test
 	public void isInCollection()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
 
@@ -149,27 +150,29 @@ public final class ObjectTest
 			@SuppressWarnings("RedundantStringConstructorCall")
 			String equivalent = new String(actual);
 
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(Arrays.asList("first", equivalent, "third"));
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isIn(Arrays.asList("first",
+				equivalent, "third"));
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInCollection_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new RequirementVerifier(scope).requireThat(actual, "actual").isIn(Arrays.asList("first", "second", "third"));
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isIn(Arrays.asList("first",
+				"second", "third"));
 		}
 	}
 
 	@Test
 	public void isInstanceOf()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(Random.class).
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(Random.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -177,81 +180,82 @@ public final class ObjectTest
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInstanceOf_actualIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(Random.class);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(Random.class);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isInstanceOf_expectedIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(null);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isInstanceOf_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(String.class);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isInstanceOf(String.class);
 		}
 	}
 
 	@Test
 	public void isNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNull();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNull();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isNull_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNull();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNull();
 		}
 	}
 
 	@Test
 	public void isNotNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNotNull();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNotNull();
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void isNotNull_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").isNotNull();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isNotNull();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void isNotNull_CustomException()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new RequirementVerifier(scope).requireThat(actual, "actual").
-				withException(IllegalStateException.class).isNotNull();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+				configuration(c -> c.withException(IllegalStateException.class)).
+				isNotNull();
 		}
 	}
 
@@ -263,22 +267,23 @@ public final class ObjectTest
 	@Test
 	public void customExceptionRequirementSubclass()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 5;
-			new RequirementVerifier(scope).requireThat(actual, "actual").
-				withException(IllegalStateException.class).isNotNull();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+				configuration(c -> c.withException(IllegalStateException.class)).
+				isNotNull();
 		}
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Object actual = null;
-			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
+			new CoreAssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 }

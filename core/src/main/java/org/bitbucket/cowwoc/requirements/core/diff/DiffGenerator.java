@@ -12,7 +12,8 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.EQUAL
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.INSERT;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.NEWLINE_PATTERN;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 
 /**
  * Generates a diff of two Strings.
@@ -22,18 +23,18 @@ import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
 public final class DiffGenerator
 {
 	/**
-	 * The terminal type.
+	 * The terminal encoding.
 	 */
-	private final TerminalType terminal;
+	private final TerminalEncoding terminalEncoding;
 
 	/**
-	 * @param scope the system configuration
+	 * @param scope the application configuration
 	 * @throws AssertionError if {@code scope} is null
 	 */
-	public DiffGenerator(SingletonScope scope)
+	public DiffGenerator(ApplicationScope scope)
 	{
 		assert (scope != null): "scope may not be null";
-		this.terminal = scope.getTerminal().getType();
+		this.terminalEncoding = scope.getTerminalEncoding();
 	}
 
 	/**
@@ -41,9 +42,8 @@ public final class DiffGenerator
 	 * <p>
 	 * NOTE: Colors are disabled when stdin or stdout are redirected. To override this behavior, set
 	 * the system property "org.bitbucket.cowwoc.requirements.terminal" to any value found in
-	 * {@link TerminalType} (e.g. XTERM).
-	 * NOTE: the system property is only read once. Changing its value will not affect the terminal
-	 * type used by subsequent invocations.
+	 * {@link TerminalEncoding} (e.g. XTERM). NOTE: the system property is only read once. Changing
+	 * its value will not affect the terminal type used by subsequent invocations.
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
@@ -70,7 +70,7 @@ public final class DiffGenerator
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
-		DiffWriter writer = terminal.diff(actual, expected);
+		DiffWriter writer = terminalEncoding.diff(actual, expected);
 		for (Diff component: components)
 		{
 			switch (component.operation)

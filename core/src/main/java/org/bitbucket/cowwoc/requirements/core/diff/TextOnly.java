@@ -164,7 +164,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Strings;
  *
  * @author Gili Tzabari
  */
-final class TextOnly extends AbstractDiffWriter
+public final class TextOnly extends AbstractDiffWriter
 {
 	/**
 	 * A padding character used to align values vertically.
@@ -181,7 +181,7 @@ final class TextOnly extends AbstractDiffWriter
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	TextOnly(String actual, String expected)
+	public TextOnly(String actual, String expected)
 	{
 		super(actual, expected, PADDING_MARKER);
 		this.middleLine = new StringBuilder(LINE_LENGTH);

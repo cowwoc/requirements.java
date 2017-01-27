@@ -11,7 +11,8 @@ import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtens
  *
  * @author Gili Tzabari
  */
+@SuppressWarnings("MarkerInterface")
 public interface ContainerSizeVerifier
-	extends PrimitiveIntegerVerifierExtension<ContainerSizeVerifier>, Verifier<ContainerSizeVerifier>
+	extends PrimitiveIntegerVerifierExtension<ContainerSizeVerifier>
 {
 }

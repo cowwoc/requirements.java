@@ -5,12 +5,11 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -22,22 +21,16 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	implements ComparableVerifier<T>
 {
-	@Override
-	public ComparableVerifier<T> withException(Class<? extends RuntimeException> exception)
-	{
-		return this;
-	}
+	private final Configuration config;
 
-	@Override
-	public ComparableVerifier<T> addContext(String key, Object value)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpComparableVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public ComparableVerifier<T> withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -145,7 +138,7 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -164,5 +157,17 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ComparableVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

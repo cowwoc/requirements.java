@@ -12,7 +12,8 @@ import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
+@SuppressWarnings("MarkerInterface")
 public interface NumberVerifier<T extends Number & Comparable<? super T>>
-	extends NumberVerifierExtension<NumberVerifier<T>, T>, Verifier<NumberVerifier<T>>
+	extends NumberVerifierExtension<NumberVerifier<T>, T>
 {
 }

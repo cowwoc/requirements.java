@@ -4,15 +4,18 @@
  */
 package org.bitbucket.cowwoc.requirements.core.diff;
 
-import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.DIFF_EQUAL;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.DIFF_INSERT;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.core.diff.TextOnly.PADDING_MARKER;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_256COLOR;
 import org.bitbucket.cowwoc.requirements.core.util.Strings;
 import org.testng.annotations.Test;
 
@@ -24,11 +27,11 @@ public final class DiffTest
 	@Test
 	public void diffArraySize()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -37,22 +40,23 @@ public final class DiffTest
 				"Diff    : " + Strings.repeat(DIFF_EQUAL, 4) + DIFF_DELETE + DIFF_INSERT +
 				DIFF_EQUAL + "\n" +
 				"Expected: int[ 5]";
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
 	@Test
 	public void diffArraySize_XTerm_16Color()
 	{
-		try (SingletonScope scope = new TestSingletonScope(TerminalType.XTERM_16COLOR))
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_16COLOR))
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
-			XTerm16Color scheme = new XTerm16Color("actual", "expected");
+			Xterm16Color scheme = new Xterm16Color("actual", "expected");
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
@@ -67,15 +71,15 @@ public final class DiffTest
 	@Test
 	public void diffArraySize_XTerm_256Color()
 	{
-		try (SingletonScope scope = new TestSingletonScope(TerminalType.XTERM_256COLOR))
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_256COLOR))
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
-			XTerm256Color scheme = new XTerm256Color("actual", "expected");
+			Xterm256Color scheme = new Xterm256Color("actual", "expected");
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
@@ -90,11 +94,11 @@ public final class DiffTest
 	@Test
 	public void diffInsertThenDelete()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
 			String expected = "expected";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -103,18 +107,19 @@ public final class DiffTest
 				"Diff    : " + Strings.repeat(DIFF_DELETE, "actual".length()) +
 				Strings.repeat(DIFF_INSERT, "expected".length()) + "\n" +
 				"Expected:       expected";
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
 	@Test
 	public void diffMissingWhitespace()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -122,18 +127,19 @@ public final class DiffTest
 			String expectedMessage = "Actual  : \"key\": \"value \"\n" +
 				"Diff    : " + Strings.repeat(DIFF_EQUAL, 13) + DIFF_DELETE + DIFF_EQUAL + "\n" +
 				"Expected: \"key\": \"value \"";
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
 	@Test
 	public void diffNewlinePrefix()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "\nactual";
 			String expected = "expected";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -149,18 +155,19 @@ public final class DiffTest
 				Strings.repeat(DIFF_EQUAL, EOS_MARKER.length()) + "\n" +
 				"Expected@1: " + Strings.repeat(PADDING_MARKER, "actual".length()) + "expected" +
 				EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
 	@Test
 	public void diffNewlinePostfix()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual\n";
 			String expected = "expected";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -175,18 +182,19 @@ public final class DiffTest
 				"Diff      : " + Strings.repeat(DIFF_INSERT, "expected".length()) +
 				Strings.repeat(DIFF_EQUAL, EOS_MARKER.length()) + "\n" +
 				"Expected@1: expected" + EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
 	@Test
 	public void matchAcrossLines()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "\n\nvalue";
 			String expected = "value";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -202,18 +210,19 @@ public final class DiffTest
 				"Actual@3  : value" + EOS_MARKER + "\n" +
 				"Diff      : " + Strings.repeat(DIFF_EQUAL, "value".length() + EOS_MARKER.length()) + "\n" +
 				"Expected@1: value" + EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
 	@Test
 	public void skipDuplicateLinesTest()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -234,7 +243,8 @@ public final class DiffTest
 				"Actual@5  : 5\\0\n" +
 				"Diff      : " + Strings.repeat(DIFF_EQUAL, "5".length() + EOS_MARKER.length()) + "\n" +
 				"Expected@5: 5\\0";
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
@@ -244,11 +254,11 @@ public final class DiffTest
 	@Test
 	public void charlesTest()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
-			new UnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -258,7 +268,8 @@ public final class DiffTest
 				"Diff    : ====   ^^^====  ^===\n" +
 				"Expected: The " + Strings.repeat(PADDING_MARKER, "dog".length()) + "fox is " +
 				Strings.repeat(DIFF_DELETE, "br".length()) + "down";
-			assert (actualMessage.contains(expectedMessage)): actualMessage;
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
 		}
 	}
 
@@ -276,5 +287,16 @@ public final class DiffTest
 
 		result = AbstractDiffWriter.lastConsecutiveIndexOf("      ", " ");
 		assert (result == 0): result;
+	}
+
+	/**
+	 * BUG: If the length of target was less than or equal to the return value, the method would
+	 * return zero which is incorrect.
+	 */
+	@Test
+	public void lastConsecutiveIndexOf_resultLessThanOrEqualToLengthOfTarget()
+	{
+		int result = AbstractDiffWriter.lastConsecutiveIndexOf("1 ", " ");
+		assert (result == 1): result;
 	}
 }

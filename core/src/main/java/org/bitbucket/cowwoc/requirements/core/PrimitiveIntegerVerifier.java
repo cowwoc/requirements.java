@@ -11,8 +11,8 @@ import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtens
  *
  * @author Gili Tzabari
  */
+@SuppressWarnings("MarkerInterface")
 public interface PrimitiveIntegerVerifier
-	extends PrimitiveIntegerVerifierExtension<PrimitiveIntegerVerifier>,
-	Verifier<PrimitiveIntegerVerifier>
+	extends PrimitiveIntegerVerifierExtension<PrimitiveIntegerVerifier>
 {
 }

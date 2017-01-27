@@ -6,14 +6,13 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -21,32 +20,24 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  *
  * @author Gili Tzabari
  */
-public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
+public final class NoOpBigDecimalVerifier implements BigDecimalVerifier
 {
-	INSTANCE;
+	private final Configuration config;
 
-	@Override
-	public BigDecimalVerifier withException(Class<? extends RuntimeException> exception)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpBigDecimalVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
 	public BigDecimalPrecisionVerifier precision()
 	{
-		return NoOpBigDecimalPrecisionVerifier.INSTANCE;
+		return new NoOpBigDecimalPrecisionVerifier(config);
 	}
 
 	@Override
@@ -58,7 +49,7 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	@Override
 	public BigDecimalScaleVerifier scale()
 	{
-		return NoOpBigDecimalScaleVerifier.INSTANCE;
+		return new NoOpBigDecimalScaleVerifier(config);
 	}
 
 	@Override
@@ -208,7 +199,7 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -227,5 +218,17 @@ public enum NoOpBigDecimalVerifier implements BigDecimalVerifier
 	public BigDecimal getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public BigDecimalVerifier configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

@@ -5,11 +5,10 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -21,26 +20,16 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  */
 public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>
 {
-	public NoOpObjectVerifier()
-	{
-	}
+	private final Configuration config;
 
-	@Override
-	public ObjectVerifier<T> withException(Class<? extends RuntimeException> exception)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpObjectVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public ObjectVerifier<T> addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public ObjectVerifier<T> withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -94,7 +83,7 @@ public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -113,5 +102,17 @@ public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ObjectVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

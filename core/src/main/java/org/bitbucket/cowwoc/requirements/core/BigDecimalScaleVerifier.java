@@ -12,8 +12,8 @@ import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtens
  *
  * @author Gili Tzabari
  */
+@SuppressWarnings("MarkerInterface")
 public interface BigDecimalScaleVerifier
-	extends PrimitiveIntegerVerifierExtension<BigDecimalScaleVerifier>,
-	Verifier<BigDecimalScaleVerifier>
+	extends PrimitiveIntegerVerifierExtension<BigDecimalScaleVerifier>
 {
 }

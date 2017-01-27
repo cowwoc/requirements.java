@@ -5,11 +5,10 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -21,26 +20,18 @@ import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
  *
  * @author Gili Tzabari
  */
-public enum NoOpStringVerifier implements StringVerifier
+public final class NoOpStringVerifier implements StringVerifier
 {
-	INSTANCE;
+	private final Configuration config;
 
-	@Override
-	public StringVerifier withException(Class<? extends RuntimeException> exception)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpStringVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public StringVerifier addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public StringVerifier withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -64,7 +55,7 @@ public enum NoOpStringVerifier implements StringVerifier
 	@Override
 	public InetAddressVerifier asInetAddress()
 	{
-		return NoOpInetAddressVerifier.INSTANCE;
+		return new NoOpInetAddressVerifier(config);
 	}
 
 	@Override
@@ -76,7 +67,7 @@ public enum NoOpStringVerifier implements StringVerifier
 	@Override
 	public UriVerifier asUri()
 	{
-		return NoOpUriVerifier.INSTANCE;
+		return new NoOpUriVerifier(config);
 	}
 
 	@Override
@@ -160,7 +151,7 @@ public enum NoOpStringVerifier implements StringVerifier
 	@Override
 	public ContainerSizeVerifier length()
 	{
-		return NoOpContainerSizeVerifier.INSTANCE;
+		return new NoOpContainerSizeVerifier(config);
 	}
 
 	@Override
@@ -192,5 +183,17 @@ public enum NoOpStringVerifier implements StringVerifier
 	public String getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public StringVerifier configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

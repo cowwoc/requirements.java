@@ -5,10 +5,11 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
- * This convenience class constructs a {@link UnifiedVerifier} with the default configuration.
+ * This convenience class constructs a {@link CoreUnifiedVerifier} with the default configuration.
  * This class' assertion status determines whether {@code assertThat()} carries out a verification
  * or does nothing.
  *
@@ -19,15 +20,16 @@ import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
 	{
 		"AssertWithSideEffects", "NestedAssignment"
 	})
-public final class Requirements
+public final class GuavaRequirements
 {
-	private static final UnifiedVerifier DELEGATE;
+	private static final GuavaUnifiedVerifier DELEGATE;
 
 	static
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		DELEGATE = new UnifiedVerifier(new TestSingletonScope(), assertionsEnabled);
+		DELEGATE = new GuavaUnifiedVerifier(MainApplicationScope.INSTANCE,
+			MainApplicationScope.INSTANCE.getDefaultConfiguration(), assertionsEnabled);
 	}
 
 	/**
@@ -55,8 +57,8 @@ public final class Requirements
 	}
 
 	/**
-	 * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are disabled for this
-	 * class.
+	 * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are disabled for
+	 * this class.
 	 *
 	 * @param <K>    the type of key in the multimap
 	 * @param <V>    the type of value in the multimap
@@ -74,7 +76,7 @@ public final class Requirements
 	/**
 	 * Prevent construction.
 	 */
-	private Requirements()
+	private GuavaRequirements()
 	{
 	}
 }

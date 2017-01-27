@@ -8,19 +8,18 @@ import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.POSTFIX;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.PREFIX;
 
 /**
- * An xterm terminal that supports a 256-color palette.
+ * A terminal that supports a 24-bit color palette.
  *
+ * @see <a href="https://gist.github.com/XVilka/8346728">https://gist.github.com/XVilka/8346728</a>
  * @author Gili Tzabari
  */
-final class XTerm256Color extends AbstractXterm
+public final class Rgb888Color extends AbstractXterm
 {
-	// OSX 10.9 renders color 15 as light gray while others render it as white. Codes 16-231 seem to
-	// be more portable.
-	private static final String WHITE_FOREGROUND = "38;5;231";
-	private static final String GRAY_FOREGROUND = "38;5;250";
-	private static final String GREEN_BACKGROUND = "48;5;28";
-	private static final String RED_BACKGROUND = "48;5;124";
-	private static final String GRAY_BACKGROUND = "48;5;244";
+	private static final String WHITE_FOREGROUND = "38;2;255;255;255";
+	private static final String GRAY_FOREGROUND = "38;2;188;188;188";
+	private static final String GREEN_BACKGROUND = "48;2;0;135;0";
+	private static final String RED_BACKGROUND = "48;2;175;0;0";
+	private static final String GRAY_BACKGROUND = "48;2;66;66;66";
 
 	/**
 	 * Creates a new instance.
@@ -29,7 +28,7 @@ final class XTerm256Color extends AbstractXterm
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	XTerm256Color(String actual, String expected)
+	public Rgb888Color(String actual, String expected)
 	{
 		super(actual, expected);
 	}

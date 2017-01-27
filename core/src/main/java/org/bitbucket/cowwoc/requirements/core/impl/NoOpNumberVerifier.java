@@ -5,11 +5,10 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -22,29 +21,16 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	implements NumberVerifier<T>
 {
+	private final Configuration config;
+
 	/**
-	 * Creates a new NoOpNumberVerifier.
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
 	 */
-	public NoOpNumberVerifier()
+	public NoOpNumberVerifier(Configuration config)
 	{
-	}
-
-	@Override
-	public NumberVerifier<T> withException(Class<? extends RuntimeException> exception)
-	{
-		return this;
-	}
-
-	@Override
-	public NumberVerifier<T> addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public NumberVerifier<T> withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -188,7 +174,7 @@ public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -207,5 +193,17 @@ public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public NumberVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

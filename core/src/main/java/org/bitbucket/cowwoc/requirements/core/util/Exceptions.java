@@ -10,7 +10,7 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.util.Arrays;
 import java.util.function.Predicate;
-import org.bitbucket.cowwoc.requirements.core.Requirements;
+import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 
 /**
  * Exception helper functions.
@@ -23,7 +23,7 @@ public final class Exceptions
 	/**
 	 * Name of boolean system property that, if set to true, prevents stack-traces from being trimmed.
 	 */
-	private static final String SHOW_FULL_STACKTRACE = Requirements.class.getPackage().getName() +
+	private static final String SHOW_FULL_STACKTRACE = CoreRequirements.class.getPackage().getName() +
 		".showFullStackTrace";
 
 	/**
@@ -76,7 +76,7 @@ public final class Exceptions
 	{
 		filterStacktrace(throwable, name ->
 		{
-			return name.startsWith(Requirements.class.getPackage().getName()) && !name.endsWith("Test");
+			return name.startsWith(CoreRequirements.class.getPackage().getName()) && !name.endsWith("Test");
 		});
 	}
 

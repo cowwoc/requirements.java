@@ -5,12 +5,11 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -20,32 +19,16 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  */
 public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisionVerifier
 {
-	public static final NoOpBigDecimalPrecisionVerifier INSTANCE
-		= new NoOpBigDecimalPrecisionVerifier();
+	private final Configuration config;
 
 	/**
-	 * Prevent construction.
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
 	 */
-	private NoOpBigDecimalPrecisionVerifier()
+	public NoOpBigDecimalPrecisionVerifier(Configuration config)
 	{
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		return this;
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Deprecated
@@ -193,7 +176,7 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -212,5 +195,17 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	public Integer getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public BigDecimalPrecisionVerifier configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

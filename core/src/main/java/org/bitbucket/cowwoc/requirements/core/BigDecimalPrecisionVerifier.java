@@ -13,8 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtens
  * @author Gili Tzabari
  */
 public interface BigDecimalPrecisionVerifier
-	extends PrimitiveIntegerVerifierExtension<BigDecimalPrecisionVerifier>,
-	Verifier<BigDecimalPrecisionVerifier>
+	extends PrimitiveIntegerVerifierExtension<BigDecimalPrecisionVerifier>
 {
 	/**
 	 * {@inheritDoc}

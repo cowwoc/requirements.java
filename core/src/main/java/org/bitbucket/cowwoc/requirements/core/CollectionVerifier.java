@@ -15,8 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface CollectionVerifier<E>
-	extends ObjectVerifierExtension<CollectionVerifier<E>, Collection<E>>,
-	Verifier<CollectionVerifier<E>>
+	extends ObjectVerifierExtension<CollectionVerifier<E>, Collection<E>>
 {
 	/**
 	 * Ensures that the actual value is empty.
@@ -56,18 +55,21 @@ public interface CollectionVerifier<E>
 	CollectionVerifier<E> contains(E expected, String name);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing
+	 * more.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection is missing any elements in {@code expected};
-	 *                                  if the collection contains elements not found in {@code expected}
+	 *                                  if the collection contains elements not found in
+	 *                                  {@code expected}
 	 */
 	CollectionVerifier<E> containsExactly(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing
+	 * more.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements

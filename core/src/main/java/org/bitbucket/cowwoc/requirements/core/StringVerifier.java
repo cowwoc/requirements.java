@@ -13,12 +13,12 @@ import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
  * @author Gili Tzabari
  */
 public interface StringVerifier
-	extends StringBasedExtension<StringVerifier, String>, Verifier<StringVerifier>
+	extends StringBasedExtension<StringVerifier, String>
 {
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.
 	 *
-	 * @return a verifier with the actual value trimmed
+	 * @return this
 	 */
 	StringVerifier trim();
 
@@ -63,13 +63,12 @@ public interface StringVerifier
 	 * Technically-speaking, there is no such thing as an invalid URI format. Per
 	 * <a href="https://tools.ietf.org/html/rfc3986#appendix-A">RFC3986</a>, any String can be
 	 * represented as a relative URI, but Java's implementation is based on an
-	 * <a href="https://tools.ietf.org/html/rfc2396">older specification</a> where this was not
-	 * the case.
+	 * <a href="https://tools.ietf.org/html/rfc2396">older specification</a> where this was not the
+	 * case.
 	 *
 	 * @return a verifier for the URI representation of the value
 	 * @throws IllegalArgumentException if the actual value cannot be converted to a Java URI
-	 * @see <a href="http://stackoverflow.com/a/27644491/14731">Discussion of Java URI vs
-	 * RFC3986</a>
+	 * @see <a href="http://stackoverflow.com/a/27644491/14731">Discussion of Java URI vs RFC3986</a>
 	 */
 	UriVerifier asUri();
 

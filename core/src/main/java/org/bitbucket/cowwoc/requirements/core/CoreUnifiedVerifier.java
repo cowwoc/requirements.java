@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Gili Tzabari.
+ * Copyright 2016 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.core;
@@ -11,64 +11,129 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.ext.Configurable;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
- * This convenience class constructs a {@link UnifiedVerifier} with the default configuration.
- * This class' assertion state determines whether {@code assertThat()} carries out a verification
- * or does nothing.
+ * Combines the functionality of {@link CoreRequirementVerifier} and {@link CoreAssertionVerifier}
+ * into a single class.
+ * <p>
+ * Unlike {@link CoreRequirements}, instances of this class can be configured prior to initiating
+ * verification. Doing so causes the same configuration to get reused across runs.
  *
  * @author Gili Tzabari
  */
-@SuppressWarnings(
-	{
-		"AssertWithSideEffects", "NestedAssignment"
-	})
-public final class Requirements
+public final class CoreUnifiedVerifier implements Configurable<CoreUnifiedVerifier>
+
 {
-	private static final UnifiedVerifier DELEGATE;
-
-	static
-	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		DELEGATE = new UnifiedVerifier(assertionsEnabled);
-	}
-
 	/**
 	 * @return true if assertions are enabled for this class
 	 */
-	public static boolean assertionsAreEnabled()
+	@SuppressWarnings(
+		{
+			"AssertWithSideEffects", "NestedAssignment"
+		})
+	public static boolean classAssertionsAreEnabled()
 	{
-		return DELEGATE.assertionsAreEnabled();
+		boolean assertionsEnabled = false;
+		assert (assertionsEnabled = true);
+		return assertionsEnabled;
+	}
+	private final Configuration config;
+	private final CoreAssertionVerifier assertions;
+	private final CoreRequirementVerifier requirements;
+
+	/**
+	 * Creates a new verifier.
+	 * <p>
+	 *
+	 * @param scope             the application configuration
+	 * @param config            the instance configuration
+	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
+	 * @throws AssertionError if any of the arguments are null
+	 */
+	public CoreUnifiedVerifier(ApplicationScope scope, Configuration config, boolean assertionsEnabled)
+	{
+		this.config = config;
+		this.assertions = new CoreAssertionVerifier(scope, assertionsEnabled, config);
+		this.requirements = new CoreRequirementVerifier(scope, config);
+	}
+
+	/**
+	 * Equivalent to
+	 * {@link #CoreUnifiedVerifier(ApplicationScope, Configuration, boolean) this(scope, scope.getDefaultConfiguration(), assertionsEnabled)}.
+	 * <p>
+	 *
+	 * @param scope             the application configuration
+	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
+	 * @throws AssertionError if any of the arguments are null
+	 */
+	public CoreUnifiedVerifier(ApplicationScope scope, boolean assertionsEnabled)
+	{
+		this(scope, scope.getDefaultConfiguration(), assertionsEnabled);
+	}
+
+	/**
+	 * Creates a new verifier.
+	 *
+	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
+	 */
+	public CoreUnifiedVerifier(boolean assertionsEnabled)
+	{
+		this(MainApplicationScope.INSTANCE, MainApplicationScope.INSTANCE.getDefaultConfiguration(),
+			assertionsEnabled);
+	}
+
+	/**
+	 * Creates a new verifier.
+	 * <p>
+	 * This class' assertion state determines whether {@code assertThat()} carries out a verification
+	 * or does nothing.
+	 */
+	public CoreUnifiedVerifier()
+	{
+		this(classAssertionsAreEnabled());
+	}
+
+	/**
+	 * @return true if {@code assertThat()} carries out a verification
+	 */
+	public boolean assertionsAreEnabled()
+	{
+		return assertions.isEnabled();
 	}
 
 	/**
 	 * Verifies an {@code Object}.
 	 *
+	 * @param <T>    the type of the value
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static ObjectVerifier<Object> requireThat(Object actual, String name)
+	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
 	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
+	 * @param <T>    the type of the value
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static ObjectVerifier<Object> assertThat(Object actual, String name)
+	public <T> ObjectVerifier<T> assertThat(T actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -81,9 +146,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
+	public <E> CollectionVerifier<E> requireThat(Collection<E> actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -97,9 +162,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <E> CollectionVerifier<E> assertThat(Collection<E> actual, String name)
+	public <E> CollectionVerifier<E> assertThat(Collection<E> actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -109,28 +174,27 @@ public final class Requirements
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <E> ArrayVerifier<E> requireThat(E[] actual, String name)
+	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
-	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled
-	 * for this class.
+	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param <E>    the type of elements in the array
+	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
 	 */
-	public static <E> ArrayVerifier<E> assertThat(E[] actual, String name)
+	public <E> ArrayVerifier<E> assertThat(E[] actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -143,10 +207,10 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
+	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
 		String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -160,10 +224,10 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual,
+	public <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual,
 		String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -176,10 +240,10 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(
-		T actual, String name)
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual,
+		String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -193,10 +257,10 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(
-		T actual, String name)
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual,
+		String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -208,9 +272,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static DoubleVerifier requireThat(Double actual, String name)
+	public DoubleVerifier requireThat(Double actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -223,9 +287,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static DoubleVerifier assertThat(Double actual, String name)
+	public DoubleVerifier assertThat(Double actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -237,9 +301,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static BigDecimalVerifier requireThat(BigDecimal actual, String name)
+	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -252,9 +316,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static BigDecimalVerifier assertThat(BigDecimal actual, String name)
+	public BigDecimalVerifier assertThat(BigDecimal actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -268,9 +332,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
+	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -285,9 +349,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name)
+	public <K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -299,9 +363,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PathVerifier requireThat(Path actual, String name)
+	public PathVerifier requireThat(Path actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -314,9 +378,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PathVerifier assertThat(Path actual, String name)
+	public PathVerifier assertThat(Path actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -328,9 +392,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static StringVerifier requireThat(String actual, String name)
+	public StringVerifier requireThat(String actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -343,9 +407,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static StringVerifier assertThat(String actual, String name)
+	public StringVerifier assertThat(String actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -357,9 +421,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static UriVerifier requireThat(URI actual, String name)
+	public UriVerifier requireThat(URI actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -372,9 +436,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static UriVerifier assertThat(URI actual, String name)
+	public UriVerifier assertThat(URI actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
@@ -387,9 +451,9 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
+	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -403,23 +467,23 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T> ClassVerifier<T> assertThat(Class<T> actual, String name)
+	public <T> ClassVerifier<T> assertThat(Class<T> actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
 	 * Verifies an {@code Optional}.
 	 *
-	 * @param actual the actual value
+	 * @param actual the actual value of the value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static OptionalVerifier requireThat(Optional<?> actual, String name)
+	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -432,23 +496,23 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static OptionalVerifier assertThat(Optional<?> actual, String name)
+	public OptionalVerifier assertThat(Optional<?> actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
 	/**
 	 * Verifies an {@code InetAddress}.
 	 *
-	 * @param actual the actual value
+	 * @param actual the actual value of the value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static InetAddressVerifier requireThat(InetAddress actual, String name)
+	public InetAddressVerifier requireThat(InetAddress actual, String name)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return requirements.requireThat(actual, name);
 	}
 
 	/**
@@ -461,15 +525,21 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static InetAddressVerifier assertThat(InetAddress actual, String name)
+	public InetAddressVerifier assertThat(InetAddress actual, String name)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return assertions.requireThat(actual, name);
 	}
 
-	/**
-	 * Prevent construction.
-	 */
-	private Requirements()
+	@Override
+	public Configuration configuration()
 	{
+		return config;
+	}
+
+	@Override
+	public CoreUnifiedVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

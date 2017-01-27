@@ -7,15 +7,15 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of {@code ArrayVerifier}.
@@ -36,7 +36,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 			return null;
 		return Arrays.asList(array);
 	}
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final E[] actual;
 	private final String name;
 	private final Configuration config;
@@ -45,13 +45,13 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	/**
 	 * Creates new ArrayVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public ArrayVerifierImpl(SingletonScope scope, E[] actual, String name, Configuration config)
+	public ArrayVerifierImpl(ApplicationScope scope, E[] actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -62,31 +62,6 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		this.config = config;
 		this.asCollection = new CollectionVerifierImpl<>(scope, asList(actual), name,
 			Pluralizer.ELEMENT, config);
-	}
-
-	@Override
-	public ArrayVerifier<E> withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new ArrayVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public ArrayVerifier<E> addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new ArrayVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public ArrayVerifier<E> withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new ArrayVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -124,7 +99,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		if (collection.contains(actual))
 			return this;
 
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
 			addContext("Actual", Arrays.toString(actual)).
 			build();
@@ -317,10 +292,22 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public E[] getActual()
 	{
-		if (actual == null)
-			return null;
-		return Arrays.copyOf(actual, actual.length);
+		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ArrayVerifier<E> configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

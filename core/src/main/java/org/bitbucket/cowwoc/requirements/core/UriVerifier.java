@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface UriVerifier
-	extends ObjectVerifierExtension<UriVerifier, URI>, Verifier<UriVerifier>
+	extends ObjectVerifierExtension<UriVerifier, URI>
 {
 	/**
 	 * Ensures that the actual value is absolute.

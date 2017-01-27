@@ -5,15 +5,14 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.DoubleVerifier;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of DoubleVerifier.
@@ -22,7 +21,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class DoubleVerifierImpl implements DoubleVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final Double actual;
 	private final String name;
 	private final Configuration config;
@@ -31,14 +30,14 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	/**
 	 * Creates new DoubleVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public DoubleVerifierImpl(SingletonScope scope, Double actual, String name, Configuration config)
+	public DoubleVerifierImpl(ApplicationScope scope, Double actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -48,31 +47,6 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 		this.name = name;
 		this.config = config;
 		this.asNumber = new NumberVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public DoubleVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new DoubleVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public DoubleVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new DoubleVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public DoubleVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new DoubleVerifierImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -241,7 +215,7 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	{
 		if (!actual.isNaN())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be a number.", name)).
 			addContext("Actual", actual).
 			build();
@@ -252,7 +226,7 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	{
 		if (actual.isNaN())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be a number.", name)).
 			addContext("Actual", actual).
 			build();
@@ -263,7 +237,7 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	{
 		if (!actual.isInfinite())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be finite.", name)).
 			addContext("Actual", actual).
 			build();
@@ -274,7 +248,7 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	{
 		if (actual.isInfinite())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be infinite.", name)).
 			addContext("Actual", actual).
 			build();
@@ -303,5 +277,18 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	public Double getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public DoubleVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

@@ -12,12 +12,13 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.core.CoreRequirements.requireThat;
+import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.guava.GuavaRequirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.guava.GuavaRequirements.requireThat;
 import org.testng.annotations.Test;
 
 public final class UsageTest
@@ -44,16 +45,17 @@ public final class UsageTest
 	@Test
 	public void withContext()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Duration duration = Duration.ofDays(1);
 			Set<Duration> bucket = Collections.emptySet();
 
-			UnifiedVerifier verifier = new UnifiedVerifier(scope, true);
+			CoreUnifiedVerifier verifier = new CoreUnifiedVerifier(scope, true);
 			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{
-				verifier.requireThat(bucket, "bucket").addContext("MyKey", "SomeContext").
+				verifier.requireThat(bucket, "bucket").
+					configuration(c -> c.addContext("MyKey", "SomeContext")).
 					contains(duration);
 			}
 			catch (IllegalArgumentException e)

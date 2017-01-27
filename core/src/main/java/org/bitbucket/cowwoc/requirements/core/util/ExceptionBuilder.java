@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.StringJoiner;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 
 /**
  * Builds an exception.
@@ -17,6 +18,20 @@ import java.util.StringJoiner;
  */
 public final class ExceptionBuilder
 {
+	/**
+	 * Checks if the configuration overrides the type of exception that should be thrown.
+	 *
+	 * @param type          the default type of exception to throw
+	 * @param configuration the verifier's configuration
+	 * @return the type of exception to throw
+	 */
+	private static Class<? extends RuntimeException> getExceptionType(Configuration configuration,
+		Class<? extends RuntimeException> type)
+	{
+		if (configuration == null)
+			throw new NullPointerException("configuration may not be null");
+		return configuration.getException().orElse(type);
+	}
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final List<Entry<String, Object>> contextPostfix;
@@ -36,7 +51,7 @@ public final class ExceptionBuilder
 	 * @throws NullPointerException if {@code type}, {@code message} or {@code contextPostfix} are
 	 *                              null
 	 */
-	public ExceptionBuilder(Class<? extends RuntimeException> type, String message,
+	private ExceptionBuilder(Class<? extends RuntimeException> type, String message,
 		Throwable cause, List<Entry<String, Object>> contextPostfix)
 	{
 		if (type == null)
@@ -50,6 +65,37 @@ public final class ExceptionBuilder
 		this.message = message;
 		this.cause = cause;
 		this.contextPostfix = contextPostfix;
+	}
+
+	/**
+	 * Equivalent to
+	 * {@link #ExceptionBuilder(Class, String, Throwable, List) ExceptionBuilder(configuration.getException().orElse(type), message, cause, config.getContext())}.
+	 *
+	 * @param configuration a verifier's configuration
+	 * @param type          the type of the exception
+	 * @param message       the exception message
+	 * @param cause         the underlying cause of the exception ({@code null} if absent)
+	 * @throws NullPointerException if {@code configuration}, {@code type} or message are null
+	 */
+	public ExceptionBuilder(Configuration configuration, Class<? extends RuntimeException> type,
+		String message, Throwable cause)
+	{
+		this(getExceptionType(configuration, type), message, cause, configuration.getContext());
+	}
+
+	/**
+	 * Equivalent to
+	 * {@link #ExceptionBuilder(Configuration, String, Throwable, List) ExceptionBuilder(configuration, message, null)}.
+	 *
+	 * @param configuration a verifier's configuration
+	 * @param type          the type of the exception
+	 * @param message       the exception message
+	 * @throws NullPointerException if {@code configuration}, {@code type} or message are null
+	 */
+	public ExceptionBuilder(Configuration configuration, Class<? extends RuntimeException> type,
+		String message)
+	{
+		this(configuration, type, message, null);
 	}
 
 	/**

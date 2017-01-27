@@ -6,15 +6,14 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of UriVerifier.
@@ -23,7 +22,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class UriVerifierImpl implements UriVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final URI actual;
 	private final String name;
 	private final Configuration config;
@@ -32,14 +31,14 @@ public final class UriVerifierImpl implements UriVerifier
 	/**
 	 * Creates new UriVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public UriVerifierImpl(SingletonScope scope, URI actual, String name, Configuration config)
+	public UriVerifierImpl(ApplicationScope scope, URI actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -52,36 +51,11 @@ public final class UriVerifierImpl implements UriVerifier
 	}
 
 	@Override
-	public UriVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new UriVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public UriVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new UriVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public UriVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new UriVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
 	public UriVerifier isAbsolute()
 	{
 		if (actual.isAbsolute())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be absolute.", name)).
 			addContext("Actual", actual).
 			build();
@@ -166,5 +140,18 @@ public final class UriVerifierImpl implements UriVerifier
 	public URI getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public UriVerifierImpl configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

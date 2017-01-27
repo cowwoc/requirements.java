@@ -15,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface ArrayVerifier<E>
-	extends ObjectVerifierExtension<ArrayVerifier<E>, E[]>, Verifier<ArrayVerifier<E>>
+	extends ObjectVerifierExtension<ArrayVerifier<E>, E[]>
 {
 	/**
 	 * Ensures that the array is empty.
@@ -170,8 +170,8 @@ public interface ArrayVerifier<E>
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains any of {@code elements}; if
-	 *                                  {@code name} is empty
+	 * @throws IllegalArgumentException if the array contains any of {@code elements}; if {@code name}
+	 *                                  is empty
 	 */
 	ArrayVerifier<E> doesNotContainAny(Collection<E> elements, String name)
 		throws NullPointerException, IllegalArgumentException;
@@ -194,8 +194,8 @@ public interface ArrayVerifier<E>
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains all of {@code elements}; if
-	 *                                  {@code name} is empty
+	 * @throws IllegalArgumentException if the array contains all of {@code elements}; if {@code name}
+	 *                                  is empty
 	 */
 	ArrayVerifier<E> doesNotContainAll(Collection<E> elements, String name)
 		throws NullPointerException, IllegalArgumentException;

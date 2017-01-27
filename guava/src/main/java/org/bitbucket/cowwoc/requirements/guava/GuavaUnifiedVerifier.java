@@ -5,47 +5,52 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import java.util.List;
-import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.ext.Configurable;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
- * An abstract class used to hide test methods from end-users.
+ * Combines the functionality of {@link GuavaRequirementVerifier} and {@link GuavaAssertionVerifier}
+ * into a single class.
+ * <p>
+ * Unlike {@link GuavaRequirements}, instances of this class can be configured prior to initiating
+ * verification. Doing so causes the same configuration to get reused across runs.
  *
  * @since 3.0.0
  * @author Gili Tzabari
  */
-abstract class AbstractUnifiedVerifier
+public final class GuavaUnifiedVerifier implements Configurable<GuavaUnifiedVerifier>
 {
-	private final SingletonScope scope;
 	private final Configuration config;
-	private final AssertionVerifier assertions;
-	private final RequirementVerifier requirements;
+	private final GuavaAssertionVerifier assertions;
+	private final GuavaRequirementVerifier requirements;
 
 	/**
-	 * @param scope             the system configuration
+	 * @param scope             the application configuration
 	 * @param config            the instance configuration
 	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	AbstractUnifiedVerifier(SingletonScope scope, Configuration config, boolean assertionsEnabled)
+	GuavaUnifiedVerifier(ApplicationScope scope, Configuration config, boolean assertionsEnabled)
 	{
-		this.scope = scope;
 		this.config = config;
-		this.assertions = new AssertionVerifier(scope, assertionsEnabled, config);
-		this.requirements = new RequirementVerifier(scope, config);
+		this.assertions = new GuavaAssertionVerifier(scope, assertionsEnabled, config);
+		this.requirements = new GuavaRequirementVerifier(scope, config);
 	}
 
 	/**
-	 * @param scope   the system configuration
-	 * @param enabled true if assertions are enabled for the class being verified
-	 * @param config  the instance configuration
-	 * @return a new assertion verifier
-	 * @throws AssertionError if {@code scope} or {@code config} are null
+	 * Equivalent to {@link #GuavaUnifiedVerifier(ApplicationScope, Configuration, boolean) GuavaUnifiedVerifier(scope, scope.getDefaultConfiguration(), assertionEnabled).
+	 *
+	 * @param scope             the application configuration
+	 * @param config            the instance configuration
+	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
+	 * @throws AssertionError if any of the arguments are null
 	 */
-	protected abstract AbstractUnifiedVerifier newInstance(SingletonScope scope,
-		Configuration config, boolean enabled);
+	GuavaUnifiedVerifier(ApplicationScope scope, boolean assertionsEnabled)
+	{
+		this(scope, scope.getDefaultConfiguration(), assertionsEnabled);
+	}
 
 	/**
 	 * @return true if {@code assertThat()} carries out a verification
@@ -88,25 +93,16 @@ abstract class AbstractUnifiedVerifier
 		return assertions.requireThat(actual, name);
 	}
 
-	protected AbstractUnifiedVerifier withException(Class<? extends RuntimeException> exception)
+	@Override
+	public Configuration configuration()
 	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return newInstance(scope, newConfig, assertions.isEnabled());
+		return config;
 	}
 
-	protected AbstractUnifiedVerifier addContext(String key, Object value)
+	@Override
+	public GuavaUnifiedVerifier configuration(Consumer<Configuration> consumer)
 	{
-		Configuration newConfig = config.addContext(key, value);
-		return newInstance(scope, newConfig, assertions.isEnabled());
-	}
-
-	protected AbstractUnifiedVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return newInstance(scope, newConfig, assertions.isEnabled());
+		consumer.accept(config);
+		return this;
 	}
 }

@@ -12,7 +12,7 @@ import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.PREFIX;
  *
  * @author Gili Tzabari
  */
-final class Xterm extends AbstractXterm
+public final class Xterm8Color extends AbstractXterm
 {
 	private static final String WHITE_FOREGROUND = "37;1";
 	private static final String GREEN_BACKGROUND = "42";
@@ -26,7 +26,7 @@ final class Xterm extends AbstractXterm
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	Xterm(String actual, String expected)
+	public Xterm8Color(String actual, String expected)
 	{
 		super(actual, expected);
 	}

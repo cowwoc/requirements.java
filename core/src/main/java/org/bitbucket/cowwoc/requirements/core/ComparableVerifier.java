@@ -12,7 +12,8 @@ import org.bitbucket.cowwoc.requirements.core.ext.ComparableVerifierExtension;
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
+@SuppressWarnings("MarkerInterface")
 public interface ComparableVerifier<T extends Comparable<? super T>>
-	extends ComparableVerifierExtension<ComparableVerifier<T>, T>, Verifier<ComparableVerifier<T>>
+	extends ComparableVerifierExtension<ComparableVerifier<T>, T>
 {
 }

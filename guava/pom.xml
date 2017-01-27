@@ -35,8 +35,8 @@
 				<version>2.10.4</version>
 				<configuration>
 					<links>
-						<link>http://docs.oracle.com/javase/8/docs/api/</link>
-						<link>http://google.github.io/guava/releases/20.0/api/docs/</link>
+						<link>https://docs.oracle.com/javase/8/docs/api/</link>
+						<link>https://google.github.io/guava/releases/20.0/api/docs/</link>
 					</links>
 					<!-- TODO: Figure out how to include public APIs and exclude impl
 					<offlineLinks>

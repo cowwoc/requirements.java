@@ -2,13 +2,15 @@
  * Copyright 2016 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.core.diff;
+package org.bitbucket.cowwoc.requirements.core.terminal;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static org.bitbucket.cowwoc.requirements.core.diff.OperatingSystem.Type.UNKNOWN;
-import static org.bitbucket.cowwoc.requirements.core.diff.OperatingSystem.Type.WINDOWS;
+import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
+import org.bitbucket.cowwoc.pouch.Reference;
+import static org.bitbucket.cowwoc.requirements.core.terminal.OperatingSystem.Type.UNKNOWN;
+import static org.bitbucket.cowwoc.requirements.core.terminal.OperatingSystem.Type.WINDOWS;
 import org.bitbucket.cowwoc.requirements.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +28,10 @@ public final class OperatingSystem
 	private static final Pattern WINDOWS_VERSION = Pattern.compile(
 		"Microsoft Windows \\[Version (\\d+)\\.(\\d+)\\.(\\d+)\\]");
 
-	/**
-	 * @return the current operating system
-	 */
-	public static OperatingSystem current()
+	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(() ->
 	{
 		Logger log = LoggerFactory.getLogger(OperatingSystem.class);
-		Type type = Type.current();
+		Type type = Type.detect();
 		switch (type)
 		{
 			case WINDOWS:
@@ -73,12 +72,20 @@ public final class OperatingSystem
 			default:
 				return new OperatingSystem(type, null);
 		}
+	});
+
+	/**
+	 * @return the detected operating system
+	 */
+	public static OperatingSystem detect()
+	{
+		return DETECTED.getValue();
 	}
 
 	/**
 	 * The version number of an operating system.
 	 */
-	public static final class Version
+	public static final class Version implements Comparable<Version>
 	{
 		public final int major;
 		public final int minor;
@@ -98,6 +105,18 @@ public final class OperatingSystem
 			this.major = major;
 			this.minor = minor;
 			this.build = build;
+		}
+
+		@Override
+		public int compareTo(Version other)
+		{
+			int result = major - other.major;
+			if (result != 0)
+				return result;
+			result = minor - other.minor;
+			if (result != 0)
+				return result;
+			return build - other.build;
 		}
 
 		@Override
@@ -137,10 +156,7 @@ public final class OperatingSystem
 		MAC,
 		UNKNOWN;
 
-		/**
-		 * @return the type of the current operating system
-		 */
-		public static Type current()
+		private static final Reference<Type> DETECTED = ConcurrentLazyReference.create(() ->
 		{
 			String osName = System.getProperty("os.name");
 			if (Strings.startsWith(osName, "windows", true))
@@ -149,7 +165,19 @@ public final class OperatingSystem
 				return LINUX;
 			if (Strings.startsWith(osName, "mac", true))
 				return MAC;
+
+			Logger log = LoggerFactory.getLogger(OperatingSystem.class);
+			log.warn("Unknown operating system: {}, os.name: {}", OperatingSystem.detect().type.name(),
+				System.getProperty("os.name"));
 			return UNKNOWN;
+		});
+
+		/**
+		 * @return the type of the detected operating system
+		 */
+		public static Type detect()
+		{
+			return DETECTED.getValue();
 		}
 	}
 }

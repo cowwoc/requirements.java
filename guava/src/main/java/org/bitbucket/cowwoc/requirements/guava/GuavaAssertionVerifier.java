@@ -5,29 +5,28 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import java.util.List;
-import java.util.Map.Entry;
-import org.bitbucket.cowwoc.requirements.core.Verifier;
-import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.ext.Configurable;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.guava.impl.NoOpMultimapVerifier;
 
 /**
  * Verifies a parameter if assertions are enabled; otherwise, does nothing.
  * <p>
- * Unlike {@link Requirements}, instances of this class can be configured prior to initiating
+ * Unlike {@link GuavaRequirements}, instances of this class can be configured prior to initiating
  * verification. Doing so causes the same configuration to get reused across runs.
  *
  * @since 3.0.0
  * @author Gili Tzabari
  */
-public final class AssertionVerifier implements Verifier<AssertionVerifier>
+public final class GuavaAssertionVerifier implements Configurable<GuavaAssertionVerifier>
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final boolean enabled;
 	private final Configuration config;
-	private final RequirementVerifier requirementVerifier;
+	private final GuavaRequirementVerifier requirementVerifier;
 
 	/**
 	 * Creates a new assertion verifier.
@@ -43,12 +42,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 *
 	 * @param enabled true if assertions are enabled for the class being verified
 	 */
-	public AssertionVerifier(boolean enabled)
+	public GuavaAssertionVerifier(boolean enabled)
 	{
-		this.scope = MainSingletonScope.INSTANCE;
+		this.scope = MainApplicationScope.INSTANCE;
 		this.enabled = enabled;
-		this.config = Configuration.initial();
-		this.requirementVerifier = new RequirementVerifier(scope, config);
+		this.config = scope.getDefaultConfiguration();
+		this.requirementVerifier = new GuavaRequirementVerifier(scope, config);
 	}
 
 	/**
@@ -63,16 +62,16 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * <p>
 	 * from within the class in question.
 	 *
-	 * @param scope   the system configuration
+	 * @param scope   the application configuration
 	 * @param enabled true if assertions are enabled for the class being verified
 	 * @throws AssertionError if {@code scope} is null
 	 */
-	AssertionVerifier(SingletonScope scope, boolean enabled)
+	GuavaAssertionVerifier(ApplicationScope scope, boolean enabled)
 	{
 		this.scope = scope;
 		this.enabled = enabled;
-		this.config = Configuration.initial();
-		this.requirementVerifier = new RequirementVerifier(scope, config);
+		this.config = scope.getDefaultConfiguration();
+		this.requirementVerifier = new GuavaRequirementVerifier(scope, config);
 	}
 
 	/**
@@ -82,13 +81,13 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * @param config  the instance configuration
 	 * @throws AssertionError if {@code scope} or {@code config} are null
 	 */
-	AssertionVerifier(SingletonScope scope, boolean enabled, Configuration config)
+	GuavaAssertionVerifier(ApplicationScope scope, boolean enabled, Configuration config)
 	{
 		assert (config != null): "config may not be null";
 		this.scope = scope;
 		this.enabled = enabled;
 		this.config = config;
-		this.requirementVerifier = new RequirementVerifier(scope, config);
+		this.requirementVerifier = new GuavaRequirementVerifier(scope, config);
 	}
 
 	/**
@@ -105,40 +104,15 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * @param enabled true if assertions are enabled
 	 * @return a verifier with the specified assertion state
 	 */
-	public AssertionVerifier withEnabled(boolean enabled)
+	public GuavaAssertionVerifier withEnabled(boolean enabled)
 	{
 		if (enabled == this.enabled)
 			return this;
-		return new AssertionVerifier(scope, enabled, config);
-	}
-
-	@Override
-	public AssertionVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new AssertionVerifier(scope, enabled, newConfig);
-	}
-
-	@Override
-	public AssertionVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new AssertionVerifier(scope, enabled, newConfig);
-	}
-
-	@Override
-	public AssertionVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new AssertionVerifier(scope, enabled, newConfig);
+		return new GuavaAssertionVerifier(scope, enabled, config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Multimap, String)} but does nothing if
+	 * Same as {@link GuavaRequirementVerifier#requireThat(Multimap, String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param <K>    the type of key in the multimap
@@ -153,8 +127,19 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		@SuppressWarnings("unchecked")
-		MultimapVerifier<K, V> result = (MultimapVerifier<K, V>) NoOpMultimapVerifier.INSTANCE;
-		return result;
+		return new NoOpMultimapVerifier<>(config);
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public GuavaAssertionVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

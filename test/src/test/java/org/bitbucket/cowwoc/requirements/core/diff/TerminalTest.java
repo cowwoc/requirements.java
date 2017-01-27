@@ -4,12 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.core.diff;
 
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import java.util.stream.Collectors;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.DefaultJvmScope;
+import org.bitbucket.cowwoc.requirements.core.scope.JvmScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal;
+import org.bitbucket.cowwoc.requirements.core.terminal.Terminal;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
 import org.testng.annotations.Test;
 
 /**
@@ -17,20 +20,39 @@ import org.testng.annotations.Test;
  */
 public final class TerminalTest
 {
+	/**
+	 * Ensures that none of the native methods fail.
+	 *
+	 * @throws IOException if an operation fails
+	 */
 	@Test
-	public void loadNativeLibrary()
+	@SuppressWarnings("try")
+	public void nativeMethods() throws IOException
 	{
-		EventBufferAppender<ILoggingEvent> eventBuffer = new EventBufferAppender<>();
-		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-		root.addAppender(eventBuffer);
-		eventBuffer.start();
-
-		try (SingletonScope scope = new TestSingletonScope(TerminalType.XTERM_16COLOR))
+		try (JvmScope scope = DefaultJvmScope.INSTANCE)
 		{
-			Terminal terminal = scope.getTerminal();
-			TerminalType type = terminal.getType();
+			NativeTerminal terminal = new NativeTerminal();
+			terminal.connect();
+			terminal.isConnectedToStdout();
+			terminal.setEncoding(NONE);
+			terminal.disconnect();
 		}
-		assert (eventBuffer.events.isEmpty()): "Unexpected events:\n" +
-			eventBuffer.events.stream().map(e -> e.getFormattedMessage()).collect(Collectors.toList());
+	}
+
+	/**
+	 * Force verifies to output using an encoding that might not be supported by the terminal.
+	 *
+	 * @throws IOException if an operation fails
+	 */
+	@Test
+	@SuppressWarnings("try")
+	public void forceUnsupportedEncoding() throws IOException
+	{
+		try (JvmScope jvm = DefaultJvmScope.INSTANCE;
+			ApplicationScope application = new TestApplicationScope(jvm))
+		{
+			Terminal terminal = jvm.getTerminal();
+			terminal.setEncoding(RGB_888COLOR);
+		}
 	}
 }

@@ -32,7 +32,7 @@ extern "C" {
 		/**
 		* Returns the String representation of the error. The caller must the LocalFree() function to free the buffer when it is no longer needed.
 		*
-		* @param errorCode an error code returned by GetLastError()
+		* @param errorCode the error code returned by GetLastError()
 		* @return 0 on failure
 		*/
 		char* getFormatMessage(DWORD errorCode);
@@ -46,9 +46,22 @@ extern "C" {
 	public:
 		/**
 		 * @param env the JNI interface pointer
+		 * @param lastError the error code returned by GetLastError()
 		 */
 		Exceptions(JNIEnv* env);
-		void throwIOException(char* message);
+		/**
+		* Throws an IOException.
+		*
+		* @param message the exception message
+		*/
+		void throwIOException(const char* message);
+		/**
+		 * Throws an IOException.
+		 *
+		 * @param lastError the error code returned by GetLastError()
+		 * @param message the exception message
+		 */
+		void throwIOException(const char* message, DWORD lastError);
 	};
 
 #ifdef __cplusplus

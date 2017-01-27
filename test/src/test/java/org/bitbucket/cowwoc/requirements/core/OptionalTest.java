@@ -5,8 +5,9 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.TestSingletonScope;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.testng.annotations.Test;
 
 /**
@@ -17,131 +18,131 @@ public final class OptionalTest
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new RequirementVerifier(scope).requireThat(actual, null);
+			new CoreRequirementVerifier(scope).requireThat(actual, null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nameIsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new RequirementVerifier(scope).requireThat(actual, "");
+			new CoreRequirementVerifier(scope).requireThat(actual, "");
 		}
 	}
 
 	@Test
 	public void isPresent()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isPresent();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isPresent();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isPresent_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isPresent();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isPresent();
 		}
 	}
 
 	@Test
 	public void isEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isEmpty_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new RequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
 	@Test
 	public void contains()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new RequirementVerifier(scope).requireThat(actual, "actual").contains(5);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").contains(5);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void contains_False()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new RequirementVerifier(scope).requireThat(actual, "actual").contains(6);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").contains(6);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void contains_actualIsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new RequirementVerifier(scope).requireThat(actual, "actual").contains(5);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").contains(5);
 		}
 	}
 
 	@Test
 	public void containsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new RequirementVerifier(scope).requireThat(actual, "actual").contains(null);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").contains(null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void contains_expectedIsEmpty()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new RequirementVerifier(scope).requireThat(actual, "actual").contains(null);
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").contains(null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void contains_expectedIsEmptyVariable()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new RequirementVerifier(scope).requireThat(actual, "actual").contains(null, "expected");
+			new CoreRequirementVerifier(scope).requireThat(actual, "actual").contains(null, "expected");
 		}
 	}
 
 	@Test
 	public void assertionsDisabled()
 	{
-		try (SingletonScope scope = new TestSingletonScope())
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Optional<?> actual = null;
-			new AssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
+			new CoreAssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
 		}
 	}
 }

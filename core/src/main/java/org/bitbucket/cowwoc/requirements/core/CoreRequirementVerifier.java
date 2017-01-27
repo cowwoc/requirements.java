@@ -9,10 +9,10 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.ext.Configurable;
 import org.bitbucket.cowwoc.requirements.core.impl.ArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.BigDecimalVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.ClassVerifierImpl;
@@ -28,20 +28,19 @@ import org.bitbucket.cowwoc.requirements.core.impl.PathVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.Pluralizer;
 import org.bitbucket.cowwoc.requirements.core.impl.StringVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.UriVerifierImpl;
-import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
  * Verifies a value.
  * <p>
- * Unlike {@link Requirements}, instances of this class can be configured prior to initiating
+ * Unlike {@link CoreRequirements}, instances of this class can be configured prior to initiating
  * verification. Doing so causes the same configuration to get reused across runs.
  *
  * @since 2.0.3
  * @author Gili Tzabari
  */
-public final class RequirementVerifier implements Verifier<RequirementVerifier>
+public final class CoreRequirementVerifier implements Configurable<CoreRequirementVerifier>
 {
 	/**
 	 * @param name the name of the actual value
@@ -55,70 +54,45 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
 	}
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final Configuration config;
 
 	/**
 	 * Creates a new requirement verifier.
 	 */
-	public RequirementVerifier()
+	public CoreRequirementVerifier()
 	{
-		this.scope = MainSingletonScope.INSTANCE;
-		this.config = Configuration.initial();
+		this.scope = MainApplicationScope.INSTANCE;
+		this.config = scope.getDefaultConfiguration();
 	}
 
 	/**
 	 * Creates a new requirement verifier. This constructor is meant to be used by automated tests,
 	 * not by users.
 	 *
-	 * @param scope the system configuration
+	 * @param scope the application configuration
 	 * @throws AssertionError if {@code scope} is null
 	 */
-	RequirementVerifier(SingletonScope scope)
+	public CoreRequirementVerifier(ApplicationScope scope)
 	{
 		assert (scope != null): "scope may not be null";
 		this.scope = scope;
-		this.config = Configuration.initial();
+		this.config = scope.getDefaultConfiguration();
 	}
 
 	/**
 	 * Creates a new requirement verifier.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope} or {@code config} are null
 	 */
-	RequirementVerifier(SingletonScope scope, Configuration config)
+	CoreRequirementVerifier(ApplicationScope scope, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
 		this.config = config;
-	}
-
-	@Override
-	public RequirementVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new RequirementVerifier(scope, newConfig);
-	}
-
-	@Override
-	public RequirementVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new RequirementVerifier(scope, newConfig);
-	}
-
-	@Override
-	public RequirementVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new RequirementVerifier(scope, newConfig);
 	}
 
 	/**
@@ -179,8 +153,7 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual,
-		String name)
+	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name)
 	{
 		verifyName(name);
 		return new ComparableVerifierImpl<>(scope, actual, name, config);
@@ -339,5 +312,18 @@ public final class RequirementVerifier implements Verifier<RequirementVerifier>
 	{
 		verifyName(name);
 		return new InetAddressVerifierImpl(scope, actual, name, config);
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public CoreRequirementVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

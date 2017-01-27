@@ -12,7 +12,8 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
+@SuppressWarnings("MarkerInterface")
 public interface ObjectVerifier<T>
-	extends ObjectVerifierExtension<ObjectVerifier<T>, T>, Verifier<ObjectVerifier<T>>
+	extends ObjectVerifierExtension<ObjectVerifier<T>, T>
 {
 }

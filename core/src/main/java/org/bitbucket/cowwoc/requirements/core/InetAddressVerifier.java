@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface InetAddressVerifier
-	extends ObjectVerifierExtension<InetAddressVerifier, InetAddress>, Verifier<InetAddressVerifier>
+	extends ObjectVerifierExtension<InetAddressVerifier, InetAddress>
 {
 	/**
 	 * Ensures that the actual value is an IP v4 address.

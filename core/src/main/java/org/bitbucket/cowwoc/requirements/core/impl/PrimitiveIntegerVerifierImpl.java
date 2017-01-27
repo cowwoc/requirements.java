@@ -5,15 +5,13 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
@@ -23,7 +21,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
  */
 public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final int actual;
 	private final String name;
 	private final Configuration config;
@@ -32,14 +30,14 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	/**
 	 * Creates new PrimitiveIntegerVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveIntegerVerifierImpl(SingletonScope scope, int actual, String name,
+	public PrimitiveIntegerVerifierImpl(ApplicationScope scope, int actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
@@ -50,31 +48,6 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 		this.name = name;
 		this.config = config;
 		this.asNumber = new NumberVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new PrimitiveIntegerVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new PrimitiveIntegerVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new PrimitiveIntegerVerifierImpl(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -262,5 +235,18 @@ public class PrimitiveIntegerVerifierImpl implements PrimitiveIntegerVerifier
 	public Integer getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public PrimitiveIntegerVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

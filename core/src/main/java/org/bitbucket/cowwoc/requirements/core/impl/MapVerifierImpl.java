@@ -5,19 +5,18 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of MapVerifier.
@@ -28,7 +27,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final Map<K, V> actual;
 	private final String name;
 	private final Configuration config;
@@ -37,14 +36,14 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	/**
 	 * Creates new MapVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public MapVerifierImpl(SingletonScope scope, Map<K, V> actual, String name, Configuration config)
+	public MapVerifierImpl(ApplicationScope scope, Map<K, V> actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -54,31 +53,6 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 		this.name = name;
 		this.config = config;
 		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public MapVerifier<K, V> withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new MapVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public MapVerifier<K, V> addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new MapVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public MapVerifier<K, V> withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new MapVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -184,7 +158,7 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	{
 		if (actual.isEmpty())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
 			addContext("Actual", actual).
 			build();
@@ -195,7 +169,7 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	{
 		if (!actual.isEmpty())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be empty", name)).
 			build();
 	}
@@ -234,8 +208,22 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	}
 
 	@Override
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public Map<K, V> getActual()
 	{
-		return Collections.unmodifiableMap(actual);
+		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public MapVerifier<K, V> configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

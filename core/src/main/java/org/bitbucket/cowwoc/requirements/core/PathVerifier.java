@@ -14,8 +14,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  *
  * @author Gili Tzabari
  */
-public interface PathVerifier
-	extends ObjectVerifierExtension<PathVerifier, Path>, Verifier<PathVerifier>
+public interface PathVerifier extends ObjectVerifierExtension<PathVerifier, Path>
 {
 	/**
 	 * Ensures that the actual value exists.
@@ -42,7 +41,8 @@ public interface PathVerifier
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return this
-	 * @throws IllegalArgumentException if actual value refers to a non-existent or a non-directory path
+	 * @throws IllegalArgumentException if actual value refers to a non-existent or a non-directory
+	 *                                  path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */
 	PathVerifier isDirectory(LinkOption... options) throws IOException;

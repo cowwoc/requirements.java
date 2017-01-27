@@ -6,15 +6,13 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
@@ -24,7 +22,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
  */
 public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final BigDecimal bigDecimal;
 	private final int actual;
 	private final String name;
@@ -34,14 +32,14 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	/**
 	 * Creates new BigDecimalScaleVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public BigDecimalScaleVerifierImpl(SingletonScope scope, BigDecimal actual, String name,
+	public BigDecimalScaleVerifierImpl(ApplicationScope scope, BigDecimal actual, String name,
 		Configuration config)
 	{
 		assert (name != null): "name may not be null";
@@ -58,15 +56,15 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	/**
 	 * Internal constructor that assumes that {@code name} has already been updated.
 	 *
-	 * @param scope      the system configuration
+	 * @param scope      the application configuration
 	 * @param bigDecimal the BigDecimal
 	 * @param actual     the scale of the BigDecimal
 	 * @param name       the name of the value
 	 * @param config     the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config}
-	 *                        are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code bigDecimal}, {@code name} or {@code config} are
+	 *                        null; if {@code name} is empty
 	 */
-	private BigDecimalScaleVerifierImpl(SingletonScope scope, BigDecimal bigDecimal, int actual,
+	private BigDecimalScaleVerifierImpl(ApplicationScope scope, BigDecimal bigDecimal, int actual,
 		String name, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
@@ -80,31 +78,6 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 		this.name = name;
 		this.config = config;
 		this.asInt = new PrimitiveIntegerVerifierImpl(scope, this.actual, name, config);
-	}
-
-	@Override
-	public BigDecimalScaleVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new BigDecimalScaleVerifierImpl(scope, bigDecimal, actual, name, newConfig);
-	}
-
-	@Override
-	public BigDecimalScaleVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new BigDecimalScaleVerifierImpl(scope, bigDecimal, actual, name, newConfig);
-	}
-
-	@Override
-	public BigDecimalScaleVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new BigDecimalScaleVerifierImpl(scope, bigDecimal, actual, name, newConfig);
 	}
 
 	@Override
@@ -295,5 +268,18 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	public Integer getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public BigDecimalScaleVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

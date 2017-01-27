@@ -5,13 +5,13 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -19,131 +19,116 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 /**
  * An implementation of MapVerifier that does nothing.
  *
+ * @param <K> the type of keys in the map
+ * @param <V> the type of values in the map
  * @author Gili Tzabari
  */
-public final class NoOpMapVerifier implements MapVerifier<Object, Object>
+public final class NoOpMapVerifier<K, V> implements MapVerifier<K, V>
 {
-	// Enum declares values() which conflicts with Map.values()
-	public static final NoOpMapVerifier INSTANCE = new NoOpMapVerifier();
+	private final Configuration config;
 
 	/**
-	 * Prevent construction.
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
 	 */
-	private NoOpMapVerifier()
+	public NoOpMapVerifier(Configuration config)
 	{
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> withException(Class<? extends RuntimeException> exception)
+	public CollectionVerifier<K> keySet()
 	{
-		return this;
+		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<Object, Object> addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public MapVerifier<Object, Object> withContext(List<Entry<String, Object>> context)
+	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Object> keySet()
+	public CollectionVerifier<V> values()
 	{
-		return new NoOpCollectionVerifier<>();
+		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<Object, Object> keySet(Consumer<CollectionVerifier<Object>> consumer)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<Object> values()
-	{
-		return new NoOpCollectionVerifier<>();
-	}
-
-	@Override
-	public MapVerifier<Object, Object> values(Consumer<CollectionVerifier<Object>> consumer)
+	public MapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Entry<Object, Object>> entrySet()
+	public CollectionVerifier<Entry<K, V>> entrySet()
 	{
-		return new NoOpCollectionVerifier<>();
+		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<Object, Object> entrySet(
-		Consumer<CollectionVerifier<Entry<Object, Object>>> consumer)
-	{
-		return this;
-	}
-
-	@Override
-	public MapVerifier<Object, Object> isEmpty()
+	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isNotEmpty()
+	public MapVerifier<K, V> isEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isEqualTo(Map<Object, Object> value)
+	public MapVerifier<K, V> isNotEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isEqualTo(Map<Object, Object> value, String name)
+	public MapVerifier<K, V> isEqualTo(Map<K, V> value)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isNotEqualTo(Map<Object, Object> value)
+	public MapVerifier<K, V> isEqualTo(Map<K, V> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isNotEqualTo(Map<Object, Object> value, String name)
+	public MapVerifier<K, V> isNotEqualTo(Map<K, V> value)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isIn(Collection<Map<Object, Object>> collection)
+	public MapVerifier<K, V> isNotEqualTo(Map<K, V> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isInstanceOf(Class<?> type)
+	public MapVerifier<K, V> isIn(Collection<Map<K, V>> collection)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isNull()
+	public MapVerifier<K, V> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public MapVerifier<Object, Object> isNotNull()
+	public MapVerifier<K, V> isNull()
+	{
+		return this;
+	}
+
+	@Override
+	public MapVerifier<K, V> isNotNull()
 	{
 		return this;
 	}
@@ -151,11 +136,11 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	@Override
 	public ContainerSizeVerifier size()
 	{
-		return NoOpContainerSizeVerifier.INSTANCE;
+		return new NoOpContainerSizeVerifier(config);
 	}
 
 	@Override
-	public MapVerifier<Object, Object> size(Consumer<ContainerSizeVerifier> consumer)
+	public MapVerifier<K, V> size(Consumer<ContainerSizeVerifier> consumer)
 	{
 		return this;
 	}
@@ -163,24 +148,36 @@ public final class NoOpMapVerifier implements MapVerifier<Object, Object>
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
-	public MapVerifier<Object, Object> asString(Consumer<StringVerifier> consumer)
+	public MapVerifier<K, V> asString(Consumer<StringVerifier> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public Optional<Map<Object, Object>> getActualIfPresent()
+	public Optional<Map<K, V>> getActualIfPresent()
 	{
 		return Optional.empty();
 	}
 
 	@Override
-	public Map<Object, Object> getActual()
+	public Map<K, V> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public MapVerifier<K, V> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

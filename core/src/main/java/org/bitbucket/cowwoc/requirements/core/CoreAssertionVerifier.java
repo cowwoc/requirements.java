@@ -9,10 +9,10 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.ext.Configurable;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpBigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpClassVerifier;
@@ -27,25 +27,24 @@ import org.bitbucket.cowwoc.requirements.core.impl.NoOpOptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpPathVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpStringVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpUriVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.MainSingletonScope;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
  * Verifies a value if assertions are enabled; otherwise, does nothing.
  * <p>
- * Unlike {@link Requirements}, instances of this class can be configured prior to initiating
+ * Unlike {@link CoreRequirements}, instances of this class can be configured prior to initiating
  * verification. Doing so causes the same configuration to get reused across runs.
  *
  * @since 2.0.3
  * @author Gili Tzabari
  */
-public final class AssertionVerifier implements Verifier<AssertionVerifier>
+public final class CoreAssertionVerifier implements Configurable<CoreAssertionVerifier>
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final boolean enabled;
 	private final Configuration config;
-	private final RequirementVerifier requirementVerifier;
+	private final CoreRequirementVerifier requirementVerifier;
 
 	/**
 	 * Creates a new assertion verifier.
@@ -61,12 +60,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 *
 	 * @param enabled true if assertions are enabled for the class being verified
 	 */
-	public AssertionVerifier(boolean enabled)
+	public CoreAssertionVerifier(boolean enabled)
 	{
-		this.scope = MainSingletonScope.INSTANCE;
+		this.scope = MainApplicationScope.INSTANCE;
 		this.enabled = enabled;
-		this.config = Configuration.initial();
-		this.requirementVerifier = new RequirementVerifier(scope, config);
+		this.config = scope.getDefaultConfiguration();
+		this.requirementVerifier = new CoreRequirementVerifier(scope, config);
 	}
 
 	/**
@@ -81,16 +80,16 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * <p>
 	 * from within the class in question.
 	 *
-	 * @param scope   the system configuration
+	 * @param scope   the application configuration
 	 * @param enabled true if assertions are enabled for the class being verified
 	 * @throws AssertionError if {@code scope} is null
 	 */
-	AssertionVerifier(SingletonScope scope, boolean enabled)
+	CoreAssertionVerifier(ApplicationScope scope, boolean enabled)
 	{
 		this.scope = scope;
 		this.enabled = enabled;
-		this.config = Configuration.initial();
-		this.requirementVerifier = new RequirementVerifier(scope, config);
+		this.config = scope.getDefaultConfiguration();
+		this.requirementVerifier = new CoreRequirementVerifier(scope, config);
 	}
 
 	/**
@@ -100,13 +99,13 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * @param config  the instance configuration
 	 * @throws AssertionError if {@code scope} or {@code config} are null
 	 */
-	AssertionVerifier(SingletonScope scope, boolean enabled, Configuration config)
+	CoreAssertionVerifier(ApplicationScope scope, boolean enabled, Configuration config)
 	{
 		assert (config != null): "config may not be null";
 		this.scope = scope;
 		this.enabled = enabled;
 		this.config = config;
-		this.requirementVerifier = new RequirementVerifier(scope, config);
+		this.requirementVerifier = new CoreRequirementVerifier(scope, config);
 	}
 
 	/**
@@ -123,41 +122,16 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	 * @param enabled true if assertions are enabled
 	 * @return a verifier with the specified assertion state
 	 */
-	public AssertionVerifier withEnabled(boolean enabled)
+	public CoreAssertionVerifier withEnabled(boolean enabled)
 	{
 		if (enabled == this.enabled)
 			return this;
-		return new AssertionVerifier(scope, enabled, config);
-	}
-
-	@Override
-	public AssertionVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new AssertionVerifier(scope, enabled, newConfig);
-	}
-
-	@Override
-	public AssertionVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new AssertionVerifier(scope, enabled, newConfig);
-	}
-
-	@Override
-	public AssertionVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new AssertionVerifier(scope, enabled, newConfig);
+		return new CoreAssertionVerifier(scope, enabled, config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Object, String)} but does nothing if assertions
-	 * are disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(Object, String)} but does nothing if
+	 * assertions are disabled.
 	 *
 	 * @param <T>    the type of the value
 	 * @param actual the actual value
@@ -170,11 +144,11 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpObjectVerifier<>();
+		return new NoOpObjectVerifier<>(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Collection, String)} but does nothing if
+	 * Same as {@link CoreRequirementVerifier#requireThat(Collection, String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param <E>    the type of elements in the collection
@@ -188,11 +162,11 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpCollectionVerifier<>();
+		return new NoOpCollectionVerifier<>(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Object[], String)} but does nothing if
+	 * Same as {@link CoreRequirementVerifier#requireThat(Object[], String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param <E>    the type of elements in the collection
@@ -206,11 +180,11 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpArrayVerifier<>();
+		return new NoOpArrayVerifier<>(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Comparable, String)} but does nothing if
+	 * Same as {@link CoreRequirementVerifier#requireThat(Comparable, String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param <T>    the type of the number
@@ -225,12 +199,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpComparableVerifier<>();
+		return new NoOpComparableVerifier<>(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Number, String)} but does nothing if assertions
-	 * are disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(Number, String)} but does nothing if
+	 * assertions are disabled.
 	 *
 	 * @param <T>    the type of the number
 	 * @param actual the actual value
@@ -244,7 +218,7 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return new NoOpNumberVerifier<>();
+		return new NoOpNumberVerifier<>(config);
 	}
 
 	/**
@@ -260,11 +234,11 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpDoubleVerifier.INSTANCE;
+		return new NoOpDoubleVerifier(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(BigDecimal, String)} but does nothing if
+	 * Same as {@link CoreRequirementVerifier#requireThat(BigDecimal, String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param actual the actual value
@@ -277,12 +251,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpBigDecimalVerifier.INSTANCE;
+		return new NoOpBigDecimalVerifier(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Map, String)} but does nothing if assertions are
-	 * disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(Map, String)} but does nothing if assertions
+	 * are disabled.
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
@@ -296,14 +270,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		@SuppressWarnings("unchecked")
-		MapVerifier<K, V> result = (MapVerifier<K, V>) NoOpMapVerifier.INSTANCE;
-		return result;
+		return new NoOpMapVerifier<>(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Path, String)} but does nothing if assertions
-	 * are disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(Path, String)} but does nothing if
+	 * assertions are disabled.
 	 *
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -315,12 +287,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpPathVerifier.INSTANCE;
+		return new NoOpPathVerifier(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(String, String)} but does nothing if assertions
-	 * are disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(String, String)} but does nothing if
+	 * assertions are disabled.
 	 *
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -332,12 +304,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(URI, String)} but does nothing if assertions are
-	 * disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(URI, String)} but does nothing if assertions
+	 * are disabled.
 	 *
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -349,12 +321,12 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpUriVerifier.INSTANCE;
+		return new NoOpUriVerifier(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Class, String)} but does nothing if assertions
-	 * are disabled.
+	 * Same as {@link CoreRequirementVerifier#requireThat(Class, String)} but does nothing if
+	 * assertions are disabled.
 	 *
 	 * @param <T>    the type of class
 	 * @param actual the actual value
@@ -367,13 +339,11 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		@SuppressWarnings("unchecked")
-		ClassVerifier<T> result = (ClassVerifier<T>) NoOpClassVerifier.INSTANCE;
-		return result;
+		return new NoOpClassVerifier<>(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(Optional, String)} but does nothing if
+	 * Same as {@link CoreRequirementVerifier#requireThat(Optional, String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param actual the actual value
@@ -386,11 +356,11 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpOptionalVerifier.INSTANCE;
+		return new NoOpOptionalVerifier(config);
 	}
 
 	/**
-	 * Same as {@link RequirementVerifier#requireThat(InetAddress, String)} but does nothing if
+	 * Same as {@link CoreRequirementVerifier#requireThat(InetAddress, String)} but does nothing if
 	 * assertions are disabled.
 	 *
 	 * @param actual the actual value
@@ -403,6 +373,19 @@ public final class AssertionVerifier implements Verifier<AssertionVerifier>
 	{
 		if (enabled)
 			return requirementVerifier.requireThat(actual, name);
-		return NoOpInetAddressVerifier.INSTANCE;
+		return new NoOpInetAddressVerifier(config);
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public CoreAssertionVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

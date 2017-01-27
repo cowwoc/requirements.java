@@ -5,91 +5,83 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ClassVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * An implementation of ClassVerifier that does nothing.
  *
+ * @param <T> the type of the class
  * @author Gili Tzabari
  */
-public enum NoOpClassVerifier implements ClassVerifier<Object>
+public final class NoOpClassVerifier<T> implements ClassVerifier<T>
 {
-	INSTANCE;
+	private final Configuration config;
+
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpClassVerifier(Configuration config)
+	{
+		assert (config != null): "config may not be null";
+		this.config = config;
+	}
 
 	@Override
-	public ClassVerifier<Object> withException(Class<? extends RuntimeException> exception)
+	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> addContext(String key, Object value)
+	public ClassVerifier<T> isEqualTo(Class<T> value)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> withContext(List<Entry<String, Object>> context)
+	public ClassVerifier<T> isEqualTo(Class<T> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isSupertypeOf(Class<?> type)
+	public ClassVerifier<T> isNotEqualTo(Class<T> value)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isEqualTo(Class<Object> value)
+	public ClassVerifier<T> isNotEqualTo(Class<T> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isEqualTo(Class<Object> value, String name)
+	public ClassVerifier<T> isIn(Collection<Class<T>> collection)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isNotEqualTo(Class<Object> value)
+	public ClassVerifier<T> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isNotEqualTo(Class<Object> value, String name)
+	public ClassVerifier<T> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public ClassVerifier<Object> isIn(Collection<Class<Object>> collection)
-	{
-		return this;
-	}
-
-	@Override
-	public ClassVerifier<Object> isInstanceOf(Class<?> type)
-	{
-		return this;
-	}
-
-	@Override
-	public ClassVerifier<Object> isNull()
-	{
-		return this;
-	}
-
-	@Override
-	public ClassVerifier<Object> isNotNull()
+	public ClassVerifier<T> isNotNull()
 	{
 		return this;
 	}
@@ -97,24 +89,36 @@ public enum NoOpClassVerifier implements ClassVerifier<Object>
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
-	public ClassVerifier<Object> asString(Consumer<StringVerifier> consumer)
+	public ClassVerifier<T> asString(Consumer<StringVerifier> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public Optional<Class<Object>> getActualIfPresent()
+	public Optional<Class<T>> getActualIfPresent()
 	{
 		return Optional.empty();
 	}
 
 	@Override
-	public Class<Object> getActual()
+	public Class<T> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ClassVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

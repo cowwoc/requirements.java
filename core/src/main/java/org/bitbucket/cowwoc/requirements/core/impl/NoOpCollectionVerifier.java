@@ -5,13 +5,12 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -23,22 +22,16 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  */
 public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 {
-	@Override
-	public CollectionVerifier<E> withException(Class<? extends RuntimeException> exception)
-	{
-		return this;
-	}
+	private final Configuration config;
 
-	@Override
-	public CollectionVerifier<E> addContext(String key, Object value)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpCollectionVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -194,7 +187,7 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	@Override
 	public ContainerSizeVerifier size()
 	{
-		return NoOpContainerSizeVerifier.INSTANCE;
+		return new NoOpContainerSizeVerifier(config);
 	}
 
 	@Override
@@ -206,7 +199,7 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -218,7 +211,7 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	@Override
 	public ArrayVerifier<E> asArray(Class<E> type)
 	{
-		return new NoOpArrayVerifier<>();
+		return new NoOpArrayVerifier<>(config);
 	}
 
 	@Override
@@ -237,5 +230,17 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	public Collection<E> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public CollectionVerifier<E> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

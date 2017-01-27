@@ -5,17 +5,16 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.UnifiedVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.util.ConsoleConstants.LINE_LENGTH;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of ComparableVerifier.
@@ -26,7 +25,7 @@ import static org.bitbucket.cowwoc.requirements.core.util.ConsoleConstants.LINE_
 public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	implements ComparableVerifier<T>
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final T actual;
 	private final String name;
 	private final Configuration config;
@@ -35,14 +34,14 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	/**
 	 * Creates new ComparableVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ComparableVerifierImpl(SingletonScope scope, T actual, String name, Configuration config)
+	public ComparableVerifierImpl(ApplicationScope scope, T actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -52,31 +51,6 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		this.name = name;
 		this.config = config;
 		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public ComparableVerifier<T> withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new ComparableVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public ComparableVerifier<T> addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new ComparableVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public ComparableVerifier<T> withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new ComparableVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -138,13 +112,13 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableVerifier<T> isLessThan(T value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be less than %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Maximum", value).
@@ -158,7 +132,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be less than %s.", this.name, value)).
 			addContext("Actual", actual).
 			build();
@@ -167,13 +141,13 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableVerifier<T> isLessThanOrEqualTo(T value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be less than or equal to %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Maximum", value).
@@ -187,7 +161,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be less than or equal to %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -196,13 +170,13 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableVerifier<T> isGreaterThan(T value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be greater than %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Minimum", value).
@@ -216,7 +190,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be greater than %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -225,13 +199,13 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableVerifier<T> isGreaterThanOrEqualTo(T value, String name)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be greater than or equal to %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Minimum", value).
@@ -245,7 +219,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be greater than or equal to %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -254,7 +228,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	@Override
 	public ComparableVerifier<T> isBetween(T min, T max)
 	{
-		UnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
 		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
 		if (actual.compareTo(min) >= 0 && actual.compareTo(max) <= 0)
@@ -263,7 +237,7 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 		message.append(name).append(" must be in range [").append(min).append(", ").append(max).
 			append("]\n").
 			append("Actual: ").append(actual);
-		throw config.exceptionBuilder(IllegalArgumentException.class, message.toString()).
+		throw new ExceptionBuilder(config, IllegalArgumentException.class, message.toString()).
 			build();
 	}
 
@@ -290,5 +264,18 @@ public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	public T getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ComparableVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

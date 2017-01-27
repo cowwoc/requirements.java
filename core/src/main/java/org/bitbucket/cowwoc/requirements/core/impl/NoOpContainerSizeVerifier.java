@@ -5,11 +5,10 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -18,26 +17,18 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  *
  * @author Gili Tzabari
  */
-public enum NoOpContainerSizeVerifier implements ContainerSizeVerifier
+public final class NoOpContainerSizeVerifier implements ContainerSizeVerifier
 {
-	INSTANCE;
+	private final Configuration config;
 
-	@Override
-	public ContainerSizeVerifier withException(Class<? extends RuntimeException> exception)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpContainerSizeVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public ContainerSizeVerifier addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public ContainerSizeVerifier withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -182,7 +173,7 @@ public enum NoOpContainerSizeVerifier implements ContainerSizeVerifier
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -201,5 +192,17 @@ public enum NoOpContainerSizeVerifier implements ContainerSizeVerifier
 	public Integer getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public ContainerSizeVerifier configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

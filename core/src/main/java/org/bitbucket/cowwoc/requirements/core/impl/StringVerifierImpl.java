@@ -8,18 +8,17 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of StringVerifier.
@@ -28,7 +27,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
  */
 public final class StringVerifierImpl implements StringVerifier
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final String actual;
 	private final String name;
 	private final Configuration config;
@@ -37,14 +36,14 @@ public final class StringVerifierImpl implements StringVerifier
 	/**
 	 * Creates new StringVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public StringVerifierImpl(SingletonScope scope, String actual, String name, Configuration config)
+	public StringVerifierImpl(ApplicationScope scope, String actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -57,36 +56,11 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
-	public StringVerifier withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new StringVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public StringVerifier addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new StringVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public StringVerifier withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new StringVerifierImpl(scope, actual, name, newConfig);
-	}
-
-	@Override
 	public StringVerifier isEmpty()
 	{
 		if (actual.isEmpty())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
 			addContext("Actual", actual).
 			build();
@@ -97,7 +71,7 @@ public final class StringVerifierImpl implements StringVerifier
 	{
 		if (!actual.isEmpty())
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be empty", name)).
 			build();
 	}
@@ -118,7 +92,7 @@ public final class StringVerifierImpl implements StringVerifier
 		char firstCharacter = actual.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s must contain a valid IP address or hostname format.", name)).
 				addContext("Actual", actual).
 				build();
@@ -130,7 +104,7 @@ public final class StringVerifierImpl implements StringVerifier
 		}
 		catch (UnknownHostException e)
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s must contain a valid IP address or hostname format.", name), e).
 				addContext("Actual", actual).
 				build();
@@ -155,7 +129,7 @@ public final class StringVerifierImpl implements StringVerifier
 		}
 		catch (IllegalArgumentException e)
 		{
-			throw config.exceptionBuilder(IllegalArgumentException.class,
+			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s does not contain a valid URI format", name)).
 				addContext("Actual", actual).
 				build();
@@ -174,7 +148,7 @@ public final class StringVerifierImpl implements StringVerifier
 	{
 		if (actual.startsWith(prefix))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must start with \"%s\".", name, prefix)).
 			addContext("Actual", actual).
 			build();
@@ -185,7 +159,7 @@ public final class StringVerifierImpl implements StringVerifier
 	{
 		if (!actual.startsWith(prefix))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not start with \"%s\".", name, prefix)).
 			addContext("Actual", actual).
 			build();
@@ -196,7 +170,7 @@ public final class StringVerifierImpl implements StringVerifier
 	{
 		if (actual.endsWith(suffix))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must end with \"%s\".", name, suffix)).
 			addContext("Actual", actual).
 			build();
@@ -207,7 +181,7 @@ public final class StringVerifierImpl implements StringVerifier
 	{
 		if (!actual.endsWith(suffix))
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not end with \"%s\".", name, suffix)).
 			addContext("Actual", actual).
 			build();
@@ -307,5 +281,18 @@ public final class StringVerifierImpl implements StringVerifier
 	public String getActual()
 	{
 		return actual;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public StringVerifier configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

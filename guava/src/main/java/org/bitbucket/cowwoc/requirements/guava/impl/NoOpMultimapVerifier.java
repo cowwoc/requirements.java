@@ -6,12 +6,12 @@ package org.bitbucket.cowwoc.requirements.guava.impl;
 
 import com.google.common.collect.Multimap;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpCollectionVerifier;
@@ -20,65 +20,66 @@ import org.bitbucket.cowwoc.requirements.core.impl.NoOpStringVerifier;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 
 /**
+ * @param <K> the type of keys in the multimap
+ * @param <V> the type of values in the multimap
  * @author Gili Tzabari
  */
-public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Object>
+public final class NoOpMultimapVerifier<K, V> implements MultimapVerifier<K, V>
 {
-	// Enum declares values() which conflicts with Multimap.values()
-	public static final NoOpMultimapVerifier INSTANCE = new NoOpMultimapVerifier();
+	private final Configuration config;
 
 	/**
-	 * Prevent construction.
+	 * @param config the verifier's configuration
 	 */
-	private NoOpMultimapVerifier()
+	public NoOpMultimapVerifier(Configuration config)
 	{
+		this.config = config;
 	}
 
 	@Override
-	public CollectionVerifier<Object> keySet()
+	public CollectionVerifier<K> keySet()
 	{
-		return new NoOpCollectionVerifier<>();
+		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> keySet(Consumer<CollectionVerifier<Object>> consumer)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<Object> values()
-	{
-		return new NoOpCollectionVerifier<>();
-	}
-
-	@Override
-	public MultimapVerifier<Object, Object> values(Consumer<CollectionVerifier<Object>> consumer)
+	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Map.Entry<Object, Object>> entries()
+	public CollectionVerifier<V> values()
 	{
-		return new NoOpCollectionVerifier<>();
+		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> entries(
-		Consumer<CollectionVerifier<Map.Entry<Object, Object>>> consumer)
-	{
-		return this;
-	}
-
-	@Override
-	public MultimapVerifier<Object, Object> isEmpty()
+	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> isNotEmpty()
+	public CollectionVerifier<Entry<K, V>> entries()
+	{
+		return new NoOpCollectionVerifier<>(config);
+	}
+
+	@Override
+	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	{
+		return this;
+	}
+
+	@Override
+	public MultimapVerifier<K, V> isEmpty()
+	{
+		return this;
+	}
+
+	@Override
+	public MultimapVerifier<K, V> isNotEmpty()
 	{
 		return this;
 	}
@@ -86,73 +87,53 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	@Override
 	public ContainerSizeVerifier size()
 	{
-		return NoOpContainerSizeVerifier.INSTANCE;
+		return new NoOpContainerSizeVerifier(config);
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> withException(
-		Class<? extends RuntimeException> exception)
+	public MultimapVerifier<K, V> isEqualTo(Multimap<K, V> value)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> addContext(String key, Object value)
+	public MultimapVerifier<K, V> isEqualTo(Multimap<K, V> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> withContext(List<Map.Entry<String, Object>> context)
+	public MultimapVerifier<K, V> isNotEqualTo(Multimap<K, V> value)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> isEqualTo(Multimap<Object, Object> value)
+	public MultimapVerifier<K, V> isNotEqualTo(Multimap<K, V> value, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> isEqualTo(Multimap<Object, Object> value, String name)
+	public MultimapVerifier<K, V> isIn(Collection<Multimap<K, V>> collection)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> isNotEqualTo(Multimap<Object, Object> value)
+	public MultimapVerifier<K, V> isInstanceOf(Class<?> type)
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> isNotEqualTo(Multimap<Object, Object> value, String name)
+	public MultimapVerifier<K, V> isNull()
 	{
 		return this;
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> isIn(Collection<Multimap<Object, Object>> collection)
-	{
-		return this;
-	}
-
-	@Override
-	public MultimapVerifier<Object, Object> isInstanceOf(
-		Class<?> type)
-	{
-		return this;
-	}
-
-	@Override
-	public MultimapVerifier<Object, Object> isNull()
-	{
-		return this;
-	}
-
-	@Override
-	public MultimapVerifier<Object, Object> isNotNull()
+	public MultimapVerifier<K, V> isNotNull()
 	{
 		return this;
 	}
@@ -160,24 +141,36 @@ public final class NoOpMultimapVerifier implements MultimapVerifier<Object, Obje
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
-	public MultimapVerifier<Object, Object> asString(Consumer<StringVerifier> consumer)
+	public MultimapVerifier<K, V> asString(Consumer<StringVerifier> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public Optional<Multimap<Object, Object>> getActualIfPresent()
+	public Optional<Multimap<K, V>> getActualIfPresent()
 	{
 		return Optional.empty();
 	}
 
 	@Override
-	public Multimap<Object, Object> getActual()
+	public Multimap<K, V> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public MultimapVerifier<K, V> configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

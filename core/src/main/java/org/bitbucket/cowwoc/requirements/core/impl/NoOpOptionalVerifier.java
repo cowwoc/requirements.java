@@ -5,11 +5,10 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
@@ -18,26 +17,18 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  *
  * @author Gili Tzabari
  */
-public enum NoOpOptionalVerifier implements OptionalVerifier
+public final class NoOpOptionalVerifier implements OptionalVerifier
 {
-	INSTANCE;
+	private final Configuration config;
 
-	@Override
-	public OptionalVerifier withException(Class<? extends RuntimeException> exception)
+	/**
+	 * @param config the verifier's configuration
+	 * @throws AssertionError if {@code config} is null
+	 */
+	public NoOpOptionalVerifier(Configuration config)
 	{
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier addContext(String key, Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier withContext(List<Entry<String, Object>> context)
-	{
-		return this;
+		assert (config != null): "config may not be null";
+		this.config = config;
 	}
 
 	@Override
@@ -115,7 +106,7 @@ public enum NoOpOptionalVerifier implements OptionalVerifier
 	@Override
 	public StringVerifier asString()
 	{
-		return NoOpStringVerifier.INSTANCE;
+		return new NoOpStringVerifier(config);
 	}
 
 	@Override
@@ -134,5 +125,17 @@ public enum NoOpOptionalVerifier implements OptionalVerifier
 	public Optional<?> getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public OptionalVerifier configuration(Consumer<Configuration> consumer)
+	{
+		return this;
 	}
 }

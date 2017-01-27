@@ -5,16 +5,15 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.SingletonScope;
-import org.bitbucket.cowwoc.requirements.core.util.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of {@code NumberVerifier}.
@@ -25,7 +24,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Configuration;
 public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	implements NumberVerifier<T>
 {
-	private final SingletonScope scope;
+	private final ApplicationScope scope;
 	private final T actual;
 	private final String name;
 	private final Configuration config;
@@ -34,14 +33,14 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	/**
 	 * Creates a new NumberVerifierImpl.
 	 *
-	 * @param scope  the system configuration
+	 * @param scope  the application configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public NumberVerifierImpl(SingletonScope scope, T actual, String name, Configuration config)
+	public NumberVerifierImpl(ApplicationScope scope, T actual, String name, Configuration config)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
@@ -51,31 +50,6 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 		this.name = name;
 		this.config = config;
 		this.asComparable = new ComparableVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public NumberVerifier<T> withException(Class<? extends RuntimeException> exception)
-	{
-		Configuration newConfig = config.withException(exception);
-		if (newConfig == config)
-			return this;
-		return new NumberVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public NumberVerifier<T> addContext(String key, Object value)
-	{
-		Configuration newConfig = config.addContext(key, value);
-		return new NumberVerifierImpl<>(scope, actual, name, newConfig);
-	}
-
-	@Override
-	public NumberVerifier<T> withContext(List<Entry<String, Object>> context)
-	{
-		Configuration newConfig = config.withContext(context);
-		if (newConfig == config)
-			return this;
-		return new NumberVerifierImpl<>(scope, actual, name, newConfig);
 	}
 
 	@Override
@@ -139,7 +113,7 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		if (actual.longValue() < 0L)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be negative.", name)).
 			addContext("Actual", actual).
 			build();
@@ -150,7 +124,7 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		if (actual.longValue() >= 0L)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be negative.", name)).
 			addContext("Actual", actual).
 			build();
@@ -161,7 +135,7 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		if (actual.longValue() == 0L)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be zero.", name)).
 			addContext("Actual", actual).
 			build();
@@ -172,7 +146,7 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		if (actual.longValue() != 0L)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be zero", name)).
 			build();
 	}
@@ -182,7 +156,7 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		if (actual.longValue() > 0L)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s must be positive.", name)).
 			addContext("Actual", actual).
 			build();
@@ -193,7 +167,7 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	{
 		if (actual.longValue() <= 0L)
 			return this;
-		throw config.exceptionBuilder(IllegalArgumentException.class,
+		throw new ExceptionBuilder(config, IllegalArgumentException.class,
 			String.format("%s may not be positive.", name)).
 			addContext("Actual", actual).
 			build();
@@ -285,5 +259,18 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	public T getActual()
 	{
 		throw new NoSuchElementException("Assertions are disabled");
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return config;
+	}
+
+	@Override
+	public NumberVerifier<T> configuration(Consumer<Configuration> consumer)
+	{
+		consumer.accept(config);
+		return this;
 	}
 }

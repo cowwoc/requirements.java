@@ -14,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
  * @author Gili Tzabari
  */
 public interface BigDecimalVerifier
-	extends NumberVerifierExtension<BigDecimalVerifier, BigDecimal>, Verifier<BigDecimalVerifier>
+	extends NumberVerifierExtension<BigDecimalVerifier, BigDecimal>
 {
 	/**
 	 * @return a verifier for {@code BigDecimal.precision()}
