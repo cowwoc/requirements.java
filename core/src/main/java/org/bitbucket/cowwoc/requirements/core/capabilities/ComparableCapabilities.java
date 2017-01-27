@@ -2,17 +2,17 @@
  * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.core.ext;
+package org.bitbucket.cowwoc.requirements.core.capabilities;
 
 /**
- * Verifies a {@link Comparable}.
+ * Verifies a value that extends {@link Comparable}.
  * <p>
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface ComparableVerifierExtension<S extends ComparableVerifierExtension<S, T>, T extends Comparable<? super T>>
-	extends ObjectVerifierExtension<S, T>
+public interface ComparableCapabilities<S extends ComparableCapabilities<S, T>, T extends Comparable<? super T>>
+	extends ObjectCapabilities<S, T>
 {
 	/**
 	 * Ensures that the actual value is greater than the specified the specified value.

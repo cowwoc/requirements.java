@@ -6,8 +6,6 @@
  * Classes that enable developers to enforce method contracts.
  *
  * Interfaces in this package may be implemented but may not be extended (because methods contain
- * a hard-coded return type).
- *
- * @see org.bitbucket.cowwoc.requirements.core.Verifier
+ * a fixed return type).
  */
 package org.bitbucket.cowwoc.requirements.guava;

@@ -5,7 +5,5 @@
 /**
  * Interfaces that may be extended but not implemented (because methods contain a generic return
  * type).
- *
- * @see org.bitbucket.cowwoc.requirements.core.Verifier
  */
-package org.bitbucket.cowwoc.requirements.core.ext;
+package org.bitbucket.cowwoc.requirements.core.capabilities;

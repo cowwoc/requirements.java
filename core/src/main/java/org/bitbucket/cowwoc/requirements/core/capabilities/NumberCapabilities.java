@@ -2,17 +2,17 @@
  * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.core.ext;
+package org.bitbucket.cowwoc.requirements.core.capabilities;
 
 /**
- * Verifier for a {@link Number}.
+ * Verifier a value that extends {@link Number}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface NumberVerifierExtension<S extends NumberVerifierExtension<S, T>, T extends Number & Comparable<? super T>>
-	extends ComparableVerifierExtension<S, T>
+public interface NumberCapabilities<S extends NumberCapabilities<S, T>, T extends Number & Comparable<? super T>>
+	extends ComparableCapabilities<S, T>
 {
 	/**
 	 * Ensures that the actual value is negative.

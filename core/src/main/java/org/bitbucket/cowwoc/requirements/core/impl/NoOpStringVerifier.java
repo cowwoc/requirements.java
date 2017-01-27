@@ -9,11 +9,10 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
-import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 
 /**
  * An implementation of StringVerifier that does nothing.
@@ -149,14 +148,13 @@ public final class NoOpStringVerifier implements StringVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier length()
+	public PrimitiveIntegerVerifier length()
 	{
-		return new NoOpContainerSizeVerifier(config);
+		return new NoOpPrimitiveIntegerVerifier(config);
 	}
 
 	@Override
-	public StringBasedExtension<StringVerifier, String> length(
-		Consumer<ContainerSizeVerifier> consumer)
+	public StringVerifier length(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		return this;
 	}

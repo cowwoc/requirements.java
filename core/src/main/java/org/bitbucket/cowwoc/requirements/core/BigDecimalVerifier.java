@@ -6,15 +6,14 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.math.BigDecimal;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 
 /**
  * Verifies a {@link BigDecimal} value.
  *
  * @author Gili Tzabari
  */
-public interface BigDecimalVerifier
-	extends NumberVerifierExtension<BigDecimalVerifier, BigDecimal>
+public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifier, BigDecimal>
 {
 	/**
 	 * @return a verifier for {@code BigDecimal.precision()}
@@ -30,11 +29,11 @@ public interface BigDecimalVerifier
 	/**
 	 * @return a verifier for {@code BigDecimal.scale()}
 	 */
-	BigDecimalScaleVerifier scale();
+	PrimitiveIntegerVerifier scale();
 
 	/**
 	 * @param consumer verifies the {@code BigDecimal.scale()}
 	 * @return this
 	 */
-	BigDecimalVerifier scale(Consumer<BigDecimalScaleVerifier> consumer);
+	BigDecimalVerifier scale(Consumer<PrimitiveIntegerVerifier> consumer);
 }

@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -185,13 +185,13 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ContainerSizeVerifier length()
+	public PrimitiveIntegerVerifier length()
 	{
-		return new NoOpContainerSizeVerifier(config);
+		return new NoOpPrimitiveIntegerVerifier(config);
 	}
 
 	@Override
-	public ArrayVerifier<E> length(Consumer<ContainerSizeVerifier> consumer)
+	public ArrayVerifier<E> length(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		return this;
 	}

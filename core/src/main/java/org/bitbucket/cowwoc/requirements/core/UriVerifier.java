@@ -5,15 +5,14 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.net.URI;
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@code URI}.
  *
  * @author Gili Tzabari
  */
-public interface UriVerifier
-	extends ObjectVerifierExtension<UriVerifier, URI>
+public interface UriVerifier extends ObjectCapabilities<UriVerifier, URI>
 {
 	/**
 	 * Ensures that the actual value is absolute.

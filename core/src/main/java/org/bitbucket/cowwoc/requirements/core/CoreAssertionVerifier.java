@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ext.Configurable;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpBigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpClassVerifier;

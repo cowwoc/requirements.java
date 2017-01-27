@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link Map}.
@@ -16,8 +16,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @param <V> the type of values in the map
  * @author Gili Tzabari
  */
-public interface MapVerifier<K, V>
-	extends ObjectVerifierExtension<MapVerifier<K, V>, Map<K, V>>
+public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>, Map<K, V>>
 {
 	/**
 	 * @return a verifier for the {@link Map#keySet()}
@@ -71,11 +70,11 @@ public interface MapVerifier<K, V>
 	/**
 	 * @return a verifier for {@link Map#size()}
 	 */
-	ContainerSizeVerifier size();
+	PrimitiveIntegerVerifier size();
 
 	/**
 	 * @param consumer verifies the {@link Map#size()}
 	 * @return this
 	 */
-	MapVerifier<K, V> size(Consumer<ContainerSizeVerifier> consumer);
+	MapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer);
 }

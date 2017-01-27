@@ -8,18 +8,18 @@ import com.google.common.collect.Multimap;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
- * Verifies a {@link Multimap} parameter.
+ * Verifies a {@link Multimap}.
  *
  * @param <K> the type of key in the multimap
  * @param <V> the type of value in the multimap
  * @author Gili Tzabari
  */
 public interface MultimapVerifier<K, V>
-	extends ObjectVerifierExtension<MultimapVerifier<K, V>, Multimap<K, V>>
+	extends ObjectCapabilities<MultimapVerifier<K, V>, Multimap<K, V>>
 {
 	/**
 	 * @return a verifier over {@link Multimap#keySet()}
@@ -55,23 +55,29 @@ public interface MultimapVerifier<K, V>
 	MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Entry<K, V>>> consumer);
 
 	/**
-	 * Ensures that the parameter is empty.
+	 * Ensures that the actual value is empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is not empty
+	 * @throws IllegalArgumentException if actual value is not empty
 	 */
 	MultimapVerifier<K, V> isEmpty();
 
 	/**
-	 * Ensures that the parameter is not empty.
+	 * Ensures that the actual value is not empty.
 	 *
 	 * @return this
-	 * @throws IllegalArgumentException if parameter is empty
+	 * @throws IllegalArgumentException if actual value is empty
 	 */
 	MultimapVerifier<K, V> isNotEmpty();
 
 	/**
 	 * @return verifier over {@link Multimap#size()}
 	 */
-	ContainerSizeVerifier size();
+	PrimitiveIntegerVerifier size();
+
+	/**
+	 * @param consumer verifies the multimap's size
+	 * @return this
+	 */
+	MultimapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer);
 }

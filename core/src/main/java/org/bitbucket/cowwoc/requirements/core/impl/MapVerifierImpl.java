@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
@@ -175,14 +175,14 @@ public final class MapVerifierImpl<K, V> implements MapVerifier<K, V>
 	}
 
 	@Override
-	public ContainerSizeVerifier size()
+	public PrimitiveIntegerVerifier size()
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name,
 			name + ".size()", Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MapVerifier<K, V> size(Consumer<ContainerSizeVerifier> consumer)
+	public MapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		consumer.accept(size());
 		return this;

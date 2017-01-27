@@ -23,7 +23,6 @@ import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisionVerifier
 {
 	private final ApplicationScope scope;
-	private final BigDecimal bigDecimal;
 	private final int actual;
 	private final String name;
 	private final Configuration config;
@@ -45,7 +44,6 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.bigDecimal = actual;
 		this.actual = actual.precision();
 		this.name = name + ".precision()";
 		this.config = config;
@@ -72,7 +70,6 @@ public final class BigDecimalPrecisionVerifierImpl implements BigDecimalPrecisio
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.bigDecimal = bigDecimal;
 		this.actual = actual;
 		this.name = name;
 		this.config = config;

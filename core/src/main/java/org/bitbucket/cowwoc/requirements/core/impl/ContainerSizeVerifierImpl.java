@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -18,11 +17,11 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
- * Default implementation of ContainerSizeVerifier.
+ * An implementation of PrimitiveIntegerVerifier for a container's size.
  *
  * @author Gili Tzabari
  */
-public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
+public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 {
 	private final ApplicationScope scope;
 	private final Object container;
@@ -66,7 +65,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isGreaterThanOrEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size >= value)
@@ -80,7 +79,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isGreaterThanOrEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value, String name)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -97,7 +96,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isGreaterThan(Integer value)
+	public PrimitiveIntegerVerifier isGreaterThan(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size > value)
@@ -111,7 +110,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isGreaterThan(Integer value, String name)
+	public PrimitiveIntegerVerifier isGreaterThan(Integer value, String name)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -128,7 +127,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isLessThanOrEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size <= value)
@@ -143,7 +142,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isLessThanOrEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value, String name)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -160,7 +159,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isLessThan(Integer value)
+	public PrimitiveIntegerVerifier isLessThan(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (size < value)
@@ -175,7 +174,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isLessThan(Integer value, String name)
+	public PrimitiveIntegerVerifier isLessThan(Integer value, String name)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -192,13 +191,13 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isNotPositive()
+	public PrimitiveIntegerVerifier isNotPositive()
 	{
 		return isZero();
 	}
 
 	@Override
-	public ContainerSizeVerifier isPositive()
+	public PrimitiveIntegerVerifier isPositive()
 	{
 		if (size > 0)
 			return this;
@@ -211,13 +210,13 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isNotZero()
+	public PrimitiveIntegerVerifier isNotZero()
 	{
 		return isPositive();
 	}
 
 	@Override
-	public ContainerSizeVerifier isZero()
+	public PrimitiveIntegerVerifier isZero()
 	{
 		if (size == 0)
 			return this;
@@ -230,7 +229,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isNotNegative()
+	public PrimitiveIntegerVerifier isNotNegative()
 	{
 		// Always true
 		return this;
@@ -238,14 +237,14 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 
 	@Deprecated
 	@Override
-	public ContainerSizeVerifier isNegative()
+	public PrimitiveIntegerVerifier isNegative()
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
 			String.format("%s cannot have a negative length", sizeName), null);
 	}
 
 	@Override
-	public ContainerSizeVerifier isBetween(Integer min, Integer max)
+	public PrimitiveIntegerVerifier isBetween(Integer min, Integer max)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
@@ -261,7 +260,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isEqualTo(Integer value)
 	{
 		if (Objects.equals(size, value))
 			return this;
@@ -274,7 +273,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isEqualTo(Integer value, String name)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -291,7 +290,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isNotEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isNotEqualTo(Integer value)
 	{
 		if (!Objects.equals(size, value))
 			return this;
@@ -302,7 +301,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier isNotEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isNotEqualTo(Integer value, String name)
 	{
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -318,28 +317,28 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 
 	@Override
 	@Deprecated
-	public ContainerSizeVerifier isNull()
+	public PrimitiveIntegerVerifier isNull()
 	{
 		asInt.isNull();
 		return this;
 	}
 
 	@Override
-	public ContainerSizeVerifier isNotNull()
+	public PrimitiveIntegerVerifier isNotNull()
 	{
 		asInt.isNotNull();
 		return this;
 	}
 
 	@Override
-	public ContainerSizeVerifier isIn(Collection<Integer> collection)
+	public PrimitiveIntegerVerifier isIn(Collection<Integer> collection)
 	{
 		asInt.isIn(collection);
 		return this;
 	}
 
 	@Override
-	public ContainerSizeVerifier isInstanceOf(Class<?> type)
+	public PrimitiveIntegerVerifier isInstanceOf(Class<?> type)
 	{
 		asInt.isInstanceOf(type);
 		return this;
@@ -352,7 +351,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier asString(Consumer<StringVerifier> consumer)
+	public PrimitiveIntegerVerifier asString(Consumer<StringVerifier> consumer)
 	{
 		consumer.accept(asString());
 		return this;
@@ -377,7 +376,7 @@ public final class ContainerSizeVerifierImpl implements ContainerSizeVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier configuration(Consumer<Configuration> consumer)
+	public PrimitiveIntegerVerifier configuration(Consumer<Configuration> consumer)
 	{
 		consumer.accept(config);
 		return this;

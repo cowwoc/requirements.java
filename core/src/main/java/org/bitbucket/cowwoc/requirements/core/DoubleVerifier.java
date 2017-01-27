@@ -4,15 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 
 /**
  * Verifies a {@link Double} value.
  *
  * @author Gili Tzabari
  */
-public interface DoubleVerifier
-	extends NumberVerifierExtension<DoubleVerifier, Double>
+public interface DoubleVerifier extends NumberCapabilities<DoubleVerifier, Double>
 {
 	/**
 	 * Ensures that the actual value is a number.

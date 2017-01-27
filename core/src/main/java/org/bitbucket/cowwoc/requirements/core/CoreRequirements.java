@@ -481,12 +481,6 @@ public final class CoreRequirements
 	private CoreRequirements()
 	{
 		// TODO:
-		// * Ideally users should be able to create their own Unified verifiers by using multiple
-		//   inheritance of interfaces with composition, or multiple inheritance of implementation.
-		// * Because spi classes omitted from Javadoc, classes like ArrayLengthRequirements
-		// reference inherited methods that cannot be looked up. See http://cowwoc.bitbucket.org/requirements/javadoc/latest/org/bitbucket/cowwoc/requirements/ArrayLengthRequirements.html
-		// * Revisit multiple inheritance using interfaces now that JDK9 adds private method and
-		// http://stackoverflow.com/a/7355094/14731 clarified that there is no possible security risk.
 		// * Separate out the following tests: (1) DiffGenerator produces the right diff.
 		// (2) DiffWriter generates the right colors. (3) JNI library returns expected values.
 		// In the first two cases, the JNI library should be stubbed out and the 3rd case might not be
@@ -495,5 +489,7 @@ public final class CoreRequirements
 		// methods in the right order.
 		// * Replace Exceptions.SHOW_FULL_STACKTRACE with global configuration option
 		// * Add JMH module to be run manually.
+		// * Ideally users should be able to create their own Unified verifiers by using multiple
+		//   inheritance of interfaces with composition, or multiple inheritance of implementation.
 	}
 }

@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
-import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -47,13 +47,13 @@ public final class NoOpBigDecimalVerifier implements BigDecimalVerifier
 	}
 
 	@Override
-	public BigDecimalScaleVerifier scale()
+	public PrimitiveIntegerVerifier scale()
 	{
-		return new NoOpBigDecimalScaleVerifier(config);
+		return new NoOpPrimitiveIntegerVerifier(config);
 	}
 
 	@Override
-	public BigDecimalVerifier scale(Consumer<BigDecimalScaleVerifier> consumer)
+	public BigDecimalVerifier scale(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		return this;
 	}

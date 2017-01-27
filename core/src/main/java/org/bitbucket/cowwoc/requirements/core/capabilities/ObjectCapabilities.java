@@ -2,23 +2,24 @@
  * Copyright 2015 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.core.ext;
+package org.bitbucket.cowwoc.requirements.core.capabilities;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * Verifies an {@link Object}.
+ * Verifies a value that extends {@link Object}.
  * <p>
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface ObjectVerifierExtension<S extends ObjectVerifierExtension<S, T>, T>
+public interface ObjectCapabilities<S extends ObjectCapabilities<S, T>, T>
 	extends Configurable<S>
 {
 	/**

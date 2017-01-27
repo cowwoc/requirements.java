@@ -11,12 +11,11 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
-import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -188,15 +187,14 @@ public final class StringVerifierImpl implements StringVerifier
 	}
 
 	@Override
-	public ContainerSizeVerifier length()
+	public PrimitiveIntegerVerifier length()
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.length(), name,
 			name + ".length()", Pluralizer.CHARACTER, config);
 	}
 
 	@Override
-	public StringBasedExtension<StringVerifier, String> length(
-		Consumer<ContainerSizeVerifier> consumer)
+	public StringVerifier length(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		consumer.accept(length());
 		return this;

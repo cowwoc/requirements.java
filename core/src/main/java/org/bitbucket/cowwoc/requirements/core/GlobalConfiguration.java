@@ -87,7 +87,8 @@ public final class GlobalConfiguration
 	/**
 	 * @return true if exceptions should show the difference between the actual and expected values
 	 *         (true by default)
-	 * @see #setDiffEnabled(boolean)
+	 * @see #withDiff()
+	 * @see #withoutDiff()
 	 */
 	public boolean isDiffEnabled()
 	{

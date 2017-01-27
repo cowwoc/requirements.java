@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Collection;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link Collection} value.
@@ -15,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 public interface CollectionVerifier<E>
-	extends ObjectVerifierExtension<CollectionVerifier<E>, Collection<E>>
+	extends ObjectCapabilities<CollectionVerifier<E>, Collection<E>>
 {
 	/**
 	 * Ensures that the actual value is empty.
@@ -201,13 +201,13 @@ public interface CollectionVerifier<E>
 	/**
 	 * @return a verifier for the collection's size
 	 */
-	ContainerSizeVerifier size();
+	PrimitiveIntegerVerifier size();
 
 	/**
 	 * @param consumer verifies the collection's size
 	 * @return this
 	 */
-	CollectionVerifier<E> size(Consumer<ContainerSizeVerifier> consumer);
+	CollectionVerifier<E> size(Consumer<PrimitiveIntegerVerifier> consumer);
 
 	/**
 	 * @param type the array type

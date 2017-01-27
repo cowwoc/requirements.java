@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.BigDecimalScaleVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -16,14 +15,13 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
- * Default implementation of {@code BigDecimalScaleVerifier}.
+ * An implementation of {@code PrimitiveIntegerVerifier} for a {@code BigDecimal}'s scale.
  *
  * @author Gili Tzabari
  */
-public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifier
+public final class BigDecimalScaleVerifierImpl implements PrimitiveIntegerVerifier
 {
 	private final ApplicationScope scope;
-	private final BigDecimal bigDecimal;
 	private final int actual;
 	private final String name;
 	private final Configuration config;
@@ -46,7 +44,6 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.bigDecimal = actual;
 		this.actual = actual.scale();
 		this.name = name + ".scale()";
 		this.config = config;
@@ -73,7 +70,6 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.bigDecimal = bigDecimal;
 		this.actual = actual;
 		this.name = name;
 		this.config = config;
@@ -82,119 +78,119 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 
 	@Override
 	@Deprecated
-	public BigDecimalScaleVerifier isNull()
+	public PrimitiveIntegerVerifier isNull()
 	{
 		asInt.isNull();
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isGreaterThan(Integer value, String name)
+	public PrimitiveIntegerVerifier isGreaterThan(Integer value, String name)
 	{
 		asInt.isGreaterThan(value, name);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isGreaterThan(Integer value)
+	public PrimitiveIntegerVerifier isGreaterThan(Integer value)
 	{
 		asInt.isGreaterThan(value);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isGreaterThanOrEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value, String name)
 	{
 		asInt.isGreaterThanOrEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isGreaterThanOrEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value)
 	{
 		asInt.isGreaterThanOrEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isLessThan(Integer value, String name)
+	public PrimitiveIntegerVerifier isLessThan(Integer value, String name)
 	{
 		asInt.isLessThan(value, name);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isLessThan(Integer value)
+	public PrimitiveIntegerVerifier isLessThan(Integer value)
 	{
 		asInt.isLessThan(value);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isLessThanOrEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value, String name)
 	{
 		asInt.isLessThanOrEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isLessThanOrEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value)
 	{
 		asInt.isLessThanOrEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isBetween(Integer min, Integer max)
+	public PrimitiveIntegerVerifier isBetween(Integer min, Integer max)
 	{
 		asInt.isBetween(min, max);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isEqualTo(Integer value)
 	{
 		asInt.isEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isEqualTo(Integer value, String name)
 	{
 		asInt.isEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isNotEqualTo(Integer value)
+	public PrimitiveIntegerVerifier isNotEqualTo(Integer value)
 	{
 		asInt.isNotEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isNotEqualTo(Integer value, String name)
+	public PrimitiveIntegerVerifier isNotEqualTo(Integer value, String name)
 	{
 		asInt.isNotEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isIn(Collection<Integer> collection)
+	public PrimitiveIntegerVerifier isIn(Collection<Integer> collection)
 	{
 		asInt.isIn(collection);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isInstanceOf(Class<?> type)
+	public PrimitiveIntegerVerifier isInstanceOf(Class<?> type)
 	{
 		asInt.isInstanceOf(type);
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isNotNull()
+	public PrimitiveIntegerVerifier isNotNull()
 	{
 		asInt.isNotNull();
 		return this;
@@ -202,14 +198,14 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 
 	@Deprecated
 	@Override
-	public BigDecimalScaleVerifier isZero()
+	public PrimitiveIntegerVerifier isZero()
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
 			String.format("%s can never be zero", name), null);
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isNotZero()
+	public PrimitiveIntegerVerifier isNotZero()
 	{
 		// Always true
 		return this;
@@ -217,21 +213,21 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 
 	@Deprecated
 	@Override
-	public BigDecimalScaleVerifier isNotPositive()
+	public PrimitiveIntegerVerifier isNotPositive()
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
 			String.format("%s can never be non-positive", name), null);
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isPositive()
+	public PrimitiveIntegerVerifier isPositive()
 	{
 		// Always true
 		return this;
 	}
 
 	@Override
-	public BigDecimalScaleVerifier isNotNegative()
+	public PrimitiveIntegerVerifier isNotNegative()
 	{
 		// Always true
 		return this;
@@ -239,7 +235,7 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 
 	@Deprecated
 	@Override
-	public BigDecimalScaleVerifier isNegative()
+	public PrimitiveIntegerVerifier isNegative()
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
 			String.format("%s can never be negative", name), null);
@@ -252,7 +248,7 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	}
 
 	@Override
-	public BigDecimalScaleVerifier asString(Consumer<StringVerifier> consumer)
+	public PrimitiveIntegerVerifier asString(Consumer<StringVerifier> consumer)
 	{
 		consumer.accept(asString());
 		return this;
@@ -277,7 +273,7 @@ public final class BigDecimalScaleVerifierImpl implements BigDecimalScaleVerifie
 	}
 
 	@Override
-	public BigDecimalScaleVerifier configuration(Consumer<Configuration> consumer)
+	public PrimitiveIntegerVerifier configuration(Consumer<Configuration> consumer)
 	{
 		consumer.accept(config);
 		return this;

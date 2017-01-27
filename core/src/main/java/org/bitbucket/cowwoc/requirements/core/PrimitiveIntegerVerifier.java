@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveIntegerCapabilities;
 
 /**
  * Verifies an {@link int}.
@@ -13,6 +13,6 @@ import org.bitbucket.cowwoc.requirements.core.ext.PrimitiveIntegerVerifierExtens
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveIntegerVerifier
-	extends PrimitiveIntegerVerifierExtension<PrimitiveIntegerVerifier>
+	extends PrimitiveIntegerCapabilities<PrimitiveIntegerVerifier>
 {
 }

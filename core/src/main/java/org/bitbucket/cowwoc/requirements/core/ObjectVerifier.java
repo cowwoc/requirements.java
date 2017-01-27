@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies an {@link Object}.
@@ -13,7 +13,6 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
-public interface ObjectVerifier<T>
-	extends ObjectVerifierExtension<ObjectVerifier<T>, T>
+public interface ObjectVerifier<T> extends ObjectCapabilities<ObjectVerifier<T>, T>
 {
 }

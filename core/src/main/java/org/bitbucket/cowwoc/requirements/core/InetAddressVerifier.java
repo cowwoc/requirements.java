@@ -5,15 +5,14 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.net.InetAddress;
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies an IP address or hostname.
  *
  * @author Gili Tzabari
  */
-public interface InetAddressVerifier
-	extends ObjectVerifierExtension<InetAddressVerifier, InetAddress>
+public interface InetAddressVerifier extends ObjectCapabilities<InetAddressVerifier, InetAddress>
 {
 	/**
 	 * Ensures that the actual value is an IP v4 address.

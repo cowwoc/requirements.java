@@ -5,15 +5,14 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies an {@link Optional}.
  *
  * @author Gili Tzabari
  */
-public interface OptionalVerifier
-	extends ObjectVerifierExtension<OptionalVerifier, Optional<?>>
+public interface OptionalVerifier extends ObjectCapabilities<OptionalVerifier, Optional<?>>
 {
 	/**
 	 * Ensures that the actual value is present.

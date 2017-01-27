@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link Class} value.
@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.ext.ObjectVerifierExtension;
  * @param <T> the type of the class
  * @author Gili Tzabari
  */
-public interface ClassVerifier<T> extends ObjectVerifierExtension<ClassVerifier<T>, Class<T>>
+public interface ClassVerifier<T> extends ObjectCapabilities<ClassVerifier<T>, Class<T>>
 {
 	/**
 	 * Ensures that the value is a superclass or super-interface of a class.

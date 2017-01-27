@@ -12,10 +12,10 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpCollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.impl.NoOpContainerSizeVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpPrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpStringVerifier;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 
@@ -85,9 +85,15 @@ public final class NoOpMultimapVerifier<K, V> implements MultimapVerifier<K, V>
 	}
 
 	@Override
-	public ContainerSizeVerifier size()
+	public PrimitiveIntegerVerifier size()
 	{
-		return new NoOpContainerSizeVerifier(config);
+		return new NoOpPrimitiveIntegerVerifier(config);
+	}
+
+	@Override
+	public MultimapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer)
+	{
+		return this;
 	}
 
 	@Override

@@ -5,38 +5,86 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ext.StringBasedExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link String}.
  *
  * @author Gili Tzabari
  */
-public interface StringVerifier
-	extends StringBasedExtension<StringVerifier, String>
+public interface StringVerifier extends ObjectCapabilities<StringVerifier, String>
 {
+	/**
+	 * Ensures that the actual value starts with a value.
+	 *
+	 * @param prefix the value that the string must start with
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not start with {@code prefix}
+	 */
+	StringVerifier startsWith(String prefix);
+
+	/**
+	 * Ensures that the actual value does not start with a value.
+	 *
+	 * @param prefix the value that the string may not start with
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value starts with {@code prefix}
+	 */
+	StringVerifier doesNotStartWith(String prefix);
+
+	/**
+	 * Ensures that the actual value ends with a value.
+	 *
+	 * @param suffix the value that the string must end with
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not end with {@code suffix}
+	 */
+	StringVerifier endsWith(String suffix);
+
+	/**
+	 * Ensures that the actual value does not end with a value.
+	 *
+	 * @param suffix the value that the string may not end with
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value ends with {@code suffix}
+	 */
+	StringVerifier doesNotEndWith(String suffix);
+
+	/**
+	 * Ensures that the actual value is empty.
+	 *
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value is not empty
+	 * @see #trim()
+	 */
+	StringVerifier isEmpty();
+
+	/**
+	 * Ensures that the actual value is not empty.
+	 *
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value is empty
+	 * @see #trim()
+	 */
+	StringVerifier isNotEmpty();
+
+	/**
+	 * @return a verifier for the length of the actual value
+	 */
+	PrimitiveIntegerVerifier length();
+
+	/**
+	 * @param consumer verifies the length of the actual value
+	 * @return this
+	 */
+	StringVerifier length(Consumer<PrimitiveIntegerVerifier> consumer);
+
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.
 	 *
 	 * @return this
 	 */
 	StringVerifier trim();
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see #trim()
-	 */
-	@Override
-	StringVerifier isEmpty();
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see #trim()
-	 */
-	@Override
-	StringVerifier isNotEmpty();
 
 	/**
 	 * Ensures that the actual value contains a valid Internet address format.

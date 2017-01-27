@@ -13,9 +13,9 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
@@ -387,14 +387,14 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
-	public ContainerSizeVerifier size()
+	public PrimitiveIntegerVerifier size()
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name,
 			name + ".size()", pluralizer, config);
 	}
 
 	@Override
-	public CollectionVerifier<E> size(Consumer<ContainerSizeVerifier> consumer)
+	public CollectionVerifier<E> size(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		consumer.accept(size());
 		return this;

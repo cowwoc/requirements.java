@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.ext.ComparableVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
 
 /**
  * Verifies a {@link Comparable}.
@@ -14,6 +14,6 @@ import org.bitbucket.cowwoc.requirements.core.ext.ComparableVerifierExtension;
  */
 @SuppressWarnings("MarkerInterface")
 public interface ComparableVerifier<T extends Comparable<? super T>>
-	extends ComparableVerifierExtension<ComparableVerifier<T>, T>
+	extends ComparableCapabilities<ComparableVerifier<T>, T>
 {
 }

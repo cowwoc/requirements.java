@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
+import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 
 /**
  * Verifier for a {@code Number}.
@@ -14,6 +14,6 @@ import org.bitbucket.cowwoc.requirements.core.ext.NumberVerifierExtension;
  */
 @SuppressWarnings("MarkerInterface")
 public interface NumberVerifier<T extends Number & Comparable<? super T>>
-	extends NumberVerifierExtension<NumberVerifier<T>, T>
+	extends NumberCapabilities<NumberVerifier<T>, T>
 {
 }
