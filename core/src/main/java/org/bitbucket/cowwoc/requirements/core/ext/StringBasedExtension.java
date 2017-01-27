@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 /**
  * Verifier for String-based types that aren't actually strings (e.g. email address).
  *
- * @param <S> the type of the non-extension interface extending this interface
+ * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */

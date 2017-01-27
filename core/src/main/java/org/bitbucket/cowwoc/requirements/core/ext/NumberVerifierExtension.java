@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.ext;
 /**
  * Verifier for a {@link Number}.
  *
- * @param <S> the type of the non-extension interface extending this interface
+ * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */

@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 
 /**
- * An object whose behavior is configurable.
+ * A verifier whose behavior is configurable.
  *
- * @param <S> the type being configured
+ * @param <S> the type of the verifier
  * @author Gili Tzabari
  */
 public interface Configurable<S>

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.ext;
 /**
  * Verifies an {@link int}.
  *
- * @param <S> the type of the non-extension interface extending this interface
+ * @param <S> the type of verifier that methods should return
  * @author Gili Tzabari
  */
 public interface PrimitiveIntegerVerifierExtension<S extends PrimitiveIntegerVerifierExtension<S>>
