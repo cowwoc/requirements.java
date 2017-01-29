@@ -7,16 +7,13 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
-import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.core.util.Sets;
@@ -28,14 +25,11 @@ import org.bitbucket.cowwoc.requirements.core.util.Strings;
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
-public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
+public class CollectionVerifierImpl<E>
+	extends ObjectCapabilitiesImpl<CollectionVerifier<E>, Collection<E>>
+	implements CollectionVerifier<E>
 {
-	private final ApplicationScope scope;
-	private final Collection<E> actual;
-	private final String name;
-	private final Configuration config;
 	private final Pluralizer pluralizer;
-	private final ObjectVerifier<Collection<E>> asObject;
 
 	/**
 	 * Creates new CollectionVerifierImpl.
@@ -51,72 +45,9 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	public CollectionVerifierImpl(ApplicationScope scope, Collection<E> actual, String name,
 		Pluralizer pluralizer, Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
+		super(scope, actual, name, config);
 		assert (pluralizer != null): "pluralizer may not be null";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
 		this.pluralizer = pluralizer;
-		this.config = config;
-		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public CollectionVerifier<E> isEqualTo(Collection<E> value)
-	{
-		asObject.isEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isEqualTo(Collection<E> value, String name)
-	{
-		asObject.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNotEqualTo(Collection<E> value)
-	{
-		asObject.isNotEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNotEqualTo(Collection<E> value, String name)
-	{
-		asObject.isNotEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isIn(Collection<Collection<E>> collection)
-	{
-		asObject.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isInstanceOf(Class<?> type)
-	{
-		asObject.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNull()
-	{
-		asObject.isNull();
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNotNull()
-	{
-		asObject.isNotNull();
-		return this;
 	}
 
 	@Override
@@ -401,19 +332,6 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	}
 
 	@Override
-	public StringVerifier asString()
-	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
-	}
-
-	@Override
-	public CollectionVerifier<E> asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
-		return this;
-	}
-
-	@Override
 	public ArrayVerifier<E> asArray(Class<E> type)
 	{
 		@SuppressWarnings("unchecked")
@@ -425,32 +343,6 @@ public class CollectionVerifierImpl<E> implements CollectionVerifier<E>
 	public CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
 	{
 		consumer.accept(asArray(type));
-		return this;
-	}
-
-	@Override
-	public Optional<Collection<E>> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public Collection<E> getActual()
-	{
-		return actual;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public CollectionVerifier<E> configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
 		return this;
 	}
 }

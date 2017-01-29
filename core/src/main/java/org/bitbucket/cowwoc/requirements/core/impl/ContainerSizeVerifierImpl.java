@@ -4,14 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
@@ -21,16 +17,13 @@ import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
  *
  * @author Gili Tzabari
  */
-public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
+public final class ContainerSizeVerifierImpl
+	extends NumberCapabilitiesImpl<PrimitiveIntegerVerifier, Integer>
+	implements PrimitiveIntegerVerifier
 {
-	private final ApplicationScope scope;
 	private final Object container;
-	private final int size;
 	private final String containerName;
-	private final String sizeName;
 	private final Pluralizer pluralizer;
-	private final Configuration config;
-	private final PrimitiveIntegerVerifier asInt;
 
 	/**
 	 * Creates new ContainerSizeVerifierImpl.
@@ -48,32 +41,26 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	public ContainerSizeVerifierImpl(ApplicationScope scope, Object container, int size,
 		String containerName, String sizeName, Pluralizer pluralizer, Configuration config)
 	{
-		assert (scope != null): "scope may not be null";
+		super(scope, size, sizeName, config);
 		assert (container != null): "container may not be null";
-		assert (sizeName != null): "name may not be null";
-		assert (!sizeName.isEmpty()): "name may not be empty";
+		assert (containerName != null): "containerName may not be null";
+		assert (!containerName.isEmpty()): "containerName may not be empty";
 		assert (pluralizer != null): "pluralizer may not be null";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
 		this.container = container;
-		this.size = size;
 		this.containerName = containerName;
-		this.sizeName = sizeName;
 		this.pluralizer = pluralizer;
-		this.config = config;
-		this.asInt = new PrimitiveIntegerVerifierImpl(scope, size, sizeName, config);
 	}
 
 	@Override
 	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
-		if (size >= value)
-			return this;
+		if (actual >= value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain at least %,d %s.", sizeName, value, pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain at least %,d %s.", name, value, pluralizer.nameOf(value))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -84,13 +71,13 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (size >= value)
-			return this;
+		if (actual >= value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain at least %s (%,d) %s.", this.sizeName, name, value,
+			String.format("%s must contain at least %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -99,12 +86,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	public PrimitiveIntegerVerifier isGreaterThan(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
-		if (size > value)
-			return this;
+		if (actual > value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain more than %,d %s.", sizeName, value, pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain more than %,d %s.", name, value, pluralizer.nameOf(value))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -115,13 +102,13 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (size > value)
-			return this;
+		if (actual > value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain more than %s (%,d) %s.", this.sizeName, name, value,
+			String.format("%s must contain more than %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -130,13 +117,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
-		if (size <= value)
-			return this;
+		if (actual <= value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s may not contain more than %,d %s.", sizeName, value,
-				pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s may not contain more than %,d %s.", name, value, pluralizer.nameOf(value))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -147,13 +133,13 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (size <= value)
-			return this;
+		if (actual <= value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s may not contain more than %s (%,d) %s.", this.sizeName, name, value,
+			String.format("%s may not contain more than %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -162,13 +148,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	public PrimitiveIntegerVerifier isLessThan(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
-		if (size < value)
-			return this;
+		if (actual < value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain less than %,d %s.", this.sizeName, value,
-				pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain less than %,d %s.", this.name, value, pluralizer.nameOf(value))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -179,13 +164,13 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (size < value)
-			return this;
+		if (actual < value)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain less than %s (%,d) %s.", this.sizeName, name, value,
-				pluralizer.nameOf(value), size, pluralizer.nameOf(size))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain less than %s (%,d) %s.", this.name, name, value,
+				pluralizer.nameOf(value), actual, pluralizer.nameOf(actual))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -199,12 +184,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	@Override
 	public PrimitiveIntegerVerifier isPositive()
 	{
-		if (size > 0)
-			return this;
+		if (actual > 0)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain at least one %s.", sizeName, pluralizer.nameOf(1))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain at least one %s.", name, pluralizer.nameOf(1))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -218,12 +203,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	@Override
 	public PrimitiveIntegerVerifier isZero()
 	{
-		if (size == 0)
-			return this;
+		if (actual == 0)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must be empty.", sizeName)).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must be empty.", name)).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -232,7 +217,7 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	public PrimitiveIntegerVerifier isNotNegative()
 	{
 		// Always true
-		return this;
+		return getThis();
 	}
 
 	@Deprecated
@@ -240,7 +225,7 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	public PrimitiveIntegerVerifier isNegative()
 	{
 		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s cannot have a negative length", sizeName), null);
+			String.format("%s cannot have a negative length", name), null);
 	}
 
 	@Override
@@ -249,12 +234,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
 		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
-		if (size >= min && size <= max)
-			return this;
+		if (actual >= min && actual <= max)
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d] %s.", sizeName, min, max, pluralizer.nameOf(2))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain [%d, %d] %s.", name, min, max, pluralizer.nameOf(2))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -262,12 +247,12 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	@Override
 	public PrimitiveIntegerVerifier isEqualTo(Integer value)
 	{
-		if (Objects.equals(size, value))
-			return this;
+		if (Objects.equals(actual, value))
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain %,d %s.", sizeName, value, pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			String.format("%s must contain %,d %s.", name, value, pluralizer.nameOf(value))).
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -278,13 +263,13 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (Objects.equals(size, value))
-			return this;
+		if (Objects.equals(actual, value))
+			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s must contain %s (%,d) %s.", this.sizeName, name, value,
+			String.format("%s must contain %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
-			addContext("Actual", size);
-		if (size > 0)
+			addContext("Actual", actual);
+		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
 	}
@@ -292,10 +277,10 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	@Override
 	public PrimitiveIntegerVerifier isNotEqualTo(Integer value)
 	{
-		if (!Objects.equals(size, value))
-			return this;
+		if (!Objects.equals(actual, value))
+			return getThis();
 		throw new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s may not contain %,d %s.", sizeName, value, pluralizer.nameOf(value))).
+			String.format("%s may not contain %,d %s.", name, value, pluralizer.nameOf(value))).
 			addContext("Actual", container).
 			build();
 	}
@@ -306,10 +291,10 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!Objects.equals(size, value))
-			return this;
+		if (!Objects.equals(actual, value))
+			return getThis();
 		throw new ExceptionBuilder(config, IllegalArgumentException.class,
-			String.format("%s may not contain %s (%,d) %s.", this.sizeName, name, value,
+			String.format("%s may not contain %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", container).
 			build();
@@ -319,66 +304,6 @@ public final class ContainerSizeVerifierImpl implements PrimitiveIntegerVerifier
 	@Deprecated
 	public PrimitiveIntegerVerifier isNull()
 	{
-		asInt.isNull();
-		return this;
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier isNotNull()
-	{
-		asInt.isNotNull();
-		return this;
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier isIn(Collection<Integer> collection)
-	{
-		asInt.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier isInstanceOf(Class<?> type)
-	{
-		asInt.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return new StringVerifierImpl(scope, String.valueOf(size), sizeName, config);
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
-		return this;
-	}
-
-	@Override
-	public Optional<Integer> getActualIfPresent()
-	{
-		return Optional.of(size);
-	}
-
-	@Override
-	public Integer getActual()
-	{
-		return size;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
-		return this;
+		return super.isNull();
 	}
 }

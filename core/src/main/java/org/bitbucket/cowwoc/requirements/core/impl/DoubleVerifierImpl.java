@@ -4,13 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.DoubleVerifier;
-import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -19,14 +14,10 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
  *
  * @author Gili Tzabari
  */
-public final class DoubleVerifierImpl implements DoubleVerifier
+public final class DoubleVerifierImpl
+	extends NumberCapabilitiesImpl<DoubleVerifier, Double>
+	implements DoubleVerifier
 {
-	private final ApplicationScope scope;
-	private final Double actual;
-	private final String name;
-	private final Configuration config;
-	private final NumberVerifier<Double> asNumber;
-
 	/**
 	 * Creates new DoubleVerifierImpl.
 	 *
@@ -39,175 +30,7 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 	 */
 	public DoubleVerifierImpl(ApplicationScope scope, Double actual, String name, Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
-		this.config = config;
-		this.asNumber = new NumberVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public DoubleVerifier isNegative()
-	{
-		asNumber.isNegative();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNotNegative()
-	{
-		asNumber.isNotNegative();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNotPositive()
-	{
-		asNumber.isNotPositive();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNotZero()
-	{
-		asNumber.isNotZero();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isPositive()
-	{
-		asNumber.isPositive();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isZero()
-	{
-		asNumber.isZero();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isGreaterThan(Double value, String name)
-	{
-		asNumber.isGreaterThan(value, name);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isGreaterThan(Double value)
-	{
-		asNumber.isGreaterThan(value);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isGreaterThanOrEqualTo(Double value, String name)
-	{
-		asNumber.isGreaterThanOrEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isGreaterThanOrEqualTo(Double value)
-	{
-		asNumber.isGreaterThanOrEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isLessThan(Double value, String name)
-	{
-		asNumber.isLessThan(value, name);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isLessThan(Double value)
-	{
-		asNumber.isLessThan(value);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isLessThanOrEqualTo(Double value, String name)
-	{
-		asNumber.isLessThanOrEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isLessThanOrEqualTo(Double value)
-	{
-		asNumber.isLessThanOrEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isBetween(Double min, Double max)
-	{
-		asNumber.isBetween(min, max);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isEqualTo(Double value)
-	{
-		asNumber.isEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isEqualTo(Double value, String name)
-	{
-		asNumber.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNotEqualTo(Double value)
-	{
-		asNumber.isNotEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNotEqualTo(Double value, String name)
-	{
-		asNumber.isNotEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isIn(Collection<Double> collection)
-	{
-		asNumber.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isInstanceOf(Class<?> type)
-	{
-		asNumber.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNull()
-	{
-		asNumber.isNull();
-		return this;
-	}
-
-	@Override
-	public DoubleVerifier isNotNull()
-	{
-		asNumber.isNotNull();
-		return this;
+		super(scope, actual, name, config);
 	}
 
 	@Override
@@ -252,43 +75,5 @@ public final class DoubleVerifierImpl implements DoubleVerifier
 			String.format("%s must be infinite.", name)).
 			addContext("Actual", actual).
 			build();
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
-	}
-
-	@Override
-	public DoubleVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
-		return this;
-	}
-
-	@Override
-	public Optional<Double> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public Double getActual()
-	{
-		return actual;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public DoubleVerifier configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
-		return this;
 	}
 }

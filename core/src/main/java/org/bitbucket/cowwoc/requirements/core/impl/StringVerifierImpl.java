@@ -7,12 +7,9 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
@@ -24,14 +21,9 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
  *
  * @author Gili Tzabari
  */
-public final class StringVerifierImpl implements StringVerifier
+public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerifier, String>
+	implements StringVerifier
 {
-	private final ApplicationScope scope;
-	private final String actual;
-	private final String name;
-	private final Configuration config;
-	private final ObjectVerifier<String> asObject;
-
 	/**
 	 * Creates new StringVerifierImpl.
 	 *
@@ -44,14 +36,7 @@ public final class StringVerifierImpl implements StringVerifier
 	 */
 	public StringVerifierImpl(ApplicationScope scope, String actual, String name, Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
-		this.config = config;
-		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
+		super(scope, actual, name, config);
 	}
 
 	@Override
@@ -126,7 +111,7 @@ public final class StringVerifierImpl implements StringVerifier
 			URI uri = URI.create(actual);
 			return new UriVerifierImpl(scope, uri, name, config);
 		}
-		catch (IllegalArgumentException e)
+		catch (IllegalArgumentException unused)
 		{
 			throw new ExceptionBuilder(config, IllegalArgumentException.class,
 				String.format("%s does not contain a valid URI format", name)).
@@ -197,100 +182,6 @@ public final class StringVerifierImpl implements StringVerifier
 	public StringVerifier length(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		consumer.accept(length());
-		return this;
-	}
-
-	@Override
-	public StringVerifier isEqualTo(String value)
-	{
-		asObject.isEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public StringVerifier isEqualTo(String value, String name)
-	{
-		asObject.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public StringVerifier isNotEqualTo(String value)
-	{
-		asObject.isNotEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public StringVerifier isNotEqualTo(String value, String name)
-	{
-		asObject.isNotEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public StringVerifier isIn(Collection<String> collection)
-	{
-		asObject.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public StringVerifier isInstanceOf(Class<?> type)
-	{
-		asObject.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public StringVerifier isNull()
-	{
-		asObject.isNull();
-		return this;
-	}
-
-	@Override
-	public StringVerifier isNotNull()
-	{
-		asObject.isNotNull();
-		return this;
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return this;
-	}
-
-	@Override
-	public StringVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(this);
-		return this;
-	}
-
-	@Override
-	public Optional<String> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public String getActual()
-	{
-		return actual;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public StringVerifier configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
 		return this;
 	}
 }

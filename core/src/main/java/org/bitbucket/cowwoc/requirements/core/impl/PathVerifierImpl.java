@@ -10,13 +10,8 @@ import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -25,14 +20,9 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
  *
  * @author Gili Tzabari
  */
-public final class PathVerifierImpl implements PathVerifier
+public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier, Path>
+	implements PathVerifier
 {
-	private final ApplicationScope scope;
-	private final Path actual;
-	private final String name;
-	private final Configuration config;
-	private final ObjectVerifier<Path> asObject;
-
 	/**
 	 * Creates new PathVerifierImpl.
 	 *
@@ -45,14 +35,7 @@ public final class PathVerifierImpl implements PathVerifier
 	 */
 	public PathVerifierImpl(ApplicationScope scope, Path actual, String name, Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
-		this.config = config;
-		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
+		super(scope, actual, name, config);
 	}
 
 	@Override
@@ -133,99 +116,5 @@ public final class PathVerifierImpl implements PathVerifier
 			String.format("%s must refer to an absolute path.", name)).
 			addContext("Actual", actual).
 			build();
-	}
-
-	@Override
-	public PathVerifier isNotNull()
-	{
-		asObject.isNotNull();
-		return this;
-	}
-
-	@Override
-	public PathVerifier isNull()
-	{
-		asObject.isNull();
-		return this;
-	}
-
-	@Override
-	public PathVerifier isIn(Collection<Path> collection)
-	{
-		asObject.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public PathVerifier isInstanceOf(Class<?> type)
-	{
-		asObject.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public PathVerifier isNotEqualTo(Path value, String name)
-	{
-		asObject.isNotEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public PathVerifier isNotEqualTo(Path value)
-	{
-		asObject.isNotEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public PathVerifier isEqualTo(Path value, String name)
-	{
-		asObject.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public PathVerifier isEqualTo(Path value)
-	{
-		asObject.isEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
-	}
-
-	@Override
-	public PathVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
-		return this;
-	}
-
-	@Override
-	public Optional<Path> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public Path getActual()
-	{
-		return actual;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public PathVerifier configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
-		return this;
 	}
 }

@@ -10,17 +10,18 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
+import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * Verifies a value that extends {@link Object}.
- * <p>
+ * Verifies a value that extends {@link Object} but the implementing verifier is not guaranteed
+ * to be an {@link ObjectVerifier}.
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface ObjectCapabilities<S extends ObjectCapabilities<S, T>, T>
-	extends Configurable<S>
+public interface ObjectCapabilities<S, T> extends Configurable<S>
 {
 	/**
 	 * Ensures that the actual value is equal to an expected value.

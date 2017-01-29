@@ -5,15 +5,11 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -22,14 +18,10 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
  *
  * @author Gili Tzabari
  */
-public final class BigDecimalVerifierImpl implements BigDecimalVerifier
+public final class BigDecimalVerifierImpl
+	extends NumberCapabilitiesImpl<BigDecimalVerifier, BigDecimal>
+	implements BigDecimalVerifier
 {
-	private final ApplicationScope scope;
-	private final BigDecimal actual;
-	private final String name;
-	private final Configuration config;
-	private final NumberVerifier<BigDecimal> asNumber;
-
 	/**
 	 * Creates new BigDecimalVerifierImpl.
 	 *
@@ -43,161 +35,7 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	public BigDecimalVerifierImpl(ApplicationScope scope, BigDecimal actual, String name,
 		Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
-		this.config = config;
-		this.asNumber = new NumberVerifierImpl<>(scope, actual, name, config);
-	}
-
-	@Override
-	public BigDecimalVerifier isEqualTo(BigDecimal value)
-	{
-		asNumber.isEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isEqualTo(BigDecimal value, String name)
-	{
-		asNumber.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNotEqualTo(BigDecimal value)
-	{
-		asNumber.isNotEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNotEqualTo(BigDecimal value, String name)
-	{
-		asNumber.isNotEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isIn(Collection<BigDecimal> collection)
-	{
-		asNumber.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isInstanceOf(Class<?> type)
-	{
-		asNumber.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNull()
-	{
-		asNumber.isNull();
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNotNull()
-	{
-		asNumber.isNotNull();
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNegative()
-	{
-		asNumber.isNegative();
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNotNegative()
-	{
-		asNumber.isNotNegative();
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isNotPositive()
-	{
-		asNumber.isNotPositive();
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isPositive()
-	{
-		asNumber.isPositive();
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isGreaterThan(BigDecimal value, String name)
-	{
-		asNumber.isGreaterThan(value, name);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isGreaterThan(BigDecimal value)
-	{
-		asNumber.isGreaterThan(value);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isGreaterThanOrEqualTo(BigDecimal value, String name)
-	{
-		asNumber.isGreaterThanOrEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isGreaterThanOrEqualTo(BigDecimal value)
-	{
-		asNumber.isGreaterThanOrEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isLessThan(BigDecimal value, String name)
-	{
-		asNumber.isLessThan(value, name);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isLessThan(BigDecimal value)
-	{
-		asNumber.isLessThan(value);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isLessThanOrEqualTo(BigDecimal value, String name)
-	{
-		asNumber.isLessThanOrEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isLessThanOrEqualTo(BigDecimal value)
-	{
-		asNumber.isLessThanOrEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isBetween(BigDecimal min, BigDecimal max)
-	{
-		asNumber.isBetween(min, max);
-		return this;
+		super(scope, actual, name, config);
 	}
 
 	@Override
@@ -246,44 +84,6 @@ public final class BigDecimalVerifierImpl implements BigDecimalVerifier
 	public BigDecimalVerifier scale(Consumer<PrimitiveIntegerVerifier> consumer)
 	{
 		consumer.accept(scale());
-		return this;
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
-	}
-
-	@Override
-	public BigDecimalVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
-		return this;
-	}
-
-	@Override
-	public Optional<BigDecimal> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public BigDecimal getActual()
-	{
-		return actual;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public BigDecimalVerifier configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
 		return this;
 	}
 }

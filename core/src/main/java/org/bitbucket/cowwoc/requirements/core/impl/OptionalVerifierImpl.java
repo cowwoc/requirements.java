@@ -4,13 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -19,14 +15,10 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
  *
  * @author Gili Tzabari
  */
-public final class OptionalVerifierImpl implements OptionalVerifier
+public final class OptionalVerifierImpl
+	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
+	implements OptionalVerifier
 {
-	private final ApplicationScope scope;
-	private final Optional<?> actual;
-	private final String name;
-	private final Configuration config;
-	private final ObjectVerifier<Optional<?>> asObject;
-
 	/**
 	 * Creates new OptionalVerifierImpl.
 	 *
@@ -40,14 +32,7 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	public OptionalVerifierImpl(ApplicationScope scope, Optional<?> actual, String name,
 		Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
-		this.config = config;
-		this.asObject = new ObjectVerifierImpl<>(scope, actual, name, config);
+		super(scope, actual, name, config);
 	}
 
 	@Override
@@ -102,93 +87,6 @@ public final class OptionalVerifierImpl implements OptionalVerifier
 	public OptionalVerifier isNotNull()
 	{
 		// Always true
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isNull()
-	{
-		asObject.isNull();
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isIn(Collection<Optional<?>> collection)
-	{
-		asObject.isIn(collection);
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isInstanceOf(Class<?> type)
-	{
-		asObject.isInstanceOf(type);
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isNotEqualTo(Optional<?> value, String name)
-	{
-		asObject.isNotEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isNotEqualTo(Optional<?> value)
-	{
-		asObject.isNotEqualTo(value);
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isEqualTo(Optional<?> value, String name)
-	{
-		asObject.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public OptionalVerifier isEqualTo(Optional<?> value)
-	{
-		asObject.isEqualTo(value, name);
-		return this;
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
-	}
-
-	@Override
-	public OptionalVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
-		return this;
-	}
-
-	@Override
-	public Optional<Optional<?>> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public Optional<?> getActual()
-	{
-		return actual;
-	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public OptionalVerifier configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
 		return this;
 	}
 }

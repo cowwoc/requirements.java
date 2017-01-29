@@ -4,14 +4,17 @@
  */
 package org.bitbucket.cowwoc.requirements.core.capabilities;
 
+import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
+
 /**
- * Verifier a value that extends {@link Number}.
+ * Verifies a value that extends {@link Number} but the implementing verifier is not guaranteed
+ * to be a {@link NumberVerifier}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface NumberCapabilities<S extends NumberCapabilities<S, T>, T extends Number & Comparable<? super T>>
+public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	extends ComparableCapabilities<S, T>
 {
 	/**

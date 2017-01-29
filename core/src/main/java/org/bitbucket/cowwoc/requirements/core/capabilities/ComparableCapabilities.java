@@ -4,14 +4,17 @@
  */
 package org.bitbucket.cowwoc.requirements.core.capabilities;
 
+import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
+
 /**
- * Verifies a value that extends {@link Comparable}.
- * <p>
+ * Verifies a value that extends {@link Comparable} but the implementing verifier is not guaranteed
+ * to be a {@link ComparableVerifier}.
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface ComparableCapabilities<S extends ComparableCapabilities<S, T>, T extends Comparable<? super T>>
+public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	extends ObjectCapabilities<S, T>
 {
 	/**
