@@ -40,7 +40,7 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (actual.isAssignableFrom(type))
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be a supertype of %s.", name, type)).
 			addContext("Actual", actual.getClass()).
 			build();

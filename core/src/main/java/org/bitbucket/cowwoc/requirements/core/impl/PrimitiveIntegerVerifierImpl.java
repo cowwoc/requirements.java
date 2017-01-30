@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Verifies an {@link int}.
@@ -38,7 +38,8 @@ public class PrimitiveIntegerVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isNull()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be null", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be null", name), null).
+			build();
 	}
 }

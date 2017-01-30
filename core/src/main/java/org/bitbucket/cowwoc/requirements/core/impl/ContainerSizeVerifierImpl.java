@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
-import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
 
 /**
  * An implementation of PrimitiveIntegerVerifier for a container's size.
@@ -57,7 +56,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual >= value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain at least %,d %s.", name, value, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -73,7 +72,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual >= value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain at least %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", actual);
@@ -88,7 +87,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual > value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain more than %,d %s.", name, value, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -104,7 +103,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual > value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain more than %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", actual);
@@ -119,7 +118,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual <= value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain more than %,d %s.", name, value, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -135,7 +134,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual <= value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain more than %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", actual);
@@ -150,7 +149,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual < value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain less than %,d %s.", this.name, value, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -166,7 +165,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual < value)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain less than %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value), actual, pluralizer.nameOf(actual))).
 			addContext("Actual", actual);
@@ -186,7 +185,7 @@ public final class ContainerSizeVerifierImpl
 	{
 		if (actual > 0)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain at least one %s.", name, pluralizer.nameOf(1))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -205,7 +204,7 @@ public final class ContainerSizeVerifierImpl
 	{
 		if (actual == 0)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -224,8 +223,9 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isNegative()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s cannot have a negative length", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s cannot have a negative length", name), null).
+			build();
 	}
 
 	@Override
@@ -236,7 +236,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
 		if (actual >= min && actual <= max)
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain [%d, %d] %s.", name, min, max, pluralizer.nameOf(2))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -249,7 +249,7 @@ public final class ContainerSizeVerifierImpl
 	{
 		if (Objects.equals(actual, value))
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain %,d %s.", name, value, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
@@ -265,7 +265,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, value))
 			return getThis();
-		ExceptionBuilder eb = new ExceptionBuilder(config, IllegalArgumentException.class,
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", actual);
@@ -279,7 +279,7 @@ public final class ContainerSizeVerifierImpl
 	{
 		if (!Objects.equals(actual, value))
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain %,d %s.", name, value, pluralizer.nameOf(value))).
 			addContext("Actual", container).
 			build();
@@ -293,7 +293,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, value))
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
 			addContext("Actual", container).

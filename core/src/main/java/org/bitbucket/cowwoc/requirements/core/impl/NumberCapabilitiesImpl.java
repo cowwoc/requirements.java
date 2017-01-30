@@ -40,7 +40,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.longValue() < 0L)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be negative.", name)).
 			addContext("Actual", actual).
 			build();
@@ -51,7 +51,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.longValue() >= 0L)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be negative.", name)).
 			addContext("Actual", actual).
 			build();
@@ -62,7 +62,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.longValue() == 0L)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be zero.", name)).
 			addContext("Actual", actual).
 			build();
@@ -73,7 +73,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.longValue() != 0L)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be zero", name)).
 			build();
 	}
@@ -83,7 +83,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.longValue() > 0L)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be positive.", name)).
 			addContext("Actual", actual).
 			build();
@@ -94,7 +94,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.longValue() <= 0L)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be positive.", name)).
 			addContext("Actual", actual).
 			build();

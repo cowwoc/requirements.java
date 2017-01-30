@@ -32,6 +32,29 @@ public interface ApplicationScope extends JvmScope
 	 */
 	TerminalEncoding getTerminalEncoding();
 
+	/**
+	 * Indicates if exceptions should show the difference between the actual and expected values.
+	 * <p>
+	 * The first time this method is invoked it reads the value of
+	 * {@code JvmScope.getGlobalConfiguration().isDiffEnabled()} and returns it for the remainder
+	 * of the application lifetime.
+	 *
+	 * @return true if exceptions should show the difference between the actual and expected values
+	 *         (true by default)
+	 */
+	boolean isDiffEnabled();
+
+	/**
+	 * Indicates if exception stack-traces should contain elements from this API.
+	 * <p>
+	 * The first time this method is invoked it reads the value of
+	 * {@code JvmScope.getGlobalConfiguration().isApiInStacktrace()} and returns it for the remainder
+	 * of the application lifetime.
+	 *
+	 * @return true if exception stack-traces should contain elements from this API (false by default)
+	 */
+	boolean isApiInStacktrace();
+
 	DiffGenerator getDiffGenerator();
 
 	/**

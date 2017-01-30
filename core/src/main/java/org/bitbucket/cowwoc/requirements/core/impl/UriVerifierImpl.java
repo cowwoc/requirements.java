@@ -38,7 +38,7 @@ public final class UriVerifierImpl extends ObjectCapabilitiesImpl<UriVerifier, U
 	{
 		if (actual.isAbsolute())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be absolute.", name)).
 			addContext("Actual", actual).
 			build();

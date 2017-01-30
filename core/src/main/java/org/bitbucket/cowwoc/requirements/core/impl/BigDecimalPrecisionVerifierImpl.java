@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of {@code BigDecimalPrecisionVerifier}.
@@ -38,8 +38,9 @@ public final class BigDecimalPrecisionVerifierImpl
 	@Override
 	public BigDecimalPrecisionVerifier isZero()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be zero", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be zero", name), null).
+			build();
 	}
 
 	@Override
@@ -53,8 +54,9 @@ public final class BigDecimalPrecisionVerifierImpl
 	@Override
 	public BigDecimalPrecisionVerifier isNotPositive()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be non-positive", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be non-positive", name), null).
+			build();
 	}
 
 	@Override
@@ -75,7 +77,8 @@ public final class BigDecimalPrecisionVerifierImpl
 	@Override
 	public BigDecimalPrecisionVerifier isNegative()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be negative", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null).
+			build();
 	}
 }

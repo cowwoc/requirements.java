@@ -46,7 +46,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be less than %s.", this.name, value)).
 			addContext("Actual", actual).
 			build();
@@ -61,7 +61,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be less than %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Maximum", value).
@@ -75,7 +75,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be less than or equal to %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -90,7 +90,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be less than or equal to %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Maximum", value).
@@ -104,7 +104,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be greater than %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -119,7 +119,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be greater than %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Minimum", value).
@@ -133,7 +133,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be greater than or equal to %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -148,7 +148,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be greater than or equal to %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Minimum", value).
@@ -167,7 +167,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		message.append(name).append(" must be in range [").append(min).append(", ").append(max).
 			append("]\n").
 			append("Actual: ").append(actual);
-		throw new ExceptionBuilder(config, IllegalArgumentException.class, message.toString()).
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message.toString()).
 			build();
 	}
 }

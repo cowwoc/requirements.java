@@ -62,6 +62,18 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
+	public boolean isDiffEnabled()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isApiInStacktrace()
+	{
+		return true;
+	}
+
+	@Override
 	public CoreUnifiedVerifier getInternalVerifier()
 	{
 		return new CoreUnifiedVerifier(this, true);

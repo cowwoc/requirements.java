@@ -487,8 +487,6 @@ public final class CoreRequirements
 		// useful to test (since tests would essentially have to repeat the logic found inside the
 		// library). For #1 consider using Mockito to ensure that DiffGenerator invokes DiffWriter
 		// methods in the right order.
-		// * Replace Exceptions.SHOW_FULL_STACKTRACE with global configuration option
-		// * Add JMH module to be run manually.
 		// * Ideally users should be able to create their own Unified verifiers by using multiple
 		//   inheritance of interfaces with composition, or multiple inheritance of implementation.
 	}

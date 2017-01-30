@@ -6,9 +6,10 @@ package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
  * Combines the functionality of {@link GuavaRequirementVerifier} and {@link GuavaAssertionVerifier}
@@ -32,7 +33,8 @@ public final class GuavaUnifiedVerifier implements Configurable<GuavaUnifiedVeri
 	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	GuavaUnifiedVerifier(ApplicationScope scope, Configuration config, boolean assertionsEnabled)
+	public GuavaUnifiedVerifier(ApplicationScope scope, Configuration config,
+		boolean assertionsEnabled)
 	{
 		this.config = config;
 		this.assertions = new GuavaAssertionVerifier(scope, assertionsEnabled, config);
@@ -43,13 +45,23 @@ public final class GuavaUnifiedVerifier implements Configurable<GuavaUnifiedVeri
 	 * Equivalent to {@link #GuavaUnifiedVerifier(ApplicationScope, Configuration, boolean) GuavaUnifiedVerifier(scope, scope.getDefaultConfiguration(), assertionEnabled).
 	 *
 	 * @param scope             the application configuration
-	 * @param config            the instance configuration
 	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	GuavaUnifiedVerifier(ApplicationScope scope, boolean assertionsEnabled)
+	public GuavaUnifiedVerifier(ApplicationScope scope, boolean assertionsEnabled)
 	{
 		this(scope, scope.getDefaultConfiguration(), assertionsEnabled);
+	}
+
+	/**
+	 * Creates a new verifier.
+	 *
+	 * @param assertionsEnabled true if {@code assertThat()} should carry out a verification
+	 */
+	public GuavaUnifiedVerifier(boolean assertionsEnabled)
+	{
+		this(MainApplicationScope.INSTANCE, MainApplicationScope.INSTANCE.getDefaultConfiguration(),
+			assertionsEnabled);
 	}
 
 	/**

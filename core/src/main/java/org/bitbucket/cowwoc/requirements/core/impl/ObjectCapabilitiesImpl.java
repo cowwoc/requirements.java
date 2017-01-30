@@ -40,17 +40,118 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	/**
-	 * Converts a DiffResult into a list of key-value pairs.
+	 * Updates the last context entry to indicate that duplicate lines were skipped.
 	 *
-	 * @param diff           a DiffResult
+	 * @param entries the exception context
+	 */
+	private static void skipDuplicateLines(List<Entry<String, Object>> entries)
+	{
+		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
+		String newValue = lastEntry.getValue() + "\n[...]\n";
+		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
+	}
+
+	/**
+	 * @param actual   the actual value
+	 * @param expected the expected value
+	 * @return the name and value of the values that need to be compared
+	 */
+	private static Comparison selectComparison(Object actual, Object expected)
+	{
+		String actualName;
+		String expectedName;
+		String actualValue = Objects.toString(actual);
+		String expectedValue = Objects.toString(expected);
+		if (actualValue.equals(expectedValue))
+		{
+			actualValue = getNullableType(actual);
+			expectedValue = getNullableType(expected);
+			if (actualValue.equals(expectedValue))
+			{
+				actualValue = String.valueOf(Objects.hashCode(actual));
+				expectedValue = String.valueOf(Objects.hashCode(expected));
+				actualName = "Actual.hashCode";
+				expectedName = "Expected.hashCode";
+			}
+			else
+			{
+				actualName = "Actual.class";
+				expectedName = "Expected.class";
+			}
+		}
+		else
+		{
+			actualName = "Actual";
+			expectedName = "Expected";
+		}
+		return new Comparison(actualName, actualValue, expectedName, expectedValue);
+	}
+
+	/**
+	 * The values to compare.
+	 */
+	private static class Comparison
+	{
+		public final String actualName;
+		public final String actualValue;
+		public final String expectedName;
+		public final String expectedValue;
+
+		Comparison(String actualName, String actualValue, String expectedName,
+			String expectedValue)
+		{
+			this.actualName = actualName;
+			this.actualValue = actualValue;
+			this.expectedName = expectedName;
+			this.expectedValue = expectedValue;
+		}
+	}
+	protected final ApplicationScope scope;
+	protected final T actual;
+	protected final String name;
+	protected final Configuration config;
+
+	/**
+	 * Creates new ObjectCapabilitiesImpl.
+	 *
+	 * @param scope  the application configuration
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @param config the instance configuration
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
+	 *                        {@code name} is empty
+	 */
+	public ObjectCapabilitiesImpl(ApplicationScope scope, T actual, String name, Configuration config)
+	{
+		assert (scope != null): "scope may not be null";
+		assert (name != null): "name may not be null";
+		assert (!name.isEmpty()): "name may not be empty";
+		assert (config != null): "config may not be null";
+		this.scope = scope;
+		this.actual = actual;
+		this.name = name;
+		this.config = config;
+	}
+
+	/**
+	 * @param actualValue    the actual value
+	 * @param expectedValue  the expected value
 	 * @param actualToString the string representation of actual value
 	 * @param actualName     the name of the actual value (e.g. "Actual" vs "Actual.class")
 	 * @param expectedName   the name of the expected value (e.g. "Expected" vs "Expected.class")
-	 * @return
+	 * @return the list of key-value pairs to append to the exception message
 	 */
-	private static List<Entry<String, Object>> getContext(DiffResult diff, String actualToString,
-		String actualName, String expectedName)
+	private List<Entry<String, Object>> getContext(String actualValue, String expectedValue,
+		String actualToString, String actualName, String expectedName)
 	{
+		if (!scope.isDiffEnabled())
+		{
+			List<Entry<String, Object>> result = new ArrayList<>(2);
+			result.add(new SimpleImmutableEntry<>(actualName, actualValue));
+			result.add(new SimpleImmutableEntry<>(expectedName, expectedValue));
+			return result;
+		}
+		DiffResult diff = scope.getDiffGenerator().diff(actualValue, expectedValue);
 		List<String> actual = diff.getActual();
 		List<String> middle = diff.getMiddle();
 		List<String> expected = diff.getExpected();
@@ -124,44 +225,6 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	/**
-	 * Updates the last context entry to indicate that duplicate lines were skipped.
-	 *
-	 * @param entries the exception context
-	 */
-	private static void skipDuplicateLines(List<Entry<String, Object>> entries)
-	{
-		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
-		String newValue = lastEntry.getValue() + "\n[...]\n";
-		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
-	}
-	protected final ApplicationScope scope;
-	protected final T actual;
-	protected final String name;
-	protected final Configuration config;
-
-	/**
-	 * Creates new ObjectCapabilitiesImpl.
-	 *
-	 * @param scope  the application configuration
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
-	 */
-	public ObjectCapabilitiesImpl(ApplicationScope scope, T actual, String name, Configuration config)
-	{
-		assert (scope != null): "scope may not be null";
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
-		this.scope = scope;
-		this.actual = actual;
-		this.name = name;
-		this.config = config;
-	}
-
-	/**
 	 * @return this
 	 */
 	protected S getThis()
@@ -176,37 +239,11 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (Objects.equals(actual, expected))
 			return getThis();
-		String actualName;
-		String expectedName;
-		String actualValue = Objects.toString(actual);
-		String actualToString = actualValue;
-		String expectedValue = Objects.toString(expected);
-		if (actualValue.equals(expectedValue))
-		{
-			actualValue = getNullableType(actual);
-			expectedValue = getNullableType(expected);
-			if (actualValue.equals(expectedValue))
-			{
-				actualValue = String.valueOf(Objects.hashCode(actual));
-				expectedValue = String.valueOf(Objects.hashCode(expected));
-				actualName = "Actual.hashCode";
-				expectedName = "Expected.hashCode";
-			}
-			else
-			{
-				actualName = "Actual.class";
-				expectedName = "Expected.class";
-			}
-		}
-		else
-		{
-			actualName = "Actual";
-			expectedName = "Expected";
-		}
-		DiffResult result = scope.getDiffGenerator().diff(actualValue, expectedValue);
-		List<Entry<String, Object>> context = getContext(result, actualToString, actualName,
-			expectedName);
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		Comparison comparison = selectComparison(actual, expected);
+		List<Entry<String, Object>> context = getContext(comparison.actualValue,
+			comparison.expectedValue, Objects.toString(actual), comparison.actualName,
+			comparison.expectedName);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name)).
 			addContext(context).
 			build();
@@ -218,37 +255,11 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
-		String actualName;
-		String expectedName;
-		String actualValue = Objects.toString(actual);
-		String actualToString = actualValue;
-		String expectedValue = Objects.toString(expected);
-		if (actualValue.equals(expectedValue))
-		{
-			actualValue = getNullableType(actual);
-			expectedValue = getNullableType(expected);
-			if (actualValue.equals(expectedValue))
-			{
-				actualValue = String.valueOf(Objects.hashCode(actual));
-				expectedValue = String.valueOf(Objects.hashCode(expected));
-				actualName = "Actual.hashCode";
-				expectedName = "Expected.hashCode";
-			}
-			else
-			{
-				actualName = "Actual.class";
-				expectedName = "Expected.class";
-			}
-		}
-		else
-		{
-			actualName = "Actual";
-			expectedName = "Expected";
-		}
-		DiffResult result = scope.getDiffGenerator().diff(actualValue, expectedValue);
-		List<Entry<String, Object>> context = getContext(result, actualToString, actualName,
-			expectedName);
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		Comparison comparison = selectComparison(actual, expected);
+		List<Entry<String, Object>> context = getContext(comparison.actualValue,
+			comparison.expectedValue, Objects.toString(actual), comparison.actualName,
+			comparison.expectedName);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name)).
 			addContext(context).
 			build();
@@ -260,7 +271,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (!Objects.equals(actual, value))
 			return getThis();
 
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be equal to %s.", name, value)).
 			build();
 	}
@@ -272,7 +283,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (!Objects.equals(actual, value))
 			return getThis();
 
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be equal to %s.", this.name, name)).
 			addContext("Actual", value).
 			build();
@@ -285,7 +296,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (collection.contains(actual))
 			return getThis();
 
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
 			addContext("Actual", actual).
 			build();
@@ -303,7 +314,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			actualClass = null;
 		else
 			actualClass = actual.getClass();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.", name, type)).
 			addContext("Actual", actualClass).
 			build();
@@ -314,7 +325,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (actual == null)
 			return getThis();
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be null.", name)).
 			addContext("Actual", actual).
 			build();
@@ -325,7 +336,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (actual != null)
 			return getThis();
-		throw new ExceptionBuilder(config, NullPointerException.class,
+		throw new ExceptionBuilder(scope, config, NullPointerException.class,
 			String.format("%s may not be null", name)).
 			build();
 	}

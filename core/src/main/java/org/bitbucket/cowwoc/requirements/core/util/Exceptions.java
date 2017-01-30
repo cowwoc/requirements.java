@@ -20,24 +20,20 @@ import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 public final class Exceptions
 {
 	private static final Lookup LOOKUP = MethodHandles.lookup();
-	/**
-	 * Name of boolean system property that, if set to true, prevents stack-traces from being trimmed.
-	 */
-	private static final String SHOW_FULL_STACKTRACE = CoreRequirements.class.getPackage().getName() +
-		".showFullStackTrace";
 
 	/**
 	 * Throws an exception with the specified message and cause.
 	 *
-	 * @param <E>     the type of the exception
-	 * @param type    the type of the exception
-	 * @param message an explanation of what went wrong
-	 * @param cause   the cause of the exception ({@code null} if absent)
+	 * @param <E>             the type of the exception
+	 * @param type            the type of the exception
+	 * @param message         an explanation of what went wrong
+	 * @param cause           the cause of the exception ({@code null} if absent)
+	 * @param apiInStacktrace true if API elements should show up in the stack-trace
 	 * @return the exception
 	 * @throws NullPointerException if {@code type} is null
 	 */
 	public static <E extends RuntimeException> RuntimeException createException(Class<E> type,
-		String message, Throwable cause)
+		String message, Throwable cause, boolean apiInStacktrace)
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");
@@ -57,7 +53,7 @@ public final class Exceptions
 				result = (RuntimeException) constructor.invokeExact(message);
 			else
 				result = (RuntimeException) constructor.invokeExact(message, cause);
-			if (!Boolean.getBoolean(SHOW_FULL_STACKTRACE))
+			if (!apiInStacktrace)
 				removeLibraryFromStacktrace(result);
 			return result;
 		}
@@ -76,7 +72,8 @@ public final class Exceptions
 	{
 		filterStacktrace(throwable, name ->
 		{
-			return name.startsWith(CoreRequirements.class.getPackage().getName()) && !name.endsWith("Test");
+			return name.startsWith(CoreRequirements.class.getPackage().getName()) &&
+				!name.endsWith("Test");
 		});
 	}
 

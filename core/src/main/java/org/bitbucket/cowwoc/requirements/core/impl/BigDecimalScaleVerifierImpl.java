@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.core.util.Exceptions;
+import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
  * An implementation of {@code PrimitiveIntegerVerifier} for a
@@ -47,8 +47,9 @@ public final class BigDecimalScaleVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isZero()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be zero", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be zero", name), null).
+			build();
 	}
 
 	@Override
@@ -62,8 +63,9 @@ public final class BigDecimalScaleVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isNotPositive()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be non-positive", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be non-positive", name), null).
+			build();
 	}
 
 	@Override
@@ -84,7 +86,8 @@ public final class BigDecimalScaleVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isNegative()
 	{
-		throw Exceptions.createException(IllegalArgumentException.class,
-			String.format("%s can never be negative", name), null);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null).
+			build();
 	}
 }

@@ -22,6 +22,10 @@ public final class GlobalConfiguration
 	 * True if exceptions should contain a diff of the values being compared.
 	 */
 	private boolean diffEnabled = true;
+	/**
+	 * True if API elements should show up in exception stacktraces.
+	 */
+	private boolean apiInStacktrace = false;
 
 	/**
 	 * @param scope the system configuration
@@ -115,6 +119,38 @@ public final class GlobalConfiguration
 	public GlobalConfiguration withoutDiff()
 	{
 		this.diffEnabled = false;
+		return this;
+	}
+
+	/**
+	 * @return true if exception stack-traces should contain elements from this API (false by default)
+	 */
+	public boolean isApiInStacktrace()
+	{
+		return apiInStacktrace;
+	}
+
+	/**
+	 * Indicates that exception stack-traces should contain elements from this API.
+	 *
+	 * @return this
+	 * @see #isApiInStacktrace
+	 */
+	public GlobalConfiguration withApiInStacktrace()
+	{
+		this.apiInStacktrace = true;
+		return this;
+	}
+
+	/**
+	 * Indicates that exception stack-traces should not contain elements from this API.
+	 *
+	 * @return this
+	 * @see #isApiInStacktrace
+	 */
+	public GlobalConfiguration withoutApiInStacktrace()
+	{
+		this.apiInStacktrace = false;
 		return this;
 	}
 }

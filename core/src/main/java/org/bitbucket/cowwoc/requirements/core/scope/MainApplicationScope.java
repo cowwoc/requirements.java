@@ -21,6 +21,8 @@ public final class MainApplicationScope extends AbstractApplicationScope
 		DefaultJvmScope.INSTANCE);
 	public final JvmScope parent;
 	public final Reference<TerminalEncoding> terminalEncoding;
+	public final Reference<Boolean> diffEnabled;
+	public final Reference<Boolean> apiInStacktrace;
 
 	/**
 	 * @param parent the parent scope
@@ -33,6 +35,10 @@ public final class MainApplicationScope extends AbstractApplicationScope
 		this.parent = parent;
 		this.terminalEncoding = ConcurrentLazyReference.create(() ->
 			parent.getTerminal().getEncoding());
+		this.diffEnabled = ConcurrentLazyReference.create(() ->
+			parent.getGlobalConfiguration().isDiffEnabled());
+		this.apiInStacktrace = ConcurrentLazyReference.create(() ->
+			parent.getGlobalConfiguration().isApiInStacktrace());
 	}
 
 	@Override
@@ -51,6 +57,18 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	public TerminalEncoding getTerminalEncoding()
 	{
 		return terminalEncoding.getValue();
+	}
+
+	@Override
+	public boolean isDiffEnabled()
+	{
+		return diffEnabled.getValue();
+	}
+
+	@Override
+	public boolean isApiInStacktrace()
+	{
+		return apiInStacktrace.getValue();
 	}
 
 	@Override

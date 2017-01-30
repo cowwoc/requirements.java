@@ -38,7 +38,7 @@ public final class DoubleVerifierImpl
 	{
 		if (!actual.isNaN())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be a number.", name)).
 			addContext("Actual", actual).
 			build();
@@ -49,7 +49,7 @@ public final class DoubleVerifierImpl
 	{
 		if (actual.isNaN())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be a number.", name)).
 			addContext("Actual", actual).
 			build();
@@ -60,7 +60,7 @@ public final class DoubleVerifierImpl
 	{
 		if (!actual.isInfinite())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be finite.", name)).
 			addContext("Actual", actual).
 			build();
@@ -71,7 +71,7 @@ public final class DoubleVerifierImpl
 	{
 		if (actual.isInfinite())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be infinite.", name)).
 			addContext("Actual", actual).
 			build();

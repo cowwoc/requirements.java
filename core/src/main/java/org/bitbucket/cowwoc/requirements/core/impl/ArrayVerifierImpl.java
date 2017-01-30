@@ -99,7 +99,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		if (collection.contains(actual))
 			return this;
 
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
 			addContext("Actual", Arrays.toString(actual)).
 			build();

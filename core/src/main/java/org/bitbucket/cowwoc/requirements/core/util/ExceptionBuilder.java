@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.StringJoiner;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
  * Builds an exception.
@@ -36,6 +37,7 @@ public final class ExceptionBuilder
 	private final String message;
 	private final List<Entry<String, Object>> contextPostfix;
 	private final Throwable cause;
+	private final boolean apiInStacktrace;
 	/**
 	 * Contextual information associated with the exception (key-value pairs).
 	 */
@@ -44,15 +46,16 @@ public final class ExceptionBuilder
 	/**
 	 * Creates a new builder.
 	 *
-	 * @param type           the type of the exception
-	 * @param message        the exception message
-	 * @param contextPostfix the key-value pairs to append to the context set by the user
-	 * @param cause          the underlying cause of the exception ({@code null} if absent)
+	 * @param type            the type of the exception
+	 * @param message         the exception message
+	 * @param contextPostfix  the key-value pairs to append to the context set by the user
+	 * @param cause           the underlying cause of the exception ({@code null} if absent)
+	 * @param apiInStacktrace true if API elements should show up in the stacktrace
 	 * @throws NullPointerException if {@code type}, {@code message} or {@code contextPostfix} are
 	 *                              null
 	 */
 	private ExceptionBuilder(Class<? extends RuntimeException> type, String message,
-		Throwable cause, List<Entry<String, Object>> contextPostfix)
+		Throwable cause, List<Entry<String, Object>> contextPostfix, boolean apiInStacktrace)
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");
@@ -65,37 +68,43 @@ public final class ExceptionBuilder
 		this.message = message;
 		this.cause = cause;
 		this.contextPostfix = contextPostfix;
+		this.apiInStacktrace = apiInStacktrace;
 	}
 
 	/**
 	 * Equivalent to
-	 * {@link #ExceptionBuilder(Class, String, Throwable, List) ExceptionBuilder(configuration.getException().orElse(type), message, cause, config.getContext())}.
+	 * {@link #ExceptionBuilder(ApplicationScope, Class, String, Throwable, List) ExceptionBuilder(scope, configuration.getException().orElse(type), message, cause, config.getContext())}.
 	 *
+	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
 	 * @param type          the type of the exception
 	 * @param message       the exception message
 	 * @param cause         the underlying cause of the exception ({@code null} if absent)
-	 * @throws NullPointerException if {@code configuration}, {@code type} or message are null
+	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message
+	 *                              are null
 	 */
-	public ExceptionBuilder(Configuration configuration, Class<? extends RuntimeException> type,
-		String message, Throwable cause)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
+		Class<? extends RuntimeException> type, String message, Throwable cause)
 	{
-		this(getExceptionType(configuration, type), message, cause, configuration.getContext());
+		this(getExceptionType(configuration, type), message, cause, configuration.getContext(),
+			scope.isApiInStacktrace());
 	}
 
 	/**
 	 * Equivalent to
-	 * {@link #ExceptionBuilder(Configuration, String, Throwable, List) ExceptionBuilder(configuration, message, null)}.
+	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, String, Throwable, List) ExceptionBuilder(scope, configuration, message, null)}.
 	 *
+	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
 	 * @param type          the type of the exception
 	 * @param message       the exception message
-	 * @throws NullPointerException if {@code configuration}, {@code type} or message are null
+	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message
+	 *                              are null
 	 */
-	public ExceptionBuilder(Configuration configuration, Class<? extends RuntimeException> type,
-		String message)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
+		Class<? extends RuntimeException> type, String message)
 	{
-		this(configuration, type, message, null);
+		this(scope, configuration, type, message, null);
 	}
 
 	/**
@@ -167,6 +176,6 @@ public final class ExceptionBuilder
 			messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
 				entry.getValue()));
 		}
-		return Exceptions.createException(type, messageWithContext.toString(), cause);
+		return Exceptions.createException(type, messageWithContext.toString(), cause, apiInStacktrace);
 	}
 }

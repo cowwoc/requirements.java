@@ -44,7 +44,7 @@ public final class BigDecimalVerifierImpl
 		// Number.longValue() truncates the fractional portion, which we need to take into account
 		if (actual.signum() == 0)
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be zero", name)).
 			addContext("Actual", actual).
 			build();
@@ -56,7 +56,7 @@ public final class BigDecimalVerifierImpl
 		// Number.longValue() truncates the fractional portion, which we need to take into account
 		if (actual.signum() != 0)
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be zero", name)).
 			build();
 	}

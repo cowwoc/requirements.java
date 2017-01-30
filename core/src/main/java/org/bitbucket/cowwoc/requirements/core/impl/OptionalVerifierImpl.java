@@ -40,7 +40,7 @@ public final class OptionalVerifierImpl
 	{
 		if (actual.isPresent())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be present", name)).
 			build();
 	}
@@ -50,7 +50,7 @@ public final class OptionalVerifierImpl
 	{
 		if (!actual.isPresent())
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be empty.", name)).
 			addContext("Actual", actual).
 			build();
@@ -64,7 +64,7 @@ public final class OptionalVerifierImpl
 		Optional<?> expected = Optional.of(value);
 		if (actual.equals(expected))
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain %s.", name, value)).
 			addContext("Actual", actual).
 			build();
@@ -76,7 +76,7 @@ public final class OptionalVerifierImpl
 		Optional<?> expectedOptional = Optional.ofNullable(expected);
 		if (actual.equals(expectedOptional))
 			return this;
-		throw new ExceptionBuilder(config, IllegalArgumentException.class,
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Expected", expectedOptional).
