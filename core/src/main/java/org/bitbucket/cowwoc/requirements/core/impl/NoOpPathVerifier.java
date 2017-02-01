@@ -134,16 +134,4 @@ public final class NoOpPathVerifier implements PathVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public PathVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

@@ -109,16 +109,4 @@ public final class NoOpUriVerifier implements UriVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public UriVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

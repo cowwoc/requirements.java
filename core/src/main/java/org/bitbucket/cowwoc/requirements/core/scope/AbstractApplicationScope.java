@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements.core.scope;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.diff.DiffGenerator;
 
 /**
@@ -17,10 +18,9 @@ import org.bitbucket.cowwoc.requirements.core.diff.DiffGenerator;
  */
 public abstract class AbstractApplicationScope implements ApplicationScope
 {
-	private final Configuration defaultConfiguration = new Configuration(this);
-	private final Reference<CoreUnifiedVerifier> internalVerifier = ConcurrentLazyReference.create(
-		() -> new CoreUnifiedVerifier(this, getDefaultConfiguration(),
-			CoreUnifiedVerifier.classAssertionsAreEnabled()));
+	private final Configuration defaultConfiguration = new Configuration();
+	private final Reference<CoreVerifiers> internalVerifier = ConcurrentLazyReference.create(() ->
+		new CoreVerifiers(this, CoreRequirements.assertionsAreEnabled()));
 	private final Reference<DiffGenerator> diffGenerator = ConcurrentLazyReference.create(() ->
 		new DiffGenerator(this));
 
@@ -31,7 +31,7 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	}
 
 	@Override
-	public CoreUnifiedVerifier getInternalVerifier()
+	public CoreVerifiers getInternalVerifier()
 	{
 		return internalVerifier.getValue();
 	}

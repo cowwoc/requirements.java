@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
@@ -116,7 +116,7 @@ public class CollectionVerifierImpl<E>
 	@Override
 	public CollectionVerifier<E> containsExactly(Collection<E> expected, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
@@ -162,7 +162,7 @@ public class CollectionVerifierImpl<E>
 	@Override
 	public CollectionVerifier<E> containsAny(Collection<E> expected, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actualContainsAny(expected))
@@ -193,7 +193,7 @@ public class CollectionVerifierImpl<E>
 	@Override
 	public CollectionVerifier<E> containsAll(Collection<E> expected, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.containsAll(expected))
@@ -252,7 +252,7 @@ public class CollectionVerifierImpl<E>
 	@Override
 	public CollectionVerifier<E> doesNotContainAny(Collection<E> elements, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!actualContainsAny(elements))
@@ -283,7 +283,7 @@ public class CollectionVerifierImpl<E>
 	@Override
 	public CollectionVerifier<E> doesNotContainAll(Collection<E> elements, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!actual.containsAll(elements))

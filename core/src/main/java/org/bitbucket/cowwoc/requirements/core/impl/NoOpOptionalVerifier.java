@@ -126,16 +126,4 @@ public final class NoOpOptionalVerifier implements OptionalVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public OptionalVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

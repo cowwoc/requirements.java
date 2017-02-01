@@ -158,16 +158,4 @@ public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public ComparableVerifier<T> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

@@ -365,17 +365,4 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		return actual;
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public S configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
-		return getThis();
-	}
 }

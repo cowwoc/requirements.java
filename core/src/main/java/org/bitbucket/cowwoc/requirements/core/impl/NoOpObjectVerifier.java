@@ -103,16 +103,4 @@ public final class NoOpObjectVerifier<T> implements ObjectVerifier<T>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public ObjectVerifier<T> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

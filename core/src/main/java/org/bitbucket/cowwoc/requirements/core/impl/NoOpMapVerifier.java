@@ -168,16 +168,4 @@ public final class NoOpMapVerifier<K, V> implements MapVerifier<K, V>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public MapVerifier<K, V> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

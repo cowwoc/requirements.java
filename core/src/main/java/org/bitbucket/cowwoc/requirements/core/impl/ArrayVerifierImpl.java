@@ -297,17 +297,4 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	{
 		return actual;
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public ArrayVerifier<E> configuration(Consumer<Configuration> consumer)
-	{
-		consumer.accept(config);
-		return this;
-	}
 }

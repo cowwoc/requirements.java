@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -21,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface ObjectCapabilities<S, T> extends Configurable<S>
+public interface ObjectCapabilities<S, T>
 {
 	/**
 	 * Ensures that the actual value is equal to an expected value.

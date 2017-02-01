@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core.scope;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 
@@ -58,11 +58,9 @@ public interface ApplicationScope extends JvmScope
 	DiffGenerator getDiffGenerator();
 
 	/**
-	 * Returns a verifier that can be used to check a verifier's own parameters.
-	 *
-	 * @return a {@link CoreUnifiedVerifier} that uses this scope
+	 * @return a verifier that can be used to check a verifier's own parameters
 	 */
-	CoreUnifiedVerifier getInternalVerifier();
+	CoreVerifiers getInternalVerifier();
 
 	@Override
 	void close();

@@ -216,16 +216,4 @@ public final class NoOpDoubleVerifier implements DoubleVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public DoubleVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

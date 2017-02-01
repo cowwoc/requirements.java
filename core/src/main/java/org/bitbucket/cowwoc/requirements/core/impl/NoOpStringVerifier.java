@@ -182,16 +182,4 @@ public final class NoOpStringVerifier implements StringVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public StringVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

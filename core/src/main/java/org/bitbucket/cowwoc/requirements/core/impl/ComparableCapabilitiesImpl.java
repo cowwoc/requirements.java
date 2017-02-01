@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
 import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
@@ -55,7 +55,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isLessThan(T value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
@@ -84,7 +84,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isLessThanOrEqualTo(T value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
@@ -113,7 +113,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isGreaterThan(T value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
@@ -142,7 +142,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isGreaterThanOrEqualTo(T value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
@@ -158,7 +158,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isBetween(T min, T max)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
 		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
 		if (actual.compareTo(min) >= 0 && actual.compareTo(max) <= 0)

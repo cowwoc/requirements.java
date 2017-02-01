@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.util.function.Consumer;
-
 /**
  * A verifier whose behavior is configurable.
  *
@@ -15,23 +13,33 @@ import java.util.function.Consumer;
 public interface Configurable<S>
 {
 	/**
-	 * Returns the verifier's configuration.
+	 * Overrides the type of exception that will get thrown if a verification fails.
 	 * <p>
-	 * Modifying the configuration affect the behavior of this verifier, the verifier that created it,
-	 * and any verifiers created by it.
+	 * The exception class must define the following constructors:
+	 * <p>
+	 * {@code <init>(String message)}<br>
+	 * {@code <init>(String message, Throwable cause)}
 	 *
-	 * @return the verifier's configuration
+	 * @param exception the type of exception to throw
+	 * @return a verifier with the updated configuration
+	 * @throws NullPointerException if {@code exception} is null
 	 */
-	Configuration configuration();
+	S withException(Class<? extends RuntimeException> exception);
 
 	/**
-	 * Returns the verifier's configuration.
-	 * <p>
-	 * Modifying the configuration affect the behavior of this verifier, the verifier that created it,
-	 * and any verifiers created by it.
+	 * Throws the default exception type if a verification fails.
 	 *
-	 * @param consumer consumes the verifier's configuration
-	 * @return this
+	 * @return a verifier with the updated configuration
 	 */
-	S configuration(Consumer<Configuration> consumer);
+	S withDefaultException();
+
+	/**
+	 * Appends contextual information to the exception message.
+	 *
+	 * @param key   a key
+	 * @param value a value
+	 * @return a verifier with the updated configuration
+	 * @throws NullPointerException if {@code key} is null
+	 */
+	S addContext(String key, Object value);
 }

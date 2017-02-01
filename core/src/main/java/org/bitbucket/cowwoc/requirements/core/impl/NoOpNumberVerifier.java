@@ -194,16 +194,4 @@ public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public NumberVerifier<T> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

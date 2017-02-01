@@ -167,16 +167,4 @@ public final class NoOpMultimapVerifier<K, V> implements MultimapVerifier<K, V>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public MultimapVerifier<K, V> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

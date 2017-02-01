@@ -10,31 +10,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
  * A verifier's configuration.
  *
  * @author Gili Tzabari
+ * @see Configurable
  */
 public final class Configuration
 {
-	private final ApplicationScope scope;
 	private final List<Entry<String, Object>> context = new ArrayList<>(2);
 	private Optional<Class<? extends RuntimeException>> exception = Optional.empty();
-
-	/**
-	 * Creates a new instance.
-	 *
-	 * @param scope the application configuration
-	 * @throws AssertionError if {@code scope} is null
-	 */
-	public Configuration(ApplicationScope scope)
-	{
-		assert (scope != null): "scope may not be null";
-		this.scope = scope;
-	}
 
 	/**
 	 * Returns the type of exception that will be thrown if a verification fails.
@@ -59,7 +45,6 @@ public final class Configuration
 	 * @param exception the type of exception to throw
 	 * @return this
 	 * @throws NullPointerException if {@code exception} is null
-	 * @see #getException()
 	 */
 	public Configuration withException(Class<? extends RuntimeException> exception)
 	{
@@ -73,7 +58,6 @@ public final class Configuration
 	 * Throws the default exception type if a verification fails.
 	 *
 	 * @return this
-	 * @see #getException()
 	 */
 	public Configuration withDefaultException()
 	{
@@ -103,44 +87,6 @@ public final class Configuration
 		if (key == null)
 			throw new NullPointerException("key may not be null");
 		context.add(new SimpleImmutableEntry<>(key, value));
-		return this;
-	}
-
-	/**
-	 * Removes all contextual information that was appended to the exception message.
-	 *
-	 * @return this
-	 * @see #addContext(String, Object)
-	 */
-	public Configuration removeAllContext()
-	{
-		context.clear();
-		return this;
-	}
-
-	/**
-	 * Returns the global configuration.
-	 * <p>
-	 * Modifying the configuration affect the behavior of all verifiers.
-	 *
-	 * @return the global configuration
-	 */
-	public GlobalConfiguration globalConfiguration()
-	{
-		return scope.getGlobalConfiguration();
-	}
-
-	/**
-	 * Returns the global configuration.
-	 * <p>
-	 * Modifying the configuration affect the behavior of all verifiers.
-	 *
-	 * @param consumer consumes the global configuration
-	 * @return this
-	 */
-	public Configuration globalConfiguration(Consumer<GlobalConfiguration> consumer)
-	{
-		consumer.accept(scope.getGlobalConfiguration());
 		return this;
 	}
 }

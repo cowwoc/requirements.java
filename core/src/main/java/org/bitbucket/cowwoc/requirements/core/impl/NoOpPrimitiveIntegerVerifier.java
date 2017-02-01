@@ -193,16 +193,4 @@ public final class NoOpPrimitiveIntegerVerifier implements PrimitiveIntegerVerif
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public PrimitiveIntegerVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

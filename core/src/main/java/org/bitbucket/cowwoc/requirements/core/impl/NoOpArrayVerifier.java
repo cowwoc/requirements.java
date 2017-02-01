@@ -231,16 +231,4 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public ArrayVerifier<E> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

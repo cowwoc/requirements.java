@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Objects;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
@@ -67,7 +67,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual >= value)
@@ -98,7 +98,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isGreaterThan(Integer value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual > value)
@@ -129,7 +129,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual <= value)
@@ -160,7 +160,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isLessThan(Integer value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual < value)
@@ -231,7 +231,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isBetween(Integer min, Integer max)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
 		verifier.requireThat(max, "max").isNotNull().isGreaterThanOrEqualTo(min, "min");
 		if (actual >= min && actual <= max)
@@ -260,7 +260,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isEqualTo(Integer value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, value))
@@ -288,7 +288,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveIntegerVerifier isNotEqualTo(Integer value, String name)
 	{
-		CoreUnifiedVerifier verifier = scope.getInternalVerifier();
+		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, value))

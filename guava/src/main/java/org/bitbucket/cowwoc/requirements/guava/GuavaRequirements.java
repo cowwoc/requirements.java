@@ -5,13 +5,14 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
  * This convenience class constructs a {@link CoreUnifiedVerifier} with the default configuration.
  * This class' assertion status determines whether {@code assertThat()} carries out a verification
  * or does nothing.
+ * <p>
+ * This class is immutable.
  *
  * @since 3.0.0
  * @author Gili Tzabari
@@ -22,13 +23,13 @@ import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 	})
 public final class GuavaRequirements
 {
-	private static final GuavaUnifiedVerifier DELEGATE;
+	private static final GuavaVerifiers DELEGATE;
 
 	static
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		DELEGATE = new GuavaUnifiedVerifier(MainApplicationScope.INSTANCE,
+		DELEGATE = new GuavaVerifiers(MainApplicationScope.INSTANCE,
 			MainApplicationScope.INSTANCE.getDefaultConfiguration(), assertionsEnabled);
 	}
 

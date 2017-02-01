@@ -196,16 +196,4 @@ public final class NoOpBigDecimalPrecisionVerifier implements BigDecimalPrecisio
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public BigDecimalPrecisionVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

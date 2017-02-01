@@ -14,9 +14,11 @@ import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.scope.DefaultJvmScope;
 
 /**
- * This convenience class constructs a {@link CoreUnifiedVerifier} with the default configuration.
+ * This convenience class constructs a {@link CoreVerifiers} with the default configuration.
  * This class' assertion state determines whether {@code assertThat()} carries out a verification or
  * does nothing.
+ * <p>
+ * This class is immutable.
  *
  * @author Gili Tzabari
  */
@@ -26,13 +28,13 @@ import org.bitbucket.cowwoc.requirements.core.scope.DefaultJvmScope;
 	})
 public final class CoreRequirements
 {
-	private static final CoreUnifiedVerifier DELEGATE;
+	private static final CoreVerifiers DELEGATE;
 
 	static
 	{
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
-		DELEGATE = new CoreUnifiedVerifier(assertionsEnabled);
+		DELEGATE = new CoreVerifiers(assertionsEnabled);
 	}
 
 	/**
@@ -480,14 +482,32 @@ public final class CoreRequirements
 	 */
 	private CoreRequirements()
 	{
-		// TODO:
-		// * Separate out the following tests: (1) DiffGenerator produces the right diff.
-		// (2) DiffWriter generates the right colors. (3) JNI library returns expected values.
-		// In the first two cases, the JNI library should be stubbed out and the 3rd case might not be
-		// useful to test (since tests would essentially have to repeat the logic found inside the
-		// library). For #1 consider using Mockito to ensure that DiffGenerator invokes DiffWriter
-		// methods in the right order.
-		// * Ideally users should be able to create their own Unified verifiers by using multiple
-		//   inheritance of interfaces with composition, or multiple inheritance of implementation.
+		/**
+		 * Idea: Configuring the root verifier is a one-time thing but configuring 2nd-level verifiers
+		 * is done on the fly. This is because any configuration set on the 2nd+ level will get
+		 * discarded at the end of the verification anyway.
+		 * \-> But configuration only contains stuff that is useful per-run (context for sure, and
+		 * exception most probably).
+		 */
+
+//		requireThat(value, "name").isNotNull();
+//		RequirementVerifier verifier;
+//		verifier.withException().addContext().requireThat()
+//		requireThat(value, "name").
+//			isNotNull().
+//			isNotEmpty().
+//			done();
+//		requireThat(value, "name").
+//			isNotNull().
+//			isNotEmpty().
+//			elseThrow(IllegalArgumentException.class).
+//			withContext("url", "http://www.facebook.com").
+//			done();
+//		// ---------------------
+//		requireThat(value, "name").isNotNull().isNotEmpty();
+//		requireThat(value, "name").
+//			withConfiguration(c -> c.withException(IllegalArgumentException.class).
+//				withContext("url", "http://www.facebook.com")).
+//			isNotNull().isNotEmpty();
 	}
 }

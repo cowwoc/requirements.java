@@ -219,16 +219,4 @@ public final class NoOpBigDecimalVerifier implements BigDecimalVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public BigDecimalVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

@@ -231,16 +231,4 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public CollectionVerifier<E> configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

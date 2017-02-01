@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import static org.bitbucket.cowwoc.requirements.core.CoreRequirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.CoreUnifiedVerifier;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -50,13 +50,12 @@ public final class UsageTest
 			Duration duration = Duration.ofDays(1);
 			Set<Duration> bucket = Collections.emptySet();
 
-			CoreUnifiedVerifier verifier = new CoreUnifiedVerifier(scope, true);
+			CoreVerifiers verifier = new CoreVerifiers(scope);
 			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{
-				verifier.requireThat(bucket, "bucket").
-					configuration(c -> c.addContext("MyKey", "SomeContext")).
-					contains(duration);
+				verifier.addContext("MyKey", "SomeContext").
+					requireThat(bucket, "bucket").contains(duration);
 			}
 			catch (IllegalArgumentException e)
 			{

@@ -115,16 +115,4 @@ public final class NoOpInetAddressVerifier implements InetAddressVerifier
 	{
 		throw new NoSuchElementException("Assertions are disabled");
 	}
-
-	@Override
-	public Configuration configuration()
-	{
-		return config;
-	}
-
-	@Override
-	public InetAddressVerifier configuration(Consumer<Configuration> consumer)
-	{
-		return this;
-	}
 }

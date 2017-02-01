@@ -21,7 +21,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, null);
+			new CoreVerifiers(scope).requireThat(actual, null);
 		}
 	}
 
@@ -31,7 +31,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "");
+			new CoreVerifiers(scope).requireThat(actual, "");
 		}
 	}
 
@@ -43,7 +43,7 @@ public final class ComparableTest
 			Year actual = Year.of(0);
 			Year first = Year.of(0);
 			Year last = Year.of(2);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
+			new CoreVerifiers(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -55,7 +55,7 @@ public final class ComparableTest
 			Year actual = Year.of(1);
 			Year first = Year.of(0);
 			Year last = Year.of(2);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
+			new CoreVerifiers(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -67,7 +67,7 @@ public final class ComparableTest
 			Year actual = Year.of(2);
 			Year first = Year.of(0);
 			Year last = Year.of(2);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
+			new CoreVerifiers(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -79,7 +79,7 @@ public final class ComparableTest
 			Year actual = Year.of(1);
 			Year first = Year.of(10);
 			Year last = Year.of(20);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isBetween(first, last);
+			new CoreVerifiers(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -90,7 +90,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").isLessThan(after, "after");
+			new CoreVerifiers(scope).requireThat(before, "before").isLessThan(after, "after");
 		}
 	}
 
@@ -101,7 +101,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").isLessThan(after);
+			new CoreVerifiers(scope).requireThat(before, "before").isLessThan(after);
 		}
 	}
 
@@ -111,7 +111,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+			new CoreVerifiers(scope).requireThat(actual, "actual").
 				isLessThan(actual, "actual");
 		}
 	}
@@ -122,7 +122,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").isLessThan(actual);
+			new CoreVerifiers(scope).requireThat(actual, "actual").isLessThan(actual);
 		}
 	}
 
@@ -133,7 +133,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(after, "after").isLessThan(before, "before");
+			new CoreVerifiers(scope).requireThat(after, "after").isLessThan(before, "before");
 		}
 	}
 
@@ -144,7 +144,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(after, "after").isLessThan(before);
+			new CoreVerifiers(scope).requireThat(after, "after").isLessThan(before);
 		}
 	}
 
@@ -154,7 +154,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+			new CoreVerifiers(scope).requireThat(actual, "actual").
 				isLessThanOrEqualTo(actual, "actual");
 		}
 	}
@@ -165,7 +165,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+			new CoreVerifiers(scope).requireThat(actual, "actual").
 				isLessThanOrEqualTo(actual);
 		}
 	}
@@ -177,7 +177,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(after, "after").
+			new CoreVerifiers(scope).requireThat(after, "after").
 				isLessThanOrEqualTo(before, "before");
 		}
 	}
@@ -189,7 +189,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(1);
 			Year after = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").isLessThanOrEqualTo(after);
+			new CoreVerifiers(scope).requireThat(before, "before").isLessThanOrEqualTo(after);
 		}
 	}
 
@@ -200,7 +200,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(after, "after").isGreaterThan(before, "before");
+			new CoreVerifiers(scope).requireThat(after, "after").isGreaterThan(before, "before");
 		}
 	}
 
@@ -211,7 +211,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(after, "after").isGreaterThan(before);
+			new CoreVerifiers(scope).requireThat(after, "after").isGreaterThan(before);
 		}
 	}
 
@@ -221,7 +221,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+			new CoreVerifiers(scope).requireThat(actual, "actual").
 				isGreaterThan(actual, "actual");
 		}
 	}
@@ -232,7 +232,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "paramter").isGreaterThan(actual);
+			new CoreVerifiers(scope).requireThat(actual, "paramter").isGreaterThan(actual);
 		}
 	}
 
@@ -243,7 +243,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").isGreaterThan(after, "after");
+			new CoreVerifiers(scope).requireThat(before, "before").isGreaterThan(after, "after");
 		}
 	}
 
@@ -254,7 +254,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").isGreaterThan(after);
+			new CoreVerifiers(scope).requireThat(before, "before").isGreaterThan(after);
 		}
 	}
 
@@ -264,7 +264,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+			new CoreVerifiers(scope).requireThat(actual, "actual").
 				isGreaterThanOrEqualTo(actual, "actual");
 		}
 	}
@@ -275,7 +275,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new CoreRequirementVerifier(scope).requireThat(actual, "actual").
+			new CoreVerifiers(scope).requireThat(actual, "actual").
 				isGreaterThanOrEqualTo(actual);
 		}
 	}
@@ -287,7 +287,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").
+			new CoreVerifiers(scope).requireThat(before, "before").
 				isGreaterThanOrEqualTo(after, "after");
 		}
 	}
@@ -299,7 +299,7 @@ public final class ComparableTest
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
-			new CoreRequirementVerifier(scope).requireThat(before, "before").isGreaterThanOrEqualTo(after);
+			new CoreVerifiers(scope).requireThat(before, "before").isGreaterThanOrEqualTo(after);
 		}
 	}
 
@@ -310,7 +310,7 @@ public final class ComparableTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Year actual = null;
-			new CoreAssertionVerifier(scope, false).requireThat(actual, "actual").isNotNull();
+			new CoreVerifiers(scope, false).assertThat(actual, "actual").isNotNull();
 		}
 	}
 }
