@@ -6,8 +6,8 @@ package org.bitbucket.cowwoc.requirements.benchmark;
 
 import java.util.concurrent.TimeUnit;
 import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
-import static org.bitbucket.cowwoc.requirements.core.CoreRequirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.core.CoreRequirements.requireThat;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -40,17 +40,28 @@ public class Main
 	private String name = "name";
 	private String value = "value";
 
+//	@Benchmark
+//	public void emptyMethod()
+//	{
+//	}
+//
+//	@Benchmark
+//	public StringVerifier assertMethod()
+//	{
+//		return assertThat(value, name).isNotNull().isNotEmpty();
+//	}
 	@Benchmark
-	public void emptyMethod()
+	public StringVerifier assertsDisabled()
 	{
+		return new CoreVerifiers(false).assertThat(value, name).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
 	// be faster than requireThat() even though it delegates to it
 	@Benchmark
-	public StringVerifier assertMethod()
+	public StringVerifier assertsEnabled()
 	{
-		return assertThat(value, name).isNotNull().isNotEmpty();
+		return new CoreVerifiers(true).assertThat(value, name).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
