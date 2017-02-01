@@ -34,12 +34,17 @@ public final class DefaultJvmScope implements JvmScope
 			try
 			{
 				result.connect();
+				return result;
+			}
+			catch (UnsatisfiedLinkError e)
+			{
+				terminalLog.warn("", e);
+				return null;
 			}
 			catch (IOException e)
 			{
 				throw new UncheckedIOException(e);
 			}
-			return result;
 		}
 
 		@Override
@@ -51,7 +56,7 @@ public final class DefaultJvmScope implements JvmScope
 			}
 			catch (IOException e)
 			{
-				log.error("", e);
+				terminalLog.error("", e);
 			}
 		}
 	};
@@ -61,7 +66,7 @@ public final class DefaultJvmScope implements JvmScope
 		() -> new GlobalConfiguration(this));
 	public final Thread shutdownHook;
 	public final AtomicBoolean closed = new AtomicBoolean();
-	private final Logger log = LoggerFactory.getLogger(DefaultJvmScope.class);
+	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);
 
 	public DefaultJvmScope()
 	{
@@ -71,7 +76,7 @@ public final class DefaultJvmScope implements JvmScope
 		}
 		catch (UnsatisfiedLinkError e)
 		{
-			log.warn("Failed to load \"requirements\" native library. Please see " +
+			terminalLog.warn("Failed to load \"requirements\" native library. Please see " +
 				"https://bitbucket.org/cowwoc/requirements/wiki/Deploying%20native%20libraries for more " +
 				"information.\n" +
 				"java.library.path=" + System.getProperty("java.library.path") + "\n" +
@@ -85,7 +90,7 @@ public final class DefaultJvmScope implements JvmScope
 			}
 			catch (RuntimeException e)
 			{
-				log.error("Error closing scope", e);
+				terminalLog.error("Error closing scope", e);
 			}
 		});
 		Runtime.getRuntime().addShutdownHook(shutdownHook);

@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.core.terminal;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
@@ -33,19 +34,17 @@ public final class Terminal
 	private final Reference<Boolean> connectedToStdout = ConcurrentLazyReference.create(
 		this::isConnectedToStdoutImpl);
 	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
-	private final NativeTerminal nativeTerminal;
+	private final Optional<NativeTerminal> nativeTerminal;
 	private final Logger log = LoggerFactory.getLogger(Terminal.class);
 
 	/**
 	 * Creates a new Terminal.
 	 *
-	 * @param nativeTerminal the native terminal
-	 * @throws AssertionError if {@code nativeTerminal} is null
+	 * @param nativeTerminal the native terminal (null if unavailable)
 	 */
 	public Terminal(NativeTerminal nativeTerminal)
 	{
-		assert (nativeTerminal != null): "nativeTerminal may not be null";
-		this.nativeTerminal = nativeTerminal;
+		this.nativeTerminal = Optional.ofNullable(nativeTerminal);
 	}
 
 	/**
@@ -151,16 +150,19 @@ public final class Terminal
 	 */
 	private boolean nativeSetEncoding(TerminalEncoding encoding)
 	{
-		try
+		return nativeTerminal.map(terminal ->
 		{
-			nativeTerminal.setEncoding(encoding);
-			return true;
-		}
-		catch (IOException e)
-		{
-			log.error("", e);
-			return false;
-		}
+			try
+			{
+				terminal.setEncoding(encoding);
+				return true;
+			}
+			catch (IOException e)
+			{
+				log.error("", e);
+				return false;
+			}
+		}).orElse(false);
 	}
 
 	/**
@@ -247,14 +249,17 @@ public final class Terminal
 		// information we send a follow-up query to the native library.
 		if (System.console() != null)
 			return true;
-		try
+		return nativeTerminal.map(terminal ->
 		{
-			return nativeTerminal.isConnectedToStdout();
-		}
-		catch (IOException e)
-		{
-			log.error("", e);
-			return false;
-		}
+			try
+			{
+				return terminal.isConnectedToStdout();
+			}
+			catch (IOException e)
+			{
+				log.error("", e);
+				return false;
+			}
+		}).orElse(false);
 	}
 }
