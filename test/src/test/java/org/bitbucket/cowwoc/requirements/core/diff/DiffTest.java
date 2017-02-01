@@ -14,6 +14,7 @@ import static org.bitbucket.cowwoc.requirements.core.diff.TextOnly.PADDING_MARKE
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_256COLOR;
 import org.bitbucket.cowwoc.requirements.core.util.Strings;
@@ -24,6 +25,9 @@ import org.testng.annotations.Test;
  */
 public final class DiffTest
 {
+	/**
+	 * Ensure that text-mode diffs generate the expected value.
+	 */
 	@Test
 	public void diffArraySize()
 	{
@@ -45,6 +49,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Ensure that XTERM_16COLOR diffs generate the expected value.
+	 */
 	@Test
 	public void diffArraySize_XTerm_16Color()
 	{
@@ -68,6 +75,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Ensure that XTERM_256COLOR diffs generate the expected value.
+	 */
 	@Test
 	public void diffArraySize_XTerm_256Color()
 	{
@@ -91,8 +101,37 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Ensure that RGB_888COLOR diffs generate the expected value.
+	 */
 	@Test
-	public void diffInsertThenDelete()
+	public void diffArraySize_Rgb888Color()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(RGB_888COLOR))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new CoreUnifiedVerifier(scope, true).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Rgb888Color scheme = new Rgb888Color("actual", "expected");
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
+				scheme.paddingColor + scheme.paddingMarker + scheme.resetColor + "]\n" +
+				"Expected: int[" + scheme.paddingColor + scheme.paddingMarker +
+				scheme.insertColor + "5" + scheme.resetColor + "]";
+			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+				"\nactual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that diffs delete before inserting.
+	 */
+	@Test
+	public void diffDeleteThenInsert()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -112,6 +151,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Ensure that whitespace differences are easy to understand in text-mode diffs.
+	 */
 	@Test
 	public void diffMissingWhitespace()
 	{
@@ -132,6 +174,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Test multi-line text-mode diffs where actual contains a leading newline character.
+	 */
 	@Test
 	public void diffNewlinePrefix()
 	{
@@ -160,6 +205,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Test multi-line text-mode diffs where actual contains a trailing newline character.
+	 */
 	@Test
 	public void diffNewlinePostfix()
 	{
@@ -187,6 +235,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Test multi-line text-mode diffs containing matching text across different lines.
+	 */
 	@Test
 	public void matchAcrossLines()
 	{
@@ -215,6 +266,9 @@ public final class DiffTest
 		}
 	}
 
+	/**
+	 * Ensures that duplicate lines in the middle of a diff are omitted.
+	 */
 	@Test
 	public void skipDuplicateLinesTest()
 	{
@@ -290,8 +344,8 @@ public final class DiffTest
 	}
 
 	/**
-	 * BUG: If the length of target was less than or equal to the return value, the method would
-	 * return zero which is incorrect.
+	 * BUG: If the length of target is less than or equal to the return value, the method would
+	 * return zero (which is incorrect).
 	 */
 	@Test
 	public void lastConsecutiveIndexOf_resultLessThanOrEqualToLengthOfTarget()

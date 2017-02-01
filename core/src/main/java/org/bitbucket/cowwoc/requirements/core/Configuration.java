@@ -21,8 +21,8 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 public final class Configuration
 {
 	private final ApplicationScope scope;
-	private final List<Entry<String, Object>> context;
-	private Optional<Class<? extends RuntimeException>> exception;
+	private final List<Entry<String, Object>> context = new ArrayList<>(2);
+	private Optional<Class<? extends RuntimeException>> exception = Optional.empty();
 
 	/**
 	 * Creates a new instance.
@@ -34,8 +34,6 @@ public final class Configuration
 	{
 		assert (scope != null): "scope may not be null";
 		this.scope = scope;
-		this.exception = Optional.empty();
-		this.context = new ArrayList<>(2);
 	}
 
 	/**
@@ -79,8 +77,6 @@ public final class Configuration
 	 */
 	public Configuration withDefaultException()
 	{
-		if (exception == null)
-			return this;
 		this.exception = Optional.empty();
 		return this;
 	}

@@ -17,8 +17,8 @@ public interface Configurable<S>
 	/**
 	 * Returns the verifier's configuration.
 	 * <p>
-	 * Modifying the configuration affect the behavior of this verifier, and any other verifier
-	 * created by it.
+	 * Modifying the configuration affect the behavior of this verifier, the verifier that created it,
+	 * and any verifiers created by it.
 	 *
 	 * @return the verifier's configuration
 	 */
@@ -27,8 +27,8 @@ public interface Configurable<S>
 	/**
 	 * Returns the verifier's configuration.
 	 * <p>
-	 * Modifying the configuration affect the behavior of this verifier, and any other verifier
-	 * created by it.
+	 * Modifying the configuration affect the behavior of this verifier, the verifier that created it,
+	 * and any verifiers created by it.
 	 *
 	 * @param consumer consumes the verifier's configuration
 	 * @return this
