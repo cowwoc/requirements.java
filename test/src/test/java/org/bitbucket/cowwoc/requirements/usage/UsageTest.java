@@ -12,13 +12,13 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import static org.bitbucket.cowwoc.requirements.core.CoreRequirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.guava.GuavaRequirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.guava.GuavaRequirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
 import org.testng.annotations.Test;
 
 public final class UsageTest
@@ -50,7 +50,7 @@ public final class UsageTest
 			Duration duration = Duration.ofDays(1);
 			Set<Duration> bucket = Collections.emptySet();
 
-			CoreVerifiers verifier = new CoreVerifiers(scope);
+			Verifiers verifier = new Verifiers(scope);
 			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{

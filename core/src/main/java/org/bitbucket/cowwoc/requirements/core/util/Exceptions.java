@@ -10,7 +10,7 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.util.Arrays;
 import java.util.function.Predicate;
-import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
+import org.bitbucket.cowwoc.requirements.core.Requirements;
 
 /**
  * Exception helper functions.
@@ -20,6 +20,26 @@ import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 public final class Exceptions
 {
 	private static final Lookup LOOKUP = MethodHandles.lookup();
+	/**
+	 * The package name of this library.
+	 */
+	private static final String LIBRARY_PACKAGE = getParentPackage(Requirements.class.getPackage().
+		getName());
+
+	/**
+	 * @param name the name of a Java package
+	 * @return the name of the parent of the package
+	 * @throws AssertionError if {@code name} is null or has no parent
+	 */
+	private static String getParentPackage(String name)
+	{
+		assert (name != null): "name may not be null";
+		assert (!name.trim().isEmpty()): "name may not be empty";
+		int index = name.lastIndexOf('.');
+		if (index == -1)
+			throw new AssertionError("pkg may not be the root package");
+		return name.substring(0, index);
+	}
 
 	/**
 	 * Throws an exception with the specified message and cause.
@@ -72,8 +92,7 @@ public final class Exceptions
 	{
 		filterStacktrace(throwable, name ->
 		{
-			return name.startsWith(CoreRequirements.class.getPackage().getName()) &&
-				!name.endsWith("Test");
+			return name.startsWith(LIBRARY_PACKAGE) && !name.endsWith("Test");
 		});
 	}
 

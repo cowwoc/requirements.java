@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
  * <p>
  * This class is thread-safe.
  *
- * @author Gili Tzababri
+ * @author Gili Tzabari
  */
 public final class GlobalConfiguration
 {
@@ -38,9 +38,7 @@ public final class GlobalConfiguration
 	}
 
 	/**
-	 * Indicates the terminal types that are available to the JVM.
-	 *
-	 * @return the list of available terminal types that may be used
+	 * @return the terminal encodings available to the JVM
 	 * @see #withTerminalEncoding(TerminalEncoding)
 	 * @see #withDefaultTerminalEncoding()
 	 */

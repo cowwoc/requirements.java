@@ -4,11 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.benchmark;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
-import static org.bitbucket.cowwoc.requirements.core.CoreRequirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
+import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Requirements;
+import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+import org.bitbucket.cowwoc.requirements.core.Verifiers;
+import org.bitbucket.cowwoc.requirements.core.impl.CoreVerifiersImpl;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
@@ -33,40 +38,84 @@ public class Main
 			.timeUnit(TimeUnit.NANOSECONDS)
 			.mode(Mode.AverageTime)
 			.build();
-		CoreRequirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
+		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
 
 		new Runner(opt).run();
 	}
 	private String name = "name";
 	private String value = "value";
+	private List<Integer> list;
+
+	public Main()
+	{
+		list = new ArrayList<>(100);
+		for (int i = 0; i < 100; ++i)
+			list.add(i);
+	}
 
 //	@Benchmark
 //	public void emptyMethod()
 //	{
 //	}
 //
-//	@Benchmark
-//	public StringVerifier assertMethod()
-//	{
-//		return assertThat(value, name).isNotNull().isNotEmpty();
-//	}
 	@Benchmark
-	public StringVerifier assertsDisabled()
+	public StringVerifier staticAssertThat()
 	{
-		return new CoreVerifiers(false).assertThat(value, name).isNotNull().isNotEmpty();
+		return assertThat(value, name).isNotNull().isNotEmpty();
+	}
+
+	@Benchmark
+	public StringVerifier verifiersAssertsDisabled()
+	{
+		return new Verifiers().withAssertionsDisabled().assertThat(value, name).isNotNull().isNotEmpty();
+	}
+
+	@Benchmark
+	public StringVerifier coreAssertsDisabled()
+	{
+		return new CoreVerifiersImpl().withAssertionsDisabled().assertThat(value, name).isNotNull().
+			isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
 	// be faster than requireThat() even though it delegates to it
 	@Benchmark
-	public StringVerifier assertsEnabled()
+	public StringVerifier verifiersAssertsEnabled()
 	{
-		return new CoreVerifiers(true).assertThat(value, name).isNotNull().isNotEmpty();
+		return new Verifiers().withAssertionsEnabled().assertThat(value, name).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
-	public StringVerifier requireMethod()
+	public StringVerifier coreAssertsEnabled()
+	{
+		return new CoreVerifiersImpl().withAssertionsEnabled().assertThat(value, name).isNotNull().
+			isNotEmpty();
+	}
+
+	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
+	// be faster than requireThat() even though it delegates to it
+	@Benchmark
+	public StringVerifier verifiersRequireThat()
+	{
+		return new Verifiers().requireThat(value, name).isNotNull().isNotEmpty();
+	}
+
+	@Benchmark
+	public StringVerifier staticRequireThat()
 	{
 		return requireThat(value, name).isNotNull().isNotEmpty();
+	}
+
+	@Benchmark
+	public CollectionVerifier<?> verifiersRequireThatContainsDuplicates()
+	{
+		return new Verifiers().requireThat(list, name).doesNotContainDuplicates();
+	}
+
+	@Benchmark
+	public CollectionVerifier<?> verifiersAssertsDisabledContainsDuplicates()
+	{
+		return new Verifiers().withAssertionsDisabled().assertThat(list, name).
+			doesNotContainDuplicates();
 	}
 }

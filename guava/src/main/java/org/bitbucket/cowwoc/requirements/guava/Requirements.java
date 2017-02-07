@@ -5,33 +5,28 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.guava.impl.GuavaVerifiersImpl;
 
 /**
- * This convenience class constructs a {@link CoreUnifiedVerifier} with the default configuration.
- * This class' assertion status determines whether {@code assertThat()} carries out a verification
- * or does nothing.
+ * An entry point for verifying API requirements.
+ * <p>
+ * The assertion status of the {@link Configuration} class determines whether {@code assertThat()}
+ * carries out a verification or does nothing.
  * <p>
  * This class is immutable.
  *
  * @since 3.0.0
  * @author Gili Tzabari
+ * @see GuavaVerifiers
  */
 @SuppressWarnings(
 	{
 		"AssertWithSideEffects", "NestedAssignment"
 	})
-public final class GuavaRequirements
+public final class Requirements
 {
-	private static final GuavaVerifiers DELEGATE;
-
-	static
-	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		DELEGATE = new GuavaVerifiers(MainApplicationScope.INSTANCE,
-			MainApplicationScope.INSTANCE.getDefaultConfiguration(), assertionsEnabled);
-	}
+	private static final GuavaVerifiers DELEGATE = new GuavaVerifiersImpl();
 
 	/**
 	 * @return true if assertions are enabled for this class
@@ -77,7 +72,7 @@ public final class GuavaRequirements
 	/**
 	 * Prevent construction.
 	 */
-	private GuavaRequirements()
+	private Requirements()
 	{
 	}
 }

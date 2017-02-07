@@ -13,14 +13,82 @@ import java.util.Optional;
 
 /**
  * A verifier's configuration.
+ * <p>
+ * This class is immutable.
  *
  * @author Gili Tzabari
  * @see Configurable
  */
-public final class Configuration
+@SuppressWarnings(
+	{
+		"NestedAssignment", "AssertWithSideEffects"
+	})
+public final class Configuration implements Configurable
 {
-	private final List<Entry<String, Object>> context = new ArrayList<>(2);
-	private Optional<Class<? extends RuntimeException>> exception = Optional.empty();
+	private static final boolean CLASS_ASSERTIONS_ENABLED;
+
+	static
+	{
+		boolean assertionsEnabled = false;
+		assert (assertionsEnabled = true);
+		CLASS_ASSERTIONS_ENABLED = assertionsEnabled;
+	}
+	private final List<Entry<String, Object>> context;
+	private final Optional<Class<? extends RuntimeException>> exception;
+	private final boolean assertionsEnabled;
+
+	/**
+	 * Creates the default configuration.
+	 * <p>
+	 * Assertions are enabled if <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">assertions are enabled on this class</a>.
+	 */
+	public Configuration()
+	{
+		this.context = new ArrayList<>(2);
+		this.exception = Optional.empty();
+		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
+	}
+
+	/**
+	 * Copies a configuration.
+	 *
+	 * @param context           the list of key-value pairs to append to the exception message
+	 * @param exception         the type of exception to throw
+	 * @param assertionsEnabled true if {@code assertThat()} should invoke {@code requireThat()};
+	 *                          false if {@code assertThat()} should do nothing
+	 * @throws AssertionError if any of the arguments are null
+	 */
+	private Configuration(List<Entry<String, Object>> context,
+		Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled)
+	{
+		assert (context != null): "context may not be null";
+		assert (exception != null): "exception may not be null";
+		this.context = context;
+		this.exception = exception;
+		this.assertionsEnabled = assertionsEnabled;
+	}
+
+	@Override
+	public boolean assertionsAreEnabled()
+	{
+		return assertionsEnabled;
+	}
+
+	@Override
+	public Configuration withAssertionsEnabled()
+	{
+		if (assertionsEnabled)
+			return this;
+		return new Configuration(context, exception, true);
+	}
+
+	@Override
+	public Configuration withAssertionsDisabled()
+	{
+		if (!assertionsEnabled)
+			return this;
+		return new Configuration(context, exception, false);
+	}
 
 	/**
 	 * Returns the type of exception that will be thrown if a verification fails.
@@ -34,35 +102,24 @@ public final class Configuration
 		return exception;
 	}
 
-	/**
-	 * Overrides the type of exception that will get thrown if a verification fails.
-	 * <p>
-	 * The exception class must define the following constructors:
-	 * <p>
-	 * {@code <init>(String message)}<br>
-	 * {@code <init>(String message, Throwable cause)}
-	 *
-	 * @param exception the type of exception to throw
-	 * @return this
-	 * @throws NullPointerException if {@code exception} is null
-	 */
+	@Override
 	public Configuration withException(Class<? extends RuntimeException> exception)
 	{
 		if (exception == null)
 			throw new NullPointerException("exception may not be null");
-		this.exception = Optional.of(exception);
-		return this;
+		Optional<Class<? extends RuntimeException>> newException = Optional.of(exception);
+		if (this.exception.equals(newException))
+			return this;
+		return new Configuration(context, newException, assertionsEnabled);
 	}
 
-	/**
-	 * Throws the default exception type if a verification fails.
-	 *
-	 * @return this
-	 */
+	@Override
 	public Configuration withDefaultException()
 	{
-		this.exception = Optional.empty();
-		return this;
+		Optional<Class<? extends RuntimeException>> newException = Optional.empty();
+		if (this.exception.equals(newException))
+			return this;
+		return new Configuration(context, newException, assertionsEnabled);
 	}
 
 	/**
@@ -74,19 +131,49 @@ public final class Configuration
 		return Collections.unmodifiableList(context);
 	}
 
-	/**
-	 * Appends contextual information to the exception message.
-	 *
-	 * @param key   a key
-	 * @param value a value
-	 * @return this
-	 * @throws NullPointerException if {@code key} is null
-	 */
+	@Override
 	public Configuration addContext(String key, Object value)
 	{
 		if (key == null)
 			throw new NullPointerException("key may not be null");
 		context.add(new SimpleImmutableEntry<>(key, value));
 		return this;
+	}
+
+	@Override
+	public Configurable withConfiguration(Configuration configuration)
+	{
+		if (configuration == null)
+			throw new NullPointerException("configuration may not be null");
+		return configuration;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 23 * hash + this.context.hashCode();
+		hash = 23 * hash + this.exception.hashCode();
+		hash = 23 * hash + Boolean.hashCode(this.assertionsEnabled);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+			return true;
+		if (!(o instanceof Configuration))
+			return false;
+		Configuration other = (Configuration) o;
+		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
+			exception.equals(other.exception);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Configuration[context=" + context + ", exception=" + exception +
+			", assertionsEnabled=" + assertionsEnabled + "]";
 	}
 }

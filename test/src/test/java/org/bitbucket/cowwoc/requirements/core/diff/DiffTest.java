@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core.diff;
 
-import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
+import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.DIFF_EQUAL;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.DIFF_INSERT;
@@ -35,7 +35,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -59,7 +59,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -85,7 +85,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -111,7 +111,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -137,7 +137,7 @@ public final class DiffTest
 		{
 			String actual = "actual";
 			String expected = "expected";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -161,7 +161,7 @@ public final class DiffTest
 		{
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -184,7 +184,7 @@ public final class DiffTest
 		{
 			String actual = "\nactual";
 			String expected = "expected";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -215,7 +215,7 @@ public final class DiffTest
 		{
 			String actual = "actual\n";
 			String expected = "expected";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -245,7 +245,7 @@ public final class DiffTest
 		{
 			String actual = "\n\nvalue";
 			String expected = "value";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -276,7 +276,7 @@ public final class DiffTest
 		{
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -312,7 +312,7 @@ public final class DiffTest
 		{
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{

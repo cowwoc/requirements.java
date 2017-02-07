@@ -7,11 +7,30 @@ package org.bitbucket.cowwoc.requirements.core;
 /**
  * A verifier whose behavior is configurable.
  *
- * @param <S> the type of the verifier
  * @author Gili Tzabari
  */
-public interface Configurable<S>
+public interface Configurable
 {
+	/**
+	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
+	 *         shouldn't do anything
+	 */
+	boolean assertionsAreEnabled();
+
+	/**
+	 * Indicates that {@code assertThat()} should invoke {@code requireThat()}.
+	 *
+	 * @return a verifier with the updated configuration
+	 */
+	Configurable withAssertionsEnabled();
+
+	/**
+	 * Indicates that {@code assertThat()} shouldn't do anything.
+	 *
+	 * @return a verifier with the updated configuration
+	 */
+	Configurable withAssertionsDisabled();
+
 	/**
 	 * Overrides the type of exception that will get thrown if a verification fails.
 	 * <p>
@@ -24,14 +43,14 @@ public interface Configurable<S>
 	 * @return a verifier with the updated configuration
 	 * @throws NullPointerException if {@code exception} is null
 	 */
-	S withException(Class<? extends RuntimeException> exception);
+	Configurable withException(Class<? extends RuntimeException> exception);
 
 	/**
 	 * Throws the default exception type if a verification fails.
 	 *
 	 * @return a verifier with the updated configuration
 	 */
-	S withDefaultException();
+	Configurable withDefaultException();
 
 	/**
 	 * Appends contextual information to the exception message.
@@ -41,5 +60,12 @@ public interface Configurable<S>
 	 * @return a verifier with the updated configuration
 	 * @throws NullPointerException if {@code key} is null
 	 */
-	S addContext(String key, Object value);
+	Configurable addContext(String key, Object value);
+
+	/**
+	 * @param configuration a new configuration
+	 * @return a verifier with the updated configuration
+	 * @throws NullPointerException if {@code configuration} is null
+	 */
+	Configurable withConfiguration(Configuration configuration);
 }

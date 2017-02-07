@@ -4,10 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.core.scope;
 
+import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
+import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 
 /**
  * An application configuration.
@@ -60,7 +62,14 @@ public interface ApplicationScope extends JvmScope
 	/**
 	 * @return a verifier that can be used to check a verifier's own parameters
 	 */
-	CoreVerifiers getInternalVerifier();
+	Verifiers getInternalVerifier();
+
+	/**
+	 * Returns a new instance of {@code GuavaVerifiers}.
+	 *
+	 * @return {@code Optional.empty()} if the guava module is not available
+	 */
+	Optional<GuavaVerifiers> createGuavaVerifiers();
 
 	@Override
 	void close();

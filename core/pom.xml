@@ -27,12 +27,36 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<!-- WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-478 -->
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<copy todir="${project.build.directory}/javadoc-sources">
+									<fileset dir="${project.build.sourceDirectory}">
+										<exclude name="org/bitbucket/cowwoc/requirements/guava/**"/>
+									</fileset>
+								</copy>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.10.4</version>
 				<configuration>
 					<links>
 						<link>https://docs.oracle.com/javase/8/docs/api/</link>
+						<link>https://google.github.io/guava/releases/21.0/api/docs/</link>
 					</links>
 					<!--
 					NOTE: <docfilessubdirs> is only needed when generating Javadoc for color diffs
@@ -40,11 +64,21 @@
 					<docfilessubdirs>true</docfilessubdirs>
 					-->
 
+					<sourcepath>${project.basedir}/../guava/src/main/java:${project.build.directory}/javadoc-sources</sourcepath>
 					<!-- whitelist in order to exclude internal classes -->
 					<sourceFileIncludes>
 						<include>org/bitbucket/cowwoc/requirements/core/*.java</include>
+						<include>org/bitbucket/cowwoc/requirements/core/terminal/TerminalEncoding.java</include>
 						<include>org/bitbucket/cowwoc/requirements/core/capabilities/*.java</include>
+						<include>org/bitbucket/cowwoc/requirements/guava/*.java</include>
 					</sourceFileIncludes>
+					<additionalDependencies>
+						<additionalDependency>
+							<groupId>com.google.guava</groupId>
+							<artifactId>guava</artifactId>
+							<version>21.0</version>
+						</additionalDependency>
+					</additionalDependencies>
 					<show>public</show>
 					<windowtitle>${project.name} ${project.version} API</windowtitle>
 				</configuration>
@@ -53,13 +87,13 @@
 			<plugin>
 				<groupId>com.github.siom79.japicmp</groupId>
 				<artifactId>japicmp-maven-plugin</artifactId>
-				<version>0.9.2</version>
+				<version>0.9.3</version>
 				<configuration>
 					<oldVersion>
 						<dependency>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.2</version>
+							<version>2.0.7</version>
 							<type>jar</type>
 						</dependency>
 					</oldVersion>
@@ -71,13 +105,11 @@
 						<skipDiffReport>true</skipDiffReport>
 						<includes>
 							<include>org.bitbucket.cowwoc.requirements</include>
+							<include>org.bitbucket.cowwoc.requirements.core</include>
+							<include>org.bitbucket.cowwoc.requirements.core.annotations</include>
+							<include>org.bitbucket.cowwoc.requirements.core.capabilities</include>
+							<include>org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding</include>
 						</includes>
-						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.core.diff</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.core.impl</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.core.ext</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.core.util</exclude>
-						</excludes>
 					</parameter>
 				</configuration>
 				<executions>
@@ -109,7 +141,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>pouch</artifactId>
-			<version>1.10-SNAPSHOT</version>
+			<version>1.12</version>
 		</dependency>
 	</dependencies>
 </project>

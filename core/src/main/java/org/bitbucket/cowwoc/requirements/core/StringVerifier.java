@@ -82,14 +82,14 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.
 	 *
-	 * @return this
+	 * @return a verifier for the trimmed String representation
 	 */
 	StringVerifier trim();
 
 	/**
 	 * Ensures that the actual value contains a valid Internet address format.
 	 *
-	 * @return a verifier for Internet addresses
+	 * @return a verifier for the Internet address representation of the value
 	 * @throws IllegalArgumentException if the actual value does not contain a valid Internet address
 	 *                                  format
 	 */

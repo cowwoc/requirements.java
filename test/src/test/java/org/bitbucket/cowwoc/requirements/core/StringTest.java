@@ -20,7 +20,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new CoreVerifiers(scope).requireThat(actual, null);
+			new Verifiers(scope).requireThat(actual, null);
 		}
 	}
 
@@ -30,7 +30,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new CoreVerifiers(scope).requireThat(actual, "");
+			new Verifiers(scope).requireThat(actual, "");
 		}
 	}
 
@@ -40,7 +40,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -50,7 +50,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -60,7 +60,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new CoreVerifiers(scope).requireThat(actual, "actual").trim().isEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").trim().isEmpty();
 		}
 	}
 
@@ -70,7 +70,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new CoreVerifiers(scope).requireThat(actual, "actual").trim().isEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").trim().isEmpty();
 		}
 	}
 
@@ -80,7 +80,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isNotEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -90,7 +90,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			new CoreVerifiers(scope).requireThat(actual, "actual").isNotEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -100,7 +100,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new CoreVerifiers(scope).requireThat(actual, "actual").trim().isNotEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
@@ -110,7 +110,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new CoreVerifiers(scope).requireThat(actual, "actual").trim().isNotEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
@@ -121,7 +121,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = prefix + "1234";
-			new CoreVerifiers(scope).requireThat(actual, "actual").startsWith(prefix);
+			new Verifiers(scope).requireThat(actual, "actual").startsWith(prefix);
 		}
 	}
 
@@ -132,7 +132,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = "1234" + prefix;
-			new CoreVerifiers(scope).requireThat(actual, "actual").startsWith(prefix);
+			new Verifiers(scope).requireThat(actual, "actual").startsWith(prefix);
 		}
 	}
 
@@ -143,7 +143,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = "1234" + prefix;
-			new CoreVerifiers(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
+			new Verifiers(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
 		}
 	}
 
@@ -154,7 +154,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = prefix + "1234";
-			new CoreVerifiers(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
+			new Verifiers(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
 		}
 	}
 
@@ -165,7 +165,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = "1234" + suffix;
-			new CoreVerifiers(scope).requireThat(actual, "actual").endsWith(suffix);
+			new Verifiers(scope).requireThat(actual, "actual").endsWith(suffix);
 		}
 	}
 
@@ -176,7 +176,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = suffix + "1234";
-			new CoreVerifiers(scope).requireThat(actual, "actual").endsWith(suffix);
+			new Verifiers(scope).requireThat(actual, "actual").endsWith(suffix);
 		}
 	}
 
@@ -187,7 +187,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = suffix + "1234";
-			new CoreVerifiers(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
+			new Verifiers(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
 		}
 	}
 
@@ -198,7 +198,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = "1234" + suffix;
-			new CoreVerifiers(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
+			new Verifiers(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
 		}
 	}
 
@@ -208,7 +208,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new CoreVerifiers(scope).requireThat(actual, "actual").length().
+			new Verifiers(scope).requireThat(actual, "actual").length().
 				isEqualTo(actual.length());
 		}
 	}
@@ -219,7 +219,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1234567890";
-			new CoreVerifiers(scope).requireThat(actual, "actual").length().
+			new Verifiers(scope).requireThat(actual, "actual").length().
 				isEqualTo(actual.length() + 1);
 		}
 	}
@@ -230,7 +230,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new CoreVerifiers(scope).requireThat(actual, "actual").length().
+			new Verifiers(scope).requireThat(actual, "actual").length().
 				isNotEqualTo(actual.length() + 1);
 		}
 	}
@@ -241,7 +241,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1234567890";
-			new CoreVerifiers(scope).requireThat(actual, "actual").length().
+			new Verifiers(scope).requireThat(actual, "actual").length().
 				isNotEqualTo(actual.length());
 		}
 	}
@@ -253,7 +253,7 @@ public final class StringTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			String actual = null;
-			new CoreVerifiers(scope, false).assertThat(actual, "actual").isNotNull();
+			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
 		}
 	}
 }

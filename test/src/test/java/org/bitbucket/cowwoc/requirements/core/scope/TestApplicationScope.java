@@ -7,8 +7,6 @@ package org.bitbucket.cowwoc.requirements.core.scope;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.ConstantReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
-import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
@@ -20,8 +18,6 @@ import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
  */
 public final class TestApplicationScope extends AbstractApplicationScope
 {
-	private final Reference<CoreVerifiers> internalVerifier = ConcurrentLazyReference.create(() ->
-		new CoreVerifiers(this, CoreRequirements.assertionsAreEnabled()));
 	private final Reference<TerminalEncoding> terminalEncoding;
 
 	/**
@@ -74,12 +70,6 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	public boolean isApiInStacktrace()
 	{
 		return true;
-	}
-
-	@Override
-	public CoreVerifiers getInternalVerifier()
-	{
-		return internalVerifier.getValue();
 	}
 
 	@Override

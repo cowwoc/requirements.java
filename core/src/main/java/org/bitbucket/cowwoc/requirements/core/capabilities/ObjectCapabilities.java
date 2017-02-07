@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.CoreRequirements;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.Requirements;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
@@ -123,7 +123,7 @@ public interface ObjectCapabilities<S, T>
 	 * modified.
 	 *
 	 * @return {@code Optional.empty()} if the actual value is not available (e.g. if
-	 *         {@link CoreRequirements#assertThat(Object, String) assertThat()} is used when
+	 *         {@link Requirements#assertThat(Object, String) assertThat()} is used when
 	 *         assertions are disabled, the verifier does not retain a reference to the actual value)
 	 */
 	Optional<T> getActualIfPresent();
@@ -138,7 +138,7 @@ public interface ObjectCapabilities<S, T>
 	 * @return the actual value
 	 * @throws NoSuchElementException if the verifier does not have access to the actual value (e.g.
 	 *                                if
-	 *                                {@link CoreRequirements#assertThat(Object, String) assertThat()}
+	 *                                {@link Requirements#assertThat(Object, String) assertThat()}
 	 *                                is used when assertions are disabled, the verifier does not need
 	 *                                to retain a reference to the actual value)
 	 * @see #getActualIfPresent()

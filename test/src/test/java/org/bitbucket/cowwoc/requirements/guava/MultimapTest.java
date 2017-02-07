@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import java.util.AbstractMap.SimpleEntry;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -21,7 +22,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = HashMultimap.create();
-			new GuavaVerifiers(scope).requireThat(actual, null);
+			new Verifiers(scope).requireThat(actual, null);
 		}
 	}
 
@@ -31,7 +32,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = HashMultimap.create();
-			new GuavaVerifiers(scope).requireThat(actual, "");
+			new Verifiers(scope).requireThat(actual, "");
 		}
 	}
 
@@ -41,7 +42,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = HashMultimap.create();
-			new GuavaVerifiers(scope).requireThat(actual, "actual").isEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -51,7 +52,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").isEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -61,7 +62,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").isNotEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -71,7 +72,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = HashMultimap.create();
-			new GuavaVerifiers(scope).requireThat(actual, "actual").isNotEmpty();
+			new Verifiers(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -81,7 +82,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").keySet().contains("key");
+			new Verifiers(scope).requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -91,7 +92,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").keySet().contains("key");
+			new Verifiers(scope).requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -101,7 +102,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").keySet().
+			new Verifiers(scope).requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -112,7 +113,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").keySet().
+			new Verifiers(scope).requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -123,7 +124,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").values().contains("value");
+			new Verifiers(scope).requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -133,7 +134,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "notValue");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").values().contains("value");
+			new Verifiers(scope).requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -143,7 +144,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").values().
+			new Verifiers(scope).requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -154,7 +155,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "notValue");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").values().
+			new Verifiers(scope).requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -165,8 +166,8 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").entries().
-				contains(new SimpleEntry<>("key", "value"));
+			new Verifiers(scope).requireThat(actual, "actual").entries().
+				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
 
@@ -176,8 +177,8 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").entries().
-				contains(new SimpleEntry<>("key", "value"));
+			new Verifiers(scope).requireThat(actual, "actual").entries().
+				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
 
@@ -187,8 +188,8 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").entries().
-				doesNotContain(new SimpleEntry<>("notKey", "value"));
+			new Verifiers(scope).requireThat(actual, "actual").entries().
+				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
 
@@ -198,8 +199,8 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").entries().
-				doesNotContain(new SimpleEntry<>("notKey", "value"));
+			new Verifiers(scope).requireThat(actual, "actual").entries().
+				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
 
@@ -209,7 +210,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").size().isEqualTo(1);
+			new Verifiers(scope).requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -219,7 +220,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").size().isEqualTo(2);
+			new Verifiers(scope).requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -229,7 +230,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
+			new Verifiers(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -239,7 +240,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
+			new Verifiers(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -250,7 +251,7 @@ public final class MultimapTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Multimap<?, ?> actual = null;
-			new GuavaVerifiers(scope).assertThat(actual, "actual").isNotNull();
+			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
 		}
 	}
 
@@ -260,7 +261,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").
+			new Verifiers(scope).requireThat(actual, "actual").
 				keySet(k -> k.contains("key")).
 				values(v -> v.contains("value"));
 		}
@@ -272,7 +273,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").
+			new Verifiers(scope).requireThat(actual, "actual").
 				keySet(k -> k.contains("notTheKey")).
 				values(v -> v.contains("value"));
 		}
@@ -284,7 +285,7 @@ public final class MultimapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new GuavaVerifiers(scope).requireThat(actual, "actual").
+			new Verifiers(scope).requireThat(actual, "actual").
 				keySet(k -> k.contains("key")).
 				values(v -> v.contains("notTheValue"));
 		}

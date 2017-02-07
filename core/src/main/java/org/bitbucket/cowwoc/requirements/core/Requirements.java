@@ -11,31 +11,27 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.core.impl.CoreVerifiersImpl;
 import org.bitbucket.cowwoc.requirements.core.scope.DefaultJvmScope;
 
 /**
- * This convenience class constructs a {@link CoreVerifiers} with the default configuration.
- * This class' assertion state determines whether {@code assertThat()} carries out a verification or
- * does nothing.
+ * An entry point for verifying API requirements.
+ * <p>
+ * The assertion status of the {@link Configuration} class determines whether {@code assertThat()}
+ * carries out a verification or does nothing.
  * <p>
  * This class is immutable.
  *
  * @author Gili Tzabari
+ * @see CoreVerifiers
  */
 @SuppressWarnings(
 	{
 		"AssertWithSideEffects", "NestedAssignment"
 	})
-public final class CoreRequirements
+public final class Requirements
 {
-	private static final CoreVerifiers DELEGATE;
-
-	static
-	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		DELEGATE = new CoreVerifiers(assertionsEnabled);
-	}
+	private static final CoreVerifiersImpl DELEGATE = new CoreVerifiersImpl();
 
 	/**
 	 * @return true if assertions are enabled for this class
@@ -480,34 +476,7 @@ public final class CoreRequirements
 	/**
 	 * Prevent construction.
 	 */
-	private CoreRequirements()
+	private Requirements()
 	{
-		/**
-		 * Idea: Configuring the root verifier is a one-time thing but configuring 2nd-level verifiers
-		 * is done on the fly. This is because any configuration set on the 2nd+ level will get
-		 * discarded at the end of the verification anyway.
-		 * \-> But configuration only contains stuff that is useful per-run (context for sure, and
-		 * exception most probably).
-		 */
-
-//		requireThat(value, "name").isNotNull();
-//		RequirementVerifier verifier;
-//		verifier.withException().addContext().requireThat()
-//		requireThat(value, "name").
-//			isNotNull().
-//			isNotEmpty().
-//			done();
-//		requireThat(value, "name").
-//			isNotNull().
-//			isNotEmpty().
-//			elseThrow(IllegalArgumentException.class).
-//			withContext("url", "http://www.facebook.com").
-//			done();
-//		// ---------------------
-//		requireThat(value, "name").isNotNull().isNotEmpty();
-//		requireThat(value, "name").
-//			withConfiguration(c -> c.withException(IllegalArgumentException.class).
-//				withContext("url", "http://www.facebook.com")).
-//			isNotNull().isNotEmpty();
 	}
 }

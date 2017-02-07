@@ -25,6 +25,11 @@
 			<version>1.17.4</version>
 			<scope>provided</scope>
 		</dependency>
+		<!--		<dependency>
+			<groupId>org.bitbucket.cowwoc</groupId>
+			<artifactId>requirements-guava</artifactId>
+			<version>${project.version}</version>
+		</dependency>-->
 		<dependency>
 			<groupId>org.bitbucket.cowwoc</groupId>
 			<artifactId>requirements-core</artifactId>
