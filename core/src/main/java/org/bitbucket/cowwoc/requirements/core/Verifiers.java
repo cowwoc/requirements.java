@@ -29,6 +29,8 @@ public final class Verifiers extends AbstractCoreVerifiers
 {
 	// DESIGN: Using an abstract superclass because interface default methods don't perform as well
 	// in Java 8: http://stackoverflow.com/a/30314501/14731
+	private static final String MODULES_HELP =
+		"https://bitbucket.org/cowwoc/requirements/wiki/Modules";
 
 	/**
 	 * @param scope the application configuration
@@ -104,13 +106,13 @@ public final class Verifiers extends AbstractCoreVerifiers
 			{
 				return new UnsupportedOperationException("requirements-guava was not loaded.\n" +
 					"Classpath: " + System.getProperty("java.class.path") + "\n" +
-					"See https://bitbucket.org/cowwoc/requirements/wiki/modules for more information");
+					"See " + MODULES_HELP + " for more information");
 			}
 			// Found Guava on the classpath, but requirements-guava is being shadowed
 			return new UnsupportedOperationException("requirements-guava must be on the classpath " +
 				"before requirements-core.\n" +
 				"Classpath: " + System.getProperty("java.class.path") + "\n" +
-				"See https://bitbucket.org/cowwoc/requirements/wiki/modules for more information");
+				"See " + MODULES_HELP + " for more information");
 		});
 	}
 
