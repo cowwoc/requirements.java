@@ -276,7 +276,13 @@ jobject terminalEncoding(JNIEnv* env, const char* name)
 	(JNIEnv* env, jobject jthis, jobject encoding)
 	{
 		Exceptions exceptions(env);
-		exceptions.throwUnsupportedOperationException("");
+		jobject NONE = terminalEncoding(env, "NONE");
+		DWORD newStdoutMode;
+		if (env->IsSameObject(encoding, NONE))
+			return;
+		std::string message("Unexpected encoding: ");
+		message += toString(env, encoding);
+		exceptions.throwIOException(message.c_str());
 	}
 
 	/**
