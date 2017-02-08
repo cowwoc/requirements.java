@@ -14,7 +14,7 @@
 	<url>https://bitbucket.org/cowwoc/requirements/</url>
 
 	<build>
-		<directory>${basedir}/target/${classifier}-${build.type}</directory>
+		<directory>${basedir}/target/${platform}-${build.type}</directory>
 		<sourceDirectory>src/main/cpp</sourceDirectory>
 		<plugins>
 			<plugin>
