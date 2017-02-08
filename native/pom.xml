@@ -338,6 +338,7 @@
 			<properties>
 				<platform>empty-jar</platform>
 				<build.type>release</build.type>
+				<classifier/>
 			</properties>
 		</profile>
 	</profiles>
