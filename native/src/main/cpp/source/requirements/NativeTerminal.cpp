@@ -95,7 +95,7 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 	jmethodID toString = env->GetMethodID(object, "toString", "()Ljava/lang/String;");
 	jstring result = (jstring) env->CallObjectMethod(o, toString);
-	const char* charArray = env->GetStringUTFChars(result, false);
+	const char* charArray = env->GetStringUTFChars(result, 0);
 	return std::string(charArray);
 }
 
