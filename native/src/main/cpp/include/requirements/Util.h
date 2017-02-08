@@ -43,7 +43,7 @@ extern "C" {
 		 * @param type the exception type
 		 * @param message the exception message
 		 */
-		void throwException(char* type, const char* message);
+		void throwException(const char* type, const char* message);
 
 	public:
 		/**

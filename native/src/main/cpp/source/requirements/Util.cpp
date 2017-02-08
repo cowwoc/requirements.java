@@ -86,7 +86,7 @@
 Exceptions::Exceptions(JNIEnv* _env) : env(_env)
 {}
 
-void Exceptions::throwException(char* type, const char* message)
+void Exceptions::throwException(const char* type, const char* message)
 {
 	assert(type != 0);
 	assert(message != 0);
