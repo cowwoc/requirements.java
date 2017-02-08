@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <wchar.h>
+#include <string>
 
 #ifdef _WIN32
 	#ifndef VC_EXTRALEAN
@@ -50,30 +51,21 @@
 	{
 		assert(message != 0);
 		char* context;
-		size_t len;
-		if (lastError == 0)
-			len = strlen(message) + 1;
-		else
+		if (lastError != 0)
 		{
 			context = getFormatMessage(lastError);
 			if (!context)
 				throwException("java/lang/AssertionError", "FormatMessage failed");
-			len = strlen(message) + strlen(": ") + strlen(context) + 1;
 		}
 
-		char* joinedMessage = new char[len];
-		joinedMessage[0] = '\0';
-		errno_t rc = strcat_s(joinedMessage, len, message);
-		assert(rc == 0);
+		std::string joinedMessage(message);
 		if (lastError != 0)
 		{
-			rc = strcat_s(joinedMessage, len, ": ");
-			assert(rc == 0);
-			rc = strcat_s(joinedMessage, len, context);
-			assert(rc == 0);
+			joinedMessage += ": ";
+			joinedMessage += context;
 		}
 
-		throwException("java/io/IOException", joinedMessage);
+		throwException("java/io/IOException", joinedMessage.c_str());
 
 		if (lastError != 0)
 		{
