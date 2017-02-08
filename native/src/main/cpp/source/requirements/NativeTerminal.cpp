@@ -80,6 +80,25 @@ jobject terminalEncoding(JNIEnv* env, const char* name)
 	return env->GetStaticObjectField(enumClass, enumField);
 }
 
+/**
+* @param env the JNI environment
+* @param o an object
+* @return the String representation of the object
+*/
+std::string toString(JNIEnv* env, jobject o)
+{
+	jclass object = env->FindClass("java/lang/Object");
+	if (object == 0)
+	{
+		assert(env->ExceptionCheck());
+		return 0;
+	}
+	jmethodID toString = env->GetMethodID(object, "toString", "()Ljava/lang/String;");
+	jstring result = (jstring) env->CallObjectMethod(o, toString);
+	const char* charArray = env->GetStringUTFChars(result, false);
+	return std::string(charArray);
+}
+
 #ifdef _WIN32
 	/**
 	 * org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal.connect()
@@ -153,25 +172,6 @@ jobject terminalEncoding(JNIEnv* env, const char* name)
 	(JNIEnv* env, jobject jthis)
 	{
 		return state.connectedToStdout;
-	}
-
-	/**
-	 * @param env the JNI environment
-	 * @param o an object
-	 * @return the String representation of the object
-	 */
-	std::string toString(JNIEnv* env, jobject o)
-	{
-		jclass object = env->FindClass("java/lang/Object");
-		if (object == 0)
-		{
-			assert(env->ExceptionCheck());
-			return 0;
-		}
-		jmethodID toString = env->GetMethodID(object, "toString", "()Ljava/lang/String;");
-		jstring result = (jstring) env->CallObjectMethod(o, toString);
-		const char* charArray = env->GetStringUTFChars(result, false);
-		return std::string(charArray);
 	}
 
 	/**
