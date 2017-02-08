@@ -72,11 +72,6 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--
-		"Deferred deploy" does not allow omitting the last module from deployment, so we use "direct
-		deploy" instead: https://issues.sonatype.org/browse/NEXUS-9138
-		-->
-		<skipLocalStaging>true</skipLocalStaging>
 	</properties>
 
 	<profiles>
