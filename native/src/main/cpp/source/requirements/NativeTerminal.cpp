@@ -277,7 +277,7 @@ void JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_NativeTerminal
 (JNIEnv* env, jobject jthis, jobject encoding)
 {
 	Exceptions exceptions(env);
-	exceptions.throwUnsupportedOperationException();
+	exceptions.throwUnsupportedOperationException("");
 }
 
 /**
