@@ -277,7 +277,6 @@ jobject terminalEncoding(JNIEnv* env, const char* name)
 	{
 		Exceptions exceptions(env);
 		jobject NONE = terminalEncoding(env, "NONE");
-		DWORD newStdoutMode;
 		if (env->IsSameObject(encoding, NONE))
 			return;
 		std::string message("Unexpected encoding: ");
