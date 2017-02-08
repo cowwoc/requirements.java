@@ -17,9 +17,9 @@
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
           <name>releaseVersion</name>
           <description>What version number should be released?</description>
-          <defaultValue>3.0.0</defaultValue>
-          <regex>\d+\.\d+\.\d+</regex>
-          <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</failedValidationMessage>
+          <defaultValue>3.0.0-RC</defaultValue>
+          <regex>\d+\.\d+\.\d+(-RC)?</regex>
+          <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-RC]</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
           <name>nextVersion</name>
@@ -43,7 +43,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.25">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -106,7 +106,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
 
                     // Open a new staging repository and capture its ID
                     def output = sh returnStdout: true, script: &quot;&quot;&quot;hg update release-${releaseVersion}
-                        mvn --batch-mode -U -e nexus-staging:rc-open -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/ -DstagingProfileId=${stagingProfileId}&quot;&quot;&quot;
+                        mvn --batch-mode -U -e nexus-staging:rc-open -DstagingProfileId=${stagingProfileId}&quot;&quot;&quot;
                     echo output
                     stagingRepositoryId = ( output =~ /Opened (orgbitbucketcowwoc-\d+)/ ) [0][1]
                 }
@@ -137,17 +137,25 @@ try
             {
                 withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
                 {
+                    stage(&quot;Build (empty-jar)&quot;)
+                    {
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pempty-jar clean install&apos;
+                    }
+                    stage(&quot;Deploy (empty-jar)&quot;)
+                    {
+                        // Deploy empty main JAR
+                        sh script: &quot;&quot;&quot;cd native
+                            mvn --batch-mode -e -DosDetection=false -Pempty-jar,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
                     stage(&quot;Build (linux-i386)&quot;)
                     {
                         sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-i386-release clean install&apos;
                     }
                     stage(&quot;Deploy (linux-i386)&quot;)
                     {
-                        // Deploy empty main JAR
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pempty-jar,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
-                        
                         // Deploy platform-specific JAR
-                        sh script: &quot;&quot;&quot;cd requirements-native
+                        sh script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -DosDetection=false -Plinux-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
@@ -177,7 +185,7 @@ try
                     }
                     stage(&quot;Deploy (linux-amd64)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;cd requirements-native
+                        sh script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
@@ -207,7 +215,7 @@ try
                     }
                     stage(&quot;Deploy (mac-amd64)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;cd requirements-native
+                        sh script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -DosDetection=false -Pmac-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
@@ -237,7 +245,7 @@ try
                     }
                     stage(&quot;Deploy (windows-i386)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;cd requirements-native
+                        bat script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -DosDetection=false -Pwindows-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
@@ -253,7 +261,7 @@ try
                     }
                     stage(&quot;Deploy (windows-amd64)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;cd requirements-native
+                        bat script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -DosDetection=false -Pwindows-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
@@ -284,7 +292,7 @@ catch (e)
             {
                 withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
                 {
-                    sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-drop -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/ -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                    sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-drop -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
                 }
             }
         }
@@ -314,7 +322,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
         {
             stage(&quot;Close release&quot;)
             {
-                sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-close -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/ -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-close -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
             }
         }
     }

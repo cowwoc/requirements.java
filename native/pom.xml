@@ -335,6 +335,10 @@
 					</plugin>
 				</plugins>
 			</build>
+			<properties>
+				<platform>empty-jar</platform>
+				<build.type>release</build.type>
+			</properties>
 		</profile>
 	</profiles>
 </project>
