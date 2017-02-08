@@ -98,7 +98,8 @@ void Exceptions::throwException(char* type, const char* message)
 
 void Exceptions::throwIOException(const char* message)
 {
-	throwIOException(message, 0);
+	assert(message != 0);
+	throwException("java/io/IOException", message);
 }
 
 void Exceptions::throwUnsupportedOperationException(const char* message)
