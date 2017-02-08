@@ -50,6 +50,8 @@ public final class DefaultJvmScope implements JvmScope
 		@Override
 		protected void disposeValue(NativeTerminal value)
 		{
+			if (value == null)
+				return;
 			try
 			{
 				value.disconnect();

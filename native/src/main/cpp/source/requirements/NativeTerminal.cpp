@@ -247,10 +247,47 @@ void JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_NativeTerminal
 
 #include <unistd.h>
 
-jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_Terminal_connectedToStdout
+/**
+ * org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal.connect()
+ *
+ * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
+ */
+void JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_NativeTerminal_connect
+(JNIEnv* env, jobject jthis)
+{
+}
+
+/**
+ * org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal.isConnectedToStdout()
+ *
+ * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
+ */
+jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_NativeTerminal_isConnectedToStdout
 (JNIEnv* env, jobject jthis)
 {
 	return isatty(STDOUT_FILENO);
+}
+
+/**
+ * org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal.setEncoding()
+ *
+ * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
+ */
+void JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_NativeTerminal_setEncoding
+(JNIEnv* env, jobject jthis, jobject encoding)
+{
+	Exceptions exceptions(env);
+	exceptions.throwUnsupportedOperationException();
+}
+
+/**
+ * org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal.disconnect()
+ *
+ * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
+ */
+void JNICALL Java_org_bitbucket_cowwoc_requirements_core_terminal_NativeTerminal_disconnect
+(JNIEnv* env, jobject jthis)
+{
 }
 
 #endif // _WIN32

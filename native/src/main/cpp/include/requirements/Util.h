@@ -50,10 +50,10 @@ extern "C" {
 		 */
 		Exceptions(JNIEnv* env);
 		/**
-		* Throws an IOException.
-		*
-		* @param message the exception message
-		*/
+		 * Throws an IOException.
+		 *
+		 * @param message the exception message
+		 */
 		void throwIOException(const char* message);
 		/**
 		 * Throws an IOException.
@@ -62,6 +62,12 @@ extern "C" {
 		 * @param message the exception message
 		 */
 		void throwIOException(const char* message, DWORD lastError);
+		/**
+		 * Throws an UnsupportedOperationException.
+		 *
+		 * @param message the exception message
+		 */
+		void throwUnsupportedOperationException(const char* message);
 	};
 
 #ifdef __cplusplus

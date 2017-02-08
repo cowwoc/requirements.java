@@ -76,6 +76,12 @@ void Exceptions::throwIOException(const char* message, DWORD lastError)
 	}
 }
 
+void Exceptions::throwUnsupportedOperationException(const char* message)
+{
+	assert(message != 0);
+	throwException("java/lang/UnsupportedOperationException", message);
+}
+
 /**
  * Returns the String representation of the error. The caller must the LocalFree() function to free the buffer when it is no longer needed.
  *
@@ -92,7 +98,7 @@ char* Exceptions::getFormatMessage(DWORD errorCode)
 		NULL,
 		errorCode,
 		DEFAULT_LANGUAGE,
-		(LPTSTR)&result,
+		(LPTSTR) &result,
 		0,
 		NULL))
 	{
