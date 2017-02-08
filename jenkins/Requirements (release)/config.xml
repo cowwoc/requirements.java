@@ -137,15 +137,14 @@ try
             {
                 withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
                 {
-                    stage(&quot;Build (empty-jar)&quot;)
+                    stage(&quot;Build (portable)&quot;)
                     {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pempty-jar clean install&apos;
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pportable clean install&apos;
                     }
-                    stage(&quot;Deploy (empty-jar)&quot;)
+                    stage(&quot;Deploy (portable)&quot;)
                     {
                         // Deploy empty main JAR
-                        sh script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -DosDetection=false -Pempty-jar,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                     stage(&quot;Build (linux-i386)&quot;)
