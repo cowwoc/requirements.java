@@ -122,6 +122,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -142,6 +143,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -152,6 +154,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -172,6 +175,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -182,6 +186,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -202,6 +207,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -212,6 +218,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -232,6 +239,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -242,6 +250,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -262,6 +271,7 @@
 			</properties>
 			<modules>
 				<module>test</module>
+				<module>deploy</module>
 			</modules>
 		</profile>
 		<profile>
@@ -321,6 +331,9 @@
 			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
 			empty file.
 			-->
+			<modules>
+				<module>deploy</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>
