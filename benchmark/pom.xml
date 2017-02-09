@@ -57,7 +57,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-	</properties>
 </project>

@@ -44,7 +44,6 @@
 		<module>core</module>
 		<module>native</module>
 		<module>guava</module>
-		<module>benchmark</module>
 	</modules>
 
 	<build>
@@ -120,10 +119,6 @@
 				<platform>windows-i386</platform>
 				<build.type>debug</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>windows-i386-release</id>
@@ -141,10 +136,6 @@
 				<platform>windows-i386</platform>
 				<build.type>release</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>windows-amd64-debug</id>
@@ -152,10 +143,6 @@
 				<platform>windows-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>windows-amd64-release</id>
@@ -173,10 +160,6 @@
 				<platform>windows-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>linux-i386-debug</id>
@@ -184,10 +167,6 @@
 				<platform>linux-i386</platform>
 				<build.type>debug</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>linux-i386-release</id>
@@ -205,10 +184,6 @@
 				<platform>linux-i386</platform>
 				<build.type>release</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>linux-amd64-debug</id>
@@ -216,10 +191,6 @@
 				<platform>linux-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>linux-amd64-release</id>
@@ -237,10 +208,6 @@
 				<platform>linux-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>mac-amd64-debug</id>
@@ -248,10 +215,6 @@
 				<platform>mac-amd64</platform>
 				<build.type>debug</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>mac-amd64-release</id>
@@ -269,13 +232,14 @@
 				<platform>mac-amd64</platform>
 				<build.type>release</build.type>
 			</properties>
-			<modules>
-				<module>test</module>
-				<module>deploy</module>
-			</modules>
 		</profile>
 		<profile>
-			<id>release</id>
+			<id>deploy</id>
+			<activation>
+				<property>
+					<name>deploy</name>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -326,14 +290,29 @@
 			</build>
 		</profile>
 		<profile>
+			<id>no-deploy</id>
+			<!--
+			According to https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin
+			skipNexusStagingDeployMojo may not be set to true in the last reactor module. Because we don't
+			want to deploy our last module, nor a dummy module, we simply omit the relevant modules when
+			a deploy is in progress.
+			-->
+			<activation>
+				<property>
+					<name>!deploy</name>
+				</property>
+			</activation>
+			<modules>
+				<module>benchmark</module>
+				<module>test</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>portable</id>
 			<!--
 			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
 			empty file.
 			-->
-			<modules>
-				<module>deploy</module>
-			</modules>
 		</profile>
 	</profiles>
 </project>
