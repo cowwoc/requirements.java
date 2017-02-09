@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.bitbucket.cowwoc</groupId>
+		<artifactId>requirements</artifactId>
+		<version>3.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>requirements-native</artifactId>
+	<packaging>jar</packaging>
+	<name>Requirements-Native</name>
+	<description>Native component of the Requirements API.</description>
+	<url>https://bitbucket.org/cowwoc/requirements/</url>
+
+	<build>
+		<directory>${basedir}/target/${platform}-${build.type}</directory>
+		<sourceDirectory>src/main/cpp</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>com.googlecode.cmake-maven-project</groupId>
+				<artifactId>cmake-maven-plugin</artifactId>
+				<version>3.7.0-b2</version>
+				<executions>
+					<execution>
+						<id>cmake-generate</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<sourcePath>${project.build.directory}/sources</sourcePath>
+							<targetPath>${project.build.directory}/cmake</targetPath>
+							<generator>${cmake.generator}</generator>
+							<classifier>${cmake.classifier}</classifier>
+							<options>${cmake.options}</options>
+							<environmentVariables>
+								<CMAKE_CLASSIFIER>${cmake.classifier}</CMAKE_CLASSIFIER>
+							</environmentVariables>
+							<downloadBinaries>${download.cmake}</downloadBinaries>
+						</configuration>
+					</execution>
+					<execution>
+						<id>cmake-compile</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<projectDirectory>${project.build.directory}/cmake</projectDirectory>
+							<classifier>${cmake.classifier}</classifier>
+							<config>${cmake.config}</config>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/sources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.sourceDirectory}</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-binaries</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/cmake/build</directory>
+									<includes>
+										<!-- windows -->
+										<include>*.dll</include>
+										<include>*.pdb</include>
+										<!-- linux -->
+										<include>*.so</include>
+										<!-- mac -->
+										<include>*.dylib</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<classifier>${classifier}</classifier>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<classifier>${platform}</classifier>
+		<download.cmake>true</download.cmake>
+	</properties>
+	<profiles>
+		<profile>
+			<id>list-profiles</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<echo>Please pick one of the following profiles:</echo>
+										<echo>* windows-i386-debug</echo>
+										<echo>* windows-i386-release</echo>
+										<echo>* windows-amd64-debug</echo>
+										<echo>* windows-amd64-release</echo>
+										<echo>* linux-i386-debug</echo>
+										<echo>* linux-i386-release</echo>
+										<echo>* linux-amd64-debug</echo>
+										<echo>* linux-amd64-release</echo>
+										<echo>* mac-amd64-debug</echo>
+										<echo>* mac-amd64-release</echo>
+										<echo/>
+										<echo>For instance: mvn -Pwindows-i386-debug install</echo>
+										<fail/>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>windows-i386-debug</id>
+			<properties>
+				<platform>windows-i386</platform>
+				<build.type>debug</build.type>
+				<cmake.classifier>windows-i386</cmake.classifier>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.config>${build.type}</cmake.config>
+				<!--
+				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
+				seem to be any other way to specify it.
+				-->
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-i386-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>x86</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>windows-i386</platform>
+				<build.type>release</build.type>
+				<cmake.classifier>windows-i386</cmake.classifier>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.config>${build.type}</cmake.config>
+				<!--
+				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
+				seem to be any other way to specify it.
+				-->
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-amd64-debug</id>
+			<properties>
+				<platform>windows-amd64</platform>
+				<build.type>debug</build.type>
+				<cmake.classifier>windows-amd64</cmake.classifier>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.options>-Ax64</cmake.options>
+				<cmake.config>${build.type}</cmake.config>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-amd64-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>windows-amd64</platform>
+				<build.type>release</build.type>
+				<cmake.classifier>windows-amd64</cmake.classifier>
+				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.options>-Ax64</cmake.options>
+				<cmake.config>${build.type}</cmake.config>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-i386-debug</id>
+			<properties>
+				<platform>linux-i386</platform>
+				<build.type>debug</build.type>
+				<cmake.classifier>linux-i386</cmake.classifier>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<download.cmake>false</download.cmake>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-i386-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>linux</family>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>linux-i386</platform>
+				<build.type>release</build.type>
+				<cmake.classifier>linux-i386</cmake.classifier>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<download.cmake>false</download.cmake>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-amd64-debug</id>
+			<properties>
+				<platform>linux-amd64</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-amd64-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>linux</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>linux-amd64</platform>
+				<build.type>release</build.type>
+				<cmake.classifier>linux-amd64</cmake.classifier>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-amd64-debug</id>
+			<properties>
+				<platform>mac-amd64</platform>
+				<build.type>debug</build.type>
+				<cmake.classifier>mac-amd64</cmake.classifier>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-amd64-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>mac</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>mac-amd64</platform>
+				<build.type>release</build.type>
+				<cmake.classifier>mac-amd64</cmake.classifier>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+			</properties>
+		</profile>
+		<profile>
+			<id>portable</id>
+			<!--
+			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
+			empty file.
+			-->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.cmake-maven-project</groupId>
+						<artifactId>cmake-maven-plugin</artifactId>
+						<version>3.7.0-b2</version>
+						<executions>
+							<execution>
+								<id>cmake-generate</id>
+								<phase>none</phase>
+							</execution>
+							<execution>
+								<id>cmake-compile</id>
+								<phase>none</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<platform>portable</platform>
+				<build.type>release</build.type>
+				<classifier/>
+			</properties>
+		</profile>
+	</profiles>
+</project>

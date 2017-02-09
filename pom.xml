@@ -11,8 +11,8 @@
 	</parent>
 	<groupId>org.bitbucket.cowwoc</groupId>
 	<artifactId>requirements</artifactId>
-	<version>2.0.8-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>3.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A Java library for enforcing API requirements.</description>
 	<url>https://bitbucket.org/cowwoc/requirements/</url>
@@ -40,59 +40,14 @@
 		</developer>
 	</developers>
 
+	<modules>
+		<module>core</module>
+		<module>native</module>
+		<module>guava</module>
+	</modules>
+
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<showDeprecation>true</showDeprecation>
-					<compilerArgs>
-						<arg>-Xlint</arg>
-					</compilerArgs>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<configuration>
-					<trimStackTrace>false</trimStackTrace>
-					<argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.7.201606060606</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>org/bitbucket/cowwoc/requirements/**</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>org/bitbucket/cowwoc/requirements/**</include>
-							</includes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -110,88 +65,254 @@
 				<configuration>
 					<serverId>sonatype-nexus-staging</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
-				<configuration>
-					<links>
-						<link>http://docs.oracle.com/javase/8/docs/api/</link>
-						<link>http://google.github.io/guava/releases/19.0/api/docs/</link>
-					</links>
-					<docfilessubdirs>true</docfilessubdirs>
-					<!-- whitelist in order to exclude internal classes -->
-					<sourceFileIncludes>
-						<include>org/bitbucket/cowwoc/requirements/*.java</include>
-					</sourceFileIncludes>
-					<windowtitle>${project.name} ${project.version} API</windowtitle>
-				</configuration>
-			</plugin>
-			<!--
-			<plugin>
-				<groupId>com.github.siom79.japicmp</groupId>
-				<artifactId>japicmp-maven-plugin</artifactId>
-				<version>0.9.1</version>
-				<configuration>
-					<oldVersion>
-						<dependency>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.2</version>
-							<type>jar</type>
-						</dependency>
-					</oldVersion>
-					<parameter>
-						<breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
-						<breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
-						<onlyModified>true</onlyModified>
-						<skipXmlReport>true</skipXmlReport>
-						<skipDiffReport>true</skipDiffReport>
-						<includes>
-							<include>org.bitbucket.cowwoc.requirements</include>
-						</includes>
-						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.diff.string</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.spi</exclude>
-							<exclude>org.bitbucket.cowwoc.requirements.util</exclude>
-						</excludes>
-					</parameter>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>cmp</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<argLine />
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>19.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>6.9.10</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.bitbucket.cowwoc</groupId>
-			<artifactId>diff-match-patch</artifactId>
-			<version>1.1</version>
-		</dependency>
-	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>list-profiles</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<echo>Please pick one of the following profiles:</echo>
+										<echo>* windows-i386-debug</echo>
+										<echo>* windows-i386-release</echo>
+										<echo>* windows-amd64-debug</echo>
+										<echo>* windows-amd64-release</echo>
+										<echo>* linux-i386-debug</echo>
+										<echo>* linux-i386-release</echo>
+										<echo>* linux-amd64-debug</echo>
+										<echo>* linux-amd64-release</echo>
+										<echo>* mac-amd64-debug</echo>
+										<echo>* mac-amd64-release</echo>
+										<echo></echo>
+										<echo>For instance: mvn -Pwindows-i386-debug install</echo>
+										<fail/>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>windows-i386-debug</id>
+			<properties>
+				<platform>windows-i386</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-i386-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>x86</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>windows-i386</platform>
+				<build.type>release</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-amd64-debug</id>
+			<properties>
+				<platform>windows-amd64</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-amd64-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>windows-amd64</platform>
+				<build.type>release</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-i386-debug</id>
+			<properties>
+				<platform>linux-i386</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-i386-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>linux</family>
+					<arch>i386</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>linux-i386</platform>
+				<build.type>release</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-amd64-debug</id>
+			<properties>
+				<platform>linux-amd64</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-amd64-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>linux</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>linux-amd64</platform>
+				<build.type>release</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-amd64-debug</id>
+			<properties>
+				<platform>mac-amd64</platform>
+				<build.type>debug</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-amd64-release</id>
+			<activation>
+				<property>
+					<name>osDetection</name>
+					<value>!false</value>
+				</property>
+				<os>
+					<family>mac</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<platform>mac-amd64</platform>
+				<build.type>release</build.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>deploy</id>
+			<activation>
+				<property>
+					<name>deploy</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<!-- See https://maven.apache.org/guides/mini/guide-encryption.html -->
+									<passphraseServerId>gpg.passphrase</passphraseServerId>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>no-deploy</id>
+			<!--
+			According to https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin
+			skipNexusStagingDeployMojo may not be set to true in the last reactor module. Because we don't
+			want to deploy our last module, nor a dummy module, we simply omit the relevant modules when
+			a deploy is in progress.
+			-->
+			<activation>
+				<property>
+					<name>!deploy</name>
+				</property>
+			</activation>
+			<modules>
+				<module>benchmark</module>
+				<module>test</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>portable</id>
+			<!--
+			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
+			empty file.
+			-->
+		</profile>
+	</profiles>
 </project>

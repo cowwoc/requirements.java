@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.9">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>100</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
+          <name>releaseVersion</name>
+          <description>What version number should be released?</description>
+          <defaultValue>3.0.0-RC</defaultValue>
+          <regex>\d+\.\d+\.\d+(-RC)?</regex>
+          <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-RC]</failedValidationMessage>
+        </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
+        <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
+          <name>nextVersion</name>
+          <description>What SNAPSHOT version should be used after the release?</description>
+          <defaultValue>3.0.1-SNAPSHOT</defaultValue>
+          <regex>.+-SNAPSHOT</regex>
+          <failedValidationMessage>Version number must end with -SNAPSHOT</failedValidationMessage>
+        </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.9.0">
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
+      <categories class="java.util.concurrent.CopyOnWriteArrayList"/>
+      <throttleEnabled>false</throttleEnabled>
+      <throttleOption>project</throttleOption>
+      <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+      <paramsToUseForLimit></paramsToUseForLimit>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.25">
+    <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
+// --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
+// -V : strongly recommended in CI, will display the JDK and Maven versions in use.
+//      Very useful to be quickly sure the selected versions were the ones you think.
+// -U : force maven to update snapshots each time (default : once an hour, makes no sense in CI).
+// -Dsurefire.useFile=false : useful in CI. Displays test errors in the logs directly (instead of
+//                            having to crawl the workspace files to see the cause).
+// -e : Display stack-traces on failure
+
+// Create release candidate branch
+def repository = &apos;bitbucket.org/cowwoc/requirements/&apos;
+// One can look up a project&apos;s profileId by running: mvn nexus-staging:rc-list-profiles -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/
+def stagingProfileId = &apos;353562598afa&apos;
+def stagingRepositoryId
+def branch = &apos;dev-3.0.0&apos;
+
+node(&quot;linux &amp;&amp; amd64&quot;)
+{
+    // http://stackoverflow.com/a/33630506/14731
+    withCredentials([[$class: &apos;UsernamePasswordMultiBinding&apos;, credentialsId: &apos;bitbucket&apos;, usernameVariable: &apos;HG_USERNAME&apos;, passwordVariable: &apos;HG_PASSWORD&apos;]])
+    {
+	def authenticatedRepository = &quot;https://${HG_USERNAME}:${HG_PASSWORD}@${repository}&quot;
+        timeout(2)
+        {
+            stage(&quot;Checkout (linux-amd64)&quot;)
+            {
+                // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                deleteDir()
+                checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;${branch}&quot;]
+            }
+        }
+        timeout(10)
+        {
+            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;,
+                &quot;HGUSER=Gili Tzabari &lt;gili.tzabari@gmail.com&gt;&quot;])
+            {
+                stage(&quot;Create release branch&quot;)
+                {
+                    // Check if tag exists: http://stackoverflow.com/a/41123272/14731
+                    def tagExists = !sh(returnStatus: true, script: &quot;hg id -q -r release-${releaseVersion} &gt; /dev/null 2&gt;&amp;1&quot;).asBoolean()
+                    if (tagExists)
+                        echo &apos;Tag release-&apos; + releaseVersion + &apos; already exists&apos;
+                    else
+                    {
+                        // Set commit username/email: http://stackoverflow.com/a/1401821/14731
+                        // Commit without failure if nothing changed: http://stackoverflow.com/a/36117152/14731
+                        // sh: check if string contains a value: http://stackoverflow.com/a/8811800/14731
+                        echo &apos;Tagging release as release-&apos; + releaseVersion
+                        sh script: &quot;mvn --batch-mode -V -e versions:set -DnewVersion=${releaseVersion} -DgenerateBackupPoms=false&quot;
+                        def hgSummary = sh(returnStdout: true, script: &apos;hg summary&apos;)
+                        if (!hgSummary.contains(&quot;commit: (clean)&quot;))
+                            sh script: &quot;hg commit -m \&quot;[jenkins] Releasing version ${releaseVersion}\&quot;&quot;
+
+                        sh script: &quot;&quot;&quot;hg tag release-${releaseVersion}
+                            hg update ${branch}
+                            mvn --batch-mode -V -e versions:set -DnewVersion=${nextVersion} -DgenerateBackupPoms=false
+                            hg commit -m &quot;[jenkins] Incrementing version to ${nextVersion}&quot;
+                            hg push ${authenticatedRepository}&quot;&quot;&quot;
+                    }
+
+                    // Open a new staging repository and capture its ID
+                    def output = sh returnStdout: true, script: &quot;&quot;&quot;hg update release-${releaseVersion}
+                        mvn --batch-mode -U -e nexus-staging:rc-open -DstagingProfileId=${stagingProfileId}&quot;&quot;&quot;
+                    echo output
+                    stagingRepositoryId = ( output =~ /Opened (orgbitbucketcowwoc-\d+)/ ) [0][1]
+                }
+            }
+        }
+    }
+}
+
+// Build and release from all platforms
+try
+{
+    parallel linux_i386:
+    {
+        // Linux-i386 deploys the portable modules as well as its platform-specific binaries.
+        // Remaining platforms only deploy platform-specific binaries.
+        node(&quot;linux &amp;&amp; i386&quot;)
+        {
+            timeout(2)
+            {
+                stage(&quot;Checkout (linux-i386)&quot;)
+                {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                    deleteDir()
+                    checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
+                }
+            }
+            timeout(15)
+            {
+                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                {
+                    // &quot;portable&quot; profile can&apos;t run unit tests so we skip the build step and deploy directly.
+                    stage(&quot;Deploy (portable)&quot;)
+                    {
+                        // Deploy empty main JAR
+                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
+                    stage(&quot;Build (linux-i386)&quot;)
+                    {
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-i386-release clean install&apos;
+                    }
+                    stage(&quot;Deploy (linux-i386)&quot;)
+                    {
+                        // Deploy platform-specific JAR
+                        sh script: &quot;&quot;&quot;cd native
+                            mvn --batch-mode -e -DosDetection=false -Plinux-i386-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
+                }
+            }
+        }
+    }, linux_amd64:
+    {
+        node(&quot;linux &amp;&amp; amd64&quot;)
+        {
+            timeout(2)
+            {
+                stage(&quot;Checkout (linux-amd64)&quot;)
+                {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                    deleteDir()
+                    checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
+                }
+            }
+            timeout(15)
+            {
+                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                {
+                    stage(&quot;Build (linux-amd64)&quot;)
+                    {
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-amd64-release clean install&apos;
+                    }
+                    stage(&quot;Deploy (linux-amd64)&quot;)
+                    {
+                        sh script: &quot;&quot;&quot;cd native
+                            mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
+                }
+            }
+        }
+    }, mac:
+    {
+        node(&quot;mac&quot;)
+        {
+            timeout(2)
+            {
+                stage(&quot;Checkout (mac)&quot;)
+                {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                    deleteDir()
+                    checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
+                }
+            }
+            timeout(15)
+            {
+                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+                {
+                    stage(&quot;Build (mac-amd64)&quot;)
+                    {
+                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pmac-amd64-release clean install&apos;
+                    }
+                    stage(&quot;Deploy (mac-amd64)&quot;)
+                    {
+                        sh script: &quot;&quot;&quot;cd native
+                            mvn --batch-mode -e -DosDetection=false -Pmac-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
+                }
+            }
+        }
+    }, windows:
+    {
+        node(&quot;windows &amp;&amp; i386 &amp;&amp; amd64&quot;)
+        {
+            timeout(2)
+            {
+                stage(&quot;Checkout (windows)&quot;)
+                {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                    deleteDir()
+                    checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
+                }
+            }
+            timeout(15)
+            {
+                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
+                {
+                    stage(&quot;Build (windows-i386)&quot;)
+                    {
+                        bat script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pwindows-i386-release clean install&apos;
+                    }
+                    stage(&quot;Deploy (windows-i386)&quot;)
+                    {
+                        bat script: &quot;&quot;&quot;cd native
+                            mvn --batch-mode -e -DosDetection=false -Pwindows-i386-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
+                }
+            }
+            timeout(15)
+            {
+                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
+                {
+                    stage(&quot;Build (windows-amd64)&quot;)
+                    {
+                        bat script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pwindows-amd64-release clean install&apos;
+                    }
+                    stage(&quot;Deploy (windows-amd64)&quot;)
+                    {
+                        bat script: &quot;&quot;&quot;cd native
+                            mvn --batch-mode -e -DosDetection=false -Pwindows-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                        archiveArtifacts: &apos;**/target/*.jar&apos;
+                    }
+                }
+            }
+        }
+    },
+    failFast: true
+}
+catch (e)
+{
+    echo &quot;Dropping staging repository due to error&quot;
+    try
+    {
+        // Drop staging repository
+        node(&quot;linux &amp;&amp; amd64&quot;)
+        {
+            timeout(2)
+            {
+                stage(&quot;Checkout (linux-amd64)&quot;)
+                {
+                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
+                    deleteDir()
+                    checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
+                }
+            }
+            timeout(5)
+            {
+                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                {
+                    sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-drop -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                }
+            }
+        }
+    }
+    catch (e2)
+    {
+        // Ignore and throw the original exception
+    }
+    throw e;
+}
+
+// Close the release
+node(&quot;linux &amp;&amp; amd64&quot;)
+{
+    timeout(2)
+    {
+        stage(&quot;Checkout (linux-amd64)&quot;)
+        {
+            // Wipe out local repository in case it contains extra commits from a previous (broken) build
+            deleteDir()
+            checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &apos;TAG&apos;]
+        }
+    }
+    timeout(10)
+    {
+        withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+        {
+            stage(&quot;Close release&quot;)
+            {
+                sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-close -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+            }
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+</flow-definition>
