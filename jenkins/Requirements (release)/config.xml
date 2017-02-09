@@ -137,14 +137,11 @@ try
             {
                 withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
                 {
-                    stage(&quot;Build (portable)&quot;)
-                    {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Pportable clean install&apos;
-                    }
+                    // &quot;portable&quot; profile can&apos;t run unit tests so we skip the build step and deploy directly.
                     stage(&quot;Deploy (portable)&quot;)
                     {
                         // Deploy empty main JAR
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                     stage(&quot;Build (linux-i386)&quot;)
@@ -155,7 +152,7 @@ try
                     {
                         // Deploy platform-specific JAR
                         sh script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -DosDetection=false -Plinux-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                            mvn --batch-mode -e -DosDetection=false -Plinux-i386-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -185,7 +182,7 @@ try
                     stage(&quot;Deploy (linux-amd64)&quot;)
                     {
                         sh script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                            mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -215,7 +212,7 @@ try
                     stage(&quot;Deploy (mac-amd64)&quot;)
                     {
                         sh script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -DosDetection=false -Pmac-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                            mvn --batch-mode -e -DosDetection=false -Pmac-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -245,7 +242,7 @@ try
                     stage(&quot;Deploy (windows-i386)&quot;)
                     {
                         bat script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -DosDetection=false -Pwindows-i386-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                            mvn --batch-mode -e -DosDetection=false -Pwindows-i386-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
@@ -261,7 +258,7 @@ try
                     stage(&quot;Deploy (windows-amd64)&quot;)
                     {
                         bat script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -DosDetection=false -Pwindows-amd64-release,release deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                            mvn --batch-mode -e -DosDetection=false -Pwindows-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
                 }
