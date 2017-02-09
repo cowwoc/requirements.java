@@ -79,7 +79,8 @@
 						</additionalDependency>
 					</additionalDependencies>
 					<show>public</show>
-					<windowtitle>${project.name} ${project.version} API</windowtitle>
+					<doctitle>Requirements ${project.version} API</doctitle>
+					<windowtitle>Requirements ${project.version} API</windowtitle>
 				</configuration>
 			</plugin>
 			<!--
