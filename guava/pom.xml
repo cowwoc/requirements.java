@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.bitbucket.cowwoc</groupId>
 		<artifactId>requirements</artifactId>
-		<version>3.0.0-RC</version>
+		<version>3.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>requirements-guava</artifactId>
 	<packaging>jar</packaging>
