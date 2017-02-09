@@ -12,10 +12,10 @@
     <properties>
         <!--
         According to https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin
-        we have to ensure that skipNexusStagingDeployMojo is true in the last
-        module. Because the "portable" profile cannot run requirements-test,
-        we're forced to run a dummy module.
+        we have to ensure that skipNexusStagingDeployMojo is false in the last
+        module. Because this isn't true for all release profiles, we're forced
+        to run a dummy module.
         -->
-        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+        <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
     </properties>
 </project>
