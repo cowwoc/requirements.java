@@ -1,37 +1,10 @@
-Changeset: d0e781d2678a7db37a2bfe1af8f3f95ab62435d2
-Benchmark           Mode  Cnt  Score    Error  Units
-Main.assertMethod   avgt   60  4.140 +- 0.004  ns/op
-Main.emptyMethod    avgt   60  0.257 +- 0.001  ns/op
-Main.requireMethod  avgt   60  6.308 +- 0.016  ns/op
-
-requirements-core.jar                : 152,356 bytes
-requirements-guava.jar               :  13,562 bytes
-requirements-native-windows-amd64.jar:  13,085 bytes
-
-
-Changeset: 2d6eabe9766e864f4d130cd42ef11838035ba8c4
-Benchmark           Mode  Cnt  Score    Error  Units
-Main.assertMethod   avgt   60  3.865 +- 0.006  ns/op
-Main.emptyMethod    avgt   60  0.257 +- 0.001  ns/op
-Main.requireMethod  avgt   60  6.180 +- 0.013  ns/op
-
-requirements-core.jar                : 146,843 bytes
-requirements-guava.jar               :  11,118 bytes
-requirements-native-windows-amd64.jar:  13,085 bytes
-
-Benchmark             Mode  Cnt  Score    Error  Units
-Main.assertsDisabled  avgt   60  3.860 +- 0.008  ns/op
-Main.assertsEnabled   avgt   60  5.957 +- 0.014  ns/op
-Main.assertMethod     avgt   60  3.904 +- 0.028  ns/op
-Main.requireMethod    avgt   60  6.383 +- 0.135  ns/op
-
-
 Changeset: 716e1459dace9cd8bcf2dcd9abc2f61adf72f0e7
 -- With only core module:
 Benchmark                                        Mode  Cnt     Score    Error  Units
 Main.coreAssertsDisabled                         avgt   60     3.967 +- 0.005  ns/op
 Main.coreAssertsEnabled                          avgt   60     8.912 +- 0.011  ns/op
 Main.staticAssertThat                            avgt   60     3.967 +- 0.005  ns/op
+Main.staticAssertThat (-ea)                      avgt   60     6.439 +- 0.004  ns/op
 Main.staticRequireThat                           avgt   60     6.218 +- 0.025  ns/op
 Main.verifiersAssertsDisabled                    avgt   60     4.327 +- 0.024  ns/op
 Main.verifiersAssertsDisabledContainsDuplicates  avgt   60     4.126 +- 0.003  ns/op
