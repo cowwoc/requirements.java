@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
- * Verifies a {@link Collection} value.
+ * Verifies a {@link Collection}.
  *
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari

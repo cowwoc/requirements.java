@@ -281,7 +281,7 @@ public final class ContainerSizeVerifierImpl
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain %,d %s.", name, value, pluralizer.nameOf(value))).
-			addContext("Actual", container).
+			addContext(containerName, container).
 			build();
 	}
 
@@ -296,7 +296,7 @@ public final class ContainerSizeVerifierImpl
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain %s (%,d) %s.", this.name, name, value,
 				pluralizer.nameOf(value))).
-			addContext("Actual", container).
+			addContext(containerName, container).
 			build();
 	}
 
