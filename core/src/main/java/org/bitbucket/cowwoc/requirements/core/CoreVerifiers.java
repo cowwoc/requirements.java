@@ -138,6 +138,98 @@ public interface CoreVerifiers extends Configurable
 	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual, String name);
 
 	/**
+	 * Verifies a {@code byte}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(byte, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Byte> assertThat(byte actual, String name);
+
+	/**
+	 * Verifies a {@code short}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Short> requireThat(short actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(short, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Short> assertThat(short actual, String name);
+
+	/**
+	 * Verifies an {@code int}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Integer> requireThat(int actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(int, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Integer> assertThat(int actual, String name);
+
+	/**
+	 * Verifies an {@code long}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Long> requireThat(long actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(long, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveNumberVerifier<Long> assertThat(long actual, String name);
+
+	/**
 	 * Verifies a {@code Number}.
 	 *
 	 * @param <T>    the type of the number

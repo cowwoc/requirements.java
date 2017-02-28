@@ -7,18 +7,18 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 import java.util.Objects;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * An implementation of PrimitiveIntegerVerifier for a container's size.
+ * An implementation of PrimitiveNumberVerifier for a container's size.
  *
  * @author Gili Tzabari
  */
 public final class ContainerSizeVerifierImpl
-	extends NumberCapabilitiesImpl<PrimitiveIntegerVerifier, Integer>
-	implements PrimitiveIntegerVerifier
+	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
+	implements PrimitiveNumberVerifier<Integer>
 {
 	private final Object container;
 	private final String containerName;
@@ -51,7 +51,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value)
+	public PrimitiveNumberVerifier<Integer> isGreaterThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual >= value)
@@ -66,7 +66,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isGreaterThanOrEqualTo(Integer value, String name)
+	public PrimitiveNumberVerifier<Integer> isGreaterThanOrEqualTo(Integer value, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -83,7 +83,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isGreaterThan(Integer value)
+	public PrimitiveNumberVerifier<Integer> isGreaterThan(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual > value)
@@ -98,7 +98,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isGreaterThan(Integer value, String name)
+	public PrimitiveNumberVerifier<Integer> isGreaterThan(Integer value, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -115,7 +115,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value)
+	public PrimitiveNumberVerifier<Integer> isLessThanOrEqualTo(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual <= value)
@@ -130,7 +130,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isLessThanOrEqualTo(Integer value, String name)
+	public PrimitiveNumberVerifier<Integer> isLessThanOrEqualTo(Integer value, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -147,7 +147,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isLessThan(Integer value)
+	public PrimitiveNumberVerifier<Integer> isLessThan(Integer value)
 	{
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual < value)
@@ -162,7 +162,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isLessThan(Integer value, String name)
+	public PrimitiveNumberVerifier<Integer> isLessThan(Integer value, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -179,13 +179,13 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotPositive()
+	public PrimitiveNumberVerifier<Integer> isNotPositive()
 	{
 		return isZero();
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isPositive()
+	public PrimitiveNumberVerifier<Integer> isPositive()
 	{
 		if (actual > 0)
 			return getThis();
@@ -198,13 +198,13 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotZero()
+	public PrimitiveNumberVerifier<Integer> isNotZero()
 	{
 		return isPositive();
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isZero()
+	public PrimitiveNumberVerifier<Integer> isZero()
 	{
 		if (actual == 0)
 			return getThis();
@@ -217,7 +217,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotNegative()
+	public PrimitiveNumberVerifier<Integer> isNotNegative()
 	{
 		// Always true
 		return getThis();
@@ -225,7 +225,7 @@ public final class ContainerSizeVerifierImpl
 
 	@Deprecated
 	@Override
-	public PrimitiveIntegerVerifier isNegative()
+	public PrimitiveNumberVerifier<Integer> isNegative()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be negative", name), null).
@@ -233,7 +233,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isBetween(Integer min, Integer max)
+	public PrimitiveNumberVerifier<Integer> isBetween(Integer min, Integer max)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(min, "min").isNotNull();
@@ -249,7 +249,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isEqualTo(Integer value)
+	public PrimitiveNumberVerifier<Integer> isEqualTo(Integer value)
 	{
 		if (Objects.equals(actual, value))
 			return getThis();
@@ -262,7 +262,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isEqualTo(Integer value, String name)
+	public PrimitiveNumberVerifier<Integer> isEqualTo(Integer value, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -279,7 +279,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotEqualTo(Integer value)
+	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Integer value)
 	{
 		if (!Objects.equals(actual, value))
 			return getThis();
@@ -290,7 +290,7 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotEqualTo(Integer value, String name)
+	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Integer value, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
@@ -306,7 +306,7 @@ public final class ContainerSizeVerifierImpl
 
 	@Override
 	@Deprecated
-	public PrimitiveIntegerVerifier isNull()
+	public PrimitiveNumberVerifier<Integer> isNull()
 	{
 		return super.isNull();
 	}

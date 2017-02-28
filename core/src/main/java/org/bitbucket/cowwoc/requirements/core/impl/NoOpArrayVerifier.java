@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
  * An implementation of {@code ArrayVerifier} that does nothing.
@@ -139,13 +139,13 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier length()
+	public PrimitiveNumberVerifier<Integer> length()
 	{
-		return new NoOpPrimitiveIntegerVerifier(config);
+		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override
-	public ArrayVerifier<E> length(Consumer<PrimitiveIntegerVerifier> consumer)
+	public ArrayVerifier<E> length(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		return this;
 	}

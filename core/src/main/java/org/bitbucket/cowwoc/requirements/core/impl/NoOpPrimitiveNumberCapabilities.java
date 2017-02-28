@@ -5,24 +5,24 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveIntegerCapabilities;
+import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveNumberCapabilities;
 
 /**
- * Extendable implementation of {@code PrimitiveIntegerVerifier} that does nothing.
+ * Extendable implementation of {@code PrimitiveNumberVerifier} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public abstract class NoOpPrimitiveIntegerCapabilities<S, T>
-	extends NoOpNumberCapabilities<S, Integer>
-	implements PrimitiveIntegerCapabilities<S>
+public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comparable<? super T>>
+	extends NoOpNumberCapabilities<S, T>
+	implements PrimitiveNumberCapabilities<S, T>
 {
 	/**
 	 * @param config the verifier's configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
-	public NoOpPrimitiveIntegerCapabilities(Configuration config)
+	public NoOpPrimitiveNumberCapabilities(Configuration config)
 	{
 		super(config);
 	}

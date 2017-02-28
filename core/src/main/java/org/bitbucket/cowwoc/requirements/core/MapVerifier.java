@@ -70,11 +70,11 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 	/**
 	 * @return a verifier for {@link Map#size()}
 	 */
-	PrimitiveIntegerVerifier size();
+	PrimitiveNumberVerifier<Integer> size();
 
 	/**
 	 * @param consumer verifies the {@link Map#size()}
 	 * @return this
 	 */
-	MapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer);
+	MapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 }

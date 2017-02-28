@@ -4,17 +4,18 @@
  */
 package org.bitbucket.cowwoc.requirements.core.capabilities;
 
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
- * Verifies a value that extends {@code int} but the implementing verifier is not guaranteed
- * to be a {@link PrimitiveIntegerVerifier}.
+ * Verifies a value that extends a primitive number (e.g. {@code int}) but the implementing verifier
+ * is not guaranteed to be a {@link PrimitiveNumberVerifier}.
  *
  * @param <S> the type of verifier that methods should return
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public interface PrimitiveIntegerCapabilities<S>
-	extends NumberCapabilities<S, Integer>
+public interface PrimitiveNumberCapabilities<S, T extends Number & Comparable<? super T>>
+	extends NumberCapabilities<S, T>
 {
 	/**
 	 * {@inheritDoc}

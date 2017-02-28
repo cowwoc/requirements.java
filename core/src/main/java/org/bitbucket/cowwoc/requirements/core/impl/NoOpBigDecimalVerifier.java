@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
  * An implementation of {@code BigDecimalVerifier} that does nothing.
@@ -48,13 +48,13 @@ public final class NoOpBigDecimalVerifier
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier scale()
+	public PrimitiveNumberVerifier<Integer> scale()
 	{
-		return new NoOpPrimitiveIntegerVerifier(config);
+		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override
-	public BigDecimalVerifier scale(Consumer<PrimitiveIntegerVerifier> consumer)
+	public BigDecimalVerifier scale(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		return this;
 	}

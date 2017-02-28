@@ -211,13 +211,13 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * @return a verifier for the array's length
 	 */
-	PrimitiveIntegerVerifier length();
+	PrimitiveNumberVerifier<Integer> length();
 
 	/**
 	 * @param consumer verifies the array's length
 	 * @return this
 	 */
-	ArrayVerifier<E> length(Consumer<PrimitiveIntegerVerifier> consumer);
+	ArrayVerifier<E> length(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 
 	/**
 	 * @return a verifier for the actual value as a collection

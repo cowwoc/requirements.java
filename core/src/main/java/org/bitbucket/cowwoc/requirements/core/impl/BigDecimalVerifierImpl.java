@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -75,13 +75,13 @@ public final class BigDecimalVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier scale()
+	public PrimitiveNumberVerifier<Integer> scale()
 	{
 		return new BigDecimalScaleVerifierImpl(scope, actual, name, config);
 	}
 
 	@Override
-	public BigDecimalVerifier scale(Consumer<PrimitiveIntegerVerifier> consumer)
+	public BigDecimalVerifier scale(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		consumer.accept(scale());
 		return this;

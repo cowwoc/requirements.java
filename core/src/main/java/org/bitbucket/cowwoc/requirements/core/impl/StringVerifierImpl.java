@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
@@ -172,14 +172,14 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier length()
+	public PrimitiveNumberVerifier<Integer> length()
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.length(), name,
 			name + ".length()", Pluralizer.CHARACTER, config);
 	}
 
 	@Override
-	public StringVerifier length(Consumer<PrimitiveIntegerVerifier> consumer)
+	public StringVerifier length(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		consumer.accept(length());
 		return this;

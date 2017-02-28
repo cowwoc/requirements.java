@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.math.BigDecimal;
-import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveIntegerCapabilities;
+import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveNumberCapabilities;
 
 /**
  * Verifies a {@link BigDecimal#precision()}.
@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveIntegerCapab
  * @author Gili Tzabari
  */
 public interface BigDecimalPrecisionVerifier
-	extends PrimitiveIntegerCapabilities<BigDecimalPrecisionVerifier>
+	extends PrimitiveNumberCapabilities<BigDecimalPrecisionVerifier, Integer>
 {
 	/**
 	 * {@inheritDoc}

@@ -6,19 +6,19 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.math.BigDecimal;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * An implementation of {@code PrimitiveIntegerVerifier} for a
+ * An implementation of {@code PrimitiveNumberVerifier} for a
  * {@code BigDecimal}'s scale.
  *
  * @author Gili Tzabari
  */
 public final class BigDecimalScaleVerifierImpl
-	extends NumberCapabilitiesImpl<PrimitiveIntegerVerifier, Integer>
-	implements PrimitiveIntegerVerifier
+	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
+	implements PrimitiveNumberVerifier<Integer>
 {
 	/**
 	 * Creates new BigDecimalScaleVerifierImpl.
@@ -38,14 +38,14 @@ public final class BigDecimalScaleVerifierImpl
 
 	@Override
 	@Deprecated
-	public PrimitiveIntegerVerifier isNull()
+	public PrimitiveNumberVerifier<Integer> isNull()
 	{
 		return super.isNull();
 	}
 
 	@Deprecated
 	@Override
-	public PrimitiveIntegerVerifier isZero()
+	public PrimitiveNumberVerifier<Integer> isZero()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s can never be zero", name), null).
@@ -53,7 +53,7 @@ public final class BigDecimalScaleVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotZero()
+	public PrimitiveNumberVerifier<Integer> isNotZero()
 	{
 		// Always true
 		return this;
@@ -61,7 +61,7 @@ public final class BigDecimalScaleVerifierImpl
 
 	@Deprecated
 	@Override
-	public PrimitiveIntegerVerifier isNotPositive()
+	public PrimitiveNumberVerifier<Integer> isNotPositive()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s can never be non-positive", name), null).
@@ -69,14 +69,14 @@ public final class BigDecimalScaleVerifierImpl
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isPositive()
+	public PrimitiveNumberVerifier<Integer> isPositive()
 	{
 		// Always true
 		return this;
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier isNotNegative()
+	public PrimitiveNumberVerifier<Integer> isNotNegative()
 	{
 		// Always true
 		return this;
@@ -84,7 +84,7 @@ public final class BigDecimalScaleVerifierImpl
 
 	@Deprecated
 	@Override
-	public PrimitiveIntegerVerifier isNegative()
+	public PrimitiveNumberVerifier<Integer> isNegative()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s can never be negative", name), null).

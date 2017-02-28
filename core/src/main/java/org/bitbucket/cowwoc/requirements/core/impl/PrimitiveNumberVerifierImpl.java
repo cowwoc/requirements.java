@@ -5,21 +5,22 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Verifies an {@link int}.
+ * Default implementation of {@code PrimitiveNumberVerifier}.
  * <p>
+ * @param <T> the type of the value
  * @author Gili Tzabari
  */
-public class PrimitiveIntegerVerifierImpl
-	extends NumberCapabilitiesImpl<PrimitiveIntegerVerifier, Integer>
-	implements PrimitiveIntegerVerifier
+public class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? super T>>
+	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<T>, T>
+	implements PrimitiveNumberVerifier<T>
 {
 	/**
-	 * Creates new PrimitiveIntegerVerifierImpl.
+	 * Creates new PrimitiveNumberVerifierImpl.
 	 *
 	 * @param scope  the application configuration
 	 * @param actual the actual value
@@ -28,7 +29,7 @@ public class PrimitiveIntegerVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveIntegerVerifierImpl(ApplicationScope scope, int actual, String name,
+	public PrimitiveNumberVerifierImpl(ApplicationScope scope, T actual, String name,
 		Configuration config)
 	{
 		super(scope, actual, name, config);
@@ -36,10 +37,17 @@ public class PrimitiveIntegerVerifierImpl
 
 	@Deprecated
 	@Override
-	public PrimitiveIntegerVerifier isNull()
+	public PrimitiveNumberVerifier<T> isNull()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s can never be null", name), null).
 			build();
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<T> isNotNull()
+	{
+		// Always true
+		return this;
 	}
 }

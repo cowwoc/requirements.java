@@ -25,6 +25,7 @@ import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
@@ -130,6 +131,66 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
 		return new NoOpComparableVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name)
+	{
+		verifyName(name);
+		return new PrimitiveNumberVerifierImpl<>(scope, actual, name, config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Byte> assertThat(byte actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpPrimitiveNumberVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Short> requireThat(short actual, String name)
+	{
+		verifyName(name);
+		return new PrimitiveNumberVerifierImpl<>(scope, actual, name, config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Short> assertThat(short actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpPrimitiveNumberVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Integer> requireThat(int actual, String name)
+	{
+		verifyName(name);
+		return new PrimitiveNumberVerifierImpl<>(scope, actual, name, config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Integer> assertThat(int actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpPrimitiveNumberVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Long> requireThat(long actual, String name)
+	{
+		verifyName(name);
+		return new PrimitiveNumberVerifierImpl<>(scope, actual, name, config);
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Long> assertThat(long actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override

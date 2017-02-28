@@ -201,13 +201,13 @@ public interface CollectionVerifier<E>
 	/**
 	 * @return a verifier for the collection's size
 	 */
-	PrimitiveIntegerVerifier size();
+	PrimitiveNumberVerifier<Integer> size();
 
 	/**
 	 * @param consumer verifies the collection's size
 	 * @return this
 	 */
-	CollectionVerifier<E> size(Consumer<PrimitiveIntegerVerifier> consumer);
+	CollectionVerifier<E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 
 	/**
 	 * @param type the array type

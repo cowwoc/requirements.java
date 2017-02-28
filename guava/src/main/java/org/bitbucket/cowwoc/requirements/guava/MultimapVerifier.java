@@ -8,7 +8,7 @@ import com.google.common.collect.Multimap;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
@@ -73,11 +73,11 @@ public interface MultimapVerifier<K, V>
 	/**
 	 * @return verifier over {@link Multimap#size()}
 	 */
-	PrimitiveIntegerVerifier size();
+	PrimitiveNumberVerifier<Integer> size();
 
 	/**
 	 * @param consumer verifies the multimap's size
 	 * @return this
 	 */
-	MultimapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer);
+	MultimapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 }

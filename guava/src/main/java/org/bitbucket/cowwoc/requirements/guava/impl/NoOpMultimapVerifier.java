@@ -9,10 +9,10 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpCollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.NoOpObjectCapabilities;
-import org.bitbucket.cowwoc.requirements.core.impl.NoOpPrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.impl.NoOpPrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 
 /**
@@ -89,13 +89,13 @@ public final class NoOpMultimapVerifier<K, V>
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier size()
+	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new NoOpPrimitiveIntegerVerifier(config);
+		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer)
+	public MultimapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		return this;
 	}

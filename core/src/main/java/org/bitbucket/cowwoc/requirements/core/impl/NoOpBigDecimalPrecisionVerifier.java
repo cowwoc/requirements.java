@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
  * @author Gili Tzabari
  */
 public final class NoOpBigDecimalPrecisionVerifier
-	extends NoOpPrimitiveIntegerCapabilities<BigDecimalPrecisionVerifier, Integer>
+	extends NoOpPrimitiveNumberCapabilities<BigDecimalPrecisionVerifier, Integer>
 	implements BigDecimalPrecisionVerifier
 {
 	/**

@@ -71,13 +71,13 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	/**
 	 * @return a verifier for the length of the actual value
 	 */
-	PrimitiveIntegerVerifier length();
+	PrimitiveNumberVerifier<Integer> length();
 
 	/**
 	 * @param consumer verifies the length of the actual value
 	 * @return this
 	 */
-	StringVerifier length(Consumer<PrimitiveIntegerVerifier> consumer);
+	StringVerifier length(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.

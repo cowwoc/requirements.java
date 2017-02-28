@@ -29,11 +29,11 @@ public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifie
 	/**
 	 * @return a verifier for {@code BigDecimal.scale()}
 	 */
-	PrimitiveIntegerVerifier scale();
+	PrimitiveNumberVerifier<Integer> scale();
 
 	/**
 	 * @param consumer verifies the {@code BigDecimal.scale()}
 	 * @return this
 	 */
-	BigDecimalVerifier scale(Consumer<PrimitiveIntegerVerifier> consumer);
+	BigDecimalVerifier scale(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 }

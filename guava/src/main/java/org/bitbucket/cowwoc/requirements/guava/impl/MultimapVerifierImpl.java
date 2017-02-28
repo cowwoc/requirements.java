@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.impl.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.ContainerSizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.core.impl.ObjectCapabilitiesImpl;
@@ -109,14 +109,14 @@ public final class MultimapVerifierImpl<K, V>
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier size()
+	public PrimitiveNumberVerifier<Integer> size()
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name, name + ".size()",
 			Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer)
+	public MultimapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		consumer.accept(size());
 		return this;

@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
  * An implementation of {@code MapVerifier} that does nothing.
@@ -87,13 +87,13 @@ public final class NoOpMapVerifier<K, V>
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier size()
+	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new NoOpPrimitiveIntegerVerifier(config);
+		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<K, V> size(Consumer<PrimitiveIntegerVerifier> consumer)
+	public MapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		return this;
 	}
