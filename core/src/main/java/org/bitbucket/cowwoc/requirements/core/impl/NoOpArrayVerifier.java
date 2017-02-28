@@ -5,33 +5,35 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * An implementation of ArrayVerifier that does nothing.
+ * An implementation of {@code ArrayVerifier} that does nothing.
  *
  * @param <E> the type of elements in the array
  * @author Gili Tzabari
  */
-public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
+public final class NoOpArrayVerifier<E>
+	extends NoOpObjectCapabilities<ArrayVerifier<E>, E[]>
+	implements ArrayVerifier<E>
 {
-	private final Configuration config;
-
 	/**
 	 * @param config the verifier's configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public NoOpArrayVerifier(Configuration config)
 	{
-		assert (config != null): "config may not be null";
-		this.config = config;
+		super(config);
+	}
+
+	@Override
+	protected ArrayVerifier<E> getThis()
+	{
+		return this;
 	}
 
 	@Override
@@ -42,54 +44,6 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 
 	@Override
 	public ArrayVerifier<E> isNotEmpty()
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isEqualTo(E[] value)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isEqualTo(E[] value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isNotEqualTo(E[] value)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isNotEqualTo(E[] value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isIn(Collection<E[]> collection)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isInstanceOf(Class<?> type)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isNull()
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isNotNull()
 	{
 		return this;
 	}
@@ -197,18 +151,6 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public StringVerifier asString()
-	{
-		return new NoOpStringVerifier(config);
-	}
-
-	@Override
-	public ArrayVerifier<E> asString(Consumer<StringVerifier> consumer)
-	{
-		return this;
-	}
-
-	@Override
 	public CollectionVerifier<E> asCollection()
 	{
 		return new NoOpCollectionVerifier<>(config);
@@ -218,17 +160,5 @@ public final class NoOpArrayVerifier<E> implements ArrayVerifier<E>
 	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer)
 	{
 		return this;
-	}
-
-	@Override
-	public Optional<E[]> getActualIfPresent()
-	{
-		return Optional.empty();
-	}
-
-	@Override
-	public E[] getActual()
-	{
-		throw new NoSuchElementException("Assertions are disabled");
 	}
 }

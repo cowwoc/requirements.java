@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
  * @param <S> the type of verifier that methods should return
  * @author Gili Tzabari
  */
-public interface PrimitiveIntegerCapabilities<S extends PrimitiveIntegerCapabilities<S>>
+public interface PrimitiveIntegerCapabilities<S>
 	extends NumberCapabilities<S, Integer>
 {
 	/**

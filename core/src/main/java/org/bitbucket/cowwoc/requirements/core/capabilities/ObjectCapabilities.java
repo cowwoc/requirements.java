@@ -79,6 +79,16 @@ public interface ObjectCapabilities<S, T>
 	S isIn(Collection<T> collection);
 
 	/**
+	 * Ensures that a collection does not contain the actual value.
+	 *
+	 * @param collection a collection
+	 * @return this
+	 * @throws NullPointerException     if {@code collection} is null
+	 * @throws IllegalArgumentException if {@code collection} contains the actual value
+	 */
+	S isNotIn(Collection<T> collection);
+
+	/**
 	 * Ensures that the actual value is an instance of a class.
 	 *
 	 * @param type the class to compare to

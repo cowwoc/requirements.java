@@ -5,33 +5,35 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * An implementation of CollectionVerifier that does nothing.
+ * An implementation of {@code CollectionVerifier} that does nothing.
  *
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
-public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
+public final class NoOpCollectionVerifier<E>
+	extends NoOpObjectCapabilities<CollectionVerifier<E>, Collection<E>>
+	implements CollectionVerifier<E>
 {
-	private final Configuration config;
-
 	/**
 	 * @param config the verifier's configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public NoOpCollectionVerifier(Configuration config)
 	{
-		assert (config != null): "config may not be null";
-		this.config = config;
+		super(config);
+	}
+
+	@Override
+	protected CollectionVerifier<E> getThis()
+	{
+		return this;
 	}
 
 	@Override
@@ -42,54 +44,6 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 
 	@Override
 	public CollectionVerifier<E> isNotEmpty()
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isEqualTo(Collection<E> value)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isEqualTo(Collection<E> value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNotEqualTo(Collection<E> value)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNotEqualTo(Collection<E> value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isIn(Collection<Collection<E>> collection)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isInstanceOf(Class<?> type)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNull()
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<E> isNotNull()
 	{
 		return this;
 	}
@@ -197,18 +151,6 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	}
 
 	@Override
-	public StringVerifier asString()
-	{
-		return new NoOpStringVerifier(config);
-	}
-
-	@Override
-	public CollectionVerifier<E> asString(Consumer<StringVerifier> consumer)
-	{
-		return this;
-	}
-
-	@Override
 	public ArrayVerifier<E> asArray(Class<E> type)
 	{
 		return new NoOpArrayVerifier<>(config);
@@ -218,17 +160,5 @@ public final class NoOpCollectionVerifier<E> implements CollectionVerifier<E>
 	public CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
 	{
 		return this;
-	}
-
-	@Override
-	public Optional<Collection<E>> getActualIfPresent()
-	{
-		return Optional.empty();
-	}
-
-	@Override
-	public Collection<E> getActual()
-	{
-		throw new NoSuchElementException("Assertions are disabled");
 	}
 }

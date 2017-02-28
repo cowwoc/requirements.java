@@ -5,77 +5,29 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.net.InetAddress;
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
- * An implementation of NoOpInetAddressVerifier that does nothing.
+ * An implementation of {@code InetAddressVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */
-public final class NoOpInetAddressVerifier implements InetAddressVerifier
+public final class NoOpInetAddressVerifier
+	extends NoOpObjectCapabilities<InetAddressVerifier, InetAddress>
+	implements InetAddressVerifier
 {
-	private final Configuration config;
-
 	/**
 	 * @param config the verifier's configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public NoOpInetAddressVerifier(Configuration config)
 	{
-		assert (config != null): "config may not be null";
-		this.config = config;
+		super(config);
 	}
 
 	@Override
-	public InetAddressVerifier isEqualTo(InetAddress value)
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isEqualTo(InetAddress value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isNotEqualTo(InetAddress value)
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isNotEqualTo(InetAddress value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isIn(Collection<InetAddress> collection)
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isInstanceOf(Class<?> type)
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isNull()
-	{
-		return this;
-	}
-
-	@Override
-	public InetAddressVerifier isNotNull()
+	protected InetAddressVerifier getThis()
 	{
 		return this;
 	}
@@ -90,29 +42,5 @@ public final class NoOpInetAddressVerifier implements InetAddressVerifier
 	public InetAddressVerifier isIpV6()
 	{
 		return this;
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		return new NoOpStringVerifier(config);
-	}
-
-	@Override
-	public InetAddressVerifier asString(Consumer<StringVerifier> consumer)
-	{
-		return this;
-	}
-
-	@Override
-	public Optional<InetAddress> getActualIfPresent()
-	{
-		return Optional.empty();
-	}
-
-	@Override
-	public InetAddress getActual()
-	{
-		throw new NoSuchElementException("Assertions are disabled");
 	}
 }

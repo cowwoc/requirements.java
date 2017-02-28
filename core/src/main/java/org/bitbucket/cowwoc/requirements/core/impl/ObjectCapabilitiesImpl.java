@@ -303,6 +303,20 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
+	public S isNotIn(Collection<T> collection)
+	{
+		// Use-case: actual may not be in a collection of reserved values
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
+		if (!collection.contains(actual))
+			return getThis();
+
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be in %s.", this.name, collection)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
 	public S isInstanceOf(Class<?> type)
 	{
 		scope.getInternalVerifier().requireThat(type, "type").isNotNull();

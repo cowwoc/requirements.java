@@ -106,6 +106,19 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
+	public ArrayVerifier<E> isNotIn(Collection<E[]> collection)
+	{
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
+		if (!collection.contains(actual))
+			return this;
+
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be in %s.", this.name, collection)).
+			addContext("Actual", Arrays.toString(actual)).
+			build();
+	}
+
+	@Override
 	public ArrayVerifier<E> isInstanceOf(Class<?> type)
 	{
 		asCollection.isInstanceOf(type);

@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import org.bitbucket.cowwoc.requirements.core.impl.CoreVerifiersImpl;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
