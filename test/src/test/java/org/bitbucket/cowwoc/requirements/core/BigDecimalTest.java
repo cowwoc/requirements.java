@@ -546,6 +546,126 @@ public final class BigDecimalTest
 	}
 
 	@Test
+	public void scaleIsZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 0);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isZero();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsZero_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 1);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isZero();
+		}
+	}
+
+	@Test
+	public void scaleIsNotZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 1);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNotZero();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsNotZero_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 0);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNotZero();
+		}
+	}
+
+	@Test
+	public void scaleIsPositive()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 1);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isPositive();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsPositive_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 0);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isPositive();
+		}
+	}
+
+	@Test
+	public void scaleIsNotPositive()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 0);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNotPositive();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsNotPositive_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 1);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNotPositive();
+		}
+	}
+
+	@Test
+	public void scaleIsNegative()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, -1);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNegative();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsNegative_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 0);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNegative();
+		}
+	}
+
+	@Test
+	public void scaleIsNotNegative()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, 0);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNotNegative();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void scaleIsNotNegative_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(123, -1);
+			new Verifiers(scope).requireThat(actual, "actual").scale().isNotNegative();
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
