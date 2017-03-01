@@ -10,6 +10,7 @@ import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.DELETE;
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.EQUAL;
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.INSERT;
+import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.core.diff.DiffConstants.NEWLINE_PATTERN;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
@@ -40,10 +41,8 @@ public final class DiffGenerator
 	/**
 	 * Generates the diff of two strings.
 	 * <p>
-	 * NOTE: Colors are disabled when stdin or stdout are redirected. To override this behavior, set
-	 * the system property "org.bitbucket.cowwoc.requirements.terminal" to any value found in
-	 * {@link TerminalEncoding} (e.g. XTERM). NOTE: the system property is only read once. Changing
-	 * its value will not affect the terminal type used by subsequent invocations.
+	 * NOTE: Colors are disabled when stdin or stdout are redirected. To override this behavior, use
+	 * {@link GlobalConfiguration#withTerminalEncoding(TerminalEncoding)}.
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
