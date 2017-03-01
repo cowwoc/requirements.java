@@ -29,32 +29,32 @@ requirements-guava.jar               :  13,277 bytes
 requirements-native-windows-amd64.jar:  13,085 bytes
 
 
-Changeset: 72014323266df6345cba5ff3ddcb5eaae0f72a67
+Changeset: 3edc437631cb41b49dee2ae096645c769472d691
 
 -- With only core module:
 Benchmark                                              Mode  Cnt     Score    Error  Units
-Main.coreAssertsDisabled                               avgt   60     3.979 +- 0.005  ns/op
-Main.coreAssertsEnabled                                avgt   60     8.973 +- 0.022  ns/op
-Main.staticAssertThat                                  avgt   60     3.990 +- 0.011  ns/op
-Main.staticAssertThat (-ea)                            avgt   60     6.589 +- 0.051  ns/op
-Main.staticRequireThat                                 avgt   60     6.541 +- 0.216  ns/op
-Main.verifiersAssertsDisabled                          avgt   60     4.306 +- 0.004  ns/op
-Main.verifiersAssertsDisabledDoesNotContainDuplicates  avgt   60     4.146 +- 0.006  ns/op
-Main.verifiersAssertsEnabled                           avgt   60     9.251 +- 0.011  ns/op
-Main.verifiersRequireThat                              avgt   60     7.068 +- 0.036  ns/op
-Main.verifiersRequireThatDoesNotContainDuplicates      avgt   60  1228.492 +- 1.659  ns/op
+Main.coreAssertsDisabled                               avgt   60     3.986 +- 0.023  ns/op
+Main.coreAssertsEnabled                                avgt   60     9.092 +- 0.009  ns/op
+Main.staticAssertThat                                  avgt   60     3.975 +- 0.005  ns/op
+Main.staticAssertThat                                  avgt   60     6.443 +- 0.008  ns/op
+Main.staticRequireThat                                 avgt   60     6.544 +- 0.220  ns/op
+Main.verifiersAssertsDisabled                          avgt   60     4.351 +- 0.031  ns/op
+Main.verifiersAssertsDisabledDoesNotContainDuplicates  avgt   60     4.130 +- 0.007  ns/op
+Main.verifiersAssertsEnabled                           avgt   60     9.245 +- 0.021  ns/op
+Main.verifiersRequireThat                              avgt   60     6.997 +- 0.011  ns/op
+Main.verifiersRequireThatDoesNotContainDuplicates      avgt   60  1226.232 +- 3.648  ns/op
 
 -- With guava module enabled:
-Benchmark                                              Mode  Cnt     Score    Error  Units
-Main.coreAssertsDisabled                               avgt   60     4.017 +- 0.008  ns/op
-Main.coreAssertsEnabled                                avgt   60     9.104 +- 0.036  ns/op
-Main.staticAssertThat                                  avgt   60     4.018 +- 0.006  ns/op
-Main.staticRequireThat                                 avgt   60     6.341 +- 0.048  ns/op
-Main.verifiersAssertsDisabled                          avgt   60     8.913 +- 0.087  ns/op
-Main.verifiersAssertsDisabledDoesNotContainDuplicates  avgt   60     8.755 +- 0.013  ns/op
-Main.verifiersAssertsEnabled                           avgt   60    18.185 +- 0.040  ns/op
-Main.verifiersRequireThat                              avgt   60    10.642 +- 0.045  ns/op
-Main.verifiersRequireThatDoesNotContainDuplicates      avgt   60  1240.232 +- 9.389  ns/op
+Benchmark                                              Mode  Cnt     Score     Error  Units
+Main.coreAssertsDisabled                               avgt   60     3.970 +-  0.004  ns/op
+Main.coreAssertsEnabled                                avgt   60     8.966 +-  0.030  ns/op
+Main.staticAssertThat                                  avgt   60     3.981 +-  0.011  ns/op
+Main.staticRequireThat                                 avgt   60     6.253 +-  0.049  ns/op
+Main.verifiersAssertsDisabled                          avgt   60     8.582 +-  0.011  ns/op
+Main.verifiersAssertsDisabledDoesNotContainDuplicates  avgt   60     8.576 +-  0.006  ns/op
+Main.verifiersAssertsEnabled                           avgt   60    17.940 +-  0.076  ns/op
+Main.verifiersRequireThat                              avgt   60    10.504 +-  0.065  ns/op
+Main.verifiersRequireThatDoesNotContainDuplicates      avgt   60  1280.922 +- 18.298  ns/op
 
 requirements-core.jar                :  152,895 bytes (3.2% decrease)
 requirements-guava.jar               :  12,480 bytes (6% decrease)
