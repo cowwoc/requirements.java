@@ -20,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.core.util.Sets;
 import org.bitbucket.cowwoc.requirements.core.util.Strings;
 
 /**
- * Default implementation of {@code CollectionVerifier}.
+ * Default implementation of {@link CollectionVerifier}.
  *
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari

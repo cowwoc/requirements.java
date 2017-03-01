@@ -8,11 +8,9 @@ import java.math.BigDecimal;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * An implementation of {@code PrimitiveNumberVerifier} for a
- * {@code BigDecimal}'s scale.
+ * An implementation of {@link PrimitiveNumberVerifier} for a {@link BigDecimal}'s scale.
  *
  * @author Gili Tzabari
  */
@@ -34,60 +32,5 @@ public final class BigDecimalScaleVerifierImpl
 		Configuration config)
 	{
 		super(scope, actual.scale(), name + ".scale()", config);
-	}
-
-	@Override
-	@Deprecated
-	public PrimitiveNumberVerifier<Integer> isNull()
-	{
-		return super.isNull();
-	}
-
-	@Deprecated
-	@Override
-	public PrimitiveNumberVerifier<Integer> isZero()
-	{
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be zero", name), null).
-			build();
-	}
-
-	@Override
-	public PrimitiveNumberVerifier<Integer> isNotZero()
-	{
-		// Always true
-		return this;
-	}
-
-	@Deprecated
-	@Override
-	public PrimitiveNumberVerifier<Integer> isNotPositive()
-	{
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be non-positive", name), null).
-			build();
-	}
-
-	@Override
-	public PrimitiveNumberVerifier<Integer> isPositive()
-	{
-		// Always true
-		return this;
-	}
-
-	@Override
-	public PrimitiveNumberVerifier<Integer> isNotNegative()
-	{
-		// Always true
-		return this;
-	}
-
-	@Deprecated
-	@Override
-	public PrimitiveNumberVerifier<Integer> isNegative()
-	{
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be negative", name), null).
-			build();
 	}
 }

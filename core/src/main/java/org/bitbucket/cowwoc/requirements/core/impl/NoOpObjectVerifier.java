@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 
 /**
- * An implementation of {@code ObjectVerifier} that does nothing.
+ * An implementation of {@link ObjectVerifier} that does nothing.
  *
  * @param <T> the type of the value
  * @author Gili Tzabari

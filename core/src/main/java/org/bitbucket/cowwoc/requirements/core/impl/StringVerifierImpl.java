@@ -17,7 +17,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of StringVerifier.
+ * Default implementation of {@link StringVerifier}.
  *
  * @author Gili Tzabari
  */

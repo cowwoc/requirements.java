@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
- * An implementation of {@code ArrayVerifier} that does nothing.
+ * An implementation of {@link ArrayVerifier} that does nothing.
  *
  * @param <E> the type of elements in the array
  * @author Gili Tzabari

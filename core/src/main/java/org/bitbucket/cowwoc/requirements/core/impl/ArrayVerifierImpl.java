@@ -18,7 +18,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@code ArrayVerifier}.
+ * Default implementation of {@link ArrayVerifier}.
  *
  * @param <E> the type of elements in the array
  * @author Gili Tzabari

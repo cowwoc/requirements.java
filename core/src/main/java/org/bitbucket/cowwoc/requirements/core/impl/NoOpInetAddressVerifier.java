@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 
 /**
- * An implementation of {@code InetAddressVerifier} that does nothing.
+ * An implementation of {@link InetAddressVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */

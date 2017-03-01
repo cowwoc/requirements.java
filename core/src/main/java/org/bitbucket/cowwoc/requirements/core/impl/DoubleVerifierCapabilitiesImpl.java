@@ -1,26 +1,26 @@
 /*
- * Copyright 2014 Gili Tzabari.
+ * Copyright 2017 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
+import org.bitbucket.cowwoc.requirements.core.capabilities.FloatingPointCapabilities;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of OptionalVerifier.
- *
+ * Extendable implementation of {@link FloatingPointCapabilities} for {@code double}s.
+ * <p>
+ * @param <S> the type of verifier that methods should return
  * @author Gili Tzabari
  */
-public final class OptionalVerifierImpl
-	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
-	implements OptionalVerifier
+public abstract class DoubleVerifierCapabilitiesImpl<S>
+	extends NumberCapabilitiesImpl<S, Double>
+	implements FloatingPointCapabilities<S, Double>
 {
 	/**
-	 * Creates new OptionalVerifierImpl.
+	 * Creates new DoubleVerifierCapabilitiesImpl.
 	 *
 	 * @param scope  the application configuration
 	 * @param actual the actual value
@@ -29,57 +29,53 @@ public final class OptionalVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public OptionalVerifierImpl(ApplicationScope scope, Optional<?> actual, String name,
+	public DoubleVerifierCapabilitiesImpl(ApplicationScope scope, Double actual, String name,
 		Configuration config)
 	{
 		super(scope, actual, name, config);
 	}
 
 	@Override
-	public OptionalVerifier isPresent()
+	public S isNumber()
 	{
-		if (actual.isPresent())
-			return this;
+		if (!actual.isNaN())
+			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be present", name)).
-			build();
-	}
-
-	@Override
-	public OptionalVerifier isEmpty()
-	{
-		if (!actual.isPresent())
-			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be empty.", name)).
+			String.format("%s must be a number.", name)).
 			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
-	public OptionalVerifier contains(Object value)
+	public S isNotNumber()
 	{
-		if (value == null)
-			return isEmpty();
-		Optional<?> expected = Optional.of(value);
-		if (actual.equals(expected))
-			return this;
+		if (actual.isNaN())
+			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s.", name, value)).
+			String.format("%s may not be a number.", name)).
 			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
-	public OptionalVerifier contains(Object expected, String name)
+	public S isFinite()
 	{
-		Optional<?> expectedOptional = Optional.ofNullable(expected);
-		if (actual.equals(expectedOptional))
-			return this;
+		if (!actual.isInfinite())
+			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s.", this.name, name)).
+			String.format("%s must be finite.", name)).
 			addContext("Actual", actual).
-			addContext("Expected", expectedOptional).
+			build();
+	}
+
+	@Override
+	public S isNotFinite()
+	{
+		if (actual.isInfinite())
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be infinite.", name)).
+			addContext("Actual", actual).
 			build();
 	}
 }

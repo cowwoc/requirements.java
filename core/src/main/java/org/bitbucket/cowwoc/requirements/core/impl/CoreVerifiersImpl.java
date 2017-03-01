@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
 
 /**
- * Default implementation of {@code CoreVerifiers}.
+ * Default implementation of {@link CoreVerifiers}.
  *
  * @author Gili Tzabari
  */

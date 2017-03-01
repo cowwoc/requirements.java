@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.core.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 
 /**
- * An implementation of {@code ClassVerifier} that does nothing.
+ * An implementation of {@link ClassVerifier} that does nothing.
  *
  * @param <T> the type of the class
  * @author Gili Tzabari

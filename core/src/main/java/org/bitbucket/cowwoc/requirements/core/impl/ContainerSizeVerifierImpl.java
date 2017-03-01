@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.util.Objects;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
@@ -18,7 +19,7 @@ import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
  */
 public final class ContainerSizeVerifierImpl
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
-	implements PrimitiveNumberVerifier<Integer>
+	implements ContainerSizeVerifier
 {
 	private final Object container;
 	private final String containerName;
@@ -216,6 +217,7 @@ public final class ContainerSizeVerifierImpl
 		throw eb.build();
 	}
 
+	@Deprecated
 	@Override
 	public PrimitiveNumberVerifier<Integer> isNotNegative()
 	{

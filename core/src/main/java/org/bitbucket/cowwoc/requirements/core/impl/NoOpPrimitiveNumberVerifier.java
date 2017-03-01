@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
- * An implementation of {@code PrimitiveNumberVerifier} that does nothing.
+ * An implementation of {@link PrimitiveNumberVerifier} that does nothing.
  *
  * @param <T> the type of the value
  * @author Gili Tzabari

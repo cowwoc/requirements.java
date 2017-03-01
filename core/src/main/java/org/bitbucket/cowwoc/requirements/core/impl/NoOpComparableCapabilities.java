@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
 
 /**
- * Extendable implementation of {@code ComparableCapabilities} that does nothing.
+ * Extendable implementation of {@link ComparableCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 
 /**
- * An implementation of {@code NumberVerifier} that does nothing.
+ * An implementation of {@link NumberVerifier} that does nothing.
  *
  * @param <T> the type of the value
  * @author Gili Tzabari

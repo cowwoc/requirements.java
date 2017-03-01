@@ -22,7 +22,16 @@ public interface PrimitiveNumberCapabilities<S, T extends Number & Comparable<? 
 	 *
 	 * @deprecated the actual value cannot be null
 	 */
-	@Deprecated
 	@Override
+	@Deprecated
 	S isNull();
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated the actual value cannot be null
+	 */
+	@Override
+	@Deprecated
+	S isNotNull();
 }

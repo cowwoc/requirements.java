@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
- * Default implementation of {@code NumberVerifier}.
+ * Default implementation of {@link NumberVerifier}.
  *
  * @param <T> the type of the value
  * @author Gili Tzabari

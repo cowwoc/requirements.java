@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 
 /**
- * An implementation of {@code OptionalVerifier} that does nothing.
+ * An implementation of {@link OptionalVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */

@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
 
 /**
- * An implementation of {@code PathVerifier} that does nothing.
+ * An implementation of {@link PathVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */

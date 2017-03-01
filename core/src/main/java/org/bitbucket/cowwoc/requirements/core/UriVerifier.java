@@ -8,7 +8,7 @@ import java.net.URI;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
- * Verifies a {@code URI}.
+ * Verifies a {@link URI}.
  *
  * @author Gili Tzabari
  */

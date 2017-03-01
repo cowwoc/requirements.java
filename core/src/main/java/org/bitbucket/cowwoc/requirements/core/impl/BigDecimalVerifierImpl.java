@@ -14,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@code BigDecimalVerifier}.
+ * Default implementation of {@link BigDecimalVerifier}.
  *
  * @author Gili Tzabari
  */

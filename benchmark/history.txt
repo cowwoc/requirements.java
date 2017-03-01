@@ -56,6 +56,6 @@ Main.verifiersAssertsEnabled                           avgt   60    18.185 +- 0.
 Main.verifiersRequireThat                              avgt   60    10.642 +- 0.045  ns/op
 Main.verifiersRequireThatDoesNotContainDuplicates      avgt   60  1240.232 +- 9.389  ns/op
 
-requirements-core.jar                : 144,077 bytes (8.8% decrease)
-requirements-guava.jar               :  12,445 bytes (6.3% decrease)
+requirements-core.jar                :  152,895 bytes (3.2% decrease)
+requirements-guava.jar               :  12,480 bytes (6% decrease)
 requirements-native-windows-amd64.jar:  13,085 bytes

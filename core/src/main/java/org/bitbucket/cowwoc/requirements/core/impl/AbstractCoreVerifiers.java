@@ -18,20 +18,21 @@ import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
-import org.bitbucket.cowwoc.requirements.core.DoubleVerifier;
+import org.bitbucket.cowwoc.requirements.core.FloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
- * Default implementation of {@code CoreVerifiers}.
+ * Default implementation of {@link CoreVerifiers}.
  *
  * @author Gili Tzabari
  */
@@ -194,6 +195,36 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
+	public PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name)
+	{
+		verifyName(name);
+		return new PrimitiveFloatVerifierImpl(scope, actual, name, config);
+	}
+
+	@Override
+	public PrimitiveFloatingPointVerifier<Float> assertThat(float actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpPrimitiveFloatingPointVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name)
+	{
+		verifyName(name);
+		return new PrimitiveDoubleVerifierImpl(scope, actual, name, config);
+	}
+
+	@Override
+	public PrimitiveFloatingPointVerifier<Double> assertThat(double actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpPrimitiveFloatingPointVerifier<>(config);
+	}
+
+	@Override
 	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual,
 		String name)
 	{
@@ -211,18 +242,33 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
-	public DoubleVerifier requireThat(Double actual, String name)
+	public FloatingPointVerifier<Float> requireThat(Float actual, String name)
+	{
+		verifyName(name);
+		return new FloatVerifierImpl(scope, actual, name, config);
+	}
+
+	@Override
+	public FloatingPointVerifier<Float> assertThat(Float actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return new NoOpFloatingPointVerifier<>(config);
+	}
+
+	@Override
+	public FloatingPointVerifier<Double> requireThat(Double actual, String name)
 	{
 		verifyName(name);
 		return new DoubleVerifierImpl(scope, actual, name, config);
 	}
 
 	@Override
-	public DoubleVerifier assertThat(Double actual, String name)
+	public FloatingPointVerifier<Double> assertThat(Double actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpDoubleVerifier(config);
+		return new NoOpFloatingPointVerifier<>(config);
 	}
 
 	@Override

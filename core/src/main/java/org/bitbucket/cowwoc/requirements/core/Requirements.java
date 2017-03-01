@@ -315,6 +315,35 @@ public final class Requirements
 	}
 
 	/**
+	 * Verifies a {@code Float}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static FloatingPointVerifier<Float> requireThat(Float actual, String name)
+	{
+		return DELEGATE.requireThat(actual, name);
+	}
+
+	/**
+	 * Same as {@link #requireThat(Float, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static FloatingPointVerifier<Float> assertThat(Float actual, String name)
+	{
+		return DELEGATE.assertThat(actual, name);
+	}
+
+	/**
 	 * Verifies a {@code Double}.
 	 *
 	 * @param actual the actual value
@@ -323,7 +352,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static DoubleVerifier requireThat(Double actual, String name)
+	public static FloatingPointVerifier<Double> requireThat(Double actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -338,7 +367,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static DoubleVerifier assertThat(Double actual, String name)
+	public static FloatingPointVerifier<Double> assertThat(Double actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}

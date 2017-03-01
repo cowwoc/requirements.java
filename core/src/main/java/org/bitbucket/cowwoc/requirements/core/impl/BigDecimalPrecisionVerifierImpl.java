@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@code BigDecimalPrecisionVerifier}.
+ * Default implementation of {@link BigDecimalPrecisionVerifier}.
  *
  * @author Gili Tzabari
  */
@@ -43,6 +43,7 @@ public final class BigDecimalPrecisionVerifierImpl
 			build();
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNotZero()
 	{
@@ -59,6 +60,7 @@ public final class BigDecimalPrecisionVerifierImpl
 			build();
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isPositive()
 	{
@@ -66,6 +68,7 @@ public final class BigDecimalPrecisionVerifierImpl
 		return this;
 	}
 
+	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNotNegative()
 	{

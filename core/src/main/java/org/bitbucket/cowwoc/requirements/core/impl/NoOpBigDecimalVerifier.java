@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
- * An implementation of {@code BigDecimalVerifier} that does nothing.
+ * An implementation of {@link BigDecimalVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */

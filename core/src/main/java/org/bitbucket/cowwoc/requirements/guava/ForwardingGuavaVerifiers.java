@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 /**
- * An interface that forwards all method invocations to a {@code GuavaVerifiers} instance.
+ * An interface that forwards all method invocations to a {@link GuavaVerifiers} instance.
  *
  * @author Gili Tzabari
  */

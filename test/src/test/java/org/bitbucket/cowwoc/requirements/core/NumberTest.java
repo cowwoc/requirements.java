@@ -528,6 +528,138 @@ public final class NumberTest
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void byteIsNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			byte actual = (byte) 1;
+			new Verifiers(scope).requireThat(actual, "actual").isNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void byteIsNotNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			byte actual = (byte) 1;
+			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void shortIsNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			short actual = (short) 1;
+			new Verifiers(scope).requireThat(actual, "actual").isNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void shortIsNotNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			short actual = (short) 1;
+			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void intIsNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat(actual, "actual").isNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void intIsNotNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void longIsNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			long actual = 1L;
+			new Verifiers(scope).requireThat(actual, "actual").isNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void longIsNotNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			long actual = 1L;
+			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void floatIsNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = 1.0F;
+			new Verifiers(scope).requireThat(actual, "actual").isNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void floatIsNotNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = 1.0F;
+			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.0;
+			new Verifiers(scope).requireThat(actual, "actual").isNull();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void doubleIsNotNull_deprecation()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.0;
+			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
 	@Test
 	public void assertionsDisabled()
 	{

@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
- * Extendable implementation of {@code ObjectCapabilities} that does nothing.
+ * Extendable implementation of {@link ObjectCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

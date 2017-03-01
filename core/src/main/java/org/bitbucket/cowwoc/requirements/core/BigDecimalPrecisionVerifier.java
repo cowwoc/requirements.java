@@ -18,16 +18,34 @@ public interface BigDecimalPrecisionVerifier
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @deprecated {@code BigDecimal.precision()} cannot be zero
+	 * @deprecated the actual value is always positive
 	 */
-	@Deprecated
 	@Override
+	@Deprecated
 	BigDecimalPrecisionVerifier isZero();
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @deprecated {@code BigDecimal.precision()} cannot be non-positive
+	 * @deprecated the actual value is always positive
+	 */
+	@Override
+	@Deprecated
+	BigDecimalPrecisionVerifier isNotZero();
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated the actual value is always positive
+	 */
+	@Override
+	@Deprecated
+	BigDecimalPrecisionVerifier isPositive();
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated the actual value is always positive
 	 */
 	@Override
 	@Deprecated
@@ -36,9 +54,18 @@ public interface BigDecimalPrecisionVerifier
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @deprecated {@code BigDecimal.precision()} cannot be negative
+	 * @deprecated the actual value is always positive
 	 */
 	@Override
 	@Deprecated
 	BigDecimalPrecisionVerifier isNegative();
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated the actual value is always positive
+	 */
+	@Override
+	@Deprecated
+	BigDecimalPrecisionVerifier isNotNegative();
 }

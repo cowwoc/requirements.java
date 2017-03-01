@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
- * An implementation of {@code MapVerifier} that does nothing.
+ * An implementation of {@link MapVerifier} that does nothing.
  *
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map

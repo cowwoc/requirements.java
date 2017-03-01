@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 
 /**
- * An implementation of {@code StringVerifier} that does nothing.
+ * An implementation of {@link StringVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */

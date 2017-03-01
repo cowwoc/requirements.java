@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@code ClassVerifier}.
+ * Default implementation of {@link ClassVerifier}.
  *
  * @param <T> the type of the class
  * @author Gili Tzabari

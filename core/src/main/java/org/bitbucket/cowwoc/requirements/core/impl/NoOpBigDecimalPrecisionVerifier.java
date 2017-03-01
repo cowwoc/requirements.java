@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 
 /**
- * An implementation of {@code BigDecimalPrecisionVerifier} that does nothing.
+ * An implementation of {@link BigDecimalPrecisionVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */
@@ -29,26 +29,5 @@ public final class NoOpBigDecimalPrecisionVerifier
 	protected BigDecimalPrecisionVerifier getThis()
 	{
 		return this;
-	}
-
-	@Deprecated
-	@Override
-	public BigDecimalPrecisionVerifier isNegative()
-	{
-		return super.isNegative();
-	}
-
-	@Deprecated
-	@Override
-	public BigDecimalPrecisionVerifier isZero()
-	{
-		return super.isZero();
-	}
-
-	@Deprecated
-	@Override
-	public BigDecimalPrecisionVerifier isNotPositive()
-	{
-		return super.isNotPositive();
 	}
 }

@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of UriVerifier.
+ * Default implementation of {@link UriVerifier}.
  *
  * @author Gili Tzabari
  */

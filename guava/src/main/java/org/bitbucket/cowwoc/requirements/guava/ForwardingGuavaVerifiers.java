@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 
 /**
- * An interface that forwards method invocations to a {@code GuavaVerifiers} instance.
+ * An interface that forwards method invocations to a {@link GuavaVerifiers} instance.
  *
  * @author Gili Tzabari
  */

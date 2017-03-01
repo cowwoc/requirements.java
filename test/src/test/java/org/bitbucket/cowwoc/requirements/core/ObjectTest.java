@@ -268,7 +268,7 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			int actual = 5;
+			Integer actual = 5;
 			new Verifiers(scope).withException(IllegalStateException.class).
 				requireThat(actual, "actual").isNotNull();
 		}

@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@code PrimitiveNumberVerifier}.
+ * Default implementation of {@link PrimitiveNumberVerifier}.
  * <p>
  * @param <T> the type of the value
  * @author Gili Tzabari

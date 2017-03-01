@@ -9,16 +9,16 @@ import org.bitbucket.cowwoc.requirements.core.FloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
- * Default implementation of {@link FloatingPointVerifier FloatingPointVerifier&lt;Double&gt;}.
+ * Default implementation of {@link FloatingPointVerifier FloatingPointVerifier&lt;Float&gt;}.
  *
  * @author Gili Tzabari
  */
-public final class DoubleVerifierImpl
-	extends DoubleVerifierCapabilitiesImpl<FloatingPointVerifier<Double>>
-	implements FloatingPointVerifier<Double>
+public final class FloatVerifierImpl
+	extends FloatVerifierCapabilitiesImpl<FloatingPointVerifier<Float>>
+	implements FloatingPointVerifier<Float>
 {
 	/**
-	 * Creates new DoubleVerifierImpl.
+	 * Creates new FloatVerifierImpl.
 	 *
 	 * @param scope  the application configuration
 	 * @param actual the actual value
@@ -27,13 +27,13 @@ public final class DoubleVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public DoubleVerifierImpl(ApplicationScope scope, Double actual, String name, Configuration config)
+	public FloatVerifierImpl(ApplicationScope scope, Float actual, String name, Configuration config)
 	{
 		super(scope, actual, name, config);
 	}
 
 	@Override
-	protected FloatingPointVerifier<Double> getThis()
+	protected FloatingPointVerifier<Float> getThis()
 	{
 		return this;
 	}

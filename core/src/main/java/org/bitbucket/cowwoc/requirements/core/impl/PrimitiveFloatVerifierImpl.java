@@ -1,24 +1,25 @@
 /*
- * Copyright 2016 Gili Tzabari.
+ * Copyright 2017 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.FloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.core.capabilities.FloatingPointCapabilities;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
- * Default implementation of {@link FloatingPointVerifier FloatingPointVerifier&lt;Double&gt;}.
+ * Default implementation of {@link FloatingPointCapabilities} for {@code float}s.
  *
  * @author Gili Tzabari
  */
-public final class DoubleVerifierImpl
-	extends DoubleVerifierCapabilitiesImpl<FloatingPointVerifier<Double>>
-	implements FloatingPointVerifier<Double>
+public final class PrimitiveFloatVerifierImpl
+	extends FloatVerifierCapabilitiesImpl<PrimitiveFloatingPointVerifier<Float>>
+	implements PrimitiveFloatingPointVerifier<Float>
 {
 	/**
-	 * Creates new DoubleVerifierImpl.
+	 * Creates new PrimitiveFloatVerifierImpl.
 	 *
 	 * @param scope  the application configuration
 	 * @param actual the actual value
@@ -27,13 +28,14 @@ public final class DoubleVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public DoubleVerifierImpl(ApplicationScope scope, Double actual, String name, Configuration config)
+	public PrimitiveFloatVerifierImpl(ApplicationScope scope, Float actual, String name,
+		Configuration config)
 	{
 		super(scope, actual, name, config);
 	}
 
 	@Override
-	protected FloatingPointVerifier<Double> getThis()
+	protected PrimitiveFloatingPointVerifier<Float> getThis()
 	{
 		return this;
 	}

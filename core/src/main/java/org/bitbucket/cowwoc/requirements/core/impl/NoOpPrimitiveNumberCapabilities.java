@@ -5,10 +5,11 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveNumberCapabilities;
 
 /**
- * Extendable implementation of {@code PrimitiveNumberVerifier} that does nothing.
+ * Extendable implementation of {@link PrimitiveNumberVerifier} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -25,5 +26,47 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 	public NoOpPrimitiveNumberCapabilities(Configuration config)
 	{
 		super(config);
+	}
+
+	@Deprecated
+	@Override
+	public S isNegative()
+	{
+		return super.isNegative();
+	}
+
+	@Deprecated
+	@Override
+	public S isNotNegative()
+	{
+		return super.isNotNegative();
+	}
+
+	@Deprecated
+	@Override
+	public S isZero()
+	{
+		return super.isZero();
+	}
+
+	@Deprecated
+	@Override
+	public S isNotZero()
+	{
+		return super.isNotZero();
+	}
+
+	@Deprecated
+	@Override
+	public S isPositive()
+	{
+		return super.isPositive();
+	}
+
+	@Deprecated
+	@Override
+	public S isNotPositive()
+	{
+		return super.isNotPositive();
 	}
 }

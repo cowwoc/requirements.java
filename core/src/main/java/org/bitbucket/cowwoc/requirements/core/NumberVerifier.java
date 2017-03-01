@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 
 /**
- * Verifier for a {@code Number}.
+ * Verifier for a {@link Number}.
  *
  * @param <T> the type of the value
  * @author Gili Tzabari

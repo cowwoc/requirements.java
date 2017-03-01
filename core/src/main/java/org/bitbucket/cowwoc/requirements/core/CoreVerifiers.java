@@ -207,7 +207,7 @@ public interface CoreVerifiers extends Configurable
 	PrimitiveNumberVerifier<Integer> assertThat(int actual, String name);
 
 	/**
-	 * Verifies an {@code long}.
+	 * Verifies a {@code long}.
 	 *
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -228,6 +228,52 @@ public interface CoreVerifiers extends Configurable
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	PrimitiveNumberVerifier<Long> assertThat(long actual, String name);
+
+	/**
+	 * Verifies a {@code float}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(float, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveFloatingPointVerifier<Float> assertThat(float actual, String name);
+
+	/**
+	 * Verifies a {@code double}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(double, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveFloatingPointVerifier<Double> assertThat(double actual, String name);
 
 	/**
 	 * Verifies a {@code Number}.
@@ -254,6 +300,28 @@ public interface CoreVerifiers extends Configurable
 	<T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual, String name);
 
 	/**
+	 * Verifies a {@code Float}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	FloatingPointVerifier<Float> requireThat(Float actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(Float, String)} but does nothing if assertions are disabled.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	FloatingPointVerifier<Float> assertThat(Float actual, String name);
+
+	/**
 	 * Verifies a {@code Double}.
 	 *
 	 * @param actual the actual value
@@ -262,7 +330,7 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	DoubleVerifier requireThat(Double actual, String name);
+	FloatingPointVerifier<Double> requireThat(Double actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled.
@@ -273,7 +341,7 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	DoubleVerifier assertThat(Double actual, String name);
+	FloatingPointVerifier<Double> assertThat(Double actual, String name);
 
 	/**
 	 * Verifies a {@code BigDecimal}.

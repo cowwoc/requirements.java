@@ -1,0 +1,33 @@
+/*
+ * Copyright 2015 Gili Tzabari.
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package org.bitbucket.cowwoc.requirements.core;
+
+import java.math.BigDecimal;
+
+/**
+ * Verifies a {@link BigDecimal#precision()}.
+ *
+ * @author Gili Tzabari
+ */
+public interface ContainerSizeVerifier extends PrimitiveNumberVerifier<Integer>
+{
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated the actual value is always positive
+	 */
+	@Override
+	@Deprecated
+	PrimitiveNumberVerifier<Integer> isNegative();
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated the actual value is always positive
+	 */
+	@Override
+	@Deprecated
+	PrimitiveNumberVerifier<Integer> isNotNegative();
+}

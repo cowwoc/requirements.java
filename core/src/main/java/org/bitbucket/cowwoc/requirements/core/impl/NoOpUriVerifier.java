@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 
 /**
- * An implementation of {@code UriVerifier} that does nothing.
+ * An implementation of {@link UriVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */
