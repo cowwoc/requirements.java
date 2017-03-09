@@ -58,6 +58,23 @@
 // -Dsurefire.useFile=false : useful in CI. Displays test errors in the logs directly (instead of
 //                            having to crawl the workspace files to see the cause).
 // -e : Display stack-traces on failure
+// -------------------------------------------------------------------------------------------------
+//
+//
+// GCC versions
+// ------------
+//
+// GCC outputs dynamically-linked libraries that depend on specific versions of the glibc library.
+// https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html lists which GLIBCXX version ships with each version of GCC.
+// As of 2017-03-09, AWS linux images ship with GCC 4.8.3: https://aws.amazon.com/amazon-linux-ami/2015.09-release-notes/
+// Therefore, we must use this version of GCC or older.
+//
+// Using a newer version of GCC results in the following error:
+//
+// java.lang.UnsatisfiedLinkError: librequirements.so: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21&apos; not found (required by librequirements.so)
+//
+// See http://stackoverflow.com/a/17275650/14731 for overriding the GCC version used by CMake
+
 
 // Create release candidate branch
 def repository = &apos;bitbucket.org/cowwoc/requirements/&apos;
@@ -157,7 +174,11 @@ try
                     stage(&quot;Deploy (linux-i386)&quot;)
                     {
                         // Deploy platform-specific JAR
-                        sh script: &quot;&quot;&quot;cd native
+                        // Use the same GCC version as AWS. See top of this script for more information.
+                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
+                            export CC=/usr/bin/gcc-4.8
+                            export CXX=/usr/bin/g++-4.8
+                            cd native
                             mvn --batch-mode -e -DosDetection=false -Plinux-i386-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }
@@ -187,7 +208,11 @@ try
                     }
                     stage(&quot;Deploy (linux-amd64)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;cd native
+                        // Use the same GCC version as AWS. See top of this script for more information.
+                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
+                            export CC=/usr/bin/gcc-4.8
+                            export CXX=/usr/bin/g++-4.8
+                            cd native
                             mvn --batch-mode -e -DosDetection=false -Plinux-amd64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts: &apos;**/target/*.jar&apos;
                     }

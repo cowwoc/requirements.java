@@ -36,7 +36,21 @@
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.29">
-    <script>parallel windows:
+    <script>// GCC versions
+// ------------
+//
+// GCC outputs dynamically-linked libraries that depend on specific versions of the glibc library.
+// https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html lists which GLIBCXX version ships with each version of GCC.
+// As of 2017-03-09, AWS linux images ship with GCC 4.8.3: https://aws.amazon.com/amazon-linux-ami/2015.09-release-notes/
+// Therefore, we must use this version of GCC or older.
+//
+// Using a newer version of GCC results in the following error:
+//
+// java.lang.UnsatisfiedLinkError: librequirements.so: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21&apos; not found (required by librequirements.so)
+//
+// See http://stackoverflow.com/a/17275650/14731 for overriding the GCC version used by CMake
+
+parallel windows:
 {
     node(&quot;windows &amp;&amp; i386 &amp;&amp; amd64&quot;)
     {
@@ -99,7 +113,10 @@
             {
                 stage(&quot;Deploy (linux-i386)&quot;)
                 {
-                    sh script: &apos;&apos;&apos;sudo apt-get install cmake -y
+                    // Use the same GCC version as AWS. See top of this script for more information.
+                    sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
+                    export CC=/usr/bin/gcc-4.8
+                    export CXX=/usr/bin/g++-4.8
                     mvn --batch-mode -V -U -e clean deploy -Plinux-i386-release -Dsurefire.useFile=false&apos;&apos;&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
@@ -125,7 +142,11 @@
             {
                 stage(&quot;Deploy (linux-amd64)&quot;)
                 {
-                    sh script: &apos;mvn --batch-mode -V -U -e clean deploy -Plinux-amd64-release -Dsurefire.useFile=false&apos;
+                    // Use the same GCC version as AWS. See top of this script for more information.
+                    sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
+                    export CC=/usr/bin/gcc-4.8
+                    export CXX=/usr/bin/g++-4.8
+                    mvn --batch-mode -V -U -e clean deploy -Plinux-amd64-release -Dsurefire.useFile=false&apos;&apos;&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
             }
