@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@2.9">
+<flow-definition plugin="workflow-job@2.10">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -12,6 +12,16 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <com.gem.persistentparameter.PersistentStringParameterDefinition plugin="persistent-parameter@1.1">
+          <name>branch</name>
+          <description>What branch should be built?</description>
+          <defaultValue>default</defaultValue>
+          <successfulOnly>true</successfulOnly>
+        </com.gem.persistentparameter.PersistentStringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
     <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.9.0">
       <maxConcurrentPerNode>0</maxConcurrentPerNode>
       <maxConcurrentTotal>0</maxConcurrentTotal>
@@ -25,10 +35,8 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
-    <script>def branch = &apos;dev-3.0.0&apos;
-
-parallel windows:
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.29">
+    <script>parallel windows:
 {
     node(&quot;windows &amp;&amp; i386 &amp;&amp; amd64&quot;)
     {
@@ -82,7 +90,7 @@ parallel windows:
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;,  installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &apos;dev-3.0.0&apos;]
+                checkout changelog: true, poll: true, scm: [$class: &apos;MercurialSCM&apos;, browser: [$class: &apos;BitBucket&apos;, url: &apos;https://bitbucket.org/cowwoc/requirements/&apos;], clean: true, credentialsId: &apos;bitbucket&apos;, installation: &apos;mercurial&apos;, source: &apos;https://bitbucket.org/cowwoc/requirements/&apos;, revision: &quot;${branch}&quot;]
             }
         }
         timeout(15)
