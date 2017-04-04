@@ -142,8 +142,8 @@
 										<echo>* linux-i386-release</echo>
 										<echo>* linux-amd64-debug</echo>
 										<echo>* linux-amd64-release</echo>
-										<echo>* mac-amd64-debug</echo>
-										<echo>* mac-amd64-release</echo>
+										<echo>* mac-x86_64-debug</echo>
+										<echo>* mac-x86_64-release</echo>
 										<echo/>
 										<echo>For instance: mvn -Pwindows-x86-debug install</echo>
 										<fail/>
@@ -282,16 +282,16 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>mac-amd64-debug</id>
+			<id>mac-x86_64-debug</id>
 			<properties>
-				<platform>mac-amd64</platform>
+				<platform>mac-x86_64</platform>
 				<build.type>debug</build.type>
-				<cmake.classifier>mac-amd64</cmake.classifier>
+				<cmake.classifier>mac-x86_64</cmake.classifier>
 				<cmake.generator>Unix Makefiles</cmake.generator>
 			</properties>
 		</profile>
 		<profile>
-			<id>mac-amd64-release</id>
+			<id>mac-x86_64-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -303,9 +303,9 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>mac-amd64</platform>
+				<platform>mac-x86_64</platform>
 				<build.type>release</build.type>
-				<cmake.classifier>mac-amd64</cmake.classifier>
+				<cmake.classifier>mac-x86_64</cmake.classifier>
 				<cmake.generator>Unix Makefiles</cmake.generator>
 			</properties>
 		</profile>
