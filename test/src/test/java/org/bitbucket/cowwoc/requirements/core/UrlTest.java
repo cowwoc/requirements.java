@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
@@ -14,45 +15,25 @@ import org.testng.annotations.Test;
 /**
  * @author Gili Tzabari
  */
-public final class UriTest
+public final class UrlTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
-	public void nameIsNull()
+	public void nameIsNull() throws MalformedURLException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			URI actual = URI.create("http://host.com/");
+			URL actual = new URL("http://host.com/");
 			new Verifiers(scope).requireThat(actual, null);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void nameIsEmpty()
+	public void nameIsEmpty() throws MalformedURLException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			URI actual = URI.create("http://host.com/");
+			URL actual = new URL("http://host.com/");
 			new Verifiers(scope).requireThat(actual, "");
-		}
-	}
-
-	@Test
-	public void isAbsolute()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			URI actual = URI.create("http://host.com/index.html");
-			new Verifiers(scope).requireThat(actual, "actual").isAbsolute();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isAbsolute_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			URI actual = URI.create("../index.html");
-			new Verifiers(scope).requireThat(actual, "actual").isAbsolute();
 		}
 	}
 
@@ -61,10 +42,10 @@ public final class UriTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "../index.html";
-			URI actualAsUri = new Verifiers(scope).requireThat(actual, "actual").asUri().
+			String actual = "http://host.com/index.html";
+			URL actualAsUrl = new Verifiers(scope).requireThat(actual, "actual").asUrl().
 				getActual();
-			assert (actualAsUri.toString().equals(actual)): "actualAsUri: " + actualAsUri + ", actual: " +
+			assert (actualAsUrl.toString().equals(actual)): "actualAsUrl: " + actualAsUrl + ", actual: " +
 				actual;
 		}
 	}
@@ -75,9 +56,9 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new Verifiers(scope).requireThat(actual, "actual").asUri().asUrl().
+			URI actualAsUri = new Verifiers(scope).requireThat(actual, "actual").asUrl().asUri().
 				getActual();
-			assert (actualAsUrl.toString().equals(actual)): "actualAsUri: " + actualAsUrl + ", actual: " +
+			assert (actualAsUri.toString().equals(actual)): "actualAsUri: " + actualAsUri + ", actual: " +
 				actual;
 		}
 	}
@@ -88,7 +69,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			// Ensure that no exception is thrown if assertions are disabled
-			URI actual = null;
+			URL actual = null;
 			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
 		}
 	}

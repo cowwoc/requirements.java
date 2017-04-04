@@ -10,6 +10,7 @@ import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
+import org.bitbucket.cowwoc.requirements.core.UrlVerifier;
 
 /**
  * An implementation of {@link StringVerifier} that does nothing.
@@ -73,6 +74,18 @@ public final class NoOpStringVerifier
 
 	@Override
 	public StringVerifier asUri(Consumer<UriVerifier> consumer)
+	{
+		return this;
+	}
+
+	@Override
+	public UrlVerifier asUrl()
+	{
+		return new NoOpUrlVerifier(config);
+	}
+
+	@Override
+	public StringVerifier asUrl(Consumer<UrlVerifier> consumer)
 	{
 		return this;
 	}

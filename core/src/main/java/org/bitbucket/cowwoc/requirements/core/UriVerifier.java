@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.net.URI;
+import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
@@ -21,4 +22,19 @@ public interface UriVerifier extends ObjectCapabilities<UriVerifier, URI>
 	 * @throws IllegalArgumentException if actual value is not absolute
 	 */
 	UriVerifier isAbsolute();
+
+	/**
+	 * @return a verifier for the URL representation of the value
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a URL
+	 */
+	UrlVerifier asUrl();
+
+	/**
+	 * Ensures that the actual value contains a valid URL format.
+	 *
+	 * @param consumer verifies URLs
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not contain a valid URL format
+	 */
+	UriVerifier asUrl(Consumer<UrlVerifier> consumer);
 }

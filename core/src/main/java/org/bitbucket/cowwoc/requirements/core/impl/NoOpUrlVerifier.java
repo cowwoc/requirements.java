@@ -4,50 +4,44 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.net.URI;
+import java.net.URL;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.UrlVerifier;
 
 /**
- * An implementation of {@link UriVerifier} that does nothing.
+ * An implementation of {@link UrlVerifier} that does nothing.
  *
  * @author Gili Tzabari
  */
-public final class NoOpUriVerifier
-	extends NoOpObjectCapabilities<UriVerifier, URI>
-	implements UriVerifier
+public final class NoOpUrlVerifier
+	extends NoOpObjectCapabilities<UrlVerifier, URL>
+	implements UrlVerifier
 {
 	/**
 	 * @param config the verifier's configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
-	public NoOpUriVerifier(Configuration config)
+	public NoOpUrlVerifier(Configuration config)
 	{
 		super(config);
 	}
 
 	@Override
-	protected UriVerifier getThis()
+	protected UrlVerifier getThis()
 	{
 		return this;
 	}
 
 	@Override
-	public UriVerifier isAbsolute()
+	public UriVerifier asUri()
 	{
-		return this;
+		return new NoOpUriVerifier(config);
 	}
 
 	@Override
-	public UrlVerifier asUrl()
-	{
-		return new NoOpUrlVerifier(config);
-	}
-
-	@Override
-	public UriVerifier asUrl(Consumer<UrlVerifier> consumer)
+	public UrlVerifier asUri(Consumer<UriVerifier> consumer)
 	{
 		return this;
 	}

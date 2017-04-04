@@ -115,7 +115,7 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	 * case.
 	 *
 	 * @return a verifier for the URI representation of the value
-	 * @throws IllegalArgumentException if the actual value cannot be converted to a Java URI
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a URI
 	 * @see <a href="http://stackoverflow.com/a/27644491/14731">Discussion of Java URI vs RFC3986</a>
 	 */
 	UriVerifier asUri();
@@ -128,4 +128,19 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	 * @throws IllegalArgumentException if the actual value does not contain a valid URI format
 	 */
 	StringVerifier asUri(Consumer<UriVerifier> consumer);
+
+	/**
+	 * @return a verifier for the URL representation of the value
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a URL
+	 */
+	UrlVerifier asUrl();
+
+	/**
+	 * Ensures that the actual value contains a valid URL format.
+	 *
+	 * @param consumer verifies URLs
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not contain a valid URL format
+	 */
+	StringVerifier asUrl(Consumer<UrlVerifier> consumer);
 }

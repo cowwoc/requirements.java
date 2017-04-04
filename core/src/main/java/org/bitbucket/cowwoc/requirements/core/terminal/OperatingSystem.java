@@ -9,11 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import static org.bitbucket.cowwoc.requirements.core.terminal.OperatingSystem.Type.UNKNOWN;
 import static org.bitbucket.cowwoc.requirements.core.terminal.OperatingSystem.Type.WINDOWS;
 import org.bitbucket.cowwoc.requirements.core.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An operating system.
@@ -27,55 +24,23 @@ public final class OperatingSystem
 	 */
 	private static final Pattern WINDOWS_VERSION = Pattern.compile(
 		"Microsoft Windows \\[Version (\\d+)\\.(\\d+)\\.(\\d+)\\]");
+	/**
+	 * Version format used by Linux and Mac.
+	 */
+	private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)");
 
-	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(() ->
+	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(
+		() ->
 	{
-		Logger log = LoggerFactory.getLogger(OperatingSystem.class);
 		Type type = Type.detect();
-		switch (type)
-		{
-			case WINDOWS:
-			{
-				String versionAsString;
-				try
-				{
-					versionAsString = Processes.run("cmd.exe", "/c", "ver");
-				}
-				catch (IOException e)
-				{
-					log.error("Failed to get Windows version", e);
-					return new OperatingSystem(type, null);
-				}
-				Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
-				if (!matcher.find())
-				{
-					log.error("Unexpected Windows version: {}", versionAsString);
-					return new OperatingSystem(type, null);
-				}
-				int major;
-				int minor;
-				int build;
-				try
-				{
-					major = Integer.parseInt(matcher.group(1));
-					minor = Integer.parseInt(matcher.group(2));
-					build = Integer.parseInt(matcher.group(3));
-				}
-				catch (NumberFormatException e)
-				{
-					log.error("Failed to parse Windows version: " + versionAsString, e);
-					return new OperatingSystem(type, null);
-				}
-				Version version = new Version(major, minor, build);
-				return new OperatingSystem(type, version);
-			}
-			default:
-				return new OperatingSystem(type, null);
-		}
+		Version version = Version.detect();
+		Architecture architecture = Architecture.detect();
+		return new OperatingSystem(type, version, architecture);
 	});
 
 	/**
 	 * @return the detected operating system
+	 * @throws AssertionError if the operating system is unsupported
 	 */
 	public static OperatingSystem detect()
 	{
@@ -87,6 +52,86 @@ public final class OperatingSystem
 	 */
 	public static final class Version implements Comparable<Version>
 	{
+		private static final Reference<Version> DETECTED = ConcurrentLazyReference.create(
+			() ->
+		{
+			Type type = Type.detect();
+			switch (type)
+			{
+				case WINDOWS:
+					return getWindowsVersion();
+				default:
+					return getVersionUsingJava();
+			}
+		});
+
+		/**
+		 * @return the version of the detected operating system
+		 */
+		public static Version detect()
+		{
+			return DETECTED.getValue();
+		}
+
+		/**
+		 * @return the version of Windows
+		 * @throws AssertionError if the version is not supported
+		 */
+		private static Version getWindowsVersion()
+		{
+			String versionAsString;
+			try
+			{
+				versionAsString = Processes.run("cmd.exe", "/c", "ver");
+			}
+			catch (IOException e)
+			{
+				throw new AssertionError("Failed to get Windows version", e);
+			}
+			Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
+			if (!matcher.find())
+				throw new AssertionError("Unsupported Windows version: " + versionAsString);
+			int major;
+			int minor;
+			int build;
+			try
+			{
+				major = Integer.parseInt(matcher.group(1));
+				minor = Integer.parseInt(matcher.group(2));
+				build = Integer.parseInt(matcher.group(3));
+			}
+			catch (NumberFormatException e)
+			{
+				throw new AssertionError("Failed to parse Windows version: " + versionAsString, e);
+			}
+			return new Version(major, minor, build);
+		}
+
+		/**
+		 * @return the version of Linux
+		 * @throws AssertionError if the version is not supported
+		 */
+		private static Version getVersionUsingJava()
+		{
+			String versionAsString = System.getProperty("os.version");
+			Matcher matcher = VERSION_PATTERN.matcher(versionAsString);
+			if (!matcher.find())
+				throw new AssertionError("Unsupported version: " + versionAsString);
+			int major;
+			int minor;
+			int build;
+			try
+			{
+				major = Integer.parseInt(matcher.group(1));
+				minor = Integer.parseInt(matcher.group(2));
+				build = Integer.parseInt(matcher.group(3));
+			}
+			catch (NumberFormatException e)
+			{
+				throw new AssertionError("Failed to parse version: " + versionAsString, e);
+			}
+			return new Version(major, minor, build);
+		}
 		public final int major;
 		public final int minor;
 		public final int build;
@@ -127,23 +172,66 @@ public final class OperatingSystem
 	}
 	public final Type type;
 	public final Version version;
+	public final Architecture architecture;
 
 	/**
-	 * @param type    the type of the operating system
-	 * @param version the version of the operating system; null if unknown
-	 * @throws AssertionError if {@code type} is null
+	 * @param type         the type of the operating system
+	 * @param version      the version of the operating system
+	 * @param architecture the architecture of the operating system
+	 * @throws AssertionError if any of the arguments are null
 	 */
-	OperatingSystem(Type type, Version version)
+	OperatingSystem(Type type, Version version, Architecture architecture)
 	{
 		assert (type != null): "type may not be null";
+		assert (version != null): "version may not be null";
+		assert (architecture != null): "architecture may not be null";
 		this.type = type;
 		this.version = version;
+		this.architecture = architecture;
 	}
 
 	@Override
 	public String toString()
 	{
-		return type + " " + version;
+		return type + " " + version + " " + architecture;
+	}
+
+	/**
+	 * The version number of an operating system.
+	 */
+	public enum Architecture
+	{
+		X86,
+		X86_64,
+		I386,
+		AMD64;
+
+		private static final Reference<Architecture> DETECTED = ConcurrentLazyReference.create(() ->
+		{
+			String osArch = System.getProperty("os.arch");
+			switch (osArch)
+			{
+				case "x86":
+					return X86;
+				case "x86_64":
+					return X86_64;
+				case "i386":
+					return I386;
+				case "amd64":
+					return AMD64;
+				default:
+					throw new AssertionError("Unsupported operating system architecture: " + osArch + "\n" +
+						"properties: " + System.getProperties());
+			}
+		});
+
+		/**
+		 * @return the architecture of the detected operating system
+		 */
+		public static Architecture detect()
+		{
+			return DETECTED.getValue();
+		}
 	}
 
 	/**
@@ -153,8 +241,7 @@ public final class OperatingSystem
 	{
 		WINDOWS,
 		LINUX,
-		MAC,
-		UNKNOWN;
+		MAC;
 
 		private static final Reference<Type> DETECTED = ConcurrentLazyReference.create(() ->
 		{
@@ -165,11 +252,8 @@ public final class OperatingSystem
 				return LINUX;
 			if (Strings.startsWith(osName, "mac", true))
 				return MAC;
-
-			Logger log = LoggerFactory.getLogger(OperatingSystem.class);
-			log.warn("Unknown operating system: {}, os.name: {}", OperatingSystem.detect().type.name(),
-				System.getProperty("os.name"));
-			return UNKNOWN;
+			throw new AssertionError("Unsupported operating system: " + osName + "\n" +
+				"properties: " + System.getProperties());
 		});
 
 		/**

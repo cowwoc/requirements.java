@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -15,15 +15,15 @@ import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@link UriVerifier}.
+ * Default implementation of {@link UrlVerifier}.
  *
  * @author Gili Tzabari
  */
-public final class UriVerifierImpl extends ObjectCapabilitiesImpl<UriVerifier, URI>
-	implements UriVerifier
+public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, URL>
+	implements UrlVerifier
 {
 	/**
-	 * Creates new UriVerifierImpl.
+	 * Creates new UrlVerifierImpl.
 	 *
 	 * @param scope  the application configuration
 	 * @param actual the actual value
@@ -32,43 +32,33 @@ public final class UriVerifierImpl extends ObjectCapabilitiesImpl<UriVerifier, U
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public UriVerifierImpl(ApplicationScope scope, URI actual, String name, Configuration config)
+	public UrlVerifierImpl(ApplicationScope scope, URL actual, String name, Configuration config)
 	{
 		super(scope, actual, name, config);
 	}
 
 	@Override
-	public UriVerifier isAbsolute()
-	{
-		if (actual.isAbsolute())
-			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be absolute.", name)).
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public UrlVerifier asUrl()
+	public UriVerifier asUri()
 	{
 		try
 		{
-			URL url = actual.toURL();
-			return new UrlVerifierImpl(scope, url, name, config);
+			URI uri = actual.toURI();
+			return new UriVerifierImpl(scope, uri, name, config);
 		}
-		catch (MalformedURLException | IllegalArgumentException e)
+		catch (URISyntaxException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s is not a valid URL", name), e).
+				String.format("%s is not a valid URI", name), e).
 				addContext("Actual", actual).
 				build();
 		}
 	}
 
 	@Override
-	public UriVerifier asUrl(Consumer<UrlVerifier> consumer)
+	public UrlVerifier asUri(Consumer<UriVerifier> consumer)
 	{
-		consumer.accept(asUrl());
+		consumer.accept(asUri());
 		return this;
 	}
+
 }

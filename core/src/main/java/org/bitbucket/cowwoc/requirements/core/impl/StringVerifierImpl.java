@@ -5,7 +5,9 @@
 package org.bitbucket.cowwoc.requirements.core.impl;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -13,6 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
+import org.bitbucket.cowwoc.requirements.core.UrlVerifier;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.util.ExceptionBuilder;
 
@@ -124,6 +127,30 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	public StringVerifier asUri(Consumer<UriVerifier> consumer)
 	{
 		consumer.accept(asUri());
+		return this;
+	}
+
+	@Override
+	public UrlVerifier asUrl()
+	{
+		try
+		{
+			URL url = new URL(actual);
+			return new UrlVerifierImpl(scope, url, name, config);
+		}
+		catch (MalformedURLException e)
+		{
+			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+				String.format("%s is not a valid URL", name), e).
+				addContext("Actual", actual).
+				build();
+		}
+	}
+
+	@Override
+	public StringVerifier asUrl(Consumer<UrlVerifier> consumer)
+	{
+		consumer.accept(asUrl());
 		return this;
 	}
 

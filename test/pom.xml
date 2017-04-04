@@ -71,48 +71,14 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.10</version>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>requirements-maven-plugin</artifactId>
+				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>unpack</goal>
 						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>requirements-native</artifactId>
-									<classifier>${requirements.classifier}</classifier>
-									<version>${project.version}</version>
-									<type>jar</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>${project.build.directory}/unpack</outputDirectory>
-									<includes>*.dll,*.pdb,*.so,*.dylib</includes>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/unpack</directory>
-								</resource>
-							</resources>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -120,7 +86,6 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<requirements.classifier>${platform}</requirements.classifier>
 		<argLine />
 	</properties>
 	<dependencies>
