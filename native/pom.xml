@@ -286,7 +286,7 @@
 			<properties>
 				<platform>mac-x86_64</platform>
 				<build.type>debug</build.type>
-				<cmake.classifier>mac-x86_64</cmake.classifier>
+				<cmake.classifier>mac-amd64</cmake.classifier>
 				<cmake.generator>Unix Makefiles</cmake.generator>
 			</properties>
 		</profile>
@@ -305,7 +305,7 @@
 			<properties>
 				<platform>mac-x86_64</platform>
 				<build.type>release</build.type>
-				<cmake.classifier>mac-x86_64</cmake.classifier>
+				<cmake.classifier>mac-amd64</cmake.classifier>
 				<cmake.generator>Unix Makefiles</cmake.generator>
 			</properties>
 		</profile>
