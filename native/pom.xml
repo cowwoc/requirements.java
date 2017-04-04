@@ -160,7 +160,7 @@
 			<properties>
 				<platform>windows-x86</platform>
 				<build.type>debug</build.type>
-				<cmake.classifier>windows-x86</cmake.classifier>
+				<cmake.classifier>windows-i386</cmake.classifier>
 				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<cmake.config>${build.type}</cmake.config>
 				<!--
@@ -184,7 +184,7 @@
 			<properties>
 				<platform>windows-x86</platform>
 				<build.type>release</build.type>
-				<cmake.classifier>windows-x86</cmake.classifier>
+				<cmake.classifier>windows-i386</cmake.classifier>
 				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<cmake.config>${build.type}</cmake.config>
 				<!--
