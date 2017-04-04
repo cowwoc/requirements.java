@@ -134,8 +134,8 @@
 								<configuration>
 									<tasks>
 										<echo>Please pick one of the following profiles:</echo>
-										<echo>* windows-i386-debug</echo>
-										<echo>* windows-i386-release</echo>
+										<echo>* windows-x86-debug</echo>
+										<echo>* windows-x86-release</echo>
 										<echo>* windows-amd64-debug</echo>
 										<echo>* windows-amd64-release</echo>
 										<echo>* linux-i386-debug</echo>
@@ -145,7 +145,7 @@
 										<echo>* mac-amd64-debug</echo>
 										<echo>* mac-amd64-release</echo>
 										<echo/>
-										<echo>For instance: mvn -Pwindows-i386-debug install</echo>
+										<echo>For instance: mvn -Pwindows-x86-debug install</echo>
 										<fail/>
 									</tasks>
 								</configuration>
@@ -156,11 +156,11 @@
 			</build>
 		</profile>
 		<profile>
-			<id>windows-i386-debug</id>
+			<id>windows-x86-debug</id>
 			<properties>
-				<platform>windows-i386</platform>
+				<platform>windows-x86</platform>
 				<build.type>debug</build.type>
-				<cmake.classifier>windows-i386</cmake.classifier>
+				<cmake.classifier>windows-x86</cmake.classifier>
 				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<cmake.config>${build.type}</cmake.config>
 				<!--
@@ -170,7 +170,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-i386-release</id>
+			<id>windows-x86-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -182,9 +182,9 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>windows-i386</platform>
+				<platform>windows-x86</platform>
 				<build.type>release</build.type>
-				<cmake.classifier>windows-i386</cmake.classifier>
+				<cmake.classifier>windows-x86</cmake.classifier>
 				<cmake.generator>Visual Studio 14 2015</cmake.generator>
 				<cmake.config>${build.type}</cmake.config>
 				<!--
