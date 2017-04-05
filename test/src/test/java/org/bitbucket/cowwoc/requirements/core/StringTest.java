@@ -203,6 +203,50 @@ public final class StringTest
 	}
 
 	@Test
+	public void contains()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String expected = "cat";
+			String actual = "my " + expected + " is the best";
+			new Verifiers(scope).requireThat(actual, "actual").contains(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String expected = "cat";
+			String actual = "my dog is the best";
+			new Verifiers(scope).requireThat(actual, "actual").contains(expected);
+		}
+	}
+
+	@Test
+	public void doesNotContain()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String expected = "cat";
+			String actual = "my dog is the best";
+			new Verifiers(scope).requireThat(actual, "actual").doesNotContain(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContain_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String expected = "cat";
+			String actual = "my " + expected + " is the best";
+			new Verifiers(scope).requireThat(actual, "actual").doesNotContain(expected);
+		}
+	}
+
+	@Test
 	public void lengthIsEqualTo()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

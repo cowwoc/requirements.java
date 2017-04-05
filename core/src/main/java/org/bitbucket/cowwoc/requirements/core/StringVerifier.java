@@ -51,6 +51,24 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	StringVerifier doesNotEndWith(String suffix);
 
 	/**
+	 * Ensures that the actual value contains a value.
+	 *
+	 * @param expected the value that the string must contain
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value does not contain {@code expected}
+	 */
+	StringVerifier contains(String expected);
+
+	/**
+	 * Ensures that the actual value does not contain a value.
+	 *
+	 * @param value the value that the string may not contain
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value contains {@code value}
+	 */
+	StringVerifier doesNotContain(String value);
+
+	/**
 	 * Ensures that the actual value is empty.
 	 *
 	 * @return this

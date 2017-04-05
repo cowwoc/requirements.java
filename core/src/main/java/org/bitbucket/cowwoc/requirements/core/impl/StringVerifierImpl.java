@@ -199,6 +199,28 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	}
 
 	@Override
+	public StringVerifier contains(String expected)
+	{
+		if (actual.contains(expected))
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must contain \"%s\".", name, expected)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public StringVerifier doesNotContain(String value)
+	{
+		if (!actual.contains(value))
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not contain \"%s\".", name, value)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
 		return new ContainerSizeVerifierImpl(scope, actual, actual.length(), name,

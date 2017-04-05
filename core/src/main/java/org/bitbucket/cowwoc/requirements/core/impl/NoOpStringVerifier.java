@@ -55,6 +55,18 @@ public final class NoOpStringVerifier
 	}
 
 	@Override
+	public StringVerifier contains(String expected)
+	{
+		return this;
+	}
+
+	@Override
+	public StringVerifier doesNotContain(String value)
+	{
+		return this;
+	}
+
+	@Override
 	public InetAddressVerifier asInetAddress()
 	{
 		return new NoOpInetAddressVerifier(config);
