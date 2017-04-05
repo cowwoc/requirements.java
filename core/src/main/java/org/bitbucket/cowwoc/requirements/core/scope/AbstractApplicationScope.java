@@ -41,12 +41,6 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	}
 
 	@Override
-	public Configuration getDefaultConfiguration()
-	{
-		return defaultConfiguration;
-	}
-
-	@Override
 	public Optional<GuavaVerifiers> createGuavaVerifiers()
 	{
 		return guavaVerifiers.createVerifier(this).map(v -> (GuavaVerifiers) v);

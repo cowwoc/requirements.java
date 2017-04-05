@@ -45,7 +45,7 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	 */
 	private CoreVerifiersImpl(ApplicationScope scope)
 	{
-		this(verifyScope(scope), scope.getDefaultConfiguration());
+		this(verifyScope(scope), new Configuration());
 	}
 
 	/**

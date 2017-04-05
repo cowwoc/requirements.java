@@ -61,7 +61,7 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	 */
 	public GuavaVerifiersImpl(ApplicationScope scope)
 	{
-		this(verifyScope(scope), scope.getDefaultConfiguration());
+		this(verifyScope(scope), new Configuration());
 	}
 
 	/**

@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.guava.impl;
 
 import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.Module;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 
 /**
@@ -18,6 +19,6 @@ public final class GuavaModule implements Module
 	@Override
 	public Optional<Object> createVerifier(ApplicationScope scope)
 	{
-		return Optional.of(new GuavaVerifiersImpl(scope, scope.getDefaultConfiguration()));
+		return Optional.of(new GuavaVerifiersImpl(scope, new Configuration()));
 	}
 }

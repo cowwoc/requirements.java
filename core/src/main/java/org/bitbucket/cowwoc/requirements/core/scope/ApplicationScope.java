@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.core.scope;
 
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
@@ -18,11 +17,6 @@ import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
  */
 public interface ApplicationScope extends JvmScope
 {
-	/**
-	 * @return the default configuration
-	 */
-	Configuration getDefaultConfiguration();
-
 	/**
 	 * Returns the terminal encoding that verifiers will output.
 	 * <p>

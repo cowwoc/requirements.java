@@ -5,10 +5,6 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
-import java.util.function.Supplier;
-import org.bitbucket.cowwoc.pouch.ConstantReference;
-import org.bitbucket.cowwoc.pouch.LazyReference;
-import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.MainApplicationScope;
@@ -43,19 +39,6 @@ public final class Verifiers extends AbstractCoreVerifiers
 		return scope;
 	}
 
-	/**
-	 * @param <T>      the type of reference being constructed
-	 * @param oldValue a reference to the old value
-	 * @param newValue a supplier that returns the new value
-	 * @return a reference to the new value
-	 */
-	private static <T> Reference<T> updateReference(Reference<T> oldValue, Supplier<T> newValue)
-	{
-		if (oldValue.isInitialized())
-			return new ConstantReference<>(newValue.get());
-		return LazyReference.create(newValue);
-	}
-
 	private final Optional<GuavaVerifiers> guavaVerifiers;
 
 	/**
@@ -74,7 +57,7 @@ public final class Verifiers extends AbstractCoreVerifiers
 	 */
 	public Verifiers(ApplicationScope scope)
 	{
-		this(verifyScope(scope), scope.getDefaultConfiguration(), scope.createGuavaVerifiers());
+		this(verifyScope(scope), new Configuration(), scope.createGuavaVerifiers());
 	}
 
 	/**
