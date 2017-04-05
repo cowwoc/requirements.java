@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.core.terminal;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
@@ -197,30 +198,38 @@ public final class OperatingSystem
 	}
 
 	/**
-	 * The version number of an operating system.
+	 * The architecture of an operating system.
+	 * <p>
+	 * Naming convention based on https://github.com/trustin/os-maven-plugin.
 	 */
 	public enum Architecture
 	{
-		X86,
-		X86_64,
-		I386,
-		AMD64;
+		X86_32,
+		X86_64;
 
 		private static final Reference<Architecture> DETECTED = ConcurrentLazyReference.create(() ->
 		{
 			String osArch = System.getProperty("os.arch");
+			osArch = osArch.toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
 			switch (osArch)
 			{
+				case "x8632":
 				case "x86":
-					return X86;
-				case "x86_64":
-					return X86_64;
 				case "i386":
-					return I386;
+				case "i486":
+				case "i586":
+				case "i686":
+				case "ia32":
+				case "x32":
+					return X86_32;
+				case "x8664":
 				case "amd64":
-					return AMD64;
+				case "ia32e":
+				case "em64t":
+				case "x64":
+					return X86_64;
 				default:
-					throw new AssertionError("Unsupported operating system architecture: " + osArch + "\n" +
+					throw new AssertionError("Unsupported architecture: " + osArch + "\n" +
 						"properties: " + System.getProperties());
 			}
 		});

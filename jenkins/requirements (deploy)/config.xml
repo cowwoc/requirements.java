@@ -67,7 +67,7 @@ parallel windows:
         {
             withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin;${env.JAVA_HOME}/bin&quot;])
             {
-                stage(&quot;Deploy (windows-i386)&quot;)
+                stage(&quot;Deploy (windows-x86_32)&quot;)
                 {
                     // https://jenkins.io/doc/pipeline/examples/
                     // Apache Maven related side notes:
@@ -77,7 +77,7 @@ parallel windows:
                     // -U : force maven to update snapshots each time (default : once an hour, makes no sense in CI).
                     // -Dsurefire.useFile=false : useful in CI. Displays test errors in the logs directly (instead of
                     //                            having to crawl the workspace files to see the cause).            
-                    bat script: &apos;mvn --batch-mode -V -U -e clean deploy -Pwindows-i386-release -Dsurefire.useFile=false&apos;
+                    bat script: &apos;mvn --batch-mode -V -U -e clean deploy -Pwindows-x86_32-release -Dsurefire.useFile=false&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
             }
@@ -88,7 +88,7 @@ parallel windows:
             {
                 stage(&quot;Deploy (windows-amd64)&quot;)
                 {
-                    bat script: &apos;mvn --batch-mode -V -U -e clean deploy -Pwindows-amd64-release -Dsurefire.useFile=false&apos;
+                    bat script: &apos;mvn --batch-mode -V -U -e clean deploy -Pwindows-x86_64-release -Dsurefire.useFile=false&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
             }
@@ -117,7 +117,7 @@ parallel windows:
                     sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
                     export CC=/usr/bin/gcc-4.8
                     export CXX=/usr/bin/g++-4.8
-                    mvn --batch-mode -V -U -e clean deploy -Plinux-i386-release -Dsurefire.useFile=false&apos;&apos;&apos;
+                    mvn --batch-mode -V -U -e clean deploy -Plinux-x86_32-release -Dsurefire.useFile=false&apos;&apos;&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
             }
@@ -146,7 +146,7 @@ parallel windows:
                     sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
                     export CC=/usr/bin/gcc-4.8
                     export CXX=/usr/bin/g++-4.8
-                    mvn --batch-mode -V -U -e clean deploy -Plinux-amd64-release -Dsurefire.useFile=false&apos;&apos;&apos;
+                    mvn --batch-mode -V -U -e clean deploy -Plinux-x86_64-release -Dsurefire.useFile=false&apos;&apos;&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
             }
@@ -169,9 +169,9 @@ parallel windows:
         {
             withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
             {
-                stage(&quot;Deploy (mac-amd64)&quot;)
+                stage(&quot;Deploy (mac-x86_64)&quot;)
                 {
-                    sh script: &apos;mvn --batch-mode -V -U -e clean deploy -Pmac-amd64-release -Dsurefire.useFile=false&apos;
+                    sh script: &apos;mvn --batch-mode -V -U -e clean deploy -Pmac-x86_64-release -Dsurefire.useFile=false&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
             }

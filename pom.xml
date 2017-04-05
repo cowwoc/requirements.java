@@ -93,18 +93,18 @@
 								<configuration>
 									<tasks>
 										<echo>Please pick one of the following profiles:</echo>
-										<echo>* windows-x86-debug</echo>
-										<echo>* windows-x86-release</echo>
-										<echo>* windows-amd64-debug</echo>
-										<echo>* windows-amd64-release</echo>
-										<echo>* linux-i386-debug</echo>
-										<echo>* linux-i386-release</echo>
-										<echo>* linux-amd64-debug</echo>
-										<echo>* linux-amd64-release</echo>
+										<echo>* windows-x86_32-debug</echo>
+										<echo>* windows-x86_32-release</echo>
+										<echo>* windows-x86_64-debug</echo>
+										<echo>* windows-x86_64-release</echo>
+										<echo>* linux-x86_32-debug</echo>
+										<echo>* linux-x86_32-release</echo>
+										<echo>* linux-x86_64-debug</echo>
+										<echo>* linux-x86_64-release</echo>
 										<echo>* mac-x86_64-debug</echo>
 										<echo>* mac-x86_64-release</echo>
 										<echo></echo>
-										<echo>For instance: mvn -Pwindows-x86-debug install</echo>
+										<echo>For instance: mvn -Pwindows-x86_32-debug install</echo>
 										<fail/>
 									</tasks>
 								</configuration>
@@ -115,14 +115,14 @@
 			</build>
 		</profile>
 		<profile>
-			<id>windows-x86-debug</id>
+			<id>windows-x86_32-debug</id>
 			<properties>
-				<platform>windows-x86</platform>
+				<platform>windows-x86_32</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-x86-release</id>
+			<id>windows-x86_32-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -134,19 +134,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>windows-x86</platform>
+				<platform>windows-x86_32</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-amd64-debug</id>
+			<id>windows-x86_64-debug</id>
 			<properties>
-				<platform>windows-amd64</platform>
+				<platform>windows-x86_64</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>windows-amd64-release</id>
+			<id>windows-x86_64-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -158,19 +158,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>windows-amd64</platform>
+				<platform>windows-x86_64</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-i386-debug</id>
+			<id>linux-x86_32-debug</id>
 			<properties>
-				<platform>linux-i386</platform>
+				<platform>linux-x86_32</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-i386-release</id>
+			<id>linux-x86_32-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -182,19 +182,19 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>linux-i386</platform>
+				<platform>linux-x86_32</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-amd64-debug</id>
+			<id>linux-x86_64-debug</id>
 			<properties>
-				<platform>linux-amd64</platform>
+				<platform>linux-x86_64</platform>
 				<build.type>debug</build.type>
 			</properties>
 		</profile>
 		<profile>
-			<id>linux-amd64-release</id>
+			<id>linux-x86_64-release</id>
 			<activation>
 				<property>
 					<name>osDetection</name>
@@ -206,7 +206,7 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>linux-amd64</platform>
+				<platform>linux-x86_64</platform>
 				<build.type>release</build.type>
 			</properties>
 		</profile>
