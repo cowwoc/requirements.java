@@ -4,14 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.core.terminal;
 
-import org.bitbucket.cowwoc.requirements.core.diff.DiffWriter;
-import org.bitbucket.cowwoc.requirements.core.diff.Rgb888Color;
-import org.bitbucket.cowwoc.requirements.core.diff.TextOnly;
-import org.bitbucket.cowwoc.requirements.core.diff.Xterm16Color;
-import org.bitbucket.cowwoc.requirements.core.diff.Xterm256Color;
-import org.bitbucket.cowwoc.requirements.core.diff.Xterm8Color;
-import static org.bitbucket.cowwoc.requirements.core.terminal.OperatingSystem.Type.WINDOWS;
-import org.bitbucket.cowwoc.requirements.core.terminal.OperatingSystem.Version;
+import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffWriter;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.Rgb888Color;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.TextOnly;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.Xterm16Color;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.Xterm256Color;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.Xterm8Color;
+import static org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Type.WINDOWS;
+import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Version;
 
 /**
  * The ANSI escape codes supported by the terminal.

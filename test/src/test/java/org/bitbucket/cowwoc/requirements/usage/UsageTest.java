@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.Set;
 import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
-import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
 public final class UsageTest

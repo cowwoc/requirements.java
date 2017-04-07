@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.guava.impl.GuavaVerifiersImpl;
+import org.bitbucket.cowwoc.requirements.internal.guava.impl.GuavaVerifiersImpl;
 
 /**
  * An entry point for verifying API requirements.

@@ -4,6 +4,41 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
+import org.bitbucket.cowwoc.requirements.internal.core.impl.MapVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.UriVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PathVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpComparableVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpOptionalVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.ComparableVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpArrayVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.InetAddressVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveNumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.CollectionVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpBigDecimalVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpClassVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.BigDecimalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpNumberVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.ClassVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.ArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpUriVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpFloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.ObjectVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpInetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpMapVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveDoubleVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpStringVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.DoubleVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveFloatVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.Pluralizer;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.StringVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPathVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.OptionalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveFloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.FloatVerifierImpl;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.URI;
@@ -29,7 +64,7 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
-import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link CoreVerifiers}.

@@ -8,8 +8,10 @@ import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.ConstantReference;
 import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
-import org.bitbucket.cowwoc.requirements.core.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.AbstractApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
+import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 
 /**
  * SingletonScope for the test codebase.

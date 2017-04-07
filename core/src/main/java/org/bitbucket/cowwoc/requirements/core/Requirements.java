@@ -11,8 +11,8 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.impl.CoreVerifiersImpl;
-import org.bitbucket.cowwoc.requirements.core.scope.DefaultJvmScope;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.CoreVerifiersImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
 
 /**
  * An entry point for verifying API requirements.

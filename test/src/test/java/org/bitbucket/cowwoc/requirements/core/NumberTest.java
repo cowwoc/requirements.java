@@ -4,9 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import org.bitbucket.cowwoc.requirements.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
 /**

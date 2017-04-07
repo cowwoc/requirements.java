@@ -68,9 +68,9 @@
 					<!-- whitelist in order to exclude internal classes -->
 					<sourceFileIncludes>
 						<include>org/bitbucket/cowwoc/requirements/core/*.java</include>
-						<include>org/bitbucket/cowwoc/requirements/core/terminal/TerminalEncoding.java</include>
 						<include>org/bitbucket/cowwoc/requirements/core/capabilities/*.java</include>
 						<include>org/bitbucket/cowwoc/requirements/core/impl/AbstractCoreVerifiers.java</include>
+						<include>org/bitbucket/cowwoc/requirements/core/terminal/TerminalEncoding.java</include>
 						<include>org/bitbucket/cowwoc/requirements/guava/*.java</include>
 					</sourceFileIncludes>
 					<additionalDependencies>
