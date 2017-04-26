@@ -107,13 +107,13 @@ public class Main
 	}
 
 	@Benchmark
-	public CollectionVerifier<?> verifiersRequireThatDoesNotContainDuplicates()
+	public CollectionVerifier<?, ?> verifiersRequireThatDoesNotContainDuplicates()
 	{
 		return new Verifiers().requireThat(list, name).doesNotContainDuplicates();
 	}
 
 	@Benchmark
-	public CollectionVerifier<?> verifiersAssertsDisabledDoesNotContainDuplicates()
+	public CollectionVerifier<?, ?> verifiersAssertsDisabledDoesNotContainDuplicates()
 	{
 		return new Verifiers().withAssertionsDisabled().assertThat(list, name).
 			doesNotContainDuplicates();

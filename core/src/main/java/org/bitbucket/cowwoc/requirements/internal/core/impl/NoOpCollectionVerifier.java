@@ -14,12 +14,13 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 /**
  * An implementation of {@link CollectionVerifier} that does nothing.
  *
+ * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
-public final class NoOpCollectionVerifier<E>
-	extends NoOpObjectCapabilities<CollectionVerifier<E>, Collection<E>>
-	implements CollectionVerifier<E>
+public final class NoOpCollectionVerifier<C extends Collection<E>, E>
+	extends NoOpObjectCapabilities<CollectionVerifier<C, E>, C>
+	implements CollectionVerifier<C, E>
 {
 	/**
 	 * @param config the verifier's configuration
@@ -31,109 +32,109 @@ public final class NoOpCollectionVerifier<E>
 	}
 
 	@Override
-	protected CollectionVerifier<E> getThis()
+	protected CollectionVerifier<C, E> getThis()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> isEmpty()
+	public CollectionVerifier<C, E> isEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> isNotEmpty()
+	public CollectionVerifier<C, E> isNotEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> contains(Object element)
+	public CollectionVerifier<C, E> contains(Object element)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> contains(Object element, String name)
+	public CollectionVerifier<C, E> contains(Object element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> containsExactly(Collection<E> elements)
+	public CollectionVerifier<C, E> containsExactly(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> containsExactly(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> containsExactly(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAny(Collection<E> elements)
+	public CollectionVerifier<C, E> containsAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAny(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> containsAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAll(Collection<E> elements)
+	public CollectionVerifier<C, E> containsAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAll(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> containsAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContain(E element)
+	public CollectionVerifier<C, E> doesNotContain(E element)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContain(E element, String name)
+	public CollectionVerifier<C, E> doesNotContain(E element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAny(Collection<E> elements)
+	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAny(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAll(Collection<E> elements)
+	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAll(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainDuplicates()
+	public CollectionVerifier<C, E> doesNotContainDuplicates()
 	{
 		return this;
 	}
@@ -145,7 +146,7 @@ public final class NoOpCollectionVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public CollectionVerifier<C, E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		return this;
 	}
@@ -157,7 +158,7 @@ public final class NoOpCollectionVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
+	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
 	{
 		return this;
 	}

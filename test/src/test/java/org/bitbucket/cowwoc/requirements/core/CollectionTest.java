@@ -4,9 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
@@ -640,6 +642,30 @@ public final class CollectionTest
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2);
 			new Verifiers(scope).requireThat(actual, "actual").size().isBetween(3, 5);
+		}
+	}
+
+	@Test
+	public void asList()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Verifiers verifiers = new Verifiers(scope);
+			List<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
+			List<Integer> expected = verifiers.requireThat(actual, "actual").getActual();
+			verifiers.requireThat(actual, "actual").isEqualTo(expected, "expected");
+		}
+	}
+
+	@Test
+	public void asIterable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Verifiers verifiers = new Verifiers(scope);
+			Iterable<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
+			Iterable<Integer> expected = verifiers.requireThat(actual, "actual").getActual();
+			verifiers.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 

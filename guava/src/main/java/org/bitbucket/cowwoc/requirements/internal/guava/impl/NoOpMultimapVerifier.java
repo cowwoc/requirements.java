@@ -5,15 +5,17 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
+import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
-import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 
 /**
  * An implementation of {@code MultimapVerifier} that does nothing.
@@ -41,37 +43,38 @@ public final class NoOpMultimapVerifier<K, V>
 	}
 
 	@Override
-	public CollectionVerifier<K> keySet()
+	public CollectionVerifier<Set<K>, K> keySet()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
+	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<V> values()
+	public CollectionVerifier<Collection<V>, V> values()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
+	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Entry<K, V>> entries()
+	public CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	public MultimapVerifier<K, V> entries(
+		Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
 		return this;
 	}

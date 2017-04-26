@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -41,42 +43,43 @@ public final class MapVerifierImpl<K, V>
 	}
 
 	@Override
-	public CollectionVerifier<K> keySet()
+	public CollectionVerifier<Set<K>, K> keySet()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.keySet(), name + ".keySet()", Pluralizer.KEY,
 			config);
 	}
 
 	@Override
-	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
+	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
 		consumer.accept(keySet());
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<V> values()
+	public CollectionVerifier<Collection<V>, V> values()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()",
 			Pluralizer.VALUE, config);
 	}
 
 	@Override
-	public MapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
+	public MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
 		consumer.accept(values());
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Entry<K, V>> entrySet()
+	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.entrySet(), name + ".entrySet()",
 			Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	public MapVerifier<K, V> entrySet(
+		Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
 		consumer.accept(entrySet());
 		return this;

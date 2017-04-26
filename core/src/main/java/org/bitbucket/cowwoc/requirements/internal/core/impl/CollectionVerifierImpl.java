@@ -22,12 +22,13 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 /**
  * Default implementation of {@link CollectionVerifier}.
  *
+ * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
-public class CollectionVerifierImpl<E>
-	extends ObjectCapabilitiesImpl<CollectionVerifier<E>, Collection<E>>
-	implements CollectionVerifier<E>
+public class CollectionVerifierImpl<C extends Collection<E>, E>
+	extends ObjectCapabilitiesImpl<CollectionVerifier<C, E>, C>
+	implements CollectionVerifier<C, E>
 {
 	private final Pluralizer pluralizer;
 
@@ -42,7 +43,7 @@ public class CollectionVerifierImpl<E>
 	 * @throws AssertionError if {@code name}, {@code pluralizer} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public CollectionVerifierImpl(ApplicationScope scope, Collection<E> actual, String name,
+	public CollectionVerifierImpl(ApplicationScope scope, C actual, String name,
 		Pluralizer pluralizer, Configuration config)
 	{
 		super(scope, actual, name, config);
@@ -51,7 +52,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> isEmpty()
+	public CollectionVerifier<C, E> isEmpty()
 	{
 		if (actual.isEmpty())
 			return this;
@@ -62,7 +63,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> isNotEmpty()
+	public CollectionVerifier<C, E> isNotEmpty()
 	{
 		if (!actual.isEmpty())
 			return this;
@@ -72,7 +73,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> contains(E element)
+	public CollectionVerifier<C, E> contains(E element)
 	{
 		if (actual.contains(element))
 			return this;
@@ -83,7 +84,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> contains(E element, String name)
+	public CollectionVerifier<C, E> contains(E element, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.contains(element))
@@ -96,7 +97,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsExactly(Collection<E> expected)
+	public CollectionVerifier<C, E> containsExactly(Collection<E> expected)
 	{
 		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
@@ -114,7 +115,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsExactly(Collection<E> expected, String name)
+	public CollectionVerifier<C, E> containsExactly(Collection<E> expected, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
@@ -136,7 +137,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAny(Collection<E> expected)
+	public CollectionVerifier<C, E> containsAny(Collection<E> expected)
 	{
 		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
 		if (actualContainsAny(expected))
@@ -160,7 +161,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAny(Collection<E> expected, String name)
+	public CollectionVerifier<C, E> containsAny(Collection<E> expected, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
@@ -175,7 +176,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAll(Collection<E> expected)
+	public CollectionVerifier<C, E> containsAll(Collection<E> expected)
 	{
 		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
 		if (actual.containsAll(expected))
@@ -191,7 +192,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> containsAll(Collection<E> expected, String name)
+	public CollectionVerifier<C, E> containsAll(Collection<E> expected, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
@@ -210,7 +211,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContain(E element)
+	public CollectionVerifier<C, E> doesNotContain(E element)
 	{
 		if (!actual.contains(element))
 			return this;
@@ -221,7 +222,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContain(E element, String name)
+	public CollectionVerifier<C, E> doesNotContain(E element, String name)
 	{
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!actual.contains(element))
@@ -234,7 +235,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAny(Collection<E> elements)
+	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
 		if (!actualContainsAny(elements))
@@ -250,7 +251,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAny(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
@@ -269,7 +270,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAll(Collection<E> elements)
+	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
 		if (!actual.containsAll(elements))
@@ -281,7 +282,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainAll(Collection<E> elements, String name)
+	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
@@ -296,7 +297,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> doesNotContainDuplicates()
+	public CollectionVerifier<C, E> doesNotContainDuplicates()
 	{
 		if (actual instanceof Set)
 			return this;
@@ -325,7 +326,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public CollectionVerifier<C, E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
 		consumer.accept(size());
 		return this;
@@ -340,7 +341,7 @@ public class CollectionVerifierImpl<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
+	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
 	{
 		consumer.accept(asArray(type));
 		return this;

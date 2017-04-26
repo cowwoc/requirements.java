@@ -5,18 +5,20 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
+import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ContainerSizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ObjectCapabilitiesImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.Pluralizer;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
-import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 
 /**
  * Default implementation of MultimapRequirements.
@@ -46,42 +48,43 @@ public final class MultimapVerifierImpl<K, V>
 	}
 
 	@Override
-	public CollectionVerifier<K> keySet()
+	public CollectionVerifier<Set<K>, K> keySet()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.keySet(), name + ".keySet()", Pluralizer.KEY,
 			config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
+	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
 		consumer.accept(keySet());
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<V> values()
+	public CollectionVerifier<Collection<V>, V> values()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()", Pluralizer.VALUE,
 			config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
+	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
 		consumer.accept(values());
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Entry<K, V>> entries()
+	public CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
 		return new CollectionVerifierImpl<>(scope, actual.entries(), name + ".entries()",
 			Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	public MultimapVerifier<K, V> entries(
+		Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
 		consumer.accept(entries());
 		return this;

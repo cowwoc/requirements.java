@@ -11,11 +11,12 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 /**
  * Verifies a {@link Collection}.
  *
+ * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
  * @author Gili Tzabari
  */
-public interface CollectionVerifier<E>
-	extends ObjectCapabilities<CollectionVerifier<E>, Collection<E>>
+public interface CollectionVerifier<C extends Collection<E>, E>
+	extends ObjectCapabilities<CollectionVerifier<C, E>, C>
 {
 	/**
 	 * Ensures that the actual value is empty.
@@ -23,7 +24,7 @@ public interface CollectionVerifier<E>
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not empty
 	 */
-	CollectionVerifier<E> isEmpty();
+	CollectionVerifier<C, E> isEmpty();
 
 	/**
 	 * Ensures that the actual value is not empty.
@@ -31,7 +32,7 @@ public interface CollectionVerifier<E>
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is empty
 	 */
-	CollectionVerifier<E> isNotEmpty();
+	CollectionVerifier<C, E> isNotEmpty();
 
 	/**
 	 * Ensures that the actual value contains an element.
@@ -40,7 +41,7 @@ public interface CollectionVerifier<E>
 	 * @return this
 	 * @throws IllegalArgumentException if the collection does not contain {@code element}
 	 */
-	CollectionVerifier<E> contains(E element);
+	CollectionVerifier<C, E> contains(E element);
 
 	/**
 	 * Ensures that the actual value contains an element.
@@ -52,7 +53,7 @@ public interface CollectionVerifier<E>
 	 * @throws IllegalArgumentException if the collection does not contain {@code expected}; if
 	 *                                  {@code name} is empty
 	 */
-	CollectionVerifier<E> contains(E expected, String name);
+	CollectionVerifier<C, E> contains(E expected, String name);
 
 	/**
 	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing
@@ -65,7 +66,7 @@ public interface CollectionVerifier<E>
 	 *                                  if the collection contains elements not found in
 	 *                                  {@code expected}
 	 */
-	CollectionVerifier<E> containsExactly(Collection<E> expected);
+	CollectionVerifier<C, E> containsExactly(Collection<E> expected);
 
 	/**
 	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing
@@ -79,7 +80,7 @@ public interface CollectionVerifier<E>
 	 *                                  if the collection contains elements not found in
 	 *                                  {@code expected}; if {@code name} is empty
 	 */
-	CollectionVerifier<E> containsExactly(Collection<E> expected, String name);
+	CollectionVerifier<C, E> containsExactly(Collection<E> expected, String name);
 
 	/**
 	 * Ensures that the actual value contains any of specified elements.
@@ -89,7 +90,7 @@ public interface CollectionVerifier<E>
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}
 	 */
-	CollectionVerifier<E> containsAny(Collection<E> expected);
+	CollectionVerifier<C, E> containsAny(Collection<E> expected);
 
 	/**
 	 * Ensures that the actual value contains any of the specified elements.
@@ -101,7 +102,7 @@ public interface CollectionVerifier<E>
 	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}; if
 	 *                                  {@code name} is empty
 	 */
-	CollectionVerifier<E> containsAny(Collection<E> expected, String name);
+	CollectionVerifier<C, E> containsAny(Collection<E> expected, String name);
 
 	/**
 	 * Ensures that the actual value contains all of the specified elements.
@@ -111,7 +112,7 @@ public interface CollectionVerifier<E>
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}
 	 */
-	CollectionVerifier<E> containsAll(Collection<E> expected);
+	CollectionVerifier<C, E> containsAll(Collection<E> expected);
 
 	/**
 	 * Ensures that the actual value contains all of the specified elements.
@@ -123,7 +124,7 @@ public interface CollectionVerifier<E>
 	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}; if
 	 *                                  {@code name} is empty
 	 */
-	CollectionVerifier<E> containsAll(Collection<E> expected, String name);
+	CollectionVerifier<C, E> containsAll(Collection<E> expected, String name);
 
 	/**
 	 * Ensures that the actual value does not contain an element.
@@ -132,7 +133,7 @@ public interface CollectionVerifier<E>
 	 * @return this
 	 * @throws IllegalArgumentException if the collection contains {@code element}
 	 */
-	CollectionVerifier<E> doesNotContain(E element);
+	CollectionVerifier<C, E> doesNotContain(E element);
 
 	/**
 	 * Ensures that the actual value does not contain an element.
@@ -144,7 +145,7 @@ public interface CollectionVerifier<E>
 	 * @throws IllegalArgumentException if the collection contains {@code element}; if {@code name} is
 	 *                                  empty
 	 */
-	CollectionVerifier<E> doesNotContain(E element, String name);
+	CollectionVerifier<C, E> doesNotContain(E element, String name);
 
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.
@@ -154,7 +155,7 @@ public interface CollectionVerifier<E>
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection contains any of {@code expected}
 	 */
-	CollectionVerifier<E> doesNotContainAny(Collection<E> expected);
+	CollectionVerifier<C, E> doesNotContainAny(Collection<E> expected);
 
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.
@@ -166,7 +167,7 @@ public interface CollectionVerifier<E>
 	 * @throws IllegalArgumentException if the collection contains any of {@code elements}; if
 	 *                                  {@code name} is empty
 	 */
-	CollectionVerifier<E> doesNotContainAny(Collection<E> elements, String name);
+	CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name);
 
 	/**
 	 * Ensures that the actual value does not contain all of the specified elements.
@@ -176,7 +177,7 @@ public interface CollectionVerifier<E>
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection contains all of {@code expected}
 	 */
-	CollectionVerifier<E> doesNotContainAll(Collection<E> expected);
+	CollectionVerifier<C, E> doesNotContainAll(Collection<E> expected);
 
 	/**
 	 * Ensures that the actual value does not contain all of the specified elements.
@@ -188,7 +189,7 @@ public interface CollectionVerifier<E>
 	 * @throws IllegalArgumentException if the collection contains all of {@code elements}; if
 	 *                                  {@code name} is empty
 	 */
-	CollectionVerifier<E> doesNotContainAll(Collection<E> elements, String name);
+	CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name);
 
 	/**
 	 * Ensures that the actual value does not contain any duplicate elements.
@@ -196,7 +197,7 @@ public interface CollectionVerifier<E>
 	 * @return this
 	 * @throws IllegalArgumentException if the collection contains any duplicate elements
 	 */
-	CollectionVerifier<E> doesNotContainDuplicates();
+	CollectionVerifier<C, E> doesNotContainDuplicates();
 
 	/**
 	 * @return a verifier for the collection's size
@@ -207,7 +208,7 @@ public interface CollectionVerifier<E>
 	 * @param consumer verifies the collection's size
 	 * @return this
 	 */
-	CollectionVerifier<E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
+	CollectionVerifier<C, E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 
 	/**
 	 * @param type the array type
@@ -220,5 +221,5 @@ public interface CollectionVerifier<E>
 	 * @param consumer verifies the actual value as an array
 	 * @return this
 	 */
-	CollectionVerifier<E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer);
+	CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer);
 }

@@ -7,13 +7,12 @@ package org.bitbucket.cowwoc.requirements.internal.core.impl;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
-import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import static org.bitbucket.cowwoc.requirements.internal.core.util.ConsoleConstants.LINE_LENGTH;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
- * Extendable implementation of {@link NumberCapabilities}.
+ * Extendable implementation of {@link ComparableCapabilities}.
  * <p>
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

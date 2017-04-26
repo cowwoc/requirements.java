@@ -40,7 +40,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	private final E[] actual;
 	private final String name;
 	private final Configuration config;
-	private final CollectionVerifier<E> asCollection;
+	private final CollectionVerifier<Collection<E>, E> asCollection;
 
 	/**
 	 * Creates new ArrayVerifierImpl.
@@ -286,13 +286,13 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> asCollection()
+	public CollectionVerifier<Collection<E>, E> asCollection()
 	{
 		return asCollection;
 	}
 
 	@Override
-	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer)
+	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer)
 	{
 		consumer.accept(asCollection());
 		return this;

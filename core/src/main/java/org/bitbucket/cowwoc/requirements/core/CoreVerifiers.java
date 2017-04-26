@@ -68,6 +68,7 @@ public interface CoreVerifiers extends Configurable
 	/**
 	 * Verifies a {@code Collection}.
 	 *
+	 * @param <C>    the type of the collection
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -75,11 +76,12 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<E> CollectionVerifier<E> requireThat(Collection<E> actual, String name);
+	<C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled.
 	 *
+	 * @param <C>    the type of the collection
 	 * @param <E>    the type of elements in the collection
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -87,7 +89,7 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	<E> CollectionVerifier<E> assertThat(Collection<E> actual, String name);
+	<C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(C actual, String name);
 
 	/**
 	 * Verifies a primitive array.
@@ -136,6 +138,29 @@ public interface CoreVerifiers extends Configurable
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual, String name);
+
+	/**
+	 * Verifies a {@code boolean}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveBooleanVerifier requireThat(boolean actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(boolean, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveBooleanVerifier assertThat(boolean actual, String name);
 
 	/**
 	 * Verifies a {@code byte}.
@@ -298,6 +323,29 @@ public interface CoreVerifiers extends Configurable
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	<T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual, String name);
+
+	/**
+	 * Verifies a {@code Boolean}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	BooleanVerifier requireThat(Boolean actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(Boolean, String)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	BooleanVerifier assertThat(Boolean actual, String name);
 
 	/**
 	 * Verifies a {@code Float}.

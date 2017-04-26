@@ -151,13 +151,13 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public CollectionVerifier<E> asCollection()
+	public CollectionVerifier<Collection<E>, E> asCollection()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer)
+	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer)
 	{
 		return this;
 	}

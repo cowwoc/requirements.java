@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
@@ -21,35 +23,35 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 	/**
 	 * @return a verifier for the {@link Map#keySet()}
 	 */
-	CollectionVerifier<K> keySet();
+	CollectionVerifier<Set<K>, K> keySet();
 
 	/**
 	 * @param consumer verifies the {@link Map#keySet()}
 	 * @return this;
 	 */
-	MapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer);
+	MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer);
 
 	/**
 	 * @return a verifier for the {@link Map#values()}
 	 */
-	CollectionVerifier<V> values();
+	CollectionVerifier<Collection<V>, V> values();
 
 	/**
 	 * @param consumer verifies the {@link Map#values()}
 	 * @return this
 	 */
-	MapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer);
+	MapVerifier<K, V> values(Consumer<CollectionVerifier< Collection<V>, V>> consumer);
 
 	/**
 	 * @return a verifier for the {@link Map#entrySet()}
 	 */
-	CollectionVerifier<Entry<K, V>> entrySet();
+	CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet();
 
 	/**
 	 * @param consumer verifies the {@link Map#entrySet()}
 	 * @return this
 	 */
-	MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Entry<K, V>>> consumer);
+	MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer);
 
 	/**
 	 * Ensures that the actual value is empty.

@@ -4,8 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -39,37 +41,38 @@ public final class NoOpMapVerifier<K, V>
 	}
 
 	@Override
-	public CollectionVerifier<K> keySet()
+	public CollectionVerifier<Set<K>, K> keySet()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<K>> consumer)
+	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<V> values()
+	public CollectionVerifier<Collection<V>, V> values()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<K, V> values(Consumer<CollectionVerifier<V>> consumer)
+	public MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<Entry<K, V>> entrySet()
+	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Entry<K, V>>> consumer)
+	public MapVerifier<K, V> entrySet(
+		Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
 		return this;
 	}

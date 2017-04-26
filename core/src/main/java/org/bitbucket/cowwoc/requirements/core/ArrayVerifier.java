@@ -222,11 +222,11 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * @return a verifier for the actual value as a collection
 	 */
-	CollectionVerifier<E> asCollection();
+	CollectionVerifier<Collection<E>, E> asCollection();
 
 	/**
 	 * @param consumer verifies the actual value as a collection
 	 * @return this
 	 */
-	ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<E>> consumer);
+	ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer);
 }

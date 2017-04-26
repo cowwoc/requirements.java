@@ -50,62 +50,6 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		String newValue = lastEntry.getValue() + "\n[...]\n";
 		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
 	}
-
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @return the name and value of the values that need to be compared
-	 */
-	private static Comparison selectComparison(Object actual, Object expected)
-	{
-		String actualName;
-		String expectedName;
-		String actualValue = Objects.toString(actual);
-		String expectedValue = Objects.toString(expected);
-		if (actualValue.equals(expectedValue))
-		{
-			actualValue = getNullableType(actual);
-			expectedValue = getNullableType(expected);
-			if (actualValue.equals(expectedValue))
-			{
-				actualValue = String.valueOf(Objects.hashCode(actual));
-				expectedValue = String.valueOf(Objects.hashCode(expected));
-				actualName = "Actual.hashCode";
-				expectedName = "Expected.hashCode";
-			}
-			else
-			{
-				actualName = "Actual.class";
-				expectedName = "Expected.class";
-			}
-		}
-		else
-		{
-			actualName = "Actual";
-			expectedName = "Expected";
-		}
-		return new Comparison(actualName, actualValue, expectedName, expectedValue);
-	}
-
-	/**
-	 * The values to compare.
-	 */
-	private static class Comparison
-	{
-		public final String actualName;
-		public final String actualValue;
-		public final String expectedName;
-		public final String expectedValue;
-
-		Comparison(String actualName, String actualValue, String expectedName,
-			String expectedValue)
-		{
-			this.actualName = actualName;
-			this.actualValue = actualValue;
-			this.expectedName = expectedName;
-			this.expectedValue = expectedValue;
-		}
-	}
 	protected final ApplicationScope scope;
 	protected final T actual;
 	protected final String name;
@@ -134,97 +78,6 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	/**
-	 * @param actualValue    the actual value
-	 * @param expectedValue  the expected value
-	 * @param actualToString the string representation of actual value
-	 * @param actualName     the name of the actual value (e.g. "Actual" vs "Actual.class")
-	 * @param expectedName   the name of the expected value (e.g. "Expected" vs "Expected.class")
-	 * @return the list of key-value pairs to append to the exception message
-	 */
-	private List<Entry<String, Object>> getContext(String actualValue, String expectedValue,
-		String actualToString, String actualName, String expectedName)
-	{
-		if (!scope.isDiffEnabled())
-		{
-			List<Entry<String, Object>> result = new ArrayList<>(2);
-			result.add(new SimpleImmutableEntry<>(actualName, actualValue));
-			result.add(new SimpleImmutableEntry<>(expectedName, expectedValue));
-			return result;
-		}
-		DiffResult diff = scope.getDiffGenerator().diff(actualValue, expectedValue);
-		List<String> actual = diff.getActual();
-		List<String> middle = diff.getMiddle();
-		List<String> expected = diff.getExpected();
-		int lines = actual.size();
-		List<Entry<String, Object>> result = new ArrayList<>(2 * lines);
-		if (!actualName.equals("Actual"))
-		{
-			// Include the string value even if it is equal
-			result.add(new SimpleImmutableEntry<>("Actual", actualToString));
-		}
-		if (lines == 1)
-		{
-			result.add(new SimpleImmutableEntry<>(actualName, actual.get(0)));
-			if (!middle.isEmpty())
-				result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
-			result.add(new SimpleImmutableEntry<>(expectedName, expected.get(0)));
-		}
-		else
-		{
-			assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " + expected.size();
-			int actualLineNumber = 1;
-			int expectedLineNumber = 1;
-			// Indicates if the previous line was identical
-			boolean skippedDupicates = false;
-			for (int i = 0; i < lines; ++i)
-			{
-				String actualLine = actual.get(i);
-				String expectedLine = expected.get(i);
-
-				if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
-				{
-					// Skip identical lines, unless they are the first or last line.
-					skippedDupicates = true;
-					++actualLineNumber;
-					++expectedLineNumber;
-					continue;
-				}
-				String actualNameForLine;
-				if (actualLine.isEmpty())
-					actualNameForLine = actualName;
-				else
-				{
-					actualNameForLine = actualName + "@" + actualLineNumber;
-					++actualLineNumber;
-				}
-				if (skippedDupicates)
-				{
-					skippedDupicates = false;
-					skipDuplicateLines(result);
-				}
-
-				result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
-				if (!middle.isEmpty())
-					result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
-				String expectedNameForLine;
-				if (expectedLine.isEmpty())
-					expectedNameForLine = expectedName;
-				else
-				{
-					expectedNameForLine = expectedName + "@" + expectedLineNumber;
-					++expectedLineNumber;
-				}
-				if (i < lines - 1)
-					expectedLine += "\n";
-				result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));
-			}
-			if (skippedDupicates)
-				skipDuplicateLines(result);
-		}
-		return result;
-	}
-
-	/**
 	 * @return this
 	 */
 	protected S getThis()
@@ -239,10 +92,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (Objects.equals(actual, expected))
 			return getThis();
-		Comparison comparison = selectComparison(actual, expected);
-		List<Entry<String, Object>> context = getContext(comparison.actualValue,
-			comparison.expectedValue, Objects.toString(actual), comparison.actualName,
-			comparison.expectedName);
+		List<Entry<String, Object>> context = new Comparison(actual, expected).getContext();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name)).
 			addContext(context).
@@ -255,10 +105,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
-		Comparison comparison = selectComparison(actual, expected);
-		List<Entry<String, Object>> context = getContext(comparison.actualValue,
-			comparison.expectedValue, Objects.toString(actual), comparison.actualName,
-			comparison.expectedName);
+		List<Entry<String, Object>> context = new Comparison(actual, expected).getContext();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name)).
 			addContext(context).
@@ -378,5 +225,153 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	public T getActual()
 	{
 		return actual;
+	}
+
+	/**
+	 * The values to compare.
+	 */
+	private class Comparison
+	{
+		public final String actualName;
+		public final String actualValue;
+		public final String expectedName;
+		public final String expectedValue;
+		/**
+		 * True if the type of values being compared should be diffed.
+		 */
+		public final boolean diffableType;
+
+		/**
+		 * @param actual   the actual value
+		 * @param expected the expected value
+		 */
+		Comparison(Object actual, Object expected)
+		{
+			assert (actual == null || expected == null || actual.getClass().equals(expected.getClass())):
+				"actual: " + actual + ", expected: " + expected;
+
+			String actualName;
+			String expectedName;
+			String actualValue = Objects.toString(actual);
+			String expectedValue = Objects.toString(expected);
+			Class<?> actualType;
+			if (actual == null)
+				actualType = null;
+			else
+				actualType = actual.getClass();
+			if (actualValue.equals(expectedValue))
+			{
+				actualValue = getNullableType(actual);
+				expectedValue = getNullableType(expected);
+				if (actualValue.equals(expectedValue))
+				{
+					actualValue = String.valueOf(Objects.hashCode(actual));
+					expectedValue = String.valueOf(Objects.hashCode(expected));
+					actualName = "Actual.hashCode";
+					expectedName = "Expected.hashCode";
+				}
+				else
+				{
+					actualName = "Actual.class";
+					expectedName = "Expected.class";
+				}
+			}
+			else
+			{
+				actualName = "Actual";
+				expectedName = "Expected";
+			}
+			this.actualName = actualName;
+			this.actualValue = actualValue;
+			this.expectedName = expectedName;
+			this.expectedValue = expectedValue;
+			this.diffableType = (actualType != boolean.class) && (actualType != Boolean.class);
+		}
+
+		/**
+		 * @return the list of key-value pairs to append to the exception message
+		 */
+		public List<Entry<String, Object>> getContext()
+		{
+			if (!diffableType || !scope.isDiffEnabled())
+			{
+				List<Entry<String, Object>> result = new ArrayList<>(2);
+				result.add(new SimpleImmutableEntry<>(actualName, actualValue));
+				result.add(new SimpleImmutableEntry<>(expectedName, expectedValue));
+				return result;
+			}
+			DiffResult diff = scope.getDiffGenerator().diff(actualValue, expectedValue);
+			List<String> actual = diff.getActual();
+			List<String> middle = diff.getMiddle();
+			List<String> expected = diff.getExpected();
+			int lines = actual.size();
+			List<Entry<String, Object>> result = new ArrayList<>(2 * lines);
+			if (!actualName.equals("Actual"))
+			{
+				// Include the string value even if it is equal
+				result.add(new SimpleImmutableEntry<>("Actual", Objects.toString(actual)));
+			}
+			if (lines == 1)
+			{
+				result.add(new SimpleImmutableEntry<>(actualName, actual.get(0)));
+				if (!middle.isEmpty())
+					result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
+				result.add(new SimpleImmutableEntry<>(expectedName, expected.get(0)));
+			}
+			else
+			{
+				assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " +
+					expected.size();
+				int actualLineNumber = 1;
+				int expectedLineNumber = 1;
+				// Indicates if the previous line was identical
+				boolean skippedDupicates = false;
+				for (int i = 0; i < lines; ++i)
+				{
+					String actualLine = actual.get(i);
+					String expectedLine = expected.get(i);
+
+					if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
+					{
+						// Skip identical lines, unless they are the first or last line.
+						skippedDupicates = true;
+						++actualLineNumber;
+						++expectedLineNumber;
+						continue;
+					}
+					String actualNameForLine;
+					if (actualLine.isEmpty())
+						actualNameForLine = actualName;
+					else
+					{
+						actualNameForLine = actualName + "@" + actualLineNumber;
+						++actualLineNumber;
+					}
+					if (skippedDupicates)
+					{
+						skippedDupicates = false;
+						skipDuplicateLines(result);
+					}
+
+					result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
+					if (!middle.isEmpty())
+						result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
+					String expectedNameForLine;
+					if (expectedLine.isEmpty())
+						expectedNameForLine = expectedName;
+					else
+					{
+						expectedNameForLine = expectedName + "@" + expectedLineNumber;
+						++expectedLineNumber;
+					}
+					if (i < lines - 1)
+						expectedLine += "\n";
+					result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));
+				}
+				if (skippedDupicates)
+					skipDuplicateLines(result);
+			}
+			return result;
+		}
 	}
 }
