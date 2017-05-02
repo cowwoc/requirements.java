@@ -5,11 +5,14 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Set;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 
 /**
- * The configuration shared by all verifiers.
+ * The default configuration inherited by all verifiers.
+ * <p>
+ * One must update the configuration prior to instantiating a verifier in order to ensure that it
+ * will inherit the correct value.
  * <p>
  * This class is thread-safe.
  *

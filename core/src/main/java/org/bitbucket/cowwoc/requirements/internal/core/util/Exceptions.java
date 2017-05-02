@@ -55,28 +55,38 @@ public final class Exceptions
 	public static <E extends RuntimeException> RuntimeException createException(Class<E> type,
 		String message, Throwable cause, boolean apiInStacktrace)
 	{
+		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
+		//
+		// java.lang.IllegalArgumentException: message of top exception
+		//   at org.bitbucket.cowwoc.requirements.internal.core.util.Exceptions.createException(Exceptions.java:76)
+		//   at org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder.build(ExceptionBuilder.java:179)
+		//   at org.bitbucket.cowwoc.requirements.internal.core.impl.SomeVerifier.method(SomeVerifier.java:1)
+		//   at UserCode.method1(UserCode.java:1)
+		// Caused by: message of underlying exception
+		//   at Cause.method1(Cause.java:1)
+		//
+		// If apiInStacktrace is false, we need to strip out the top 3 stack-trace elements. But we are
+		// also forced to strip out the exception cause because it was thrown inside our API.
 		if (type == null)
 			throw new NullPointerException("type may not be null");
 		try
 		{
+			boolean includeCause = apiInStacktrace && cause != null;
+
 			MethodType constructorType;
-			if (cause != null)
+			if (includeCause)
 				constructorType = MethodType.methodType(void.class, String.class, Throwable.class);
 			else
 				constructorType = MethodType.methodType(void.class, String.class);
 			MethodHandle constructor = LOOKUP.findConstructor(type, constructorType);
-			// Convert from the actual exception type to RuntimeException
+			// Convert the exception type to RuntimeException
 			constructor = constructor.asType(constructor.type().changeReturnType(RuntimeException.class));
 
 			RuntimeException result;
-			if (!apiInStacktrace || cause == null)
-			{
-				// If apiInStacktrace is false we cannot include the exception cause as it references
-				// stack-trace elements below our API.
-				result = (RuntimeException) constructor.invokeExact(message);
-			}
-			else
+			if (includeCause)
 				result = (RuntimeException) constructor.invokeExact(message, cause);
+			else
+				result = (RuntimeException) constructor.invokeExact(message);
 			if (!apiInStacktrace)
 				removeLibraryFromStacktrace(result);
 			return result;

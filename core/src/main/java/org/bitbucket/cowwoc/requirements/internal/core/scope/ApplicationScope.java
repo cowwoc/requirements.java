@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
 import java.util.Optional;
+import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
@@ -44,8 +45,8 @@ public interface ApplicationScope extends JvmScope
 	 * Indicates if exception stack-traces should contain elements from this API.
 	 * <p>
 	 * The first time this method is invoked it reads the value of
-	 * {@code JvmScope.getGlobalConfiguration().isApiInStacktrace()} and returns it for the remainder
-	 * of the application lifetime.
+	 * {@link GlobalConfiguration#isApiInStacktrace() DefaultJvmScope.getGlobalConfiguration().isApiInStacktrace()}
+	 * and returns it for the remainder of the application lifetime.
 	 *
 	 * @return true if exception stack-traces should contain elements from this API (false by default)
 	 */
