@@ -126,34 +126,35 @@ public final class Terminal
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
 		log.debug("setEncoding({})", encoding);
+		boolean encodingIsSupported = getSupportedTypes().contains(encoding);
+		boolean connectedToStdout = isConnectedToStdout();
+		if (encodingIsSupported && !connectedToStdout)
+		{
+			log.debug("User requested a supported encoding, but stdout was redirected. Falling back to " +
+				"{}", NONE);
+			this.encoding.set(NONE);
+			return;
+		}
+		if (!encodingIsSupported)
+		{
+			log.debug("User forced the use of an unsupported encoding: {}", encoding);
+			this.encoding.set(encoding);
+			return;
+		}
 		OperatingSystem os = OperatingSystem.detected();
 		if (os.type == WINDOWS)
 		{
-			if (getSupportedTypes().contains(encoding))
+			// Only Windows needs nativeSetEncoding() to be invoked
+			if (nativeSetEncoding(encoding))
 			{
-				// Only Windows needs nativeSetEncoding() to be invoked
-				if (isConnectedToStdout() && nativeSetEncoding(encoding))
-				{
-					log.debug("Setting {}", encoding);
-					this.encoding.set(encoding);
-				}
-				else
-				{
-					log.debug("Falling back to {}", NONE);
-					this.encoding.set(NONE);
-				}
+				log.debug("Setting {}", encoding);
+				this.encoding.set(encoding);
 			}
 			else
 			{
-				// The user is forcing the use of an unsupported encoding
-				log.debug("Forcing {}", encoding);
-				this.encoding.set(encoding);
+				log.debug("nativeSetEncoding() failed. Falling back to {}", NONE);
+				this.encoding.set(NONE);
 			}
-		}
-		else
-		{
-			log.debug("Setting {} without native support", encoding);
-			this.encoding.set(encoding);
 		}
 	}
 
