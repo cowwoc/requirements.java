@@ -23,14 +23,14 @@
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
           <name>releaseVersion</name>
           <description>What version number should be released?</description>
-          <defaultValue>3.0.4-RC</defaultValue>
+          <defaultValue>3.0.9</defaultValue>
           <regex>\d+\.\d+\.\d+(-RC)?</regex>
           <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-RC]</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
           <name>nextVersion</name>
           <description>What SNAPSHOT version should be used after the release?</description>
-          <defaultValue>3.0.5-SNAPSHOT</defaultValue>
+          <defaultValue>3.0.10-SNAPSHOT</defaultValue>
           <regex>.+-SNAPSHOT</regex>
           <failedValidationMessage>Version number must end with -SNAPSHOT</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
@@ -49,7 +49,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.29">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.30">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -169,14 +169,14 @@ try
                     }
                     stage(&quot;Build (linux-i386)&quot;)
                     {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_32-release clean install&apos;
+                        sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
+                            mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_32-release clean install&apos;&apos;&apos;
                     }
                     stage(&quot;Deploy (linux-i386)&quot;)
                     {
                         // Deploy platform-specific JAR
                         // Use the same GCC version as AWS. See top of this script for more information.
-                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
-                            export CC=/usr/bin/gcc-4.8
+                        sh script: &quot;&quot;&quot;export CC=/usr/bin/gcc-4.8
                             export CXX=/usr/bin/g++-4.8
                             cd native
                             mvn --batch-mode -e -DosDetection=false -Plinux-x86_32-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
@@ -204,13 +204,13 @@ try
                 {
                     stage(&quot;Build (linux-amd64)&quot;)
                     {
-                        sh script: &apos;mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release clean install&apos;
+                        sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
+                            mvn --batch-mode -U -e -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release clean install&apos;&apos;&apos;
                     }
                     stage(&quot;Deploy (linux-amd64)&quot;)
                     {
                         // Use the same GCC version as AWS. See top of this script for more information.
-                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
-                            export CC=/usr/bin/gcc-4.8
+                        sh script: &quot;&quot;&quot;export CC=/usr/bin/gcc-4.8
                             export CXX=/usr/bin/g++-4.8
                             cd native
                             mvn --batch-mode -e -DosDetection=false -Plinux-x86_64-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
