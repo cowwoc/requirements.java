@@ -66,7 +66,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 * @param actual        the actual value
 	 * @param expected      the expected value
 	 * @param paddingMarker a padding character used to align values vertically
-	 * @throws NullPointerException if any of the arguments are null
+	 * @throws NullPointerException     if any of the arguments are null
+	 * @throws IllegalArgumentException if {@code paddingMarker} is empty
 	 */
 	AbstractDiffWriter(String actual, String expected, String paddingMarker)
 	{
@@ -76,6 +77,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 			throw new NullPointerException("expected may not be null");
 		if (paddingMarker == null)
 			throw new NullPointerException("paddingMarker may not be null");
+		if (paddingMarker.isEmpty())
+			throw new IllegalArgumentException("paddingMarker may not be empty");
 		this.paddingMarker = paddingMarker;
 		this.actualLine = new StringBuilder(LINE_LENGTH);
 		this.expectedLine = new StringBuilder(LINE_LENGTH);

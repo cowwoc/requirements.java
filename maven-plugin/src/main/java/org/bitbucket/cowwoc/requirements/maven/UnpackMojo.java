@@ -49,7 +49,7 @@ public class UnpackMojo extends AbstractMojo
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
-		OperatingSystem os = OperatingSystem.detect();
+		OperatingSystem os = OperatingSystem.detected();
 		String classifier = os.type.name().toLowerCase() + "-" + os.architecture.name().toLowerCase();
 		File outputDirectory;
 		if (target != null)

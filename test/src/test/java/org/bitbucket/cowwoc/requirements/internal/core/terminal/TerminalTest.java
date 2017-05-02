@@ -2,17 +2,13 @@
  * Copyright 2016 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.internal.core.diff;
+package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
 import java.io.IOException;
-import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
-import org.bitbucket.cowwoc.requirements.internal.core.terminal.NativeTerminal;
-import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 import org.testng.annotations.Test;
 
 /**
@@ -48,8 +44,7 @@ public final class TerminalTest
 	@SuppressWarnings("try")
 	public void forceUnsupportedEncoding() throws IOException
 	{
-		try (JvmScope jvm = DefaultJvmScope.INSTANCE;
-			ApplicationScope application = new TestApplicationScope(jvm))
+		try (JvmScope jvm = DefaultJvmScope.INSTANCE)
 		{
 			Terminal terminal = jvm.getTerminal();
 			terminal.setEncoding(RGB_888COLOR);

@@ -14,7 +14,7 @@
 	<version>3.0.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
-	<description>A Java library for enforcing API requirements.</description>
+	<description>A fluent API for enforcing design contracts with automatic message generation</description>
 	<url>https://bitbucket.org/cowwoc/requirements/</url>
 
 	<licenses>

@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
@@ -28,14 +29,14 @@ public final class OperatingSystem
 	/**
 	 * Version format used by Linux and Mac.
 	 */
-	private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)");
+	private static final Pattern VERSION_PATTERN = Pattern.compile(
+		"(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?");
 
-	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(
-		() ->
+	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(() ->
 	{
-		Type type = Type.detect();
-		Version version = Version.detect();
-		Architecture architecture = Architecture.detect();
+		Type type = Type.detected();
+		Version version = Version.detected();
+		Architecture architecture = Architecture.detected();
 		return new OperatingSystem(type, version, architecture);
 	});
 
@@ -43,7 +44,7 @@ public final class OperatingSystem
 	 * @return the detected operating system
 	 * @throws AssertionError if the operating system is unsupported
 	 */
-	public static OperatingSystem detect()
+	public static OperatingSystem detected()
 	{
 		return DETECTED.getValue();
 	}
@@ -53,23 +54,22 @@ public final class OperatingSystem
 	 */
 	public static final class Version implements Comparable<Version>
 	{
-		private static final Reference<Version> DETECTED = ConcurrentLazyReference.create(
-			() ->
+		private static final Reference<Version> DETECTED = ConcurrentLazyReference.create(() ->
 		{
-			Type type = Type.detect();
+			Type type = Type.detected();
 			switch (type)
 			{
 				case WINDOWS:
 					return getWindowsVersion();
 				default:
-					return getVersionUsingJava();
+					return getVersionUsingJava(System.getProperty("os.version"));
 			}
 		});
 
 		/**
 		 * @return the version of the detected operating system
 		 */
-		public static Version detect()
+		public static Version detected()
 		{
 			return DETECTED.getValue();
 		}
@@ -109,39 +109,51 @@ public final class OperatingSystem
 		}
 
 		/**
+		 * @param osVersion the operating system version
 		 * @return the version of Linux
 		 * @throws AssertionError if the version is not supported
 		 */
-		private static Version getVersionUsingJava()
+		static Version getVersionUsingJava(String osVersion)
 		{
-			String versionAsString = System.getProperty("os.version");
-			Matcher matcher = VERSION_PATTERN.matcher(versionAsString);
+			Matcher matcher = VERSION_PATTERN.matcher(osVersion);
 			if (!matcher.find())
-				throw new AssertionError("Unsupported version: " + versionAsString);
+				throw new AssertionError("Unsupported version: " + osVersion);
 			int major;
 			int minor;
 			int build;
 			try
 			{
 				major = Integer.parseInt(matcher.group(1));
+				if (matcher.group(2) == null)
+					return new Version(major);
 				minor = Integer.parseInt(matcher.group(2));
+				if (matcher.group(3) == null)
+					return new Version(major, minor);
 				build = Integer.parseInt(matcher.group(3));
+				return new Version(major, minor, build);
 			}
 			catch (NumberFormatException e)
 			{
-				throw new AssertionError("Failed to parse version: " + versionAsString, e);
+				throw new AssertionError("Failed to parse version: " + osVersion, e);
 			}
-			return new Version(major, minor, build);
 		}
 		public final int major;
-		public final int minor;
-		public final int build;
+		public final Integer minor;
+		/**
+		 * The minor number, or zero if the component is absent.
+		 */
+		public final int minorOrZero;
+		public final Integer build;
+		/**
+		 * The build number, or zero if the component is absent.
+		 */
+		public final int buildOrZero;
 
 		/**
 		 * @param major the major component of the version number
 		 * @param minor the minor component of the version number
 		 * @param build the build component of the version number
-		 * @throws AssertionError if any of the components is negative
+		 * @throws AssertionError if any of the components are negative
 		 */
 		public Version(int major, int minor, int build)
 		{
@@ -150,7 +162,39 @@ public final class OperatingSystem
 			assert (build >= 0): "build: " + build;
 			this.major = major;
 			this.minor = minor;
+			this.minorOrZero = minor;
 			this.build = build;
+			this.buildOrZero = build;
+		}
+
+		/**
+		 * @param major the major component of the version number
+		 * @param minor the minor component of the version number
+		 * @throws AssertionError if any of the components are negative
+		 */
+		public Version(int major, int minor)
+		{
+			assert (major >= 0): "major: " + major;
+			assert (minor >= 0): "minor: " + minor;
+			this.major = major;
+			this.minor = minor;
+			this.minorOrZero = minor;
+			this.build = null;
+			this.buildOrZero = 0;
+		}
+
+		/**
+		 * @param major the major component of the version number
+		 * @throws AssertionError if {@code major} is negative
+		 */
+		public Version(int major)
+		{
+			assert (major >= 0): "major: " + major;
+			this.major = major;
+			this.minor = null;
+			this.minorOrZero = 0;
+			this.build = null;
+			this.buildOrZero = 0;
 		}
 
 		@Override
@@ -159,16 +203,38 @@ public final class OperatingSystem
 			int result = major - other.major;
 			if (result != 0)
 				return result;
-			result = minor - other.minor;
+			result = minorOrZero - other.minorOrZero;
 			if (result != 0)
 				return result;
-			return build - other.build;
+			return buildOrZero - other.buildOrZero;
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (!(obj instanceof Version))
+				return false;
+			Version other = (Version) obj;
+			return major == other.major && minorOrZero == other.minorOrZero &&
+				buildOrZero == other.buildOrZero;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return Objects.hash(major, minor, build);
 		}
 
 		@Override
 		public String toString()
 		{
-			return major + "." + minor + "." + build;
+			StringBuilder result = new StringBuilder(10);
+			result.append(major);
+			if (minor != null)
+				result.append(".").append(minor);
+			if (build != null)
+				result.append(".").append(build);
+			return result.toString();
 		}
 	}
 	public final Type type;
@@ -237,7 +303,7 @@ public final class OperatingSystem
 		/**
 		 * @return the architecture of the detected operating system
 		 */
-		public static Architecture detect()
+		public static Architecture detected()
 		{
 			return DETECTED.getValue();
 		}
@@ -268,7 +334,7 @@ public final class OperatingSystem
 		/**
 		 * @return the type of the detected operating system
 		 */
-		public static Type detect()
+		public static Type detected()
 		{
 			return DETECTED.getValue();
 		}

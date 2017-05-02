@@ -212,7 +212,7 @@ std::string toString(JNIEnv* env, jobject o)
 				exceptions.throwIOException(message.c_str());
 				return;
 			}
-			newStdoutMode = state.stdoutMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+			newStdoutMode = state.stdoutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 		}
 		if (state.currentMode != newStdoutMode)
 		{

@@ -5,21 +5,23 @@
 package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import static org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Type.WINDOWS;
-import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Version;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_256COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_8COLOR;
+import static org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Type.WINDOWS;
+import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,9 +63,10 @@ public final class Terminal
 	 */
 	private Set<TerminalEncoding> getSupportedTypesImpl()
 	{
-		OperatingSystem os = OperatingSystem.detect();
+		OperatingSystem os = OperatingSystem.detected();
 		if (os.type == WINDOWS)
 		{
+			log.debug("Detected Windows {}", os.version);
 			if (os.version.compareTo(new Version(10, 0, 10586)) >= 0)
 			{
 				// Windows 10.0.10586 added 16-bit color support:
@@ -77,6 +80,7 @@ public final class Terminal
 					// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
 					result.add(RGB_888COLOR);
 				}
+				log.debug("Returning {}", result);
 				return result;
 			}
 			return Collections.singleton(NONE);
@@ -121,25 +125,36 @@ public final class Terminal
 	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
-		OperatingSystem os = OperatingSystem.detect();
+		log.debug("setEncoding({})", encoding);
+		OperatingSystem os = OperatingSystem.detected();
 		if (os.type == WINDOWS)
 		{
 			if (getSupportedTypes().contains(encoding))
 			{
 				// Only Windows needs nativeSetEncoding() to be invoked
-				if (nativeSetEncoding(encoding))
+				if (isConnectedToStdout() && nativeSetEncoding(encoding))
+				{
+					log.debug("Setting {}", encoding);
 					this.encoding.set(encoding);
+				}
 				else
+				{
+					log.debug("Falling back to {}", NONE);
 					this.encoding.set(NONE);
+				}
 			}
 			else
 			{
 				// The user is forcing the use of an unsupported encoding
+				log.debug("Forcing {}", encoding);
 				this.encoding.set(encoding);
 			}
 		}
 		else
+		{
+			log.debug("Setting {} without native support", encoding);
 			this.encoding.set(encoding);
+		}
 	}
 
 	/**
@@ -173,49 +188,10 @@ public final class Terminal
 	 */
 	public void useBestEncoding()
 	{
-		// See getSupportedTypesImpl() for an explanation of this algorithm
-		OperatingSystem os = OperatingSystem.detect();
-		if (os.type == WINDOWS)
-		{
-			if (os.version.compareTo(new Version(10, 0, 10586)) == 0)
-			{
-				this.encoding.set(XTERM_16COLOR);
-				return;
-			}
-			// Build 10586 was the only one to support colors by default. Later builds required explicit
-			// activation using native code.
-			if (os.version.compareTo(new Version(10, 0, 14931)) >= 0 && nativeSetEncoding(RGB_888COLOR))
-			{
-				this.encoding.set(RGB_888COLOR);
-				return;
-			}
-			this.encoding.set(NONE);
-			return;
-		}
-		String term = System.getenv("TERM");
-		if (term == null)
-		{
-			this.encoding.set(NONE);
-			return;
-		}
-		switch (term)
-		{
-			case "xterm":
-			{
-				this.encoding.set(XTERM_8COLOR);
-				return;
-			}
-			case "xterm-256color":
-			{
-				this.encoding.set(XTERM_256COLOR);
-				return;
-			}
-			default:
-			{
-				log.error("Unknown terminal: " + term);
-				this.encoding.set(NONE);
-			}
-		}
+		Set<TerminalEncoding> supportedTypes = getSupportedTypes();
+		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
+		Collections.sort(sortedTypes, TerminalEncoding.sortByDecreasingRank());
+		setEncoding(sortedTypes.get(0));
 	}
 
 	/**
@@ -249,18 +225,27 @@ public final class Terminal
 		// is redirected (which we don't care about). We try using System.console() and if we need more
 		// information we send a follow-up query to the native library.
 		if (System.console() != null)
+		{
+			log.debug("System.console() != null");
 			return true;
+		}
 		return nativeTerminal.map(terminal ->
 		{
 			try
 			{
-				return terminal.isConnectedToStdout();
+				boolean result = terminal.isConnectedToStdout();
+				log.debug("Returning {}", result);
+				return result;
 			}
 			catch (IOException e)
 			{
 				log.error("", e);
 				return false;
 			}
-		}).orElse(false);
+		}).orElseGet(() ->
+		{
+			log.debug("NativeTerminal is not available");
+			return false;
+		});
 	}
 }

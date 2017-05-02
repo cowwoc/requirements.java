@@ -6,12 +6,12 @@ package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
 import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
-import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
+import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffGenerator;
 
 /**
- * An application configuration.
+ * The configuration of an application. A JVM may contain multiple applications.
  *
  * @author Gili Tzabari
  */

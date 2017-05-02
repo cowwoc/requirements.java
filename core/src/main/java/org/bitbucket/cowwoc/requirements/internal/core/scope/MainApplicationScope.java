@@ -7,8 +7,8 @@ package org.bitbucket.cowwoc.requirements.internal.core.scope;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
-import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 
 /**
  * ApplicationScope for the main codebase.
