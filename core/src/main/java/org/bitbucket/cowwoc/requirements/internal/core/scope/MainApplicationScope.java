@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
-import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
-import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
@@ -20,9 +18,9 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	public static final MainApplicationScope INSTANCE = new MainApplicationScope(
 		DefaultJvmScope.INSTANCE);
 	public final JvmScope parent;
-	public final Reference<TerminalEncoding> terminalEncoding;
-	public final Reference<Boolean> diffEnabled;
-	public final Reference<Boolean> apiInStacktrace;
+	public final TerminalEncoding terminalEncoding;
+	public final boolean diffEnabled;
+	public final boolean apiInStacktrace;
 
 	/**
 	 * @param parent the parent scope
@@ -33,12 +31,10 @@ public final class MainApplicationScope extends AbstractApplicationScope
 		if (parent == null)
 			throw new NullPointerException("parent may not be null");
 		this.parent = parent;
-		this.terminalEncoding = ConcurrentLazyReference.create(() ->
-			parent.getTerminal().getEncoding());
-		this.diffEnabled = ConcurrentLazyReference.create(() ->
-			parent.getGlobalConfiguration().isDiffEnabled());
-		this.apiInStacktrace = ConcurrentLazyReference.create(() ->
-			parent.getGlobalConfiguration().isApiInStacktrace());
+		GlobalConfiguration globalConfig = parent.getGlobalConfiguration();
+		this.terminalEncoding = globalConfig.getTerminalEncoding();
+		this.diffEnabled = globalConfig.isDiffEnabled();
+		this.apiInStacktrace = globalConfig.isApiInStacktrace();
 	}
 
 	@Override
@@ -56,19 +52,19 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	@Override
 	public TerminalEncoding getTerminalEncoding()
 	{
-		return terminalEncoding.getValue();
+		return terminalEncoding;
 	}
 
 	@Override
 	public boolean isDiffEnabled()
 	{
-		return diffEnabled.getValue();
+		return diffEnabled;
 	}
 
 	@Override
 	public boolean isApiInStacktrace()
 	{
-		return apiInStacktrace.getValue();
+		return apiInStacktrace;
 	}
 
 	@Override

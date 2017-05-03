@@ -9,10 +9,10 @@ import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 
 /**
- * The default configuration inherited by all verifiers.
+ * The global configuration inherited by all verifiers.
  * <p>
- * One must update the configuration prior to instantiating a verifier in order to ensure that it
- * will inherit the correct value.
+ * One must update the configuration prior to interacting with any verifier. Subsequent changes
+ * will be silently ignored.
  * <p>
  * This class is thread-safe.
  *

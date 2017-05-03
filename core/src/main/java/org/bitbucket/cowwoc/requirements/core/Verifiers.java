@@ -6,10 +6,10 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.guava.ForwardingGuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
 
 /**
  * An entry point for verifying API requirements.
