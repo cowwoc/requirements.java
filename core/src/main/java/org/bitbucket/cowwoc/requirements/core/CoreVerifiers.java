@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * An entry point for verifying API requirements.
@@ -25,6 +26,9 @@ public interface CoreVerifiers extends Configurable
 {
 	@Override
 	CoreVerifiers addContext(String key, Object value);
+
+	@Override
+	CoreVerifiers addContext(String key, Supplier<String> value);
 
 	@Override
 	CoreVerifiers withDefaultException();

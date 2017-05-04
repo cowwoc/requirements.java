@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.util.function.Supplier;
+
 /**
  * A verifier whose behavior is configurable.
  *
@@ -78,6 +80,16 @@ public interface Configurable
 	 * @throws NullPointerException if {@code key} is null
 	 */
 	Configurable addContext(String key, Object value);
+
+	/**
+	 * Appends contextual information to the exception message.
+	 *
+	 * @param key   a key
+	 * @param value a custom String representation for the value
+	 * @return a verifier with the updated configuration
+	 * @throws NullPointerException if {@code key} is null
+	 */
+	Configurable addContext(String key, Supplier<String> value);
 
 	/**
 	 * @param configuration a new configuration

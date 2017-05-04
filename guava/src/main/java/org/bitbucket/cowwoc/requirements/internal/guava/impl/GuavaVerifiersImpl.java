@@ -5,12 +5,14 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
+import java.util.function.Supplier;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * Default implementation of {@code GuavaVerifiers}.
@@ -163,6 +165,12 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 		if (newConfig.equals(config))
 			return this;
 		return new GuavaVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public GuavaVerifiers addContext(String key, Supplier<String> value)
+	{
+		return addContext(key, new ToStringSupplier(value));
 	}
 
 	@Override

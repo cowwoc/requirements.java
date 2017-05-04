@@ -5,11 +5,13 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.ForwardingGuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * An entry point for verifying API requirements.
@@ -157,6 +159,12 @@ public final class Verifiers extends AbstractCoreVerifiers
 		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
 			map(v -> v.withConfiguration(newConfig));
 		return new Verifiers(scope, newConfig, newGuavaVerifiers);
+	}
+
+	@Override
+	public Verifiers addContext(String key, Supplier<String> value)
+	{
+		return addContext(key, new ToStringSupplier(value));
 	}
 
 	@Override

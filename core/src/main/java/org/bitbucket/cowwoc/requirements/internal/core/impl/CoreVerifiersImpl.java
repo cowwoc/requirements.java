@@ -4,12 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
+import java.util.function.Supplier;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * Default implementation of {@link CoreVerifiers}.
@@ -83,6 +85,12 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	public CoreVerifiers addContext(String key, Object value)
 	{
 		return new CoreVerifiersImpl(scope, config.addContext(key, value));
+	}
+
+	@Override
+	public CoreVerifiers addContext(String key, Supplier<String> value)
+	{
+		return addContext(key, new ToStringSupplier(value));
 	}
 
 	@Override

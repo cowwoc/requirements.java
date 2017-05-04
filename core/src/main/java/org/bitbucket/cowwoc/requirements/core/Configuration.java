@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.Supplier;
+import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * A verifier's configuration.
@@ -157,6 +159,12 @@ public final class Configuration implements Configurable
 		newContext.addAll(context);
 		newContext.add(new SimpleImmutableEntry<>(key, value));
 		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled);
+	}
+
+	@Override
+	public Configuration addContext(String key, Supplier<String> value)
+	{
+		return addContext(key, new ToStringSupplier(value));
 	}
 
 	/**

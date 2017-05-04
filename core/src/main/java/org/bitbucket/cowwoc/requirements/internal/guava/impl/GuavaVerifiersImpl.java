@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
+import java.util.function.Supplier;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
@@ -73,6 +74,12 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers, Configurable
 
 	@Override
 	public GuavaVerifiers addContext(String key, Object value)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public GuavaVerifiers addContext(String key, Supplier<String> value)
 	{
 		throw new UnsupportedOperationException();
 	}
