@@ -11,10 +11,10 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.DELET
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.EQUAL;
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.INSERT;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.NEWLINE_PATTERN;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 
 /**
  * Generates a diff of two Strings.
@@ -23,10 +23,7 @@ import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
  */
 public final class DiffGenerator
 {
-	/**
-	 * The terminal encoding.
-	 */
-	private final TerminalEncoding terminalEncoding;
+	private final ApplicationScope scope;
 
 	/**
 	 * @param scope the application configuration
@@ -35,14 +32,14 @@ public final class DiffGenerator
 	public DiffGenerator(ApplicationScope scope)
 	{
 		assert (scope != null): "scope may not be null";
-		this.terminalEncoding = scope.getTerminalEncoding();
+		this.scope = scope;
 	}
 
 	/**
 	 * Generates the diff of two strings.
 	 * <p>
-	 * NOTE: Colors are disabled when stdin or stdout are redirected. To override this behavior, use
-	 * {@link GlobalConfiguration#withTerminalEncoding(TerminalEncoding)}.
+	 * <b>NOTE</b>: Colors may be disabled when stdin or stdout are redirected. To override this
+	 * behavior, use {@link GlobalConfiguration#withTerminalEncoding(TerminalEncoding)}.
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
@@ -69,7 +66,7 @@ public final class DiffGenerator
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
-		DiffWriter writer = terminalEncoding.diff(actual, expected);
+		DiffWriter writer = scope.getTerminalEncoding().get().diff(actual, expected);
 		for (Diff component: components)
 		{
 			switch (component.operation)

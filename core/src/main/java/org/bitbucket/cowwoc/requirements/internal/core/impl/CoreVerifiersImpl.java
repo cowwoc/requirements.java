@@ -46,7 +46,7 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	 */
 	private CoreVerifiersImpl(ApplicationScope scope)
 	{
-		this(verifyScope(scope), new Configuration());
+		this(verifyScope(scope), scope.getDefaultConfiguration().get());
 	}
 
 	/**
@@ -98,6 +98,24 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	public CoreVerifiers withAssertionsDisabled()
 	{
 		Configuration newConfig = config.withAssertionsDisabled();
+		if (newConfig.equals(config))
+			return this;
+		return new CoreVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public Configurable withDiff()
+	{
+		Configuration newConfig = config.withDiff();
+		if (newConfig.equals(config))
+			return this;
+		return new CoreVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public Configurable withoutDiff()
+	{
+		Configuration newConfig = config.withoutDiff();
 		if (newConfig.equals(config))
 			return this;
 		return new CoreVerifiersImpl(scope, newConfig);

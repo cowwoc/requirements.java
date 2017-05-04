@@ -14,7 +14,9 @@ public interface Configurable
 	/**
 	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
 	 *         shouldn't do anything
+	 * @deprecated this method is scheduled for removal without replacement
 	 */
+	@Deprecated
 	boolean assertionsAreEnabled();
 
 	/**
@@ -51,6 +53,21 @@ public interface Configurable
 	 * @return a verifier with the updated configuration
 	 */
 	Configurable withDefaultException();
+
+	/**
+	 * Indicates that exceptions should show the difference between the actual and expected values.
+	 *
+	 * @return a verifier with the updated configuration
+	 */
+	Configurable withDiff();
+
+	/**
+	 * Indicates that exceptions should not show the difference between the actual and expected
+	 * values.
+	 *
+	 * @return a verifier with the updated configuration
+	 */
+	Configurable withoutDiff();
 
 	/**
 	 * Appends contextual information to the exception message.

@@ -11,8 +11,15 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 /**
  * The global configuration inherited by all verifiers.
  * <p>
- * One must update the configuration prior to interacting with any verifier. Subsequent changes
- * will be silently ignored.
+ * <b>Note</b>: Verifiers inherit from the global configuration at instantiation time. Their
+ * {@link Configuration local configuration} is not affected by subsequent changes to the global
+ * configuration.
+ * <p>
+ * However, updating settings not found in {@link Configuration} will impact the behavior of
+ * existing verifiers. Users are encouraged to update these settings at startup, or take active
+ * measures to ensure that verifiers are idle while the configuration is being updated. Failing to
+ * do so may result in undesirable behavior such as verifiers outputting ANSI colors to a terminal
+ * that is no longer configured to render them.
  * <p>
  * This class is thread-safe.
  *
@@ -22,13 +29,13 @@ public final class GlobalConfiguration
 {
 	private final JvmScope scope;
 	/**
-	 * True if exceptions should contain a diff of the values being compared.
-	 */
-	private boolean diffEnabled = true;
-	/**
 	 * True if API elements should show up in exception stacktraces.
 	 */
 	private boolean apiInStacktrace = false;
+	/**
+	 * True if exceptions should contain a diff of the values being compared.
+	 */
+	private boolean diffEnabled = true;
 
 	/**
 	 * @param scope the system configuration
@@ -90,6 +97,38 @@ public final class GlobalConfiguration
 	}
 
 	/**
+	 * @return true if exception stack-traces should contain elements from this API (false by default)
+	 */
+	public boolean isApiInStacktrace()
+	{
+		return apiInStacktrace;
+	}
+
+	/**
+	 * Indicates that exception stack-traces should contain elements from this API.
+	 *
+	 * @return this
+	 * @see #isApiInStacktrace
+	 */
+	public GlobalConfiguration withApiInStacktrace()
+	{
+		this.apiInStacktrace = true;
+		return this;
+	}
+
+	/**
+	 * Indicates that exception stack-traces should not contain elements from this API.
+	 *
+	 * @return this
+	 * @see #isApiInStacktrace
+	 */
+	public GlobalConfiguration withoutApiInStacktrace()
+	{
+		this.apiInStacktrace = false;
+		return this;
+	}
+
+	/**
 	 * @return true if exceptions should show the difference between the actual and expected values
 	 *         (true by default)
 	 * @see #withDiff()
@@ -120,38 +159,6 @@ public final class GlobalConfiguration
 	public GlobalConfiguration withoutDiff()
 	{
 		this.diffEnabled = false;
-		return this;
-	}
-
-	/**
-	 * @return true if exception stack-traces should contain elements from this API (false by default)
-	 */
-	public boolean isApiInStacktrace()
-	{
-		return apiInStacktrace;
-	}
-
-	/**
-	 * Indicates that exception stack-traces should contain elements from this API.
-	 *
-	 * @return this
-	 * @see #isApiInStacktrace
-	 */
-	public GlobalConfiguration withApiInStacktrace()
-	{
-		this.apiInStacktrace = true;
-		return this;
-	}
-
-	/**
-	 * Indicates that exception stack-traces should not contain elements from this API.
-	 *
-	 * @return this
-	 * @see #isApiInStacktrace
-	 */
-	public GlobalConfiguration withoutApiInStacktrace()
-	{
-		this.apiInStacktrace = false;
 		return this;
 	}
 }

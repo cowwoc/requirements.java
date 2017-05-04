@@ -19,6 +19,7 @@ public interface ForwardingGuavaVerifiers extends GuavaVerifiers
 	GuavaVerifiers guavaVerifiers();
 
 	@Override
+	@SuppressWarnings("deprecation")
 	default boolean assertionsAreEnabled()
 	{
 		return guavaVerifiers().assertionsAreEnabled();

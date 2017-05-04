@@ -4,34 +4,22 @@
  */
 package org.bitbucket.cowwoc.requirements.core.scope;
 
-import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
-import org.bitbucket.cowwoc.pouch.ConstantReference;
-import org.bitbucket.cowwoc.pouch.Reference;
+import java.util.function.Supplier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.AbstractApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 
 /**
- * SingletonScope for the test codebase.
+ * ApplicationScope for the test codebase.
  *
  * @author Gili Tzabari
  */
 public final class TestApplicationScope extends AbstractApplicationScope
 {
-	private final Reference<TerminalEncoding> terminalEncoding;
-
-	/**
-	 * Creates a TestApplicationScope that uses the best available terminal encoding.
-	 *
-	 * @param parent the parent scope
-	 */
-	public TestApplicationScope(JvmScope parent)
-	{
-		this.terminalEncoding = ConcurrentLazyReference.create(() ->
-			parent.getTerminal().getEncoding());
-	}
+	private static final Supplier<Boolean> TRUE = () -> true;
+	private final TerminalEncoding terminalEncoding;
 
 	/**
 	 * @param terminalEncoding the type of encoding that verifiers should output
@@ -39,7 +27,9 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	 */
 	public TestApplicationScope(TerminalEncoding terminalEncoding)
 	{
-		this.terminalEncoding = new ConstantReference<>(terminalEncoding);
+		if (terminalEncoding == null)
+			throw new NullPointerException("terminalEncoding may not be null");
+		this.terminalEncoding = terminalEncoding;
 	}
 
 	@Override
@@ -57,21 +47,27 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public TerminalEncoding getTerminalEncoding()
+	public Supplier<Configuration> getDefaultConfiguration()
 	{
-		return terminalEncoding.getValue();
+		return () -> defaultConfiguration;
 	}
 
 	@Override
-	public boolean isDiffEnabled()
+	public Supplier<TerminalEncoding> getTerminalEncoding()
 	{
-		return true;
+		return () -> terminalEncoding;
 	}
 
 	@Override
-	public boolean isApiInStacktrace()
+	public Supplier<Boolean> isDiffEnabled()
 	{
-		return true;
+		return TRUE;
+	}
+
+	@Override
+	public Supplier<Boolean> isApiInStacktrace()
+	{
+		return TRUE;
 	}
 
 	@Override

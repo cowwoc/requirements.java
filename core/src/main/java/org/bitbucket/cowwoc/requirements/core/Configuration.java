@@ -36,17 +36,24 @@ public final class Configuration implements Configurable
 	private final List<Entry<String, Object>> context;
 	private final Optional<Class<? extends RuntimeException>> exception;
 	private final boolean assertionsEnabled;
+	private final boolean diffEnabled;
 
 	/**
-	 * Creates the default configuration.
+	 * Creates a new configuration:
 	 * <p>
-	 * Assertions are enabled if <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">assertions are enabled on this class</a>.
+	 * <ul>
+	 * <li>With an empty context.</li>
+	 * <li>That throws the default exception type.</li>
+	 * <li>Whose assertions are enabled if <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">assertions are enabled on this class</a>.</li>
+	 * <li>That shows the difference between the actual and expected values.</li>
+	 * </ul>
 	 */
 	public Configuration()
 	{
-		this.context = new ArrayList<>(2);
+		this.context = Collections.emptyList();
 		this.exception = Optional.empty();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
+		this.diffEnabled = true;
 	}
 
 	/**
@@ -56,19 +63,28 @@ public final class Configuration implements Configurable
 	 * @param exception         the type of exception to throw
 	 * @param assertionsEnabled true if {@code assertThat()} should invoke {@code requireThat()};
 	 *                          false if {@code assertThat()} should do nothing
+	 * @param diffEnabled       indicates whether exceptions should show the difference between the
+	 *                          actual and expected values
 	 * @throws AssertionError if any of the arguments are null
 	 */
 	private Configuration(List<Entry<String, Object>> context,
-		Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled)
+		Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled,
+		boolean diffEnabled)
 	{
 		assert (context != null): "context may not be null";
 		assert (exception != null): "exception may not be null";
-		this.context = context;
+		this.context = Collections.unmodifiableList(context);
 		this.exception = exception;
 		this.assertionsEnabled = assertionsEnabled;
+		this.diffEnabled = diffEnabled;
 	}
 
+	/**
+	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
+	 *         shouldn't do anything
+	 */
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		return assertionsEnabled;
@@ -79,7 +95,7 @@ public final class Configuration implements Configurable
 	{
 		if (assertionsEnabled)
 			return this;
-		return new Configuration(context, exception, true);
+		return new Configuration(context, exception, true, diffEnabled);
 	}
 
 	@Override
@@ -87,13 +103,13 @@ public final class Configuration implements Configurable
 	{
 		if (!assertionsEnabled)
 			return this;
-		return new Configuration(context, exception, false);
+		return new Configuration(context, exception, false, diffEnabled);
 	}
 
 	/**
 	 * Returns the type of exception that will be thrown if a verification fails.
 	 *
-	 * @return {@code Optional.empty()} if the default exception type will be thrown
+	 * @return {@code Optional.empty()} if the default exception type will get thrown
 	 * @see #withException(Class)
 	 * @see #withDefaultException()
 	 */
@@ -110,7 +126,7 @@ public final class Configuration implements Configurable
 		Optional<Class<? extends RuntimeException>> newException = Optional.of(exception);
 		if (this.exception.equals(newException))
 			return this;
-		return new Configuration(context, newException, assertionsEnabled);
+		return new Configuration(context, newException, assertionsEnabled, diffEnabled);
 	}
 
 	@Override
@@ -119,16 +135,17 @@ public final class Configuration implements Configurable
 		Optional<Class<? extends RuntimeException>> newException = Optional.empty();
 		if (this.exception.equals(newException))
 			return this;
-		return new Configuration(context, newException, assertionsEnabled);
+		return new Configuration(context, newException, assertionsEnabled, diffEnabled);
 	}
 
 	/**
 	 * @return an unmodifiable list of key-value pairs to append to the exception message
 	 * @see #addContext(String, Object)
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<Entry<String, Object>> getContext()
 	{
-		return Collections.unmodifiableList(context);
+		return context;
 	}
 
 	@Override
@@ -136,8 +153,34 @@ public final class Configuration implements Configurable
 	{
 		if (key == null)
 			throw new NullPointerException("key may not be null");
-		context.add(new SimpleImmutableEntry<>(key, value));
-		return this;
+		List<Entry<String, Object>> newContext = new ArrayList<>(context.size() + 1);
+		newContext.addAll(context);
+		newContext.add(new SimpleImmutableEntry<>(key, value));
+		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled);
+	}
+
+	/**
+	 * @return true if exceptions should show the difference between the actual and expected values
+	 */
+	public boolean isDiffEnabled()
+	{
+		return diffEnabled;
+	}
+
+	@Override
+	public Configuration withDiff()
+	{
+		if (this.diffEnabled)
+			return this;
+		return new Configuration(context, exception, assertionsEnabled, true);
+	}
+
+	@Override
+	public Configuration withoutDiff()
+	{
+		if (!this.diffEnabled)
+			return this;
+		return new Configuration(context, exception, assertionsEnabled, false);
 	}
 
 	@Override
@@ -155,6 +198,7 @@ public final class Configuration implements Configurable
 		hash = 23 * hash + this.context.hashCode();
 		hash = 23 * hash + this.exception.hashCode();
 		hash = 23 * hash + Boolean.hashCode(this.assertionsEnabled);
+		hash = 23 * hash + Boolean.hashCode(this.diffEnabled);
 		return hash;
 	}
 
@@ -167,13 +211,13 @@ public final class Configuration implements Configurable
 			return false;
 		Configuration other = (Configuration) o;
 		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
-			exception.equals(other.exception);
+			exception.equals(other.exception) && diffEnabled == other.diffEnabled;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "Configuration[context=" + context + ", exception=" + exception +
-			", assertionsEnabled=" + assertionsEnabled + "]";
+			", assertionsEnabled=" + assertionsEnabled + ", diffEnabled=" + diffEnabled + "]";
 	}
 }

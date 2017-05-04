@@ -6,8 +6,8 @@ package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * A placeholder that is meant to be replaced by the requirements-guava module.
@@ -29,6 +29,7 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers, Configurable
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		throw new UnsupportedOperationException();
@@ -54,6 +55,18 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers, Configurable
 
 	@Override
 	public GuavaVerifiers withDefaultException()
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Configurable withDiff()
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Configurable withoutDiff()
 	{
 		throw new UnsupportedOperationException();
 	}

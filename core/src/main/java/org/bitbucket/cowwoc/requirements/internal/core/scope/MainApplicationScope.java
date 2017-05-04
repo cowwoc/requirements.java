@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
+import java.util.function.Supplier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
@@ -18,9 +20,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	public static final MainApplicationScope INSTANCE = new MainApplicationScope(
 		DefaultJvmScope.INSTANCE);
 	public final JvmScope parent;
-	public final TerminalEncoding terminalEncoding;
-	public final boolean diffEnabled;
-	public final boolean apiInStacktrace;
+	public final GlobalConfiguration globalConfiguration;
 
 	/**
 	 * @param parent the parent scope
@@ -31,10 +31,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 		if (parent == null)
 			throw new NullPointerException("parent may not be null");
 		this.parent = parent;
-		GlobalConfiguration globalConfig = parent.getGlobalConfiguration();
-		this.terminalEncoding = globalConfig.getTerminalEncoding();
-		this.diffEnabled = globalConfig.isDiffEnabled();
-		this.apiInStacktrace = globalConfig.isApiInStacktrace();
+		this.globalConfiguration = parent.getGlobalConfiguration();
 	}
 
 	@Override
@@ -50,21 +47,33 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public TerminalEncoding getTerminalEncoding()
+	public Supplier<Configuration> getDefaultConfiguration()
 	{
-		return terminalEncoding;
+		return () ->
+		{
+			Configuration result = defaultConfiguration;
+			if (!globalConfiguration.isDiffEnabled())
+				result = result.withoutDiff();
+			return result;
+		};
 	}
 
 	@Override
-	public boolean isDiffEnabled()
+	public Supplier<TerminalEncoding> getTerminalEncoding()
 	{
-		return diffEnabled;
+		return globalConfiguration::getTerminalEncoding;
 	}
 
 	@Override
-	public boolean isApiInStacktrace()
+	public Supplier<Boolean> isDiffEnabled()
 	{
-		return apiInStacktrace;
+		return globalConfiguration::isDiffEnabled;
+	}
+
+	@Override
+	public Supplier<Boolean> isApiInStacktrace()
+	{
+		return globalConfiguration::isApiInStacktrace;
 	}
 
 	@Override

@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
-import org.bitbucket.cowwoc.requirements.internal.guava.impl.GuavaVerifiersImpl;
 import com.google.common.collect.Multimap;
+import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
 
 /**
  * Default implementation of {@code GuavaVerifiers}.
@@ -62,7 +62,7 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	 */
 	public GuavaVerifiersImpl(ApplicationScope scope)
 	{
-		this(verifyScope(scope), new Configuration());
+		this(verifyScope(scope), scope.getDefaultConfiguration().get());
 	}
 
 	/**
@@ -81,6 +81,7 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		return config.assertionsAreEnabled();
@@ -132,6 +133,24 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	public GuavaVerifiers withDefaultException()
 	{
 		Configuration newConfig = config.withDefaultException();
+		if (newConfig.equals(config))
+			return this;
+		return new GuavaVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public Configurable withDiff()
+	{
+		Configuration newConfig = config.withDiff();
+		if (newConfig.equals(config))
+			return this;
+		return new GuavaVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public Configurable withoutDiff()
+	{
+		Configuration newConfig = config.withoutDiff();
 		if (newConfig.equals(config))
 			return this;
 		return new GuavaVerifiersImpl(scope, newConfig);

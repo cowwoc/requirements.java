@@ -5,7 +5,8 @@
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
+import java.util.function.Supplier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
@@ -19,38 +20,27 @@ import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffGenerator;
 public interface ApplicationScope extends JvmScope
 {
 	/**
-	 * Returns the terminal encoding that verifiers will output.
-	 * <p>
-	 * The first time this method is invoked it reads the value of
-	 * {@code JvmScope.getTerminal().getEncoding()} and returns it for the remainder of the
-	 * application lifetime.
-	 *
-	 * @return the terminal encoding that verifiers will output
+	 * @return the default configuration (value may change with every invocation)
 	 */
-	TerminalEncoding getTerminalEncoding();
+	Supplier<Configuration> getDefaultConfiguration();
 
 	/**
-	 * Indicates if exceptions should show the difference between the actual and expected values.
-	 * <p>
-	 * The first time this method is invoked it reads the value of
-	 * {@code JvmScope.getGlobalConfiguration().isDiffEnabled()} and returns it for the remainder
-	 * of the application lifetime.
-	 *
+	 * @return the terminal encoding that verifiers will output (value may change with every
+	 *         invocation)
+	 */
+	Supplier<TerminalEncoding> getTerminalEncoding();
+
+	/**
 	 * @return true if exceptions should show the difference between the actual and expected values
-	 *         (true by default)
+	 *         (value may change with every invocation)
 	 */
-	boolean isDiffEnabled();
+	Supplier<Boolean> isDiffEnabled();
 
 	/**
-	 * Indicates if exception stack-traces should contain elements from this API.
-	 * <p>
-	 * The first time this method is invoked it reads the value of
-	 * {@link GlobalConfiguration#isApiInStacktrace() DefaultJvmScope.getGlobalConfiguration().isApiInStacktrace()}
-	 * and returns it for the remainder of the application lifetime.
-	 *
-	 * @return true if exception stack-traces should contain elements from this API (false by default)
+	 * @return true if exception stack-traces should contain elements from this API (value may change
+	 *         with every invocation)
 	 */
-	boolean isApiInStacktrace();
+	Supplier<Boolean> isApiInStacktrace();
 
 	DiffGenerator getDiffGenerator();
 

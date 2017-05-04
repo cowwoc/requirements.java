@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 public final class ExceptionsTest
 {
 	/**
-	 * Regression test for bug that was throwing:
+	 * Regression test. Exceptions.createException() was throwing:
 	 * <p>
 	 * {@code java.lang.invoke.WrongMethodTypeException: expected (String,Throwable)RuntimeException but found (String)RuntimeException}
 	 */

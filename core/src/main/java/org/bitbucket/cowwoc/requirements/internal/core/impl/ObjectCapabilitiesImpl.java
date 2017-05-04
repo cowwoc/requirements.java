@@ -54,6 +54,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	protected final T actual;
 	protected final String name;
 	protected final Configuration config;
+	private final boolean diffEnabled;
 
 	/**
 	 * Creates new ObjectCapabilitiesImpl.
@@ -75,6 +76,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		this.actual = actual;
 		this.name = name;
 		this.config = config;
+		this.diffEnabled = scope.isDiffEnabled().get();
 	}
 
 	/**
@@ -293,7 +295,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		 */
 		public List<Entry<String, Object>> getContext()
 		{
-			if (!diffableType || !scope.isDiffEnabled())
+			if (!diffableType || !diffEnabled)
 			{
 				List<Entry<String, Object>> result = new ArrayList<>(2);
 				result.add(new SimpleImmutableEntry<>(actualName, actualValue));

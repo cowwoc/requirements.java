@@ -20,7 +20,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 public final class ExceptionBuilder
 {
 	/**
-	 * Checks if the configuration overrides the type of exception that should be thrown.
+	 * Checks if the configuration overrides the type of exception that should get thrown.
 	 *
 	 * @param type          the default type of exception to throw
 	 * @param configuration the verifier's configuration
@@ -87,7 +87,7 @@ public final class ExceptionBuilder
 		Class<? extends RuntimeException> type, String message, Throwable cause)
 	{
 		this(getExceptionType(configuration, type), message, cause, configuration.getContext(),
-			scope.isApiInStacktrace());
+			scope.isApiInStacktrace().get());
 	}
 
 	/**

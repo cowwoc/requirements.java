@@ -14,16 +14,17 @@ import org.testng.annotations.Test;
 public final class VerifiersTest
 {
 	/**
-	 * Ensure that verifiers instantiate separate configuration instances.
+	 * Regression test. Ensure that invoking addContext() on one verifier does not impact the context
+	 * of a second verifier.
 	 */
 	@Test
 	public void separateConfigurations()
 	{
 		Verifiers first = new Verifiers();
-		first.addContext("key1", "value1");
+		first = first.addContext("key1", "value1");
 
 		Verifiers second = new Verifiers();
-		second.addContext("key2", "value2");
+		second = second.addContext("key2", "value2");
 
 		assertThat(first.config, "first.config").isNotEqualTo(second.config, "second.config");
 	}

@@ -57,7 +57,8 @@ public final class Verifiers extends AbstractCoreVerifiers
 	 */
 	public Verifiers(ApplicationScope scope)
 	{
-		this(verifyScope(scope), new Configuration(), scope.createGuavaVerifiers());
+		this(verifyScope(scope), scope.getDefaultConfiguration().get(),
+			scope.createGuavaVerifiers());
 	}
 
 	/**
@@ -97,6 +98,12 @@ public final class Verifiers extends AbstractCoreVerifiers
 				"Classpath: " + System.getProperty("java.class.path") + "\n" +
 				"See " + MODULES_HELP + " for more information");
 		});
+	}
+
+	@Override
+	public boolean assertionsAreEnabled()
+	{
+		return config.assertionsAreEnabled();
 	}
 
 	@Override
@@ -153,6 +160,28 @@ public final class Verifiers extends AbstractCoreVerifiers
 	}
 
 	@Override
+	public Configurable withDiff()
+	{
+		Configuration newConfig = config.withDiff();
+		if (newConfig.equals(config))
+			return this;
+		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
+			map(v -> v.withConfiguration(newConfig));
+		return new Verifiers(scope, newConfig, newGuavaVerifiers);
+	}
+
+	@Override
+	public Configurable withoutDiff()
+	{
+		Configuration newConfig = config.withoutDiff();
+		if (newConfig.equals(config))
+			return this;
+		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
+			map(v -> v.withConfiguration(newConfig));
+		return new Verifiers(scope, newConfig, newGuavaVerifiers);
+	}
+
+	@Override
 	public Verifiers withConfiguration(Configuration configuration)
 	{
 		if (config.equals(configuration))
@@ -160,11 +189,5 @@ public final class Verifiers extends AbstractCoreVerifiers
 		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
 			map(v -> v.withConfiguration(configuration));
 		return new Verifiers(scope, configuration, newGuavaVerifiers);
-	}
-
-	@Override
-	public boolean assertionsAreEnabled()
-	{
-		return config.assertionsAreEnabled();
 	}
 }
