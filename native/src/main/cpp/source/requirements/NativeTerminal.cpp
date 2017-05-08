@@ -113,7 +113,10 @@ std::string toString(JNIEnv* env, jobject o)
 		Exceptions exceptions(env);
 		// See http://stackoverflow.com/a/3650507/14731
 		CONSOLE_SCREEN_BUFFER_INFO sbi;
-		state.connectedToStdout = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &sbi) && GetLastError() != ERROR_INVALID_HANDLE;
+		HANDLE stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		BOOL rc = GetConsoleScreenBufferInfo(stdoutHandle, &sbi);
+		DWORD lastError = GetLastError();
+		state.connectedToStdout = rc && lastError != ERROR_INVALID_HANDLE;
 		if (state.connectedToStdout)
 		{
 			state.stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);

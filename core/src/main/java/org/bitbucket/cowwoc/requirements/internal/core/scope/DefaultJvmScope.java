@@ -25,11 +25,14 @@ import org.slf4j.LoggerFactory;
 public final class DefaultJvmScope implements JvmScope
 {
 	public static final JvmScope INSTANCE = new DefaultJvmScope();
+	private final boolean nativeLibraryLoaded;
 	private final Factory<NativeTerminal> nativeTerminal = new ConcurrentLazyFactory<NativeTerminal>()
 	{
 		@Override
 		protected NativeTerminal createValue()
 		{
+			if (!nativeLibraryLoaded)
+				return null;
 			NativeTerminal result = new NativeTerminal();
 			try
 			{
@@ -72,18 +75,22 @@ public final class DefaultJvmScope implements JvmScope
 
 	public DefaultJvmScope()
 	{
+		boolean nativeLibraryLoaded;
 		try
 		{
 			System.loadLibrary("requirements");
+			nativeLibraryLoaded = true;
 		}
 		catch (UnsatisfiedLinkError e)
 		{
+			nativeLibraryLoaded = false;
 			terminalLog.warn("Failed to load \"requirements\" native library. Please see " +
 				"https://bitbucket.org/cowwoc/requirements/wiki/Deploying%20native%20libraries for more " +
 				"information.\n" +
 				"java.library.path=" + System.getProperty("java.library.path") + "\n" +
 				"user.dir=" + System.getProperty("user.dir"), e);
 		}
+		this.nativeLibraryLoaded = nativeLibraryLoaded;
 		shutdownHook = new Thread(() ->
 		{
 			try
