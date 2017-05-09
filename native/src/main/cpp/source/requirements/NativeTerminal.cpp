@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <string>
+#include <deque>
 
 #include "requirements/Util.h"
 #include "requirements/NativeTerminal.h"
@@ -192,24 +193,39 @@ std::string toString(JNIEnv* env, jobject o)
 			newStdoutMode = state.stdoutMode & !ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 		else
 		{
-			char* expected;
+			std::deque<char*> supportedEncodings;
+			// build 10586 added 16-bit color support: http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
+			assert(IsWindowsVersionOrGreater(10, 0, 10586));
+			supportedEncodings.push_back("XTERM_8COLOR");
+			supportedEncodings.push_back("XTERM_16COLOR");
+
 			if (IsWindowsVersionOrGreater(10, 0, 14931))
 			{
 				// build 14931 added 24-bit color support: https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
-				expected = "RGB_888COLOR";
+				supportedEncodings.push_back("RGB_888COLOR");
 			}
-			else
+
+			bool matchFound;
+			for (std::deque<char*>::iterator i = supportedEncodings.begin(); i != supportedEncodings.end(); ++i)
 			{
-				// build 10586 added 16-bit color support: http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
-				expected = "XTERM_16COLOR";
-				assert(IsWindowsVersionOrGreater(10, 0, 10586));
+				jobject expectedEnum = terminalEncoding(env, *i);
+				if (env->IsSameObject(encoding, expectedEnum))
+				{
+					matchFound = true;
+					break;
+				}
 			}
-			jobject expectedEnum = terminalEncoding(env, expected);
-			if (!env->IsSameObject(encoding, expectedEnum))
+			if (!matchFound)
 			{
-				std::string message("Expected encoding to be ");
-				message += expected;
-				message += ".\n";
+				supportedEncodings.push_front("NONE");
+				std::string message("Expected encoding to be one of [");
+				for (std::deque<char*>::iterator i = supportedEncodings.begin(); i != supportedEncodings.end(); ++i)
+				{
+					message += *i;
+					if (i != supportedEncodings.end() - 1)
+						message += ", ";
+				}
+				message += "].\n";
 				message += "Actual: ";
 				message += toString(env, encoding);
 				exceptions.throwIOException(message.c_str());

@@ -18,6 +18,7 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffResult;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 
 /**
  * Extendable implementation of {@link ObjectCapabilities}.
@@ -319,60 +320,58 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 				if (!middle.isEmpty())
 					result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
 				result.add(new SimpleImmutableEntry<>(expectedName, expected.get(0)));
+				return result;
 			}
-			else
+			assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " +
+				expected.size();
+			int actualLineNumber = 1;
+			int expectedLineNumber = 1;
+			// Indicates if the previous line was identical
+			boolean skippedDupicates = false;
+			for (int i = 0; i < lines; ++i)
 			{
-				assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " +
-					expected.size();
-				int actualLineNumber = 1;
-				int expectedLineNumber = 1;
-				// Indicates if the previous line was identical
-				boolean skippedDupicates = false;
-				for (int i = 0; i < lines; ++i)
+				String actualLine = actual.get(i);
+				String expectedLine = expected.get(i);
+
+				if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
 				{
-					String actualLine = actual.get(i);
-					String expectedLine = expected.get(i);
-
-					if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
-					{
-						// Skip identical lines, unless they are the first or last line.
-						skippedDupicates = true;
-						++actualLineNumber;
-						++expectedLineNumber;
-						continue;
-					}
-					String actualNameForLine;
-					if (actualLine.isEmpty())
-						actualNameForLine = actualName;
-					else
-					{
-						actualNameForLine = actualName + "@" + actualLineNumber;
-						++actualLineNumber;
-					}
-					if (skippedDupicates)
-					{
-						skippedDupicates = false;
-						skipDuplicateLines(result);
-					}
-
-					result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
-					if (!middle.isEmpty())
-						result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
-					String expectedNameForLine;
-					if (expectedLine.isEmpty())
-						expectedNameForLine = expectedName;
-					else
-					{
-						expectedNameForLine = expectedName + "@" + expectedLineNumber;
-						++expectedLineNumber;
-					}
-					if (i < lines - 1)
-						expectedLine += "\n";
-					result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));
+					// Skip identical lines, unless they are the first or last line.
+					skippedDupicates = true;
+					++actualLineNumber;
+					++expectedLineNumber;
+					continue;
+				}
+				String actualNameForLine;
+				if (Strings.containsOnly(actualLine, diff.getPaddingMarker()))
+					actualNameForLine = actualName;
+				else
+				{
+					actualNameForLine = actualName + "@" + actualLineNumber;
+					++actualLineNumber;
 				}
 				if (skippedDupicates)
+				{
+					skippedDupicates = false;
 					skipDuplicateLines(result);
+				}
+
+				result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
+				if (!middle.isEmpty())
+					result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
+				String expectedNameForLine;
+				if (Strings.containsOnly(expectedLine, diff.getPaddingMarker()))
+					expectedNameForLine = expectedName;
+				else
+				{
+					expectedNameForLine = expectedName + "@" + expectedLineNumber;
+					++expectedLineNumber;
+				}
+				if (i < lines - 1)
+					expectedLine += "\n";
+				result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));
 			}
+			if (skippedDupicates)
+				skipDuplicateLines(result);
 			return result;
 		}
 	}

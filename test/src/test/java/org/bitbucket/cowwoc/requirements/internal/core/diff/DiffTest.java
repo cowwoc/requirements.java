@@ -67,8 +67,8 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.paddingMarker + scheme.resetColor + "]\n" +
-				"Expected: int[" + scheme.paddingColor + scheme.paddingMarker +
+				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
+				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
 				scheme.insertColor + "5" + scheme.resetColor + "]";
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -93,8 +93,8 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.paddingMarker + scheme.resetColor + "]\n" +
-				"Expected: int[" + scheme.paddingColor + scheme.paddingMarker +
+				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
+				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
 				scheme.insertColor + "5" + scheme.resetColor + "]";
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -119,8 +119,8 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.paddingMarker + scheme.resetColor + "]\n" +
-				"Expected: int[" + scheme.paddingColor + scheme.paddingMarker +
+				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
+				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
 				scheme.insertColor + "5" + scheme.resetColor + "]";
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -142,10 +142,11 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : actual\n" +
+			String expectedMessage = "Actual  : actual" +
+				Strings.repeat(PADDING_MARKER, "expected".length()) + "\n" +
 				"Diff    : " + Strings.repeat(DIFF_DELETE, "actual".length()) +
 				Strings.repeat(DIFF_INSERT, "expected".length()) + "\n" +
-				"Expected:       expected";
+				"Expected: " + Strings.repeat(" ", "actual".length()) + "expected";
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
@@ -191,7 +192,7 @@ public final class DiffTest
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : " + NEWLINE_MARKER + "\n" +
 				"Diff      : " + Strings.repeat(DIFF_DELETE, NEWLINE_MARKER.length()) + "\n" +
-				"Expected  : \n" +
+				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@2  : actual" + Strings.repeat(PADDING_MARKER, "expected".length()) +
 				EOS_MARKER + "\n" +
@@ -223,7 +224,8 @@ public final class DiffTest
 			String expectedMessage = "Actual@1  : actual" + NEWLINE_MARKER + "\n" +
 				"Diff      : " + Strings.repeat(DIFF_DELETE, "actual".length() + NEWLINE_MARKER.length()) +
 				"\n" +
-				"Expected  : \n" +
+				"Expected  : " + Strings.repeat(PADDING_MARKER,
+					"actual".length() + NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@2  : " + Strings.repeat(PADDING_MARKER, "expected".length()) + EOS_MARKER +
 				"\n" +
@@ -252,11 +254,11 @@ public final class DiffTest
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : " + NEWLINE_MARKER + "\n" +
 				"Diff      : " + Strings.repeat(DIFF_DELETE, NEWLINE_MARKER.length()) + "\n" +
-				"Expected  : \n" +
+				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@2  : " + NEWLINE_MARKER + "\n" +
 				"Diff      : " + Strings.repeat(DIFF_DELETE, NEWLINE_MARKER.length()) + "\n" +
-				"Expected  : \n" +
+				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@3  : value" + EOS_MARKER + "\n" +
 				"Diff      : " + Strings.repeat(DIFF_EQUAL, "value".length() + EOS_MARKER.length()) + "\n" +
@@ -330,16 +332,16 @@ public final class DiffTest
 	@Test
 	public void lastConsecutiveIndexOf()
 	{
-		int result = AbstractDiffWriter.lastConsecutiveIndexOf("textex", " ");
+		int result = Strings.lastConsecutiveIndexOf("textex", " ");
 		assert (result == -1): result;
 
-		result = AbstractDiffWriter.lastConsecutiveIndexOf("  text", " ");
+		result = Strings.lastConsecutiveIndexOf("  text", " ");
 		assert (result == -1): result;
 
-		result = AbstractDiffWriter.lastConsecutiveIndexOf("text  ", " ");
+		result = Strings.lastConsecutiveIndexOf("text  ", " ");
 		assert (result == 4): result;
 
-		result = AbstractDiffWriter.lastConsecutiveIndexOf("      ", " ");
+		result = Strings.lastConsecutiveIndexOf("      ", " ");
 		assert (result == 0): result;
 	}
 
@@ -350,7 +352,7 @@ public final class DiffTest
 	@Test
 	public void lastConsecutiveIndexOf_resultLessThanOrEqualToLengthOfTarget()
 	{
-		int result = AbstractDiffWriter.lastConsecutiveIndexOf("1 ", " ");
+		int result = Strings.lastConsecutiveIndexOf("1 ", " ");
 		assert (result == 1): result;
 	}
 }

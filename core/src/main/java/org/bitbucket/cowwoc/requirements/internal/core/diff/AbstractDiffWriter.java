@@ -18,42 +18,12 @@ import static org.bitbucket.cowwoc.requirements.internal.core.util.ConsoleConsta
  */
 abstract class AbstractDiffWriter implements DiffWriter
 {
-	/**
-	 * Returns the index within {@code source} of the last consecutive occurrence of {@code target}.
-	 * The last occurrence of the empty string {@code ""} is considered to occur at the index value
-	 * {@code source.length()}.
-	 * <p>
-	 * The returned index is the largest value {@code k} for which {@code source.startsWith(target, k)}
-	 * consecutively. If no such value of {@code k} exists, then {@code -1} is returned.
-	 *
-	 * @param source the string to search within
-	 * @param target the string to search for
-	 * @return the index of the last consecutive occurrence of {@code target} in {@code source}, or
-	 *         {@code -1} if there is no such occurrence.
-	 */
-	static int lastConsecutiveIndexOf(String source, String target)
-	{
-		assert (source != null): "source may not be null";
-		assert (target != null): "target may not be null";
-		int lengthOfTarget = target.length();
-		int result = -1;
-		if (lengthOfTarget == 0)
-			return result;
-
-		for (int i = source.length() - lengthOfTarget; i >= 0; i -= lengthOfTarget)
-		{
-			if (!source.startsWith(target, i))
-				return result;
-			result = i;
-		}
-		return result;
-	}
+	protected final StringBuilder actualLine;
+	protected final StringBuilder expectedLine;
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	protected final String paddingMarker;
-	protected final StringBuilder actualLine;
-	protected final StringBuilder expectedLine;
+	private final String paddingMarker;
 	private final List<String> actualList;
 	private final List<String> expectedList;
 	private List<String> actual;
@@ -108,14 +78,20 @@ abstract class AbstractDiffWriter implements DiffWriter
 	protected abstract void deleteLine(String line);
 
 	/**
-	 * Invoked before closing the writer.
+	 * Invoked before flushing each line.
 	 */
-	protected abstract void beforeClose();
+	protected abstract void beforeFlushLine();
 
 	/**
 	 * Invoked after closing the writer.
 	 */
 	protected abstract void afterClose();
+
+	@Override
+	public String getPaddingMarker()
+	{
+		return paddingMarker;
+	}
 
 	@Override
 	public void keep(String text)
@@ -186,18 +162,12 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 */
 	protected void flushLine()
 	{
-		// Strip trailing whitespace to ensure that end of line markers are the last character.
+		beforeFlushLine();
 		String string = actualLine.toString();
-		int index = lastConsecutiveIndexOf(string, paddingMarker);
-		if (index != -1)
-			string = string.substring(0, index);
 		actualList.add(string);
 		actualLine.delete(0, actualLine.length());
 
 		string = expectedLine.toString();
-		index = lastConsecutiveIndexOf(string, paddingMarker);
-		if (index != -1)
-			string = string.substring(0, index);
 		expectedList.add(string);
 		expectedLine.delete(0, expectedLine.length());
 	}
@@ -208,7 +178,6 @@ abstract class AbstractDiffWriter implements DiffWriter
 		if (closed)
 			return;
 		closed = true;
-		beforeClose();
 		flushLine();
 		this.actual = Collections.unmodifiableList(actualList);
 		this.expected = Collections.unmodifiableList(expectedList);

@@ -8,7 +8,7 @@ import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.PREFIX;
 
 /**
- * An xterm terminal that supports a 256-color palette.
+ * An xterm terminal that supports a 256 color palette.
  *
  * @author Gili Tzabari
  */

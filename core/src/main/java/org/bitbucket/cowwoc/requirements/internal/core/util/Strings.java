@@ -81,6 +81,48 @@ public final class Strings
 	}
 
 	/**
+	 * Returns the index within {@code source} of the last consecutive occurrence of {@code target}.
+	 * The last occurrence of the empty string {@code ""} is considered to occur at the index value
+	 * {@code source.length()}.
+	 * <p>
+	 * The returned index is the largest value {@code k} for which {@code source.startsWith(target, k)}
+	 * consecutively. If no such value of {@code k} exists, then {@code -1} is returned.
+	 *
+	 * @param source the string to search within
+	 * @param target the string to search for
+	 * @return the index of the last consecutive occurrence of {@code target} in {@code source}, or
+	 *         {@code -1} if there is no such occurrence.
+	 */
+	public static int lastConsecutiveIndexOf(String source, String target)
+	{
+		assert (source != null): "source may not be null";
+		assert (target != null): "target may not be null";
+		int lengthOfTarget = target.length();
+		int result = -1;
+		if (lengthOfTarget == 0)
+			return result;
+
+		for (int i = source.length() - lengthOfTarget; i >= 0; i -= lengthOfTarget)
+		{
+			if (!source.startsWith(target, i))
+				return result;
+			result = i;
+		}
+		return result;
+	}
+
+	/**
+	 * @param source the string to search within
+	 * @param target the string to search for
+	 * @return true if {@code source} only contains occurrences of {@code target} or if
+	 *         {@code source} is empty
+	 */
+	public static boolean containsOnly(String source, String target)
+	{
+		return lastConsecutiveIndexOf(source, target) == 0;
+	}
+
+	/**
 	 * Prevent construction.
 	 */
 	private Strings()

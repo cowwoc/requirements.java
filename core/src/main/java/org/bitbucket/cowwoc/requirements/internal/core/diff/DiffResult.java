@@ -17,16 +17,20 @@ public final class DiffResult
 	private final List<String> actual;
 	private final List<String> middle;
 	private final List<String> expected;
+	private final String paddingMarker;
 
 	/**
 	 * Creates a new instance.
 	 *
-	 * @param actual   the lines of the actual string
-	 * @param middle   the optional lines to display between "actual" and "expected"
-	 * @param expected the lines of the expected string
-	 * @throws NullPointerException if any of the arguments are null
+	 * @param actual        the lines of the actual string
+	 * @param middle        the optional lines to display between "actual" and "expected"
+	 * @param expected      the lines of the expected string
+	 * @param paddingMarker a padding character used to align values vertically
+	 * @throws NullPointerException     if any of the arguments are null
+	 * @throws IllegalArgumentException if {@code paddingMarker} is empty
 	 */
-	public DiffResult(List<String> actual, List<String> middle, List<String> expected)
+	public DiffResult(List<String> actual, List<String> middle, List<String> expected,
+		String paddingMarker)
 	{
 		if (actual == null)
 			throw new NullPointerException("actual may not be null");
@@ -34,9 +38,14 @@ public final class DiffResult
 			throw new NullPointerException("middle may not be null");
 		if (expected == null)
 			throw new NullPointerException("expected may not be null");
+		if (paddingMarker == null)
+			throw new NullPointerException("paddingMarker may not be null");
+		if (paddingMarker.isEmpty())
+			throw new IllegalArgumentException("paddingMarker may not be empty");
 		this.actual = Lists.unmodifiable(actual);
 		this.middle = Lists.unmodifiable(middle);
 		this.expected = Lists.unmodifiable(expected);
+		this.paddingMarker = paddingMarker;
 	}
 
 	/**
@@ -48,6 +57,14 @@ public final class DiffResult
 	public List<String> getActual()
 	{
 		return actual;
+	}
+
+	/**
+	 * @return a padding character used to align values vertically
+	 */
+	public String getPaddingMarker()
+	{
+		return paddingMarker;
 	}
 
 	/**

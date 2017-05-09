@@ -71,8 +71,9 @@ public final class Terminal
 			{
 				// Windows 10.0.10586 added 16-bit color support:
 				// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
-				Set<TerminalEncoding> result = new HashSet<>(3);
+				Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
 				result.add(NONE);
+				result.add(XTERM_8COLOR);
 				result.add(XTERM_16COLOR);
 				if (os.version.compareTo(new Version(10, 0, 14931)) >= 0)
 				{
@@ -91,24 +92,41 @@ public final class Terminal
 		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't
 		// attempt to support all possible terminal types. Instead, we support mainstream types and
 		// require the terminal to support or emulate them.
+		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length /
+			0.75));
+		result.add(NONE);
 		switch (term)
 		{
 			case "xterm":
 			{
 				// Used by older Linux deployments (e.g. routers)
-				return Collections.singleton(XTERM_8COLOR);
+				result.add(XTERM_8COLOR);
+				break;
+			}
+			case "xterm-16color":
+			{
+				// http://stackoverflow.com/a/10039347/14731
+				result.add(XTERM_16COLOR);
+				result.add(XTERM_8COLOR);
+				break;
 			}
 			case "xterm-256color":
 			{
 				// Used by Linux and OSX 10.9+
-				return Collections.singleton(XTERM_256COLOR);
+				result.add(XTERM_256COLOR);
+				result.add(XTERM_16COLOR);
+				result.add(XTERM_8COLOR);
+				break;
 			}
 			default:
 			{
 				log.error("Unexpected TERM: " + term);
-				return Collections.singleton(NONE);
+				break;
 			}
 		}
+		// There is no reliable way to detect RGB_888COLOR support:
+		// https://gist.github.com/XVilka/8346728#detection
+		return result;
 	}
 
 	/**
@@ -123,19 +141,33 @@ public final class Terminal
 	 */
 	public void setEncoding(TerminalEncoding encoding)
 	{
+		setEncodingImpl(encoding, true);
+	}
+
+	/**
+	 * Indicates the type of encoding that verifiers will output.
+	 * <p>
+	 * This feature can be used to force the use of ANSI colors even when their support is not
+	 * detected.
+	 *
+	 * @param encoding the type of encoding that verifiers will output
+	 * @param force    true if the encoding should be forced regardless of what the system supports
+	 * @throws NullPointerException if {@code encoding} is null
+	 * @see #useBestEncoding()
+	 */
+	private void setEncodingImpl(TerminalEncoding encoding, boolean force)
+	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
-		log.debug("setEncoding({})", encoding);
-		boolean encodingIsSupported = getSupportedTypes().contains(encoding);
+		log.debug("setEncodingImpl({}, {})", encoding, force);
 		boolean connectedToStdout = isConnectedToStdout();
-		if (encodingIsSupported && !connectedToStdout)
+		if (!connectedToStdout && !force)
 		{
-			log.debug("User requested a supported encoding, but stdout was redirected. Falling back to " +
-				"{}", NONE);
+			log.debug("stdout was redirected. Falling back to {}", NONE);
 			this.encoding.set(NONE);
 			return;
 		}
-		if (!encodingIsSupported)
+		if (!getSupportedTypes().contains(encoding))
 		{
 			log.debug("User forced the use of an unsupported encoding: {}", encoding);
 			this.encoding.set(encoding);
@@ -145,7 +177,7 @@ public final class Terminal
 		if (os.type == WINDOWS)
 		{
 			// Only Windows needs nativeSetEncoding() to be invoked
-			if (nativeSetEncoding(encoding))
+			if (nativeSetEncoding(encoding) || force)
 			{
 				log.debug("Setting {}", encoding);
 				this.encoding.set(encoding);
@@ -192,7 +224,7 @@ public final class Terminal
 		Set<TerminalEncoding> supportedTypes = getSupportedTypes();
 		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
 		Collections.sort(sortedTypes, TerminalEncoding.sortByDecreasingRank());
-		setEncoding(sortedTypes.get(0));
+		setEncodingImpl(sortedTypes.get(0), false);
 	}
 
 	/**

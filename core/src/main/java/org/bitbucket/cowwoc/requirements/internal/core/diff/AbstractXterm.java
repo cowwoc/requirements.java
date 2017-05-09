@@ -182,8 +182,9 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	@Override
 	protected void insertLine(String line)
 	{
-		actualLine.append(paddingColor).append(Strings.repeat(paddingMarker, line.length()));
+		actualLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), line.length()));
 		expectedLine.append(insertColor).append(line);
+		needToResetActual = true;
 		needToResetExpected = true;
 	}
 
@@ -191,12 +192,13 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	protected void deleteLine(String line)
 	{
 		actualLine.append(deleteColor).append(line);
+		expectedLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), line.length()));
 		needToResetActual = true;
-		expectedLine.append(paddingColor).append(Strings.repeat(paddingMarker, line.length()));
+		needToResetExpected = true;
 	}
 
 	@Override
-	protected void beforeClose()
+	protected void beforeFlushLine()
 	{
 		resetColors();
 	}

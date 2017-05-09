@@ -201,7 +201,7 @@ public final class TextOnly extends AbstractDiffWriter
 	protected void insertLine(String line)
 	{
 		int length = line.length();
-		actualLine.append(Strings.repeat(paddingMarker, length));
+		actualLine.append(Strings.repeat(getPaddingMarker(), length));
 		middleLine.append(Strings.repeat(DIFF_INSERT, length));
 		expectedLine.append(line);
 	}
@@ -212,7 +212,12 @@ public final class TextOnly extends AbstractDiffWriter
 		actualLine.append(line);
 		int length = line.length();
 		middleLine.append(Strings.repeat(DIFF_DELETE, length));
-		expectedLine.append(Strings.repeat(paddingMarker, length));
+		expectedLine.append(Strings.repeat(getPaddingMarker(), length));
+	}
+
+	@Override
+	protected void beforeFlushLine()
+	{
 	}
 
 	/**
@@ -225,11 +230,6 @@ public final class TextOnly extends AbstractDiffWriter
 		super.flushLine();
 		middleList.add(middleLine.toString());
 		middleLine.delete(0, middleLine.length());
-	}
-
-	@Override
-	protected void beforeClose()
-	{
 	}
 
 	@Override

@@ -91,6 +91,7 @@ public final class DiffGenerator
 			}
 		}
 		writer.close();
-		return new DiffResult(writer.getActual(), writer.getMiddle(), writer.getExpected());
+		return new DiffResult(writer.getActual(), writer.getMiddle(), writer.getExpected(),
+			writer.getPaddingMarker());
 	}
 }
