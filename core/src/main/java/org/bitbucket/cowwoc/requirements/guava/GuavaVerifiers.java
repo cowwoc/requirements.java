@@ -33,6 +33,5 @@ public interface GuavaVerifiers extends Configurable
 	GuavaVerifiers withConfiguration(Configuration configuration);
 
 	@Override
-	@SuppressWarnings("deprecation")
 	boolean assertionsAreEnabled();
 }

@@ -30,7 +30,6 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers, Configurable
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		throw new UnsupportedOperationException();

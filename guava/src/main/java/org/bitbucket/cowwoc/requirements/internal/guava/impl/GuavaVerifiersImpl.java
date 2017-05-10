@@ -83,7 +83,6 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		return config.assertionsAreEnabled();

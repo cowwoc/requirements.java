@@ -110,7 +110,6 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		return config.assertionsAreEnabled();

@@ -86,7 +86,6 @@ public final class Configuration implements Configurable
 	 *         shouldn't do anything
 	 */
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean assertionsAreEnabled()
 	{
 		return assertionsEnabled;

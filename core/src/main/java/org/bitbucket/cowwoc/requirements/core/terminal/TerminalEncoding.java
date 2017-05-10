@@ -95,7 +95,7 @@ public enum TerminalEncoding
 	{
 		Set<TerminalEncoding> supportedTypes = DefaultJvmScope.INSTANCE.getTerminal().
 			getSupportedTypes();
-		requireThat(supportedTypes, "supportedTypes").isNotEmpty();
+		requireThat(supportedTypes, "Terminal.getSupportedTypes()").isNotEmpty();
 		return supportedTypes.iterator().next();
 	}
 

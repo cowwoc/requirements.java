@@ -43,7 +43,6 @@ public interface CoreVerifiers extends Configurable
 	CoreVerifiers withAssertionsEnabled();
 
 	@Override
-	@SuppressWarnings("deprecation")
 	boolean assertionsAreEnabled();
 
 	/**

@@ -16,9 +16,7 @@ public interface Configurable
 	/**
 	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
 	 *         shouldn't do anything
-	 * @deprecated this method is scheduled for removal without replacement
 	 */
-	@Deprecated
 	boolean assertionsAreEnabled();
 
 	/**
