@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <string>
-#include <deque>
+#ifdef _WIN32
+	#include <deque>
+#endif
 
 #include "requirements/Util.h"
 #include "requirements/NativeTerminal.h"
