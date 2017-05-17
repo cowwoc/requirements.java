@@ -127,6 +127,12 @@ public final class NoOpStringVerifier
 	}
 
 	@Override
+	public StringVerifier isTrimmed()
+	{
+		return this;
+	}
+
+	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
 		return new NoOpPrimitiveNumberVerifier<>(config);

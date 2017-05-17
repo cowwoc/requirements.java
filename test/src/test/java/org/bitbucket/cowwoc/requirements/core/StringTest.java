@@ -115,6 +115,36 @@ public final class StringTest
 	}
 
 	@Test
+	public void isTrimmed()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "abc";
+			new Verifiers(scope).requireThat(actual, "actual").isTrimmed();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isTrimmed_LeadingWhitespace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = " abc";
+			new Verifiers(scope).requireThat(actual, "actual").isTrimmed();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isTrimmed_TrailingWhitespace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "abc ";
+			new Verifiers(scope).requireThat(actual, "actual").isTrimmed();
+		}
+	}
+
+	@Test
 	public void startsWith()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

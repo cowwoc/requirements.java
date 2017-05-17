@@ -73,6 +73,18 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	}
 
 	@Override
+	public StringVerifier isTrimmed()
+	{
+		String trimmed = actual.trim();
+		if (trimmed.equals(actual))
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not contain leading or trailing whitespace", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
 	public InetAddressVerifier asInetAddress()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.

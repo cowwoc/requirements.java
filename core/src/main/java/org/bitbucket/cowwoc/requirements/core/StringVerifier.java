@@ -105,6 +105,15 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	StringVerifier trim();
 
 	/**
+	 * Ensures that the actual value does not contain leading or trailing whitespace.
+	 *
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value is not trimmed
+	 * @see #trim()
+	 */
+	StringVerifier isTrimmed();
+
+	/**
 	 * Ensures that the actual value contains a valid Internet address format.
 	 *
 	 * @return a verifier for the Internet address representation of the value

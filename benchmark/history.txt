@@ -36,7 +36,7 @@ Benchmark                                              Mode  Cnt     Score    Er
 Main.coreAssertsDisabled                               avgt   60     3.986 +- 0.023  ns/op
 Main.coreAssertsEnabled                                avgt   60     9.092 +- 0.009  ns/op
 Main.staticAssertThat                                  avgt   60     3.975 +- 0.005  ns/op
-Main.staticAssertThat                                  avgt   60     6.443 +- 0.008  ns/op
+Main.staticAssertThat (-ea)                            avgt   60     6.443 +- 0.008  ns/op
 Main.staticRequireThat                                 avgt   60     6.544 +- 0.220  ns/op
 Main.verifiersAssertsDisabled                          avgt   60     4.351 +- 0.031  ns/op
 Main.verifiersAssertsDisabledDoesNotContainDuplicates  avgt   60     4.130 +- 0.007  ns/op
