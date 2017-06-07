@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@2.10">
+<flow-definition plugin="workflow-job@2.12">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -22,7 +22,7 @@
         </com.gem.persistentparameter.PersistentStringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.9.0">
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0">
       <maxConcurrentPerNode>0</maxConcurrentPerNode>
       <maxConcurrentTotal>0</maxConcurrentTotal>
       <categories class="java.util.concurrent.CopyOnWriteArrayList"/>
@@ -35,7 +35,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.29">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.34">
     <script>// GCC versions
 // ------------
 //
@@ -114,9 +114,9 @@ parallel windows:
                 stage(&quot;Deploy (linux-i386)&quot;)
                 {
                     // Use the same GCC version as AWS. See top of this script for more information.
-                    sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
-                    export CC=/usr/bin/gcc-4.8
-                    export CXX=/usr/bin/g++-4.8
+                    sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.7 g++-4.7 -y
+                    export CC=/usr/bin/gcc-4.7
+                    export CXX=/usr/bin/g++-4.7
                     mvn --batch-mode -V -U -e clean deploy -Plinux-x86_32-release -Dsurefire.useFile=false&apos;&apos;&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
@@ -143,9 +143,9 @@ parallel windows:
                 stage(&quot;Deploy (linux-amd64)&quot;)
                 {
                     // Use the same GCC version as AWS. See top of this script for more information.
-                    sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.8 g++-4.8 -y
-                    export CC=/usr/bin/gcc-4.8
-                    export CXX=/usr/bin/g++-4.8
+                    sh script: &apos;&apos;&apos;sudo apt-get install cmake gcc-4.7 g++-4.7 -y
+                    export CC=/usr/bin/gcc-4.7
+                    export CXX=/usr/bin/g++-4.7
                     mvn --batch-mode -V -U -e clean deploy -Plinux-x86_64-release -Dsurefire.useFile=false&apos;&apos;&apos;
                     archiveArtifacts &apos;**/target/*.jar&apos;
                 }
@@ -183,4 +183,5 @@ failFast: true</script>
   </definition>
   <triggers/>
   <quietPeriod>60</quietPeriod>
+  <disabled>false</disabled>
 </flow-definition>
