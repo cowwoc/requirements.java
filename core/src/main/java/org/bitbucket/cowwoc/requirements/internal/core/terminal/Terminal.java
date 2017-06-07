@@ -177,7 +177,7 @@ public final class Terminal
 		if (os.type == WINDOWS)
 		{
 			// Only Windows needs nativeSetEncoding() to be invoked
-			if (nativeSetEncoding(encoding) || force)
+			if (nativeSetEncoding(encoding, force) || force)
 			{
 				log.debug("Setting {}", encoding);
 				this.encoding.set(encoding);
@@ -195,9 +195,10 @@ public final class Terminal
 	 *
 	 * @param encoding the type of encoding that verifiers will output (null if the best available
 	 *                 encoding should be used)
+	 * @param force    true if the encoding should be forced regardless of what the system supports
 	 * @return true on success
 	 */
-	private boolean nativeSetEncoding(TerminalEncoding encoding)
+	private boolean nativeSetEncoding(TerminalEncoding encoding, boolean force)
 	{
 		return nativeTerminal.map(terminal ->
 		{
@@ -208,7 +209,10 @@ public final class Terminal
 			}
 			catch (IOException e)
 			{
-				log.error("", e);
+				if (force)
+					log.debug("", e);
+				else
+					log.warn("", e);
 				return false;
 			}
 		}).orElse(false);
