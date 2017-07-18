@@ -44,13 +44,14 @@ public final class Requirements
 	/**
 	 * Verifies an {@code Object}.
 	 *
+	 * @param <T>    the type of the value
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static ObjectVerifier<Object> requireThat(Object actual, String name)
+	public static <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
 		return DELEGATE.requireThat(actual, name);
 	}
@@ -59,13 +60,14 @@ public final class Requirements
 	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
+	 * @param <T>    the type of the value
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static ObjectVerifier<Object> assertThat(Object actual, String name)
+	public static <T> ObjectVerifier<T> assertThat(T actual, String name)
 	{
 		return DELEGATE.assertThat(actual, name);
 	}
