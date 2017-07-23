@@ -5,6 +5,8 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Random;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -271,6 +273,21 @@ public final class ObjectTest
 			Integer actual = 5;
 			new Verifiers(scope).withException(IllegalStateException.class).
 				requireThat(actual, "actual").isNotNull();
+		}
+	}
+
+	/**
+	 * BUG: isEqualTo() was throwing AssertionError if actual.class != expected.class.
+	 */
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEqualToDifferentClassType()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new HashSet<>(Arrays.asList(1));
+			Object expected = new LinkedHashSet<>(Arrays.asList(2));
+
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 

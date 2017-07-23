@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * An entry point for verifying API requirements.
@@ -25,10 +25,7 @@ import java.util.function.Supplier;
 public interface CoreVerifiers extends Configurable
 {
 	@Override
-	CoreVerifiers addContext(String key, Object value);
-
-	@Override
-	CoreVerifiers addContext(String key, Supplier<String> value);
+	CoreVerifiers addContext(String name, Object value);
 
 	@Override
 	CoreVerifiers withDefaultException();
@@ -43,7 +40,16 @@ public interface CoreVerifiers extends Configurable
 	CoreVerifiers withAssertionsEnabled();
 
 	@Override
-	boolean assertionsAreEnabled();
+	CoreVerifiers withDiff();
+
+	@Override
+	CoreVerifiers withoutDiff();
+
+	@Override
+	<T> CoreVerifiers withStringConverter(Class<T> type, Function<T, String> converter);
+
+	@Override
+	<T> CoreVerifiers withoutStringConverter(Class<T> type);
 
 	/**
 	 * Verifies an {@code Object}.

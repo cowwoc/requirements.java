@@ -26,6 +26,18 @@ import org.testng.annotations.Test;
 public final class DiffTest
 {
 	/**
+	 * A class whose instances have the same toString() but are never equal.
+	 */
+	private static final class SameToStringDifferentHashCode
+	{
+		@Override
+		public String toString()
+		{
+			return "SameToStringDifferentHashCode";
+		}
+	}
+
+	/**
 	 * Ensure that text-mode diffs generate the expected value.
 	 */
 	@Test
@@ -354,5 +366,28 @@ public final class DiffTest
 	{
 		int result = Strings.lastConsecutiveIndexOf("1 ", " ");
 		assert (result == 1): result;
+	}
+
+	/**
+	 * BUG: If actual != expected but their string value is identical, then actual's string value
+	 * should be included in the output, but is not.
+	 */
+	@Test
+	public void stringValueIsEqual()
+	{
+		SameToStringDifferentHashCode actual =
+			new SameToStringDifferentHashCode();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(
+				new SameToStringDifferentHashCode());
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains(actual.toString())):
+				"Was expecting output to contain actual value, but did not.\n" +
+				"\nActual:\n" + actualMessage;
+		}
 	}
 }

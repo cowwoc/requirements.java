@@ -5,14 +5,13 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * Default implementation of {@code GuavaVerifiers}.
@@ -158,18 +157,30 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	}
 
 	@Override
-	public GuavaVerifiers addContext(String key, Object value)
+	public GuavaVerifiers addContext(String name, Object value)
 	{
-		Configuration newConfig = config.addContext(key, value);
+		Configuration newConfig = config.addContext(name, value);
 		if (newConfig.equals(config))
 			return this;
 		return new GuavaVerifiersImpl(scope, newConfig);
 	}
 
 	@Override
-	public GuavaVerifiers addContext(String key, Supplier<String> value)
+	public <T> GuavaVerifiers withStringConverter(Class<T> type, Function<T, String> converter)
 	{
-		return addContext(key, new ToStringSupplier(value));
+		Configuration newConfig = config.withStringConverter(type, converter);
+		if (newConfig.equals(config))
+			return this;
+		return new GuavaVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public <T> GuavaVerifiers withoutStringConverter(Class<T> type)
+	{
+		Configuration newConfig = config.withoutStringConverter(type);
+		if (newConfig.equals(config))
+			return this;
+		return new GuavaVerifiersImpl(scope, newConfig);
 	}
 
 	@Override

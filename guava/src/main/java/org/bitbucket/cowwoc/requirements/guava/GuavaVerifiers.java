@@ -21,7 +21,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 public interface GuavaVerifiers extends Configurable
 {
 	@Override
-	GuavaVerifiers addContext(String key, Object value);
+	GuavaVerifiers addContext(String name, Object value);
 
 	@Override
 	GuavaVerifiers withDefaultException();

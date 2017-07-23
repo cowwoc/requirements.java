@@ -54,12 +54,12 @@ public final class UsageTest
 			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{
-				verifier.addContext("MyKey", "SomeContext").
+				verifier.addContext("SomeName", "SomeContext").
 					requireThat(bucket, "bucket").contains(duration);
 			}
 			catch (IllegalArgumentException e)
 			{
-				if (!e.getMessage().contains("MyKey") || !e.getMessage().contains("SomeContext"))
+				if (!e.getMessage().contains("SomeName") || !e.getMessage().contains("SomeContext"))
 					throw new AssertionError(e);
 			}
 		}

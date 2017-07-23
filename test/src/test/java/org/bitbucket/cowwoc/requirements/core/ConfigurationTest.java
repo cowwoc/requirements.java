@@ -4,6 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -16,17 +23,27 @@ import org.testng.annotations.Test;
 public final class ConfigurationTest
 {
 	@Test
-	public void contextWithCustomToString()
+	public void withStringConverter()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String value = "1+1=";
-			new Verifiers(scope).addContext("key", () -> value + "2").
-				requireThat("actual", "actual").isEqualTo("expected");
+			Set<Integer> actual = Sets.newLinkedHashSetWithExpectedSize(2);
+			actual.add(1);
+			actual.add(2);
+
+			Set<Integer> notEqual = Collections.emptySet();
+
+			new Verifiers(scope).withStringConverter(LinkedHashSet.class, s ->
+			{
+				@SuppressWarnings("unchecked")
+				List<Integer> result = new ArrayList<>(s);
+				Collections.sort(result, Comparator.reverseOrder());
+				return result.toString();
+			}).requireThat(actual, "actual").isEqualTo(notEqual);
 		}
 		catch (IllegalArgumentException e)
 		{
-			requireThat(e.getMessage(), "e.getMessage()").contains("1+1=2");
+			requireThat(e.getMessage(), "e.getMessage()").contains("[2, 1]");
 		}
 	}
 }

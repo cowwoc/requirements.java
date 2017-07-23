@@ -101,7 +101,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be one of %s.", this.name, collection)).
-			addContext("Actual", Arrays.toString(actual)).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -114,7 +114,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be in %s.", this.name, collection)).
-			addContext("Actual", Arrays.toString(actual)).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -275,7 +275,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public StringVerifier asString()
 	{
-		return new StringVerifierImpl(scope, Arrays.toString(actual), name, config);
+		return new StringVerifierImpl(scope, config.toString(actual), name, config);
 	}
 
 	@Override

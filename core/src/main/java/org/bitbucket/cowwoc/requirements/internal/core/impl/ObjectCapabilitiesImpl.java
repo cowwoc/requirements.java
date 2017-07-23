@@ -33,7 +33,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 * @param o an object
 	 * @return {@code null} if the object is null; otherwise, {@code o.getClass().getName()}
 	 */
-	private static String getNullableType(Object o)
+	private static String getNullOrClassName(Object o)
 	{
 		if (o == null)
 			return "null";
@@ -208,7 +208,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public StringVerifier asString()
 	{
-		return new StringVerifierImpl(scope, actual.toString(), name, config);
+		return new StringVerifierImpl(scope, config.toString(actual), name, config);
 	}
 
 	@Override
@@ -235,6 +235,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 */
 	private class Comparison
 	{
+		public final String actualRawValue;
 		public final String actualName;
 		public final String actualValue;
 		public final String expectedName;
@@ -250,13 +251,12 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		 */
 		Comparison(Object actual, Object expected)
 		{
-			assert (actual == null || expected == null || actual.getClass().equals(expected.getClass())):
-				"actual: " + actual + ", expected: " + expected;
+			this.actualRawValue = config.toString(actual);
 
 			String actualName;
 			String expectedName;
-			String actualValue = Objects.toString(actual);
-			String expectedValue = Objects.toString(expected);
+			String actualValue = this.actualRawValue;
+			String expectedValue = config.toString(expected);
 			Class<?> actualType;
 			if (actual == null)
 				actualType = null;
@@ -264,8 +264,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 				actualType = actual.getClass();
 			if (actualValue.equals(expectedValue))
 			{
-				actualValue = getNullableType(actual);
-				expectedValue = getNullableType(expected);
+				actualValue = getNullOrClassName(actual);
+				expectedValue = getNullOrClassName(expected);
 				if (actualValue.equals(expectedValue))
 				{
 					actualValue = String.valueOf(Objects.hashCode(actual));
@@ -292,7 +292,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		}
 
 		/**
-		 * @return the list of key-value pairs to append to the exception message
+		 * @return the list of name-value pairs to append to the exception message
 		 */
 		public List<Entry<String, Object>> getContext()
 		{
@@ -312,7 +312,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			if (!actualName.equals("Actual"))
 			{
 				// Include the string value even if it is equal
-				result.add(new SimpleImmutableEntry<>("Actual", Objects.toString(actual)));
+				result.add(new SimpleImmutableEntry<>("Actual", config.toString(actualRawValue)));
 			}
 			if (lines == 1)
 			{

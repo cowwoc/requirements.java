@@ -925,6 +925,60 @@ public final class ArrayTest
 	}
 
 	@Test
+	public void primitiveToStringConverter()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[]
+			{
+				2,
+				1,
+				3
+			};
+			new Verifiers(scope).withStringConverter(int[].class, o -> "primitive[]").
+				requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains("primitive[]")): "Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void objectToStringConverter()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new String[]
+			{
+				"1",
+				"2",
+				"3"
+			};
+			Object expected = new String[]
+			{
+				"2",
+				"1",
+				"3"
+			};
+			new Verifiers(scope).withStringConverter(Object[].class, o -> "object[]").
+				requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains("object[]")): "Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

@@ -5,13 +5,12 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.ForwardingGuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * An entry point for verifying API requirements.
@@ -153,22 +152,16 @@ public final class Verifiers extends AbstractCoreVerifiers
 	}
 
 	@Override
-	public Verifiers addContext(String key, Object value)
+	public Verifiers addContext(String name, Object value)
 	{
-		Configuration newConfig = config.addContext(key, value);
+		Configuration newConfig = config.addContext(name, value);
 		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
 			map(v -> v.withConfiguration(newConfig));
 		return new Verifiers(scope, newConfig, newGuavaVerifiers);
 	}
 
 	@Override
-	public Verifiers addContext(String key, Supplier<String> value)
-	{
-		return addContext(key, new ToStringSupplier(value));
-	}
-
-	@Override
-	public Configurable withDiff()
+	public Verifiers withDiff()
 	{
 		Configuration newConfig = config.withDiff();
 		if (newConfig.equals(config))
@@ -179,9 +172,31 @@ public final class Verifiers extends AbstractCoreVerifiers
 	}
 
 	@Override
-	public Configurable withoutDiff()
+	public Verifiers withoutDiff()
 	{
 		Configuration newConfig = config.withoutDiff();
+		if (newConfig.equals(config))
+			return this;
+		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
+			map(v -> v.withConfiguration(newConfig));
+		return new Verifiers(scope, newConfig, newGuavaVerifiers);
+	}
+
+	@Override
+	public <T> Verifiers withStringConverter(Class<T> type, Function<T, String> converter)
+	{
+		Configuration newConfig = config.withStringConverter(type, converter);
+		if (newConfig.equals(config))
+			return this;
+		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
+			map(v -> v.withConfiguration(newConfig));
+		return new Verifiers(scope, newConfig, newGuavaVerifiers);
+	}
+
+	@Override
+	public <T> Verifiers withoutStringConverter(Class<T> type)
+	{
+		Configuration newConfig = config.withoutStringConverter(type);
 		if (newConfig.equals(config))
 			return this;
 		Optional<GuavaVerifiers> newGuavaVerifiers = guavaVerifiers.
