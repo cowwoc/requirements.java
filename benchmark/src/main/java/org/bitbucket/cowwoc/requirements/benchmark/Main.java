@@ -97,25 +97,25 @@ public class Main
 	@Benchmark
 	public StringVerifier verifiersRequireThat()
 	{
-		return new Verifiers().requireThat(value, name).isNotNull().isNotEmpty();
+		return new Verifiers().requireThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
 	public StringVerifier staticRequireThat()
 	{
-		return requireThat(value, name).isNotNull().isNotEmpty();
+		return requireThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
 	public CollectionVerifier<?, ?> verifiersRequireThatDoesNotContainDuplicates()
 	{
-		return new Verifiers().requireThat(list, name).doesNotContainDuplicates();
+		return new Verifiers().requireThat(name, list).doesNotContainDuplicates();
 	}
 
 	@Benchmark
 	public CollectionVerifier<?, ?> verifiersAssertsDisabledDoesNotContainDuplicates()
 	{
-		return new Verifiers().withAssertionsDisabled().assertThat(list, name).
+		return new Verifiers().withAssertionsDisabled().assertThat(name, list).
 			doesNotContainDuplicates();
 	}
 }

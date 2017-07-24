@@ -26,6 +26,6 @@ public final class VerifiersTest
 		Verifiers second = new Verifiers();
 		second = second.addContext("name2", "value2");
 
-		assertThat(first.config, "first.config").isNotEqualTo(second.config, "second.config");
+		assertThat("first.config", first.config).isNotEqualTo("second.config", second.config);
 	}
 }

@@ -41,15 +41,15 @@ public final class Requirements
 	 *
 	 * @param <K>    the type of key in the multimap
 	 * @param <V>    the type of value in the multimap
-	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
+	 * @param actual the actual value of the parameter
 	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
+	public static <K, V> MultimapVerifier<K, V> requireThat(String name, Multimap<K, V> actual)
 	{
-		return DELEGATE.requireThat(actual, name);
+		return DELEGATE.requireThat(name, actual);
 	}
 
 	/**
@@ -58,15 +58,15 @@ public final class Requirements
 	 *
 	 * @param <K>    the type of key in the multimap
 	 * @param <V>    the type of value in the multimap
-	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
+	 * @param actual the actual value of the parameter
 	 * @return a verifier for the parameter
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name)
+	public static <K, V> MultimapVerifier<K, V> assertThat(String name, Multimap<K, V> actual)
 	{
-		return DELEGATE.assertThat(actual, name);
+		return DELEGATE.assertThat(name, actual);
 	}
 
 	/**

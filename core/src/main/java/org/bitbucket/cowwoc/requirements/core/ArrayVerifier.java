@@ -44,14 +44,15 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array contains an element.
 	 *
-	 * @param expected the element
 	 * @param name     the name of the element
+	 * @param expected the element
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array does not contain {@code expected}; if
-	 *                                  {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array does not contain
+	 *                                  {@code expected}
+	 *
 	 */
-	ArrayVerifier<E> contains(E expected, String name)
+	ArrayVerifier<E> contains(String name, E expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
@@ -70,15 +71,15 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array contains the specified elements; nothing less, nothing more.
 	 *
-	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
+	 * @param expected the elements that must exist
 	 * @return this
-	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected};
-	 *                                  if the array contains any element not found in
-	 *                                  {@code expected}; if {@code name} is empty
+	 * @throws NullPointerException     if {@code name} or {@code expected} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array is missing any element
+	 *                                  found in {@code expected}; if the array contains any element
+	 *                                  not found in {@code expected}
 	 */
-	ArrayVerifier<E> containsExactly(Collection<E> expected, String name)
+	ArrayVerifier<E> containsExactly(String name, Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
@@ -95,14 +96,15 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array contains any of the specified elements.
 	 *
-	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
+	 * @param expected the elements that must exist
 	 * @return this
-	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}; if
-	 *                                  {@code name} is empty
+	 * @throws NullPointerException     if {@code name} or {@code expected} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array does not contain any
+	 *                                  of {@code expected}
+	 *
 	 */
-	ArrayVerifier<E> containsAny(Collection<E> expected, String name)
+	ArrayVerifier<E> containsAny(String name, Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
@@ -119,14 +121,14 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array contains all of the specified elements.
 	 *
-	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
+	 * @param expected the elements that must exist
 	 * @return this
-	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}; if
-	 *                                  {@code name} is empty
+	 * @throws NullPointerException     if {@code name} or {@code expected} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array does not contain all
+	 *                                  of {@code expected}
 	 */
-	ArrayVerifier<E> containsAll(Collection<E> expected, String name)
+	ArrayVerifier<E> containsAll(String name, Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
@@ -141,14 +143,14 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array does not contain an element.
 	 *
-	 * @param element the element that must not exist
 	 * @param name    the name of the element
+	 * @param element the element that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array contains {@code element}; if {@code name} is
-	 *                                  empty
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array contains
+	 *                                  {@code element}
 	 */
-	ArrayVerifier<E> doesNotContain(E element, String name)
+	ArrayVerifier<E> doesNotContain(String name, E element)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
@@ -165,14 +167,14 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array does not contain any of the specified elements.
 	 *
-	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
+	 * @param elements the elements that must not exist
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains any of {@code elements}; if {@code name}
-	 *                                  is empty
+	 * @throws NullPointerException     if {@code name} or {@code elements} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array contains any of
+	 *                                  {@code elements}
 	 */
-	ArrayVerifier<E> doesNotContainAny(Collection<E> elements, String name)
+	ArrayVerifier<E> doesNotContainAny(String name, Collection<E> elements)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
@@ -189,14 +191,14 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	/**
 	 * Ensures that the array does not contain all of specified elements.
 	 *
-	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
+	 * @param elements the elements that must not exist
 	 * @return this
-	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains all of {@code elements}; if {@code name}
-	 *                                  is empty
+	 * @throws NullPointerException     if {@code name} or {@code elements} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array contains all of
+	 *                                  {@code elements}
 	 */
-	ArrayVerifier<E> doesNotContainAll(Collection<E> elements, String name)
+	ArrayVerifier<E> doesNotContainAll(String name, Collection<E> elements)
 		throws NullPointerException, IllegalArgumentException;
 
 	/**

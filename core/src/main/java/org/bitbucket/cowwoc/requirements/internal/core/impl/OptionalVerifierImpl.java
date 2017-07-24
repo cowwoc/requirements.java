@@ -23,16 +23,16 @@ public final class OptionalVerifierImpl
 	 * Creates new OptionalVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public OptionalVerifierImpl(ApplicationScope scope, Optional<?> actual, String name,
+	public OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public final class OptionalVerifierImpl
 	}
 
 	@Override
-	public OptionalVerifier contains(Object expected, String name)
+	public OptionalVerifier contains(String name, Object expected)
 	{
 		Optional<?> expectedOptional = Optional.ofNullable(expected);
 		if (actual.equals(expectedOptional))

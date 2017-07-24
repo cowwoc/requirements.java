@@ -20,7 +20,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, null);
+			new Verifiers(scope).requireThat(null, actual);
 		}
 	}
 
@@ -30,7 +30,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "");
+			new Verifiers(scope).requireThat("", actual);
 		}
 	}
 
@@ -42,7 +42,7 @@ public final class NumberTest
 			Integer actual = 0;
 			int first = 0;
 			int last = 2;
-			new Verifiers(scope).requireThat(actual, "actual").isBetween(first, last);
+			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -54,7 +54,7 @@ public final class NumberTest
 			Integer actual = 1;
 			int first = 0;
 			int last = 2;
-			new Verifiers(scope).requireThat(actual, "actual").isBetween(first, last);
+			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -66,7 +66,7 @@ public final class NumberTest
 			Integer actual = 2;
 			int first = 0;
 			int last = 2;
-			new Verifiers(scope).requireThat(actual, "actual").isBetween(first, last);
+			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -78,7 +78,7 @@ public final class NumberTest
 			Integer actual = 1;
 			int first = 10;
 			int last = 20;
-			new Verifiers(scope).requireThat(actual, "actual").isBetween(first, last);
+			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -88,7 +88,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Verifiers(scope).requireThat(actual, "actual").isNegative();
+			new Verifiers(scope).requireThat("actual", actual).isNegative();
 		}
 	}
 
@@ -98,7 +98,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Verifiers(scope).requireThat(actual, "actual").isNegative();
+			new Verifiers(scope).requireThat("actual", actual).isNegative();
 		}
 	}
 
@@ -108,7 +108,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNegative();
+			new Verifiers(scope).requireThat("actual", actual).isNegative();
 		}
 	}
 
@@ -119,10 +119,10 @@ public final class NumberTest
 		{
 			Verifiers verifiers = new Verifiers(scope);
 			Integer actual = 0;
-			verifiers.requireThat(actual, "actual").isNotNegative();
+			verifiers.requireThat("actual", actual).isNotNegative();
 
 			actual = 1;
-			verifiers.requireThat(actual, "actual").isNotNegative();
+			verifiers.requireThat("actual", actual).isNotNegative();
 		}
 	}
 
@@ -132,7 +132,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNegative();
+			new Verifiers(scope).requireThat("actual", actual).isNotNegative();
 		}
 	}
 
@@ -142,7 +142,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Verifiers(scope).requireThat(actual, "actual").isZero();
+			new Verifiers(scope).requireThat("actual", actual).isZero();
 		}
 	}
 
@@ -152,7 +152,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isZero();
+			new Verifiers(scope).requireThat("actual", actual).isZero();
 		}
 	}
 
@@ -162,7 +162,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Verifiers(scope).requireThat(actual, "actual").isZero();
+			new Verifiers(scope).requireThat("actual", actual).isZero();
 		}
 	}
 
@@ -173,10 +173,10 @@ public final class NumberTest
 		{
 			Verifiers verifiers = new Verifiers(scope);
 			Integer actual = -1;
-			verifiers.requireThat(actual, "actual").isNotZero();
+			verifiers.requireThat("actual", actual).isNotZero();
 
 			actual = 1;
-			verifiers.requireThat(actual, "actual").isNotZero();
+			verifiers.requireThat("actual", actual).isNotZero();
 		}
 	}
 
@@ -186,7 +186,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Verifiers(scope).requireThat(actual, "actual").isNotZero();
+			new Verifiers(scope).requireThat("actual", actual).isNotZero();
 		}
 	}
 
@@ -196,7 +196,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isPositive();
+			new Verifiers(scope).requireThat("actual", actual).isPositive();
 		}
 	}
 
@@ -206,7 +206,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Verifiers(scope).requireThat(actual, "actual").isPositive();
+			new Verifiers(scope).requireThat("actual", actual).isPositive();
 		}
 	}
 
@@ -216,7 +216,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Verifiers(scope).requireThat(actual, "actual").isPositive();
+			new Verifiers(scope).requireThat("actual", actual).isPositive();
 		}
 	}
 
@@ -227,10 +227,10 @@ public final class NumberTest
 		{
 			Verifiers verifiers = new Verifiers(scope);
 			Integer actual = 0;
-			verifiers.requireThat(actual, "actual").isNotPositive();
+			verifiers.requireThat("actual", actual).isNotPositive();
 
 			actual = -1;
-			verifiers.requireThat(actual, "actual").isNotPositive();
+			verifiers.requireThat("actual", actual).isNotPositive();
 		}
 	}
 
@@ -240,7 +240,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNotPositive();
+			new Verifiers(scope).requireThat("actual", actual).isNotPositive();
 		}
 	}
 
@@ -250,7 +250,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThan(1, "expected");
+			new Verifiers(scope).requireThat("actual", actual).isLessThan("expected", 1);
 		}
 	}
 
@@ -260,7 +260,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThan(1);
+			new Verifiers(scope).requireThat("actual", actual).isLessThan(1);
 		}
 	}
 
@@ -270,7 +270,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThan(1, "expected");
+			new Verifiers(scope).requireThat("actual", actual).isLessThan("expected", 1);
 		}
 	}
 
@@ -280,7 +280,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThan(1);
+			new Verifiers(scope).requireThat("actual", actual).isLessThan(1);
 		}
 	}
 
@@ -290,7 +290,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 2;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThan(1, "expected");
+			new Verifiers(scope).requireThat("actual", actual).isLessThan("expected", 1);
 		}
 	}
 
@@ -300,7 +300,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 2;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThan(1);
+			new Verifiers(scope).requireThat("actual", actual).isLessThan(1);
 		}
 	}
 
@@ -310,8 +310,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").
-				isLessThanOrEqualTo(1, "expected");
+			new Verifiers(scope).requireThat("actual", actual).
+				isLessThanOrEqualTo("expected", 1);
 		}
 	}
 
@@ -321,7 +321,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThanOrEqualTo(1);
+			new Verifiers(scope).requireThat("actual", actual).isLessThanOrEqualTo(1);
 		}
 	}
 
@@ -331,8 +331,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 3;
-			new Verifiers(scope).requireThat(actual, "actual").
-				isLessThanOrEqualTo(2, "expected");
+			new Verifiers(scope).requireThat("actual", actual).
+				isLessThanOrEqualTo("expected", 2);
 		}
 	}
 
@@ -342,7 +342,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 3;
-			new Verifiers(scope).requireThat(actual, "actual").isLessThanOrEqualTo(2);
+			new Verifiers(scope).requireThat("actual", actual).isLessThanOrEqualTo(2);
 		}
 	}
 
@@ -352,7 +352,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThan(0, "expected");
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThan("expected", 0);
 		}
 	}
 
@@ -362,7 +362,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThan(0);
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThan(0);
 		}
 	}
 
@@ -372,7 +372,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThan(1, "expected");
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThan("expected", 1);
 		}
 	}
 
@@ -382,7 +382,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThan(1);
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThan(1);
 		}
 	}
 
@@ -392,7 +392,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThan(2, "expected");
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThan("expected", 2);
 		}
 	}
 
@@ -402,7 +402,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThan(2);
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThan(2);
 		}
 	}
 
@@ -412,8 +412,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").
-				isGreaterThanOrEqualTo(1, "expected");
+			new Verifiers(scope).requireThat("actual", actual).
+				isGreaterThanOrEqualTo("expected", 1);
 		}
 	}
 
@@ -423,7 +423,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(1);
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThanOrEqualTo(1);
 		}
 	}
 
@@ -433,8 +433,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").
-				isGreaterThanOrEqualTo(2, "expected");
+			new Verifiers(scope).requireThat("actual", actual).
+				isGreaterThanOrEqualTo("expected", 2);
 		}
 	}
 
@@ -444,7 +444,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(2);
+			new Verifiers(scope).requireThat("actual", actual).isGreaterThanOrEqualTo(2);
 		}
 	}
 
@@ -454,7 +454,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Verifiers(scope).requireThat(actual, "actual").isFinite();
+			new Verifiers(scope).requireThat("actual", actual).isFinite();
 		}
 	}
 
@@ -464,7 +464,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0 / 0.0;
-			new Verifiers(scope).requireThat(actual, "actual").isFinite();
+			new Verifiers(scope).requireThat("actual", actual).isFinite();
 		}
 	}
 
@@ -474,7 +474,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0 / 0.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNotFinite();
+			new Verifiers(scope).requireThat("actual", actual).isNotFinite();
 		}
 	}
 
@@ -484,7 +484,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNotFinite();
+			new Verifiers(scope).requireThat("actual", actual).isNotFinite();
 		}
 	}
 
@@ -494,7 +494,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNumber();
+			new Verifiers(scope).requireThat("actual", actual).isNumber();
 		}
 	}
 
@@ -504,7 +504,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 0.0 / 0.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNumber();
+			new Verifiers(scope).requireThat("actual", actual).isNumber();
 		}
 	}
 
@@ -514,7 +514,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 0.0 / 0.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNumber();
+			new Verifiers(scope).requireThat("actual", actual).isNotNumber();
 		}
 	}
 
@@ -524,7 +524,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNumber();
+			new Verifiers(scope).requireThat("actual", actual).isNotNumber();
 		}
 	}
 
@@ -535,7 +535,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			byte actual = (byte) 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -546,7 +546,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			byte actual = (byte) 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -557,7 +557,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			short actual = (short) 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -568,7 +568,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			short actual = (short) 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -579,7 +579,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -590,7 +590,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -601,7 +601,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			long actual = 1L;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -612,7 +612,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			long actual = 1L;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -623,7 +623,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			float actual = 1.0F;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -634,7 +634,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			float actual = 1.0F;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -645,7 +645,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -656,7 +656,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.0;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -667,7 +667,7 @@ public final class NumberTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Integer actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -677,7 +677,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 5;
-			new Verifiers(scope).withAssertionsEnabled().requireThat(actual, "actual").isGreaterThan(10);
+			new Verifiers(scope).withAssertionsEnabled().requireThat("actual", actual).isGreaterThan(10);
 		}
 	}
 
@@ -687,7 +687,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 5.5;
-			new Verifiers(scope).withAssertionsEnabled().requireThat(actual, "actual").isGreaterThan(10.5);
+			new Verifiers(scope).withAssertionsEnabled().requireThat("actual", actual).isGreaterThan(10.5);
 		}
 	}
 }

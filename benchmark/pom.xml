@@ -9,9 +9,6 @@
 	<artifactId>requirements-benchmark</artifactId>
 	<packaging>jar</packaging>
 	<name>Requirements-Benchmark</name>
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
 	<dependencies>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>

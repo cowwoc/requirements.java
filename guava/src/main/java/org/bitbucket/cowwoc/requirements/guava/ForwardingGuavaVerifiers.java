@@ -37,14 +37,14 @@ public interface ForwardingGuavaVerifiers extends GuavaVerifiers
 	}
 
 	@Override
-	default <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
+	default <K, V> MultimapVerifier<K, V> requireThat(String name, Multimap<K, V> actual)
 	{
-		return guavaVerifiers().requireThat(actual, name);
+		return guavaVerifiers().requireThat(name, actual);
 	}
 
 	@Override
-	default <K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name)
+	default <K, V> MultimapVerifier<K, V> assertThat(String name, Multimap<K, V> actual)
 	{
-		return guavaVerifiers().assertThat(actual, name);
+		return guavaVerifiers().assertThat(name, actual);
 	}
 }

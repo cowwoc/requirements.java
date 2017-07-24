@@ -46,24 +46,24 @@ public interface GuavaVerifiers extends Configurable
 	 *
 	 * @param <K>    the type of key in the multimap
 	 * @param <V>    the type of value in the multimap
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name);
+	<K, V> MultimapVerifier<K, V> requireThat(String name, Multimap<K, V> actual);
 
 	/**
 	 * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <K>    the type of key in the multimap
 	 * @param <V>    the type of value in the multimap
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	<K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name);
+	<K, V> MultimapVerifier<K, V> assertThat(String name, Multimap<K, V> actual);
 }

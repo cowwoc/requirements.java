@@ -22,16 +22,16 @@ public final class PrimitiveFloatVerifierImpl
 	 * Creates new PrimitiveFloatVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveFloatVerifierImpl(ApplicationScope scope, Float actual, String name,
+	public PrimitiveFloatVerifierImpl(ApplicationScope scope, String name, Float actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override

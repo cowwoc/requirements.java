@@ -52,8 +52,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
 	}
 	protected final ApplicationScope scope;
-	protected final T actual;
 	protected final String name;
+	protected final T actual;
 	protected final Configuration config;
 	private final boolean diffEnabled;
 
@@ -61,21 +61,21 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 * Creates new ObjectCapabilitiesImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ObjectCapabilitiesImpl(ApplicationScope scope, T actual, String name, Configuration config)
+	public ObjectCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
 		assert (scope != null): "scope may not be null";
 		assert (name != null): "name may not be null";
 		assert (!name.isEmpty()): "name may not be empty";
 		assert (config != null): "config may not be null";
 		this.scope = scope;
-		this.actual = actual;
 		this.name = name;
+		this.actual = actual;
 		this.config = config;
 		this.diffEnabled = scope.isDiffEnabled().get();
 	}
@@ -103,9 +103,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isEqualTo(T expected, String name)
+	public S isEqualTo(String name, T expected)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
 		List<Entry<String, Object>> context = new Comparison(actual, expected).getContext();
@@ -127,9 +127,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotEqualTo(T value, String name)
+	public S isNotEqualTo(String name, T value)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, value))
 			return getThis();
 
@@ -142,7 +142,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isIn(Collection<T> collection)
 	{
-		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
+		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (collection.contains(actual))
 			return getThis();
 
@@ -156,7 +156,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	public S isNotIn(Collection<T> collection)
 	{
 		// Use-case: actual may not be in a collection of reserved values
-		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
+		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
 
@@ -169,7 +169,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
+		scope.getInternalVerifier().requireThat("type", type).isNotNull();
 		if (type.isInstance(actual))
 			return getThis();
 

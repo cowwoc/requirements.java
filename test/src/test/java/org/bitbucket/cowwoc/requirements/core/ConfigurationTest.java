@@ -39,11 +39,11 @@ public final class ConfigurationTest
 				List<Integer> result = new ArrayList<>(s);
 				Collections.sort(result, Comparator.reverseOrder());
 				return result.toString();
-			}).requireThat(actual, "actual").isEqualTo(notEqual);
+			}).requireThat("actual", actual).isEqualTo(notEqual);
 		}
 		catch (IllegalArgumentException e)
 		{
-			requireThat(e.getMessage(), "e.getMessage()").contains("[2, 1]");
+			requireThat("e.getMessage()", e.getMessage()).contains("[2, 1]");
 		}
 	}
 }

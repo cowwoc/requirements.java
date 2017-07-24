@@ -26,11 +26,11 @@ public final class TerminalEncodingTest
 	{
 		List<TerminalEncoding> availableEncodings = new ArrayList<>(Arrays.asList(XTERM_16COLOR, NONE));
 		Collections.sort(availableEncodings, TerminalEncoding.sortByDecreasingRank());
-		requireThat(availableEncodings.get(0), "availableEncoding.get(0)").isEqualTo(XTERM_16COLOR);
+		requireThat("availableEncoding.get(0)", availableEncodings.get(0)).isEqualTo(XTERM_16COLOR);
 
 		availableEncodings = new ArrayList<>(Arrays.asList(NONE, XTERM_16COLOR));
 		Collections.sort(availableEncodings, TerminalEncoding.sortByDecreasingRank());
-		requireThat(availableEncodings.get(0), "availableEncoding.get(0)").isEqualTo(XTERM_16COLOR);
+		requireThat("availableEncoding.get(0)", availableEncodings.get(0)).isEqualTo(XTERM_16COLOR);
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public final class TerminalEncodingTest
 		{
 			Terminal terminal = jvm.getTerminal();
 			TerminalEncoding actual = terminal.getSupportedTypes().iterator().next();
-			requireThat(actual, "actual").isEqualTo(expected, "expected");
+			requireThat("actual", actual).isEqualTo("expected", expected);
 		}
 	}
 }

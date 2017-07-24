@@ -23,15 +23,15 @@ public final class BigDecimalPrecisionVerifierImpl
 	 * Creates new BigDecimalPrecisionVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public BigDecimalPrecisionVerifierImpl(ApplicationScope scope, BigDecimal actual, String name,
+	public BigDecimalPrecisionVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
 		Configuration config)
 	{
-		super(scope, actual.precision(), name + ".precision()", config);
+		super(scope, name + ".precision()", actual.precision(), config);
 	}
 
 	@Deprecated

@@ -42,10 +42,10 @@ public interface OptionalVerifier extends ObjectCapabilities<OptionalVerifier, O
 	/**
 	 * Ensures that the optional contains the expected value.
 	 *
-	 * @param expected the expected value; {@code null} matches an empty optional
 	 * @param name     the name of the expected value
+	 * @param expected the expected value ({@code null} matches an empty optional)
 	 * @return this
 	 * @throws IllegalArgumentException if the optional does not contain the specified value
 	 */
-	OptionalVerifier contains(Object expected, String name);
+	OptionalVerifier contains(String name, Object expected);
 }

@@ -21,16 +21,16 @@ public final class PrimitiveBooleanVerifierImpl
 	 * Creates new BooleanVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveBooleanVerifierImpl(ApplicationScope scope, boolean actual, String name,
+	public PrimitiveBooleanVerifierImpl(ApplicationScope scope, String name, boolean actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Deprecated

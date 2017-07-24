@@ -26,15 +26,15 @@ public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, U
 	 * Creates new UrlVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public UrlVerifierImpl(ApplicationScope scope, URL actual, String name, Configuration config)
+	public UrlVerifierImpl(ApplicationScope scope, String name, URL actual, Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, U
 		try
 		{
 			URI uri = actual.toURI();
-			return new UriVerifierImpl(scope, uri, name, config);
+			return new UriVerifierImpl(scope, name, uri, config);
 		}
 		catch (URISyntaxException e)
 		{
