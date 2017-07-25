@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -15,10 +13,8 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
-import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffResult;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
-import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 
 /**
  * Extendable implementation of {@link ObjectCapabilities}.
@@ -29,33 +25,11 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
  */
 public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities<S, T>
 {
-	/**
-	 * @param o an object
-	 * @return {@code null} if the object is null; otherwise, {@code o.getClass().getName()}
-	 */
-	private static String getNullOrClassName(Object o)
-	{
-		if (o == null)
-			return "null";
-		return o.getClass().getName();
-	}
-
-	/**
-	 * Updates the last context entry to indicate that duplicate lines were skipped.
-	 *
-	 * @param entries the exception context
-	 */
-	private static void skipDuplicateLines(List<Entry<String, Object>> entries)
-	{
-		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
-		String newValue = lastEntry.getValue() + "\n[...]\n";
-		entries.set(entries.size() - 1, new SimpleImmutableEntry<>(lastEntry.getKey(), newValue));
-	}
 	protected final ApplicationScope scope;
 	protected final String name;
 	protected final T actual;
 	protected final Configuration config;
-	private final boolean diffEnabled;
+	private final ContextGenerator contextGenerator;
 
 	/**
 	 * Creates new ObjectCapabilitiesImpl.
@@ -77,7 +51,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		this.name = name;
 		this.actual = actual;
 		this.config = config;
-		this.diffEnabled = scope.isDiffEnabled().get();
+		this.contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
 	}
 
 	/**
@@ -91,11 +65,12 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isEqualTo(T expected)
+	public S isEqualTo(Object expected)
 	{
 		if (Objects.equals(actual, expected))
 			return getThis();
-		List<Entry<String, Object>> context = new Comparison(actual, expected).getContext();
+		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
+			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s had an unexpected value.", name)).
 			addContext(context).
@@ -103,12 +78,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isEqualTo(String name, T expected)
+	public S isEqualTo(String name, Object expected)
 	{
 		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
-		List<Entry<String, Object>> context = new Comparison(actual, expected).getContext();
+		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
+			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be equal to %s.", this.name, name)).
 			addContext(context).
@@ -116,7 +92,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotEqualTo(T value)
+	public S isNotEqualTo(Object value)
 	{
 		if (!Objects.equals(actual, value))
 			return getThis();
@@ -127,7 +103,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotEqualTo(String name, T value)
+	public S isNotEqualTo(String name, Object value)
 	{
 		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, value))
@@ -140,7 +116,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isIn(Collection<T> collection)
+	public S isIn(Collection<? super T> collection)
 	{
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (collection.contains(actual))
@@ -153,7 +129,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotIn(Collection<T> collection)
+	public S isNotIn(Collection<? super T> collection)
 	{
 		// Use-case: actual may not be in a collection of reserved values
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
@@ -173,13 +149,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (type.isInstance(actual))
 			return getThis();
 
-		Class<?> actualClass;
+		String actualClass;
 		if (actual == null)
-			actualClass = null;
+			actualClass = "null";
 		else
-			actualClass = actual.getClass();
+			actualClass = actual.getClass().getName();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be an instance of %s.", name, type)).
+			String.format("%s must be an instance of %s.", name, type.getName())).
 			addContext("Actual", actualClass).
 			build();
 	}
@@ -230,149 +206,4 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		return actual;
 	}
 
-	/**
-	 * The values to compare.
-	 */
-	private class Comparison
-	{
-		public final String actualRawValue;
-		public final String actualName;
-		public final String actualValue;
-		public final String expectedName;
-		public final String expectedValue;
-		/**
-		 * True if the type of values being compared should be diffed.
-		 */
-		public final boolean diffableType;
-
-		/**
-		 * @param actual   the actual value
-		 * @param expected the expected value
-		 */
-		Comparison(Object actual, Object expected)
-		{
-			this.actualRawValue = config.toString(actual);
-
-			String actualName;
-			String expectedName;
-			String actualValue = this.actualRawValue;
-			String expectedValue = config.toString(expected);
-			Class<?> actualType;
-			if (actual == null)
-				actualType = null;
-			else
-				actualType = actual.getClass();
-			if (actualValue.equals(expectedValue))
-			{
-				actualValue = getNullOrClassName(actual);
-				expectedValue = getNullOrClassName(expected);
-				if (actualValue.equals(expectedValue))
-				{
-					actualValue = String.valueOf(Objects.hashCode(actual));
-					expectedValue = String.valueOf(Objects.hashCode(expected));
-					actualName = "Actual.hashCode";
-					expectedName = "Expected.hashCode";
-				}
-				else
-				{
-					actualName = "Actual.class";
-					expectedName = "Expected.class";
-				}
-			}
-			else
-			{
-				actualName = "Actual";
-				expectedName = "Expected";
-			}
-			this.actualName = actualName;
-			this.actualValue = actualValue;
-			this.expectedName = expectedName;
-			this.expectedValue = expectedValue;
-			this.diffableType = (actualType != boolean.class) && (actualType != Boolean.class);
-		}
-
-		/**
-		 * @return the list of name-value pairs to append to the exception message
-		 */
-		public List<Entry<String, Object>> getContext()
-		{
-			if (!diffableType || !diffEnabled)
-			{
-				List<Entry<String, Object>> result = new ArrayList<>(2);
-				result.add(new SimpleImmutableEntry<>(actualName, actualValue));
-				result.add(new SimpleImmutableEntry<>(expectedName, expectedValue));
-				return result;
-			}
-			DiffResult diff = scope.getDiffGenerator().diff(actualValue, expectedValue);
-			List<String> actual = diff.getActual();
-			List<String> middle = diff.getMiddle();
-			List<String> expected = diff.getExpected();
-			int lines = actual.size();
-			List<Entry<String, Object>> result = new ArrayList<>(2 * lines);
-			if (!actualName.equals("Actual"))
-			{
-				// Include the string value even if it is equal
-				result.add(new SimpleImmutableEntry<>("Actual", config.toString(actualRawValue)));
-			}
-			if (lines == 1)
-			{
-				result.add(new SimpleImmutableEntry<>(actualName, actual.get(0)));
-				if (!middle.isEmpty())
-					result.add(new SimpleImmutableEntry<>("Diff", middle.get(0)));
-				result.add(new SimpleImmutableEntry<>(expectedName, expected.get(0)));
-				return result;
-			}
-			assert (expected.size() == lines): "lines: " + lines + ", expected.size(): " +
-				expected.size();
-			int actualLineNumber = 1;
-			int expectedLineNumber = 1;
-			// Indicates if the previous line was identical
-			boolean skippedDupicates = false;
-			for (int i = 0; i < lines; ++i)
-			{
-				String actualLine = actual.get(i);
-				String expectedLine = expected.get(i);
-
-				if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
-				{
-					// Skip identical lines, unless they are the first or last line.
-					skippedDupicates = true;
-					++actualLineNumber;
-					++expectedLineNumber;
-					continue;
-				}
-				String actualNameForLine;
-				if (Strings.containsOnly(actualLine, diff.getPaddingMarker()))
-					actualNameForLine = actualName;
-				else
-				{
-					actualNameForLine = actualName + "@" + actualLineNumber;
-					++actualLineNumber;
-				}
-				if (skippedDupicates)
-				{
-					skippedDupicates = false;
-					skipDuplicateLines(result);
-				}
-
-				result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
-				if (!middle.isEmpty())
-					result.add(new SimpleImmutableEntry<>("Diff", middle.get(i)));
-				String expectedNameForLine;
-				if (Strings.containsOnly(expectedLine, diff.getPaddingMarker()))
-					expectedNameForLine = expectedName;
-				else
-				{
-					expectedNameForLine = expectedName + "@" + expectedLineNumber;
-					++expectedLineNumber;
-				}
-				if (i < lines - 1)
-					expectedLine += "\n";
-				result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));
-			}
-			if (skippedDupicates)
-				skipDuplicateLines(result);
-			return result;
-		}
-	}
 }

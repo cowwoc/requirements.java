@@ -162,6 +162,9 @@ public final class Configuration implements Configurable
 	}
 
 	/**
+	 * Returns a list of name-value pairs to append to the exception message. Null elements denote
+	 * empty lines.
+	 *
 	 * @return an unmodifiable list of name-value pairs to append to the exception message
 	 * @see #addContext(String, Object)
 	 */
@@ -218,12 +221,12 @@ public final class Configuration implements Configurable
 	{
 		if (o == null)
 			return "null";
-		Function<Object, String> converter;
 		Class<?> type = o.getClass();
+		Function<Object, String> converter;
 		if (type.isArray() && !type.getComponentType().isPrimitive())
 			converter = typeToStringConverter.get(Object[].class);
 		else
-			converter = typeToStringConverter.get(o.getClass());
+			converter = typeToStringConverter.get(type);
 		if (converter != null)
 			return converter.apply(o);
 		return o.toString();

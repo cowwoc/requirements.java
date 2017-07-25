@@ -38,6 +38,63 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 			return null;
 		return Arrays.asList(array);
 	}
+
+	/**
+	 * @param array an array
+	 * @param type  the type of the array
+	 * @return a list containing the elements of the array
+	 * @throws AssertionError if any of the arguments are null
+	 */
+	private static List<?> asList(Object array, Class<?> type)
+	{
+		assert (array != null);
+		assert (type != null);
+		if (!type.getComponentType().isPrimitive())
+			return Arrays.asList((Object[]) array);
+		if (type == boolean[].class)
+		{
+			boolean[] valueAsArray = (boolean[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		if (type == char[].class)
+		{
+			char[] valueAsArray = (char[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		if (type == short[].class)
+		{
+			short[] valueAsArray = (short[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		if (type == int[].class)
+		{
+			int[] valueAsArray = (int[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		if (type == long[].class)
+		{
+			long[] valueAsArray = (long[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		if (type == float[].class)
+		{
+			float[] valueAsArray = (float[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		if (type == double[].class)
+		{
+			double[] valueAsArray = (double[]) array;
+			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toList());
+		}
+		throw new AssertionError("Unexpected array type: " + type);
+	}
 	private final ApplicationScope scope;
 	private final E[] actual;
 	private final String name;
@@ -67,35 +124,71 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> isEqualTo(E[] expected)
+	public ArrayVerifier<E> isEqualTo(Object expected)
 	{
-		asCollection.isEqualTo(asList(expected));
+		if (expected != null)
+		{
+			Class<?> type = expected.getClass();
+			if (type.isArray())
+			{
+				asCollection.isEqualTo(asList(expected, type));
+				return this;
+			}
+		}
+		asCollection.isEqualTo(expected);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> isEqualTo(String name, E[] expected)
+	public ArrayVerifier<E> isEqualTo(String name, Object expected)
 	{
-		asCollection.isEqualTo(name, asList(expected));
+		if (expected != null)
+		{
+			Class<?> type = expected.getClass();
+			if (type.isArray())
+			{
+				asCollection.isEqualTo(name, asList(expected, type));
+				return this;
+			}
+		}
+		asCollection.isEqualTo(name, expected);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> isNotEqualTo(E[] value)
+	public ArrayVerifier<E> isNotEqualTo(Object value)
 	{
-		asCollection.isNotEqualTo(asList(value));
+		if (value != null)
+		{
+			Class<?> type = value.getClass();
+			if (type.isArray())
+			{
+				asCollection.isNotEqualTo(asList(value, type));
+				return this;
+			}
+		}
+		asCollection.isNotEqualTo(value);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> isNotEqualTo(String name, E[] value)
+	public ArrayVerifier<E> isNotEqualTo(String name, Object value)
 	{
-		asCollection.isNotEqualTo(name, asList(value));
+		if (value != null)
+		{
+			Class<?> type = value.getClass();
+			if (type.isArray())
+			{
+				asCollection.isNotEqualTo(name, asList(value, type));
+				return this;
+			}
+		}
+		asCollection.isNotEqualTo(name, value);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> isIn(Collection<E[]> collection)
+	public ArrayVerifier<E> isIn(Collection<? super E[]> collection)
 	{
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (collection.contains(actual))
@@ -108,7 +201,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> isNotIn(Collection<E[]> collection)
+	public ArrayVerifier<E> isNotIn(Collection<? super E[]> collection)
 	{
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (!collection.contains(actual))

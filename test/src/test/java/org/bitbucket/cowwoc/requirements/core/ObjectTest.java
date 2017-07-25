@@ -18,18 +18,6 @@ import org.testng.annotations.Test;
  */
 public final class ObjectTest
 {
-	/**
-	 * A class whose instances have the same toString() but are never equal.
-	 */
-	private static final class SameToStringDifferentHashCode
-	{
-		@Override
-		public String toString()
-		{
-			return "SameToStringDifferentHashCode";
-		}
-	}
-
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nameIsNull()
 	{

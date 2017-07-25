@@ -5,11 +5,9 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -555,6 +553,26 @@ public final class CollectionTest
 		}
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsEqualTo_expectedIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("element");
+			new Verifiers(scope).requireThat("actual", actual).size().isEqualTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsEqualTo_expectedIsNotInteger()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("element");
+			new Verifiers(scope).requireThat("actual", actual).size().isEqualTo(1L);
+		}
+	}
+
 	@Test
 	public void sizeIsNotEqualTo()
 	{
@@ -604,6 +622,26 @@ public final class CollectionTest
 		{
 			Collection<String> actual = Arrays.asList("element");
 			new Verifiers(scope).requireThat("actual", actual).size().isNotEqualTo(" ", 2);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsNotEqualTo_valueIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("element");
+			new Verifiers(scope).requireThat("actual", actual).size().isNotEqualTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sizeIsNotEqualTo_valueIsNotInteger()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("element");
+			new Verifiers(scope).requireThat("actual", actual).size().isNotEqualTo(1L);
 		}
 	}
 

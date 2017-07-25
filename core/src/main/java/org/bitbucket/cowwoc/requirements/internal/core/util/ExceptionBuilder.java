@@ -8,6 +8,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.StringJoiner;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
@@ -19,20 +20,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
  */
 public final class ExceptionBuilder
 {
-	/**
-	 * Checks if the configuration overrides the type of exception that should get thrown.
-	 *
-	 * @param type          the default type of exception to throw
-	 * @param configuration the verifier's configuration
-	 * @return the type of exception to throw
-	 */
-	private static Class<? extends RuntimeException> getExceptionType(Configuration configuration,
-		Class<? extends RuntimeException> type)
-	{
-		if (configuration == null)
-			throw new NullPointerException("configuration may not be null");
-		return configuration.getException().orElse(type);
-	}
 	private final Configuration config;
 	private Class<? extends RuntimeException> type;
 	private final String message;
@@ -154,12 +141,15 @@ public final class ExceptionBuilder
 			mergedContext.addAll(contextPostfix);
 		}
 
-		int maxKeyLength = mergedContext.stream().map(Entry::getKey).mapToInt(String::length).max().
-			orElse(0);
+		int maxKeyLength = mergedContext.stream().filter(Objects::nonNull).map(Entry::getKey).
+			mapToInt(String::length).max().orElse(0);
 		for (Entry<String, Object> entry: mergedContext)
 		{
-			messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
-				config.toString(entry.getValue())));
+			if (entry == null)
+				messageWithContext.add("");
+			else
+				messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
+					config.toString(entry.getValue())));
 		}
 		return Exceptions.createException(type, messageWithContext.toString(), cause, apiInStacktrace);
 	}

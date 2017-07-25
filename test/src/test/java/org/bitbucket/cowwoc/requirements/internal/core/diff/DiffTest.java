@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.diff;
 
+import org.bitbucket.cowwoc.requirements.core.SameToStringDifferentHashCode;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -25,18 +26,6 @@ import org.testng.annotations.Test;
  */
 public final class DiffTest
 {
-	/**
-	 * A class whose instances have the same toString() but are never equal.
-	 */
-	private static final class SameToStringDifferentHashCode
-	{
-		@Override
-		public String toString()
-		{
-			return "SameToStringDifferentHashCode";
-		}
-	}
-
 	/**
 	 * Ensure that text-mode diffs generate the expected value.
 	 */
@@ -273,7 +262,6 @@ public final class DiffTest
 				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@3  : value" + EOS_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_EQUAL, "value".length() + EOS_MARKER.length()) + "\n" +
 				"Expected@1: value" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -296,7 +284,6 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : 1" + NEWLINE_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_EQUAL, "1".length() + NEWLINE_MARKER.length()) + "\n" +
 				"Expected@1: 1" + NEWLINE_MARKER + "\n" +
 				"\n" +
 				"[...]\n" +
@@ -309,7 +296,6 @@ public final class DiffTest
 				"[...]\n" +
 				"\n" +
 				"Actual@5  : 5\\0\n" +
-				"Diff      : " + Strings.repeat(DIFF_EQUAL, "5".length() + EOS_MARKER.length()) + "\n" +
 				"Expected@5: 5\\0";
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -375,12 +361,11 @@ public final class DiffTest
 	@Test
 	public void stringValueIsEqual()
 	{
-		SameToStringDifferentHashCode actual =
-			new SameToStringDifferentHashCode();
+		SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(
-				new SameToStringDifferentHashCode());
+			new Verifiers(scope).requireThat("actual", actual).
+				isEqualTo(new SameToStringDifferentHashCode());
 		}
 		catch (IllegalArgumentException e)
 		{

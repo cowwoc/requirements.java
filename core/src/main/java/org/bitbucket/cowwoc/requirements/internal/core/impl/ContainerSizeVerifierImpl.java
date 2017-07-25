@@ -24,6 +24,7 @@ public final class ContainerSizeVerifierImpl
 	private final String containerName;
 	private final Object container;
 	private final Pluralizer pluralizer;
+	private final ContextGenerator contextGenerator;
 
 	/**
 	 * Creates new ContainerSizeVerifierImpl.
@@ -49,6 +50,7 @@ public final class ContainerSizeVerifierImpl
 		this.containerName = containerName;
 		this.container = container;
 		this.pluralizer = pluralizer;
+		this.contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
 	}
 
 	@Override
@@ -70,8 +72,8 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isGreaterThanOrEqualTo(String name, Integer value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		if (actual >= value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -102,8 +104,8 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isGreaterThan(String name, Integer value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		if (actual > value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -134,8 +136,8 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isLessThanOrEqualTo(String name, Integer value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		if (actual <= value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -166,8 +168,8 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isLessThan(String name, Integer value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		if (actual < value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -251,12 +253,15 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isEqualTo(Integer value)
+	public PrimitiveNumberVerifier<Integer> isEqualTo(Object expected)
 	{
-		if (Objects.equals(actual, value))
+		scope.getInternalVerifier().requireThat("expected", expected).isInstanceOf(Integer.class);
+		if (Objects.equals(actual, expected))
 			return getThis();
+		int expectedAsInt = (Integer) expected;
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %,d %s.", containerName, value, pluralizer.nameOf(value))).
+			String.format("%s must contain %,d %s.", containerName, expected,
+				pluralizer.nameOf(expectedAsInt))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -264,16 +269,17 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isEqualTo(String name, Integer value)
+	public PrimitiveNumberVerifier<Integer> isEqualTo(String name, Object expected)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		if (Objects.equals(actual, value))
+		verifier.requireThat("expected", expected).isInstanceOf(Integer.class);
+		if (Objects.equals(actual, expected))
 			return getThis();
+		int expectedAsInt = (Integer) expected;
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(value))).
+			String.format("%s must contain %s (%,d) %s.", this.containerName, name, expected,
+				pluralizer.nameOf(expectedAsInt))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -281,27 +287,31 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Integer value)
+	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Object value)
 	{
+		scope.getInternalVerifier().requireThat("value", value).isInstanceOf(Integer.class);
 		if (!Objects.equals(actual, value))
 			return getThis();
+		int valueAsInt = (Integer) value;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain %,d %s.", containerName, value, pluralizer.nameOf(value))).
+			String.format("%s may not contain %,d %s.", containerName, value,
+				pluralizer.nameOf(valueAsInt))).
 			addContext("Actual", container).
 			build();
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isNotEqualTo(String name, Integer value)
+	public PrimitiveNumberVerifier<Integer> isNotEqualTo(String name, Object value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isInstanceOf(Integer.class);
 		if (!Objects.equals(actual, value))
 			return getThis();
+		int valueAsInt = (Integer) value;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not contain %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(value))).
+				pluralizer.nameOf(valueAsInt))).
 			addContext("Actual", container).
 			build();
 	}
