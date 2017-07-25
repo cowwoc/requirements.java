@@ -230,6 +230,64 @@ public final class Requirements
 	}
 
 	/**
+	 * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static PrimitiveCharacterVerifier assertThat(String name, char actual)
+	{
+		return DELEGATE.assertThat(name, actual);
+	}
+
+	/**
+	 * Verifies a {@code char}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static PrimitiveCharacterVerifier requireThat(String name, char actual)
+	{
+		return DELEGATE.requireThat(name, actual);
+	}
+
+	/**
+	 * Same as {@link #requireThat(String, Character)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static CharacterVerifier assertThat(String name, Character actual)
+	{
+		return DELEGATE.assertThat(name, actual);
+	}
+
+	/**
+	 * Verifies a {@code Character}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static CharacterVerifier requireThat(String name, Character actual)
+	{
+		return DELEGATE.requireThat(name, actual);
+	}
+
+	/**
 	 * Verifies a {@code short}.
 	 *
 	 * @param name   the name of the value

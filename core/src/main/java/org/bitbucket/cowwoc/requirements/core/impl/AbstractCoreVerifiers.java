@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.BooleanVerifier;
+import org.bitbucket.cowwoc.requirements.core.CharacterVerifier;
 import org.bitbucket.cowwoc.requirements.core.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
@@ -27,6 +28,7 @@ import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
@@ -34,6 +36,7 @@ import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.BigDecimalVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.BooleanVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.CharacterVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ClassVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ComparableVerifierImpl;
@@ -44,6 +47,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.MapVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpBigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCharacterVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpClassVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpComparableVerifier;
@@ -55,6 +59,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpOptionalVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPathVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveCharacterVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpStringVerifier;
@@ -65,6 +70,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.OptionalVerifierImpl
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PathVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.Pluralizer;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveBooleanVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveCharacterVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveDoubleVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveFloatVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveNumberVerifierImpl;
@@ -191,6 +197,21 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
+	public BooleanVerifier requireThat(String name, Boolean actual)
+	{
+		verifyName(name);
+		return new BooleanVerifierImpl<>(scope, name, actual, config);
+	}
+
+	@Override
+	public BooleanVerifier assertThat(String name, Boolean actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpBooleanVerifier(config);
+	}
+
+	@Override
 	public PrimitiveNumberVerifier<Byte> requireThat(String name, byte actual)
 	{
 		verifyName(name);
@@ -203,6 +224,36 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
 		return new NoOpPrimitiveNumberVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveCharacterVerifier requireThat(String name, char actual)
+	{
+		verifyName(name);
+		return new PrimitiveCharacterVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveCharacterVerifier assertThat(String name, char actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveCharacterVerifier(config);
+	}
+
+	@Override
+	public CharacterVerifier requireThat(String name, Character actual)
+	{
+		verifyName(name);
+		return new CharacterVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public CharacterVerifier assertThat(String name, Character actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpCharacterVerifier(config);
 	}
 
 	@Override
@@ -266,6 +317,21 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
+	public FloatingPointVerifier<Float> requireThat(String name, Float actual)
+	{
+		verifyName(name);
+		return new FloatVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public FloatingPointVerifier<Float> assertThat(String name, Float actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpFloatingPointVerifier<>(config);
+	}
+
+	@Override
 	public PrimitiveFloatingPointVerifier<Double> requireThat(String name, double actual)
 	{
 		verifyName(name);
@@ -278,6 +344,21 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
 		return new NoOpPrimitiveFloatingPointVerifier<>(config);
+	}
+
+	@Override
+	public FloatingPointVerifier<Double> requireThat(String name, Double actual)
+	{
+		verifyName(name);
+		return new DoubleVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public FloatingPointVerifier<Double> assertThat(String name, Double actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpFloatingPointVerifier<>(config);
 	}
 
 	@Override
@@ -295,51 +376,6 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
 		return new NoOpNumberVerifier<>(config);
-	}
-
-	@Override
-	public BooleanVerifier requireThat(String name, Boolean actual)
-	{
-		verifyName(name);
-		return new BooleanVerifierImpl<>(scope, name, actual, config);
-	}
-
-	@Override
-	public BooleanVerifier assertThat(String name, Boolean actual)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
-		return new NoOpBooleanVerifier(config);
-	}
-
-	@Override
-	public FloatingPointVerifier<Float> requireThat(String name, Float actual)
-	{
-		verifyName(name);
-		return new FloatVerifierImpl(scope, name, actual, config);
-	}
-
-	@Override
-	public FloatingPointVerifier<Float> assertThat(String name, Float actual)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
-		return new NoOpFloatingPointVerifier<>(config);
-	}
-
-	@Override
-	public FloatingPointVerifier<Double> requireThat(String name, Double actual)
-	{
-		verifyName(name);
-		return new DoubleVerifierImpl(scope, name, actual, config);
-	}
-
-	@Override
-	public FloatingPointVerifier<Double> assertThat(String name, Double actual)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
-		return new NoOpFloatingPointVerifier<>(config);
 	}
 
 	@Override

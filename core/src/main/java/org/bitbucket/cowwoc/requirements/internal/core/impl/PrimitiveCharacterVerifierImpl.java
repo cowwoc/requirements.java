@@ -5,20 +5,20 @@
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
- * Default implementation of {@code PrimitiveBooleanVerifier}.
+ * Default implementation of {@code PrimitiveCharacterVerifier}.
  *
  * @author Gili Tzabari
  */
-public final class PrimitiveBooleanVerifierImpl
-	extends BooleanCapabilitiesImpl<PrimitiveBooleanVerifier>
-	implements PrimitiveBooleanVerifier
+public final class PrimitiveCharacterVerifierImpl
+	extends ComparableCapabilitiesImpl<PrimitiveCharacterVerifier, Character>
+	implements PrimitiveCharacterVerifier
 {
 	/**
-	 * Creates new PrimitiveBooleanVerifierImpl.
+	 * Creates new PrimitiveCharacterVerifierImpl.
 	 *
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
@@ -27,7 +27,7 @@ public final class PrimitiveBooleanVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveBooleanVerifierImpl(ApplicationScope scope, String name, boolean actual,
+	public PrimitiveCharacterVerifierImpl(ApplicationScope scope, String name, char actual,
 		Configuration config)
 	{
 		super(scope, name, actual, config);
@@ -35,14 +35,14 @@ public final class PrimitiveBooleanVerifierImpl
 
 	@Deprecated
 	@Override
-	public PrimitiveBooleanVerifier isNotNull()
+	public PrimitiveCharacterVerifier isNotNull()
 	{
 		return super.isNotNull();
 	}
 
 	@Deprecated
 	@Override
-	public PrimitiveBooleanVerifier isNull()
+	public PrimitiveCharacterVerifier isNull()
 	{
 		return super.isNull();
 	}
