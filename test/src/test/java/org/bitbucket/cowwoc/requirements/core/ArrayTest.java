@@ -925,6 +925,52 @@ public final class ArrayTest
 	}
 
 	@Test
+	public void objectIsEqualToArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+
+			new Verifiers(scope).requireThat("actual", (Object) actual).isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains("primitive[]")): "Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void arrayIsEqualToObject()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo((Object) expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains("primitive[]")): "Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
 	public void primitiveToStringConverter()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

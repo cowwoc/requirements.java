@@ -9,8 +9,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -37,63 +35,6 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		if (array == null)
 			return null;
 		return Arrays.asList(array);
-	}
-
-	/**
-	 * @param array an array
-	 * @param type  the type of the array
-	 * @return a list containing the elements of the array
-	 * @throws AssertionError if any of the arguments are null
-	 */
-	private static List<?> asList(Object array, Class<?> type)
-	{
-		assert (array != null);
-		assert (type != null);
-		if (!type.getComponentType().isPrimitive())
-			return Arrays.asList((Object[]) array);
-		if (type == boolean[].class)
-		{
-			boolean[] valueAsArray = (boolean[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		if (type == char[].class)
-		{
-			char[] valueAsArray = (char[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		if (type == short[].class)
-		{
-			short[] valueAsArray = (short[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		if (type == int[].class)
-		{
-			int[] valueAsArray = (int[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		if (type == long[].class)
-		{
-			long[] valueAsArray = (long[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		if (type == float[].class)
-		{
-			float[] valueAsArray = (float[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		if (type == double[].class)
-		{
-			double[] valueAsArray = (double[]) array;
-			return IntStream.range(0, valueAsArray.length).mapToObj(i -> valueAsArray[i]).
-				collect(Collectors.toList());
-		}
-		throw new AssertionError("Unexpected array type: " + type);
 	}
 	private final ApplicationScope scope;
 	private final E[] actual;
@@ -126,15 +67,6 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public ArrayVerifier<E> isEqualTo(Object expected)
 	{
-		if (expected != null)
-		{
-			Class<?> type = expected.getClass();
-			if (type.isArray())
-			{
-				asCollection.isEqualTo(asList(expected, type));
-				return this;
-			}
-		}
 		asCollection.isEqualTo(expected);
 		return this;
 	}
@@ -142,15 +74,6 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public ArrayVerifier<E> isEqualTo(String name, Object expected)
 	{
-		if (expected != null)
-		{
-			Class<?> type = expected.getClass();
-			if (type.isArray())
-			{
-				asCollection.isEqualTo(name, asList(expected, type));
-				return this;
-			}
-		}
 		asCollection.isEqualTo(name, expected);
 		return this;
 	}
@@ -158,15 +81,6 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public ArrayVerifier<E> isNotEqualTo(Object value)
 	{
-		if (value != null)
-		{
-			Class<?> type = value.getClass();
-			if (type.isArray())
-			{
-				asCollection.isNotEqualTo(asList(value, type));
-				return this;
-			}
-		}
 		asCollection.isNotEqualTo(value);
 		return this;
 	}
@@ -174,15 +88,6 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public ArrayVerifier<E> isNotEqualTo(String name, Object value)
 	{
-		if (value != null)
-		{
-			Class<?> type = value.getClass();
-			if (type.isArray())
-			{
-				asCollection.isNotEqualTo(name, asList(value, type));
-				return this;
-			}
-		}
 		asCollection.isNotEqualTo(name, value);
 		return this;
 	}

@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.internal.core.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -15,6 +14,7 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Objects;
 
 /**
  * Extendable implementation of {@link ObjectCapabilities}.
