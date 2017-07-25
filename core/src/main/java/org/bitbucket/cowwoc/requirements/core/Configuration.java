@@ -279,6 +279,7 @@ public final class Configuration implements Configurable
 		hash = 23 * hash + this.exception.hashCode();
 		hash = 23 * hash + Boolean.hashCode(this.assertionsEnabled);
 		hash = 23 * hash + Boolean.hashCode(this.diffEnabled);
+		hash = 23 * hash + this.typeToStringConverter.hashCode();
 		return hash;
 	}
 
@@ -291,13 +292,15 @@ public final class Configuration implements Configurable
 			return false;
 		Configuration other = (Configuration) o;
 		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
-			exception.equals(other.exception) && diffEnabled == other.diffEnabled;
+			exception.equals(other.exception) && diffEnabled == other.diffEnabled &&
+			typeToStringConverter.equals(other.typeToStringConverter);
 	}
 
 	@Override
 	public String toString()
 	{
 		return "Configuration[context=" + context + ", exception=" + exception +
-			", assertionsEnabled=" + assertionsEnabled + ", diffEnabled=" + diffEnabled + "]";
+			", assertionsEnabled=" + assertionsEnabled + ", diffEnabled=" + diffEnabled +
+			", typeToStringConverter=" + typeToStringConverter + "]";
 	}
 }
