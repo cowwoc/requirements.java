@@ -219,29 +219,6 @@ public interface CoreVerifiers extends Configurable
 	PrimitiveCharacterVerifier assertThat(String name, char actual);
 
 	/**
-	 * Verifies a {@code Character}.
-	 *
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	CharacterVerifier requireThat(String name, Character actual);
-
-	/**
-	 * Same as {@link #requireThat(String, Character)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	CharacterVerifier assertThat(String name, Character actual);
-
-	/**
 	 * Verifies a {@code short}.
 	 *
 	 * @param name   the name of the value

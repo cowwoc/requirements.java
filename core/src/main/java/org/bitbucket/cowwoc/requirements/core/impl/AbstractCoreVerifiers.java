@@ -14,7 +14,6 @@ import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.BooleanVerifier;
-import org.bitbucket.cowwoc.requirements.core.CharacterVerifier;
 import org.bitbucket.cowwoc.requirements.core.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
@@ -36,7 +35,6 @@ import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.BigDecimalVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.BooleanVerifierImpl;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.CharacterVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ClassVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ComparableVerifierImpl;
@@ -47,7 +45,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.MapVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpBigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpBooleanVerifier;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCharacterVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpClassVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpComparableVerifier;
@@ -239,21 +236,6 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
 		return new NoOpPrimitiveCharacterVerifier(config);
-	}
-
-	@Override
-	public CharacterVerifier requireThat(String name, Character actual)
-	{
-		verifyName(name);
-		return new CharacterVerifierImpl(scope, name, actual, config);
-	}
-
-	@Override
-	public CharacterVerifier assertThat(String name, Character actual)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
-		return new NoOpCharacterVerifier(config);
 	}
 
 	@Override
