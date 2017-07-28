@@ -4,20 +4,22 @@
  */
 package org.bitbucket.cowwoc.requirements.benchmark;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.Requirements;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -30,11 +32,13 @@ import org.testng.annotations.Test;
 public class GuavaWithAssertsTest
 {
 	private String name = "name";
-	private String value = "value";
+	private Multimap<String, String> value = HashMultimap.create();
+	private Multimap<?, ?> nullMultimap = null;
 	private List<Integer> list;
 
 	public GuavaWithAssertsTest()
 	{
+		value.put("key", "value");
 		list = new ArrayList<>(100);
 		for (int i = 0; i < 100; ++i)
 			list.add(i);
@@ -50,46 +54,42 @@ public class GuavaWithAssertsTest
 			timeUnit(TimeUnit.NANOSECONDS).
 			mode(Mode.AverageTime).
 			build();
-		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
+		org.bitbucket.cowwoc.requirements.core.Requirements.globalConfiguration().
+			withTerminalEncoding(TerminalEncoding.NONE);
 
 		new Runner(opt).run();
 	}
 
-//	@Benchmark
-//	public void emptyMethod()
-//	{
-//	}
-//
 	@Benchmark
-	public StringVerifier staticAssertThat()
+	public MultimapVerifier<?, ?> staticAssertThat()
 	{
-		return assertThat(value, name).isNotNull().isNotEmpty();
+		return assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
-	public StringVerifier verifiersAssertsDisabled()
+	public MultimapVerifier<?, ?> verifiersAssertsDisabled()
 	{
-		return new Verifiers().withAssertionsDisabled().assertThat(value, name).isNotNull().isNotEmpty();
+		return new Verifiers().withAssertionsDisabled().assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
 	// be faster than requireThat() even though it delegates to it
 	@Benchmark
-	public StringVerifier verifiersAssertsEnabled()
+	public MultimapVerifier<?, ?> verifiersAssertsEnabled()
 	{
-		return new Verifiers().withAssertionsEnabled().assertThat(value, name).isNotNull().isNotEmpty();
+		return new Verifiers().withAssertionsEnabled().assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
 	// be faster than requireThat() even though it delegates to it
 	@Benchmark
-	public StringVerifier verifiersRequireThat()
+	public MultimapVerifier<?, ?> verifiersRequireThat()
 	{
 		return new Verifiers().requireThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
-	public StringVerifier staticRequireThat()
+	public MultimapVerifier<?, ?> staticRequireThat()
 	{
 		return requireThat(name, value).isNotNull().isNotEmpty();
 	}
@@ -105,5 +105,31 @@ public class GuavaWithAssertsTest
 	{
 		return new Verifiers().withAssertionsDisabled().assertThat(name, list).
 			doesNotContainDuplicates();
+	}
+
+	@Benchmark
+	public void staticThrowException(Blackhole bh)
+	{
+		try
+		{
+			requireThat(name, nullMultimap).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			bh.consume(e);
+		}
+	}
+
+	@Benchmark
+	public void verifiersThrowException(Blackhole bh)
+	{
+		try
+		{
+			new Verifiers().requireThat(name, nullMultimap).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			bh.consume(e);
+		}
 	}
 }

@@ -4,13 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.benchmark;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.concurrent.TimeUnit;
-import org.bitbucket.cowwoc.requirements.core.Requirements;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
+import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -27,14 +26,11 @@ import org.testng.annotations.Test;
 public class GuavaWithoutAssertsTest
 {
 	private String name = "name";
-	private String value = "value";
-	private List<Integer> list;
+	private Multimap<String, String> value = HashMultimap.create();
 
 	public GuavaWithoutAssertsTest()
 	{
-		list = new ArrayList<>(100);
-		for (int i = 0; i < 100; ++i)
-			list.add(i);
+		value.put("key", "value");
 	}
 
 	@Test
@@ -46,14 +42,15 @@ public class GuavaWithoutAssertsTest
 			timeUnit(TimeUnit.NANOSECONDS).
 			mode(Mode.AverageTime).
 			build();
-		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
+		org.bitbucket.cowwoc.requirements.core.Requirements.globalConfiguration().
+			withTerminalEncoding(TerminalEncoding.NONE);
 
 		new Runner(opt).run();
 	}
 
 	@Benchmark
-	public StringVerifier staticAssertThat()
+	public MultimapVerifier<?, ?> staticAssertThat()
 	{
-		return assertThat(value, name).isNotNull().isNotEmpty();
+		return assertThat(name, value).isNotNull().isNotEmpty();
 	}
 }

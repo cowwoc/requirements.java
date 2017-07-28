@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.benchmark;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.bitbucket.cowwoc.requirements.core.Requirements;
 import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
@@ -28,14 +26,6 @@ public class CoreWithoutAssertsTest
 {
 	private String name = "name";
 	private String value = "value";
-	private List<Integer> list;
-
-	public CoreWithoutAssertsTest()
-	{
-		list = new ArrayList<>(100);
-		for (int i = 0; i < 100; ++i)
-			list.add(i);
-	}
 
 	@Test
 	public void launchBenchmarks() throws RunnerException
@@ -54,6 +44,6 @@ public class CoreWithoutAssertsTest
 	@Benchmark
 	public StringVerifier staticAssertThat()
 	{
-		return assertThat(value, name).isNotNull().isNotEmpty();
+		return assertThat(name, value).isNotNull().isNotEmpty();
 	}
 }

@@ -190,5 +190,4 @@ public class ContextGenerator
 			skipDuplicateLines(result);
 		return result;
 	}
-
 }
