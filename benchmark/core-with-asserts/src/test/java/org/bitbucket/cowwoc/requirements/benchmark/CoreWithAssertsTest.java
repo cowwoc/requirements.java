@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 @State(Scope.Benchmark)
 public class CoreWithAssertsTest
 {
-	private String name = "name";
+	private String name = "actual";
 	private String value = "value";
 
 	@Test

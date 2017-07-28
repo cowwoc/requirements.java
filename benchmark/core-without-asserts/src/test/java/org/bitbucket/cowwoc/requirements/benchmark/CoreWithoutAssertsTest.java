@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 @State(Scope.Benchmark)
 public class CoreWithoutAssertsTest
 {
-	private String name = "name";
+	private String name = "actual";
 	private String value = "value";
 	private Object nullObject = null;
 	private List<Integer> list;

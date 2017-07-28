@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 @State(Scope.Benchmark)
 public class GuavaWithoutAssertsTest
 {
-	private String name = "name";
+	private String name = "multimap";
 	private Multimap<String, String> value = HashMultimap.create();
 	private Multimap<?, ?> nullMultimap = null;
 	private List<Integer> list;

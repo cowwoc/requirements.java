@@ -25,11 +25,13 @@ import org.testng.annotations.Test;
 @State(Scope.Benchmark)
 public class GuavaWithAssertsTest
 {
-	private String name = "name";
+	private String name = "multimap";
 	private Multimap<String, String> value = HashMultimap.create();
 
 	public GuavaWithAssertsTest()
 	{
+		value.put("key", "value");
+		value.put("key", "value");
 	}
 
 	@Test
