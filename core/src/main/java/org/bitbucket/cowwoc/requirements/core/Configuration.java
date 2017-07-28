@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.internal.core.annotations.Beta;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Lists;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Maps;
 
 /**
  * A verifier's configuration.
@@ -94,11 +96,11 @@ public final class Configuration implements Configurable
 		assert (context != null): "context may not be null";
 		assert (exception != null): "exception may not be null";
 		assert (typeToStringConverter != null): "typeToStringConverter may not be null";
-		this.context = Collections.unmodifiableList(context);
+		this.context = Lists.unmodifiable(context);
 		this.exception = exception;
 		this.assertionsEnabled = assertionsEnabled;
 		this.diffEnabled = diffEnabled;
-		this.typeToStringConverter = typeToStringConverter;
+		this.typeToStringConverter = Maps.unmodifiable(typeToStringConverter);
 	}
 
 	/**
