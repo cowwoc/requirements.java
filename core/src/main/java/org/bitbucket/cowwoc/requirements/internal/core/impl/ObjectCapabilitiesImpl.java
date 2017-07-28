@@ -29,7 +29,6 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	protected final String name;
 	protected final T actual;
 	protected final Configuration config;
-	private final ContextGenerator contextGenerator;
 
 	/**
 	 * Creates new ObjectCapabilitiesImpl.
@@ -51,7 +50,6 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		this.name = name;
 		this.actual = actual;
 		this.config = config;
-		this.contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
 	}
 
 	/**
@@ -69,6 +67,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (Objects.equals(actual, expected))
 			return getThis();
+		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -83,6 +82,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
+		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,

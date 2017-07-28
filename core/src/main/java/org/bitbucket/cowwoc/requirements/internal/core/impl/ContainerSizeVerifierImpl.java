@@ -24,7 +24,6 @@ public final class ContainerSizeVerifierImpl
 	private final String containerName;
 	private final Object container;
 	private final Pluralizer pluralizer;
-	private final ContextGenerator contextGenerator;
 
 	/**
 	 * Creates new ContainerSizeVerifierImpl.
@@ -50,7 +49,6 @@ public final class ContainerSizeVerifierImpl
 		this.containerName = containerName;
 		this.container = container;
 		this.pluralizer = pluralizer;
-		this.contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
 	}
 
 	@Override
