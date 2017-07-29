@@ -59,3 +59,34 @@ Main.verifiersRequireThatDoesNotContainDuplicates      avgt   60  1280.922 +- 18
 requirements-core.jar                :  152,895 bytes (3.2% decrease)
 requirements-guava.jar               :  12,480 bytes (6% decrease)
 requirements-native-windows-amd64.jar:  13,085 bytes
+
+
+Changeset: d5dd179367d6ab27972f08acba723775f7820882
+
+Benchmark                                                                 Mode  Cnt      Score     Error  Units
+CoreWithAssertsTest.staticAssertThat                                      avgt   60      6.505 ±   0.017  ns/op
+CoreWithoutAssertsTest.emptyMethod                                        avgt   60      0.258 ±   0.001  ns/op
+CoreWithoutAssertsTest.staticAssertThat                                   avgt   60      4.096 ±   0.049  ns/op
+CoreWithoutAssertsTest.staticRequireThat                                  avgt   60      6.180 ±   0.007  ns/op
+CoreWithoutAssertsTest.staticThrowException                               avgt   60  16384.240 ±  51.522  ns/op
+CoreWithoutAssertsTest.throwException                                     avgt   60    760.861 ±   1.252  ns/op
+CoreWithoutAssertsTest.verifiersAssertsDisabled                           avgt   60      4.536 ±   0.046  ns/op
+CoreWithoutAssertsTest.verifiersAssertsDisabledDoesNotContainDuplicates   avgt   60      4.452 ±   0.007  ns/op
+CoreWithoutAssertsTest.verifiersAssertsEnabled                            avgt   60     16.908 ±   0.216  ns/op
+CoreWithoutAssertsTest.verifiersRequireThat                               avgt   60      7.345 ±   0.011  ns/op
+CoreWithoutAssertsTest.verifiersRequireThatDoesNotContainDuplicates       avgt   60   1267.266 ±  12.466  ns/op
+CoreWithoutAssertsTest.verifiersThrowException                            avgt   60  16584.206 ±  54.670  ns/op
+GuavaWithAssertsTest.staticAssertThat                                     avgt   60      6.437 ±   0.148  ns/op
+GuavaWithoutAssertsTest.staticAssertThat                                  avgt   60      3.986 ±   0.011  ns/op
+GuavaWithoutAssertsTest.staticRequireThat                                 avgt   60      6.070 ±   0.070  ns/op
+GuavaWithoutAssertsTest.staticThrowException                              avgt   60  16529.749 ±  68.369  ns/op
+GuavaWithoutAssertsTest.verifiersAssertsDisabled                          avgt   60      9.245 ±   0.011  ns/op
+GuavaWithoutAssertsTest.verifiersAssertsDisabledDoesNotContainDuplicates  avgt   60      8.988 ±   0.020  ns/op
+GuavaWithoutAssertsTest.verifiersAssertsEnabled                           avgt   60     31.919 ±   0.046  ns/op
+GuavaWithoutAssertsTest.verifiersRequireThat                              avgt   60     12.420 ±   0.731  ns/op
+GuavaWithoutAssertsTest.verifiersRequireThatDoesNotContainDuplicates      avgt   60   1223.386 ±   4.400  ns/op
+GuavaWithoutAssertsTest.verifiersThrowException                           avgt   60  16742.843 ± 128.416  ns/op
+
+requirements-core.jar                :  181,517 bytes (19% increase)
+requirements-guava.jar               :  13,339 bytes (7% increase)
+requirements-native-windows-amd64.jar:  14,385 bytes (10% increase)
