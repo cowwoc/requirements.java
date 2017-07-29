@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -31,10 +32,8 @@ public final class Lists
 		Class<?> sequentialList = Collections.unmodifiableList(new LinkedList<>()).getClass();
 		Class<?> emptyList = Collections.emptyList().getClass();
 
-		UNMODIFIABLE_CLASS_NAMES = new HashSet<>(3);
-		UNMODIFIABLE_CLASS_NAMES.add(randomAccessList);
-		UNMODIFIABLE_CLASS_NAMES.add(emptyList);
-		UNMODIFIABLE_CLASS_NAMES.add(sequentialList);
+		UNMODIFIABLE_CLASS_NAMES = new HashSet<>(Arrays.asList(randomAccessList, emptyList,
+			sequentialList));
 	}
 
 	/**

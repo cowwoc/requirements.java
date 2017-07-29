@@ -20,7 +20,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new Verifiers(scope).requireThat(actual, "actual").isTrue();
+			new Verifiers(scope).requireThat("actual", actual).isTrue();
 		}
 	}
 
@@ -30,7 +30,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new Verifiers(scope).requireThat(actual, "actual").isFalse();
+			new Verifiers(scope).requireThat("actual", actual).isFalse();
 		}
 	}
 
@@ -40,7 +40,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new Verifiers(scope).requireThat(actual, "actual").isFalse();
+			new Verifiers(scope).requireThat("actual", actual).isFalse();
 		}
 	}
 
@@ -51,7 +51,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new Verifiers(scope).requireThat(actual, "actual").isNull();
+			new Verifiers(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -62,7 +62,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new Verifiers(scope).requireThat(actual, "actual").isNotNull();
+			new Verifiers(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -72,7 +72,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(true);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(true);
 			assert (false): "Expected verifier to throw an exception";
 		}
 		catch (IllegalArgumentException e)

@@ -21,7 +21,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Object> actual = Object.class;
-			new Verifiers(scope).requireThat(actual, null);
+			new Verifiers(scope).requireThat(null, actual);
 		}
 	}
 
@@ -31,7 +31,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Object> actual = Object.class;
-			new Verifiers(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(Random.class);
 		}
 	}
 
@@ -41,7 +41,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = Random.class;
-			new Verifiers(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
+			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(Object.class);
 		}
 	}
 
@@ -51,7 +51,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = Random.class;
-			new Verifiers(scope).requireThat(actual, "actual").isSupertypeOf(null);
+			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(null);
 		}
 	}
 
@@ -61,7 +61,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = null;
-			new Verifiers(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(Random.class);
 		}
 	}
 
@@ -72,7 +72,7 @@ public final class ClassTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Class<?> actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 }

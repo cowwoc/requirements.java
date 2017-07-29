@@ -26,15 +26,15 @@ public final class InetAddressVerifierImpl
 	 * Creates new InetAddressVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public InetAddressVerifierImpl(ApplicationScope scope, InetAddress actual, String name,
+	public InetAddressVerifierImpl(ApplicationScope scope, String name, InetAddress actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override

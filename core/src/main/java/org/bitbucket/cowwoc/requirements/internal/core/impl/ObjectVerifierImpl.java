@@ -21,14 +21,14 @@ public final class ObjectVerifierImpl<T> extends ObjectCapabilitiesImpl<ObjectVe
 	 * Creates new ObjectVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ObjectVerifierImpl(ApplicationScope scope, T actual, String name, Configuration config)
+	public ObjectVerifierImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 }

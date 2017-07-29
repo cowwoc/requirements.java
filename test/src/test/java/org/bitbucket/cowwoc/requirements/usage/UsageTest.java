@@ -34,12 +34,12 @@ public final class UsageTest
 
 		// Java will invoke core.Requirements.requireThat() or guava.Requirements.requireThat()
 		// depending on the context
-		requireThat(map, "map").size().isPositive();
-		requireThat(multimap, "multimap").entries().containsAll(ImmutableList.of(
+		requireThat("map", map).size().isPositive();
+		requireThat("multimap", multimap).entries().containsAll(ImmutableList.of(
 			Maps.immutableEntry(1, 5), Maps.immutableEntry(1, 6)));
 
 		// Assertions work too
-		assertThat(multimap, "multimap").size().isPositive();
+		assertThat("multimap", multimap).size().isPositive();
 	}
 
 	@Test
@@ -51,15 +51,15 @@ public final class UsageTest
 			Set<Duration> bucket = Collections.emptySet();
 
 			Verifiers verifier = new Verifiers(scope);
-			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+			verifier.requireThat("duration", duration).isGreaterThan(Duration.ofDays(0));
 			try
 			{
-				verifier.addContext("MyKey", "SomeContext").
-					requireThat(bucket, "bucket").contains(duration);
+				verifier.addContext("SomeName", "SomeContext").
+					requireThat("bucket", bucket).contains(duration);
 			}
 			catch (IllegalArgumentException e)
 			{
-				if (!e.getMessage().contains("MyKey") || !e.getMessage().contains("SomeContext"))
+				if (!e.getMessage().contains("SomeName") || !e.getMessage().contains("SomeContext"))
 					throw new AssertionError(e);
 			}
 		}

@@ -55,7 +55,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> contains(Object element, String name)
+	public ArrayVerifier<E> contains(String name, Object element)
 	{
 		return this;
 	}
@@ -67,7 +67,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsExactly(Collection<E> elements, String name)
+	public ArrayVerifier<E> containsExactly(String name, Collection<E> elements)
 	{
 		return this;
 	}
@@ -79,7 +79,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAny(Collection<E> elements, String name)
+	public ArrayVerifier<E> containsAny(String name, Collection<E> elements)
 	{
 		return this;
 	}
@@ -91,7 +91,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAll(Collection<E> elements, String name)
+	public ArrayVerifier<E> containsAll(String name, Collection<E> elements)
 	{
 		return this;
 	}
@@ -103,7 +103,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContain(E element, String name)
+	public ArrayVerifier<E> doesNotContain(String name, E element)
 	{
 		return this;
 	}
@@ -115,7 +115,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContainAny(Collection<E> elements, String name)
+	public ArrayVerifier<E> doesNotContainAny(String name, Collection<E> elements)
 	{
 		return this;
 	}
@@ -127,7 +127,7 @@ public final class NoOpArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContainAll(Collection<E> elements, String name)
+	public ArrayVerifier<E> doesNotContainAll(String name, Collection<E> elements)
 	{
 		return this;
 	}

@@ -35,22 +35,22 @@ public final class MultimapVerifierImpl<K, V>
 	 * Creates new MultimapRequirementsImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value of the parameter
 	 * @param name   the name of the parameter
+	 * @param actual the actual value of the parameter
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public MultimapVerifierImpl(ApplicationScope scope, Multimap<K, V> actual, String name,
+	public MultimapVerifierImpl(ApplicationScope scope, String name, Multimap<K, V> actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierImpl<>(scope, actual.keySet(), name + ".keySet()", Pluralizer.KEY,
+		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
 			config);
 	}
 
@@ -64,7 +64,7 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()", Pluralizer.VALUE,
+		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE,
 			config);
 	}
 
@@ -78,7 +78,7 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new CollectionVerifierImpl<>(scope, actual.entries(), name + ".entries()",
+		return new CollectionVerifierImpl<>(scope, name + ".entries()", actual.entries(),
 			Pluralizer.ENTRY, config);
 	}
 
@@ -114,7 +114,7 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name, name + ".size()",
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
 			Pluralizer.ENTRY, config);
 	}
 

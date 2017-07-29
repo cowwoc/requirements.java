@@ -14,67 +14,76 @@ import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.CoreVerifiersImpl;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.testng.annotations.Test;
 
 // Fields may not be final: http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 @SuppressWarnings("FieldMayBeFinal")
 @State(Scope.Benchmark)
-public class Main
+public class CoreWithoutAssertsTest
 {
-	public static void main(String[] args) throws RunnerException
-	{
-		Options opt = new OptionsBuilder()
-			.include(Main.class.getSimpleName())
-			//			.jvmArgsAppend("-ea")
-			.forks(3)
-			.timeUnit(TimeUnit.NANOSECONDS)
-			.mode(Mode.AverageTime)
-			.build();
-		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
-
-		new Runner(opt).run();
-	}
-	private String name = "name";
+	private String name = "actual";
 	private String value = "value";
+	private Object nullObject = null;
 	private List<Integer> list;
 
-	public Main()
+	public CoreWithoutAssertsTest()
 	{
 		list = new ArrayList<>(100);
 		for (int i = 0; i < 100; ++i)
 			list.add(i);
 	}
 
-//	@Benchmark
-//	public void emptyMethod()
-//	{
-//	}
-//
+	@Test
+	public void launchBenchmarks() throws RunnerException
+	{
+		Options opt = new OptionsBuilder().
+			include(CoreWithoutAssertsTest.class.getSimpleName()).
+			forks(3).
+			timeUnit(TimeUnit.NANOSECONDS).
+			mode(Mode.AverageTime).
+			build();
+		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
+
+		new Runner(opt).run();
+	}
+
+	@Benchmark
+	public void emptyMethod()
+	{
+	}
+
+	@Benchmark
+	public void throwException(Blackhole bh)
+	{
+		try
+		{
+			throw new IllegalArgumentException("Hard-coded exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			bh.consume(e);
+		}
+	}
+
 	@Benchmark
 	public StringVerifier staticAssertThat()
 	{
-		return assertThat(value, name).isNotNull().isNotEmpty();
+		return assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
 	public StringVerifier verifiersAssertsDisabled()
 	{
-		return new Verifiers().withAssertionsDisabled().assertThat(value, name).isNotNull().isNotEmpty();
-	}
-
-	@Benchmark
-	public StringVerifier coreAssertsDisabled()
-	{
-		return new CoreVerifiersImpl().withAssertionsDisabled().assertThat(value, name).isNotNull().
-			isNotEmpty();
+		return new Verifiers().withAssertionsDisabled().assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
@@ -82,14 +91,7 @@ public class Main
 	@Benchmark
 	public StringVerifier verifiersAssertsEnabled()
 	{
-		return new Verifiers().withAssertionsEnabled().assertThat(value, name).isNotNull().isNotEmpty();
-	}
-
-	@Benchmark
-	public StringVerifier coreAssertsEnabled()
-	{
-		return new CoreVerifiersImpl().withAssertionsEnabled().assertThat(value, name).isNotNull().
-			isNotEmpty();
+		return new Verifiers().withAssertionsEnabled().assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
@@ -97,25 +99,51 @@ public class Main
 	@Benchmark
 	public StringVerifier verifiersRequireThat()
 	{
-		return new Verifiers().requireThat(value, name).isNotNull().isNotEmpty();
+		return new Verifiers().requireThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
 	public StringVerifier staticRequireThat()
 	{
-		return requireThat(value, name).isNotNull().isNotEmpty();
+		return requireThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
 	public CollectionVerifier<?, ?> verifiersRequireThatDoesNotContainDuplicates()
 	{
-		return new Verifiers().requireThat(list, name).doesNotContainDuplicates();
+		return new Verifiers().requireThat(name, list).doesNotContainDuplicates();
 	}
 
 	@Benchmark
 	public CollectionVerifier<?, ?> verifiersAssertsDisabledDoesNotContainDuplicates()
 	{
-		return new Verifiers().withAssertionsDisabled().assertThat(list, name).
+		return new Verifiers().withAssertionsDisabled().assertThat(name, list).
 			doesNotContainDuplicates();
+	}
+
+	@Benchmark
+	public void staticThrowException(Blackhole bh)
+	{
+		try
+		{
+			requireThat(name, nullObject).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			bh.consume(e);
+		}
+	}
+
+	@Benchmark
+	public void verifiersThrowException(Blackhole bh)
+	{
+		try
+		{
+			new Verifiers().requireThat(name, nullObject).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			bh.consume(e);
+		}
 	}
 }

@@ -18,7 +18,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.getVersionUsingJava("1.2.3");
 		Version expected = new Version(1, 2, 3);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 
 	@Test
@@ -26,7 +26,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.getVersionUsingJava("1.2");
 		Version expected = new Version(1, 2);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.getVersionUsingJava("1");
 		Version expected = new Version(1);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.getVersionUsingJava("1.2");
 		Version expected = new Version(1, 2, 0);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.getVersionUsingJava("1");
 		Version expected = new Version(1, 0);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public final class OperatingSystemTest
 	{
 		String expected = "1";
 		String actual = Version.getVersionUsingJava(expected).toString();
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 
 	@Test
@@ -66,6 +66,6 @@ public final class OperatingSystemTest
 	{
 		String expected = "1.0";
 		String actual = Version.getVersionUsingJava(expected).toString();
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		requireThat("actual", actual).isEqualTo("expected", expected);
 	}
 }

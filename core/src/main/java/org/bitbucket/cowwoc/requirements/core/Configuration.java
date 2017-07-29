@@ -6,12 +6,17 @@ package org.bitbucket.cowwoc.requirements.core;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.function.Supplier;
-import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
+import java.util.function.Function;
+import org.bitbucket.cowwoc.requirements.internal.core.annotations.Beta;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Lists;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Maps;
 
 /**
  * A verifier's configuration.
@@ -39,6 +44,7 @@ public final class Configuration implements Configurable
 	private final Optional<Class<? extends RuntimeException>> exception;
 	private final boolean assertionsEnabled;
 	private final boolean diffEnabled;
+	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
 
 	/**
 	 * Creates a new configuration:
@@ -48,6 +54,8 @@ public final class Configuration implements Configurable
 	 * <li>That throws the default exception type.</li>
 	 * <li>Whose assertions are enabled if <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">assertions are enabled on this class</a>.</li>
 	 * <li>That shows the difference between the actual and expected values.</li>
+	 * <li>That invokes {@code Arrays.toString()} for arrays and {@code Object.toString()} for all
+	 * other objects to convert them to a {@code String}.</li>
 	 * </ul>
 	 */
 	public Configuration()
@@ -56,29 +64,43 @@ public final class Configuration implements Configurable
 		this.exception = Optional.empty();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.diffEnabled = true;
+		this.typeToStringConverter = new HashMap<>(13);
+		typeToStringConverter.put(boolean[].class, o -> Arrays.toString((boolean[]) o));
+		typeToStringConverter.put(byte[].class, o -> Arrays.toString((byte[]) o));
+		typeToStringConverter.put(char[].class, o -> Arrays.toString((char[]) o));
+		typeToStringConverter.put(short[].class, o -> Arrays.toString((short[]) o));
+		typeToStringConverter.put(int[].class, o -> Arrays.toString((int[]) o));
+		typeToStringConverter.put(long[].class, o -> Arrays.toString((long[]) o));
+		typeToStringConverter.put(float[].class, o -> Arrays.toString((float[]) o));
+		typeToStringConverter.put(double[].class, o -> Arrays.toString((double[]) o));
+		typeToStringConverter.put(Object[].class, o -> Arrays.toString((Object[]) o));
 	}
 
 	/**
 	 * Copies a configuration.
 	 *
-	 * @param context           the list of key-value pairs to append to the exception message
-	 * @param exception         the type of exception to throw
-	 * @param assertionsEnabled true if {@code assertThat()} should invoke {@code requireThat()};
-	 *                          false if {@code assertThat()} should do nothing
-	 * @param diffEnabled       indicates whether exceptions should show the difference between the
-	 *                          actual and expected values
+	 * @param context               the list of name-value pairs to append to the exception message
+	 * @param exception             the type of exception to throw
+	 * @param assertionsEnabled     true if {@code assertThat()} should invoke {@code requireThat()};
+	 *                              false if {@code assertThat()} should do nothing
+	 * @param diffEnabled           indicates whether exceptions should show the difference between the
+	 *                              actual and expected values
+	 * @param typeToStringConverter map from an object type to a function that converts the object to
+	 *                              a String
 	 * @throws AssertionError if any of the arguments are null
 	 */
 	private Configuration(List<Entry<String, Object>> context,
 		Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled,
-		boolean diffEnabled)
+		boolean diffEnabled, Map<Class<?>, Function<Object, String>> typeToStringConverter)
 	{
 		assert (context != null): "context may not be null";
 		assert (exception != null): "exception may not be null";
-		this.context = Collections.unmodifiableList(context);
+		assert (typeToStringConverter != null): "typeToStringConverter may not be null";
+		this.context = Lists.unmodifiable(context);
 		this.exception = exception;
 		this.assertionsEnabled = assertionsEnabled;
 		this.diffEnabled = diffEnabled;
+		this.typeToStringConverter = Maps.unmodifiable(typeToStringConverter);
 	}
 
 	/**
@@ -96,7 +118,7 @@ public final class Configuration implements Configurable
 	{
 		if (assertionsEnabled)
 			return this;
-		return new Configuration(context, exception, true, diffEnabled);
+		return new Configuration(context, exception, true, diffEnabled, typeToStringConverter);
 	}
 
 	@Override
@@ -104,7 +126,7 @@ public final class Configuration implements Configurable
 	{
 		if (!assertionsEnabled)
 			return this;
-		return new Configuration(context, exception, false, diffEnabled);
+		return new Configuration(context, exception, false, diffEnabled, typeToStringConverter);
 	}
 
 	/**
@@ -127,7 +149,8 @@ public final class Configuration implements Configurable
 		Optional<Class<? extends RuntimeException>> newException = Optional.of(exception);
 		if (this.exception.equals(newException))
 			return this;
-		return new Configuration(context, newException, assertionsEnabled, diffEnabled);
+		return new Configuration(context, newException, assertionsEnabled, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
@@ -136,34 +159,34 @@ public final class Configuration implements Configurable
 		Optional<Class<? extends RuntimeException>> newException = Optional.empty();
 		if (this.exception.equals(newException))
 			return this;
-		return new Configuration(context, newException, assertionsEnabled, diffEnabled);
+		return new Configuration(context, newException, assertionsEnabled, diffEnabled,
+			typeToStringConverter);
 	}
 
 	/**
-	 * @return an unmodifiable list of key-value pairs to append to the exception message
+	 * Returns a list of name-value pairs to append to the exception message. Null elements denote
+	 * empty lines.
+	 *
+	 * @return an unmodifiable list of name-value pairs to append to the exception message
 	 * @see #addContext(String, Object)
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
+	@Beta
 	public List<Entry<String, Object>> getContext()
 	{
 		return context;
 	}
 
 	@Override
-	public Configuration addContext(String key, Object value)
+	public Configuration addContext(String name, Object value)
 	{
-		if (key == null)
-			throw new NullPointerException("key may not be null");
+		if (name == null)
+			throw new NullPointerException("name may not be null");
 		List<Entry<String, Object>> newContext = new ArrayList<>(context.size() + 1);
 		newContext.addAll(context);
-		newContext.add(new SimpleImmutableEntry<>(key, value));
-		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled);
-	}
-
-	@Override
-	public Configuration addContext(String key, Supplier<String> value)
-	{
-		return addContext(key, new ToStringSupplier(value));
+		newContext.add(new SimpleImmutableEntry<>(name, value));
+		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled,
+			typeToStringConverter);
 	}
 
 	/**
@@ -179,7 +202,7 @@ public final class Configuration implements Configurable
 	{
 		if (this.diffEnabled)
 			return this;
-		return new Configuration(context, exception, assertionsEnabled, true);
+		return new Configuration(context, exception, assertionsEnabled, true, typeToStringConverter);
 	}
 
 	@Override
@@ -187,7 +210,59 @@ public final class Configuration implements Configurable
 	{
 		if (!this.diffEnabled)
 			return this;
-		return new Configuration(context, exception, assertionsEnabled, false);
+		return new Configuration(context, exception, assertionsEnabled, false, typeToStringConverter);
+	}
+
+	/**
+	 * @param o an object
+	 * @return the String representation of the object
+	 * @see #withStringConverter(Class, Function)
+	 */
+	@Beta
+	public String toString(Object o)
+	{
+		if (o == null)
+			return "null";
+		Class<?> type = o.getClass();
+		Function<Object, String> converter;
+		if (type.isArray() && !type.getComponentType().isPrimitive())
+			converter = typeToStringConverter.get(Object[].class);
+		else
+			converter = typeToStringConverter.get(type);
+		if (converter != null)
+			return converter.apply(o);
+		return o.toString();
+	}
+
+	@Override
+	public <T> Configuration withStringConverter(Class<T> type, Function<T, String> converter)
+	{
+		if (type == null)
+			throw new NullPointerException("type may not be null");
+		if (converter == null)
+			throw new NullPointerException("converter may not be null");
+		Function<?, String> existingConverter = typeToStringConverter.get(type);
+		if (converter.equals(existingConverter))
+			return this;
+		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
+			new HashMap<>(typeToStringConverter);
+		@SuppressWarnings("unchecked")
+		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
+		newTypeToStringConverter.put(type, unsafeConverter);
+		return new Configuration(context, exception, assertionsEnabled, false, newTypeToStringConverter);
+	}
+
+	@Override
+	public <T> Configuration withoutStringConverter(Class<T> type)
+	{
+		if (type == null)
+			throw new NullPointerException("type may not be null");
+		if (!typeToStringConverter.containsKey(type))
+			return this;
+		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
+			new HashMap<>(typeToStringConverter);
+		newTypeToStringConverter.remove(type);
+		return new Configuration(context, exception, assertionsEnabled, false, newTypeToStringConverter);
 	}
 
 	@Override
@@ -206,6 +281,7 @@ public final class Configuration implements Configurable
 		hash = 23 * hash + this.exception.hashCode();
 		hash = 23 * hash + Boolean.hashCode(this.assertionsEnabled);
 		hash = 23 * hash + Boolean.hashCode(this.diffEnabled);
+		hash = 23 * hash + this.typeToStringConverter.hashCode();
 		return hash;
 	}
 
@@ -218,13 +294,15 @@ public final class Configuration implements Configurable
 			return false;
 		Configuration other = (Configuration) o;
 		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
-			exception.equals(other.exception) && diffEnabled == other.diffEnabled;
+			exception.equals(other.exception) && diffEnabled == other.diffEnabled &&
+			typeToStringConverter.equals(other.typeToStringConverter);
 	}
 
 	@Override
 	public String toString()
 	{
 		return "Configuration[context=" + context + ", exception=" + exception +
-			", assertionsEnabled=" + assertionsEnabled + ", diffEnabled=" + diffEnabled + "]";
+			", assertionsEnabled=" + assertionsEnabled + ", diffEnabled=" + diffEnabled +
+			", typeToStringConverter=" + typeToStringConverter + "]";
 	}
 }

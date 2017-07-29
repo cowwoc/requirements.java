@@ -31,21 +31,21 @@ public final class MapVerifierImpl<K, V>
 	 * Creates new MapVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public MapVerifierImpl(ApplicationScope scope, Map<K, V> actual, String name, Configuration config)
+	public MapVerifierImpl(ApplicationScope scope, String name, Map<K, V> actual, Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierImpl<>(scope, actual.keySet(), name + ".keySet()", Pluralizer.KEY,
+		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
 			config);
 	}
 
@@ -59,7 +59,7 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierImpl<>(scope, actual.values(), name + ".values()",
+		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(),
 			Pluralizer.VALUE, config);
 	}
 
@@ -73,7 +73,7 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionVerifierImpl<>(scope, actual.entrySet(), name + ".entrySet()",
+		return new CollectionVerifierImpl<>(scope, name + ".entrySet()", actual.entrySet(),
 			Pluralizer.ENTRY, config);
 	}
 
@@ -109,8 +109,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, actual, actual.size(), name,
-			name + ".size()", Pluralizer.ENTRY, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
+			Pluralizer.ENTRY, config);
 	}
 
 	@Override

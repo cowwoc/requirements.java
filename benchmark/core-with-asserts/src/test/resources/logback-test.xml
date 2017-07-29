@@ -8,5 +8,6 @@
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
 	</root>
-	<logger name="org.bitbucket.cowwoc.requirements.core.terminal.NativeTerminal" level="off"/>
+	<logger name="org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal" level="WARN"/>
+	<logger name="org.bitbucket.cowwoc.requirements.internal.core.terminal.NativeTerminal" level="OFF"/>
 </configuration>

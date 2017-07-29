@@ -19,6 +19,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
  * <li>Space (&nbsp;) indicates characters that needs to be deleted from Actual.</li>
  * <li>Equal sign ({@code =}) indicates characters that are equal in Actual and Expected.</li>
  * <li>Up arrowhead ({@code ^}) indicates characters that needs to be inserted into Actual.</li>
+ * <li>"Diff" is omitted for lines that are identical.</li>
  * <li>Characters in the opposite direction of '&nbsp;' or '{@code ^}' are padded to line up the
  * strings vertically. This padding does not contribute any characters to the string it is found in.
  * Read on for concrete examples.</li>
@@ -108,7 +109,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
  * <pre>{@code
  *
  * Actual@1  : first
- * Diff      : =====
  * Expected@1: first
  *
  * [...]
@@ -120,7 +120,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
  * [...]
  *
  * Actual@5  : fifth\0
- * Diff      : =======
  * Expected@5: fifth\0
  * }
  * </pre>
@@ -151,7 +150,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
  * Expected  :
  *
  * Actual@2  : Bar\0
- * Diff      : =====
  * Expected@1: Bar\0
  * }
  * </pre>

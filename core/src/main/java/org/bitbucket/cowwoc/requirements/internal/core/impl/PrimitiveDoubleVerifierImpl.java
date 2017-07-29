@@ -22,16 +22,16 @@ public final class PrimitiveDoubleVerifierImpl
 	 * Creates new PrimitiveDoubleVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveDoubleVerifierImpl(ApplicationScope scope, Double actual, String name,
+	public PrimitiveDoubleVerifierImpl(ApplicationScope scope, String name, Double actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override

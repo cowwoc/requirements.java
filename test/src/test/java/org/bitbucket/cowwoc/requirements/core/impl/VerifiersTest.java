@@ -21,11 +21,11 @@ public final class VerifiersTest
 	public void separateConfigurations()
 	{
 		Verifiers first = new Verifiers();
-		first = first.addContext("key1", "value1");
+		first = first.addContext("name1", "value1");
 
 		Verifiers second = new Verifiers();
-		second = second.addContext("key2", "value2");
+		second = second.addContext("name2", "value2");
 
-		assertThat(first.config, "first.config").isNotEqualTo(second.config, "second.config");
+		assertThat("first.config", first.config).isNotEqualTo("second.config", second.config);
 	}
 }

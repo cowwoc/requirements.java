@@ -31,15 +31,15 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	 * Creates new StringVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public StringVerifierImpl(ApplicationScope scope, String actual, String name, Configuration config)
+	public StringVerifierImpl(ApplicationScope scope, String name, String actual, Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		String trimmed = actual.trim();
 		if (trimmed.equals(actual))
 			return this;
-		return new StringVerifierImpl(scope, trimmed, name + ".trim()", config);
+		return new StringVerifierImpl(scope, name + ".trim()", trimmed, config);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 				addContext("Actual", actual).
 				build();
 		}
-		return new InetAddressVerifierImpl(scope, address, name, config);
+		return new InetAddressVerifierImpl(scope, name, address, config);
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		try
 		{
 			URI uri = URI.create(actual);
-			return new UriVerifierImpl(scope, uri, name, config);
+			return new UriVerifierImpl(scope, name, uri, config);
 		}
 		catch (IllegalArgumentException unused)
 		{
@@ -148,7 +148,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		try
 		{
 			URL url = new URL(actual);
-			return new UrlVerifierImpl(scope, url, name, config);
+			return new UrlVerifierImpl(scope, name, url, config);
 		}
 		catch (MalformedURLException e)
 		{
@@ -235,8 +235,8 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
-		return new ContainerSizeVerifierImpl(scope, actual, actual.length(), name,
-			name + ".length()", Pluralizer.CHARACTER, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length()",
+			actual.length(), Pluralizer.CHARACTER, config);
 	}
 
 	@Override

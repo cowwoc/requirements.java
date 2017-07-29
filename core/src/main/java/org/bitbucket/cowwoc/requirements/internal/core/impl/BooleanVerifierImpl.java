@@ -22,15 +22,15 @@ public final class BooleanVerifierImpl<T extends Comparable<? super T>>
 	 * Creates new BooleanVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public BooleanVerifierImpl(ApplicationScope scope, Boolean actual, String name,
+	public BooleanVerifierImpl(ApplicationScope scope, String name, Boolean actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 }

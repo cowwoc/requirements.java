@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * A verifier whose behavior is configurable.
@@ -72,22 +72,37 @@ public interface Configurable
 	/**
 	 * Appends contextual information to the exception message.
 	 *
-	 * @param key   a key
+	 * @param name  the name of the value
 	 * @param value a value
 	 * @return a verifier with the updated configuration
-	 * @throws NullPointerException if {@code key} is null
+	 * @throws NullPointerException if {@code name} is null
 	 */
-	Configurable addContext(String key, Object value);
+	Configurable addContext(String name, Object value);
 
 	/**
-	 * Appends contextual information to the exception message.
+	 * Indicates that a function should be used to convert an object to a String.
+	 * <p>
+	 * Please note that {@code type} must be an exact match (e.g. configuring a converter for
+	 * {@code Set} will not match values of type {@code HashSet}).
 	 *
-	 * @param key   a key
-	 * @param value a custom String representation for the value
+	 * @param <T>       the type of object being converted
+	 * @param type      the type of object being converted (non-primitive arrays are mapped to
+	 *                  {@code Object[].class})
+	 * @param converter a function that converts an object of the specified type to a String
 	 * @return a verifier with the updated configuration
-	 * @throws NullPointerException if {@code key} is null
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	Configurable addContext(String key, Supplier<String> value);
+	<T> Configurable withStringConverter(Class<T> type, Function<T, String> converter);
+
+	/**
+	 * Indicates that an object's {@code toString()} method should be used to convert it to a String.
+	 *
+	 * @param <T>  the type of object being converted
+	 * @param type the type of object being converted
+	 * @return a verifier with the updated configuration
+	 * @throws NullPointerException if {@code type} is null
+	 */
+	<T> Configurable withoutStringConverter(Class<T> type);
 
 	/**
 	 * @param configuration a new configuration

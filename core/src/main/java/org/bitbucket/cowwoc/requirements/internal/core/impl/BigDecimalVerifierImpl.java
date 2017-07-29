@@ -26,16 +26,16 @@ public final class BigDecimalVerifierImpl
 	 * Creates new BigDecimalVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public BigDecimalVerifierImpl(ApplicationScope scope, BigDecimal actual, String name,
+	public BigDecimalVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalPrecisionVerifier precision()
 	{
-		return new BigDecimalPrecisionVerifierImpl(scope, actual, name, config);
+		return new BigDecimalPrecisionVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> scale()
 	{
-		return new BigDecimalScaleVerifierImpl(scope, actual, name, config);
+		return new BigDecimalScaleVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override

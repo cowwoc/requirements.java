@@ -22,15 +22,15 @@ public final class BigDecimalScaleVerifierImpl
 	 * Creates new BigDecimalScaleVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config}
 	 *                        are null; if {@code name} is empty
 	 */
-	public BigDecimalScaleVerifierImpl(ApplicationScope scope, BigDecimal actual, String name,
+	public BigDecimalScaleVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
 		Configuration config)
 	{
-		super(scope, actual.scale(), name + ".scale()", config);
+		super(scope, name + ".scale()", actual.scale(), config);
 	}
 }

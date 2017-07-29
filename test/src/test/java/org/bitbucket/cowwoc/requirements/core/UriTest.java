@@ -22,7 +22,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/");
-			new Verifiers(scope).requireThat(actual, null);
+			new Verifiers(scope).requireThat(null, actual);
 		}
 	}
 
@@ -32,7 +32,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/");
-			new Verifiers(scope).requireThat(actual, "");
+			new Verifiers(scope).requireThat("", actual);
 		}
 	}
 
@@ -42,7 +42,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/index.html");
-			new Verifiers(scope).requireThat(actual, "actual").isAbsolute();
+			new Verifiers(scope).requireThat("actual", actual).isAbsolute();
 		}
 	}
 
@@ -52,7 +52,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("../index.html");
-			new Verifiers(scope).requireThat(actual, "actual").isAbsolute();
+			new Verifiers(scope).requireThat("actual", actual).isAbsolute();
 		}
 	}
 
@@ -62,7 +62,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "../index.html";
-			URI actualAsUri = new Verifiers(scope).requireThat(actual, "actual").asUri().
+			URI actualAsUri = new Verifiers(scope).requireThat("actual", actual).asUri().
 				getActual();
 			assert (actualAsUri.toString().equals(actual)): "actualAsUri: " + actualAsUri + ", actual: " +
 				actual;
@@ -75,7 +75,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new Verifiers(scope).requireThat(actual, "actual").asUri().asUrl().
+			URL actualAsUrl = new Verifiers(scope).requireThat("actual", actual).asUri().asUrl().
 				getActual();
 			assert (actualAsUrl.toString().equals(actual)): "actualAsUri: " + actualAsUrl + ", actual: " +
 				actual;
@@ -89,7 +89,7 @@ public final class UriTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			URI actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 }

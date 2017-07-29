@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.diff;
 
+import org.bitbucket.cowwoc.requirements.core.SameToStringDifferentHashCode;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -35,7 +36,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -59,7 +60,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -85,7 +86,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -111,7 +112,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -137,7 +138,7 @@ public final class DiffTest
 		{
 			String actual = "actual";
 			String expected = "expected";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -162,7 +163,7 @@ public final class DiffTest
 		{
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -185,7 +186,7 @@ public final class DiffTest
 		{
 			String actual = "\nactual";
 			String expected = "expected";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -216,7 +217,7 @@ public final class DiffTest
 		{
 			String actual = "actual\n";
 			String expected = "expected";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -247,7 +248,7 @@ public final class DiffTest
 		{
 			String actual = "\n\nvalue";
 			String expected = "value";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -261,7 +262,6 @@ public final class DiffTest
 				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@3  : value" + EOS_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_EQUAL, "value".length() + EOS_MARKER.length()) + "\n" +
 				"Expected@1: value" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -278,13 +278,12 @@ public final class DiffTest
 		{
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : 1" + NEWLINE_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_EQUAL, "1".length() + NEWLINE_MARKER.length()) + "\n" +
 				"Expected@1: 1" + NEWLINE_MARKER + "\n" +
 				"\n" +
 				"[...]\n" +
@@ -297,7 +296,6 @@ public final class DiffTest
 				"[...]\n" +
 				"\n" +
 				"Actual@5  : 5\\0\n" +
-				"Diff      : " + Strings.repeat(DIFF_EQUAL, "5".length() + EOS_MARKER.length()) + "\n" +
 				"Expected@5: 5\\0";
 			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -314,7 +312,7 @@ public final class DiffTest
 		{
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
-			new Verifiers(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -354,5 +352,27 @@ public final class DiffTest
 	{
 		int result = Strings.lastConsecutiveIndexOf("1 ", " ");
 		assert (result == 1): result;
+	}
+
+	/**
+	 * BUG: If actual != expected but their string value is identical, then actual's string value
+	 * should be included in the output, but is not.
+	 */
+	@Test
+	public void stringValueIsEqual()
+	{
+		SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Verifiers(scope).requireThat("actual", actual).
+				isEqualTo(new SameToStringDifferentHashCode());
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains(actual.toString())):
+				"Was expecting output to contain actual value, but did not.\n" +
+				"\nActual:\n" + actualMessage;
+		}
 	}
 }

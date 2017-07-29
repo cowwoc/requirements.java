@@ -22,14 +22,14 @@ public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	 * Creates a new NumberVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public NumberVerifierImpl(ApplicationScope scope, T actual, String name, Configuration config)
+	public NumberVerifierImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 }

@@ -25,7 +25,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("/");
-			new Verifiers(scope).requireThat(actual, null);
+			new Verifiers(scope).requireThat(null, actual);
 		}
 	}
 
@@ -35,7 +35,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("/");
-			new Verifiers(scope).requireThat(actual, "");
+			new Verifiers(scope).requireThat("", actual);
 		}
 	}
 
@@ -47,7 +47,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new Verifiers(scope).requireThat(actual, "actual").exists();
+				new Verifiers(scope).requireThat("actual", actual).exists();
 			}
 			finally
 			{
@@ -63,7 +63,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempFile(null, null);
 			Files.delete(actual);
-			new Verifiers(scope).requireThat(actual, "actual").exists();
+			new Verifiers(scope).requireThat("actual", actual).exists();
 		}
 	}
 
@@ -75,7 +75,7 @@ public final class PathTest
 			Path actual = Files.createTempDirectory(null);
 			try
 			{
-				new Verifiers(scope).requireThat(actual, "actual").isDirectory();
+				new Verifiers(scope).requireThat("actual", actual).isDirectory();
 			}
 			finally
 			{
@@ -91,7 +91,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempDirectory(null);
 			Files.delete(actual);
-			new Verifiers(scope).requireThat(actual, "actual").isDirectory();
+			new Verifiers(scope).requireThat("actual", actual).isDirectory();
 		}
 	}
 
@@ -103,7 +103,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new Verifiers(scope).requireThat(actual, "actual").isDirectory();
+				new Verifiers(scope).requireThat("actual", actual).isDirectory();
 			}
 			finally
 			{
@@ -120,7 +120,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new Verifiers(scope).requireThat(actual, "actual").isRegularFile();
+				new Verifiers(scope).requireThat("actual", actual).isRegularFile();
 			}
 			finally
 			{
@@ -136,7 +136,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempFile(null, null);
 			Files.delete(actual);
-			new Verifiers(scope).requireThat(actual, "actual").isRegularFile();
+			new Verifiers(scope).requireThat("actual", actual).isRegularFile();
 		}
 	}
 
@@ -148,7 +148,7 @@ public final class PathTest
 			Path actual = Files.createTempDirectory(null);
 			try
 			{
-				new Verifiers(scope).requireThat(actual, "actual").isRegularFile();
+				new Verifiers(scope).requireThat("actual", actual).isRegularFile();
 			}
 			finally
 			{
@@ -163,7 +163,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("path1/path2");
-			new Verifiers(scope).requireThat(actual, "actual").isRelative();
+			new Verifiers(scope).requireThat("actual", actual).isRelative();
 		}
 	}
 
@@ -173,7 +173,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new Verifiers(scope).requireThat(actual, "actual").isRelative();
+			new Verifiers(scope).requireThat("actual", actual).isRelative();
 		}
 	}
 
@@ -183,7 +183,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new Verifiers(scope).requireThat(actual, "actual").isAbsolute();
+			new Verifiers(scope).requireThat("actual", actual).isAbsolute();
 		}
 	}
 
@@ -193,7 +193,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("path1/path2");
-			new Verifiers(scope).requireThat(actual, "actual").isAbsolute();
+			new Verifiers(scope).requireThat("actual", actual).isAbsolute();
 		}
 	}
 
@@ -204,7 +204,7 @@ public final class PathTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Path actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 }

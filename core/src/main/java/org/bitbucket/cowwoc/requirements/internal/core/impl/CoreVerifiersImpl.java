@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.util.ToStringSupplier;
 
 /**
  * Default implementation of {@link CoreVerifiers}.
@@ -82,15 +81,9 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	}
 
 	@Override
-	public CoreVerifiers addContext(String key, Object value)
+	public CoreVerifiers addContext(String name, Object value)
 	{
-		return new CoreVerifiersImpl(scope, config.addContext(key, value));
-	}
-
-	@Override
-	public CoreVerifiers addContext(String key, Supplier<String> value)
-	{
-		return addContext(key, new ToStringSupplier(value));
+		return new CoreVerifiersImpl(scope, config.addContext(name, value));
 	}
 
 	@Override
@@ -112,7 +105,7 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	}
 
 	@Override
-	public Configurable withDiff()
+	public CoreVerifiers withDiff()
 	{
 		Configuration newConfig = config.withDiff();
 		if (newConfig.equals(config))
@@ -121,9 +114,27 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	}
 
 	@Override
-	public Configurable withoutDiff()
+	public CoreVerifiers withoutDiff()
 	{
 		Configuration newConfig = config.withoutDiff();
+		if (newConfig.equals(config))
+			return this;
+		return new CoreVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public <T> CoreVerifiers withStringConverter(Class<T> type, Function<T, String> converter)
+	{
+		Configuration newConfig = config.withStringConverter(type, converter);
+		if (newConfig.equals(config))
+			return this;
+		return new CoreVerifiersImpl(scope, newConfig);
+	}
+
+	@Override
+	public <T> CoreVerifiers withoutStringConverter(Class<T> type)
+	{
+		Configuration newConfig = config.withoutStringConverter(type);
 		if (newConfig.equals(config))
 			return this;
 		return new CoreVerifiersImpl(scope, newConfig);

@@ -31,21 +31,21 @@ public interface ObjectCapabilities<S, T>
 	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of
 	 * the output format</a>
 	 */
-	S isEqualTo(T expected);
+	S isEqualTo(Object expected);
 
 	/**
 	 * Ensures that the actual value is equal to the expected value.
 	 *
-	 * @param expected the expected value
 	 * @param name     the name of the expected value
+	 * @param expected the expected value
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the actual value is not equal to the variable; if
-	 *                                  {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is not equal to
+	 *                                  the variable
 	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of
 	 * the output format</a>
 	 */
-	S isEqualTo(T expected, String name);
+	S isEqualTo(String name, Object expected);
 
 	/**
 	 * Ensures that the actual value is not equal to a value.
@@ -54,19 +54,19 @@ public interface ObjectCapabilities<S, T>
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is equal to {@code value}
 	 */
-	S isNotEqualTo(T value);
+	S isNotEqualTo(Object value);
 
 	/**
 	 * Ensures that the actual value is not equal to a variable.
 	 *
-	 * @param value the value to compare to
 	 * @param name  the name of the variable
+	 * @param value the value to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the actual value is equal to the variable; if {@code name}
-	 *                                  is empty
+	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is equal to the
+	 *                                  variable
 	 */
-	S isNotEqualTo(T value, String name);
+	S isNotEqualTo(String name, Object value);
 
 	/**
 	 * Ensures that a collection contains the actual value.
@@ -76,7 +76,7 @@ public interface ObjectCapabilities<S, T>
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} does not contain the actual value
 	 */
-	S isIn(Collection<T> collection);
+	S isIn(Collection<? super T> collection);
 
 	/**
 	 * Ensures that a collection does not contain the actual value.
@@ -86,7 +86,7 @@ public interface ObjectCapabilities<S, T>
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} contains the actual value
 	 */
-	S isNotIn(Collection<T> collection);
+	S isNotIn(Collection<? super T> collection);
 
 	/**
 	 * Ensures that the actual value is an instance of a class.

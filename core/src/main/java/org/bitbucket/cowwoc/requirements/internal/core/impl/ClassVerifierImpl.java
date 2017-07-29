@@ -22,22 +22,22 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 	 * Creates new ClassVerifierImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ClassVerifierImpl(ApplicationScope scope, Class<T> actual, String name,
+	public ClassVerifierImpl(ApplicationScope scope, String name, Class<T> actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override
 	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
+		scope.getInternalVerifier().requireThat("type", type).isNotNull();
 		if (actual.isAssignableFrom(type))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,

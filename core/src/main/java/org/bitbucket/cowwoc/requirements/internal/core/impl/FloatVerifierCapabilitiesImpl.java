@@ -23,16 +23,16 @@ public abstract class FloatVerifierCapabilitiesImpl<S>
 	 * Creates new FloatVerifierCapabilitiesImpl.
 	 *
 	 * @param scope  the application configuration
-	 * @param actual the actual value
 	 * @param name   the name of the value
+	 * @param actual the actual value
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public FloatVerifierCapabilitiesImpl(ApplicationScope scope, Float actual, String name,
+	public FloatVerifierCapabilitiesImpl(ApplicationScope scope, String name, Float actual,
 		Configuration config)
 	{
-		super(scope, actual, name, config);
+		super(scope, name, actual, config);
 	}
 
 	@Override

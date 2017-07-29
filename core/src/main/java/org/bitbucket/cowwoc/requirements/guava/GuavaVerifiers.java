@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.guava;
 
+import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 
@@ -15,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 public interface GuavaVerifiers extends Configurable
 {
 	@Override
-	GuavaVerifiers addContext(String key, Object value);
+	GuavaVerifiers addContext(String name, Object value);
 
 	@Override
 	GuavaVerifiers withDefaultException();
@@ -28,6 +29,18 @@ public interface GuavaVerifiers extends Configurable
 
 	@Override
 	GuavaVerifiers withAssertionsEnabled();
+
+	@Override
+	GuavaVerifiers withDiff();
+
+	@Override
+	GuavaVerifiers withoutDiff();
+
+	@Override
+	<T> GuavaVerifiers withStringConverter(Class<T> type, Function<T, String> converter);
+
+	@Override
+	<T> GuavaVerifiers withoutStringConverter(Class<T> type);
 
 	@Override
 	GuavaVerifiers withConfiguration(Configuration configuration);
