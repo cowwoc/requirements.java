@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.core;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
 
 /**
- * Verifies a primitive {@code char} value.
+ * Verifies a {@code char} value.
  *
  * @author Gili Tzabari
  */

@@ -55,7 +55,7 @@ public interface GuavaVerifiers extends Configurable
 	<K, V> MultimapVerifier<K, V> requireThat(String name, Multimap<K, V> actual);
 
 	/**
-	 * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(String, Multimap)} but does nothing if assertions are disabled.
 	 *
 	 * @param <K>    the type of key in the multimap
 	 * @param <V>    the type of value in the multimap

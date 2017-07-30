@@ -53,7 +53,7 @@ public final class Requirements
 	}
 
 	/**
-	 * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(String, Multimap)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
 	 * @param <K>    the type of key in the multimap

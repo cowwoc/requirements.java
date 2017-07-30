@@ -48,7 +48,6 @@ public final class Configuration implements Configurable
 
 	/**
 	 * Creates a new configuration:
-	 * <p>
 	 * <ul>
 	 * <li>With an empty context.</li>
 	 * <li>That throws the default exception type.</li>
