@@ -21,6 +21,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 public final class ExceptionBuilder
 {
 	private final Configuration config;
+	private final Exceptions exceptions;
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final Throwable cause;
@@ -34,20 +35,22 @@ public final class ExceptionBuilder
 	 * Creates a new builder.
 	 *
 	 * @param configuration   the instance configuration
+	 * @param exceptions      an instance of {@code Exceptions}
 	 * @param type            the type of the exception
 	 * @param message         the exception message
 	 * @param cause           the underlying cause of the exception ({@code null} if absent)
 	 * @param apiInStacktrace true if API elements should show up in the stacktrace
-	 * @throws NullPointerException if {@code configuration} or {@code message} are null
+	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message}
+	 *                        are null
 	 */
-	private ExceptionBuilder(Configuration configuration, Class<? extends RuntimeException> type,
-		String message, Throwable cause, boolean apiInStacktrace)
+	private ExceptionBuilder(Configuration configuration, Exceptions exceptions,
+		Class<? extends RuntimeException> type, String message, Throwable cause, boolean apiInStacktrace)
 	{
-		if (configuration == null)
-			throw new NullPointerException("configuration may not be null");
-		if (message == null)
-			throw new NullPointerException("message may not be null");
+		assert (configuration != null): "configuration may not be null";
+		assert (exceptions != null): "exceptions may not be null";
+		assert (message != null): "message may not be null";
 		this.config = configuration;
+		this.exceptions = exceptions;
 		this.type = config.getException().orElse(type);
 		this.message = message;
 		this.cause = cause;
@@ -69,7 +72,7 @@ public final class ExceptionBuilder
 	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
 		Class<? extends RuntimeException> type, String message, Throwable cause)
 	{
-		this(configuration, type, message, cause, scope.isApiInStacktrace().get());
+		this(configuration, scope.getExceptions(), type, message, cause, scope.isApiInStacktrace().get());
 	}
 
 	/**
@@ -151,6 +154,6 @@ public final class ExceptionBuilder
 				messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
 					config.toString(entry.getValue())));
 		}
-		return Exceptions.createException(type, messageWithContext.toString(), cause, apiInStacktrace);
+		return exceptions.createException(type, messageWithContext.toString(), cause, apiInStacktrace);
 	}
 }

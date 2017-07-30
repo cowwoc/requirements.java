@@ -9,6 +9,9 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import org.bitbucket.cowwoc.requirements.core.Requirements;
 
@@ -19,19 +22,49 @@ import org.bitbucket.cowwoc.requirements.core.Requirements;
  */
 public final class Exceptions
 {
-	private static final Lookup LOOKUP = MethodHandles.lookup();
+	private final Lookup lookup = MethodHandles.lookup();
 	/**
 	 * The package name of this library.
 	 */
-	private static final String LIBRARY_PACKAGE = getParentPackage(Requirements.class.getPackage().
+	private final String libraryPackage = getParentPackage(Requirements.class.getPackage().
 		getName());
+	private final MethodType constructorWithCause = MethodType.methodType(void.class,
+		String.class, Throwable.class);
+	private final MethodType constructorWithoutCause = MethodType.methodType(void.class,
+		String.class);
+	private final Function<Class<?>, MethodHandle> computeConstructorWithCause = c ->
+	{
+		try
+		{
+			return lookup.findConstructor(c, constructorWithCause);
+		}
+		catch (ReflectiveOperationException e)
+		{
+			throw new RuntimeException(e);
+		}
+	};
+	private final Function<Class<?>, MethodHandle> computeConstructorWithoutCause = c ->
+	{
+		try
+		{
+			return lookup.findConstructor(c, constructorWithoutCause);
+		}
+		catch (ReflectiveOperationException e)
+		{
+			throw new RuntimeException(e);
+		}
+	};
+	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithoutCause =
+		new ConcurrentHashMap<>(3);
+	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithCause =
+		new ConcurrentHashMap<>(3);
 
 	/**
 	 * @param name the name of a Java package
 	 * @return the name of the parent of the package
 	 * @throws AssertionError if {@code name} is null or has no parent
 	 */
-	private static String getParentPackage(String name)
+	private String getParentPackage(String name)
 	{
 		assert (name != null): "name may not be null";
 		assert (!name.trim().isEmpty()): "name may not be empty";
@@ -50,9 +83,9 @@ public final class Exceptions
 	 * @param cause           the cause of the exception ({@code null} if absent)
 	 * @param apiInStacktrace true if API elements should show up in the stack-trace
 	 * @return the exception
-	 * @throws NullPointerException if {@code type} is null
+	 * @throws AssertionError if {@code type} is null
 	 */
-	public static <E extends RuntimeException> RuntimeException createException(Class<E> type,
+	public <E extends RuntimeException> RuntimeException createException(Class<E> type,
 		String message, Throwable cause, boolean apiInStacktrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
@@ -67,23 +100,16 @@ public final class Exceptions
 		//
 		// If apiInStacktrace is false, we need to strip out the top 3 stack-trace elements. But we are
 		// also forced to strip out the exception cause because it was thrown inside our API.
-		if (type == null)
-			throw new NullPointerException("type may not be null");
+		assert (type != null): "type may not be null";
 		try
 		{
-			boolean includeCause = apiInStacktrace && cause != null;
-
-			MethodType constructorType;
-			if (includeCause)
-				constructorType = MethodType.methodType(void.class, String.class, Throwable.class);
-			else
-				constructorType = MethodType.methodType(void.class, String.class);
-			MethodHandle constructor = LOOKUP.findConstructor(type, constructorType);
+			boolean withCause = apiInStacktrace && cause != null;
+			MethodHandle constructor = getConstructor(type, withCause);
 			// Convert the exception type to RuntimeException
 			constructor = constructor.asType(constructor.type().changeReturnType(RuntimeException.class));
 
 			RuntimeException result;
-			if (includeCause)
+			if (withCause)
 				result = (RuntimeException) constructor.invokeExact(message, cause);
 			else
 				result = (RuntimeException) constructor.invokeExact(message);
@@ -98,15 +124,37 @@ public final class Exceptions
 	}
 
 	/**
+	 * @param type      the type of the exception
+	 * @param withCause true if the constructor takes an exception cause
+	 * @return the constructor of the exception
+	 * @throws Throwable if an error occurs
+	 */
+	private MethodHandle getConstructor(Class<?> type, boolean withCause) throws Throwable
+	{
+		try
+		{
+			if (withCause)
+				return classToConstructorsWithCause.computeIfAbsent(type, computeConstructorWithCause);
+			return classToConstructorsWithoutCause.computeIfAbsent(type, computeConstructorWithoutCause);
+		}
+		catch (RuntimeException e)
+		{
+			if (e.getCause() instanceof ReflectiveOperationException)
+				throw e.getCause();
+			throw e;
+		}
+	}
+
+	/**
 	 * Removes references to this library from an exception stacktrace.
 	 *
 	 * @param throwable the {@code Throwable} to process
 	 */
-	private static void removeLibraryFromStacktrace(Throwable throwable)
+	private void removeLibraryFromStacktrace(Throwable throwable)
 	{
 		filterStacktrace(throwable, name ->
 		{
-			return name.startsWith(LIBRARY_PACKAGE) && !name.endsWith("Test");
+			return name.startsWith(libraryPackage) && !name.endsWith("Test");
 		});
 	}
 
@@ -120,7 +168,7 @@ public final class Exceptions
 	 * @param classNameFilter returns true if stack-trace elements should be removed at and above the
 	 *                        current position
 	 */
-	public static void filterStacktrace(Throwable throwable, Predicate<String> classNameFilter)
+	public void filterStacktrace(Throwable throwable, Predicate<String> classNameFilter)
 	{
 		// Method needs to be public to hide 3rd-party verifiers located in in other packages
 		StackTraceElement[] elements = throwable.getStackTrace();
@@ -137,10 +185,4 @@ public final class Exceptions
 		throwable.setStackTrace(Arrays.copyOfRange(elements, i + 1, elements.length));
 	}
 
-	/**
-	 * Prevent construction.
-	 */
-	private Exceptions()
-	{
-	}
 }

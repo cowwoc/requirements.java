@@ -11,6 +11,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffGenerator;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Exceptions;
 import org.bitbucket.cowwoc.requirements.internal.guava.impl.GuavaModule;
 import org.bitbucket.cowwoc.requirements.internal.module.Module;
 
@@ -26,12 +27,19 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	private final Module guavaVerifiers = new GuavaModule();
 	private final Reference<DiffGenerator> diffGenerator = ConcurrentLazyReference.create(() ->
 		new DiffGenerator(this));
+	private final Exceptions exceptions = new Exceptions();
 	protected final Configuration defaultConfiguration = new Configuration();
 
 	@Override
 	public DiffGenerator getDiffGenerator()
 	{
 		return diffGenerator.getValue();
+	}
+
+	@Override
+	public Exceptions getExceptions()
+	{
+		return exceptions;
 	}
 
 	@Override

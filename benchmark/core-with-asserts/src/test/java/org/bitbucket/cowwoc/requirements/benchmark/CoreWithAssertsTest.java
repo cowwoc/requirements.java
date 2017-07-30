@@ -10,8 +10,10 @@ import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.openjdk.jmh.annotations.Benchmark;
+import static org.openjdk.jmh.annotations.Level.Iteration;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -37,9 +39,13 @@ public class CoreWithAssertsTest
 			timeUnit(TimeUnit.NANOSECONDS).
 			mode(Mode.AverageTime).
 			build();
-		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
-
 		new Runner(opt).run();
+	}
+
+	@Setup(Iteration)
+	public void setupFork()
+	{
+		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
 	}
 
 	@Benchmark

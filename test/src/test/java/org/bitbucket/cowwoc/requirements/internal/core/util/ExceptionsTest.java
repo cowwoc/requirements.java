@@ -20,6 +20,6 @@ public final class ExceptionsTest
 	@SuppressWarnings("ThrowableResultIgnored")
 	public void createExceptionWithCauseButNotInApi()
 	{
-		Exceptions.createException(RuntimeException.class, "message", new Exception(), false);
+		new Exceptions().createException(RuntimeException.class, "message", new Exception(), false);
 	}
 }
