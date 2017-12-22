@@ -25,12 +25,12 @@ public final class OperatingSystem
 	 * Extracts the Windows version number from the output of the "ver" command.
 	 */
 	private static final Pattern WINDOWS_VERSION = Pattern.compile(
-		"Microsoft Windows \\[Version (\\d+)\\.(\\d+)\\.(\\d+)\\]");
+		"Microsoft Windows \\[Version ([^]]+)]");
 	/**
 	 * Version format used by Linux and Mac.
 	 */
 	private static final Pattern VERSION_PATTERN = Pattern.compile(
-		"(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?");
+		"(\\d+)(?:\\.(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?)?");
 
 	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(() ->
 	{
@@ -62,7 +62,7 @@ public final class OperatingSystem
 				case WINDOWS:
 					return getWindowsVersion();
 				default:
-					return getVersionUsingJava(System.getProperty("os.version"));
+					return parseVersion(System.getProperty("os.version"));
 			}
 		});
 
@@ -92,49 +92,49 @@ public final class OperatingSystem
 			Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
 			if (!matcher.find())
 				throw new AssertionError("Unsupported Windows version: " + versionAsString);
-			int major;
-			int minor;
-			int build;
-			try
-			{
-				major = Integer.parseInt(matcher.group(1));
-				minor = Integer.parseInt(matcher.group(2));
-				build = Integer.parseInt(matcher.group(3));
-			}
-			catch (NumberFormatException e)
-			{
-				throw new AssertionError("Failed to parse Windows version: " + versionAsString, e);
-			}
-			return new Version(major, minor, build);
+			return parseVersion(matcher.group(1));
 		}
 
 		/**
-		 * @param osVersion the operating system version
-		 * @return the version of Linux
+		 * @param versionAsString the output of the "ver" command
+		 * @return the version
 		 * @throws AssertionError if the version is not supported
 		 */
-		static Version getVersionUsingJava(String osVersion)
+		static Version parseWindowsVersion(String versionAsString)
 		{
-			Matcher matcher = VERSION_PATTERN.matcher(osVersion);
+			Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
 			if (!matcher.find())
-				throw new AssertionError("Unsupported version: " + osVersion);
-			int major;
-			int minor;
-			int build;
+				throw new AssertionError("Unsupported Windows version: " + versionAsString);
+			return parseVersion(matcher.group(1));
+		}
+
+		/**
+		 * @param versionAsString the String representation of the version number
+		 * @return the version of the operating system
+		 * @throws AssertionError if the version is not supported
+		 */
+		static Version parseVersion(String versionAsString)
+		{
+			Matcher matcher = VERSION_PATTERN.matcher(versionAsString);
+			if (!matcher.find())
+				throw new AssertionError("Unsupported version: " + versionAsString);
 			try
 			{
-				major = Integer.parseInt(matcher.group(1));
+				int major = Integer.parseInt(matcher.group(1));
 				if (matcher.group(2) == null)
 					return new Version(major);
-				minor = Integer.parseInt(matcher.group(2));
+				int minor = Integer.parseInt(matcher.group(2));
 				if (matcher.group(3) == null)
 					return new Version(major, minor);
-				build = Integer.parseInt(matcher.group(3));
-				return new Version(major, minor, build);
+				int build = Integer.parseInt(matcher.group(3));
+				if (matcher.group(4) == null)
+					return new Version(major, minor, build);
+				int revision = Integer.parseInt(matcher.group(4));
+				return new Version(major, minor, build, revision);
 			}
 			catch (NumberFormatException e)
 			{
-				throw new AssertionError("Failed to parse version: " + osVersion, e);
+				throw new AssertionError("Failed to parse version: " + versionAsString, e);
 			}
 		}
 		public final int major;
@@ -148,6 +148,37 @@ public final class OperatingSystem
 		 * The build number, or zero if the component is absent.
 		 */
 		public final int buildOrZero;
+		/**
+		 * Hotfix of an old build. See Stackoverflow for
+		 * <a href="https://softwareengineering.stackexchange.com/a/171381/42177">more details</a>.
+		 */
+		public final Integer revision;
+		/**
+		 * The revision number, or zero if the component is absent.
+		 */
+		public final int revisionOrZero;
+
+		/**
+		 * @param major    the major component of the version number
+		 * @param minor    the minor component of the version number
+		 * @param build    the build component of the version number
+		 * @param revision the revision component of the version number
+		 * @throws AssertionError if any of the components are negative
+		 */
+		public Version(int major, int minor, int build, int revision)
+		{
+			assert (major >= 0): "major: " + major;
+			assert (minor >= 0): "minor: " + minor;
+			assert (build >= 0): "build: " + build;
+			assert (revision >= 0): "revision: " + revision;
+			this.major = major;
+			this.minor = minor;
+			this.minorOrZero = minor;
+			this.build = build;
+			this.buildOrZero = build;
+			this.revision = revision;
+			this.revisionOrZero = revision;
+		}
 
 		/**
 		 * @param major the major component of the version number
@@ -165,6 +196,8 @@ public final class OperatingSystem
 			this.minorOrZero = minor;
 			this.build = build;
 			this.buildOrZero = build;
+			this.revision = null;
+			this.revisionOrZero = 0;
 		}
 
 		/**
@@ -181,6 +214,8 @@ public final class OperatingSystem
 			this.minorOrZero = minor;
 			this.build = null;
 			this.buildOrZero = 0;
+			this.revision = null;
+			this.revisionOrZero = 0;
 		}
 
 		/**
@@ -195,6 +230,8 @@ public final class OperatingSystem
 			this.minorOrZero = 0;
 			this.build = null;
 			this.buildOrZero = 0;
+			this.revision = null;
+			this.revisionOrZero = 0;
 		}
 
 		@Override
@@ -206,7 +243,10 @@ public final class OperatingSystem
 			result = minorOrZero - other.minorOrZero;
 			if (result != 0)
 				return result;
-			return buildOrZero - other.buildOrZero;
+			result = buildOrZero - other.buildOrZero;
+			if (result != 0)
+				return result;
+			return revisionOrZero - other.revisionOrZero;
 		}
 
 		@Override
@@ -216,13 +256,13 @@ public final class OperatingSystem
 				return false;
 			Version other = (Version) obj;
 			return major == other.major && minorOrZero == other.minorOrZero &&
-				buildOrZero == other.buildOrZero;
+				buildOrZero == other.buildOrZero && revisionOrZero == other.revisionOrZero;
 		}
 
 		@Override
 		public int hashCode()
 		{
-			return Objects.hash(major, minor, build);
+			return Objects.hash(major, minor, build, revision);
 		}
 
 		@Override
@@ -234,6 +274,8 @@ public final class OperatingSystem
 				result.append(".").append(minor);
 			if (build != null)
 				result.append(".").append(build);
+			if (revision != null)
+				result.append(".").append(revision);
 			return result.toString();
 		}
 	}
