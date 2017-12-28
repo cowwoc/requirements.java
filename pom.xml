@@ -280,6 +280,11 @@
 								<configuration>
 									<!-- See https://maven.apache.org/guides/mini/guide-encryption.html -->
 									<passphraseServerId>gpg.passphrase</passphraseServerId>
+									<!-- See https://myshittycode.com/2017/08/07/maven-gpg-plugin-prevent-signing-prompt-or-gpg-signing-failed-no-such-file-or-directory-error/ -->
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
 								</configuration>
 							</execution>
 						</executions>
