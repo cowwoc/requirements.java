@@ -675,4 +675,17 @@ public final class BigDecimalTest
 			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
+
+	/**
+	 * BUG: Implementation used to check that longValue() > 0; which fails for decimals.
+	 */
+	@Test
+	public void decimalIsPositive()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = new BigDecimal("0.1");
+			new Verifiers(scope).requireThat("actual", actual).isPositive();
+		}
+	}
 }

@@ -38,7 +38,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNegative()
 	{
-		if (actual.longValue() < 0L)
+		if (actual.doubleValue() < 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be negative.", name)).
@@ -49,7 +49,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotNegative()
 	{
-		if (actual.longValue() >= 0L)
+		if (actual.doubleValue() >= 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be negative.", name)).
@@ -60,7 +60,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isZero()
 	{
-		if (actual.longValue() == 0L)
+		if (actual.doubleValue() == 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be zero.", name)).
@@ -71,7 +71,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotZero()
 	{
-		if (actual.longValue() != 0L)
+		if (actual.doubleValue() != 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be zero", name)).
@@ -81,7 +81,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isPositive()
 	{
-		if (actual.longValue() > 0L)
+		if (actual.doubleValue() > 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be positive.", name)).
@@ -92,7 +92,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotPositive()
 	{
-		if (actual.longValue() <= 0L)
+		if (actual.doubleValue() <= 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be positive.", name)).
