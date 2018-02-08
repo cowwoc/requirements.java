@@ -18,6 +18,16 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	extends ObjectCapabilities<S, T>
 {
 	/**
+	 * Ensures that the actual value is greater than the specified value.
+	 *
+	 * @param value a lower bound
+	 * @return this
+	 * @throws NullPointerException     if {@code value} is null
+	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}
+	 */
+	S isGreaterThan(T value);
+
+	/**
 	 * Ensures that the actual value is greater than the specified the specified value.
 	 *
 	 * @param name  the name of the lower bound
@@ -31,14 +41,14 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	S isGreaterThan(String name, T value);
 
 	/**
-	 * Ensures that the actual value is greater than the specified value.
+	 * Ensures that the actual value is greater than or equal to the specified value.
 	 *
-	 * @param value a lower bound
+	 * @param value the minimum value
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
-	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}
+	 * @throws IllegalArgumentException if the actual value is less than to {@code value}
 	 */
-	S isGreaterThan(T value);
+	S isGreaterThanOrEqualTo(T value);
 
 	/**
 	 * Ensures that the actual value is greater than or equal to the specified value.
@@ -54,14 +64,14 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	S isGreaterThanOrEqualTo(String name, T value);
 
 	/**
-	 * Ensures that the actual value is greater than or equal to the specified value.
+	 * Ensures that the actual value is less than the specified value.
 	 *
-	 * @param value the minimum value
+	 * @param value the upper bound
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
-	 * @throws IllegalArgumentException if the actual value is less than to {@code value}
+	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}
 	 */
-	S isGreaterThanOrEqualTo(T value);
+	S isLessThan(T value);
 
 	/**
 	 * Ensures that the actual value is less than the value of the specified value.
@@ -76,14 +86,14 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	S isLessThan(String name, T value);
 
 	/**
-	 * Ensures that the actual value is less than the specified value.
+	 * Ensures that the actual value is less than or equal to the specified value.
 	 *
-	 * @param value the upper bound
+	 * @param value the maximum value
 	 * @return this
 	 * @throws NullPointerException     if {@code value} is null
-	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}
+	 * @throws IllegalArgumentException if the actual value is greater than {@code value}
 	 */
-	S isLessThan(T value);
+	S isLessThanOrEqualTo(T value);
 
 	/**
 	 * Ensures that the actual value is less than or equal to the specified value.
@@ -98,14 +108,46 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	S isLessThanOrEqualTo(String name, T value);
 
 	/**
-	 * Ensures that the actual value is less than or equal to the specified value.
+	 * Ensures that the actual value is comparable to the expected value.
 	 *
-	 * @param value the maximum value
+	 * @param expected the expected value
 	 * @return this
-	 * @throws NullPointerException     if {@code value} is null
-	 * @throws IllegalArgumentException if the actual value is greater than {@code value}
+	 * @throws NullPointerException     if {@code expected} is null
+	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}
 	 */
-	S isLessThanOrEqualTo(T value);
+	S isComparableTo(T expected);
+
+	/**
+	 * Ensures that the actual value is comparable to the expected value.
+	 *
+	 * @param name     the name of the expected value
+	 * @param expected the expected value
+	 * @return this
+	 * @throws NullPointerException     if {@code name} or {@code expected} are null
+	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}
+	 */
+	S isComparableTo(String name, T expected);
+
+	/**
+	 * Ensures that the actual value is not comparable to another value.
+	 *
+	 * @param other the other value
+	 * @return this
+	 * @throws NullPointerException     if {@code other} is null
+	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}
+	 */
+	S isNotComparableTo(T other);
+
+	/**
+	 * Ensures that the actual value is not comparable to another value.
+	 *
+	 * @param name  the name of the other value
+	 * @param other the other value
+	 * @return this
+	 * @throws NullPointerException     if {@code name} or {@code other} are null
+	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}
+	 */
+	S isNotComparableTo(String name, T other);
 
 	/**
 	 * Ensures that the actual value is within range.

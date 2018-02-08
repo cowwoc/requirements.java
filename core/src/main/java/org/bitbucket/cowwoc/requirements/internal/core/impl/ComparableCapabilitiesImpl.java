@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import static org.bitbucket.cowwoc.requirements.internal.core.util.ConsoleConstants.LINE_LENGTH;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
@@ -155,6 +154,62 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
+	public S isComparableTo(T expected)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("expected", expected).isNotNull();
+		if (actual.compareTo(expected) == 0)
+			return getThis();
+		String message = name + " must be comparable to " + expected;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+			addContext("Actual", actual).
+			addContext("Expected", expected).
+			build();
+	}
+
+	@Override
+	public S isComparableTo(String name, T expected)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("expected", expected).isNotNull();
+		if (actual.compareTo(expected) == 0)
+			return getThis();
+		String message = name + " must be comparable to " + name;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+			addContext("Actual", actual).
+			addContext("Expected", expected).
+			build();
+	}
+
+	@Override
+	public S isNotComparableTo(T value)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("value", value).isNotNull();
+		if (actual.compareTo(value) != 0)
+			return getThis();
+		String message = name + " must not be comparable to " + value;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+			addContext("Actual", actual).
+			addContext("Value", value).
+			build();
+	}
+
+	@Override
+	public S isNotComparableTo(String name, T other)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("value", other).isNotNull();
+		if (actual.compareTo(other) != 0)
+			return getThis();
+		String message = name + " must not be comparable to " + name;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+			addContext("Actual", actual).
+			addContext("Other", other).
+			build();
+	}
+
+	@Override
 	public S isBetween(T min, T max)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
@@ -162,11 +217,9 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat("max", max).isNotNull().isGreaterThanOrEqualTo("min", min);
 		if (actual.compareTo(min) >= 0 && actual.compareTo(max) <= 0)
 			return getThis();
-		StringBuilder message = new StringBuilder(LINE_LENGTH);
-		message.append(name).append(" must be in range [").append(min).append(", ").append(max).
-			append("]\n").
-			append("Actual: ").append(actual);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message.toString()).
+		String message = name + " must be in range [" + min + ", " + max + "]";
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+			addContext("Actual", actual).
 			build();
 	}
 }

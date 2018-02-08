@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.math.BigDecimal;
 import java.time.Year;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
@@ -36,7 +37,7 @@ public final class ComparableTest
 	}
 
 	@Test
-	public void isInRange_expectedIsLowerBound()
+	public void isInRange_actualIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -60,7 +61,7 @@ public final class ComparableTest
 	}
 
 	@Test
-	public void isInRange_expectedIsUpperBound()
+	public void isInRange_actualIsUpperBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -72,7 +73,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_expectedIsBefore()
+	public void isInRange_actualIsBefore()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -106,7 +107,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_expectedIsEqual()
+	public void isLessThanVariable_actualIsEqual()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -117,7 +118,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_expectedIsEqual()
+	public void isLessThanConstant_actualIsEqual()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -127,7 +128,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanVariable_expectedIsBefore()
+	public void isLessThanVariable_actualIsGreater()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -138,7 +139,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanConstant_expectedIsBefore()
+	public void isLessThanConstant_actualIsGreater()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -171,7 +172,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToVariable_expectedIsBefore()
+	public void isLessThanOrEqualToVariable_actualIsGreater()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -183,7 +184,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isLessThanOrEqualToConstant_expectedIsAfter()
+	public void isLessThanOrEqualToConstant_actualIsGreater()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -216,7 +217,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_expectedIsEqual()
+	public void isGreaterThanVariable_actualIsEqual()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -227,7 +228,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_expectedIsEqual()
+	public void isGreaterThanConstant_actualIsEqual()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -237,7 +238,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanVariable_expectedIsBefore()
+	public void isGreaterThanVariable_actualIsLess()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -248,7 +249,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanConstant_expectedIsBefore()
+	public void isGreaterThanConstant_actualIsLessThan()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -281,7 +282,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToVariable_expectedIsBefore()
+	public void isGreaterThanOrEqualToVariable_actualIsLessThan()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -293,13 +294,107 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isGreaterThanOrEqualToConstant_expectedIsBefore()
+	public void isGreaterThanOrEqualToConstant_actualIsLessThan()
 	{
+
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year before = Year.of(0);
 			Year after = Year.of(1);
 			new Verifiers(scope).requireThat("before", before).isGreaterThanOrEqualTo(after);
+		}
+	}
+
+	@Test
+	public void isComparableToVariable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
+			BigDecimal expected = new BigDecimal("0.00");
+			new Verifiers(scope).requireThat("actual", actual).
+				isComparableTo("expected", expected);
+		}
+	}
+
+	@Test
+	public void isComparableToConstant()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
+			BigDecimal expected = new BigDecimal("0.00");
+			new Verifiers(scope).requireThat("actual", actual).
+				isComparableTo(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isComparableToVariable_actualIsLessThan()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Year before = Year.of(0);
+			Year after = Year.of(1);
+			new Verifiers(scope).requireThat("before", before).
+				isComparableTo("after", after);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isComparableToConstant_actualIsLessThan()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Year before = Year.of(0);
+			Year after = Year.of(1);
+			new Verifiers(scope).requireThat("before", before).isComparableTo(after);
+		}
+	}
+
+	@Test
+	public void isNotComparableToVariable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Year before = Year.of(0);
+			Year after = Year.of(1);
+			new Verifiers(scope).requireThat("before", before).
+				isNotComparableTo("after", after);
+		}
+	}
+
+	@Test
+	public void isNotComparableToConstant()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Year before = Year.of(0);
+			Year after = Year.of(1);
+			new Verifiers(scope).requireThat("before", before).isNotComparableTo(after);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotComparableToVariable_actualIsComparable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
+			BigDecimal other = new BigDecimal("0.00");
+			new Verifiers(scope).requireThat("actual", actual).
+				isNotComparableTo("other", other);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotComparableToConstant_actualIsComparable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
+			BigDecimal other = new BigDecimal("0.00");
+			new Verifiers(scope).requireThat("actual", actual).isNotComparableTo(other);
 		}
 	}
 

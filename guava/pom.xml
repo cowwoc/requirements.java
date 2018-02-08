@@ -33,7 +33,7 @@
 				<configuration>
 					<links>
 						<link>https://docs.oracle.com/javase/8/docs/api/</link>
-						<link>https://google.github.io/guava/releases/22.0/api/docs/</link>
+						<link>https://google.github.io/guava/releases/24.0-jre/api/docs/</link>
 					</links>
 					<docfilessubdirs>true</docfilessubdirs>
 					<!-- whitelist in order to exclude internal classes -->
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>22.0</version>
+			<version>24.0-jre</version>
 		</dependency>
 	</dependencies>
 </project>
