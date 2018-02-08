@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.bitbucket.cowwoc</groupId>
 	<artifactId>requirements</artifactId>
-	<version>4.0.2-SNAPSHOT</version>
+	<version>4.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
