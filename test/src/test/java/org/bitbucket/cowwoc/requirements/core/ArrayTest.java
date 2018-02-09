@@ -146,19 +146,6 @@ public final class ArrayTest
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void contains_expectedEmptyName()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String[] actual =
-			{
-				"element"
-			};
-			new Verifiers(scope).requireThat("actual", actual).contains(" ");
-		}
-	}
-
 	@Test
 	public void containsExactly()
 	{
@@ -494,6 +481,100 @@ public final class ArrayTest
 			};
 			new Verifiers(scope).requireThat("actual", actual).
 				doesNotContain(" ", "element");
+		}
+	}
+
+	@Test
+	public void doesNotContainExactly_actualContainsUnwantedElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual =
+			{
+				"one",
+				"two",
+				"three"
+			};
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly(Arrays.asList("one", "two"));
+		}
+	}
+
+	@Test
+	public void doesNotContainExactly_actualIsMissingElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual =
+			{
+				"one",
+				"two"
+			};
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly(Arrays.asList("one", "two", "three"));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainsExactly()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual =
+			{
+				"one",
+				"two",
+				"three"
+			};
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly(Arrays.asList("one", "two", "three"));
+		}
+	}
+
+	@Test
+	public void doesNotContainExactlyVariable_actualContainsUnwantedElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual =
+			{
+				"one",
+				"two",
+				"three"
+			};
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly("nameOfExpected", Arrays.asList("one", "two"));
+		}
+	}
+
+	@Test
+	public void doesNotContainExactlyVariable_actualIsMissingElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual =
+			{
+				"one",
+				"two"
+			};
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly("expected", Arrays.asList("one", "two", "three"));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainExactlyVariable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual =
+			{
+				"one",
+				"two",
+				"three"
+			};
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly("nameOfExpected", Arrays.asList("one", "two", "three"));
 		}
 	}
 
@@ -940,10 +1021,61 @@ public final class ArrayTest
 
 			new Verifiers(scope).requireThat("actual", (Object) actual).isEqualTo(expected);
 		}
-		catch (IllegalArgumentException e)
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void objectIsEqualToArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actualMessage = e.getMessage();
-			assert (actualMessage.contains("primitive[]")): "Actual:\n" + actualMessage;
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+			expected[0] = 4;
+
+			new Verifiers(scope).requireThat("actual", (Object) actual).isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void objectIsNotEqualToArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+			expected[0] = 4;
+
+			new Verifiers(scope).requireThat("actual", (Object) actual).isNotEqualTo(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void objectIsNotEqualToArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+
+			new Verifiers(scope).requireThat("actual", (Object) actual).isNotEqualTo(expected);
 		}
 	}
 
@@ -961,12 +1093,130 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo((Object) expected);
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
-		catch (IllegalArgumentException e)
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void arrayIsEqualToObject_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actualMessage = e.getMessage();
-			assert (actualMessage.contains("primitive[]")): "Actual:\n" + actualMessage;
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+			expected[0] = 4;
+
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void arrayIsNotEqualToObject()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+			expected[0] = 4;
+
+			new Verifiers(scope).requireThat("actual", actual).isNotEqualTo(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void arrayIsNotEqualToObject_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] expected = new int[actual.length];
+			System.arraycopy(actual, 0, expected, 0, actual.length);
+
+			new Verifiers(scope).requireThat("actual", actual).isNotEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void isSameObjectAs()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isSameObjectAs_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] other = new int[actual.length];
+			System.arraycopy(actual, 0, other, 0, actual.length);
+
+			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("other", other);
+		}
+	}
+
+	@Test
+	public void isNotSameObjectAs()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+			int[] other = new int[actual.length];
+			System.arraycopy(actual, 0, other, 0, actual.length);
+
+			new Verifiers(scope).requireThat("actual", actual).isNotSameObjectAs("other", other);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotSameObjectAs_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual = new int[]
+			{
+				1,
+				2,
+				3
+			};
+
+			new Verifiers(scope).requireThat("actual", actual).isNotSameObjectAs("actual", actual);
 		}
 	}
 
@@ -989,6 +1239,7 @@ public final class ArrayTest
 			};
 			new Verifiers(scope).withStringConverter(int[].class, o -> "primitive[]").
 				requireThat("actual", actual).isEqualTo(expected);
+			assert (false): "Expection was never thrown";
 		}
 		catch (IllegalArgumentException e)
 		{

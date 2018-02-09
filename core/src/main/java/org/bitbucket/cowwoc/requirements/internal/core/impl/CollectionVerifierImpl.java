@@ -68,7 +68,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		if (!actual.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be empty.", name)).
+			String.format("%s may not be empty", name)).
 			build();
 	}
 
@@ -78,7 +78,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		if (actual.contains(element))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain: %s", name, element)).
+			String.format("%s must contain %s.", name, element)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -107,7 +107,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		if (missing.isEmpty() && unwanted.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain exactly: %s", name, expected)).
+			String.format("%s must contain exactly %s.", name, expected)).
 			addContext("Actual", actual).
 			addContext("Missing", missing).
 			addContext("Unwanted", unwanted).
@@ -143,7 +143,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		if (actualContainsAny(expected))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain any %s in: %s", name, pluralizer.nameOf(1), expected)).
+			String.format("%s must contain any %s in %s.", name, pluralizer.nameOf(1), expected)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -185,7 +185,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain all %s in: %s", name, pluralizer.nameOf(2), expected)).
+			String.format("%s must contain all %s in %s.", name, pluralizer.nameOf(2), expected)).
 			addContext("Actual", actual).
 			addContext("Missing", missing).
 			build();
@@ -216,7 +216,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		if (!actual.contains(element))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain: %s", name, element)).
+			String.format("%s may not contain %s.", name, element)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -235,6 +235,38 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	}
 
 	@Override
+	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other)
+	{
+		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		Set<E> otherAsSet = Sets.fromCollection(other);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
+		Set<E> missing = Sets.difference(otherAsSet, actualAsSet);
+		Set<E> unwanted = Sets.difference(actualAsSet, otherAsSet);
+		if (!missing.isEmpty() || !unwanted.isEmpty())
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not contain exactly %s", name, other)).
+			build();
+	}
+
+	@Override
+	public CollectionVerifier<C, E> doesNotContainExactly(String name, Collection<E> other)
+	{
+		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		Set<E> otherAsSet = Sets.fromCollection(other);
+		Set<E> actualAsSet = Sets.fromCollection(actual);
+		Set<E> missing = Sets.difference(otherAsSet, actualAsSet);
+		Set<E> unwanted = Sets.difference(actualAsSet, otherAsSet);
+		if (!missing.isEmpty() || !unwanted.isEmpty())
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not contain exactly the same %s as %s.", this.name,
+				pluralizer.nameOf(2), name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
 	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
 	{
 		scope.getInternalVerifier().requireThat("elements", elements).isNotNull();
@@ -244,7 +276,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> unwanted = Sets.intersection(actualAsSet, elementsAsSet);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain any %s in: %s", name, pluralizer.nameOf(1), elements)).
+			String.format("%s may not contain any %s in %s.", name, pluralizer.nameOf(1), elements)).
 			addContext("Actual", actual).
 			addContext("Unwanted", unwanted).
 			build();
@@ -276,7 +308,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		if (!actual.containsAll(elements))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain all of: %s", name, elements)).
+			String.format("%s may not contain all of %s.", name, elements)).
 			addContext("Actual", actual).
 			build();
 	}

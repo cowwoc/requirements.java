@@ -17,9 +17,9 @@ import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffResult;
 import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 
 /**
- * The values to compare.
+ * Returns the difference between two values as an exception context.
  */
-public class ContextGenerator
+public final class DiffToContextGenerator
 {
 	private static final Pattern LINES_NOT_EQUAL = Pattern.compile("[^=]+");
 
@@ -51,7 +51,7 @@ public class ContextGenerator
 	 * @param diffGenerator an instance of {@link DiffGenerator}
 	 * @throws AssertionError if {@code configuration}, {@code diffGenerator} are null
 	 */
-	ContextGenerator(Configuration configuration, DiffGenerator diffGenerator)
+	DiffToContextGenerator(Configuration configuration, DiffGenerator diffGenerator)
 	{
 		assert (configuration != null): "configuration may not be null";
 		assert (diffGenerator != null): "diffGenerator may not be null";
@@ -69,6 +69,8 @@ public class ContextGenerator
 	public List<Entry<String, Object>> getContext(String actualName, Object actualValue,
 		String expectedName, Object expectedValue)
 	{
+		// This class outputs the String representation of the values. If those are equal, it also
+		// outputs the first of getClass(), hashCode(), or System.identityHashCode()] that differs.
 		String actualToString = config.toString(actualValue);
 		String expectedToString = config.toString(expectedValue);
 		Class<?> actualType;
@@ -81,6 +83,8 @@ public class ContextGenerator
 			expectedToString));
 		if (actualToString.equals(expectedToString))
 		{
+			result.add(null);
+
 			String actualClassName;
 			if (actualType == null)
 				actualClassName = "null";
@@ -91,15 +95,24 @@ public class ContextGenerator
 				expectedClassName = "null";
 			else
 				expectedClassName = expectedValue.getClass().getName();
+			if (!actualClassName.equals(expectedClassName))
+			{
+				result.addAll(getContext(actualName + ".class", actualClassName, actualType,
+					expectedName + ".class", expectedClassName));
+				return result;
+			}
 			String actualHashCode = config.toString(Objects.hashCode(actualValue));
 			String expectedHashCode = config.toString(Objects.hashCode(expectedValue));
-
-			result.add(null);
-			result.addAll(getContext(actualName + ".class", actualClassName, actualType,
-				expectedName + ".class", expectedClassName));
-			result.add(null);
-			result.addAll(getContext(actualName + ".hashCode", actualHashCode, actualType,
-				expectedName + ".hashCode", expectedHashCode));
+			if (!actualHashCode.equals(expectedHashCode))
+			{
+				result.addAll(getContext(actualName + ".hashCode", actualHashCode, actualType,
+					expectedName + ".hashCode", expectedHashCode));
+				return result;
+			}
+			String actualIdentityHashCode = config.toString(System.identityHashCode(actualValue));
+			String expectedIdentityHashCode = config.toString(System.identityHashCode(expectedValue));
+			result.addAll(getContext(actualName + ".identityHashCode", actualIdentityHashCode,
+				actualType, expectedName + ".identityHashCode", expectedIdentityHashCode));
 		}
 		return result;
 	}

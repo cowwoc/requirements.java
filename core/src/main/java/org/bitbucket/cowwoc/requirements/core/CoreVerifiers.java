@@ -102,7 +102,183 @@ public interface CoreVerifiers extends Configurable
 	<C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(String name, C actual);
 
 	/**
-	 * Verifies a primitive array.
+	 * Verifies a primitive {@code byte} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveByteArrayVerifier requireThat(String name, byte[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, byte[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveByteArrayVerifier assertThat(String name, byte[] actual);
+
+	/**
+	 * Verifies a primitive {@code short} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveShortArrayVerifier requireThat(String name, short[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, short[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveShortArrayVerifier assertThat(String name, short[] actual);
+
+	/**
+	 * Verifies a primitive {@code int} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveIntegerArrayVerifier requireThat(String name, int[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, int[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveIntegerArrayVerifier assertThat(String name, int[] actual);
+
+	/**
+	 * Verifies a primitive {@code long} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveLongArrayVerifier requireThat(String name, long[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, long[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveLongArrayVerifier assertThat(String name, long[] actual);
+
+	/**
+	 * Verifies a primitive {@code float} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveFloatArrayVerifier requireThat(String name, float[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, float[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveFloatArrayVerifier assertThat(String name, float[] actual);
+
+	/**
+	 * Verifies a primitive {@code double} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveDoubleArrayVerifier requireThat(String name, double[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, double[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveDoubleArrayVerifier assertThat(String name, double[] actual);
+
+	/**
+	 * Verifies a primitive {@code boolean} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveBooleanArrayVerifier requireThat(String name, boolean[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, boolean[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveBooleanArrayVerifier assertThat(String name, boolean[] actual);
+
+	/**
+	 * Verifies a primitive {@code char} array.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveCharacterArrayVerifier requireThat(String name, char[] actual);
+
+	/**
+	 * Same as {@link #requireThat(String, char[])} but does nothing if assertions are disabled.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	PrimitiveCharacterArrayVerifier assertThat(String name, char[] actual);
+
+	/**
+	 * Verifies an {@code Object} array.
 	 *
 	 * @param <E>    the type of elements in the array
 	 * @param name   the name of the value
@@ -150,29 +326,6 @@ public interface CoreVerifiers extends Configurable
 	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(String name, T actual);
 
 	/**
-	 * Verifies a {@code boolean}.
-	 *
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	PrimitiveBooleanVerifier requireThat(String name, boolean actual);
-
-	/**
-	 * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	PrimitiveBooleanVerifier assertThat(String name, boolean actual);
-
-	/**
 	 * Verifies a {@code byte}.
 	 *
 	 * @param name   the name of the value
@@ -194,29 +347,6 @@ public interface CoreVerifiers extends Configurable
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	PrimitiveNumberVerifier<Byte> assertThat(String name, byte actual);
-
-	/**
-	 * Verifies a {@code char}.
-	 *
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	PrimitiveCharacterVerifier requireThat(String name, char actual);
-
-	/**
-	 * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	PrimitiveCharacterVerifier assertThat(String name, char actual);
 
 	/**
 	 * Verifies a {@code short}.
@@ -332,6 +462,52 @@ public interface CoreVerifiers extends Configurable
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	PrimitiveFloatingPointVerifier<Double> assertThat(String name, double actual);
+
+	/**
+	 * Verifies a {@code boolean}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveBooleanVerifier requireThat(String name, boolean actual);
+
+	/**
+	 * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveBooleanVerifier assertThat(String name, boolean actual);
+
+	/**
+	 * Verifies a {@code char}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveCharacterVerifier requireThat(String name, char actual);
+
+	/**
+	 * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	PrimitiveCharacterVerifier assertThat(String name, char actual);
 
 	/**
 	 * Verifies a {@code Number}.

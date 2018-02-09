@@ -4,12 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Collection;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
-import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
  * An implementation of {@link ArrayVerifier} that does nothing.
@@ -18,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
  * @author Gili Tzabari
  */
 public final class NoOpArrayVerifier<E>
-	extends NoOpObjectCapabilities<ArrayVerifier<E>, E[]>
+	extends NoOpArrayCapabilities<ArrayVerifier<E>, E, E[]>
 	implements ArrayVerifier<E>
 {
 	/**
@@ -32,132 +28,6 @@ public final class NoOpArrayVerifier<E>
 
 	@Override
 	protected ArrayVerifier<E> getThis()
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isEmpty()
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> isNotEmpty()
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> contains(Object element)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> contains(String name, Object element)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> containsExactly(Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> containsExactly(String name, Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> containsAny(Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> containsAny(String name, Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> containsAll(Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> containsAll(String name, Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContain(E element)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContain(String name, E element)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContainAny(Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContainAny(String name, Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContainAll(Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContainAll(String name, Collection<E> elements)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayVerifier<E> doesNotContainDuplicates()
-	{
-		return this;
-	}
-
-	@Override
-	public PrimitiveNumberVerifier<Integer> length()
-	{
-		return new NoOpPrimitiveNumberVerifier<>(config);
-	}
-
-	@Override
-	public ArrayVerifier<E> length(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
-	{
-		return this;
-	}
-
-	@Override
-	public CollectionVerifier<Collection<E>, E> asCollection()
-	{
-		return new NoOpCollectionVerifier<>(config);
-	}
-
-	@Override
-	public ArrayVerifier<E> asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer)
 	{
 		return this;
 	}

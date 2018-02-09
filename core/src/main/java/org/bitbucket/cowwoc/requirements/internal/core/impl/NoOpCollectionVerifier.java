@@ -110,6 +110,18 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
+	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionVerifier<C, E> doesNotContainExactly(String name, Collection<E> other)
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
 	{
 		return this;

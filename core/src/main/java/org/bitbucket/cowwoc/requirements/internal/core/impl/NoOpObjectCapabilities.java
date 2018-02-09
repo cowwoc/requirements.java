@@ -63,6 +63,18 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	}
 
 	@Override
+	public S isSameObjectAs(String name, Object expected)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isNotSameObjectAs(String name, Object other)
+	{
+		return getThis();
+	}
+
+	@Override
 	public S isIn(Collection<? super T> collection)
 	{
 		return getThis();

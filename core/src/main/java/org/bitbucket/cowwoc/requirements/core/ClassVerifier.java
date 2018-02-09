@@ -15,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 public interface ClassVerifier<T> extends ObjectCapabilities<ClassVerifier<T>, Class<T>>
 {
 	/**
-	 * Ensures that the value is a superclass or super-interface of a class.
+	 * Ensures that the actual value is a superclass or super-interface of a class.
 	 *
 	 * @param type the class to compare to
 	 * @return this

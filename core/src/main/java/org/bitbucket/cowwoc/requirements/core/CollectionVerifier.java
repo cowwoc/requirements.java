@@ -57,8 +57,8 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	CollectionVerifier<C, E> contains(String name, E expected);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing
-	 * more.
+	 * Ensures that the actual value contains exactly the specified elements (nothing more, nothing
+	 * less).
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -70,8 +70,8 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	CollectionVerifier<C, E> containsExactly(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing
-	 * more.
+	 * Ensures that the actual value contains exactly the specified elements (nothing more, nothing
+	 * less).
 	 *
 	 * @param name     the name of the expected elements
 	 * @param expected the elements that must exist
@@ -148,6 +148,31 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *                                  {@code element}
 	 */
 	CollectionVerifier<C, E> doesNotContain(String name, E element);
+
+	/**
+	 * Ensures that the actual value does not contain exactly the specified elements (nothing more,
+	 * nothing less).
+	 *
+	 * @param other the elements that must not exist
+	 * @return this
+	 * @throws NullPointerException     if {@code other} is null
+	 * @throws IllegalArgumentException if the collection contains all of the elements in
+	 *                                  {@code other} (nothing more, nothing less).
+	 */
+	CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other);
+
+	/**
+	 * Ensures that the actual value does not contain exactly the specified elements (nothing more,
+	 * nothing less).
+	 *
+	 * @param name  the name of the collection
+	 * @param other the elements that must not exist
+	 * @return this
+	 * @throws NullPointerException     if {@code name} or {@code other} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the collection contains all of
+	 *                                  the elements in {@code other} (nothing more, nothing less).
+	 */
+	CollectionVerifier<C, E> doesNotContainExactly(String name, Collection<E> other);
 
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.

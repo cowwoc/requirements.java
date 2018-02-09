@@ -48,25 +48,45 @@ public interface ObjectCapabilities<S, T>
 	S isEqualTo(String name, Object expected);
 
 	/**
-	 * Ensures that the actual value is not equal to a value.
+	 * Ensures that the actual value is not equal to another value.
 	 *
-	 * @param value the value to compare to
+	 * @param other the value to compare to
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is equal to {@code value}
 	 */
-	S isNotEqualTo(Object value);
+	S isNotEqualTo(Object other);
 
 	/**
-	 * Ensures that the actual value is not equal to a variable.
+	 * Ensures that the actual value is not equal to another variable.
 	 *
 	 * @param name  the name of the variable
-	 * @param value the value to compare to
+	 * @param other the value to compare to
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is equal to the
 	 *                                  variable
 	 */
-	S isNotEqualTo(String name, Object value);
+	S isNotEqualTo(String name, Object other);
+
+	/**
+	 * Ensures that the actual and expected objects are one and the same object.
+	 *
+	 * @param name     the name of the expected object
+	 * @param expected the expected object
+	 * @return this
+	 * @throws IllegalArgumentException if {@code actual != expected}
+	 */
+	S isSameObjectAs(String name, Object expected);
+
+	/**
+	 * Ensures that the actual value does not reference a specific object.
+	 *
+	 * @param name  the name of the other object
+	 * @param other the object to compare to
+	 * @return this
+	 * @throws IllegalArgumentException if {@code actual == other}
+	 */
+	S isNotSameObjectAs(String name, Object other);
 
 	/**
 	 * Ensures that a collection contains the actual value.

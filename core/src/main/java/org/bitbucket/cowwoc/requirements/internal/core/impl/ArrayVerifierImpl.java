@@ -38,6 +38,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 	private final ApplicationScope scope;
 	private final E[] actual;
+	private final List<E> actualAsList;
 	private final String name;
 	private final Configuration config;
 	private final CollectionVerifier<Collection<E>, E> asCollection;
@@ -58,10 +59,11 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		assert (config != null): "config may not be null";
 		this.scope = scope;
 		this.actual = actual;
+		this.actualAsList = asList(actual);
 		this.name = name;
 		this.config = config;
-		this.asCollection = new CollectionVerifierImpl<>(scope, name, asList(actual),
-			Pluralizer.ELEMENT, config);
+		this.asCollection = new CollectionVerifierImpl<>(scope, name, actualAsList, Pluralizer.ELEMENT,
+			config);
 	}
 
 	@Override
@@ -89,6 +91,20 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	public ArrayVerifier<E> isNotEqualTo(String name, Object value)
 	{
 		asCollection.isNotEqualTo(name, value);
+		return this;
+	}
+
+	@Override
+	public ArrayVerifier<E> isSameObjectAs(String name, Object expected)
+	{
+		asCollection.isSameObjectAs(name, expected);
+		return this;
+	}
+
+	@Override
+	public ArrayVerifier<E> isNotSameObjectAs(String name, Object value)
+	{
+		asCollection.isNotSameObjectAs(name, value);
 		return this;
 	}
 
@@ -220,6 +236,20 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	public ArrayVerifier<E> doesNotContain(String name, E element)
 	{
 		asCollection.doesNotContain(name, element);
+		return this;
+	}
+
+	@Override
+	public ArrayVerifier<E> doesNotContainExactly(Collection<E> element)
+	{
+		asCollection.doesNotContainExactly(element);
+		return this;
+	}
+
+	@Override
+	public ArrayVerifier<E> doesNotContainExactly(String name, Collection<E> element)
+	{
+		asCollection.doesNotContainExactly(name, element);
 		return this;
 	}
 

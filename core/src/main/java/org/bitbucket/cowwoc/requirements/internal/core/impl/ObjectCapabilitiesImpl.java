@@ -67,7 +67,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (Objects.equals(actual, expected))
 			return getThis();
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
+
+		DiffToContextGenerator contextGenerator = new DiffToContextGenerator(config,
+			scope.getDiffGenerator());
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -82,7 +84,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
+
+		DiffToContextGenerator contextGenerator = new DiffToContextGenerator(config,
+			scope.getDiffGenerator());
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -92,26 +96,56 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotEqualTo(Object value)
+	public S isNotEqualTo(Object other)
 	{
-		if (!Objects.equals(actual, value))
+		if (!Objects.equals(actual, other))
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be equal to %s.", name, value)).
+			String.format("%s may not be equal to %s", name, config.toString(other))).
 			build();
 	}
 
 	@Override
-	public S isNotEqualTo(String name, Object value)
+	public S isNotEqualTo(String name, Object other)
 	{
 		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
-		if (!Objects.equals(actual, value))
+		if (!Objects.equals(actual, other))
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be equal to %s.", this.name, name)).
-			addContext("Actual", value).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isSameObjectAs(String name, Object expected)
+	{
+		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		if (actual == expected)
+			return getThis();
+
+		DiffToContextGenerator contextGenerator = new DiffToContextGenerator(config,
+			scope.getDiffGenerator());
+		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
+			expected);
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be the same object as %s.", this.name, name)).
+			addContext(context).
+			build();
+	}
+
+	@Override
+	public S isNotSameObjectAs(String name, Object other)
+	{
+		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		if (actual != other)
+			return getThis();
+
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be the same object as %s.", this.name, name)).
+			addContext("Actual", actual).
 			build();
 	}
 
@@ -131,7 +165,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotIn(Collection<? super T> collection)
 	{
-		// Use-case: actual may not be in a collection of reserved values
+		// Use-case: "actual" may not be equal to one or more reserved values
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
@@ -165,9 +199,15 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (actual == null)
 			return getThis();
+
+		// Output a diff because actual.toString() may return "null" which is misleading
+		DiffToContextGenerator contextGenerator = new DiffToContextGenerator(config,
+			scope.getDiffGenerator());
+		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
+			null);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be null.", name)).
-			addContext("Actual", actual).
+			addContext(context).
 			build();
 	}
 
@@ -176,6 +216,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		if (actual != null)
 			return getThis();
+
 		throw new ExceptionBuilder(scope, config, NullPointerException.class,
 			String.format("%s may not be null", name)).
 			build();
@@ -205,5 +246,4 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	{
 		return actual;
 	}
-
 }

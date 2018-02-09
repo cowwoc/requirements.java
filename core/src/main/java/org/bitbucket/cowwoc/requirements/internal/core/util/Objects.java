@@ -25,7 +25,7 @@ public final class Objects
 	 */
 	public static boolean equals(Object first, Object second)
 	{
-		return java.util.Objects.equals(normalize(first), normalize(second));
+		return java.util.Objects.equals(wrapArrays(first), wrapArrays(second));
 	}
 
 	/**
@@ -35,7 +35,7 @@ public final class Objects
 	 * @param o an object
 	 * @return an object that implements {@code equals()}, {@code hashCode()} and {@code toString()}
 	 */
-	private static Object normalize(Object o)
+	private static Object wrapArrays(Object o)
 	{
 		if (o == null)
 			return null;

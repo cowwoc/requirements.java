@@ -17,7 +17,7 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E[]>
 {
 	/**
-	 * Ensures that the array is empty.
+	 * Ensures that the actual value is empty.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array is not empty
@@ -25,7 +25,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	ArrayVerifier<E> isEmpty() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the array is not empty.
+	 * Ensures that the actual value is not empty.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array is empty
@@ -33,7 +33,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	ArrayVerifier<E> isNotEmpty() throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains an element.
+	 * Ensures that the actual value contains an element.
 	 *
 	 * @param expected the element
 	 * @return this
@@ -42,7 +42,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	ArrayVerifier<E> contains(E expected) throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains an element.
+	 * Ensures that the actual value contains an element.
 	 *
 	 * @param name     the name of the element
 	 * @param expected the element
@@ -56,7 +56,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains the specified elements; nothing less, nothing more.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -69,7 +69,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains the specified elements; nothing less, nothing more.
 	 *
 	 * @param name     the name of the elements
 	 * @param expected the elements that must exist
@@ -83,7 +83,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains any of the specified elements.
+	 * Ensures that the actual value contains any of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -94,7 +94,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains any of the specified elements.
+	 * Ensures that the actual value contains any of the specified elements.
 	 *
 	 * @param name     the name of the elements
 	 * @param expected the elements that must exist
@@ -108,7 +108,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains all of the specified elements.
+	 * Ensures that the actual value contains all of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -119,7 +119,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array contains all of the specified elements.
+	 * Ensures that the actual value contains all of the specified elements.
 	 *
 	 * @param name     the name of the elements
 	 * @param expected the elements that must exist
@@ -132,7 +132,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain an element.
+	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @return this
@@ -141,7 +141,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	ArrayVerifier<E> doesNotContain(E element) throws IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain an element.
+	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param name    the name of the element
 	 * @param element the element that must not exist
@@ -154,7 +154,32 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain any of the specified elements.
+	 * Ensures that the actual value does not contain exactly the specified elements (nothing more,
+	 * nothing less).
+	 *
+	 * @param other the elements that must not exist
+	 * @return this
+	 * @throws NullPointerException     if {@code other} is null
+	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other}
+	 *                                  (nothing more, nothing less).
+	 */
+	ArrayVerifier<E> doesNotContainExactly(Collection<E> other);
+
+	/**
+	 * Ensures that the actual value does not contain exactly the specified elements (nothing more,
+	 * nothing less).
+	 *
+	 * @param name  the name of the collection
+	 * @param other the elements that must not exist
+	 * @return this
+	 * @throws NullPointerException     if {@code name} or {@code other} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the array contains all of
+	 *                                  the elements in {@code other} (nothing more, nothing less).
+	 */
+	ArrayVerifier<E> doesNotContainExactly(String name, Collection<E> other);
+
+	/**
+	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -165,7 +190,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain any of the specified elements.
+	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
 	 * @param name     the name of the elements
 	 * @param elements the elements that must not exist
@@ -178,7 +203,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain all of the specified elements.
+	 * Ensures that the actual value does not contain all of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -189,7 +214,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain all of specified elements.
+	 * Ensures that the actual value does not contain all of specified elements.
 	 *
 	 * @param name     the name of the elements
 	 * @param elements the elements that must not exist
@@ -202,7 +227,7 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Ensures that the array does not contain any duplicate elements.
+	 * Ensures that the actual value does not contain any duplicate elements.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array contains any duplicate elements

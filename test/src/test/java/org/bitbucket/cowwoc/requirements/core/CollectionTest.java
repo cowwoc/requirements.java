@@ -121,16 +121,6 @@ public final class CollectionTest
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void contains_expectedEmptyName()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Collection<String> actual = Arrays.asList("element");
-			new Verifiers(scope).requireThat("actual", actual).contains(" ");
-		}
-	}
-
 	@Test
 	public void containsExactly()
 	{
@@ -164,17 +154,6 @@ public final class CollectionTest
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void containsExactlyVariable_actualIsMissingElements()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Collection<String> actual = Arrays.asList("one", "two");
-			new Verifiers(scope).requireThat("actual", actual).
-				containsExactly("expected", Arrays.asList("one", "two", "three"));
-		}
-	}
-
 	@Test
 	public void containsExactlyVariable()
 	{
@@ -187,13 +166,24 @@ public final class CollectionTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void containsExactlyVariable_False()
+	public void containsExactlyVariable_actualContainsUnwantedElements()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
 			new Verifiers(scope).requireThat("actual", actual).
 				containsExactly("nameOfExpected", Arrays.asList("one", "two"));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsExactlyVariable_actualIsMissingElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two");
+			new Verifiers(scope).requireThat("actual", actual).
+				containsExactly("expected", Arrays.asList("one", "two", "three"));
 		}
 	}
 
@@ -368,6 +358,72 @@ public final class CollectionTest
 			Collection<String> actual = Arrays.asList("notElement");
 			new Verifiers(scope).requireThat("actual", actual).
 				doesNotContain(" ", "element");
+		}
+	}
+
+	@Test
+	public void doesNotContainExactly_actualContainsUnwantedElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two", "three");
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly(Arrays.asList("one", "two"));
+		}
+	}
+
+	@Test
+	public void doesNotContainExactly_actualIsMissingElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two");
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly(Arrays.asList("one", "two", "three"));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainsExactly()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two", "three");
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly(Arrays.asList("one", "two", "three"));
+		}
+	}
+
+	@Test
+	public void doesNotContainExactlyVariable_actualContainsUnwantedElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two", "three");
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly("nameOfExpected", Arrays.asList("one", "two"));
+		}
+	}
+
+	@Test
+	public void doesNotContainExactlyVariable_actualIsMissingElements()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two");
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly("expected", Arrays.asList("one", "two", "three"));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainExactlyVariable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = Arrays.asList("one", "two", "three");
+			new Verifiers(scope).requireThat("actual", actual).
+				doesNotContainExactly("nameOfExpected", Arrays.asList("one", "two", "three"));
 		}
 	}
 

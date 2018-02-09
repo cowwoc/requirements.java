@@ -74,7 +74,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (difference <= 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be less than or equal to %s.", name, value)).
+			String.format("%s must be less than or equal to %s.", name, config.toString(value))).
 			addContext("Actual", actual).
 			build();
 	}
@@ -132,7 +132,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (difference >= 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be greater than or equal to %s.", name, value)).
+			String.format("%s must be greater than or equal to %s.", name, config.toString(value))).
 			addContext("Actual", actual).
 			build();
 	}
@@ -188,7 +188,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat("value", value).isNotNull();
 		if (actual.compareTo(value) != 0)
 			return getThis();
-		String message = name + " must not be comparable to " + value;
+		String message = name + " may not be comparable to " + value;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
 			addContext("Actual", actual).
 			addContext("Value", value).
@@ -202,7 +202,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat("value", other).isNotNull();
 		if (actual.compareTo(other) != 0)
 			return getThis();
-		String message = name + " must not be comparable to " + name;
+		String message = name + " may not be comparable to " + name;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
 			addContext("Actual", actual).
 			addContext("Other", other).

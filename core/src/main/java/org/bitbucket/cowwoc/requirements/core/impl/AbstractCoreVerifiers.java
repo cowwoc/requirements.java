@@ -26,10 +26,18 @@ import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveByteArrayVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveDoubleArrayVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerArrayVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveLongArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveShortArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.ArrayVerifierImpl;
@@ -55,10 +63,18 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpOptionalVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPathVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveBooleanArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveByteArrayVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveCharacterArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveCharacterVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveDoubleArrayVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveFloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveIntegerArrayVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveLongArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveShortArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpStringVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpUriVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NumberVerifierImpl;
@@ -66,11 +82,19 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.ObjectVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.OptionalVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PathVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.Pluralizer;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveBooleanArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveBooleanVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveByteArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveCharacterArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveCharacterVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveDoubleArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveDoubleVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveFloatArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveFloatVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveIntegerArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveLongArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveNumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveShortArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.StringVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.UriVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
@@ -146,6 +170,126 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
 		return new NoOpCollectionVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveByteArrayVerifier requireThat(String name, byte[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveByteArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveByteArrayVerifier assertThat(String name, byte[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveByteArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveShortArrayVerifier requireThat(String name, short[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveShortArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveShortArrayVerifier assertThat(String name, short[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveShortArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveIntegerArrayVerifier requireThat(String name, int[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveIntegerArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveIntegerArrayVerifier assertThat(String name, int[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveIntegerArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveLongArrayVerifier requireThat(String name, long[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveLongArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveLongArrayVerifier assertThat(String name, long[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveLongArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveFloatArrayVerifier requireThat(String name, float[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveFloatArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveFloatArrayVerifier assertThat(String name, float[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveFloatArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveDoubleArrayVerifier requireThat(String name, double[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveDoubleArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveDoubleArrayVerifier assertThat(String name, double[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveDoubleArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveBooleanArrayVerifier requireThat(String name, boolean[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveBooleanArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveBooleanArrayVerifier assertThat(String name, boolean[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveBooleanArrayVerifier(config);
+	}
+
+	@Override
+	public PrimitiveCharacterArrayVerifier requireThat(String name, char[] actual)
+	{
+		verifyName(name);
+		return new PrimitiveCharacterArrayVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveCharacterArrayVerifier assertThat(String name, char[] actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveCharacterArrayVerifier(config);
 	}
 
 	@Override

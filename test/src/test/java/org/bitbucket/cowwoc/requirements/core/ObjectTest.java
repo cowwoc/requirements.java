@@ -69,13 +69,26 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isEqualTo_sameToStringAndTypeDifferentHashCode()
+	public void isEqualTo_differentHashCode()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(
-				new SameToStringDifferentHashCode());
+			SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEqualTo_differentIdentityHashCode()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			SameToStringAndHashCodeDifferentIdentity actual =
+				new SameToStringAndHashCodeDifferentIdentity();
+			SameToStringAndHashCodeDifferentIdentity expected =
+				new SameToStringAndHashCodeDifferentIdentity();
+			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 	}
 
@@ -126,6 +139,60 @@ public final class ObjectTest
 		{
 			Object actual = new Object();
 			new Verifiers(scope).requireThat("actual", actual).isNotEqualTo(actual);
+		}
+	}
+
+	@Test
+	public void isSameObject()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
+		}
+	}
+
+	@Test
+	public void isSameObjectNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("UnnecessaryBoxing")
+	public void isSameObject_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = new Integer(1);
+			Integer expected = new Integer(1);
+			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("expected", expected);
+		}
+	}
+
+	@Test
+	@SuppressWarnings("UnnecessaryBoxing")
+	public void isNotSameObject()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = new Integer(1);
+			Integer expected = new Integer(1);
+			new Verifiers(scope).requireThat("actual", actual).isNotSameObjectAs("expected", expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotSameObject_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isNotSameObjectAs("actual", actual);
 		}
 	}
 
