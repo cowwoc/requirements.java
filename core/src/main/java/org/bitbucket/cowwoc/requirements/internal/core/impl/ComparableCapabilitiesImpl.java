@@ -54,8 +54,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isLessThan(String name, T value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return getThis();
@@ -112,8 +112,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isGreaterThan(String name, T value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return getThis();
@@ -141,8 +141,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isGreaterThanOrEqualTo(String name, T value)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("value", value).isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return getThis();
@@ -160,8 +160,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat("expected", expected).isNotNull();
 		if (actual.compareTo(expected) == 0)
 			return getThis();
-		String message = name + " must be comparable to " + expected;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be comparable to %s.", name, expected)).
 			addContext("Actual", actual).
 			addContext("Expected", expected).
 			build();
@@ -171,11 +171,12 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isComparableTo(String name, T expected)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
 		verifier.requireThat("expected", expected).isNotNull();
 		if (actual.compareTo(expected) == 0)
 			return getThis();
-		String message = name + " must be comparable to " + name;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be comparable to %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Expected", expected).
 			build();
@@ -188,8 +189,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat("value", value).isNotNull();
 		if (actual.compareTo(value) != 0)
 			return getThis();
-		String message = name + " may not be comparable to " + value;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be comparable to %s.", name, value)).
 			addContext("Actual", actual).
 			addContext("Value", value).
 			build();
@@ -199,11 +200,12 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isNotComparableTo(String name, T other)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
 		verifier.requireThat("value", other).isNotNull();
 		if (actual.compareTo(other) != 0)
 			return getThis();
-		String message = name + " may not be comparable to " + name;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be comparable to %s.", this.name, name)).
 			addContext("Actual", actual).
 			addContext("Other", other).
 			build();
@@ -217,8 +219,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat("max", max).isNotNull().isGreaterThanOrEqualTo("min", min);
 		if (actual.compareTo(min) >= 0 && actual.compareTo(max) <= 0)
 			return getThis();
-		String message = name + " must be in range [" + min + ", " + max + "]";
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class, message).
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be in range [%s, %s].", name, min, max)).
 			addContext("Actual", actual).
 			build();
 	}

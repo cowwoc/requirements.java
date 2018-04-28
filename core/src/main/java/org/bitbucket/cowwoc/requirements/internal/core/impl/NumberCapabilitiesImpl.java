@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
 import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
@@ -97,6 +98,97 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be positive.", name)).
 			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isWholeNumber()
+	{
+		if (isWholeNumber(actual.doubleValue()))
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be a whole number.", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	/**
+	 * @param value a value
+	 * @return true if {@code value} is a whole number
+	 */
+	private static boolean isWholeNumber(double value)
+	{
+		// Based on https://stackoverflow.com/a/9909417/14731
+		return (value % 1) == 0;
+	}
+
+	@Override
+	public S isNotWholeNumber()
+	{
+		// Based on https://stackoverflow.com/a/12748321/14731
+		if (!isWholeNumber(actual.doubleValue()))
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be a whole number.", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isMultipleOf(T divisor)
+	{
+		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		double divisorAsDouble = divisor.doubleValue();
+		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be a multiple of %s.", name, divisor)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isMultipleOf(String name, T divisor)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("divisor", divisor).isNotNull();
+		double divisorAsDouble = divisor.doubleValue();
+		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be a multiple of %s.", this.name, name)).
+			addContext("Actual", actual).
+			addContext("divisor", divisor).
+			build();
+	}
+
+	@Override
+	public S isNotMultipleOf(T divisor)
+	{
+		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		double divisorAsDouble = divisor.doubleValue();
+		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be a multiple of %s.", name, divisor)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isNotMultipleOf(String name, T divisor)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("divisor", divisor).isNotNull();
+		double divisorAsDouble = divisor.doubleValue();
+		if (divisorAsDouble == 0 || isWholeNumber(actual.doubleValue() / divisorAsDouble))
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be a multiple of %s.", this.name, name)).
+			addContext("Actual", actual).
+			addContext("divisor", divisor).
 			build();
 	}
 }

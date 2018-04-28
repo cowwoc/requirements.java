@@ -528,8 +528,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
 	public void byteIsNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -539,8 +539,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
+	@SuppressWarnings("deprecation")
 	public void byteIsNotNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -550,8 +550,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
 	public void shortIsNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -561,8 +561,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
+	@SuppressWarnings("deprecation")
 	public void shortIsNotNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -572,8 +572,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
 	public void intIsNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -583,8 +583,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
+	@SuppressWarnings("deprecation")
 	public void intIsNotNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -594,8 +594,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
 	public void longIsNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -605,8 +605,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
+	@SuppressWarnings("deprecation")
 	public void longIsNotNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -616,8 +616,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
 	public void floatIsNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -627,8 +627,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
+	@SuppressWarnings("deprecation")
 	public void floatIsNotNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -638,8 +638,8 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
 	public void doubleIsNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -649,14 +649,207 @@ public final class NumberTest
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
+	@SuppressWarnings("deprecation")
 	public void doubleIsNotNull_deprecation()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.0;
 			new Verifiers(scope).requireThat("actual", actual).isNotNull();
+		}
+	}
+
+	@Test
+	@SuppressWarnings("deprecation")
+	public void intIsWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test
+	@SuppressWarnings("deprecation")
+	public void intIsWholeNumber_Zero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 0;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("deprecation")
+	public void intIsNotWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isNotWholeNumber();
+		}
+	}
+
+	@Test
+	public void intIsMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 2;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(1);
+		}
+	}
+
+	@Test
+	public void intIsMultipleOf_Self()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(actual);
+		}
+	}
+
+	@Test
+	public void intIsMultipleOf_ZeroTop()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 0;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(1);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void intIsMultipleOf_ZeroBottom()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(0);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void intIsMultipleOf_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(2);
+		}
+	}
+
+	@Test
+	public void intIsNotMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isNotMultipleOf(2);
+		}
+	}
+
+	@Test
+	public void doubleIsWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.0;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test
+	public void doubleIsWholeNumber_Zero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 0.0;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsWholeNumber_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.1;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test
+	public void doubleIsNotWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.1;
+			new Verifiers(scope).requireThat("actual", actual).isNotWholeNumber();
+		}
+	}
+
+	@Test
+	public void doubleIsMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 2.2;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(1.1);
+		}
+	}
+
+	@Test
+	public void doubleIsMultipleOf_Self()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(actual);
+		}
+	}
+
+	@Test
+	public void doubleIsMultipleOf_ZeroTop()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 0;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(1.1);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsMultipleOf_ZeroBottom()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(0.0);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsMultipleOf_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(1.2);
+		}
+	}
+
+	@Test
+	public void doubleIsNotMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			double actual = 1.1;
+			new Verifiers(scope).requireThat("actual", actual).isNotMultipleOf(1.2);
 		}
 	}
 

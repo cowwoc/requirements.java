@@ -380,7 +380,7 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Integer> requireThat(String name, int actual);
+	PrimitiveIntegerVerifier<Integer> requireThat(String name, int actual);
 
 	/**
 	 * Same as {@link #requireThat(String, int)} but does nothing if assertions are disabled for this
@@ -392,7 +392,30 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Integer> assertThat(String name, int actual);
+	PrimitiveIntegerVerifier<Integer> assertThat(String name, int actual);
+
+	/**
+	 * Verifies an {@code Integer}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	IntegerVerifier<Integer> requireThat(String name, Integer actual);
+
+	/**
+	 * Same as {@link #requireThat(String, Integer)} but does nothing if assertions are disabled for this
+	 * class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	IntegerVerifier<Integer> assertThat(String name, Integer actual);
 
 	/**
 	 * Verifies a {@code long}.
@@ -403,7 +426,7 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Long> requireThat(String name, long actual);
+	PrimitiveIntegerVerifier<Long> requireThat(String name, long actual);
 
 	/**
 	 * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for
@@ -415,7 +438,30 @@ public interface CoreVerifiers extends Configurable
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Long> assertThat(String name, long actual);
+	PrimitiveIntegerVerifier<Long> assertThat(String name, long actual);
+
+	/**
+	 * Verifies a {@code Long}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	IntegerVerifier<Long> requireThat(String name, Long actual);
+
+	/**
+	 * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	IntegerVerifier<Long> assertThat(String name, Long actual);
 
 	/**
 	 * Verifies a {@code float}.

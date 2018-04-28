@@ -462,7 +462,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PrimitiveNumberVerifier<Integer> requireThat(String name, int actual)
+	public static PrimitiveIntegerVerifier<Integer> requireThat(String name, int actual)
 	{
 		return DELEGATE.requireThat(name, actual);
 	}
@@ -477,13 +477,13 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PrimitiveNumberVerifier<Integer> assertThat(String name, int actual)
+	public static PrimitiveIntegerVerifier<Integer> assertThat(String name, int actual)
 	{
 		return DELEGATE.assertThat(name, actual);
 	}
 
 	/**
-	 * Verifies an {@code long}.
+	 * Verifies an {@code Integer}.
 	 *
 	 * @param name   the name of the value
 	 * @param actual the actual value
@@ -491,7 +491,36 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PrimitiveNumberVerifier<Long> requireThat(String name, long actual)
+	public static IntegerVerifier<Integer> requireThat(String name, Integer actual)
+	{
+		return DELEGATE.requireThat(name, actual);
+	}
+
+	/**
+	 * Same as {@link #requireThat(String, Integer)} but does nothing if assertions are disabled for this
+	 * class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static IntegerVerifier<Integer> assertThat(String name, Integer actual)
+	{
+		return DELEGATE.assertThat(name, actual);
+	}
+
+	/**
+	 * Verifies a {@code long}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static PrimitiveIntegerVerifier<Long> requireThat(String name, long actual)
 	{
 		return DELEGATE.requireThat(name, actual);
 	}
@@ -506,7 +535,36 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static PrimitiveNumberVerifier<Long> assertThat(String name, long actual)
+	public static PrimitiveIntegerVerifier<Long> assertThat(String name, long actual)
+	{
+		return DELEGATE.assertThat(name, actual);
+	}
+
+	/**
+	 * Verifies a {@code Long}.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static IntegerVerifier<Long> requireThat(String name, Long actual)
+	{
+		return DELEGATE.requireThat(name, actual);
+	}
+
+	/**
+	 * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for
+	 * this class.
+	 *
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	public static IntegerVerifier<Long> assertThat(String name, Long actual)
 	{
 		return DELEGATE.assertThat(name, actual);
 	}

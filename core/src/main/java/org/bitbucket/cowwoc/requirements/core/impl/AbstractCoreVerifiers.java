@@ -21,6 +21,7 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.FloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.core.IntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
 import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
@@ -35,6 +36,7 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveDoubleArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerArrayVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveLongArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveShortArrayVerifier;
@@ -49,6 +51,8 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.ComparableVerifierIm
 import org.bitbucket.cowwoc.requirements.internal.core.impl.DoubleVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.FloatVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.InetAddressVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.IntegerVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.LongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.MapVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpBigDecimalVerifier;
@@ -58,6 +62,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifi
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpComparableVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpInetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpMapVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectVerifier;
@@ -72,6 +77,7 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveDoubleA
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveIntegerArrayVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveLongArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveShortArrayVerifier;
@@ -92,7 +98,9 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveDoubleVerif
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveFloatArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveFloatVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveIntegerArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveIntegerVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveLongArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveLongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveNumberVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.PrimitiveShortArrayVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.StringVerifierImpl;
@@ -398,33 +406,63 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> requireThat(String name, int actual)
+	public PrimitiveIntegerVerifier<Integer> requireThat(String name, int actual)
 	{
 		verifyName(name);
-		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
+		return new PrimitiveIntegerVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> assertThat(String name, int actual)
+	public PrimitiveIntegerVerifier<Integer> assertThat(String name, int actual)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new NoOpPrimitiveIntegerVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Long> requireThat(String name, long actual)
+	public IntegerVerifier<Integer> requireThat(String name, Integer actual)
 	{
 		verifyName(name);
-		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
+		return new IntegerVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Long> assertThat(String name, long actual)
+	public IntegerVerifier<Integer> assertThat(String name, Integer actual)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new NoOpIntegerVerifier<>(config);
+	}
+
+	@Override
+	public PrimitiveIntegerVerifier<Long> requireThat(String name, long actual)
+	{
+		verifyName(name);
+		return new PrimitiveLongVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public PrimitiveIntegerVerifier<Long> assertThat(String name, long actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpPrimitiveIntegerVerifier<>(config);
+	}
+
+	@Override
+	public IntegerVerifier<Long> requireThat(String name, Long actual)
+	{
+		verifyName(name);
+		return new LongVerifierImpl(scope, name, actual, config);
+	}
+
+	@Override
+	public IntegerVerifier<Long> assertThat(String name, Long actual)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(name, actual);
+		return new NoOpIntegerVerifier<>(config);
 	}
 
 	@Override

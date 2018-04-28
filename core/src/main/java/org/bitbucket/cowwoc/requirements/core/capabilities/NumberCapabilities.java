@@ -64,4 +64,62 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 * @throws IllegalArgumentException if the actual value is positive
 	 */
 	S isNotPositive();
+
+	/**
+	 * Ensures that the actual value is a whole value.
+	 *
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value is not a whole number
+	 */
+	S isWholeNumber();
+
+	/**
+	 * Ensures that the actual value is not a whole value.
+	 *
+	 * @return this
+	 * @throws IllegalArgumentException if the actual value is a whole number
+	 */
+	S isNotWholeNumber();
+
+	/**
+	 * Ensures that the actual value is a multiple of the specified value.
+	 *
+	 * @param divisor the value being divided by
+	 * @return this
+	 * @throws NullPointerException     if {@code value} is null
+	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}
+	 */
+	S isMultipleOf(T divisor);
+
+	/**
+	 * Ensures that the actual value is a multiple of the specified value.
+	 *
+	 * @param name    the name of the divisor
+	 * @param divisor the value being divided by
+	 * @return this
+	 * @throws NullPointerException     if {@code name} or {@code value} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is not a multiple of {@code divisor}
+	 */
+	S isMultipleOf(String name, T divisor);
+
+	/**
+	 * Ensures that the actual value is not a multiple of the specified value.
+	 *
+	 * @param divisor the value being divided by
+	 * @return this
+	 * @throws NullPointerException     if {@code value} is null
+	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}
+	 */
+	S isNotMultipleOf(T divisor);
+
+	/**
+	 * Ensures that the actual value is not a multiple of the specified value.
+	 *
+	 * @param name    the name of the divisor
+	 * @param divisor the value being divided by
+	 * @return this
+	 * @throws NullPointerException     if {@code name} or {@code value} are null
+	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is a multiple of {@code divisor}
+	 */
+	S isNotMultipleOf(String name, T divisor);
 }

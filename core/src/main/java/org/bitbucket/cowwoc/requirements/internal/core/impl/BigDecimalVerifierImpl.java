@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
@@ -85,5 +86,122 @@ public final class BigDecimalVerifierImpl
 	{
 		consumer.accept(scale());
 		return this;
+	}
+
+	@Override
+	public BigDecimalVerifier isWholeNumber()
+	{
+		if (isWholeNumber(actual))
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be a whole number.", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	/**
+	 * @param value a value
+	 * @return true if {@code value} is a whole number
+	 */
+	private static boolean isWholeNumber(BigDecimal value)
+	{
+		// Based on https://stackoverflow.com/a/12748321/14731
+		return value.signum() == 0 || value.stripTrailingZeros().scale() <= 0;
+	}
+
+	@Override
+	public BigDecimalVerifier isNotWholeNumber()
+	{
+		// Based on https://stackoverflow.com/a/12748321/14731
+		if (!isWholeNumber(actual))
+			return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be a whole number.", name)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public BigDecimalVerifier isMultipleOf(BigDecimal divisor)
+	{
+		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		try
+		{
+			if (isWholeNumber(actual.divide(divisor)))
+				return this;
+		}
+		catch (ArithmeticException unused)
+		{
+			// non-terminating decimal expansion
+		}
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be a multiple of %s.", name, divisor)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public BigDecimalVerifier isMultipleOf(String name, BigDecimal divisor)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("divisor", divisor).isNotNull();
+		try
+		{
+			if (isWholeNumber(actual.divide(divisor)))
+				return this;
+		}
+		catch (ArithmeticException unused)
+		{
+			// non-terminating decimal expansion
+		}
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be a multiple of %s.", this.name, name)).
+			addContext("Actual", actual).
+			addContext("divisor", divisor).
+			build();
+	}
+
+	@Override
+	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor)
+	{
+		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		try
+		{
+			if (!isWholeNumber(actual.divide(divisor)))
+				return this;
+		}
+		catch (ArithmeticException unused)
+		{
+			// non-terminating decimal expansion
+			return this;
+		}
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be a multiple of %s.", name, divisor)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public BigDecimalVerifier isNotMultipleOf(String name, BigDecimal divisor)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat("divisor", divisor).isNotNull();
+		try
+		{
+			if (!isWholeNumber(actual.divide(divisor)))
+				return this;
+		}
+		catch (ArithmeticException unused)
+		{
+			// non-terminating decimal expansion
+			return this;
+		}
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be a multiple of %s.", this.name, name)).
+			addContext("Actual", actual).
+			addContext("divisor", divisor).
+			build();
 	}
 }

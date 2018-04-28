@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import java.math.BigDecimal;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +74,7 @@ public final class Configuration implements Configurable
 		typeToStringConverter.put(float[].class, o -> Arrays.toString((float[]) o));
 		typeToStringConverter.put(double[].class, o -> Arrays.toString((double[]) o));
 		typeToStringConverter.put(Object[].class, o -> Arrays.toString((Object[]) o));
+		typeToStringConverter.put(BigDecimal.class, o -> ((BigDecimal) o).toPlainString());
 	}
 
 	/**

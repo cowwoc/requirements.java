@@ -666,6 +666,106 @@ public final class BigDecimalTest
 	}
 
 	@Test
+	public void isWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ONE;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test
+	public void isWholeNumber_Zero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isWholeNumber_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = new BigDecimal("1.1");
+			new Verifiers(scope).requireThat("actual", actual).isWholeNumber();
+		}
+	}
+
+	@Test
+	public void isNotWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = new BigDecimal("1.1");
+			new Verifiers(scope).requireThat("actual", actual).isNotWholeNumber();
+		}
+	}
+
+	@Test
+	public void isMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(2);
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(BigDecimal.ONE);
+		}
+	}
+
+	@Test
+	public void isMultipleOf_Self()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ONE;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(actual);
+		}
+	}
+
+	@Test
+	public void isMultipleOf_ZeroTop()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(BigDecimal.ONE);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isMultipleOf_ZeroBottom()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ONE;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(BigDecimal.ZERO);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isMultipleOf_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ONE;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(BigDecimal.valueOf(2));
+		}
+	}
+
+	@Test
+	public void isNotMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ONE;
+			new Verifiers(scope).requireThat("actual", actual).isNotMultipleOf(BigDecimal.valueOf(2));
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

@@ -61,4 +61,40 @@ public abstract class NoOpNumberCapabilities<S, T extends Number & Comparable<? 
 	{
 		return getThis();
 	}
+
+	@Override
+	public S isWholeNumber()
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isNotWholeNumber()
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isMultipleOf(T divisor)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isMultipleOf(String name, T divisor)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isNotMultipleOf(T divisor)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isNotMultipleOf(String name, T divisor)
+	{
+		return getThis();
+	}
 }
