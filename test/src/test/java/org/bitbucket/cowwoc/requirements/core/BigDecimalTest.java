@@ -36,7 +36,7 @@ public final class BigDecimalTest
 	}
 
 	@Test
-	public void isIn_actualIsLowerBound()
+	public void isBetween_actualIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -48,7 +48,7 @@ public final class BigDecimalTest
 	}
 
 	@Test
-	public void isInRange()
+	public void isBetween()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -59,8 +59,8 @@ public final class BigDecimalTest
 		}
 	}
 
-	@Test
-	public void isIn_actualIsLast()
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBetween_actualIsLast()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -72,7 +72,7 @@ public final class BigDecimalTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_actualIsBelow()
+	public void isBetween_actualIsBelow()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -80,6 +80,18 @@ public final class BigDecimalTest
 			BigDecimal first = BigDecimal.valueOf(10);
 			BigDecimal last = BigDecimal.valueOf(20);
 			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+		}
+	}
+
+	@Test
+	public void isBetweenClosed_actualIsLast()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.valueOf(2);
+			BigDecimal first = BigDecimal.ZERO;
+			BigDecimal last = BigDecimal.valueOf(2);
+			new Verifiers(scope).requireThat("actual", actual).isBetweenClosed(first, last);
 		}
 	}
 
@@ -494,54 +506,50 @@ public final class BigDecimalTest
 	}
 
 	@Test
-	public void precisionIsInRange()
+	public void precisionIsBetween()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.valueOf(1234, 2);
 			int first = 3;
 			int last = 5;
-			new Verifiers(scope).requireThat("actual", actual).precision().isBetween(first,
-				last);
+			new Verifiers(scope).requireThat("actual", actual).precision().isBetween(first, last);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void precisionIsInClosedRange_actualIsAbove()
+	public void precisionIsBetween_actualIsAbove()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.valueOf(123, 2);
 			int first = 10;
 			int last = 20;
-			new Verifiers(scope).requireThat("actual", actual).precision().isBetween(first,
-				last);
+			new Verifiers(scope).requireThat("actual", actual).precision().isBetween(first, last);
 		}
 	}
 
 	@Test
-	public void scaleInRange()
+	public void scaleIsBetween()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.valueOf(1234, 4);
 			int first = 3;
 			int last = 5;
-			new Verifiers(scope).requireThat("actual", actual).scale().
-				isBetween(first, last);
+			new Verifiers(scope).requireThat("actual", actual).scale().isBetween(first, last);
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void scaleIsInRange_actualIsAbove()
+	public void scaleIsBetween_actualIsAbove()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.valueOf(123, 2);
 			int first = 10;
 			int last = 20;
-			new Verifiers(scope).requireThat("actual", actual).scale().
-				isBetween(first, last);
+			new Verifiers(scope).requireThat("actual", actual).scale().isBetween(first, last);
 		}
 	}
 
@@ -741,6 +749,16 @@ public final class BigDecimalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.ONE;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(BigDecimal.ZERO);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isMultipleOf_ZeroTopAndBottom()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = BigDecimal.ZERO;
 			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(BigDecimal.ZERO);
 		}
 	}

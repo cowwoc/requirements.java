@@ -35,7 +35,7 @@ public final class CharacterTest
 	}
 
 	@Test
-	public void isInRange_actualIsLowerBound()
+	public void isBetween_actualIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -47,7 +47,7 @@ public final class CharacterTest
 	}
 
 	@Test
-	public void isInRange_actualIsInBounds()
+	public void isBetween_actualIsInBounds()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -58,8 +58,8 @@ public final class CharacterTest
 		}
 	}
 
-	@Test
-	public void isInRange_actualIsUpperBound()
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBetween_actualIsUpperBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -71,7 +71,7 @@ public final class CharacterTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_actualIsBelow()
+	public void isBetween_actualIsBelow()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -79,6 +79,18 @@ public final class CharacterTest
 			char first = '3';
 			char last = '4';
 			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+		}
+	}
+
+	@Test
+	public void isBetweenClosed_actualIsUpperBound()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			char actual = '2';
+			char first = '0';
+			char last = '2';
+			new Verifiers(scope).requireThat("actual", actual).isBetweenClosed(first, last);
 		}
 	}
 

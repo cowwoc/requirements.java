@@ -121,19 +121,24 @@ public final class BigDecimalVerifierImpl
 			build();
 	}
 
+	/**
+	 * @param number the number being divided
+	 * @param factor the number dividing {@code number}
+	 * @return true if {@code number} is a multiple of {@code factor}
+	 */
+	private static boolean isMultipleOf(BigDecimal number, BigDecimal factor)
+	{
+		return factor.compareTo(BigDecimal.ZERO) != 0 &&
+			(number.compareTo(BigDecimal.ZERO) == 0 ||
+			number.remainder(factor).compareTo(BigDecimal.ZERO) == 0);
+	}
+
 	@Override
 	public BigDecimalVerifier isMultipleOf(BigDecimal divisor)
 	{
 		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
-		try
-		{
-			if (isWholeNumber(actual.divide(divisor)))
-				return this;
-		}
-		catch (ArithmeticException unused)
-		{
-			// non-terminating decimal expansion
-		}
+		if (isMultipleOf(actual, divisor))
+			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be a multiple of %s.", name, divisor)).
 			addContext("Actual", actual).
@@ -146,15 +151,8 @@ public final class BigDecimalVerifierImpl
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
 		verifier.requireThat("divisor", divisor).isNotNull();
-		try
-		{
-			if (isWholeNumber(actual.divide(divisor)))
-				return this;
-		}
-		catch (ArithmeticException unused)
-		{
-			// non-terminating decimal expansion
-		}
+		if (isMultipleOf(actual, divisor))
+			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be a multiple of %s.", this.name, name)).
 			addContext("Actual", actual).
@@ -166,16 +164,8 @@ public final class BigDecimalVerifierImpl
 	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor)
 	{
 		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
-		try
-		{
-			if (!isWholeNumber(actual.divide(divisor)))
-				return this;
-		}
-		catch (ArithmeticException unused)
-		{
-			// non-terminating decimal expansion
+		if (!isMultipleOf(actual, divisor))
 			return this;
-		}
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be a multiple of %s.", name, divisor)).
 			addContext("Actual", actual).
@@ -188,16 +178,8 @@ public final class BigDecimalVerifierImpl
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
 		verifier.requireThat("divisor", divisor).isNotNull();
-		try
-		{
-			if (!isWholeNumber(actual.divide(divisor)))
-				return this;
-		}
-		catch (ArithmeticException unused)
-		{
-			// non-terminating decimal expansion
+		if (!isMultipleOf(actual, divisor))
 			return this;
-		}
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be a multiple of %s.", this.name, name)).
 			addContext("Actual", actual).

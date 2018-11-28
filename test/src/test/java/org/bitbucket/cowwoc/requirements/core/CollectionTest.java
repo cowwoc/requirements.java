@@ -702,7 +702,7 @@ public final class CollectionTest
 	}
 
 	@Test
-	public void isInRange_expectedIsLowerBound()
+	public void isBetween_expectedIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -712,7 +712,7 @@ public final class CollectionTest
 	}
 
 	@Test
-	public void isInRange_expectedIsInBounds()
+	public void isBetween_expectedIsInBounds()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -721,8 +721,8 @@ public final class CollectionTest
 		}
 	}
 
-	@Test
-	public void isInRange_expectedIsUpperBound()
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBetween_expectedIsUpperBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -732,12 +732,22 @@ public final class CollectionTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_expectedIsBelow()
+	public void isBetween_expectedIsBelow()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2);
 			new Verifiers(scope).requireThat("actual", actual).size().isBetween(3, 5);
+		}
+	}
+
+	@Test
+	public void isBetweenClosed_expectedIsUpperBound()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
+			new Verifiers(scope).requireThat("actual", actual).size().isBetweenClosed(3, 5);
 		}
 	}
 

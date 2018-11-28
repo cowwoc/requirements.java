@@ -93,6 +93,12 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	}
 
 	@Override
+	public S isNotInstanceOf(Class<?> type)
+	{
+		return getThis();
+	}
+
+	@Override
 	public S isNull()
 	{
 		return getThis();

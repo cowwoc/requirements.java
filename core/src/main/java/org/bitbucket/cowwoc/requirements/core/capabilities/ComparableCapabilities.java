@@ -152,12 +152,24 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is within range.
 	 *
-	 * @param min the minimum element in the range (inclusive)
-	 * @param max the maximum element in the range (inclusive)
+	 * @param startInclusive the lower bound of the range (inclusive)
+	 * @param endExclusive   the upper bound of the range (exclusive)
 	 * @return this
-	 * @throws NullPointerException     if {@code min} or {@code max} are null
-	 * @throws IllegalArgumentException if {@code max} is less than {@code min}; if
-	 *                                  the actual value is not in range
+	 * @throws NullPointerException     if {@code startInclusive} or {@code endExclusive} are null
+	 * @throws IllegalArgumentException if {@code endExclusive} is less than {@code startInclusive};
+	 *                                  if the actual value is not in range
 	 */
-	S isBetween(T min, T max);
+	S isBetween(T startInclusive, T endExclusive);
+
+	/**
+	 * Ensures that the actual value is within range.
+	 *
+	 * @param startInclusive the lower bound of the range (inclusive)
+	 * @param endInclusive   the upper bound of the range (inclusive)
+	 * @return this
+	 * @throws NullPointerException     if {@code startInclusive} or {@code endInclusive} are null
+	 * @throws IllegalArgumentException if {@code endInclusive} is less than {@code startInclusive};
+	 *                                  if the actual value is not in range
+	 */
+	S isBetweenClosed(T startInclusive, T endInclusive);
 }

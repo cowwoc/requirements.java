@@ -81,7 +81,7 @@ public final class Exceptions
 	 * @param type            the type of the exception
 	 * @param message         an explanation of what went wrong
 	 * @param cause           the cause of the exception ({@code null} if absent)
-	 * @param apiInStacktrace true if API elements should show up in the stack-trace
+	 * @param apiInStacktrace true if API elements should show up in the stack trace
 	 * @return the exception
 	 * @throws AssertionError if {@code type} is null
 	 */
@@ -98,7 +98,7 @@ public final class Exceptions
 		// Caused by: message of underlying exception
 		//   at Cause.method1(Cause.java:1)
 		//
-		// If apiInStacktrace is false, we need to strip out the top 3 stack-trace elements. But we are
+		// If apiInStacktrace is false, we need to strip out the top 3 stack trace elements. But we are
 		// also forced to strip out the exception cause because it was thrown inside our API.
 		assert (type != null): "type may not be null";
 		try
@@ -146,29 +146,30 @@ public final class Exceptions
 	}
 
 	/**
-	 * Removes references to this library from an exception stacktrace.
+	 * Removes references to this library from an exception stack trace.
 	 *
 	 * @param throwable the {@code Throwable} to process
 	 */
 	private void removeLibraryFromStacktrace(Throwable throwable)
 	{
-		filterStacktrace(throwable, name ->
+		filterStacktrace(throwable, element ->
 		{
-			return name.startsWith(libraryPackage) && !name.endsWith("Test");
+			String clasName = element.getClassName();
+			return clasName.startsWith(libraryPackage) && !clasName.endsWith("Test");
 		});
 	}
 
 	/**
-	 * Runs a predicate against all lines of a stacktrace removing lines at or above those that match.
+	 * Runs a predicate against all lines of a stack trace removing lines at or above those that match.
 	 * <p>
 	 * This method can be used to remove lines that hold little value for the end user (such as
 	 * internal methods invoked by this library).
 	 *
-	 * @param throwable       the {@code Throwable} to process
-	 * @param classNameFilter returns true if stack-trace elements should be removed at and above the
-	 *                        current position
+	 * @param throwable     the {@code Throwable} to process
+	 * @param elementFilter returns true if the current stack trace element and methods it invokes
+	 *                      should be removed
 	 */
-	public void filterStacktrace(Throwable throwable, Predicate<String> classNameFilter)
+	public void filterStacktrace(Throwable throwable, Predicate<StackTraceElement> elementFilter)
 	{
 		// Method needs to be public to hide 3rd-party verifiers located in in other packages
 		StackTraceElement[] elements = throwable.getStackTrace();
@@ -176,7 +177,7 @@ public final class Exceptions
 		while (true)
 		{
 			StackTraceElement element = elements[i];
-			if (classNameFilter.test(element.getClassName()))
+			if (elementFilter.test(element))
 				break;
 			if (i == 0)
 				return;
@@ -184,5 +185,4 @@ public final class Exceptions
 		}
 		throwable.setStackTrace(Arrays.copyOfRange(elements, i + 1, elements.length));
 	}
-
 }

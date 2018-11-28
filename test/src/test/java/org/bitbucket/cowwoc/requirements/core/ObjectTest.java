@@ -265,6 +265,47 @@ public final class ObjectTest
 	}
 
 	@Test
+	public void isNotInstanceOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Random actual = new Random();
+			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(Integer.class).
+				isInstanceOf(Object.class);
+		}
+	}
+
+	@Test
+	public void isNotInstanceOf_actualIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Random actual = null;
+			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(Random.class);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void isNotInstanceOf_expectedIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Random actual = new Random();
+			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(null);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotInstanceOf_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Random actual = new Random();
+			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(Random.class);
+		}
+	}
+
+	@Test
 	public void isNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

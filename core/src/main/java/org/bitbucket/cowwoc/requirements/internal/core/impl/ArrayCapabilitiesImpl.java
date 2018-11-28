@@ -144,6 +144,13 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
+	public S isNotInstanceOf(Class<?> type)
+	{
+		asCollection.isNotInstanceOf(type);
+		return getThis();
+	}
+
+	@Override
 	public S isNull()
 	{
 		asCollection.isNull();

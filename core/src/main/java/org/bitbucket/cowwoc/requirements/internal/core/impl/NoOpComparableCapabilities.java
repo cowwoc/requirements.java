@@ -100,7 +100,13 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isBetween(T min, T max)
+	public S isBetween(T startInclusive, T endExclusive)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isBetweenClosed(T startInclusive, T endInclusive)
 	{
 		return getThis();
 	}

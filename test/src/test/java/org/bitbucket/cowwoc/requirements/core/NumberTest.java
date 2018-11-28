@@ -35,7 +35,7 @@ public final class NumberTest
 	}
 
 	@Test
-	public void isInRange_actualIsLowerBound()
+	public void isBetween_actualIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -47,7 +47,7 @@ public final class NumberTest
 	}
 
 	@Test
-	public void isInRange_actualIsInBounds()
+	public void isBetween_actualIsInBounds()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -58,8 +58,8 @@ public final class NumberTest
 		}
 	}
 
-	@Test
-	public void isInRange_actualIsUpperBound()
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBetween_actualIsUpperBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -71,7 +71,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_actualIsBelow()
+	public void isBetween_actualIsBelow()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -79,6 +79,18 @@ public final class NumberTest
 			int first = 10;
 			int last = 20;
 			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+		}
+	}
+
+	@Test
+	public void isBetweenClosed_actualIsUpperBound()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = 2;
+			int first = 0;
+			int last = 2;
+			new Verifiers(scope).requireThat("actual", actual).isBetweenClosed(first, last);
 		}
 	}
 
@@ -729,6 +741,16 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
+			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(0);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void intIsMultipleOf_ZeroTopAndBottom()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int actual = 0;
 			new Verifiers(scope).requireThat("actual", actual).isMultipleOf(0);
 		}
 	}

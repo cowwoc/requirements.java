@@ -235,15 +235,36 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isBetween(Integer min, Integer max)
+	public PrimitiveNumberVerifier<Integer> isBetween(Integer startInclusive, Integer endExclusive)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("min", min).isNotNull();
-		verifier.requireThat("max", max).isNotNull().isGreaterThanOrEqualTo("min", min);
-		if (actual >= min && actual <= max)
+		verifier.requireThat("startInclusive", startInclusive).isNotNull();
+		verifier.requireThat("endExclusive", endExclusive).isNotNull().
+			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		if (actual >= startInclusive && actual < endExclusive)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d] %s.", containerName, min, max, pluralizer.nameOf(2))).
+			String.format("%s must contain [%d, %d) %s.", containerName, startInclusive, endExclusive,
+				pluralizer.nameOf(2))).
+			addContext("Actual", actual);
+		if (actual > 0)
+			eb.addContext(containerName, container);
+		throw eb.build();
+	}
+
+	@Override
+	public PrimitiveNumberVerifier<Integer> isBetweenClosed(Integer startInclusive,
+		Integer endInclusive)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("startInclusive", startInclusive).isNotNull();
+		verifier.requireThat("endInclusive", endInclusive).isNotNull().
+			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		if (actual >= startInclusive && actual <= endInclusive)
+			return getThis();
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must contain [%d, %d] %s.", containerName, startInclusive, endInclusive,
+				pluralizer.nameOf(2))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);

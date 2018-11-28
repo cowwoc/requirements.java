@@ -119,6 +119,16 @@ public interface ObjectCapabilities<S, T>
 	S isInstanceOf(Class<?> type);
 
 	/**
+	 * Ensures that the actual value is not an instance of a class.
+	 *
+	 * @param type the class to compare to
+	 * @return this
+	 * @throws NullPointerException     if {@code type} is null
+	 * @throws IllegalArgumentException if the actual value is an instance of {@code type}
+	 */
+	S isNotInstanceOf(Class<?> type);
+
+	/**
 	 * Ensures that the actual value is null.
 	 *
 	 * @return this

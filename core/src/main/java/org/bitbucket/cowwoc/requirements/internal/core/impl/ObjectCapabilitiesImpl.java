@@ -190,7 +190,27 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			actualClass = actual.getClass().getName();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be an instance of %s.", name, type.getName())).
-			addContext("Actual", actualClass).
+			addContext("Actual.getClass()", actualClass).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isNotInstanceOf(Class<?> type)
+	{
+		scope.getInternalVerifier().requireThat("type", type).isNotNull();
+		if (!type.isInstance(actual))
+			return getThis();
+
+		String actualClass;
+		if (actual == null)
+			actualClass = "null";
+		else
+			actualClass = actual.getClass().getName();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not be an instance of %s.", name, type.getName())).
+			addContext("Actual.getClass()", actualClass).
+			addContext("Actual", actual).
 			build();
 	}
 

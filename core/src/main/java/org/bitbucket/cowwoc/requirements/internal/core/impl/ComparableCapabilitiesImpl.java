@@ -212,15 +212,31 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isBetween(T min, T max)
+	public S isBetween(T startInclusive, T endExclusive)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
-		verifier.requireThat("min", min).isNotNull();
-		verifier.requireThat("max", max).isNotNull().isGreaterThanOrEqualTo("min", min);
-		if (actual.compareTo(min) >= 0 && actual.compareTo(max) <= 0)
+		verifier.requireThat("startInclusive", startInclusive).isNotNull();
+		verifier.requireThat("endExclusive", endExclusive).isNotNull().
+			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endExclusive) < 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be in range [%s, %s].", name, min, max)).
+			String.format("%s must be in range [%s, %s).", name, startInclusive, endExclusive)).
+			addContext("Actual", actual).
+			build();
+	}
+
+	@Override
+	public S isBetweenClosed(T startInclusive, T endInclusive)
+	{
+		CoreVerifiers verifier = scope.getInternalVerifier();
+		verifier.requireThat("startInclusive", startInclusive).isNotNull();
+		verifier.requireThat("endInclusive", endInclusive).isNotNull().
+			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endInclusive) <= 0)
+			return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s must be in range [%s, %s].", name, startInclusive, endInclusive)).
 			addContext("Actual", actual).
 			build();
 	}

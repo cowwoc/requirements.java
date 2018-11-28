@@ -6,3 +6,7 @@ pom.xml.releaseBackup
 # Netbeans files
 nbactions*.xml
 nb-configuration.xml
+
+# IntelliJ IDEA files
+.idea/
+*.iml

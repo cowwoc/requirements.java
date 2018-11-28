@@ -37,7 +37,7 @@ public final class ComparableTest
 	}
 
 	@Test
-	public void isInRange_actualIsLowerBound()
+	public void isBetween_actualIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -49,7 +49,7 @@ public final class ComparableTest
 	}
 
 	@Test
-	public void isInRange()
+	public void isBetween()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -60,8 +60,8 @@ public final class ComparableTest
 		}
 	}
 
-	@Test
-	public void isInRange_actualIsUpperBound()
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBetween_actualIsUpperBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -73,7 +73,7 @@ public final class ComparableTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInRange_actualIsBefore()
+	public void isBetween_actualIsBefore()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -81,6 +81,18 @@ public final class ComparableTest
 			Year first = Year.of(10);
 			Year last = Year.of(20);
 			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+		}
+	}
+
+	@Test
+	public void isBetweenClosed_actualIsUpperBound()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Year actual = Year.of(2);
+			Year first = Year.of(0);
+			Year last = Year.of(2);
+			new Verifiers(scope).requireThat("actual", actual).isBetweenClosed(first, last);
 		}
 	}
 

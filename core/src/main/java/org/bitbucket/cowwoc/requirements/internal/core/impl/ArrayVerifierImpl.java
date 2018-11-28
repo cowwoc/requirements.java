@@ -142,6 +142,13 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
+	public ArrayVerifier<E> isNotInstanceOf(Class<?> type)
+	{
+		asCollection.isNotInstanceOf(type);
+		return this;
+	}
+
+	@Override
 	public ArrayVerifier<E> isNull()
 	{
 		asCollection.isNull();

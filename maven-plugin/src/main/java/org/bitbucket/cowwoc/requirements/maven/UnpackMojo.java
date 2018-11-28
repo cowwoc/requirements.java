@@ -28,7 +28,7 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
  *
  * @author Gili Tzabari
  */
-@Mojo(name = "unpack", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
+@Mojo(name = "unpack", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true)
 public class UnpackMojo extends AbstractMojo
 {
 	/**
