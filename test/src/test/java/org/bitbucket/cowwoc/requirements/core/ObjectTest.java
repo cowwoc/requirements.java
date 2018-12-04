@@ -4,18 +4,17 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.testng.annotations.Test;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
-import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class ObjectTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

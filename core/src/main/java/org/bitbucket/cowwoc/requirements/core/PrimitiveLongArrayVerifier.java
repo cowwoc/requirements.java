@@ -8,8 +8,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ArrayCapabilities;
 
 /**
  * Verifies a long array.
- *
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveLongArrayVerifier extends

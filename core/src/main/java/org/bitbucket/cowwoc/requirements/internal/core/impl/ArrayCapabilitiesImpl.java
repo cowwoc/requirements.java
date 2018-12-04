@@ -4,11 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
@@ -17,13 +12,18 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ArrayCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 /**
  * Extendable implementation of {@link ArrayCapabilities}.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of the array elements
  * @param <R> the type of the array
- * @author Gili Tzabari
  */
 public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, R>
 	extends ObjectCapabilitiesImpl<S, R>
@@ -42,8 +42,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	 * @param config             the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public ArrayCapabilitiesImpl(ApplicationScope scope, String name, R actual,
-		Collection<E> actualAsCollection, Configuration config)
+	public ArrayCapabilitiesImpl(ApplicationScope scope, String name, R actual, Collection<E> actualAsCollection, Configuration config)
 	{
 		super(scope, name, actual, config);
 		this.actualAsCollection = actualAsCollection;

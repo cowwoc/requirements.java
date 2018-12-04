@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveIntegerCapab
  * Verifies a primitive integer number.
  *
  * @param <T> the type of the integer number
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveIntegerVerifier<T extends Number & Comparable<? super T>>

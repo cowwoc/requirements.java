@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveIntegerArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveIntegerArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveIntegerArrayVerifier, Integer, int[]>

@@ -4,21 +4,20 @@
  */
 package org.bitbucket.cowwoc.requirements.core.terminal;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
+
 public final class TerminalEncodingTest
 {
 	@Test

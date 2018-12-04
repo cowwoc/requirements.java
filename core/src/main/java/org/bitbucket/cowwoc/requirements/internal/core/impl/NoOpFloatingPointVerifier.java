@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.FloatingPointVerifier;
  * An implementation of {@link FloatingPointVerifier} that does nothing.
  *
  * @param <T> the type of the floating-point number
- * @author Gili Tzabari
  */
 public final class NoOpFloatingPointVerifier<T extends Number & Comparable<? super T>>
 	extends NoOpFloatingPointCapabilities<FloatingPointVerifier<T>, T>

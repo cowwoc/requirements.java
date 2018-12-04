@@ -4,19 +4,19 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Collection;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+
+import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * An implementation of {@link CollectionVerifier} that does nothing.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
- * @author Gili Tzabari
  */
 public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	extends NoOpObjectCapabilities<CollectionVerifier<C, E>, C>

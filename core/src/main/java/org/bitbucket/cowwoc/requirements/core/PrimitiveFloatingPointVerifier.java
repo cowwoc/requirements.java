@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveNumberCapabi
  * Verifies a primitive floating-point number.
  *
  * @param <T> the type of the floating-point number
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveFloatingPointVerifier<T extends Number & Comparable<? super T>>

@@ -6,8 +6,6 @@ package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
 /**
  * Generates the singular or plural form of an element type.
- *
- * @author Gili Tzabari
  */
 public enum Pluralizer
 {

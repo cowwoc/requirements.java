@@ -4,13 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.diff;
 
+import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.DIFF_DELETE;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.DIFF_INSERT;
 import static org.bitbucket.cowwoc.requirements.internal.core.util.ConsoleConstants.LINE_LENGTH;
-import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 
 /**
  * A diff representation that does not use ANSI escape codes.
@@ -159,8 +161,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
  * <li>Expected did not have a line that corresponded to Actual line 1.</li>
  * <li>We need to delete line 1 and retain line 2 unchanged.</li>
  * </ul>
- *
- * @author Gili Tzabari
  */
 public final class TextOnly extends AbstractDiffWriter
 {

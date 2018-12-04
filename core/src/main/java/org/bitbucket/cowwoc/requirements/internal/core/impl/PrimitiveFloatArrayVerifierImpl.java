@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Default implementation of {@link PrimitiveFloatArrayVerifier}.
- *
- * @author Gili Tzabari
  */
 public class PrimitiveFloatArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveFloatArrayVerifier, Float, float[]>
@@ -30,7 +29,7 @@ public class PrimitiveFloatArrayVerifierImpl
 		if (array == null)
 			return null;
 		List<Float> result = new ArrayList<>(array.length);
-		for (float element: array)
+		for (float element : array)
 			result.add(element);
 		return result;
 	}
@@ -44,8 +43,7 @@ public class PrimitiveFloatArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public PrimitiveFloatArrayVerifierImpl(ApplicationScope scope, String name, float[] actual,
-		Configuration config)
+	public PrimitiveFloatArrayVerifierImpl(ApplicationScope scope, String name, float[] actual, Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

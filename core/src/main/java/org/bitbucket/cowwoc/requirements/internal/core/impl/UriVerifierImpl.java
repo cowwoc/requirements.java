@@ -4,20 +4,19 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.UrlVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of {@link UriVerifier}.
- *
- * @author Gili Tzabari
  */
 public final class UriVerifierImpl extends ObjectCapabilitiesImpl<UriVerifier, URI>
 	implements UriVerifier

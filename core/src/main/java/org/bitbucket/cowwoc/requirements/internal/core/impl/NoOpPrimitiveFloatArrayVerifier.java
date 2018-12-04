@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveFloatArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveFloatArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveFloatArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveFloatArrayVerifier, Float, float[]>

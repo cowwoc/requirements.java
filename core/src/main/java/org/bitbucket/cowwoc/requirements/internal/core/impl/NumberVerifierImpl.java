@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
  * Default implementation of {@link NumberVerifier}.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
 	extends NumberCapabilitiesImpl<NumberVerifier<T>, T>

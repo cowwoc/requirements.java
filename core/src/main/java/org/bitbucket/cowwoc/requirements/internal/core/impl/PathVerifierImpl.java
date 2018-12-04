@@ -4,21 +4,20 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.PathVerifier;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PathVerifier;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of PathVerifier.
- *
- * @author Gili Tzabari
  */
 public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier, Path>
 	implements PathVerifier

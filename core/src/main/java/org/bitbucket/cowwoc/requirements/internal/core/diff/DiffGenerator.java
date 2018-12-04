@@ -4,22 +4,19 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.diff;
 
-import java.util.LinkedList;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.DELETE;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.EQUAL;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Operation.INSERT;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+
+import java.util.LinkedList;
+
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.NEWLINE_PATTERN;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Generates a diff of two Strings.
- *
- * @author Gili Tzabari
  */
 public final class DiffGenerator
 {
@@ -31,7 +28,7 @@ public final class DiffGenerator
 	 */
 	public DiffGenerator(ApplicationScope scope)
 	{
-		assert (scope != null): "scope may not be null";
+		assert (scope != null) : "scope may not be null";
 		this.scope = scope;
 	}
 
@@ -67,7 +64,7 @@ public final class DiffGenerator
 		diffEngine.diffCleanupSemantic(components);
 
 		DiffWriter writer = scope.getTerminalEncoding().get().diff(actual, expected);
-		for (Diff component: components)
+		for (Diff component : components)
 		{
 			switch (component.operation)
 			{

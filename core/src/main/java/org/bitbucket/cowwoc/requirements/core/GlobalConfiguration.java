@@ -4,9 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.util.Set;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
+
+import java.util.Set;
 
 /**
  * The global configuration inherited by all verifiers.
@@ -22,8 +23,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
  * that is no longer configured to render them.
  * <p>
  * This class is thread-safe.
- *
- * @author Gili Tzabari
  */
 public final class GlobalConfiguration
 {

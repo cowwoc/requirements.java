@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
  * An implementation of {@link ClassVerifier} that does nothing.
  *
  * @param <T> the type of the class
- * @author Gili Tzabari
  */
 public final class NoOpClassVerifier<T>
 	extends NoOpObjectCapabilities<ClassVerifier<T>, Class<T>>

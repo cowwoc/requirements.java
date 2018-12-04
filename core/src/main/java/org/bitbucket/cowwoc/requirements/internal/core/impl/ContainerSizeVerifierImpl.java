@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Objects;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
@@ -12,10 +11,10 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.util.Objects;
+
 /**
  * An implementation of PrimitiveNumberVerifier for a container's size.
- *
- * @author Gili Tzabari
  */
 public final class ContainerSizeVerifierImpl
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
@@ -38,14 +37,14 @@ public final class ContainerSizeVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name}, {@code container} or {@code config} are
 	 *                        null; if {@code name} is empty
 	 */
-	public ContainerSizeVerifierImpl(ApplicationScope scope, String containerName, Object container,
-		String sizeName, int size, Pluralizer pluralizer, Configuration config)
+	public ContainerSizeVerifierImpl(ApplicationScope scope, String containerName, Object container, String sizeName, int size,
+	                                 Pluralizer pluralizer, Configuration config)
 	{
 		super(scope, sizeName, size, config);
-		assert (containerName != null): "containerName may not be null";
-		assert (!containerName.isEmpty()): "containerName may not be empty";
-		assert (container != null): "container may not be null";
-		assert (pluralizer != null): "pluralizer may not be null";
+		assert (containerName != null) : "containerName may not be null";
+		assert (!containerName.isEmpty()) : "containerName may not be empty";
+		assert (container != null) : "container may not be null";
+		assert (pluralizer != null) : "pluralizer may not be null";
 		this.containerName = containerName;
 		this.container = container;
 		this.pluralizer = pluralizer;
@@ -254,7 +253,7 @@ public final class ContainerSizeVerifierImpl
 
 	@Override
 	public PrimitiveNumberVerifier<Integer> isBetweenClosed(Integer startInclusive,
-		Integer endInclusive)
+	                                                        Integer endInclusive)
 	{
 		CoreVerifiers verifier = scope.getInternalVerifier();
 		verifier.requireThat("startInclusive", startInclusive).isNotNull();

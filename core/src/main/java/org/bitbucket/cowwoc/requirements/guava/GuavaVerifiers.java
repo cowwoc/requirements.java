@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.guava;
 
-import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 
+import java.util.function.Function;
+
 /**
  * A placeholder that is replaced by the requirements-guava module.
- *
- * @author Gili Tzabari
  */
 public interface GuavaVerifiers extends Configurable
 {

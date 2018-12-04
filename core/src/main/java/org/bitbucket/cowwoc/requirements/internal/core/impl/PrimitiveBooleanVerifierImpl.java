@@ -10,8 +10,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveBooleanVerifier}.
- *
- * @author Gili Tzabari
  */
 public final class PrimitiveBooleanVerifierImpl
 	extends BooleanCapabilitiesImpl<PrimitiveBooleanVerifier>
@@ -27,8 +25,7 @@ public final class PrimitiveBooleanVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveBooleanVerifierImpl(ApplicationScope scope, String name, boolean actual,
-		Configuration config)
+	public PrimitiveBooleanVerifierImpl(ApplicationScope scope, String name, boolean actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

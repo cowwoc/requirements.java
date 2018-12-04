@@ -5,13 +5,11 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class BooleanTest
 {
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -73,14 +71,14 @@ public final class BooleanTest
 		{
 			boolean actual = false;
 			new Verifiers(scope).requireThat("actual", actual).isEqualTo(true);
-			assert (false): "Expected verifier to throw an exception";
+			assert (false) : "Expected verifier to throw an exception";
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			assert (!actualMessage.contains("Diff")):
+			assert (!actualMessage.contains("Diff")) :
 				"Wasn't expecting boolean equals() to return diff.\n" +
-				"\nActual:\n" + actualMessage;
+					"\nActual:\n" + actualMessage;
 		}
 	}
 }

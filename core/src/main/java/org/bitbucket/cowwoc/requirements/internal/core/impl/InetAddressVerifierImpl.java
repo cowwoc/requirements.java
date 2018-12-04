@@ -4,19 +4,18 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+
 /**
  * Default implementation of InetAddressVerifier.
- *
- * @author Gili Tzabari
  */
 public final class InetAddressVerifierImpl
 	extends ObjectCapabilitiesImpl<InetAddressVerifier, InetAddress>
@@ -31,8 +30,7 @@ public final class InetAddressVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public InetAddressVerifierImpl(ApplicationScope scope, String name, InetAddress actual,
-		Configuration config)
+	public InetAddressVerifierImpl(ApplicationScope scope, String name, InetAddress actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
@@ -13,10 +12,10 @@ import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
 
+import java.util.function.Function;
+
 /**
  * Default implementation of {@code GuavaVerifiers}.
- *
- * @author Gili Tzabari
  */
 public final class GuavaVerifiersImpl implements GuavaVerifiers
 {
@@ -40,9 +39,10 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	 */
 	private static ApplicationScope verifyScope(ApplicationScope scope)
 	{
-		assert (scope != null): "scope may not be null";
+		assert (scope != null) : "scope may not be null";
 		return scope;
 	}
+
 	private final ApplicationScope scope;
 	private final Configuration config;
 
@@ -75,8 +75,8 @@ public final class GuavaVerifiersImpl implements GuavaVerifiers
 	 */
 	public GuavaVerifiersImpl(ApplicationScope scope, Configuration configuration)
 	{
-		assert (scope != null): "scope may not be null";
-		assert (configuration != null): "configuration may not be null";
+		assert (scope != null) : "scope may not be null";
+		assert (configuration != null) : "configuration may not be null";
 		this.scope = scope;
 		this.config = configuration;
 	}

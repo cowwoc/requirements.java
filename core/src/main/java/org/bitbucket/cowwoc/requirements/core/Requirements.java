@@ -4,6 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.internal.core.impl.CoreVerifiersImpl;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
+
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.URI;
@@ -11,8 +14,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.CoreVerifiersImpl;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
 
 /**
  * An entry point for verifying API requirements.
@@ -22,7 +23,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
  * <p>
  * This class is immutable.
  *
- * @author Gili Tzabari
  * @see CoreVerifiers
  */
 @SuppressWarnings(
@@ -83,8 +83,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <C extends Collection<E>, E> CollectionVerifier<C, E>
-		requireThat(String name, C actual)
+	public static <C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(String name, C actual)
 	{
 		return DELEGATE.requireThat(name, actual);
 	}
@@ -101,8 +100,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <C extends Collection<E>, E> CollectionVerifier<C, E>
-		assertThat(String name, C actual)
+	public static <C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(String name, C actual)
 	{
 		return DELEGATE.assertThat(name, actual);
 	}
@@ -372,8 +370,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(String name,
-		T actual)
+	public static <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(String name, T actual)
 	{
 		return DELEGATE.requireThat(name, actual);
 	}
@@ -389,8 +386,7 @@ public final class Requirements
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	public static <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(String name,
-		T actual)
+	public static <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(String name, T actual)
 	{
 		return DELEGATE.assertThat(name, actual);
 	}

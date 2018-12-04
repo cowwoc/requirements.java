@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
-import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.util.function.Function;
+
 /**
  * A placeholder that is meant to be replaced by the requirements-guava module.
- *
- * @author Gili Tzabari
  */
 public final class GuavaVerifiersImpl implements GuavaVerifiers, Configurable
 {

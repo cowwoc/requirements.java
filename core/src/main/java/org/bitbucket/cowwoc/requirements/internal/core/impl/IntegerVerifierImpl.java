@@ -10,8 +10,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link IntegerVerifier IntegerVerifier&lt;Integer&gt;}.
- *
- * @author Gili Tzabari
  */
 public final class IntegerVerifierImpl
 	extends IntegerVerifierCapabilitiesImpl<IntegerVerifier<Integer>, Integer>
@@ -27,8 +25,7 @@ public final class IntegerVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public IntegerVerifierImpl(ApplicationScope scope, String name, Integer actual,
-		Configuration config)
+	public IntegerVerifierImpl(ApplicationScope scope, String name, Integer actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

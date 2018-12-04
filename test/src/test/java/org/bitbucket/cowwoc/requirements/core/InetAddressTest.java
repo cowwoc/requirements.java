@@ -11,9 +11,6 @@ import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.N
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
 public final class InetAddressTest
 {
 	@Test

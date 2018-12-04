@@ -10,8 +10,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveCharacterVerifier}.
- *
- * @author Gili Tzabari
  */
 public final class PrimitiveCharacterVerifierImpl
 	extends ComparableCapabilitiesImpl<PrimitiveCharacterVerifier, Character>
@@ -27,8 +25,7 @@ public final class PrimitiveCharacterVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveCharacterVerifierImpl(ApplicationScope scope, String name, char actual,
-		Configuration config)
+	public PrimitiveCharacterVerifierImpl(ApplicationScope scope, String name, char actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

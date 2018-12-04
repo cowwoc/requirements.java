@@ -6,8 +6,6 @@ package org.bitbucket.cowwoc.requirements.internal.core.util;
 
 /**
  * String helper functions.
- *
- * @author Gili Tzabari
  */
 public final class Strings
 {
@@ -95,8 +93,8 @@ public final class Strings
 	 */
 	public static int lastConsecutiveIndexOf(String source, String target)
 	{
-		assert (source != null): "source may not be null";
-		assert (target != null): "target may not be null";
+		assert (source != null) : "source may not be null";
+		assert (target != null) : "target may not be null";
 		int lengthOfTarget = target.length();
 		int result = -1;
 		if (lengthOfTarget == 0)

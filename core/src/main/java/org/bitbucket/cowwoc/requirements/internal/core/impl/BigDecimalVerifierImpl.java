@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.math.BigDecimal;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -14,10 +12,11 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.math.BigDecimal;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of {@link BigDecimalVerifier}.
- *
- * @author Gili Tzabari
  */
 public final class BigDecimalVerifierImpl
 	extends NumberCapabilitiesImpl<BigDecimalVerifier, BigDecimal>
@@ -33,8 +32,7 @@ public final class BigDecimalVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public BigDecimalVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-		Configuration config)
+	public BigDecimalVerifierImpl(ApplicationScope scope, String name, BigDecimal actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}
@@ -129,8 +127,7 @@ public final class BigDecimalVerifierImpl
 	private static boolean isMultipleOf(BigDecimal number, BigDecimal factor)
 	{
 		return factor.compareTo(BigDecimal.ZERO) != 0 &&
-			(number.compareTo(BigDecimal.ZERO) == 0 ||
-			number.remainder(factor).compareTo(BigDecimal.ZERO) == 0);
+			(number.compareTo(BigDecimal.ZERO) == 0 || number.remainder(factor).compareTo(BigDecimal.ZERO) == 0);
 	}
 
 	@Override

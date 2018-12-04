@@ -4,13 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import static org.bitbucket.cowwoc.requirements.core.Requirements.assertThat;
+
 public final class VerifiersTest
 {
 	/**

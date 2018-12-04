@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
-import java.io.IOException;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.JvmScope;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import java.io.IOException;
+
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
+
 public final class TerminalTest
 {
 	/**

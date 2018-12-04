@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveShortArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveShortArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveShortArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveShortArrayVerifier, Short, short[]>

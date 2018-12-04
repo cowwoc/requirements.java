@@ -5,20 +5,20 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
+import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
-import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link Multimap}.
  *
  * @param <K> the type of key in the multimap
  * @param <V> the type of value in the multimap
- * @author Gili Tzabari
  */
 public interface MultimapVerifier<K, V>
 	extends ObjectCapabilities<MultimapVerifier<K, V>, Multimap<K, V>>

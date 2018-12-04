@@ -4,13 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Version;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+
 public final class OperatingSystemTest
 {
 	@Test

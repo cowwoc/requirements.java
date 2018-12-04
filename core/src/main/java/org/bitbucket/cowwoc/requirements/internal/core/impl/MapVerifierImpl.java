@@ -4,11 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.MapVerifier;
@@ -16,12 +11,17 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of MapVerifier.
  *
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map
- * @author Gili Tzabari
  */
 public final class MapVerifierImpl<K, V>
 	extends ObjectCapabilitiesImpl<MapVerifier<K, V>, Map<K, V>>

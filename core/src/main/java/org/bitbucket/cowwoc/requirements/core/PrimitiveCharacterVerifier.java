@@ -8,8 +8,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilitie
 
 /**
  * Verifies a {@code char} value.
- *
- * @author Gili Tzabari
  */
 public interface PrimitiveCharacterVerifier
 	extends ComparableCapabilities<PrimitiveCharacterVerifier, Character>

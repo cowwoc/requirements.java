@@ -8,8 +8,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ArrayCapabilities;
 
 /**
  * Verifies a float array.
- *
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveFloatArrayVerifier extends

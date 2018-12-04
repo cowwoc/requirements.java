@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.math.BigDecimal;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.math.BigDecimal;
+
 /**
  * Default implementation of {@link BigDecimalPrecisionVerifier}.
- *
- * @author Gili Tzabari
  */
 public final class BigDecimalPrecisionVerifierImpl
 	extends NumberCapabilitiesImpl<BigDecimalPrecisionVerifier, Integer>
@@ -29,7 +28,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	public BigDecimalPrecisionVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-		Configuration config)
+	                                       Configuration config)
 	{
 		super(scope, name + ".precision()", actual.precision(), config);
 	}

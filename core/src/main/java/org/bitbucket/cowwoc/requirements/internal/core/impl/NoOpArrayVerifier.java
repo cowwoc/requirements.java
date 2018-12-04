@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
  * An implementation of {@link ArrayVerifier} that does nothing.
  *
  * @param <E> the type of elements in the array
- * @author Gili Tzabari
  */
 public final class NoOpArrayVerifier<E>
 	extends NoOpArrayCapabilities<ArrayVerifier<E>, E, E[]>

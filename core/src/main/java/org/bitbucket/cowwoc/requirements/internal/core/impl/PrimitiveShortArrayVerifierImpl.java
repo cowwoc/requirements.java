@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveShortArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Default implementation of {@link PrimitiveShortArrayVerifier}.
- *
- * @author Gili Tzabari
  */
 public class PrimitiveShortArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveShortArrayVerifier, Short, short[]>
@@ -30,7 +29,7 @@ public class PrimitiveShortArrayVerifierImpl
 		if (array == null)
 			return null;
 		List<Short> result = new ArrayList<>(array.length);
-		for (short element: array)
+		for (short element : array)
 			result.add(element);
 		return result;
 	}
@@ -44,8 +43,7 @@ public class PrimitiveShortArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public PrimitiveShortArrayVerifierImpl(ApplicationScope scope, String name, short[] actual,
-		Configuration config)
+	public PrimitiveShortArrayVerifierImpl(ApplicationScope scope, String name, short[] actual, Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

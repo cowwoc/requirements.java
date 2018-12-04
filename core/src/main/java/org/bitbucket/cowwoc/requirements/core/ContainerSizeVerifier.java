@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 
 /**
  * Verifies a {@link BigDecimal#precision()}.
- *
- * @author Gili Tzabari
  */
 public interface ContainerSizeVerifier extends PrimitiveNumberVerifier<Integer>
 {

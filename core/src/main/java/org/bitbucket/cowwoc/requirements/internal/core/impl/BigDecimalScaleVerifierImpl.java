@@ -4,15 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.math.BigDecimal;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.math.BigDecimal;
+
 /**
  * An implementation of {@link PrimitiveNumberVerifier} for a {@link BigDecimal}'s scale.
- *
- * @author Gili Tzabari
  */
 public final class BigDecimalScaleVerifierImpl
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
@@ -29,7 +28,7 @@ public final class BigDecimalScaleVerifierImpl
 	 *                        are null; if {@code name} is empty
 	 */
 	public BigDecimalScaleVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-		Configuration config)
+	                                   Configuration config)
 	{
 		super(scope, name + ".scale()", actual.scale(), config);
 	}

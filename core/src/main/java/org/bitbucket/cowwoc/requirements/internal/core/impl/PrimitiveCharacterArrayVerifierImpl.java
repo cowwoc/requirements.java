@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Default implementation of {@link PrimitiveCharacterArrayVerifier}.
- *
- * @author Gili Tzabari
  */
 public class PrimitiveCharacterArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveCharacterArrayVerifier, Character, char[]>
@@ -30,7 +29,7 @@ public class PrimitiveCharacterArrayVerifierImpl
 		if (array == null)
 			return null;
 		List<Character> result = new ArrayList<>(array.length);
-		for (char element: array)
+		for (char element : array)
 			result.add(element);
 		return result;
 	}
@@ -44,8 +43,7 @@ public class PrimitiveCharacterArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public PrimitiveCharacterArrayVerifierImpl(ApplicationScope scope, String name, char[] actual,
-		Configuration config)
+	public PrimitiveCharacterArrayVerifierImpl(ApplicationScope scope, String name, char[] actual, Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

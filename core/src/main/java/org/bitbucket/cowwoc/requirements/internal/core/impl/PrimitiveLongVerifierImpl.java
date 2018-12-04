@@ -11,8 +11,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link IntegerCapabilities} for {@code long}s.
- *
- * @author Gili Tzabari
  */
 public final class PrimitiveLongVerifierImpl
 	extends IntegerVerifierCapabilitiesImpl<PrimitiveIntegerVerifier<Long>, Long>
@@ -28,8 +26,7 @@ public final class PrimitiveLongVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveLongVerifierImpl(ApplicationScope scope, String name, Long actual,
-		Configuration config)
+	public PrimitiveLongVerifierImpl(ApplicationScope scope, String name, Long actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -11,7 +11,6 @@ import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants
  * A terminal that supports a 24-bit color palette.
  *
  * @see <a href="https://gist.github.com/XVilka/8346728">https://gist.github.com/XVilka/8346728</a>
- * @author Gili Tzabari
  */
 public final class Rgb888Color extends AbstractXterm
 {

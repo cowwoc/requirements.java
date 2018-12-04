@@ -4,13 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.core.impl;
 
-import java.math.BigDecimal;
-import java.net.InetAddress;
-import java.net.URI;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.BooleanVerifier;
@@ -107,10 +100,16 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.StringVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.UriVerifierImpl;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.URI;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * Default implementation of {@link CoreVerifiers}.
- *
- * @author Gili Tzabari
  */
 public abstract class AbstractCoreVerifiers implements CoreVerifiers
 {
@@ -126,6 +125,7 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 		if (name.trim().isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
 	}
+
 	protected final ApplicationScope scope;
 	protected final Configuration config;
 
@@ -138,8 +138,8 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	 */
 	protected AbstractCoreVerifiers(ApplicationScope scope, Configuration config)
 	{
-		assert (scope != null): "scope may not be null";
-		assert (config != null): "config may not be null";
+		assert (scope != null) : "scope may not be null";
+		assert (config != null) : "config may not be null";
 		this.scope = scope;
 		this.config = config;
 	}
@@ -526,16 +526,14 @@ public abstract class AbstractCoreVerifiers implements CoreVerifiers
 	}
 
 	@Override
-	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(String name,
-		T actual)
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(String name, T actual)
 	{
 		verifyName(name);
 		return new NumberVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(String name,
-		T actual)
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(String name, T actual)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(name, actual);

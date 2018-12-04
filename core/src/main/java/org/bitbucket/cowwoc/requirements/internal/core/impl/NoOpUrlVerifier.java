@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.net.URL;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.UriVerifier;
 import org.bitbucket.cowwoc.requirements.core.UrlVerifier;
 
+import java.net.URL;
+import java.util.function.Consumer;
+
 /**
  * An implementation of {@link UrlVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpUrlVerifier
 	extends NoOpObjectCapabilities<UrlVerifier, URL>

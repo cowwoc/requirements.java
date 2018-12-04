@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveCharacterArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveCharacterArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveCharacterArrayVerifier, Character, char[]>

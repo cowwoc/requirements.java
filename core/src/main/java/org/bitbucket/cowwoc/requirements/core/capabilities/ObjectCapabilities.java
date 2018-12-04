@@ -4,13 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.core.capabilities;
 
+import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
+import org.bitbucket.cowwoc.requirements.core.Requirements;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
-import org.bitbucket.cowwoc.requirements.core.Requirements;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 
 /**
  * Verifies a value that extends {@link Object} but the implementing verifier is not guaranteed
@@ -18,7 +19,6 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public interface ObjectCapabilities<S, T>
 {

@@ -8,8 +8,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.BooleanCapabilities;
 
 /**
  * Verifies a {@code boolean} value.
- *
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface BooleanVerifier extends BooleanCapabilities<BooleanVerifier>

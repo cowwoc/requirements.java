@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 /**
  * Constants used for generating diffs.
- *
- * @author Gili Tzabari
  */
 final class DiffConstants
 {

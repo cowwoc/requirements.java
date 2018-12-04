@@ -9,10 +9,9 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.FloatingPointCapabili
 
 /**
  * Extendable implementation of {@link FloatingPointCapabilities} that does nothing.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class NoOpFloatingPointCapabilities<S, T extends Number & Comparable<? super T>>
 	extends NoOpNumberCapabilities<S, T>

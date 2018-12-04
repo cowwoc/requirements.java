@@ -8,8 +8,6 @@ import com.google.common.collect.Multimap;
 
 /**
  * An interface that forwards method invocations to a {@link GuavaVerifiers} instance.
- *
- * @author Gili Tzabari
  */
 public interface ForwardingGuavaVerifiers extends GuavaVerifiers
 {

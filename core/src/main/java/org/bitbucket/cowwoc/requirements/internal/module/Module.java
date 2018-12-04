@@ -4,13 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.module;
 
-import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+
+import java.util.Optional;
 
 /**
  * Information about a module.
- *
- * @author Gili Tzabari
  */
 public interface Module
 {

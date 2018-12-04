@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.IntegerVerifier;
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public interface IntegerCapabilities<S, T extends Number & Comparable<? super T>>
 	extends NumberCapabilities<S, T>

@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.ObjectVerifier;
  * An implementation of {@link ObjectVerifier} that does nothing.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public final class NoOpObjectVerifier<T>
 	extends NoOpObjectCapabilities<ObjectVerifier<T>, T>

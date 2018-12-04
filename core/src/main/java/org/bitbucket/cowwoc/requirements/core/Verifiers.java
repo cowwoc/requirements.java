@@ -4,13 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.util.Optional;
-import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.ForwardingGuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
+
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * An entry point for verifying API requirements.
@@ -18,8 +19,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScop
  * Unlike {@link Requirements}, instances of this class are configurable.
  * <p>
  * This class is immutable.
- *
- * @author Gili Tzabari
  */
 public final class Verifiers extends AbstractCoreVerifiers
 	implements ForwardingGuavaVerifiers
@@ -36,7 +35,7 @@ public final class Verifiers extends AbstractCoreVerifiers
 	 */
 	private static ApplicationScope verifyScope(ApplicationScope scope)
 	{
-		assert (scope != null): "scope may not be null";
+		assert (scope != null) : "scope may not be null";
 		return scope;
 	}
 
@@ -71,10 +70,10 @@ public final class Verifiers extends AbstractCoreVerifiers
 	 * @throws AssertionError if any of the arguments are null
 	 */
 	public Verifiers(ApplicationScope scope, Configuration configuration,
-		Optional<GuavaVerifiers> guavaVerifiers)
+	                 Optional<GuavaVerifiers> guavaVerifiers)
 	{
 		super(scope, configuration);
-		assert (guavaVerifiers != null): "guavaVerifiers may not be null";
+		assert (guavaVerifiers != null) : "guavaVerifiers may not be null";
 		this.guavaVerifiers = guavaVerifiers;
 	}
 

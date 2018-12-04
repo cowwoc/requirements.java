@@ -5,21 +5,20 @@
 package org.bitbucket.cowwoc.requirements.core;
 
 import com.google.common.collect.Sets;
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.testng.annotations.Test;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class ConfigurationTest
 {
 	@Test

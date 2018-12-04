@@ -11,8 +11,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link IntegerCapabilities} for {@code int}s.
- *
- * @author Gili Tzabari
  */
 public final class PrimitiveIntegerVerifierImpl
 	extends IntegerVerifierCapabilitiesImpl<PrimitiveIntegerVerifier<Integer>, Integer>
@@ -28,8 +26,7 @@ public final class PrimitiveIntegerVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveIntegerVerifierImpl(ApplicationScope scope, String name, Integer actual,
-		Configuration config)
+	public PrimitiveIntegerVerifierImpl(ApplicationScope scope, String name, Integer actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

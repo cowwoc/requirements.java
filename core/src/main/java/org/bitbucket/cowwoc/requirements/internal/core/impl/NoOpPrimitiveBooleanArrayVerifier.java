@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveBooleanArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveBooleanArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>

@@ -11,9 +11,8 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Extendable implementation of {@link BooleanCapabilities}.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
- * @author Gili Tzabari
  */
 public abstract class BooleanCapabilitiesImpl<S>
 	extends ComparableCapabilitiesImpl<S, Boolean>
@@ -29,8 +28,7 @@ public abstract class BooleanCapabilitiesImpl<S>
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public BooleanCapabilitiesImpl(ApplicationScope scope, String name, Boolean actual,
-		Configuration config)
+	public BooleanCapabilitiesImpl(ApplicationScope scope, String name, Boolean actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

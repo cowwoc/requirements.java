@@ -4,9 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.core.terminal;
 
-import java.util.Comparator;
-import java.util.Set;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffWriter;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.Rgb888Color;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.TextOnly;
@@ -15,10 +12,13 @@ import org.bitbucket.cowwoc.requirements.internal.core.diff.Xterm256Color;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.Xterm8Color;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.DefaultJvmScope;
 
+import java.util.Comparator;
+import java.util.Set;
+
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+
 /**
  * The ANSI escape codes supported by the terminal.
- *
- * @author Gili Tzabari
  */
 public enum TerminalEncoding
 {

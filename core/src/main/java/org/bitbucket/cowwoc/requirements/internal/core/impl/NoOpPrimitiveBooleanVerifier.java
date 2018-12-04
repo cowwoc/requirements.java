@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanVerifier;
 
 /**
  * An implementation of {@link PrimitiveBooleanVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveBooleanVerifier
 	extends NoOpComparableCapabilities<PrimitiveBooleanVerifier, Boolean>

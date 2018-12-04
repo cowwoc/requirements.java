@@ -11,9 +11,8 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Extendable implementation of {@link FloatingPointCapabilities} for {@code float}s.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
- * @author Gili Tzabari
  */
 public abstract class FloatVerifierCapabilitiesImpl<S>
 	extends NumberCapabilitiesImpl<S, Float>
@@ -29,8 +28,7 @@ public abstract class FloatVerifierCapabilitiesImpl<S>
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public FloatVerifierCapabilitiesImpl(ApplicationScope scope, String name, Float actual,
-		Configuration config)
+	public FloatVerifierCapabilitiesImpl(ApplicationScope scope, String name, Float actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.NumberVerifier;
  * An implementation of {@link NumberVerifier} that does nothing.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public final class NoOpNumberVerifier<T extends Number & Comparable<? super T>>
 	extends NoOpNumberCapabilities<NumberVerifier<T>, T>

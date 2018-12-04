@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilitie
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super T>>
 	extends NoOpObjectCapabilities<S, T>

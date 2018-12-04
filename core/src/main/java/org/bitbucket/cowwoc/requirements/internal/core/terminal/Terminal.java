@@ -4,6 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
+import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
+import org.bitbucket.cowwoc.pouch.Reference;
+import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,23 +19,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
-import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_256COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_8COLOR;
 import static org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Type.WINDOWS;
-import org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Version;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The terminal associated with the JVM.
- *
- * @author Gili Tzabari
  */
 public final class Terminal
 {

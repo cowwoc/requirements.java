@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
  * Verifier for a {@link Number}.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface NumberVerifier<T extends Number & Comparable<? super T>>

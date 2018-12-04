@@ -10,8 +10,6 @@ import java.io.InputStreamReader;
 
 /**
  * Process helper functions.
- *
- * @author Gili Tzabari
  */
 final class Processes
 {

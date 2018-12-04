@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
  * An implementation of {@link ComparableVerifier} that does nothing.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public final class NoOpComparableVerifier<T extends Comparable<? super T>>
 	extends NoOpComparableCapabilities<ComparableVerifier<T>, T>

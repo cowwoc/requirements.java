@@ -11,9 +11,8 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Extendable implementation of {@link FloatingPointCapabilities} for {@code double}s.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
- * @author Gili Tzabari
  */
 public abstract class DoubleVerifierCapabilitiesImpl<S>
 	extends NumberCapabilitiesImpl<S, Double>
@@ -29,8 +28,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public DoubleVerifierCapabilitiesImpl(ApplicationScope scope, String name, Double actual,
-		Configuration config)
+	public DoubleVerifierCapabilitiesImpl(ApplicationScope scope, String name, Double actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -4,20 +4,18 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
+import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
+import org.bitbucket.cowwoc.pouch.Reference;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
+
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
-import org.bitbucket.cowwoc.pouch.Reference;
-import static org.bitbucket.cowwoc.requirements.internal.core.terminal.OperatingSystem.Type.WINDOWS;
-import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 
 /**
  * An operating system.
- *
- * @author Gili Tzabari
  */
 public final class OperatingSystem
 {
@@ -137,6 +135,7 @@ public final class OperatingSystem
 				throw new AssertionError("Failed to parse version: " + versionAsString, e);
 			}
 		}
+
 		public final int major;
 		public final Integer minor;
 		/**
@@ -167,10 +166,10 @@ public final class OperatingSystem
 		 */
 		public Version(int major, int minor, int build, int revision)
 		{
-			assert (major >= 0): "major: " + major;
-			assert (minor >= 0): "minor: " + minor;
-			assert (build >= 0): "build: " + build;
-			assert (revision >= 0): "revision: " + revision;
+			assert (major >= 0) : "major: " + major;
+			assert (minor >= 0) : "minor: " + minor;
+			assert (build >= 0) : "build: " + build;
+			assert (revision >= 0) : "revision: " + revision;
 			this.major = major;
 			this.minor = minor;
 			this.minorOrZero = minor;
@@ -188,9 +187,9 @@ public final class OperatingSystem
 		 */
 		public Version(int major, int minor, int build)
 		{
-			assert (major >= 0): "major: " + major;
-			assert (minor >= 0): "minor: " + minor;
-			assert (build >= 0): "build: " + build;
+			assert (major >= 0) : "major: " + major;
+			assert (minor >= 0) : "minor: " + minor;
+			assert (build >= 0) : "build: " + build;
 			this.major = major;
 			this.minor = minor;
 			this.minorOrZero = minor;
@@ -207,8 +206,8 @@ public final class OperatingSystem
 		 */
 		public Version(int major, int minor)
 		{
-			assert (major >= 0): "major: " + major;
-			assert (minor >= 0): "minor: " + minor;
+			assert (major >= 0) : "major: " + major;
+			assert (minor >= 0) : "minor: " + minor;
 			this.major = major;
 			this.minor = minor;
 			this.minorOrZero = minor;
@@ -224,7 +223,7 @@ public final class OperatingSystem
 		 */
 		public Version(int major)
 		{
-			assert (major >= 0): "major: " + major;
+			assert (major >= 0) : "major: " + major;
 			this.major = major;
 			this.minor = null;
 			this.minorOrZero = 0;
@@ -279,6 +278,7 @@ public final class OperatingSystem
 			return result.toString();
 		}
 	}
+
 	public final Type type;
 	public final Version version;
 	public final Architecture architecture;
@@ -291,9 +291,9 @@ public final class OperatingSystem
 	 */
 	OperatingSystem(Type type, Version version, Architecture architecture)
 	{
-		assert (type != null): "type may not be null";
-		assert (version != null): "version may not be null";
-		assert (architecture != null): "architecture may not be null";
+		assert (type != null) : "type may not be null";
+		assert (version != null) : "version may not be null";
+		assert (architecture != null) : "architecture may not be null";
 		this.type = type;
 		this.version = version;
 		this.architecture = architecture;

@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 
 /**
  * The JVM configuration.
- *
- * @author Gili Tzabari
  */
 public interface JvmScope extends AutoCloseable
 {

@@ -10,8 +10,6 @@ import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants
 /**
  * An xterm terminal that supports a 16 color palette. Adds "bold" and "aixterm" extensions on top
  * of {@link Xterm8Color}.
- *
- * @author Gili Tzabari
  */
 public final class Xterm16Color extends AbstractXterm
 {

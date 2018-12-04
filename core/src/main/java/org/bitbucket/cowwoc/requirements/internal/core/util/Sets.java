@@ -11,8 +11,6 @@ import java.util.Set;
 
 /**
  * Set helper functions.
- *
- * @author Gili Tzabari
  */
 public final class Sets
 {
@@ -25,7 +23,7 @@ public final class Sets
 	 */
 	public static <E> Set<E> fromCollection(Collection<E> collection)
 	{
-		assert (collection != null): "collection may not be null";
+		assert (collection != null) : "collection may not be null";
 		if (collection instanceof Set)
 			return (Set<E>) collection;
 		return new HashSet<>(collection);
@@ -43,8 +41,8 @@ public final class Sets
 	 */
 	public static <E> Set<E> difference(Set<E> first, Set<E> second)
 	{
-		assert (first != null): "first may not be null";
-		assert (second != null): "second may not be null";
+		assert (first != null) : "first may not be null";
+		assert (second != null) : "second may not be null";
 		Set<E> result = new LinkedHashSet<>(first);
 		result.removeAll(second);
 		return result;
@@ -61,8 +59,8 @@ public final class Sets
 	 */
 	public static <E> Set<E> intersection(Set<E> first, Set<E> second)
 	{
-		assert (first != null): "first may not be null";
-		assert (second != null): "second may not be null";
+		assert (first != null) : "first may not be null";
+		assert (second != null) : "second may not be null";
 		// Iterate on the smaller of the two sets
 		Set<E> small;
 		Set<E> big;

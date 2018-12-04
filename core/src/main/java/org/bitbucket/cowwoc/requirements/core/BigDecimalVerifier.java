@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
+
 import java.math.BigDecimal;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.capabilities.NumberCapabilities;
 
 /**
  * Verifies a {@link BigDecimal} value.
- *
- * @author Gili Tzabari
  */
 public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifier, BigDecimal>
 {

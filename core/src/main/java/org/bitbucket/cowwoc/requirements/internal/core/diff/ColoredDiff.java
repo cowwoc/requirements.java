@@ -6,8 +6,6 @@ package org.bitbucket.cowwoc.requirements.internal.core.diff;
 
 /**
  * A terminal that supports ANSI color codes.
- *
- * @author Gili Tzabari
  */
 interface ColoredDiff
 {

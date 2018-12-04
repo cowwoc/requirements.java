@@ -4,6 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.internal.core.annotations.Beta;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Lists;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Maps;
+
 import java.math.BigDecimal;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
@@ -15,16 +19,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
-import org.bitbucket.cowwoc.requirements.internal.core.annotations.Beta;
-import org.bitbucket.cowwoc.requirements.internal.core.util.Lists;
-import org.bitbucket.cowwoc.requirements.internal.core.util.Maps;
 
 /**
  * A verifier's configuration.
  * <p>
  * This class is immutable.
  *
- * @author Gili Tzabari
  * @see Configurable
  */
 @SuppressWarnings(
@@ -41,6 +41,7 @@ public final class Configuration implements Configurable
 		assert (assertionsEnabled = true);
 		CLASS_ASSERTIONS_ENABLED = assertionsEnabled;
 	}
+
 	private final List<Entry<String, Object>> context;
 	private final Optional<Class<? extends RuntimeException>> exception;
 	private final boolean assertionsEnabled;
@@ -91,12 +92,12 @@ public final class Configuration implements Configurable
 	 * @throws AssertionError if any of the arguments are null
 	 */
 	private Configuration(List<Entry<String, Object>> context,
-		Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled,
-		boolean diffEnabled, Map<Class<?>, Function<Object, String>> typeToStringConverter)
+	                      Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled,
+	                      boolean diffEnabled, Map<Class<?>, Function<Object, String>> typeToStringConverter)
 	{
-		assert (context != null): "context may not be null";
-		assert (exception != null): "exception may not be null";
-		assert (typeToStringConverter != null): "typeToStringConverter may not be null";
+		assert (context != null) : "context may not be null";
+		assert (exception != null) : "exception may not be null";
+		assert (typeToStringConverter != null) : "typeToStringConverter may not be null";
 		this.context = Lists.unmodifiable(context);
 		this.exception = exception;
 		this.assertionsEnabled = assertionsEnabled;

@@ -12,10 +12,9 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Extendable implementation of {@link NumberCapabilities}.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? super T>>
 	extends ComparableCapabilitiesImpl<S, T>

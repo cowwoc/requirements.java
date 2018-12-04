@@ -4,11 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -17,11 +12,16 @@ import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of {@link ArrayVerifier}.
  *
  * @param <E> the type of elements in the array
- * @author Gili Tzabari
  */
 public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 {
@@ -36,6 +36,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 			return null;
 		return Arrays.asList(array);
 	}
+
 	private final ApplicationScope scope;
 	private final E[] actual;
 	private final List<E> actualAsList;
@@ -54,9 +55,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	 */
 	public ArrayVerifierImpl(ApplicationScope scope, String name, E[] actual, Configuration config)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
+		assert (name != null) : "name may not be null";
+		assert (!name.isEmpty()) : "name may not be empty";
+		assert (config != null) : "config may not be null";
 		this.scope = scope;
 		this.actual = actual;
 		this.actualAsList = asList(actual);

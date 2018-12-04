@@ -5,10 +5,6 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
@@ -20,12 +16,16 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.Pluralizer;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.util.Collection;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of MultimapRequirements.
  *
  * @param <K> the type of key in the multimap
  * @param <V> the type of value in the multimap
- * @author Gili Tzabari
  */
 public final class MultimapVerifierImpl<K, V>
 	extends ObjectCapabilitiesImpl<MultimapVerifier<K, V>, Multimap<K, V>>
@@ -41,8 +41,7 @@ public final class MultimapVerifierImpl<K, V>
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public MultimapVerifierImpl(ApplicationScope scope, String name, Multimap<K, V> actual,
-		Configuration config)
+	public MultimapVerifierImpl(ApplicationScope scope, String name, Multimap<K, V> actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

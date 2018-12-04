@@ -11,9 +11,8 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Default implementation of {@link PrimitiveNumberVerifier}.
- * <p>
+ *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? super T>>
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<T>, T>
@@ -29,8 +28,7 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveNumberVerifierImpl(ApplicationScope scope, String name, T actual,
-		Configuration config)
+	public PrimitiveNumberVerifierImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveCharacterVerifier;
 
 /**
  * An implementation of {@link PrimitiveCharacterVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveCharacterVerifier
 	extends NoOpComparableCapabilities<PrimitiveCharacterVerifier, Character>

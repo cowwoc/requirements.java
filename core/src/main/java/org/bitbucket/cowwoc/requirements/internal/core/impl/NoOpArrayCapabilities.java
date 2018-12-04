@@ -4,13 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Collection;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ArrayCapabilities;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilities;
+
+import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * Extendable implementation of {@link ComparableCapabilities} that does nothing.
@@ -18,7 +19,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilitie
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of an array element
  * @param <R> the type of the array
- * @author Gili Tzabari
  */
 public abstract class NoOpArrayCapabilities<S, E, R>
 	extends NoOpObjectCapabilities<S, R>

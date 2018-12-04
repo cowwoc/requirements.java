@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.net.InetAddress;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 
+import java.net.InetAddress;
+
 /**
  * An implementation of {@link InetAddressVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpInetAddressVerifier
 	extends NoOpObjectCapabilities<InetAddressVerifier, InetAddress>

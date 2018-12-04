@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
 import java.net.URI;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link URI}.
- *
- * @author Gili Tzabari
  */
 public interface UriVerifier extends ObjectCapabilities<UriVerifier, URI>
 {

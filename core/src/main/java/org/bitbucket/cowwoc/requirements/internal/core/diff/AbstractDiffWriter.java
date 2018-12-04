@@ -7,14 +7,13 @@ package org.bitbucket.cowwoc.requirements.internal.core.diff;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.NEWLINE_PATTERN;
 import static org.bitbucket.cowwoc.requirements.internal.core.util.ConsoleConstants.LINE_LENGTH;
 
 /**
  * Base implementation for all diff writers.
- *
- * @author Gili Tzabari
  */
 abstract class AbstractDiffWriter implements DiffWriter
 {

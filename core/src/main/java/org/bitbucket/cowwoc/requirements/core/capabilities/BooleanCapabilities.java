@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.BooleanVerifier;
  * {@link BooleanVerifier}.
  *
  * @param <S> the type of verifier that methods should return
- * @author Gili Tzabari
  */
 public interface BooleanCapabilities<S> extends ComparableCapabilities<S, Boolean>
 {

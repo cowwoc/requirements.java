@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.function.Function;
 import org.bitbucket.cowwoc.requirements.core.Configurable;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.CoreVerifiers;
@@ -12,10 +11,10 @@ import org.bitbucket.cowwoc.requirements.core.impl.AbstractCoreVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
 
+import java.util.function.Function;
+
 /**
  * Default implementation of {@link CoreVerifiers}.
- *
- * @author Gili Tzabari
  */
 public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 {
@@ -26,7 +25,7 @@ public final class CoreVerifiersImpl extends AbstractCoreVerifiers
 	 */
 	private static ApplicationScope verifyScope(ApplicationScope scope)
 	{
-		assert (scope != null): "scope may not be null";
+		assert (scope != null) : "scope may not be null";
 		return scope;
 	}
 

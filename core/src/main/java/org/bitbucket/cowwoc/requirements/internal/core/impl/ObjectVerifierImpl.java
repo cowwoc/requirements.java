@@ -10,9 +10,8 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of ObjectVerifier.
- * <p>
+ *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public final class ObjectVerifierImpl<T> extends ObjectCapabilitiesImpl<ObjectVerifier<T>, T>
 	implements ObjectVerifier<T>

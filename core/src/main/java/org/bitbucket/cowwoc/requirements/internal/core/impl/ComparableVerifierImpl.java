@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
  * Default implementation of {@code ComparableVerifier}.
  *
  * @param <T> the type of objects that the value may be compared to
- * @author Gili Tzabari
  */
 public final class ComparableVerifierImpl<T extends Comparable<? super T>>
 	extends ComparableCapabilitiesImpl<ComparableVerifier<T>, T>

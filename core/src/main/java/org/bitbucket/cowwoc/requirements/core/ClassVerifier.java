@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
  * Verifies a {@link Class} value.
  *
  * @param <T> the type of the class
- * @author Gili Tzabari
  */
 public interface ClassVerifier<T> extends ObjectCapabilities<ClassVerifier<T>, Class<T>>
 {

@@ -4,13 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.diff;
 
-import java.util.List;
 import org.bitbucket.cowwoc.requirements.internal.core.util.Lists;
+
+import java.util.List;
 
 /**
  * The result of calculating the difference between two strings.
- *
- * @author Gili Tzabari
  */
 public final class DiffResult
 {
@@ -29,8 +28,7 @@ public final class DiffResult
 	 * @throws NullPointerException     if any of the arguments are null
 	 * @throws IllegalArgumentException if {@code paddingMarker} is empty
 	 */
-	public DiffResult(List<String> actual, List<String> middle, List<String> expected,
-		String paddingMarker)
+	public DiffResult(List<String> actual, List<String> middle, List<String> expected, String paddingMarker)
 	{
 		if (actual == null)
 			throw new NullPointerException("actual may not be null");

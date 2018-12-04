@@ -4,15 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PathVerifier;
 
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+
 /**
  * An implementation of {@link PathVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPathVerifier
 	extends NoOpObjectCapabilities<PathVerifier, Path>

@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.Collections;
-import java.util.Map;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Collections;
+import java.util.Map;
+
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class MapTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

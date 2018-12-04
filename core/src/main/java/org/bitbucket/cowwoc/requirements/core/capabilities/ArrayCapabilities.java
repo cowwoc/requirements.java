@@ -4,11 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.core.capabilities;
 
-import java.util.Collection;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+
+import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * Verifies an array of elements but the implementing verifier is not guaranteed to be a
@@ -17,7 +18,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of the array elements
  * @param <R> the type of the array
- * @author Gili Tzabari
  */
 public interface ArrayCapabilities<S, E, R>
 	extends ObjectCapabilities<S, R>
@@ -103,7 +103,6 @@ public interface ArrayCapabilities<S, E, R>
 	 * @throws NullPointerException     if {@code name} or {@code expected} are null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the array does not contain any
 	 *                                  of {@code expected}
-	 *
 	 */
 	S containsAny(String name, Collection<E> expected);
 

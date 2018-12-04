@@ -4,20 +4,20 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.StringVerifier;
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.StringVerifier;
-import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Extendable implementation of {@link ObjectCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities<S, T>
 {
@@ -29,7 +29,7 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	 */
 	public NoOpObjectCapabilities(Configuration config)
 	{
-		assert (config != null): "config may not be null";
+		assert (config != null) : "config may not be null";
 		this.config = config;
 	}
 

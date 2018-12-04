@@ -13,8 +13,6 @@ import java.util.Set;
 
 /**
  * List helper functions.
- *
- * @author Gili Tzabari
  */
 public final class Lists
 {

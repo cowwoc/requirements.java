@@ -8,8 +8,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.BooleanCapabilities;
 
 /**
  * Verifies a primitive {@code boolean} value.
- *
- * @author Gili Tzabari
  */
 public interface PrimitiveBooleanVerifier extends BooleanCapabilities<PrimitiveBooleanVerifier>
 {

@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveIntegerVerifier;
  * An implementation of {@link PrimitiveIntegerVerifier} that does nothing.
  *
  * @param <T> the type of the integer number
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveIntegerVerifier<T extends Number & Comparable<? super T>>
 	extends NoOpIntegerCapabilities<PrimitiveIntegerVerifier<T>, T>

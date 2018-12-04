@@ -4,18 +4,17 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.testng.annotations.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class ArrayTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -1256,12 +1255,12 @@ public final class ArrayTest
 			};
 			new Verifiers(scope).withStringConverter(int[].class, o -> "primitive[]").
 				requireThat("actual", actual).isEqualTo(expected);
-			assert (false): "Expection was never thrown";
+			assert (false) : "Expection was never thrown";
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			assert (actualMessage.contains("primitive[]")): "Actual:\n" + actualMessage;
+			assert (actualMessage.contains("primitive[]")) : "Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1288,7 +1287,7 @@ public final class ArrayTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			assert (actualMessage.contains("object[]")): "Actual:\n" + actualMessage;
+			assert (actualMessage.contains("object[]")) : "Actual:\n" + actualMessage;
 		}
 	}
 

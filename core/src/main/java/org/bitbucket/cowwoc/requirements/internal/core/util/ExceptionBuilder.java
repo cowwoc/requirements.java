@@ -4,19 +4,18 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.util;
 
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.StringJoiner;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Builds an exception.
- *
- * @author Gili Tzabari
  */
 public final class ExceptionBuilder
 {
@@ -43,12 +42,12 @@ public final class ExceptionBuilder
 	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message}
 	 *                        are null
 	 */
-	private ExceptionBuilder(Configuration configuration, Exceptions exceptions,
-		Class<? extends RuntimeException> type, String message, Throwable cause, boolean apiInStacktrace)
+	private ExceptionBuilder(Configuration configuration, Exceptions exceptions, Class<? extends RuntimeException> type, String message,
+	                         Throwable cause, boolean apiInStacktrace)
 	{
-		assert (configuration != null): "configuration may not be null";
-		assert (exceptions != null): "exceptions may not be null";
-		assert (message != null): "message may not be null";
+		assert (configuration != null) : "configuration may not be null";
+		assert (exceptions != null) : "exceptions may not be null";
+		assert (message != null) : "message may not be null";
 		this.config = configuration;
 		this.exceptions = exceptions;
 		this.type = config.getException().orElse(type);
@@ -69,8 +68,8 @@ public final class ExceptionBuilder
 	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message
 	 *                              are null
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
-		Class<? extends RuntimeException> type, String message, Throwable cause)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message,
+	                        Throwable cause)
 	{
 		this(configuration, scope.getExceptions(), type, message, cause, scope.isApiInStacktrace().get());
 	}
@@ -86,8 +85,7 @@ public final class ExceptionBuilder
 	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message
 	 *                              are null
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
-		Class<? extends RuntimeException> type, String message)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message)
 	{
 		this(scope, configuration, type, message, null);
 	}
@@ -132,7 +130,7 @@ public final class ExceptionBuilder
 		messageWithContext.add(message);
 
 		List<Entry<String, Object>> contextPostfix = config.getContext();
-		assert (Lists.isUnmodifiable(contextPostfix)): "contextPostfix may not be modifiable";
+		assert (Lists.isUnmodifiable(contextPostfix)) : "contextPostfix may not be modifiable";
 
 		List<Entry<String, Object>> mergedContext;
 		if (contextPostfix.isEmpty())
@@ -146,7 +144,7 @@ public final class ExceptionBuilder
 
 		int maxKeyLength = mergedContext.stream().filter(Objects::nonNull).map(Entry::getKey).
 			mapToInt(String::length).max().orElse(0);
-		for (Entry<String, Object> entry: mergedContext)
+		for (Entry<String, Object> entry : mergedContext)
 		{
 			if (entry == null)
 				messageWithContext.add("");

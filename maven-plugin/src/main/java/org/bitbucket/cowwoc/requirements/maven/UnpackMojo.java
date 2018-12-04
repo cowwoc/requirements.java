@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.maven;
 
-import java.io.File;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
@@ -23,10 +22,10 @@ import org.twdata.maven.mojoexecutor.MojoExecutor;
 import org.twdata.maven.mojoexecutor.MojoExecutor.Element;
 import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 
+import java.io.File;
+
 /**
  * Unpacks native binaries.
- *
- * @author Gili Tzabari
  */
 @Mojo(name = "unpack", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true)
 public class UnpackMojo extends AbstractMojo

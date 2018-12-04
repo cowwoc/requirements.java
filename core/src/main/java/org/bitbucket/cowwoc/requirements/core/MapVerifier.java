@@ -4,19 +4,19 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link Map}.
  *
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map
- * @author Gili Tzabari
  */
 public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>, Map<K, V>>
 {
@@ -40,7 +40,7 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 	 * @param consumer verifies the {@link Map#values()}
 	 * @return this
 	 */
-	MapVerifier<K, V> values(Consumer<CollectionVerifier< Collection<V>, V>> consumer);
+	MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer);
 
 	/**
 	 * @return a verifier for the {@link Map#entrySet()}

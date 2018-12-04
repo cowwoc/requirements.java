@@ -11,8 +11,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link FloatingPointCapabilities} for {@code float}s.
- *
- * @author Gili Tzabari
  */
 public final class PrimitiveFloatVerifierImpl
 	extends FloatVerifierCapabilitiesImpl<PrimitiveFloatingPointVerifier<Float>>
@@ -28,8 +26,7 @@ public final class PrimitiveFloatVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveFloatVerifierImpl(ApplicationScope scope, String name, Float actual,
-		Configuration config)
+	public PrimitiveFloatVerifierImpl(ApplicationScope scope, String name, Float actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
-import java.util.Optional;
-import java.util.function.Supplier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
@@ -13,10 +11,11 @@ import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.internal.core.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.internal.core.util.Exceptions;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 /**
  * The configuration of an application. A JVM may contain multiple applications.
- *
- * @author Gili Tzabari
  */
 public interface ApplicationScope extends JvmScope
 {

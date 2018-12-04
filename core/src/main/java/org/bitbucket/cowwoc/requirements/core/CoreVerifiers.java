@@ -19,8 +19,6 @@ import java.util.function.Function;
  * Unlike {@link Requirements}, instances of this interface are configurable.
  * <p>
  * Implementations must be immutable.
- *
- * @author Gili Tzabari
  */
 public interface CoreVerifiers extends Configurable
 {

@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
  * Verifies an {@link Object}.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface ObjectVerifier<T> extends ObjectCapabilities<ObjectVerifier<T>, T>

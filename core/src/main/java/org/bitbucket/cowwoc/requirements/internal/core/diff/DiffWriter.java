@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * Generates a String representing the diff of {@code Actual} and {@code Expected} Strings.
- *
- * @author Gili Tzabari
  */
 public interface DiffWriter extends AutoCloseable
 {

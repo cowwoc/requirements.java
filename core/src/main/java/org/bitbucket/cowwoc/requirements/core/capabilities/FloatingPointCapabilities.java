@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.core.FloatingPointVerifier;
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public interface FloatingPointCapabilities<S, T extends Number & Comparable<? super T>>
 	extends NumberCapabilities<S, T>

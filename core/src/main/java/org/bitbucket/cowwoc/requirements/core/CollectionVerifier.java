@@ -4,16 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
 import java.util.Collection;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies a {@link Collection}.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
- * @author Gili Tzabari
  */
 public interface CollectionVerifier<C extends Collection<E>, E>
 	extends ObjectCapabilities<CollectionVerifier<C, E>, C>
@@ -52,7 +52,6 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the collection does not contain
 	 *                                  {@code expected}
-	 *
 	 */
 	CollectionVerifier<C, E> contains(String name, E expected);
 
@@ -124,7 +123,6 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @throws NullPointerException     if {@code name} or {@code expected} null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the collection does not contain
 	 *                                  all of {@code expected}
-	 *
 	 */
 	CollectionVerifier<C, E> containsAll(String name, Collection<E> expected);
 

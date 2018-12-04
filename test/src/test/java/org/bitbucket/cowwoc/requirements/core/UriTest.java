@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.net.URI;
-import java.net.URL;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import java.net.URI;
+import java.net.URL;
+
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class UriTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -64,7 +63,7 @@ public final class UriTest
 			String actual = "../index.html";
 			URI actualAsUri = new Verifiers(scope).requireThat("actual", actual).asUri().
 				getActual();
-			assert (actualAsUri.toString().equals(actual)): "actualAsUri: " + actualAsUri + ", actual: " +
+			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " +
 				actual;
 		}
 	}
@@ -77,7 +76,7 @@ public final class UriTest
 			String actual = "http://host.com/index.html";
 			URL actualAsUrl = new Verifiers(scope).requireThat("actual", actual).asUri().asUrl().
 				getActual();
-			assert (actualAsUrl.toString().equals(actual)): "actualAsUri: " + actualAsUrl + ", actual: " +
+			assert (actualAsUrl.toString().equals(actual)) : "actualAsUri: " + actualAsUrl + ", actual: " +
 				actual;
 		}
 	}

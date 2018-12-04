@@ -4,11 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -19,12 +14,17 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.internal.core.util.Sets;
 import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of {@link CollectionVerifier}.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
- * @author Gili Tzabari
  */
 public class CollectionVerifierImpl<C extends Collection<E>, E>
 	extends ObjectCapabilitiesImpl<CollectionVerifier<C, E>, C>
@@ -43,11 +43,10 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	 * @throws AssertionError if {@code name}, {@code pluralizer} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public CollectionVerifierImpl(ApplicationScope scope, String name, C actual,
-		Pluralizer pluralizer, Configuration config)
+	public CollectionVerifierImpl(ApplicationScope scope, String name, C actual, Pluralizer pluralizer, Configuration config)
 	{
 		super(scope, name, actual, config);
-		assert (pluralizer != null): "pluralizer may not be null";
+		assert (pluralizer != null) : "pluralizer may not be null";
 		this.pluralizer = pluralizer;
 	}
 
@@ -154,7 +153,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	 */
 	private boolean actualContainsAny(Collection<E> elements)
 	{
-		for (E element: elements)
+		for (E element : elements)
 			if (actual.contains(element))
 				return true;
 		return false;
@@ -336,7 +335,7 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 		int size = actual.size();
 		Set<E> unique = new HashSet<>(size);
 		Set<E> duplicates = new HashSet<>(size);
-		for (E element: actual)
+		for (E element : actual)
 		{
 			if (!unique.add(element))
 				duplicates.add(element);

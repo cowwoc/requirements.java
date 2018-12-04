@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.math.BigDecimal;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.core.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
+import java.math.BigDecimal;
+import java.util.function.Consumer;
+
 /**
  * An implementation of {@link BigDecimalVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpBigDecimalVerifier
 	extends NoOpNumberCapabilities<BigDecimalVerifier, BigDecimal>

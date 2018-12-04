@@ -7,6 +7,10 @@ package org.bitbucket.cowwoc.requirements.internal.core.diff;
 import org.bitbucket.cowwoc.requirements.core.SameToStringDifferentHashCode;
 import org.bitbucket.cowwoc.requirements.core.Verifiers;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
+import org.testng.annotations.Test;
+
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.RGB_888COLOR;
 import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.XTERM_16COLOR;
@@ -17,13 +21,7 @@ import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.internal.core.diff.TextOnly.PADDING_MARKER;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.util.Strings;
-import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
 public final class DiffTest
 {
 	/**
@@ -45,7 +43,7 @@ public final class DiffTest
 				"Diff    : " + Strings.repeat(DIFF_EQUAL, 4) + DIFF_DELETE + DIFF_INSERT +
 				DIFF_EQUAL + "\n" +
 				"Expected: int[ 5]";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -71,7 +69,7 @@ public final class DiffTest
 				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
 				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
 				scheme.insertColor + "5" + scheme.resetColor + "]";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -97,7 +95,7 @@ public final class DiffTest
 				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
 				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
 				scheme.insertColor + "5" + scheme.resetColor + "]";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -123,7 +121,7 @@ public final class DiffTest
 				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
 				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
 				scheme.insertColor + "5" + scheme.resetColor + "]";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -148,7 +146,7 @@ public final class DiffTest
 				"Diff    : " + Strings.repeat(DIFF_DELETE, "actual".length()) +
 				Strings.repeat(DIFF_INSERT, "expected".length()) + "\n" +
 				"Expected: " + Strings.repeat(" ", "actual".length()) + "expected";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -171,7 +169,7 @@ public final class DiffTest
 			String expectedMessage = "Actual  : \"key\": \"value \"\n" +
 				"Diff    : " + Strings.repeat(DIFF_EQUAL, 13) + DIFF_DELETE + DIFF_EQUAL + "\n" +
 				"Expected: \"key\": \"value \"";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -202,7 +200,7 @@ public final class DiffTest
 				Strings.repeat(DIFF_EQUAL, EOS_MARKER.length()) + "\n" +
 				"Expected@1: " + Strings.repeat(PADDING_MARKER, "actual".length()) + "expected" +
 				EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -226,14 +224,14 @@ public final class DiffTest
 				"Diff      : " + Strings.repeat(DIFF_DELETE, "actual".length() + NEWLINE_MARKER.length()) +
 				"\n" +
 				"Expected  : " + Strings.repeat(PADDING_MARKER,
-					"actual".length() + NEWLINE_MARKER.length()) + "\n" +
+				"actual".length() + NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@2  : " + Strings.repeat(PADDING_MARKER, "expected".length()) + EOS_MARKER +
 				"\n" +
 				"Diff      : " + Strings.repeat(DIFF_INSERT, "expected".length()) +
 				Strings.repeat(DIFF_EQUAL, EOS_MARKER.length()) + "\n" +
 				"Expected@1: expected" + EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -263,7 +261,7 @@ public final class DiffTest
 				"\n" +
 				"Actual@3  : value" + EOS_MARKER + "\n" +
 				"Expected@1: value" + EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -297,7 +295,7 @@ public final class DiffTest
 				"\n" +
 				"Actual@5  : 5\\0\n" +
 				"Expected@5: 5\\0";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -322,7 +320,7 @@ public final class DiffTest
 				"Diff    : ====   ^^^====  ^===\n" +
 				"Expected: The " + Strings.repeat(PADDING_MARKER, "dog".length()) + "fox is " +
 				Strings.repeat(DIFF_DELETE, "br".length()) + "down";
-			assert (actualMessage.contains(expectedMessage)): "expected:\n" + expectedMessage +
+			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
 	}
@@ -331,16 +329,16 @@ public final class DiffTest
 	public void lastConsecutiveIndexOf()
 	{
 		int result = Strings.lastConsecutiveIndexOf("textex", " ");
-		assert (result == -1): result;
+		assert (result == -1) : result;
 
 		result = Strings.lastConsecutiveIndexOf("  text", " ");
-		assert (result == -1): result;
+		assert (result == -1) : result;
 
 		result = Strings.lastConsecutiveIndexOf("text  ", " ");
-		assert (result == 4): result;
+		assert (result == 4) : result;
 
 		result = Strings.lastConsecutiveIndexOf("      ", " ");
-		assert (result == 0): result;
+		assert (result == 0) : result;
 	}
 
 	/**
@@ -351,7 +349,7 @@ public final class DiffTest
 	public void lastConsecutiveIndexOf_resultLessThanOrEqualToLengthOfTarget()
 	{
 		int result = Strings.lastConsecutiveIndexOf("1 ", " ");
-		assert (result == 1): result;
+		assert (result == 1) : result;
 	}
 
 	/**
@@ -370,9 +368,9 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			assert (actualMessage.contains(actual.toString())):
+			assert (actualMessage.contains(actual.toString())) :
 				"Was expecting output to contain actual value, but did not.\n" +
-				"\nActual:\n" + actualMessage;
+					"\nActual:\n" + actualMessage;
 		}
 	}
 }

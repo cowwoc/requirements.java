@@ -5,10 +5,6 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
@@ -17,12 +13,16 @@ import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifi
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
 
+import java.util.Collection;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
+
 /**
  * An implementation of {@code MultimapVerifier} that does nothing.
  *
  * @param <K> the type of keys in the multimap
  * @param <V> the type of values in the multimap
- * @author Gili Tzabari
  */
 public final class NoOpMultimapVerifier<K, V>
 	extends NoOpObjectCapabilities<MultimapVerifier<K, V>, Multimap<K, V>>

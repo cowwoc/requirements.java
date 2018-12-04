@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * Map helper functions.
- *
- * @author Gili Tzabari
  */
 public final class Maps
 {

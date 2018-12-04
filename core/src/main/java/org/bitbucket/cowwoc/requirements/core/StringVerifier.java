@@ -4,13 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
+import java.util.function.Consumer;
 
 /**
  * Verifies a {@link String}.
- *
- * @author Gili Tzabari
  */
 public interface StringVerifier extends ObjectCapabilities<StringVerifier, String>
 {

@@ -4,10 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.util;
 
-/**
- *
- * @author Gili Tzabari
- */
 public class ConsoleConstants
 {
 	/**

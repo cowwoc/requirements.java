@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 
 /**
  * An implementation of {@link BigDecimalPrecisionVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpBigDecimalPrecisionVerifier
 	extends NoOpPrimitiveNumberCapabilities<BigDecimalPrecisionVerifier, Integer>

@@ -4,11 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.StringVerifier;
 import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
@@ -16,12 +11,17 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.internal.core.util.Objects;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 /**
  * Extendable implementation of {@link ObjectCapabilities}.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities<S, T>
 {
@@ -42,10 +42,10 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 */
 	public ObjectCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
-		assert (scope != null): "scope may not be null";
-		assert (name != null): "name may not be null";
-		assert (!name.isEmpty()): "name may not be empty";
-		assert (config != null): "config may not be null";
+		assert (scope != null) : "scope may not be null";
+		assert (name != null) : "name may not be null";
+		assert (!name.isEmpty()) : "name may not be empty";
+		assert (config != null) : "config may not be null";
 		this.scope = scope;
 		this.name = name;
 		this.actual = actual;

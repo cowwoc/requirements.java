@@ -10,8 +10,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link FloatingPointVerifier FloatingPointVerifier&lt;Double&gt;}.
- *
- * @author Gili Tzabari
  */
 public final class DoubleVerifierImpl
 	extends DoubleVerifierCapabilitiesImpl<FloatingPointVerifier<Double>>

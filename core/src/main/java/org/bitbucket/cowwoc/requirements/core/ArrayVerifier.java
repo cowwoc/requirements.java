@@ -4,15 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
+import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
+
 import java.util.Collection;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.capabilities.ObjectCapabilities;
 
 /**
  * Verifies an array.
  *
  * @param <E> the type of elements in the array
- * @author Gili Tzabari
  */
 public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E[]>
 {
@@ -50,7 +50,6 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the array does not contain
 	 *                                  {@code expected}
-	 *
 	 */
 	ArrayVerifier<E> contains(String name, E expected)
 		throws NullPointerException, IllegalArgumentException;
@@ -102,7 +101,6 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @throws NullPointerException     if {@code name} or {@code expected} are null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the array does not contain any
 	 *                                  of {@code expected}
-	 *
 	 */
 	ArrayVerifier<E> containsAny(String name, Collection<E> expected)
 		throws NullPointerException, IllegalArgumentException;

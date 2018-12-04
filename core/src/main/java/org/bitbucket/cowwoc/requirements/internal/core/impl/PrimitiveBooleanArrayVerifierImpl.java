@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveBooleanArrayVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Default implementation of {@link PrimitiveBooleanArrayVerifier}.
- *
- * @author Gili Tzabari
  */
 public class PrimitiveBooleanArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
@@ -30,7 +29,7 @@ public class PrimitiveBooleanArrayVerifierImpl
 		if (array == null)
 			return null;
 		List<Boolean> result = new ArrayList<>(array.length);
-		for (boolean element: array)
+		for (boolean element : array)
 			result.add(element);
 		return result;
 	}
@@ -44,8 +43,7 @@ public class PrimitiveBooleanArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public PrimitiveBooleanArrayVerifierImpl(ApplicationScope scope, String name, boolean[] actual,
-		Configuration config)
+	public PrimitiveBooleanArrayVerifierImpl(ApplicationScope scope, String name, boolean[] actual, Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

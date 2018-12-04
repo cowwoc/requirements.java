@@ -10,8 +10,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link FloatingPointVerifier FloatingPointVerifier&lt;Float&gt;}.
- *
- * @author Gili Tzabari
  */
 public final class FloatVerifierImpl
 	extends FloatVerifierCapabilitiesImpl<FloatingPointVerifier<Float>>

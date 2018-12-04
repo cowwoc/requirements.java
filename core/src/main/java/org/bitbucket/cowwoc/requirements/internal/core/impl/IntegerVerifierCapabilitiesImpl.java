@@ -12,10 +12,9 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Extendable implementation of {@link FloatingPointCapabilities} for {@code double}s.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class IntegerVerifierCapabilitiesImpl<S, T extends Number & Comparable<? super T>>
 	extends NumberCapabilitiesImpl<S, T>
@@ -31,8 +30,7 @@ public abstract class IntegerVerifierCapabilitiesImpl<S, T extends Number & Comp
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public IntegerVerifierCapabilitiesImpl(ApplicationScope scope, String name, T actual,
-		Configuration config)
+	public IntegerVerifierCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

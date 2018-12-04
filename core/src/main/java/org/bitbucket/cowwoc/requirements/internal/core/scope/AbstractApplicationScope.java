@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
-import java.util.Optional;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
@@ -15,10 +14,10 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.Exceptions;
 import org.bitbucket.cowwoc.requirements.internal.guava.impl.GuavaModule;
 import org.bitbucket.cowwoc.requirements.internal.module.Module;
 
+import java.util.Optional;
+
 /**
  * ApplicationScope for the main and test codebases.
- *
- * @author Gili Tzabari
  */
 public abstract class AbstractApplicationScope implements ApplicationScope
 {

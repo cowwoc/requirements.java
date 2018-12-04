@@ -4,22 +4,22 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
+import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.core.MapVerifier;
+import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.MapVerifier;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 
 /**
  * An implementation of {@link MapVerifier} that does nothing.
  *
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map
- * @author Gili Tzabari
  */
 public final class NoOpMapVerifier<K, V>
 	extends NoOpObjectCapabilities<MapVerifier<K, V>, Map<K, V>>

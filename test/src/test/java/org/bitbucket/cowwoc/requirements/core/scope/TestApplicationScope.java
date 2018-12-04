@@ -4,17 +4,16 @@
  */
 package org.bitbucket.cowwoc.requirements.core.scope;
 
-import java.util.function.Supplier;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.AbstractApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 
+import java.util.function.Supplier;
+
 /**
  * ApplicationScope for the test codebase.
- *
- * @author Gili Tzabari
  */
 public final class TestApplicationScope extends AbstractApplicationScope
 {

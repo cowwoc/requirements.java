@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
-import java.util.Optional;
-import org.bitbucket.cowwoc.requirements.internal.module.Module;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.module.Module;
+
+import java.util.Optional;
 
 /**
  * Information about the Guava module.
- *
- * @author Gili Tzabaris
  */
 public final class GuavaModule implements Module
 {

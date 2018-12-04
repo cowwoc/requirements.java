@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
  * Default implementation of {@code BooleanVerifier}.
  *
  * @param <T> the type of objects that the value may be compared to
- * @author Gili Tzabari
  */
 public final class BooleanVerifierImpl<T extends Comparable<? super T>>
 	extends BooleanCapabilitiesImpl<BooleanVerifier>
@@ -28,8 +27,7 @@ public final class BooleanVerifierImpl<T extends Comparable<? super T>>
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public BooleanVerifierImpl(ApplicationScope scope, String name, Boolean actual,
-		Configuration config)
+	public BooleanVerifierImpl(ApplicationScope scope, String name, Boolean actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

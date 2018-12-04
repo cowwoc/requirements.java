@@ -16,7 +16,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
  * Implementations must be immutable.
  *
  * @since 3.0.0
- * @author Gili Tzabari
  */
 public interface GuavaVerifiers extends Configurable
 {

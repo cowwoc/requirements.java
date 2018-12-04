@@ -8,8 +8,6 @@ import java.util.function.Function;
 
 /**
  * A verifier whose behavior is configurable.
- *
- * @author Gili Tzabari
  */
 public interface Configurable
 {

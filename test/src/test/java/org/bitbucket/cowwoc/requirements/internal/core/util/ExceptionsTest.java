@@ -6,9 +6,6 @@ package org.bitbucket.cowwoc.requirements.internal.core.util;
 
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
 public final class ExceptionsTest
 {
 	/**

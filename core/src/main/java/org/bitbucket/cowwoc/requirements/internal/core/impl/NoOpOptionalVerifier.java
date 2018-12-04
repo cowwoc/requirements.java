@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 
+import java.util.Optional;
+
 /**
  * An implementation of {@link OptionalVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpOptionalVerifier
 	extends NoOpObjectCapabilities<OptionalVerifier, Optional<?>>

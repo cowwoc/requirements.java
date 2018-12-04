@@ -4,9 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.scope;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyFactory;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Factory;
@@ -17,10 +14,12 @@ import org.bitbucket.cowwoc.requirements.internal.core.terminal.Terminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * The default implementation of JvmScope.
- *
- * @author Gili Tzabari
  */
 public final class DefaultJvmScope implements JvmScope
 {

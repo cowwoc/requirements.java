@@ -10,8 +10,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link IntegerVerifier IntegerVerifier&lt;Long&gt;}.
- *
- * @author Gili Tzabari
  */
 public final class LongVerifierImpl
 	extends IntegerVerifierCapabilitiesImpl<IntegerVerifier<Long>, Long>

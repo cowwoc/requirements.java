@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveByteArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveByteArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveByteArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveByteArrayVerifier, Byte, byte[]>

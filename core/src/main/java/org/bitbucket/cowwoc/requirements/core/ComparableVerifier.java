@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.ComparableCapabilitie
  * Verifies a {@link Comparable}.
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface ComparableVerifier<T extends Comparable<? super T>>

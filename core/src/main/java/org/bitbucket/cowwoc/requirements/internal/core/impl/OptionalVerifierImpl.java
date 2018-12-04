@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.util.Optional;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.util.Optional;
+
 /**
  * Default implementation of OptionalVerifier.
- *
- * @author Gili Tzabari
  */
 public final class OptionalVerifierImpl
 	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
@@ -29,8 +28,7 @@ public final class OptionalVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual,
-		Configuration config)
+	public OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

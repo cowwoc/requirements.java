@@ -16,9 +16,8 @@ import org.bitbucket.cowwoc.requirements.internal.guava.impl.GuavaVerifiersImpl;
  * <p>
  * This class is immutable.
  *
- * @since 3.0.0
- * @author Gili Tzabari
  * @see GuavaVerifiers
+ * @since 3.0.0
  */
 @SuppressWarnings(
 	{

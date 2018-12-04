@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.core.ComparableVerifier;
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	extends ObjectCapabilities<S, T>

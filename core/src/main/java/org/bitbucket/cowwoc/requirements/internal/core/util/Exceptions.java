@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.util;
 
+import org.bitbucket.cowwoc.requirements.core.Requirements;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
@@ -13,12 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import org.bitbucket.cowwoc.requirements.core.Requirements;
 
 /**
  * Exception helper functions.
- *
- * @author Gili Tzabari
  */
 public final class Exceptions
 {
@@ -66,8 +65,8 @@ public final class Exceptions
 	 */
 	private String getParentPackage(String name)
 	{
-		assert (name != null): "name may not be null";
-		assert (!name.trim().isEmpty()): "name may not be empty";
+		assert (name != null) : "name may not be null";
+		assert (!name.trim().isEmpty()) : "name may not be empty";
 		int index = name.lastIndexOf('.');
 		if (index == -1)
 			throw new AssertionError("pkg may not be the root package");
@@ -85,8 +84,8 @@ public final class Exceptions
 	 * @return the exception
 	 * @throws AssertionError if {@code type} is null
 	 */
-	public <E extends RuntimeException> RuntimeException createException(Class<E> type,
-		String message, Throwable cause, boolean apiInStacktrace)
+	public <E extends RuntimeException> RuntimeException createException(Class<E> type, String message, Throwable cause,
+	                                                                     boolean apiInStacktrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
 		//
@@ -100,7 +99,7 @@ public final class Exceptions
 		//
 		// If apiInStacktrace is false, we need to strip out the top 3 stack trace elements. But we are
 		// also forced to strip out the exception cause because it was thrown inside our API.
-		assert (type != null): "type may not be null";
+		assert (type != null) : "type may not be null";
 		try
 		{
 			boolean withCause = apiInStacktrace && cause != null;

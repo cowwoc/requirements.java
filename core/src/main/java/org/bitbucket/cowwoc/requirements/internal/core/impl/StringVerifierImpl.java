@@ -4,12 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.impl;
 
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.function.Consumer;
 import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.core.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
@@ -19,10 +13,15 @@ import org.bitbucket.cowwoc.requirements.core.UrlVerifier;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.function.Consumer;
+
 /**
  * Default implementation of {@link StringVerifier}.
- *
- * @author Gili Tzabari
  */
 public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerifier, String>
 	implements StringVerifier

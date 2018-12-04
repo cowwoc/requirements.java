@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.PrimitiveNumberCapabi
  * Verifies a primitive number (e.g. {@link int}).
  *
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveNumberVerifier<T extends Number & Comparable<? super T>>

@@ -6,14 +6,13 @@ package org.bitbucket.cowwoc.requirements.internal.core.util;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import java.util.Collection;
-import java.util.Set;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import java.util.Collection;
+import java.util.Set;
+
+import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
+
 public final class SetsTest
 {
 	@Test

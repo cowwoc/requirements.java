@@ -4,13 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.core.terminal;
 
-import java.io.IOException;
 import org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding;
+
+import java.io.IOException;
 
 /**
  * Native functions for interacting with the JVM terminal.
- *
- * @author Gili Tzabari
  */
 public final class NativeTerminal
 {

@@ -4,16 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.core;
 
-import java.math.BigDecimal;
-import java.time.Year;
 import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
 import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 import org.testng.annotations.Test;
 
-/**
- * @author Gili Tzabari
- */
+import java.math.BigDecimal;
+import java.time.Year;
+
+import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 public final class ComparableTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

@@ -12,10 +12,9 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
 
 /**
  * Extendable implementation of {@link ComparableCapabilities}.
- * <p>
+ *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
- * @author Gili Tzabari
  */
 public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super T>>
 	extends ObjectCapabilitiesImpl<S, T>
@@ -31,8 +30,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ComparableCapabilitiesImpl(ApplicationScope scope, String name, T actual,
-		Configuration config)
+	public ComparableCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.core.capabilities.IntegerCapabilities;
  * Verifies a floating-point number.
  *
  * @param <T> the type of the floating-point number
- * @author Gili Tzabari
  */
 @SuppressWarnings("MarkerInterface")
 public interface IntegerVerifier<T extends Number & Comparable<? super T>>

@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveDoubleArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveDoubleArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveDoubleArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveDoubleArrayVerifier, Double, double[]>

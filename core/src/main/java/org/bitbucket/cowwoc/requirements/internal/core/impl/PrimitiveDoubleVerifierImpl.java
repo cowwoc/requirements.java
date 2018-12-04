@@ -11,8 +11,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
 
 /**
  * Default implementation of {@link FloatingPointCapabilities} for {@code double}s.
- *
- * @author Gili Tzabari
  */
 public final class PrimitiveDoubleVerifierImpl
 	extends DoubleVerifierCapabilitiesImpl<PrimitiveFloatingPointVerifier<Double>>
@@ -28,8 +26,7 @@ public final class PrimitiveDoubleVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public PrimitiveDoubleVerifierImpl(ApplicationScope scope, String name, Double actual,
-		Configuration config)
+	public PrimitiveDoubleVerifierImpl(ApplicationScope scope, String name, Double actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

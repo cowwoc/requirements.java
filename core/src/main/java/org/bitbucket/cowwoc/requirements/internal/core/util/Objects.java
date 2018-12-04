@@ -11,8 +11,6 @@ import java.util.stream.IntStream;
 
 /**
  * Object helper functions.
- *
- * @author Gili Tzabari
  */
 public final class Objects
 {

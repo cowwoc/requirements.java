@@ -9,8 +9,6 @@ import static org.bitbucket.cowwoc.requirements.internal.core.diff.DiffConstants
 
 /**
  * An xterm terminal that supports an 8 color palette.
- *
- * @author Gili Tzabari
  */
 public final class Xterm8Color extends AbstractXterm
 {

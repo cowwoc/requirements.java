@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.Configuration;
 
 /**
  * An implementation of {@link BooleanVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpBooleanVerifier
 	extends NoOpComparableCapabilities<BooleanVerifier, Boolean>

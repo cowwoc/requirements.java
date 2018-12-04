@@ -13,7 +13,6 @@ import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
  * Default implementation of {@link ClassVerifier}.
  *
  * @param <T> the type of the class
- * @author Gili Tzabari
  */
 public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVerifier<T>, Class<T>>
 	implements ClassVerifier<T>
@@ -28,8 +27,7 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
 	 *                        {@code name} is empty
 	 */
-	public ClassVerifierImpl(ApplicationScope scope, String name, Class<T> actual,
-		Configuration config)
+	public ClassVerifierImpl(ApplicationScope scope, String name, Class<T> actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

@@ -9,8 +9,6 @@ import org.bitbucket.cowwoc.requirements.core.PrimitiveLongArrayVerifier;
 
 /**
  * An implementation of {@link PrimitiveLongArrayVerifier} that does nothing.
- *
- * @author Gili Tzabari
  */
 public final class NoOpPrimitiveLongArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveLongArrayVerifier, Long, long[]>
