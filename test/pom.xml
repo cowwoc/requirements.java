@@ -97,7 +97,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-core</artifactId>
+			<artifactId>requirements-java</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>

@@ -5,16 +5,16 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.CollectionVerifierImpl;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.ContainerSizeVerifierImpl;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.ObjectCapabilitiesImpl;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.Pluralizer;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.CollectionVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.ContainerSizeVerifierImpl;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.ObjectCapabilitiesImpl;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.Pluralizer;
+import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.java.util.ExceptionBuilder;
 
 import java.util.Collection;
 import java.util.Map.Entry;

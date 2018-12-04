@@ -7,12 +7,14 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import org.bitbucket.cowwoc.requirements.core.Verifiers;
-import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.Verifiers;
+import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
 import org.testng.annotations.Test;
+
+import java.util.AbstractMap.SimpleImmutableEntry;
+
+import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class MultimapTest
 {

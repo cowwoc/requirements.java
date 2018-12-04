@@ -5,8 +5,8 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.Configurable;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.java.Configurable;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 
 /**
  * An entry point for verifying API requirements.

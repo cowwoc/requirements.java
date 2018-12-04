@@ -8,18 +8,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.Verifiers;
+import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.testng.annotations.Test;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import static org.bitbucket.cowwoc.requirements.core.Requirements.requireThat;
-import org.bitbucket.cowwoc.requirements.core.Verifiers;
-import org.bitbucket.cowwoc.requirements.core.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.core.terminal.TerminalEncoding.NONE;
+
 import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.testng.annotations.Test;
+import static org.bitbucket.cowwoc.requirements.java.Requirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class UsageTest
 {
@@ -32,7 +34,7 @@ public final class UsageTest
 		Map<Integer, Integer> map = Collections.singletonMap(1, 5);
 		Multimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5, 1, 6);
 
-		// Java will invoke core.Requirements.requireThat() or guava.Requirements.requireThat()
+		// Java will invoke java.Requirements.requireThat() or guava.Requirements.requireThat()
 		// depending on the context
 		requireThat("map", map).size().isPositive();
 		requireThat("multimap", multimap).entries().containsAll(ImmutableList.of(

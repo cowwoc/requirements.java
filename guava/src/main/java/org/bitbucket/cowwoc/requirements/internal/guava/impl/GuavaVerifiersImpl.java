@@ -5,12 +5,12 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.Configurable;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
 import org.bitbucket.cowwoc.requirements.guava.GuavaVerifiers;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.internal.core.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.java.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.Configurable;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 
 import java.util.function.Function;
 

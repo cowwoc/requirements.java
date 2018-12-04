@@ -5,13 +5,13 @@
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
-import org.bitbucket.cowwoc.requirements.core.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpCollectionVerifier;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpObjectCapabilities;
-import org.bitbucket.cowwoc.requirements.internal.core.impl.NoOpPrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.NoOpCollectionVerifier;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.NoOpObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.internal.java.impl.NoOpPrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 
 import java.util.Collection;
 import java.util.Map.Entry;

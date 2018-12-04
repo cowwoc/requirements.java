@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.guava.impl;
 
-import org.bitbucket.cowwoc.requirements.internal.core.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.internal.module.Module;
 
 import java.util.Optional;

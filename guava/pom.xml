@@ -42,7 +42,7 @@
 					</sourceFileIncludes>
 					<show>public</show>
 					<windowtitle>${project.name} ${project.version} API</windowtitle>
-					<noqualifier>org.bitbucket.cowwoc.requirements.core.*</noqualifier>
+					<noqualifier>org.bitbucket.cowwoc.requirements.java.*</noqualifier>
 				</configuration>
 			</plugin>
 			<!--
@@ -91,7 +91,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-core</artifactId>
+			<artifactId>requirements-java</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

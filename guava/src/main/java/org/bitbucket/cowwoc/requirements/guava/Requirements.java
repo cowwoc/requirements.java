@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.core.Configuration;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.internal.guava.impl.GuavaVerifiersImpl;
 
 /**
