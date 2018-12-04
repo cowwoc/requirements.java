@@ -162,7 +162,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("UnnecessaryBoxing")
+	@SuppressWarnings("deprecation")
 	public void isSameObject_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -174,7 +174,7 @@ public final class ObjectTest
 	}
 
 	@Test
-	@SuppressWarnings("UnnecessaryBoxing")
+	@SuppressWarnings("deprecation")
 	public void isNotSameObject()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
