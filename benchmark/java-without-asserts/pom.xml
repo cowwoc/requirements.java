@@ -15,27 +15,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
 				<configuration>
 					<showDeprecation>true</showDeprecation>
 					<compilerArgs>
 						<arg>-Xlint</arg>
 					</compilerArgs>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>requirements-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

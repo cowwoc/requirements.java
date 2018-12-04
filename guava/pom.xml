@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.bitbucket.cowwoc</groupId>
@@ -15,15 +16,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
 				<configuration>
 					<showDeprecation>true</showDeprecation>
 					<compilerArgs>
 						<arg>-Xlint</arg>
 						<arg>-Werror</arg>
 					</compilerArgs>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -32,8 +32,8 @@
 				<version>2.10.4</version>
 				<configuration>
 					<links>
-						<link>https://docs.oracle.com/javase/8/docs/api/</link>
-						<link>https://google.github.io/guava/releases/24.0-jre/api/docs/</link>
+						<link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+						<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
 					</links>
 					<docfilessubdirs>true</docfilessubdirs>
 					<!-- whitelist in order to exclude internal classes -->
@@ -85,9 +85,6 @@
 			-->
 		</plugins>
 	</build>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -97,7 +94,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>24.0-jre</version>
+			<version>${guava.version}</version>
 		</dependency>
 	</dependencies>
 </project>
