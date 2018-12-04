@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Verifies a {@link Map}.
+ * Verifies the requirements of a {@link Map}.
  *
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map

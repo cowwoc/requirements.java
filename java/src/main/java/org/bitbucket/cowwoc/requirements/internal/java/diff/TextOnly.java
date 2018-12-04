@@ -5,11 +5,14 @@
 package org.bitbucket.cowwoc.requirements.internal.java.diff;
 
 import org.bitbucket.cowwoc.requirements.internal.java.util.Strings;
-import org.bitbucket.cowwoc.requirements.internal.java.util.ConsoleConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.DIFF_DELETE;
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.DIFF_INSERT;
+import static org.bitbucket.cowwoc.requirements.internal.java.util.ConsoleConstants.LINE_LENGTH;
 
 /**
  * A diff representation that does not use ANSI escape codes.
@@ -170,8 +173,6 @@ public final class TextOnly extends AbstractDiffWriter
 	private List<String> middle;
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
@@ -179,9 +180,9 @@ public final class TextOnly extends AbstractDiffWriter
 	public TextOnly(String actual, String expected)
 	{
 		super(actual, expected, PADDING_MARKER);
-		this.middleLine = new StringBuilder(ConsoleConstants.LINE_LENGTH);
+		this.middleLine = new StringBuilder(LINE_LENGTH);
 		this.middleList = new ArrayList<>(Math.max(1,
-			Math.max(actual.length(), expected.length()) / ConsoleConstants.LINE_LENGTH));
+			Math.max(actual.length(), expected.length()) / LINE_LENGTH));
 	}
 
 	@Override
@@ -197,7 +198,7 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		int length = line.length();
 		actualLine.append(Strings.repeat(getPaddingMarker(), length));
-		middleLine.append(Strings.repeat(DiffConstants.DIFF_INSERT, length));
+		middleLine.append(Strings.repeat(DIFF_INSERT, length));
 		expectedLine.append(line);
 	}
 
@@ -206,7 +207,7 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		actualLine.append(line);
 		int length = line.length();
-		middleLine.append(Strings.repeat(DiffConstants.DIFF_DELETE, length));
+		middleLine.append(Strings.repeat(DIFF_DELETE, length));
 		expectedLine.append(Strings.repeat(getPaddingMarker(), length));
 	}
 

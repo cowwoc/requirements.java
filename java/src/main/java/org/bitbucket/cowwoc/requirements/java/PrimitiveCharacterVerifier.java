@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilities;
 
 /**
- * Verifies a {@code char} value.
+ * Verifies the requirements of a {@code char} value.
  */
 public interface PrimitiveCharacterVerifier
 	extends ComparableCapabilities<PrimitiveCharacterVerifier, Character>

@@ -9,6 +9,9 @@ import org.bitbucket.cowwoc.requirements.internal.java.util.Strings;
 import java.util.Collections;
 import java.util.List;
 
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.POSTFIX;
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.PREFIX;
+
 /**
  * Base implementation for all XTerm terminals.
  * <h3>Basic Rules</h3>
@@ -153,8 +156,6 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	private boolean needToResetExpected;
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
@@ -165,7 +166,7 @@ abstract class AbstractXterm extends AbstractDiffWriter
 		this.paddingColor = getColorForPadding();
 		this.insertColor = getColorForInsert();
 		this.deleteColor = getColorForDelete();
-		this.resetColor = DiffConstants.PREFIX + "0" + DiffConstants.POSTFIX;
+		this.resetColor = PREFIX + "0" + POSTFIX;
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import java.util.Optional;
 
 /**
- * Verifies an {@link Optional}.
+ * Verifies the requirements of an {@link Optional}.
  */
 public interface OptionalVerifier extends ObjectCapabilities<OptionalVerifier, Optional<?>>
 {

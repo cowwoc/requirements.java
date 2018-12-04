@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import java.math.BigDecimal;
 
 /**
- * Verifies a {@link BigDecimal#precision()}.
+ * Verifies the requirements of a {@link BigDecimal#precision()}.
  */
 public interface ContainerSizeVerifier extends PrimitiveNumberVerifier<Integer>
 {

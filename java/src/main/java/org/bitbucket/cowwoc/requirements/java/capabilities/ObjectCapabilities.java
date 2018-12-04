@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Verifies a value that extends {@link Object} but the implementing verifier is not guaranteed
+ * Verifies the requirements of a value that extends {@link Object} but the implementing verifier is not guaranteed
  * to be an {@link ObjectVerifier}.
  *
  * @param <S> the type of verifier that methods should return

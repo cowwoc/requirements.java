@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.NumberVerifier;
 
 /**
- * Verifies a value that extends {@link Number} but the implementing verifier is not guaranteed
+ * Verifies the requirements of a value that extends {@link Number} but the implementing verifier is not guaranteed
  * to be a {@link NumberVerifier}.
  *
  * @param <S> the type of verifier that methods should return

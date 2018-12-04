@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import java.net.InetAddress;
 
 /**
- * Verifies an IP address or hostname.
+ * Verifies the requirements of an IP address or hostname.
  */
 public interface InetAddressVerifier extends ObjectCapabilities<InetAddressVerifier, InetAddress>
 {

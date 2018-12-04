@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.internal.java.terminal;
 
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.internal.java.terminal.OperatingSystem.Type;
 import org.bitbucket.cowwoc.requirements.internal.java.terminal.OperatingSystem.Version;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.bitbucket.cowwoc.requirements.internal.java.terminal.OperatingSystem.Type.WINDOWS;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.RGB_888COLOR;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_16COLOR;
@@ -32,17 +32,13 @@ import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.X
  */
 public final class Terminal
 {
-	private final Reference<Set<TerminalEncoding>> supportedTypes = ConcurrentLazyReference.create(
-		this::getSupportedTypesImpl);
-	private final Reference<Boolean> connectedToStdout = ConcurrentLazyReference.create(
-		this::isConnectedToStdoutImpl);
+	private final Reference<Set<TerminalEncoding>> supportedTypes = ConcurrentLazyReference.create(this::getSupportedTypesImpl);
+	private final Reference<Boolean> connectedToStdout = ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
 	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
 	private final Optional<NativeTerminal> nativeTerminal;
 	private final Logger log = LoggerFactory.getLogger(Terminal.class);
 
 	/**
-	 * Creates a new Terminal.
-	 *
 	 * @param nativeTerminal the native terminal (null if unavailable)
 	 */
 	public Terminal(NativeTerminal nativeTerminal)
@@ -64,7 +60,7 @@ public final class Terminal
 	private Set<TerminalEncoding> getSupportedTypesImpl()
 	{
 		OperatingSystem os = OperatingSystem.detected();
-		if (os.type == Type.WINDOWS)
+		if (os.type == WINDOWS)
 		{
 			log.debug("Detected Windows {}", os.version);
 			if (os.version.compareTo(new Version(10, 0, 10586)) >= 0)
@@ -174,7 +170,7 @@ public final class Terminal
 			return;
 		}
 		OperatingSystem os = OperatingSystem.detected();
-		if (os.type == Type.WINDOWS)
+		if (os.type == WINDOWS)
 		{
 			// Only Windows needs nativeSetEncoding() to be invoked
 			if (nativeSetEncoding(encoding, force) || force)

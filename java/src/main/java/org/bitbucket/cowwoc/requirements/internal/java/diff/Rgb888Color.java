@@ -4,6 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.java.diff;
 
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.POSTFIX;
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.PREFIX;
+
 /**
  * A terminal that supports a 24-bit color palette.
  *
@@ -18,8 +21,6 @@ public final class Rgb888Color extends AbstractXterm
 	private static final String GRAY_BACKGROUND = "48;2;66;66;66";
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
@@ -32,18 +33,18 @@ public final class Rgb888Color extends AbstractXterm
 	@Override
 	public String getColorForPadding()
 	{
-		return DiffConstants.PREFIX + GRAY_FOREGROUND + DiffConstants.POSTFIX + DiffConstants.PREFIX + GRAY_BACKGROUND + DiffConstants.POSTFIX;
+		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + GRAY_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForInsert()
 	{
-		return DiffConstants.PREFIX + WHITE_FOREGROUND + DiffConstants.POSTFIX + DiffConstants.PREFIX + GREEN_BACKGROUND + DiffConstants.POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + POSTFIX + PREFIX + GREEN_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForDelete()
 	{
-		return DiffConstants.PREFIX + WHITE_FOREGROUND + DiffConstants.POSTFIX + DiffConstants.PREFIX + RED_BACKGROUND + DiffConstants.POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + POSTFIX + PREFIX + RED_BACKGROUND + POSTFIX;
 	}
 }

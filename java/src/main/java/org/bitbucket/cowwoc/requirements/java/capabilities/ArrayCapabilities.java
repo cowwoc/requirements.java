@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * Verifies an array of elements but the implementing verifier is not guaranteed to be a
+ * Verifies the requirements of an array of elements but the implementing verifier is not guaranteed to be a
  * {@link ArrayVerifier}.
  *
  * @param <S> the type of verifier that methods should return

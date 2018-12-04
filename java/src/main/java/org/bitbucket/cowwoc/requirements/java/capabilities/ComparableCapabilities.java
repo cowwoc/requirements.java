@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
 
 /**
- * Verifies a value that extends {@link Comparable} but the implementing verifier is not guaranteed
+ * Verifies the requirements of a value that extends {@link Comparable} but the implementing verifier is not guaranteed
  * to be a {@link ComparableVerifier}.
  *
  * @param <S> the type of verifier that methods should return
@@ -35,7 +35,6 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @throws NullPointerException     if {@code name} or {@code value} are null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is less than or
 	 *                                  equal to {@code value}
-	 *
 	 */
 	S isGreaterThan(String name, T value);
 
@@ -58,7 +57,6 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @throws NullPointerException     if {@code name} or {@code value} are null
 	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is less than to
 	 *                                  {@code value}
-	 *
 	 */
 	S isGreaterThanOrEqualTo(String name, T value);
 

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.BooleanCapabilities;
 
 /**
- * Verifies a {@code boolean} value.
+ * Verifies the requirements of a {@code boolean} value.
  */
 @SuppressWarnings("MarkerInterface")
 public interface BooleanVerifier extends BooleanCapabilities<BooleanVerifier>

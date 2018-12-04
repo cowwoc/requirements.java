@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabi
 import java.math.BigDecimal;
 
 /**
- * Verifies a {@link BigDecimal#precision()}.
+ * Verifies the requirements of a {@link BigDecimal#precision()}.
  */
 public interface BigDecimalPrecisionVerifier
 	extends PrimitiveNumberCapabilities<BigDecimalPrecisionVerifier, Integer>

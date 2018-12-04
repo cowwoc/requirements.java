@@ -4,11 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.java.diff;
 
-import org.bitbucket.cowwoc.requirements.internal.java.util.ConsoleConstants;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.NEWLINE_MARKER;
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.NEWLINE_PATTERN;
+import static org.bitbucket.cowwoc.requirements.internal.java.util.ConsoleConstants.LINE_LENGTH;
 
 /**
  * Base implementation for all diff writers.
@@ -28,8 +30,6 @@ abstract class AbstractDiffWriter implements DiffWriter
 	protected boolean closed;
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual        the actual value
 	 * @param expected      the expected value
 	 * @param paddingMarker a padding character used to align values vertically
@@ -47,10 +47,10 @@ abstract class AbstractDiffWriter implements DiffWriter
 		if (paddingMarker.isEmpty())
 			throw new IllegalArgumentException("paddingMarker may not be empty");
 		this.paddingMarker = paddingMarker;
-		this.actualLine = new StringBuilder(ConsoleConstants.LINE_LENGTH);
-		this.expectedLine = new StringBuilder(ConsoleConstants.LINE_LENGTH);
-		this.actualList = new ArrayList<>(Math.max(1, actual.length() / ConsoleConstants.LINE_LENGTH));
-		this.expectedList = new ArrayList<>(Math.max(1, expected.length() / ConsoleConstants.LINE_LENGTH));
+		this.actualLine = new StringBuilder(LINE_LENGTH);
+		this.expectedLine = new StringBuilder(LINE_LENGTH);
+		this.actualList = new ArrayList<>(Math.max(1, actual.length() / LINE_LENGTH));
+		this.expectedList = new ArrayList<>(Math.max(1, expected.length() / LINE_LENGTH));
 	}
 
 	/**
@@ -70,7 +70,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 	/**
 	 * Deletes a line that is present in {@code Actual} but not {@code Expected}.
 	 *
-	 * @param length the length of the padding
+	 * @param line the text
 	 */
 	protected abstract void deleteLine(String line);
 
@@ -95,12 +95,12 @@ abstract class AbstractDiffWriter implements DiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		String[] lines = DiffConstants.NEWLINE_PATTERN.split(text, -1);
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
 		for (int i = 0, size = lines.length; i < size; ++i)
 		{
 			String line = lines[i];
 			if (i < size - 1)
-				line += DiffConstants.NEWLINE_MARKER;
+				line += NEWLINE_MARKER;
 			keepLine(line);
 
 			if (i < size - 1)
@@ -116,12 +116,12 @@ abstract class AbstractDiffWriter implements DiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		String[] lines = DiffConstants.NEWLINE_PATTERN.split(text, -1);
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
 		for (int i = 0, size = lines.length; i < size; ++i)
 		{
 			String line = lines[i];
 			if (i < size - 1)
-				line += DiffConstants.NEWLINE_MARKER;
+				line += NEWLINE_MARKER;
 			if (line.length() > 0)
 				insertLine(line);
 			if (i < size - 1)
@@ -137,12 +137,12 @@ abstract class AbstractDiffWriter implements DiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		String[] lines = DiffConstants.NEWLINE_PATTERN.split(text, -1);
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
 		for (int i = 0, size = lines.length; i < size; ++i)
 		{
 			String line = lines[i];
 			if (i < size - 1)
-				line += DiffConstants.NEWLINE_MARKER;
+				line += NEWLINE_MARKER;
 			if (line.length() > 0)
 				deleteLine(line);
 			if (i < size - 1)

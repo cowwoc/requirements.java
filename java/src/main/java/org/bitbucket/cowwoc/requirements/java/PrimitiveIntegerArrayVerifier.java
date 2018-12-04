@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 
 /**
- * Verifies an int array.
+ * Verifies the requirements of an int array.
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveIntegerArrayVerifier extends

@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import java.util.function.Consumer;
 
 /**
- * Verifies a {@link String}.
+ * Verifies the requirements of a {@link String}.
  */
 public interface StringVerifier extends ObjectCapabilities<StringVerifier, String>
 {

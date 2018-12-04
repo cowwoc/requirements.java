@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.function.Consumer;
 
 /**
- * Verifies a {@link URL}.
+ * Verifies the requirements of a {@link URL}.
  */
 public interface UrlVerifier extends ObjectCapabilities<UrlVerifier, URL>
 {

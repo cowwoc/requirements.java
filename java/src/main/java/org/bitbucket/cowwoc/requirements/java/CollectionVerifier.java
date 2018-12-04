@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * Verifies a {@link Collection}.
+ * Verifies the requirements of a {@link Collection}.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection

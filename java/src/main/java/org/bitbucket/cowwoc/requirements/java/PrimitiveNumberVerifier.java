@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabilities;
 
 /**
- * Verifies a primitive number (e.g. {@link int}).
+ * Verifies the requirements of a primitive number (e.g. {@link int}).
  *
  * @param <T> the type of the value
  */

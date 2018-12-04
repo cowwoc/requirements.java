@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.BooleanCapabilities;
 
 /**
- * Verifies a primitive {@code boolean} value.
+ * Verifies the requirements of a primitive {@code boolean} value.
  */
 public interface PrimitiveBooleanVerifier extends BooleanCapabilities<PrimitiveBooleanVerifier>
 {

@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * A verifier's configuration.
+ * Configures a requirements verifier.
  * <p>
  * This class is immutable.
  *
@@ -279,12 +279,11 @@ public final class Configuration implements Configurable
 	public int hashCode()
 	{
 		int hash = 3;
-		hash = 23 * hash + this.context.hashCode();
-		hash = 23 * hash + this.exception.hashCode();
-		hash = 23 * hash + Boolean.hashCode(this.assertionsEnabled);
-		hash = 23 * hash + Boolean.hashCode(this.diffEnabled);
-		hash = 23 * hash + this.typeToStringConverter.hashCode();
-		return hash;
+		hash = 23 * hash + context.hashCode();
+		hash = 23 * hash + exception.hashCode();
+		hash = 23 * hash + Boolean.hashCode(assertionsEnabled);
+		hash = 23 * hash + Boolean.hashCode(diffEnabled);
+		return 23 * hash + typeToStringConverter.hashCode();
 	}
 
 	@Override
@@ -295,16 +294,14 @@ public final class Configuration implements Configurable
 		if (!(o instanceof Configuration))
 			return false;
 		Configuration other = (Configuration) o;
-		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
-			exception.equals(other.exception) && diffEnabled == other.diffEnabled &&
-			typeToStringConverter.equals(other.typeToStringConverter);
+		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) && exception.equals(other.exception) &&
+			diffEnabled == other.diffEnabled && typeToStringConverter.equals(other.typeToStringConverter);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Configuration[context=" + context + ", exception=" + exception +
-			", assertionsEnabled=" + assertionsEnabled + ", diffEnabled=" + diffEnabled +
-			", typeToStringConverter=" + typeToStringConverter + "]";
+		return "Configuration[context=" + context + ", exception=" + exception + ", assertionsEnabled=" + assertionsEnabled + ", " +
+			"diffEnabled=" + diffEnabled + ", typeToStringConverter=" + typeToStringConverter + "]";
 	}
 }

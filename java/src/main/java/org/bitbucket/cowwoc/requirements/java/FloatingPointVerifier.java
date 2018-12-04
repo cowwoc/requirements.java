@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabilities;
 
 /**
- * Verifies a floating-point number.
+ * Verifies the requirements of a floating-point number.
  *
  * @param <T> the type of the floating-point number
  */

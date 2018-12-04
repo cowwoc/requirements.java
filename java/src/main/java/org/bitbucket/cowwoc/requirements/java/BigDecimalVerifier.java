@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 /**
- * Verifies a {@link BigDecimal} value.
+ * Verifies the requirements of a {@link BigDecimal} value.
  */
 public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifier, BigDecimal>
 {

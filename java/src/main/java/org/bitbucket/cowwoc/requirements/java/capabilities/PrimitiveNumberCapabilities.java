@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 
 /**
- * Verifies a value that extends a primitive number (e.g. {@code int}) but the implementing verifier
+ * Verifies the requirements of a value that extends a primitive number (e.g. {@code int}) but the implementing verifier
  * is not guaranteed to be a {@link PrimitiveNumberVerifier}.
  *
  * @param <S> the type of verifier that methods should return

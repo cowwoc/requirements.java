@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 
 /**
- * Verifies a double array.
+ * Verifies the requirements of a double array.
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveDoubleArrayVerifier extends

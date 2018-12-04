@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilities;
 
 /**
- * Verifies a {@link Comparable}.
+ * Verifies the requirements of a {@link Comparable}.
  *
  * @param <T> the type of the value
  */

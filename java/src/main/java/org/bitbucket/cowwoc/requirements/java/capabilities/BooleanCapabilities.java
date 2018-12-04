@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
 
 /**
- * Verifies a boolean value but the implementing verifier is not guaranteed to be a
+ * Verifies the requirements of a boolean value but the implementing verifier is not guaranteed to be a
  * {@link BooleanVerifier}.
  *
  * @param <S> the type of verifier that methods should return

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 
 /**
- * Verifies a float array.
+ * Verifies the requirements of a float array.
  */
 @SuppressWarnings("MarkerInterface")
 public interface PrimitiveFloatArrayVerifier extends

@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
 import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveIntegerCapabilities;
 
 /**
- * Verifies a primitive integer number.
+ * Verifies the requirements of a primitive integer number.
  *
  * @param <T> the type of the integer number
  */

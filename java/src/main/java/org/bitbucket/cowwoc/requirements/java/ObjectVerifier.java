@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 
 /**
- * Verifies an {@link Object}.
+ * Verifies the requirements of an {@link Object}.
  *
  * @param <T> the type of the value
  */

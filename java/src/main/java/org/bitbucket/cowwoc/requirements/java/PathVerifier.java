@@ -11,7 +11,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
 /**
- * Verifies a {@link Path}.
+ * Verifies the requirements of a {@link Path}.
  */
 public interface PathVerifier extends ObjectCapabilities<PathVerifier, Path>
 {

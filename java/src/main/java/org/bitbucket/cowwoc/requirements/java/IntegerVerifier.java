@@ -7,9 +7,9 @@ package org.bitbucket.cowwoc.requirements.java;
 import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
 
 /**
- * Verifies a floating-point number.
+ * Verifies the requirements of an integer number.
  *
- * @param <T> the type of the floating-point number
+ * @param <T> the type of the integer number
  */
 @SuppressWarnings("MarkerInterface")
 public interface IntegerVerifier<T extends Number & Comparable<? super T>>

@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import java.util.function.Function;
 
 /**
- * A verifier whose behavior is configurable.
+ * Configures a requirements verifier.
  */
 public interface Configurable
 {

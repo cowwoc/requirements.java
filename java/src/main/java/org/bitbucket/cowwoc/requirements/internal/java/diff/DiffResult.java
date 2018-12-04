@@ -19,8 +19,6 @@ public final class DiffResult
 	private final String paddingMarker;
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual        the lines of the actual string
 	 * @param middle        the optional lines to display between "actual" and "expected"
 	 * @param expected      the lines of the expected string

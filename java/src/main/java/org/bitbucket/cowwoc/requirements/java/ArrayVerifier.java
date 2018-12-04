@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * Verifies an array.
+ * Verifies the requirements of an array.
  *
  * @param <E> the type of elements in the array
  */

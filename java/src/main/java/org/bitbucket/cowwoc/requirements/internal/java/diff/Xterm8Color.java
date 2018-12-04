@@ -4,6 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.internal.java.diff;
 
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.POSTFIX;
+import static org.bitbucket.cowwoc.requirements.internal.java.diff.DiffConstants.PREFIX;
+
 /**
  * An xterm terminal that supports an 8 color palette.
  */
@@ -16,8 +19,6 @@ public final class Xterm8Color extends AbstractXterm
 	private static final String GRAY_BACKGROUND = "47";
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null
@@ -30,18 +31,18 @@ public final class Xterm8Color extends AbstractXterm
 	@Override
 	public String getColorForPadding()
 	{
-		return DiffConstants.PREFIX + BLACK_FOREGROUND + ";" + GRAY_BACKGROUND + DiffConstants.POSTFIX;
+		return PREFIX + BLACK_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForInsert()
 	{
-		return DiffConstants.PREFIX + GRAY_FOREGROUND + ";" + GREEN_BACKGROUND + DiffConstants.POSTFIX;
+		return PREFIX + GRAY_FOREGROUND + ";" + GREEN_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForDelete()
 	{
-		return DiffConstants.PREFIX + GRAY_FOREGROUND + ";" + RED_BACKGROUND + DiffConstants.POSTFIX;
+		return PREFIX + GRAY_FOREGROUND + ";" + RED_BACKGROUND + POSTFIX;
 	}
 }

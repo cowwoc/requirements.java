@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
 
 /**
- * Verifies an integer value but the implementing verifier is not guaranteed to be a {@link IntegerVerifier}.
+ * Verifies the requirements of an integer value but the implementing verifier is not guaranteed to be a {@link IntegerVerifier}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

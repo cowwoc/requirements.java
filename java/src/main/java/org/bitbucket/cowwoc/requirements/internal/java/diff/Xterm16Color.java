@@ -23,8 +23,6 @@ public final class Xterm16Color extends AbstractXterm
 	private static final String GRAY_BACKGROUND = "47;100";
 
 	/**
-	 * Creates a new instance.
-	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
 	 * @throws NullPointerException if any of the arguments are null

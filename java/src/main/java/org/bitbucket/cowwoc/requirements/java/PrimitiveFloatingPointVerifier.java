@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabili
 import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabilities;
 
 /**
- * Verifies a primitive floating-point number.
+ * Verifies the requirements of a primitive floating-point number.
  *
  * @param <T> the type of the floating-point number
  */

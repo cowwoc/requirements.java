@@ -32,8 +32,6 @@ public final class MultimapVerifierImpl<K, V>
 	implements MultimapVerifier<K, V>
 {
 	/**
-	 * Creates new MultimapRequirementsImpl.
-	 *
 	 * @param scope  the application configuration
 	 * @param name   the name of the parameter
 	 * @param actual the actual value of the parameter
@@ -49,8 +47,7 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			config);
+		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY, config);
 	}
 
 	@Override
@@ -63,8 +60,7 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE,
-			config);
+		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE, config);
 	}
 
 	@Override
@@ -113,8 +109,7 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(), Pluralizer.ENTRY, config);
 	}
 
 	@Override
