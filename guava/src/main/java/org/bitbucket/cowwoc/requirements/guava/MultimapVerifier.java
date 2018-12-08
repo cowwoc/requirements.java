@@ -5,13 +5,14 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
+import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 
 /**
  * Verifies the requirements of a {@link Multimap}.
@@ -53,8 +54,7 @@ public interface MultimapVerifier<K, V>
 	 * @param consumer verifies the {@link Multimap#entries()}
 	 * @return this
 	 */
-	MultimapVerifier<K, V> entries(
-		Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer);
+	MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer);
 
 	/**
 	 * Ensures that the actual value is empty.

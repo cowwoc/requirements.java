@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.Optional;
@@ -20,7 +21,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Verifiers(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(null, actual);
 		}
 	}
 
@@ -30,7 +31,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Verifiers(scope).requireThat("", actual);
+			new Requirements(scope).requireThat("", actual);
 		}
 	}
 
@@ -40,7 +41,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Verifiers(scope).requireThat("actual", actual).isPresent();
+			new Requirements(scope).requireThat("actual", actual).isPresent();
 		}
 	}
 
@@ -50,7 +51,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Verifiers(scope).requireThat("actual", actual).isPresent();
+			new Requirements(scope).requireThat("actual", actual).isPresent();
 		}
 	}
 
@@ -60,7 +61,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Verifiers(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat("actual", actual).isEmpty();
 		}
 	}
 
@@ -70,7 +71,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Verifiers(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat("actual", actual).isEmpty();
 		}
 	}
 
@@ -80,7 +81,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Verifiers(scope).requireThat("actual", actual).contains(5);
+			new Requirements(scope).requireThat("actual", actual).contains(5);
 		}
 	}
 
@@ -90,7 +91,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Verifiers(scope).requireThat("actual", actual).contains(6);
+			new Requirements(scope).requireThat("actual", actual).contains(6);
 		}
 	}
 
@@ -100,7 +101,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Verifiers(scope).requireThat("actual", actual).contains(5);
+			new Requirements(scope).requireThat("actual", actual).contains(5);
 		}
 	}
 
@@ -110,7 +111,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Verifiers(scope).requireThat("actual", actual).contains(null);
+			new Requirements(scope).requireThat("actual", actual).contains(null);
 		}
 	}
 
@@ -120,7 +121,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Verifiers(scope).requireThat("actual", actual).contains(null);
+			new Requirements(scope).requireThat("actual", actual).contains(null);
 		}
 	}
 
@@ -130,7 +131,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Verifiers(scope).requireThat("actual", actual).contains(null, "expected");
+			new Requirements(scope).requireThat("actual", actual).contains(null, "expected");
 		}
 	}
 
@@ -141,7 +142,7 @@ public final class OptionalTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Optional<?> actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 }

@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
@@ -18,7 +19,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new Verifiers(scope).requireThat("actual", actual).isTrue();
+			new Requirements(scope).requireThat("actual", actual).isTrue();
 		}
 	}
 
@@ -28,7 +29,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new Verifiers(scope).requireThat("actual", actual).isFalse();
+			new Requirements(scope).requireThat("actual", actual).isFalse();
 		}
 	}
 
@@ -38,7 +39,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new Verifiers(scope).requireThat("actual", actual).isFalse();
+			new Requirements(scope).requireThat("actual", actual).isFalse();
 		}
 	}
 
@@ -49,7 +50,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new Verifiers(scope).requireThat("actual", actual).isNull();
+			new Requirements(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -60,7 +61,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new Verifiers(scope).requireThat("actual", actual).isNotNull();
+			new Requirements(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -70,7 +71,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(true);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(true);
 			assert (false) : "Expected verifier to throw an exception";
 		}
 		catch (IllegalArgumentException e)

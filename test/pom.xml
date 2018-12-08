@@ -17,13 +17,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<showDeprecation>true</showDeprecation>
 					<compilerArgs>
-						<arg>-Xlint</arg>
+						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
+						<arg>-Xlint:-requires-automatic</arg>
 					</compilerArgs>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -76,8 +74,12 @@
 				<executions>
 					<execution>
 						<goals>
+							<goal>generate-api</goal>
 							<goal>unpack</goal>
 						</goals>
+						<configuration>
+							<scope>test</scope>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -89,26 +91,26 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-guava</artifactId>
+			<artifactId>requirements-java</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-java</artifactId>
+			<artifactId>requirements-guava</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.14.2</version>
+			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

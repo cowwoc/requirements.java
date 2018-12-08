@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.java.capabilities;
 
+import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;
-import org.bitbucket.cowwoc.requirements.java.Requirements;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 
 import java.util.Collection;
@@ -163,8 +163,8 @@ public interface ObjectCapabilities<S, T>
 	 * modified.
 	 *
 	 * @return {@code Optional.empty()} if the actual value is not available (e.g. if
-	 *         {@link Requirements#assertThat(String, Object) assertThat()} is used when
-	 *         assertions are disabled, the verifier does not retain a reference to the actual value)
+	 * {@link JavaVerifier#assertThat(String, Object) assertThat()} is used when
+	 * assertions are disabled, the verifier does not retain a reference to the actual value)
 	 */
 	Optional<T> getActualIfPresent();
 
@@ -177,8 +177,7 @@ public interface ObjectCapabilities<S, T>
 	 *
 	 * @return the actual value
 	 * @throws NoSuchElementException if the verifier does not have access to the actual value (e.g.
-	 *                                if
-	 *                                {@link Requirements#assertThat(String, Object) assertThat()}
+	 *                                if {@link JavaVerifier#assertThat(String, Object) assertThat()}
 	 *                                is used when assertions are disabled, the verifier does not need
 	 *                                to retain a reference to the actual value)
 	 * @see #getActualIfPresent()

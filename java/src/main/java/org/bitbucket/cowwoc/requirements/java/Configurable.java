@@ -103,6 +103,11 @@ public interface Configurable
 	<T> Configurable withoutStringConverter(Class<T> type);
 
 	/**
+	 * @return the configuration associated with the verifier
+	 */
+	Configuration getConfiguration();
+
+	/**
 	 * @param configuration a new configuration
 	 * @return a verifier with the updated configuration
 	 * @throws NullPointerException if {@code configuration} is null

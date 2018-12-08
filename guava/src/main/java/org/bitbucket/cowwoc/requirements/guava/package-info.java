@@ -4,8 +4,7 @@
  */
 /**
  * Classes that enable developers to enforce method contracts.
- *
- * Interfaces in this package may be implemented but may not be extended (because methods contain
- * a fixed return type).
+ * <p>
+ * Interfaces in this package may be implemented but may not be extended (because methods contain a fixed return type).
  */
 package org.bitbucket.cowwoc.requirements.guava;

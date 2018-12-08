@@ -4,9 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.annotations.Beta;
-import org.bitbucket.cowwoc.requirements.internal.java.util.Lists;
-import org.bitbucket.cowwoc.requirements.internal.java.util.Maps;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Lists;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
 
 import java.math.BigDecimal;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -40,6 +41,21 @@ public final class Configuration implements Configurable
 		boolean assertionsEnabled = false;
 		assert (assertionsEnabled = true);
 		CLASS_ASSERTIONS_ENABLED = assertionsEnabled;
+
+		SharedSecrets.INSTANCE.secretConfiguration = new SecretConfiguration()
+		{
+			@Override
+			public List<Entry<String, Object>> getContext(Configuration configuration)
+			{
+				return configuration.getContext();
+			}
+
+			@Override
+			public String toString(Configuration configuration, Object o)
+			{
+				return configuration.toString(o);
+			}
+		};
 	}
 
 	private final List<Entry<String, Object>> context;
@@ -105,10 +121,6 @@ public final class Configuration implements Configurable
 		this.typeToStringConverter = Maps.unmodifiable(typeToStringConverter);
 	}
 
-	/**
-	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
-	 *         shouldn't do anything
-	 */
 	@Override
 	public boolean assertionsAreEnabled()
 	{
@@ -173,8 +185,7 @@ public final class Configuration implements Configurable
 	 * @see #addContext(String, Object)
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	@Beta
-	public List<Entry<String, Object>> getContext()
+	private List<Entry<String, Object>> getContext()
 	{
 		return context;
 	}
@@ -220,8 +231,7 @@ public final class Configuration implements Configurable
 	 * @return the String representation of the object
 	 * @see #withStringConverter(Class, Function)
 	 */
-	@Beta
-	public String toString(Object o)
+	private String toString(Object o)
 	{
 		if (o == null)
 			return "null";
@@ -276,6 +286,11 @@ public final class Configuration implements Configurable
 	}
 
 	@Override
+	public Configuration getConfiguration()
+	{
+		return this;
+	}
+
 	public int hashCode()
 	{
 		int hash = 3;

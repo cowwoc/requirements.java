@@ -5,8 +5,9 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import com.google.common.collect.Sets;
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.bitbucket.cowwoc.requirements.java.Requirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class ConfigurationTest
@@ -32,7 +33,7 @@ public final class ConfigurationTest
 
 			Set<Integer> notEqual = Collections.emptySet();
 
-			new Verifiers(scope).withStringConverter(LinkedHashSet.class, s ->
+			new Requirements(scope).withStringConverter(LinkedHashSet.class, s ->
 			{
 				@SuppressWarnings("unchecked")
 				List<Integer> result = new ArrayList<>(s);

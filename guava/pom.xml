@@ -17,19 +17,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<showDeprecation>true</showDeprecation>
 					<compilerArgs>
-						<arg>-Xlint</arg>
+						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
+						<arg>-Xlint:-requires-automatic</arg>
 					</compilerArgs>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
 				<configuration>
 					<links>
 						<link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
@@ -45,44 +42,6 @@
 					<noqualifier>org.bitbucket.cowwoc.requirements.java.*</noqualifier>
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>com.github.siom79.japicmp</groupId>
-				<artifactId>japicmp-maven-plugin</artifactId>
-				<version>0.9.3</version>
-				<configuration>
-					<oldVersion>
-						<dependency>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.7</version>
-							<type>jar</type>
-						</dependency>
-					</oldVersion>
-					<parameter>
-						<breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
-						<breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
-						<onlyModified>true</onlyModified>
-						<skipXmlReport>true</skipXmlReport>
-						<skipDiffReport>true</skipDiffReport>
-						<includes>
-							<include>org.bitbucket.cowwoc.requirements.guava</include>
-						</includes>
-						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.guava.impl</exclude>
-						</excludes>
-					</parameter>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>cmp</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 	<dependencies>

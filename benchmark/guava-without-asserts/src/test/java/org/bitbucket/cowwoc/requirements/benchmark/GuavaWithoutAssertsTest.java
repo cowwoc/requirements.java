@@ -6,18 +6,12 @@ package org.bitbucket.cowwoc.requirements.benchmark;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Requirements;
-import org.bitbucket.cowwoc.requirements.java.Verifiers;
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.DefaultRequirements;
+import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
+import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.openjdk.jmh.annotations.Benchmark;
-import static org.openjdk.jmh.annotations.Level.Iteration;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
@@ -29,8 +23,15 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
+import static org.openjdk.jmh.annotations.Level.Iteration;
+
 // Fields may not be final: http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
-@SuppressWarnings("FieldMayBeFinal")
 @State(Scope.Benchmark)
 public class GuavaWithoutAssertsTest
 {
@@ -63,7 +64,7 @@ public class GuavaWithoutAssertsTest
 	@Setup(Iteration)
 	public void setupFork()
 	{
-		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
+		DefaultRequirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
 	}
 
 	@Benchmark
@@ -75,7 +76,7 @@ public class GuavaWithoutAssertsTest
 	@Benchmark
 	public MultimapVerifier<?, ?> verifiersAssertsDisabled()
 	{
-		return new Verifiers().withAssertionsDisabled().assertThat(name, value).isNotNull().isNotEmpty();
+		return new Requirements().withAssertionsDisabled().assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
@@ -83,7 +84,7 @@ public class GuavaWithoutAssertsTest
 	@Benchmark
 	public MultimapVerifier<?, ?> verifiersAssertsEnabled()
 	{
-		return new Verifiers().withAssertionsEnabled().assertThat(name, value).isNotNull().isNotEmpty();
+		return new Requirements().withAssertionsEnabled().assertThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can
@@ -91,7 +92,7 @@ public class GuavaWithoutAssertsTest
 	@Benchmark
 	public MultimapVerifier<?, ?> verifiersRequireThat()
 	{
-		return new Verifiers().requireThat(name, value).isNotNull().isNotEmpty();
+		return new Requirements().requireThat(name, value).isNotNull().isNotEmpty();
 	}
 
 	@Benchmark
@@ -103,13 +104,13 @@ public class GuavaWithoutAssertsTest
 	@Benchmark
 	public CollectionVerifier<?, ?> verifiersRequireThatDoesNotContainDuplicates()
 	{
-		return new Verifiers().requireThat(name, list).doesNotContainDuplicates();
+		return new Requirements().requireThat(name, list).doesNotContainDuplicates();
 	}
 
 	@Benchmark
 	public CollectionVerifier<?, ?> verifiersAssertsDisabledDoesNotContainDuplicates()
 	{
-		return new Verifiers().withAssertionsDisabled().assertThat(name, list).
+		return new Requirements().withAssertionsDisabled().assertThat(name, list).
 			doesNotContainDuplicates();
 	}
 
@@ -131,7 +132,7 @@ public class GuavaWithoutAssertsTest
 	{
 		try
 		{
-			new Verifiers().requireThat(name, nullMultimap).isNotNull();
+			new Requirements().requireThat(name, nullMultimap).isNotNull();
 		}
 		catch (NullPointerException e)
 		{

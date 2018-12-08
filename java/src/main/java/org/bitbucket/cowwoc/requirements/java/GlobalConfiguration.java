@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
+import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
-import org.bitbucket.cowwoc.requirements.internal.java.scope.JvmScope;
 
 import java.util.Set;
 

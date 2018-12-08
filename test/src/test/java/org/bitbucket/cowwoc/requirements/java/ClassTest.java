@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -20,7 +21,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Object> actual = Object.class;
-			new Verifiers(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(null, actual);
 		}
 	}
 
@@ -30,7 +31,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Object> actual = Object.class;
-			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(Random.class);
+			new Requirements(scope).requireThat("actual", actual).isSupertypeOf(Random.class);
 		}
 	}
 
@@ -40,7 +41,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = Random.class;
-			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(Object.class);
+			new Requirements(scope).requireThat("actual", actual).isSupertypeOf(Object.class);
 		}
 	}
 
@@ -50,7 +51,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = Random.class;
-			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(null);
+			new Requirements(scope).requireThat("actual", actual).isSupertypeOf(null);
 		}
 	}
 
@@ -60,7 +61,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Random> actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isSupertypeOf(Random.class);
+			new Requirements(scope).requireThat("actual", actual).isSupertypeOf(Random.class);
 		}
 	}
 
@@ -71,7 +72,7 @@ public final class ClassTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Class<?> actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 }

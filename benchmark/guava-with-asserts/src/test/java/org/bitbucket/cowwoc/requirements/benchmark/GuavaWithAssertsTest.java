@@ -7,11 +7,14 @@ package org.bitbucket.cowwoc.requirements.benchmark;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.concurrent.TimeUnit;
-import org.bitbucket.cowwoc.requirements.java.Requirements;
+
+import org.bitbucket.cowwoc.requirements.DefaultRequirements;
+import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
 import org.openjdk.jmh.annotations.Benchmark;
+
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.assertThat;
 import static org.openjdk.jmh.annotations.Level.Iteration;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -24,7 +27,6 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
 // Fields may not be final: http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
-@SuppressWarnings("FieldMayBeFinal")
 @State(Scope.Benchmark)
 public class GuavaWithAssertsTest
 {
@@ -53,7 +55,7 @@ public class GuavaWithAssertsTest
 	@Setup(Iteration)
 	public void setupFork()
 	{
-		Requirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
+		DefaultRequirements.globalConfiguration().withTerminalEncoding(TerminalEncoding.NONE);
 	}
 
 	@Benchmark

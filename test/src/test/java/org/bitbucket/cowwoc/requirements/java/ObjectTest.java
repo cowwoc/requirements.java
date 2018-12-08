@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Verifiers(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(null, actual);
 		}
 	}
 
@@ -33,7 +34,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Verifiers(scope).requireThat("", actual);
+			new Requirements(scope).requireThat("", actual);
 		}
 	}
 
@@ -43,7 +44,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(actual);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(actual);
 		}
 	}
 
@@ -53,7 +54,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo("expected");
+			new Requirements(scope).requireThat("actual", actual).isEqualTo("expected");
 		}
 	}
 
@@ -63,7 +64,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "null";
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(null);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(null);
 		}
 	}
 
@@ -74,7 +75,7 @@ public final class ObjectTest
 		{
 			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
 			SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 	}
 
@@ -87,7 +88,7 @@ public final class ObjectTest
 				new SameToStringAndHashCodeDifferentIdentity();
 			SameToStringAndHashCodeDifferentIdentity expected =
 				new SameToStringAndHashCodeDifferentIdentity();
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
 		}
 	}
 
@@ -97,7 +98,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(actual);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(actual);
 		}
 	}
 
@@ -107,7 +108,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo("expected");
+			new Requirements(scope).requireThat("actual", actual).isEqualTo("expected");
 		}
 	}
 
@@ -117,7 +118,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "actual";
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo(null);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo(null);
 		}
 	}
 
@@ -127,7 +128,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Verifiers(scope).requireThat("actual", actual).isNotEqualTo(new Object());
+			new Requirements(scope).requireThat("actual", actual).isNotEqualTo(new Object());
 		}
 	}
 
@@ -137,7 +138,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Verifiers(scope).requireThat("actual", actual).isNotEqualTo(actual);
+			new Requirements(scope).requireThat("actual", actual).isNotEqualTo(actual);
 		}
 	}
 
@@ -147,7 +148,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
+			new Requirements(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
 		}
 	}
 
@@ -157,7 +158,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
+			new Requirements(scope).requireThat("actual", actual).isSameObjectAs("actual", actual);
 		}
 	}
 
@@ -169,7 +170,7 @@ public final class ObjectTest
 		{
 			Integer actual = new Integer(1);
 			Integer expected = new Integer(1);
-			new Verifiers(scope).requireThat("actual", actual).isSameObjectAs("expected", expected);
+			new Requirements(scope).requireThat("actual", actual).isSameObjectAs("expected", expected);
 		}
 	}
 
@@ -181,7 +182,7 @@ public final class ObjectTest
 		{
 			Integer actual = new Integer(1);
 			Integer expected = new Integer(1);
-			new Verifiers(scope).requireThat("actual", actual).isNotSameObjectAs("expected", expected);
+			new Requirements(scope).requireThat("actual", actual).isNotSameObjectAs("expected", expected);
 		}
 	}
 
@@ -191,7 +192,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Verifiers(scope).requireThat("actual", actual).isNotSameObjectAs("actual", actual);
+			new Requirements(scope).requireThat("actual", actual).isNotSameObjectAs("actual", actual);
 		}
 	}
 
@@ -206,7 +207,7 @@ public final class ObjectTest
 			@SuppressWarnings("RedundantStringConstructorCall")
 			String equivalent = new String(actual);
 
-			new Verifiers(scope).requireThat("actual", actual).isIn(Arrays.asList("first",
+			new Requirements(scope).requireThat("actual", actual).isIn(Arrays.asList("first",
 				equivalent, "third"));
 		}
 	}
@@ -217,7 +218,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Verifiers(scope).requireThat("actual", actual).isIn(Arrays.asList("first",
+			new Requirements(scope).requireThat("actual", actual).isIn(Arrays.asList("first",
 				"second", "third"));
 		}
 	}
@@ -228,7 +229,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Verifiers(scope).requireThat("actual", actual).isInstanceOf(Random.class).
+			new Requirements(scope).requireThat("actual", actual).isInstanceOf(Random.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -239,7 +240,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isInstanceOf(Random.class);
+			new Requirements(scope).requireThat("actual", actual).isInstanceOf(Random.class);
 		}
 	}
 
@@ -249,7 +250,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Verifiers(scope).requireThat("actual", actual).isInstanceOf(null);
+			new Requirements(scope).requireThat("actual", actual).isInstanceOf(null);
 		}
 	}
 
@@ -259,7 +260,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Verifiers(scope).requireThat("actual", actual).isInstanceOf(String.class);
+			new Requirements(scope).requireThat("actual", actual).isInstanceOf(String.class);
 		}
 	}
 
@@ -269,7 +270,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(Integer.class).
+			new Requirements(scope).requireThat("actual", actual).isNotInstanceOf(Integer.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -280,7 +281,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(Random.class);
+			new Requirements(scope).requireThat("actual", actual).isNotInstanceOf(Random.class);
 		}
 	}
 
@@ -290,7 +291,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(null);
+			new Requirements(scope).requireThat("actual", actual).isNotInstanceOf(null);
 		}
 	}
 
@@ -300,7 +301,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Verifiers(scope).requireThat("actual", actual).isNotInstanceOf(Random.class);
+			new Requirements(scope).requireThat("actual", actual).isNotInstanceOf(Random.class);
 		}
 	}
 
@@ -310,7 +311,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isNull();
+			new Requirements(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -320,7 +321,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Verifiers(scope).requireThat("actual", actual).isNull();
+			new Requirements(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -330,7 +331,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Verifiers(scope).requireThat("actual", actual).isNotNull();
+			new Requirements(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -340,7 +341,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new Verifiers(scope).requireThat("actual", actual).isNotNull();
+			new Requirements(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -350,7 +351,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new Verifiers(scope).withException(IllegalStateException.class).
+			new Requirements(scope).withException(IllegalStateException.class).
 				requireThat("actual", actual).isNotNull();
 		}
 	}
@@ -366,7 +367,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 5;
-			new Verifiers(scope).withException(IllegalStateException.class).
+			new Requirements(scope).withException(IllegalStateException.class).
 				requireThat("actual", actual).isNotNull();
 		}
 	}
@@ -382,7 +383,7 @@ public final class ObjectTest
 			Object actual = new HashSet<>(Arrays.asList(1));
 			Object expected = new LinkedHashSet<>(Arrays.asList(2));
 
-			new Verifiers(scope).requireThat("actual", actual).isEqualTo("expected", expected);
+			new Requirements(scope).requireThat("actual", actual).isEqualTo("expected", expected);
 		}
 	}
 
@@ -393,7 +394,7 @@ public final class ObjectTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Object actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -404,7 +405,7 @@ public final class ObjectTest
 		{
 			// Ensure that verification occurs if we start with assertions disabled, then enable them
 			Object actual = null;
-			new Verifiers(scope).withAssertionsDisabled().withAssertionsEnabled().
+			new Requirements(scope).withAssertionsDisabled().withAssertionsEnabled().
 				assertThat("actual", actual).isNotNull();
 		}
 	}
@@ -416,7 +417,7 @@ public final class ObjectTest
 		{
 			// Ensure that no exception gets thrown if we start with assertions enabled, then disable them
 			Object actual = null;
-			new Verifiers(scope).withAssertionsEnabled().withAssertionsDisabled().
+			new Requirements(scope).withAssertionsEnabled().withAssertionsDisabled().
 				assertThat("actual", actual).isNotNull();
 		}
 	}

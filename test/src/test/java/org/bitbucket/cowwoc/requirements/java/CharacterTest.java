@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
@@ -18,7 +19,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Verifiers(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(null, actual);
 		}
 	}
 
@@ -28,7 +29,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Verifiers(scope).requireThat("", actual);
+			new Requirements(scope).requireThat("", actual);
 		}
 	}
 
@@ -40,7 +41,7 @@ public final class CharacterTest
 			char actual = '0';
 			char first = '0';
 			char last = '2';
-			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+			new Requirements(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -52,7 +53,7 @@ public final class CharacterTest
 			char actual = '1';
 			char first = '0';
 			char last = '2';
-			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+			new Requirements(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -64,7 +65,7 @@ public final class CharacterTest
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+			new Requirements(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -76,7 +77,7 @@ public final class CharacterTest
 			char actual = '1';
 			char first = '3';
 			char last = '4';
-			new Verifiers(scope).requireThat("actual", actual).isBetween(first, last);
+			new Requirements(scope).requireThat("actual", actual).isBetween(first, last);
 		}
 	}
 
@@ -88,7 +89,7 @@ public final class CharacterTest
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new Verifiers(scope).requireThat("actual", actual).isBetweenClosed(first, last);
+			new Requirements(scope).requireThat("actual", actual).isBetweenClosed(first, last);
 		}
 	}
 
@@ -99,7 +100,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Verifiers(scope).requireThat("actual", actual).isNull();
+			new Requirements(scope).requireThat("actual", actual).isNull();
 		}
 	}
 
@@ -110,7 +111,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Verifiers(scope).requireThat("actual", actual).isNotNull();
+			new Requirements(scope).requireThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -121,7 +122,7 @@ public final class CharacterTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Character actual = null;
-			new Verifiers(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
 		}
 	}
 
@@ -131,7 +132,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Verifiers(scope).withAssertionsEnabled().requireThat("actual", actual).
+			new Requirements(scope).withAssertionsEnabled().requireThat("actual", actual).
 				isGreaterThan(actual);
 		}
 	}

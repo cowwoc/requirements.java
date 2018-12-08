@@ -4,8 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.net.InetAddress;
@@ -21,7 +22,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = InetAddress.getByName("1.2.3.4");
-			new Verifiers(scope).requireThat("actual", actual).isIpV4();
+			new Requirements(scope).requireThat("actual", actual).isIpV4();
 		}
 	}
 
@@ -31,7 +32,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = InetAddress.getByName("2001:db8:a0b:12f0::1");
-			new Verifiers(scope).requireThat("actual", actual).isIpV4();
+			new Requirements(scope).requireThat("actual", actual).isIpV4();
 		}
 	}
 
@@ -41,7 +42,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = InetAddress.getByName("2001:db8:a0b:12f0::1");
-			new Verifiers(scope).requireThat("actual", actual).isIpV6();
+			new Requirements(scope).requireThat("actual", actual).isIpV6();
 		}
 	}
 
@@ -51,7 +52,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = InetAddress.getByName("1.2.3.4");
-			new Verifiers(scope).requireThat("actual", actual).isIpV6();
+			new Requirements(scope).requireThat("actual", actual).isIpV6();
 		}
 	}
 
@@ -61,7 +62,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1.2.3.4";
-			new Verifiers(scope).requireThat("actual", actual).asInetAddress();
+			new Requirements(scope).requireThat("actual", actual).asInetAddress();
 		}
 	}
 
@@ -71,7 +72,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1";
-			new Verifiers(scope).requireThat("actual", actual).asInetAddress();
+			new Requirements(scope).requireThat("actual", actual).asInetAddress();
 		}
 	}
 
@@ -81,7 +82,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1.256.3.4";
-			new Verifiers(scope).requireThat("actual", actual).asInetAddress();
+			new Requirements(scope).requireThat("actual", actual).asInetAddress();
 		}
 	}
 
@@ -91,7 +92,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
-			new Verifiers(scope).requireThat("actual", actual).asInetAddress();
+			new Requirements(scope).requireThat("actual", actual).asInetAddress();
 		}
 	}
 
@@ -101,7 +102,7 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1.2.3.4";
-			InetAddress actualAsInetAddress = new Verifiers(scope).
+			InetAddress actualAsInetAddress = new Requirements(scope).
 				requireThat("actual", actual).asInetAddress().getActual();
 			assert (actualAsInetAddress.toString().equals("/" + actual)) :
 				"actualAsInetAddress: " + actualAsInetAddress + ", actual: /" + actual;

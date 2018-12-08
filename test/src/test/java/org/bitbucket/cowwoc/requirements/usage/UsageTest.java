@@ -8,9 +8,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.internal.java.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.Verifiers;
-import org.bitbucket.cowwoc.requirements.java.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -18,9 +18,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.assertThat;
-import static org.bitbucket.cowwoc.requirements.guava.Requirements.requireThat;
-import static org.bitbucket.cowwoc.requirements.java.Requirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.assertThat;
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class UsageTest
@@ -52,7 +51,7 @@ public final class UsageTest
 			Duration duration = Duration.ofDays(1);
 			Set<Duration> bucket = Collections.emptySet();
 
-			Verifiers verifier = new Verifiers(scope);
+			Requirements verifier = new Requirements(scope);
 			verifier.requireThat("duration", duration).isGreaterThan(Duration.ofDays(0));
 			try
 			{

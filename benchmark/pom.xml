@@ -14,13 +14,13 @@
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-core</artifactId>
-			<version>1.21</version>
+			<version>${jmh.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-generator-annprocess</artifactId>
-			<version>1.21</version>
+			<version>${jmh.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -31,12 +31,12 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.14.3</version>
+			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -55,9 +55,25 @@
 					<skipTests>${skipTests}</skipTests>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>requirements-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-api</goal>
+						</goals>
+						<configuration>
+							<scope>test</scope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<properties>
 		<skipTests>true</skipTests>
+		<jmh.version>1.21</jmh.version>
 	</properties>
 </project>

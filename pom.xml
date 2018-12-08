@@ -131,7 +131,7 @@
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>3.6.0</version>
+									<version>${maven.version}</version>
 								</requireMavenVersion>
 							</rules>
 						</configuration>
@@ -159,16 +159,27 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+					<compilerArgs>
+						<arg>-Xdiags:verbose</arg>
+						<arg>-Werror</arg>
+					</compilerArgs>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.version>3.6.0</maven.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<guava.version>27.0.1-jre</guava.version>
+		<slf4j.version>1.8.0-beta2</slf4j.version>
+		<logback.version>1.3.0-alpha4</logback.version>
+		<testng.version>6.14.3</testng.version>
 	</properties>
 
 	<profiles>
@@ -450,8 +461,8 @@
 				</property>
 			</activation>
 			<modules>
-				<module>benchmark</module>
 				<module>test</module>
+				<module>benchmark</module>
 			</modules>
 		</profile>
 		<profile>
