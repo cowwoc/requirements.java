@@ -11,10 +11,8 @@ import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm16Color;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm256Color;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm8Color;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
 
 import java.util.Comparator;
-import java.util.Set;
 
 /**
  * The ANSI escape codes supported by the terminal.
@@ -89,20 +87,6 @@ public enum TerminalEncoding
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	abstract DiffWriter diff(String actual, String expected);
-
-	/**
-	 * @return the detected encoding
-	 * @deprecated replaced by {@code Terminal.getSupportedTypes().iterator().next()}
-	 */
-	@Deprecated
-	public static TerminalEncoding detect()
-	{
-		Set<TerminalEncoding> supportedTypes = DefaultJvmScope.INSTANCE.getTerminal().
-			getSupportedTypes();
-		if (supportedTypes.isEmpty())
-			throw new IllegalArgumentException("Terminal.getSupportedTypes() may not be empty");
-		return supportedTypes.iterator().next();
-	}
 
 	/**
 	 * @return a comparator that sorts encodings based on their ranking, from most-desirable to

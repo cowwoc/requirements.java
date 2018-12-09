@@ -4,9 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.terminal;
 
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -30,18 +27,5 @@ public final class TerminalEncodingTest
 		availableEncodings = new ArrayList<>(Arrays.asList(NONE, XTERM_16COLOR));
 		Collections.sort(availableEncodings, TerminalEncoding.sortByDecreasingRank());
 		requireThat("availableEncoding.get(0)", availableEncodings.get(0)).isEqualTo(XTERM_16COLOR);
-	}
-
-	@Test
-	public void detect()
-	{
-		@SuppressWarnings("deprecation")
-		TerminalEncoding expected = TerminalEncoding.detect();
-		try (JvmScope jvm = DefaultJvmScope.INSTANCE)
-		{
-			Terminal terminal = jvm.getTerminal();
-			TerminalEncoding actual = terminal.getSupportedTypes().iterator().next();
-			requireThat("actual", actual).isEqualTo("expected", expected);
-		}
 	}
 }

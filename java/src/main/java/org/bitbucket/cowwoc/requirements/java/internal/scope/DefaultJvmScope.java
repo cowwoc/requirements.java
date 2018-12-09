@@ -82,9 +82,12 @@ public final class DefaultJvmScope implements JvmScope
 		catch (UnsatisfiedLinkError e)
 		{
 			nativeLibraryLoaded = false;
-			terminalLog.warn("Failed to load \"requirements\" native library. Please see " +
+			terminalLog.debug("Failed to load \"requirements\" native library. Please see " +
 				"https://bitbucket.org/cowwoc/requirements/wiki/Deploying%20native%20libraries for more " +
 				"information.\n" +
+				"\n" +
+				"Relevant System Properties\n" +
+				"--------------------------\n" +
 				"java.library.path=" + System.getProperty("java.library.path") + "\n" +
 				"user.dir=" + System.getProperty("user.dir"), e);
 		}
