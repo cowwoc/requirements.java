@@ -10,10 +10,8 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code BooleanVerifier}.
- *
- * @param <T> the type of objects that the value may be compared to
  */
-public final class BooleanVerifierImpl<T extends Comparable<? super T>>
+public final class BooleanVerifierImpl
 	extends BooleanCapabilitiesImpl<BooleanVerifier>
 	implements BooleanVerifier
 {
@@ -22,8 +20,7 @@ public final class BooleanVerifierImpl<T extends Comparable<? super T>>
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected BooleanVerifierImpl(ApplicationScope scope, String name, Boolean actual, Configuration config)
 	{

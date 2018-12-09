@@ -27,8 +27,7 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected PathVerifierImpl(ApplicationScope scope, String name, Path actual, Configuration config)
 	{
@@ -41,7 +40,8 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		if (Files.exists(actual))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath())).
+			String.format("%s refers to a non-existent path", name)).
+			addContext("Actual", actual.toAbsolutePath()).
 			build();
 	}
 
@@ -56,7 +56,8 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		catch (NoSuchFileException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath()), e).
+				String.format("%s refers to a non-existent path", name), e).
+				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
 		if (!attrs.isRegularFile())
@@ -80,7 +81,8 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		catch (NoSuchFileException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path: %s", name, actual.toAbsolutePath()), e).
+				String.format("%s refers to a non-existent path", name), e).
+				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
 		if (!attrs.isDirectory())

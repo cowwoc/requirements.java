@@ -10,6 +10,8 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.math.BigDecimal;
@@ -22,13 +24,14 @@ public final class BigDecimalVerifierImpl
 	extends NumberCapabilitiesImpl<BigDecimalVerifier, BigDecimal>
 	implements BigDecimalVerifier
 {
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
+
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected BigDecimalVerifierImpl(ApplicationScope scope, String name, BigDecimal actual, Configuration config)
 	{
@@ -134,8 +137,9 @@ public final class BigDecimalVerifierImpl
 		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
 		if (isMultipleOf(actual, divisor))
 			return this;
+		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a multiple of %s.", name, divisor)).
+			String.format("%s must be a multiple of %s.", name, divisorAsString)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -161,8 +165,9 @@ public final class BigDecimalVerifierImpl
 		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
 		if (!isMultipleOf(actual, divisor))
 			return this;
+		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a multiple of %s.", name, divisor)).
+			String.format("%s may not be a multiple of %s.", name, divisorAsString)).
 			addContext("Actual", actual).
 			build();
 	}

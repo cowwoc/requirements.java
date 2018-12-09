@@ -4,13 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.impl;
 
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Objects;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Objects;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.function.Consumer;
  */
 public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities<S, T>
 {
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	protected final ApplicationScope scope;
 	protected final String name;
 	protected final T actual;
@@ -36,8 +38,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected ObjectCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
@@ -99,7 +100,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (!Objects.equals(actual, other))
 			return getThis();
 
-		String value = SharedSecrets.INSTANCE.secretConfiguration.toString(config, other);
+		String value = secretConfiguration.toString(config, other);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be equal to %s", name, value)).
 			build();
@@ -242,7 +243,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public StringVerifier asString()
 	{
-		String value = SharedSecrets.INSTANCE.secretConfiguration.toString(config, actual);
+		String value = secretConfiguration.toString(config, actual);
 		return new StringVerifierImpl(scope, name, value, config);
 	}
 

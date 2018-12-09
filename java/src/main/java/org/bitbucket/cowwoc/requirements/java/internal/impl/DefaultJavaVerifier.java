@@ -392,7 +392,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	public BooleanVerifier requireThat(String name, Boolean actual)
 	{
 		verifyName(name);
-		return new BooleanVerifierImpl<>(scope, name, actual, config);
+		return new BooleanVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override

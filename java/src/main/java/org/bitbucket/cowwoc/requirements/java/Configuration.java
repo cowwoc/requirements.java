@@ -10,6 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.Lists;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,7 +92,10 @@ public final class Configuration implements Configurable
 		typeToStringConverter.put(float[].class, o -> Arrays.toString((float[]) o));
 		typeToStringConverter.put(double[].class, o -> Arrays.toString((double[]) o));
 		typeToStringConverter.put(Object[].class, o -> Arrays.toString((Object[]) o));
+		typeToStringConverter.put(Integer.class, o -> String.format("%,d", o));
+		typeToStringConverter.put(Long.class, o -> String.format("%,d", o));
 		typeToStringConverter.put(BigDecimal.class, o -> ((BigDecimal) o).toPlainString());
+		typeToStringConverter.put(Path.class, o -> ((Path) o).toAbsolutePath().toString());
 	}
 
 	/**
@@ -163,8 +167,7 @@ public final class Configuration implements Configurable
 		Optional<Class<? extends RuntimeException>> newException = Optional.of(exception);
 		if (this.exception.equals(newException))
 			return this;
-		return new Configuration(context, newException, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
+		return new Configuration(context, newException, assertionsEnabled, diffEnabled, typeToStringConverter);
 	}
 
 	@Override
@@ -173,8 +176,7 @@ public final class Configuration implements Configurable
 		Optional<Class<? extends RuntimeException>> newException = Optional.empty();
 		if (this.exception.equals(newException))
 			return this;
-		return new Configuration(context, newException, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
+		return new Configuration(context, newException, assertionsEnabled, diffEnabled, typeToStringConverter);
 	}
 
 	/**
@@ -198,8 +200,7 @@ public final class Configuration implements Configurable
 		List<Entry<String, Object>> newContext = new ArrayList<>(context.size() + 1);
 		newContext.addAll(context);
 		newContext.add(new SimpleImmutableEntry<>(name, value));
-		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
+		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled, typeToStringConverter);
 	}
 
 	/**
@@ -256,8 +257,7 @@ public final class Configuration implements Configurable
 		Function<?, String> existingConverter = typeToStringConverter.get(type);
 		if (converter.equals(existingConverter))
 			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
-			new HashMap<>(typeToStringConverter);
+		Map<Class<?>, Function<Object, String>> newTypeToStringConverter = new HashMap<>(typeToStringConverter);
 		@SuppressWarnings("unchecked")
 		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
 		newTypeToStringConverter.put(type, unsafeConverter);
@@ -271,8 +271,7 @@ public final class Configuration implements Configurable
 			throw new NullPointerException("type may not be null");
 		if (!typeToStringConverter.containsKey(type))
 			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
-			new HashMap<>(typeToStringConverter);
+		Map<Class<?>, Function<Object, String>> newTypeToStringConverter = new HashMap<>(typeToStringConverter);
 		newTypeToStringConverter.remove(type);
 		return new Configuration(context, exception, assertionsEnabled, false, newTypeToStringConverter);
 	}

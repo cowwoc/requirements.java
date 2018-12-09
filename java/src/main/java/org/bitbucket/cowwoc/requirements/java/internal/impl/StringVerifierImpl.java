@@ -32,8 +32,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected StringVerifierImpl(ApplicationScope scope, String name, String actual, Configuration config)
 	{
@@ -86,6 +85,12 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	public InetAddressVerifier asInetAddress()
 	{
 		// IPv4 must start with a digit. IPv6 must start with a colon.
+		if (actual.isEmpty())
+		{
+			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+				String.format("%s may not be empty", name)).
+				build();
+		}
 		char firstCharacter = actual.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
@@ -233,8 +238,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length()",
-			actual.length(), Pluralizer.CHARACTER, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length()", actual.length(), Pluralizer.CHARACTER, config);
 	}
 
 	@Override

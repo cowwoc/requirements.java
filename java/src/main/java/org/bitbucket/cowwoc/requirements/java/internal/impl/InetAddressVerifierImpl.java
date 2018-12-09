@@ -58,8 +58,8 @@ public final class InetAddressVerifierImpl
 	@Override
 	public StringVerifier asString()
 	{
-		// InetAddress.toString() returns hostname/ip-address, but this cannot be fed back into
-		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which can.
+		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into InetAddress.getByName(String). Instead, we
+		// use InetAddress.getHostName() which returns the desired format.
 		String hostName = actual.getHostName();
 		return new StringVerifierImpl(scope, hostName, name, config);
 	}

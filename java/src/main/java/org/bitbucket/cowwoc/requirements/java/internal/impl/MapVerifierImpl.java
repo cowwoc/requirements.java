@@ -33,8 +33,7 @@ public final class MapVerifierImpl<K, V>
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected MapVerifierImpl(ApplicationScope scope, String name, Map<K, V> actual, Configuration config)
 	{
@@ -44,8 +43,7 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			config);
+		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY, config);
 	}
 
 	@Override
@@ -58,8 +56,7 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(),
-			Pluralizer.VALUE, config);
+		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE, config);
 	}
 
 	@Override
@@ -72,8 +69,7 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".entrySet()", actual.entrySet(),
-			Pluralizer.ENTRY, config);
+		return new CollectionVerifierImpl<>(scope, name + ".entrySet()", actual.entrySet(), Pluralizer.ENTRY, config);
 	}
 
 	@Override
@@ -108,8 +104,7 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(), Pluralizer.ENTRY, config);
 	}
 
 	@Override

@@ -40,8 +40,7 @@ public final class MultimapVerifierImpl<K, V>
 	 * @param name   the name of the parameter
 	 * @param actual the actual value of the parameter
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	public MultimapVerifierImpl(ApplicationScope scope, String name, Multimap<K, V> actual, Configuration config)
 	{

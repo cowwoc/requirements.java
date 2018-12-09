@@ -44,8 +44,9 @@ public final class BigDecimalPrecisionVerifierImpl
 	@Override
 	public BigDecimalPrecisionVerifier isNotZero()
 	{
-		// Always true
-		return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be zero", name), null).
+			build();
 	}
 
 	@Deprecated
@@ -53,7 +54,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isNotPositive()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be non-positive", name), null).
+			String.format("%s can never be zero or negative", name), null).
 			build();
 	}
 
@@ -61,16 +62,18 @@ public final class BigDecimalPrecisionVerifierImpl
 	@Override
 	public BigDecimalPrecisionVerifier isPositive()
 	{
-		// Always true
-		return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be zero or negative", name), null).
+			build();
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNotNegative()
 	{
-		// Always true
-		return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null).
+			build();
 	}
 
 	@Deprecated

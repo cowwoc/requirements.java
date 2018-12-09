@@ -7,6 +7,8 @@ package org.bitbucket.cowwoc.requirements.java.internal.impl;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.util.Optional;
@@ -18,13 +20,14 @@ public final class OptionalVerifierImpl
 	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
 	implements OptionalVerifier
 {
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
+
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual, Configuration config)
 	{
@@ -60,8 +63,9 @@ public final class OptionalVerifierImpl
 		Optional<?> expected = Optional.of(value);
 		if (actual.equals(expected))
 			return this;
+		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s.", name, value)).
+			String.format("%s must contain %s.", name, valueAsString)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -69,13 +73,13 @@ public final class OptionalVerifierImpl
 	@Override
 	public OptionalVerifier contains(String name, Object expected)
 	{
-		Optional<?> expectedOptional = Optional.ofNullable(expected);
-		if (actual.equals(expectedOptional))
+		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
+		if (actual.equals(expectedAsOptional))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain %s.", this.name, name)).
 			addContext("Actual", actual).
-			addContext("Expected", expectedOptional).
+			addContext("Expected", expectedAsOptional).
 			build();
 	}
 }

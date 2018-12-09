@@ -10,6 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
@@ -31,6 +32,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	extends ObjectCapabilitiesImpl<S, R>
 	implements ArrayCapabilities<S, E, R>
 {
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final Collection<E> actualAsCollection;
 	private final CollectionVerifier<Collection<E>, E> asCollection;
 
@@ -99,7 +101,6 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
 		if (actual != other)
 			return getThis();
-
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be the same object as %s.", this.name, name)).
 			addContext("Actual", actual).
@@ -112,9 +113,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (collection.contains(actual))
 			return getThis();
-
+		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be one of %s.", this.name, collection)).
+			String.format("%s must be one of %s.", this.name, collectionAsString)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -125,9 +126,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
-
+		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be in %s.", this.name, collection)).
+			String.format("%s may not be in %s.", this.name, collectionAsString)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -296,9 +297,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.
-			size(),
-			Pluralizer.ELEMENT, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.size(), Pluralizer.ELEMENT, config);
 	}
 
 	@Override
@@ -311,7 +310,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	@Override
 	public StringVerifier asString()
 	{
-		String value = SharedSecrets.INSTANCE.secretConfiguration.toString(config, actual);
+		String value = secretConfiguration.toString(config, actual);
 		return new StringVerifierImpl(scope, name, value, config);
 	}
 

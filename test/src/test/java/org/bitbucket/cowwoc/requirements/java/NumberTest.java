@@ -550,7 +550,7 @@ public final class NumberTest
 		}
 	}
 
-	@Test
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	@SuppressWarnings("deprecation")
 	public void byteIsNotNull_deprecation()
 	{
@@ -572,7 +572,7 @@ public final class NumberTest
 		}
 	}
 
-	@Test
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	@SuppressWarnings("deprecation")
 	public void shortIsNotNull_deprecation()
 	{

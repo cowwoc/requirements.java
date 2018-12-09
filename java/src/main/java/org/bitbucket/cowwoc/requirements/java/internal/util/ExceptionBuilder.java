@@ -4,10 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.util;
 
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public final class ExceptionBuilder
 {
 	private final Configuration config;
 	private final Exceptions exceptions;
-	private final SecretConfiguration secretConfiguration;
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final Throwable cause;
@@ -55,7 +55,6 @@ public final class ExceptionBuilder
 		this.message = message;
 		this.cause = cause;
 		this.apiInStacktrace = apiInStacktrace;
-		this.secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	}
 
 	/**

@@ -9,6 +9,8 @@ import org.bitbucket.cowwoc.requirements.java.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
@@ -21,6 +23,7 @@ public final class ContainerSizeVerifierImpl
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
 	implements ContainerSizeVerifier
 {
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final String containerName;
 	private final Object container;
 	private final Pluralizer pluralizer;
@@ -55,9 +58,9 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat("value", value).isNotNull();
 		if (actual >= value)
 			return getThis();
+		String valueAsString = secretConfiguration.toString(config, value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain at least %,d %s.", containerName, value,
-				pluralizer.nameOf(value))).
+			String.format("%s must contain at least %s %s.", containerName, valueAsString, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -73,9 +76,9 @@ public final class ContainerSizeVerifierImpl
 		if (actual >= value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain at least %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(value))).
-			addContext("Actual", actual);
+			String.format("%s must contain at least %s %s.", containerName, name, pluralizer.nameOf(value))).
+			addContext("Actual", actual).
+			addContext("Minimum", value);
 		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
@@ -87,9 +90,9 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat("value", value).isNotNull();
 		if (actual > value)
 			return getThis();
+		String valueAsString = secretConfiguration.toString(config, value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain more than %,d %s.", containerName, value,
-				pluralizer.nameOf(value))).
+			String.format("%s must contain more than %s %s.", containerName, valueAsString, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -105,9 +108,9 @@ public final class ContainerSizeVerifierImpl
 		if (actual > value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain more than %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(value))).
-			addContext("Actual", actual);
+			String.format("%s must contain more than %s %s.", containerName, name, pluralizer.nameOf(value))).
+			addContext("Actual", actual).
+			addContext("Exclusive minimum", value);
 		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
@@ -119,9 +122,9 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat("value", value).isNotNull();
 		if (actual <= value)
 			return getThis();
+		String valueAsString = secretConfiguration.toString(config, value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain more than %,d %s.", containerName, value,
-				pluralizer.nameOf(value))).
+			String.format("%s may not contain more than %s %s.", containerName, valueAsString, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -137,9 +140,9 @@ public final class ContainerSizeVerifierImpl
 		if (actual <= value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain more than %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(value))).
-			addContext("Actual", actual);
+			String.format("%s may not contain more than %s %s.", containerName, name, pluralizer.nameOf(value))).
+			addContext("Actual", actual).
+			addContext("Maximum", value);
 		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
@@ -151,9 +154,9 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat("value", value).isNotNull();
 		if (actual < value)
 			return getThis();
+		String valueAsString = secretConfiguration.toString(config, value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain less than %,d %s.", this.containerName, value,
-				pluralizer.nameOf(value))).
+			String.format("%s must contain less than %s %s.", containerName, valueAsString, pluralizer.nameOf(value))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -169,9 +172,9 @@ public final class ContainerSizeVerifierImpl
 		if (actual < value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain less than %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(value), actual, pluralizer.nameOf(actual))).
-			addContext("Actual", actual);
+			String.format("%s must contain less than %s %s.", containerName, name, pluralizer.nameOf(value))).
+			addContext("Actual", actual).
+			addContext("Exclusive maximum", value);
 		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
@@ -209,9 +212,7 @@ public final class ContainerSizeVerifierImpl
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must be empty.", containerName)).
-			addContext("Actual", actual);
-		if (actual > 0)
-			eb.addContext(containerName, container);
+			addContext("Actual", container);
 		throw eb.build();
 	}
 
@@ -219,8 +220,9 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isNotNegative()
 	{
-		// Always true
-		return getThis();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be negative", name), null).
+			build();
 	}
 
 	@Deprecated
@@ -228,7 +230,7 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isNegative()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be negative", name), null).
+			String.format("%s can never be negative", name), null).
 			build();
 	}
 
@@ -241,9 +243,10 @@ public final class ContainerSizeVerifierImpl
 			isGreaterThanOrEqualTo("startInclusive", startInclusive);
 		if (actual >= startInclusive && actual < endExclusive)
 			return getThis();
+		String startAsString = secretConfiguration.toString(config, startInclusive);
+		String endAsString = secretConfiguration.toString(config, endExclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d) %s.", containerName, startInclusive, endExclusive,
-				pluralizer.nameOf(2))).
+			String.format("%s must contain [%d, %d) %s.", containerName, startAsString, endAsString, pluralizer.nameOf(2))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -260,9 +263,10 @@ public final class ContainerSizeVerifierImpl
 			isGreaterThanOrEqualTo("startInclusive", startInclusive);
 		if (actual >= startInclusive && actual <= endInclusive)
 			return getThis();
+		String startAsString = secretConfiguration.toString(config, startInclusive);
+		String endAsString = secretConfiguration.toString(config, endInclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d] %s.", containerName, startInclusive, endInclusive,
-				pluralizer.nameOf(2))).
+			String.format("%s must contain [%d, %d] %s.", containerName, startAsString, endAsString, pluralizer.nameOf(2))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -273,12 +277,14 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isEqualTo(Object expected)
 	{
 		scope.getInternalVerifier().requireThat("expected", expected).isInstanceOf(Integer.class);
+		if (!(expected instanceof Integer))
+			return super.isEqualTo(expected);
 		if (Objects.equals(actual, expected))
 			return getThis();
 		int expectedAsInt = (Integer) expected;
+		String expectedAsString = secretConfiguration.toString(config, expected);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %,d %s.", containerName, expected,
-				pluralizer.nameOf(expectedAsInt))).
+			String.format("%s must contain %s %s.", containerName, expectedAsString, pluralizer.nameOf(expectedAsInt))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -295,9 +301,9 @@ public final class ContainerSizeVerifierImpl
 			return getThis();
 		int expectedAsInt = (Integer) expected;
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s (%,d) %s.", this.containerName, name, expected,
-				pluralizer.nameOf(expectedAsInt))).
-			addContext("Actual", actual);
+			String.format("%s must contain %s %s.", containerName, name, pluralizer.nameOf(expectedAsInt))).
+			addContext("Actual", actual).
+			addContext("Expected", expected);
 		if (actual > 0)
 			eb.addContext(containerName, container);
 		throw eb.build();
@@ -307,14 +313,23 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Object value)
 	{
 		scope.getInternalVerifier().requireThat("value", value).isInstanceOf(Integer.class);
+		if (!(value instanceof Integer))
+		{
+			String valueAsString = secretConfiguration.toString(config, value);
+			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+				String.format("%s can never be equal to %s", name, valueAsString), null).
+				build();
+		}
 		if (!Objects.equals(actual, value))
 			return getThis();
 		int valueAsInt = (Integer) value;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain %,d %s.", containerName, value,
-				pluralizer.nameOf(valueAsInt))).
-			addContext("Actual", container).
-			build();
+		String valueAsString = secretConfiguration.toString(config, value);
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not contain %s %s.", containerName, valueAsString, pluralizer.nameOf(valueAsInt))).
+			addContext("Actual", actual);
+		if (actual > 0)
+			eb.addContext(containerName, container);
+		throw eb.build();
 	}
 
 	@Override
@@ -323,20 +338,31 @@ public final class ContainerSizeVerifierImpl
 		JavaVerifier verifier = scope.getInternalVerifier();
 		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
 		verifier.requireThat("value", value).isInstanceOf(Integer.class);
+		if (!(value instanceof Integer))
+		{
+			String valueAsString = secretConfiguration.toString(config, value);
+			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+				String.format("%s can never be equal to %s", name, valueAsString), null).
+				build();
+		}
 		if (!Objects.equals(actual, value))
 			return getThis();
 		int valueAsInt = (Integer) value;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain %s (%,d) %s.", this.containerName, name, value,
-				pluralizer.nameOf(valueAsInt))).
-			addContext("Actual", container).
-			build();
+		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s may not contain %s %s.", containerName, name, pluralizer.nameOf(valueAsInt))).
+			addContext("Actual", actual).
+			addContext("Unwanted", value);
+		if (actual > 0)
+			eb.addContext(containerName, container);
+		throw eb.build();
 	}
 
 	@Override
 	@Deprecated
 	public PrimitiveNumberVerifier<Integer> isNull()
 	{
-		return super.isNull();
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be null", name), null).
+			build();
 	}
 }

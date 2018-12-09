@@ -71,8 +71,7 @@ public final class NoOpMapVerifier<K, V>
 	}
 
 	@Override
-	public MapVerifier<K, V> entrySet(
-		Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
+	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
 		return this;
 	}

@@ -8,6 +8,8 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.NumberCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
@@ -20,13 +22,14 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	extends ComparableCapabilitiesImpl<S, T>
 	implements NumberCapabilities<S, T>
 {
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
+
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected NumberCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
@@ -125,6 +128,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (!isWholeNumber(actual.doubleValue()))
 			return getThis();
+
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s may not be a whole number.", name)).
 			addContext("Actual", actual).
@@ -138,8 +142,9 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
+		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a multiple of %s.", name, divisor)).
+			String.format("%s must be a multiple of %s.", name, divisorAsString)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -167,8 +172,9 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
+		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a multiple of %s.", name, divisor)).
+			String.format("%s may not be a multiple of %s.", name, divisorAsString)).
 			addContext("Actual", actual).
 			build();
 	}

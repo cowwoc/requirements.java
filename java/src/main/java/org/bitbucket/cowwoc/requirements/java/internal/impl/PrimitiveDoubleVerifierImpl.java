@@ -21,8 +21,7 @@ public final class PrimitiveDoubleVerifierImpl
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected PrimitiveDoubleVerifierImpl(ApplicationScope scope, String name, Double actual, Configuration config)
 	{

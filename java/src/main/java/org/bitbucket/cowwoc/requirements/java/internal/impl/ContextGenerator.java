@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.impl;
 
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffResult;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public final class ContextGenerator
 {
 	private static final Pattern LINES_NOT_EQUAL = Pattern.compile("[^=]+");
-	private final SecretConfiguration secretConfiguration;
+	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 
 	/**
 	 * Updates the last context entry to indicate that duplicate lines were skipped.
@@ -62,7 +62,6 @@ public final class ContextGenerator
 		assert (diffGenerator != null) : "diffGenerator may not be null";
 		this.config = configuration;
 		this.diffGenerator = diffGenerator;
-		this.secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	}
 
 	/**
@@ -72,8 +71,7 @@ public final class ContextGenerator
 	 * @param expectedValue the expected value
 	 * @return the list of name-value pairs to append to the exception message
 	 */
-	public List<Entry<String, Object>> getContext(String actualName, Object actualValue,
-	                                              String expectedName, Object expectedValue)
+	public List<Entry<String, Object>> getContext(String actualName, Object actualValue, String expectedName, Object expectedValue)
 	{
 		// This class outputs the String representation of the values. If those are equal, it also
 		// outputs the first of getClass(), hashCode(), or System.identityHashCode()] that differs.
@@ -132,8 +130,8 @@ public final class ContextGenerator
 	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	private List<Entry<String, Object>> getContext(String actualName, String actualValue,
-	                                               Class<?> actualType, String expectedName, String expectedValue)
+	private List<Entry<String, Object>> getContext(String actualName, String actualValue, Class<?> actualType, String expectedName,
+	                                               String expectedValue)
 	{
 		assert (actualName != null) : "actualName may not be null";
 		assert (expectedName != null) : "expectedName may not be null";

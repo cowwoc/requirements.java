@@ -26,8 +26,7 @@ public final class UriVerifierImpl extends ObjectCapabilitiesImpl<UriVerifier, U
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected UriVerifierImpl(ApplicationScope scope, String name, URI actual, Configuration config)
 	{

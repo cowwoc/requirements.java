@@ -4,14 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.impl;
 
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
@@ -117,9 +117,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (collection.contains(actual))
 			return this;
-
+		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be one of %s.", this.name, collection)).
+			String.format("%s must be one of %s.", this.name, collectionAsString)).
 			addContext("Actual", actual).
 			build();
 	}
@@ -130,9 +130,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
 		if (!collection.contains(actual))
 			return this;
-
+		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be in %s.", this.name, collection)).
+			String.format("%s may not be in %s.", this.name, collectionAsString)).
 			addContext("Actual", actual).
 			build();
 	}

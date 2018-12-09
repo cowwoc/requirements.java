@@ -23,8 +23,7 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if
-	 *                        {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
 	protected PrimitiveNumberVerifierImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
@@ -40,10 +39,12 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 			build();
 	}
 
+	@Deprecated
 	@Override
 	public PrimitiveNumberVerifier<T> isNotNull()
 	{
-		// Always true
-		return this;
+		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			String.format("%s can never be null", name), null).
+			build();
 	}
 }
