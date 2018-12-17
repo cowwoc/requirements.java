@@ -173,7 +173,7 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.version>3.6.0</maven.version>
+		<maven.version>3.5.4</maven.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<guava.version>27.0.1-jre</guava.version>

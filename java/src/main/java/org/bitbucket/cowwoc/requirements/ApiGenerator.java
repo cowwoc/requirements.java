@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -16,7 +18,6 @@ import java.nio.file.Paths;
  */
 public final class ApiGenerator
 {
-	private final Logger log = LoggerFactory.getLogger(ApiGenerator.class);
 	private boolean guavaEnabled;
 
 	/**
@@ -38,18 +39,20 @@ public final class ApiGenerator
 		}
 
 		Path directory = Paths.get(args[0]);
-		try
-		{
-			Files.createDirectories(directory);
-		}
-		catch (IOException e)
-		{
-			System.err.println("Failed to create: " + directory.toAbsolutePath());
-			System.exit(2);
-		}
 		ApiGenerator generator = new ApiGenerator();
-		generator.writeDefaultRequirements(directory);
-		generator.writeRequirements(directory);
+
+		Logger log = LoggerFactory.getLogger(ApiGenerator.class);
+		Path defaultRequirements = generator.getDefaultRequirementsPath(directory);
+		if (generator.writeDefaultRequirements(defaultRequirements))
+			log.info("Skipped {} because it was up-to-date", defaultRequirements);
+		else
+			log.info("Generated {}", defaultRequirements);
+
+		Path requirements = generator.getRequirementsPath(directory);
+		if (generator.writeRequirements(requirements))
+			log.info("Skipped {} because it was up-to-date", defaultRequirements);
+		else
+			log.info("Generated {}", defaultRequirements);
 	}
 
 	/**
@@ -63,17 +66,36 @@ public final class ApiGenerator
 	}
 
 	/**
+	 * @param rootPackage the path of the root package
+	 * @return the path of the {@code DefaultRequirements.java} file
+	 */
+	public Path getDefaultRequirementsPath(Path rootPackage)
+	{
+		return rootPackage.resolve("org/bitbucket/cowwoc/requirements/DefaultRequirements.java");
+	}
+
+	/**
 	 * Writes {@code DefaultRequirements.java}.
 	 *
-	 * @param path the directory to write to
+	 * @param path the path of the file
+	 * @return true if the file was updated
 	 * @throws IOException if an I/O error occurs while writing the file
 	 */
-	public void writeDefaultRequirements(Path path) throws IOException
+	public boolean writeDefaultRequirements(Path path) throws IOException
 	{
-		Path filePath = path.resolve("org/bitbucket/cowwoc/requirements/DefaultRequirements.java");
-		Files.createDirectories(filePath.getParent());
-		try (FileWriter fw = new FileWriter(filePath.toFile());
-		     BufferedWriter writer = new BufferedWriter(fw))
+		Files.createDirectories(path.getParent());
+
+		String oldValue;
+		try
+		{
+			oldValue = Files.readString(path);
+		}
+		catch (NoSuchFileException unused)
+		{
+			oldValue = "";
+		}
+		try (StringWriter sw = new StringWriter();
+		     BufferedWriter writer = new BufferedWriter(sw))
 		{
 			writer.write("/*\n" +
 				" * Copyright 2013 Gili Tzabari.\n" +
@@ -1207,22 +1229,50 @@ public final class ApiGenerator
 				"\t{\n" +
 				"\t}\n" +
 				"}\n");
+			writer.close();
+
+			String newValue = sw.toString();
+			if (oldValue.equals(newValue))
+				return false;
+			try (FileWriter fw = new FileWriter(path.toFile()))
+			{
+				fw.write(newValue);
+			}
 		}
-		log.info("Generated {}", filePath);
+		return true;
+	}
+
+	/**
+	 * @param rootPackage the path of the root package
+	 * @return the path of the {@code Requirements.java} file
+	 */
+	public Path getRequirementsPath(Path rootPackage)
+	{
+		return rootPackage.resolve("org/bitbucket/cowwoc/requirements/Requirements.java");
 	}
 
 	/**
 	 * Writes {@code Requirements.java}.
 	 *
-	 * @param path the directory to write to
+	 * @param path the path of the file
+	 * @return true if the file was updated
 	 * @throws IOException if an I/O error occurs while writing the file
 	 */
-	public void writeRequirements(Path path) throws IOException
+	public boolean writeRequirements(Path path) throws IOException
 	{
-		Path filePath = path.resolve("org/bitbucket/cowwoc/requirements/Requirements.java");
-		Files.createDirectories(filePath.getParent());
-		try (FileWriter fw = new FileWriter(filePath.toFile());
-		     BufferedWriter writer = new BufferedWriter(fw))
+		Files.createDirectories(path.getParent());
+
+		String oldValue;
+		try
+		{
+			oldValue = Files.readString(path);
+		}
+		catch (NoSuchFileException unused)
+		{
+			oldValue = "";
+		}
+		try (StringWriter sw = new StringWriter();
+		     BufferedWriter writer = new BufferedWriter(sw))
 		{
 			writer.write("/*\n" +
 				" * Copyright 2013 Gili Tzabari.\n" +
@@ -2543,7 +2593,16 @@ public final class ApiGenerator
 					"\t}\n");
 			}
 			writer.write("}\n");
+			writer.close();
+
+			String newValue = sw.toString();
+			if (oldValue.equals(newValue))
+				return false;
+			try (FileWriter fw = new FileWriter(path.toFile()))
+			{
+				fw.write(newValue);
+			}
 		}
-		log.info("Generated {}", filePath);
+		return true;
 	}
 }

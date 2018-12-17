@@ -163,7 +163,7 @@
 				<platform>windows-x86_32</platform>
 				<build.type>debug</build.type>
 				<cmake.classifier>windows-x86_32</cmake.classifier>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.generator>Visual Studio 15 2017</cmake.generator>
 				<cmake.config>${build.type}</cmake.config>
 				<!--
 				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
@@ -187,7 +187,7 @@
 				<platform>windows-x86_32</platform>
 				<build.type>release</build.type>
 				<cmake.classifier>windows-x86_32</cmake.classifier>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.generator>Visual Studio 15 2017</cmake.generator>
 				<cmake.config>${build.type}</cmake.config>
 				<!--
 				CMake interprets the lack of a generator architecture ("-A<platform>") as x86. There doesn't
@@ -201,7 +201,7 @@
 				<platform>windows-x86_64</platform>
 				<build.type>debug</build.type>
 				<cmake.classifier>windows-x86_64</cmake.classifier>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.generator>Visual Studio 15 2017</cmake.generator>
 				<cmake.options>-Ax64</cmake.options>
 				<cmake.config>${build.type}</cmake.config>
 			</properties>
@@ -222,7 +222,7 @@
 				<platform>windows-x86_64</platform>
 				<build.type>release</build.type>
 				<cmake.classifier>windows-x86_64</cmake.classifier>
-				<cmake.generator>Visual Studio 14 2015</cmake.generator>
+				<cmake.generator>Visual Studio 15 2017</cmake.generator>
 				<cmake.options>-Ax64</cmake.options>
 				<cmake.config>${build.type}</cmake.config>
 			</properties>

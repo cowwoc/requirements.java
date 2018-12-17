@@ -41,22 +41,11 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>java-without-asserts</module>
-		<module>java-with-asserts</module>
-		<module>guava-without-asserts</module>
-		<module>guava-with-asserts</module>
+		<module>java</module>
+		<module>guava</module>
 	</modules>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>none</phase>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -76,6 +65,27 @@
 						<configuration>
 							<scope>test</scope>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Tests don't publish any artifacts -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-install</id>
+						<phase>none</phase>
 					</execution>
 				</executions>
 			</plugin>

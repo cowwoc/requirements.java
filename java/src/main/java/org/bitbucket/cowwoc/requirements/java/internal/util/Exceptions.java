@@ -153,8 +153,8 @@ public final class Exceptions
 	{
 		filterStacktrace(throwable, element ->
 		{
-			String clasName = element.getClassName();
-			return clasName.startsWith(libraryPackage) && !clasName.endsWith("Test");
+			String className = element.getClassName();
+			return className.startsWith(libraryPackage) && !className.endsWith("Test");
 		});
 	}
 

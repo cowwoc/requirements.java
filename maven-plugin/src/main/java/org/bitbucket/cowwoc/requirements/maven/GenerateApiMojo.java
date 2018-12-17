@@ -10,6 +10,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.bitbucket.cowwoc.requirements.ApiGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,8 +93,18 @@ public final class GenerateApiMojo extends AbstractMojo
 		}
 		try
 		{
-			generator.writeDefaultRequirements(targetPath);
-			generator.writeRequirements(targetPath);
+			Logger log = LoggerFactory.getLogger(ApiGenerator.class);
+			Path defaultRequirements = generator.getDefaultRequirementsPath(targetPath);
+			if (generator.writeDefaultRequirements(defaultRequirements))
+				log.info("Skipped {} because it was up-to-date", defaultRequirements);
+			else
+				log.info("Generated {}", defaultRequirements);
+
+			Path requirements = generator.getRequirementsPath(targetPath);
+			if (generator.writeRequirements(requirements))
+				log.info("Skipped {} because it was up-to-date", defaultRequirements);
+			else
+				log.info("Generated {}", defaultRequirements);
 		}
 		catch (IOException e)
 		{
