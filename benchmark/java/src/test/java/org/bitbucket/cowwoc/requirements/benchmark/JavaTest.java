@@ -17,6 +17,8 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -99,4 +101,35 @@ public class JavaTest
 			bh.consume(e);
 		}
 	}
+
+	@Benchmark
+	public void throwAndConsumeStacktrace(Blackhole bh)
+	{
+		try
+		{
+			throw new IllegalArgumentException("Hard-coded exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			bh.consume(sw.toString());
+		}
+	}
+
+	@Benchmark
+	public void requirementsThrowAndConsumeStacktrace(Blackhole bh)
+	{
+		try
+		{
+			new Requirements().requireThat(name, nullObject).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			bh.consume(sw.toString());
+		}
+	}
 }
+

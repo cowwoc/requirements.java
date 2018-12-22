@@ -4,16 +4,18 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
 
 /**
  * The configuration of an application. A JVM may contain multiple applications.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public interface ApplicationScope extends JvmScope
 {
@@ -33,9 +35,9 @@ public interface ApplicationScope extends JvmScope
 	Supplier<Boolean> isDiffEnabled();
 
 	/**
-	 * @return true if exception stack-traces should contain elements from this API (value may change with every invocation)
+	 * @return true if exceptions should remove references to this library from their stack traces (value may change with every invocation)
 	 */
-	Supplier<Boolean> isApiInStacktrace();
+	Supplier<Boolean> isLibraryRemovedFromStacktrace();
 
 	DiffGenerator getDiffGenerator();
 

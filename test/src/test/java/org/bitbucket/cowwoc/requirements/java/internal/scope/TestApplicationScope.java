@@ -4,9 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
@@ -17,7 +17,9 @@ import java.util.function.Supplier;
 public final class TestApplicationScope extends AbstractApplicationScope
 {
 	private static final Supplier<Boolean> TRUE = () -> true;
+	private static final Supplier<Boolean> FALSE = () -> false;
 	private final TerminalEncoding terminalEncoding;
+	private final Configuration defaultConfiguration = new Configuration();
 
 	/**
 	 * @param terminalEncoding the type of encoding that verifiers should output
@@ -63,9 +65,9 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public Supplier<Boolean> isApiInStacktrace()
+	public Supplier<Boolean> isLibraryRemovedFromStacktrace()
 	{
-		return TRUE;
+		return FALSE;
 	}
 
 	@Override

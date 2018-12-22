@@ -2,9 +2,9 @@
  * Copyright 2017 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.java.internal.terminal;
+package org.bitbucket.cowwoc.requirements.natives.internal.util;
 
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.OperatingSystem.Version;
+import org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem.Version;
 import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;

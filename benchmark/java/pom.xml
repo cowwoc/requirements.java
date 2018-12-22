@@ -13,6 +13,21 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>requirements-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-api</goal>
+						</goals>
+						<configuration>
+							<scope>test</scope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>

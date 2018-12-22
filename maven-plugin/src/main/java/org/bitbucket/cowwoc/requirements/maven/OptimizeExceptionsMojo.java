@@ -1,14 +1,12 @@
 package org.bitbucket.cowwoc.requirements.maven;
 
-import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.bitbucket.cowwoc.requirements.generator.ApiGenerator;
+import org.bitbucket.cowwoc.requirements.generator.ExceptionOptimizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +14,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
- * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints classes that expose a different number of methods depending on
- * the plugins that are available at build-time.
+ * Optimizes the exceptions thrown by the library. Specifically, stack traces are stripped lazily.
  */
-@Mojo(name = "generate-api", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
-public final class GenerateApiMojo extends AbstractMojo
+@Mojo(name = "optimize-exceptions", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
+public final class OptimizeExceptionsMojo extends AbstractMojo
 {
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	private File targetDirectory;
@@ -33,17 +31,13 @@ public final class GenerateApiMojo extends AbstractMojo
 	@Parameter(property = "scope", defaultValue = "compile")
 	private String scope;
 	/**
-	 * Indicates if the generated API should reference the guava plugin. If the guava plugin is present as a project dependency (of any
-	 * scope) this value is true by default; otherwise, it is false by default.
+	 * The list of exceptions to optimize. Each entry is expected to contain a fully-qualified class name.
 	 */
-	@Parameter(property = "guavaEnabled")
-	private Boolean overrideGuavaEnabled;
+	@Parameter(property = "exceptions")
+	private List<String> exceptions;
 
 	@Parameter(property = "project", required = true, readonly = true)
 	private MavenProject project;
-
-	@Parameter(defaultValue = "${plugin}", readonly = true)
-	private PluginDescriptor plugin;
 
 	@Override
 	public void execute() throws MojoExecutionException
@@ -69,18 +63,7 @@ public final class GenerateApiMojo extends AbstractMojo
 					"Actual: " + scope);
 			}
 		}
-		boolean guavaEnabled = false;
-		for (Dependency dependency : project.getDependencies())
-		{
-			if (!dependency.getGroupId().equals(plugin.getGroupId()))
-				continue;
-			if (dependency.getArtifactId().equals("requirements-guava"))
-				guavaEnabled = true;
-		}
-		if (overrideGuavaEnabled != null)
-			guavaEnabled = overrideGuavaEnabled;
-		ApiGenerator generator = new ApiGenerator();
-		generator.setGuavaEnabled(guavaEnabled);
+		ExceptionOptimizer optimizer = new ExceptionOptimizer();
 		try
 		{
 			Files.createDirectories(targetPath);
@@ -92,18 +75,25 @@ public final class GenerateApiMojo extends AbstractMojo
 		}
 		try
 		{
-			Logger log = LoggerFactory.getLogger(ApiGenerator.class);
-			Path defaultRequirements = generator.getDefaultRequirementsPath(targetPath);
-			if (generator.writeDefaultRequirements(defaultRequirements))
-				log.info("{} was up-to-date", defaultRequirements);
-			else
-				log.info("Generated {}", defaultRequirements);
-
-			Path requirements = generator.getRequirementsPath(targetPath);
-			if (generator.writeRequirements(requirements))
-				log.info("{} was up-to-date", requirements);
-			else
-				log.info("Generated {}", requirements);
+			Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
+			for (String exceptionName : exceptions)
+			{
+				Class<?> exception;
+				try
+				{
+					exception = Class.forName(exceptionName);
+				}
+				catch (ClassNotFoundException e)
+				{
+					log.error("Cannot find " + exceptionName);
+					continue;
+				}
+				Path path = ExceptionOptimizer.getWrapperPath(targetPath, exceptionName);
+				if (optimizer.writeWrapper(path, exception))
+					log.info("{} was up-to-date", path);
+				else
+					log.info("Generated {}", path);
+			}
 		}
 		catch (IOException e)
 		{

@@ -4,11 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 
 /**
  * The JVM configuration.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public interface JvmScope extends AutoCloseable
 {

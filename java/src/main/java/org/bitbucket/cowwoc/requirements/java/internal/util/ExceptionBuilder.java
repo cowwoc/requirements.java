@@ -27,24 +27,23 @@ public final class ExceptionBuilder
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final Throwable cause;
-	private final boolean apiInStacktrace;
+	private final boolean removeLibraryFromStacktrace;
 	/**
 	 * Contextual information associated with the exception (name-value pairs).
 	 */
 	private final List<Entry<String, Object>> context = new ArrayList<>(2);
 
 	/**
-	 * @param configuration   the instance configuration
-	 * @param exceptions      an instance of {@code Exceptions}
-	 * @param type            the type of the exception
-	 * @param message         the exception message
-	 * @param cause           the underlying cause of the exception ({@code null} if absent)
-	 * @param apiInStacktrace true if API elements should show up in the stacktrace
-	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message}
-	 *                        are null
+	 * @param configuration               the instance configuration
+	 * @param exceptions                  an instance of {@code Exceptions}
+	 * @param type                        the type of the exception
+	 * @param message                     the exception message
+	 * @param cause                       the underlying cause of the exception ({@code null} if absent)
+	 * @param removeLibraryFromStacktrace true if exceptions should remove references to this library from their stack traces
+	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message} are null
 	 */
 	private ExceptionBuilder(Configuration configuration, Exceptions exceptions, Class<? extends RuntimeException> type, String message,
-	                         Throwable cause, boolean apiInStacktrace)
+	                         Throwable cause, boolean removeLibraryFromStacktrace)
 	{
 		assert (configuration != null) : "configuration may not be null";
 		assert (exceptions != null) : "exceptions may not be null";
@@ -54,26 +53,25 @@ public final class ExceptionBuilder
 		this.type = config.getException().orElse(type);
 		this.message = message;
 		this.cause = cause;
-		this.apiInStacktrace = apiInStacktrace;
+		this.removeLibraryFromStacktrace = removeLibraryFromStacktrace;
 	}
 
 	/**
 	 * Equivalent to
 	 * {@link #ExceptionBuilder(Configuration, Exceptions, Class, String, Throwable, boolean)
-	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause, scope.isApiInStacktrace().get())}.
+	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStacktrace().get())}.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
 	 * @param type          the type of the exception
 	 * @param message       the exception message
 	 * @param cause         the underlying cause of the exception ({@code null} if absent)
-	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message
-	 *                              are null
+	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
 	 */
 	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message,
 	                        Throwable cause)
 	{
-		this(configuration, scope.getExceptions(), type, message, cause, scope.isApiInStacktrace().get());
+		this(configuration, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStacktrace().get());
 	}
 
 	/**
@@ -84,8 +82,7 @@ public final class ExceptionBuilder
 	 * @param configuration a verifier's configuration
 	 * @param type          the type of the exception
 	 * @param message       the exception message
-	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message
-	 *                              are null
+	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
 	 */
 	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message)
 	{
@@ -144,6 +141,7 @@ public final class ExceptionBuilder
 			mergedContext.addAll(contextPostfix);
 		}
 
+		// null entries denote a newline between DIFF sections
 		int maxKeyLength = mergedContext.stream().filter(Objects::nonNull).map(Entry::getKey).
 			mapToInt(String::length).max().orElse(0);
 		for (Entry<String, Object> entry : mergedContext)
@@ -154,6 +152,6 @@ public final class ExceptionBuilder
 				messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
 					secretConfiguration.toString(config, entry.getValue())));
 		}
-		return exceptions.createException(type, messageWithContext.toString(), cause, apiInStacktrace);
+		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStacktrace);
 	}
 }

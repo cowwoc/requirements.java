@@ -50,23 +50,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<skipTests>${skipTests}</skipTests>
+					<skipTests>${skipBenchmarks}</skipTests>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>requirements-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate-api</goal>
-						</goals>
-						<configuration>
-							<scope>test</scope>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<!-- Tests don't publish any artifacts -->
 			<plugin>
@@ -92,7 +77,21 @@
 		</plugins>
 	</build>
 	<properties>
-		<skipTests>true</skipTests>
+		<skipBenchmarks>true</skipBenchmarks>
 		<jmh.version>1.21</jmh.version>
 	</properties>
+	<profiles>
+		<profile>
+			<id>run-benchmarks</id>
+			<activation>
+				<property>
+					<name>runBenchmarks</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<skipBenchmarks>false</skipBenchmarks>
+			</properties>
+		</profile>
+	</profiles>
 </project>

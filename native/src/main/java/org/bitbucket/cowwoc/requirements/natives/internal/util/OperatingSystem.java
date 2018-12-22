@@ -2,11 +2,10 @@
  * Copyright 2016 Gili Tzabari.
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.java.internal.terminal;
+package org.bitbucket.cowwoc.requirements.natives.internal.util;
 
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -363,11 +362,11 @@ public final class OperatingSystem
 		private static final Reference<Type> DETECTED = ConcurrentLazyReference.create(() ->
 		{
 			String osName = System.getProperty("os.name");
-			if (Strings.startsWith(osName, "windows", true))
+			if (startsWith(osName, "windows", true))
 				return WINDOWS;
-			if (Strings.startsWith(osName, "linux", true))
+			if (startsWith(osName, "linux", true))
 				return LINUX;
-			if (Strings.startsWith(osName, "mac", true))
+			if (startsWith(osName, "mac", true))
 				return MAC;
 			throw new AssertionError("Unsupported operating system: " + osName + "\n" +
 				"properties: " + System.getProperties());
@@ -379,6 +378,18 @@ public final class OperatingSystem
 		public static Type detected()
 		{
 			return DETECTED.getValue();
+		}
+
+		/**
+		 * @param str        a string
+		 * @param prefix     a prefix
+		 * @param ignoreCase {@code true} if case should be ignored when comparing characters
+		 * @return true if {@code start} starts with {@code prefix}, disregarding case sensitivity
+		 * @throws NullPointerException if any of the arguments are null
+		 */
+		public static boolean startsWith(String str, String prefix, boolean ignoreCase)
+		{
+			return str.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
 		}
 	}
 }

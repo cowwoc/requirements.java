@@ -12,6 +12,7 @@ import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
@@ -191,6 +192,12 @@ public final class DefaultJavaVerifier implements JavaVerifier
 		if (configuration.equals(config))
 			return this;
 		return new DefaultJavaVerifier(scope, configuration);
+	}
+
+	@Override
+	public GlobalConfiguration getGlobalConfiguration()
+	{
+		return config.getGlobalConfiguration();
 	}
 
 	@Override

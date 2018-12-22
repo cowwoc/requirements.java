@@ -1,4 +1,4 @@
-package org.bitbucket.cowwoc.requirements;
+package org.bitbucket.cowwoc.requirements.generator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +30,11 @@ public final class ApiGenerator
 		{
 			System.err.println("Generates the API endpoints (Requirements, DefaultRequirements)");
 			System.err.println();
-			System.err.println("Usage: ApiGenerator <directory>");
+			System.err.println("Usage: ApiGenerator <root>");
 			System.err.println();
 			System.err.println("Where:");
 			System.err.println();
-			System.err.println("<directory> is the directory corresponding to the Java root package");
+			System.err.println("<root> is the directory corresponding to the Java root package");
 			System.exit(1);
 		}
 
@@ -44,15 +44,15 @@ public final class ApiGenerator
 		Logger log = LoggerFactory.getLogger(ApiGenerator.class);
 		Path defaultRequirements = generator.getDefaultRequirementsPath(directory);
 		if (generator.writeDefaultRequirements(defaultRequirements))
-			log.info("Skipped {} because it was up-to-date", defaultRequirements);
+			log.info("{} was up-to-date", defaultRequirements);
 		else
 			log.info("Generated {}", defaultRequirements);
 
 		Path requirements = generator.getRequirementsPath(directory);
 		if (generator.writeRequirements(requirements))
-			log.info("Skipped {} because it was up-to-date", defaultRequirements);
+			log.info("{} was up-to-date", requirements);
 		else
-			log.info("Generated {}", defaultRequirements);
+			log.info("Generated {}", requirements);
 	}
 
 	/**
@@ -1217,7 +1217,7 @@ public final class ApiGenerator
 			writer.write("\t/**\n" +
 				"\t * @return the global configuration shared by all verifiers\n" +
 				"\t */\n" +
-				"\tpublic static GlobalConfiguration globalConfiguration()\n" +
+				"\tpublic static GlobalConfiguration getGlobalConfiguration()\n" +
 				"\t{\n" +
 				"\t\treturn DefaultJvmScope.INSTANCE.getGlobalConfiguration();\n" +
 				"\t}\n" +
@@ -1296,6 +1296,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.Configurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
+				"import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
@@ -1321,6 +1322,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n" +
+				"import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;\n" +
 				"\n" +
 				"import java.math.BigDecimal;\n" +
@@ -1562,6 +1564,11 @@ public final class ApiGenerator
 				"\tpublic Configuration getConfiguration()\n" +
 				"\t{\n" +
 				"\t\treturn javaVerifier.getConfiguration();\n" +
+				"\t}\n" +
+				"\t@Override\n" +
+				"\tpublic GlobalConfiguration getGlobalConfiguration()\n" +
+				"\t{\n" +
+				"\t\treturn DefaultJvmScope.INSTANCE.getGlobalConfiguration();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +

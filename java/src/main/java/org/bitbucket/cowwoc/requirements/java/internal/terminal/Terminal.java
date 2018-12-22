@@ -6,7 +6,8 @@ package org.bitbucket.cowwoc.requirements.java.internal.terminal;
 
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.OperatingSystem.Version;
+import org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem;
+import org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem.Version;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.bitbucket.cowwoc.requirements.java.internal.terminal.OperatingSystem.Type.WINDOWS;
+import static org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem.Type.WINDOWS;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.RGB_888COLOR;
 import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_16COLOR;

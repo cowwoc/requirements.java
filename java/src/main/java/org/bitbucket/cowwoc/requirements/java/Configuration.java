@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
+import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Lists;
@@ -298,6 +299,12 @@ public final class Configuration implements Configurable
 		hash = 23 * hash + Boolean.hashCode(assertionsEnabled);
 		hash = 23 * hash + Boolean.hashCode(diffEnabled);
 		return 23 * hash + typeToStringConverter.hashCode();
+	}
+
+	@Override
+	public GlobalConfiguration getGlobalConfiguration()
+	{
+		return DefaultJvmScope.INSTANCE.getGlobalConfiguration();
 	}
 
 	@Override

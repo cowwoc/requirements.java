@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.internal.impl.MultimapVerifierImpl;
 import org.bitbucket.cowwoc.requirements.guava.internal.impl.NoOpMultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 
@@ -188,5 +189,11 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 		if (config.equals(configuration))
 			return this;
 		return new DefaultGuavaVerifier(scope, configuration);
+	}
+
+	@Override
+	public GlobalConfiguration getGlobalConfiguration()
+	{
+		return config.getGlobalConfiguration();
 	}
 }

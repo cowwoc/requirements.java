@@ -4,9 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
@@ -16,10 +16,10 @@ import java.util.function.Supplier;
  */
 public final class MainApplicationScope extends AbstractApplicationScope
 {
-	public static final MainApplicationScope INSTANCE = new MainApplicationScope(
-		DefaultJvmScope.INSTANCE);
+	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
 	public final JvmScope parent;
 	public final GlobalConfiguration globalConfiguration;
+	public final Supplier<Configuration> defaultConfigurationSupplier;
 
 	/**
 	 * @param parent the parent scope
@@ -31,6 +31,14 @@ public final class MainApplicationScope extends AbstractApplicationScope
 			throw new NullPointerException("parent may not be null");
 		this.parent = parent;
 		this.globalConfiguration = parent.getGlobalConfiguration();
+		Configuration defaultConfiguration = new Configuration();
+		this.defaultConfigurationSupplier = () ->
+		{
+			Configuration result = defaultConfiguration;
+			if (!globalConfiguration.isDiffEnabled())
+				result = result.withoutDiff();
+			return result;
+		};
 	}
 
 	@Override
@@ -48,13 +56,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	@Override
 	public Supplier<Configuration> getDefaultConfiguration()
 	{
-		return () ->
-		{
-			Configuration result = defaultConfiguration;
-			if (!globalConfiguration.isDiffEnabled())
-				result = result.withoutDiff();
-			return result;
-		};
+		return defaultConfigurationSupplier;
 	}
 
 	@Override
@@ -70,9 +72,9 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public Supplier<Boolean> isApiInStacktrace()
+	public Supplier<Boolean> isLibraryRemovedFromStacktrace()
 	{
-		return globalConfiguration::isApiInStacktrace;
+		return globalConfiguration::isLibraryRemovedFromStacktrace;
 	}
 
 	@Override

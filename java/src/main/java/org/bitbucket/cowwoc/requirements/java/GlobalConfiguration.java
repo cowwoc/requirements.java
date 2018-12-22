@@ -8,6 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
 import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The global configuration inherited by all verifiers.
@@ -28,11 +29,11 @@ public final class GlobalConfiguration
 	/**
 	 * True if API elements should show up in exception stacktraces.
 	 */
-	private boolean apiInStacktrace = false;
+	private final AtomicBoolean removeLibraryFromStacktrace = new AtomicBoolean(true);
 	/**
 	 * True if exceptions should contain a diff of the values being compared.
 	 */
-	private boolean diffEnabled = true;
+	private final AtomicBoolean diffEnabled = new AtomicBoolean(true);
 
 	/**
 	 * @param scope the system configuration
@@ -49,7 +50,7 @@ public final class GlobalConfiguration
 	 * @see #withTerminalEncoding(TerminalEncoding)
 	 * @see #withDefaultTerminalEncoding()
 	 */
-	public Set<TerminalEncoding> getAvailableTerminalEncodings()
+	public Set<TerminalEncoding> listTerminalEncodings()
 	{
 		return scope.getTerminal().getSupportedTypes();
 	}
@@ -60,6 +61,18 @@ public final class GlobalConfiguration
 	public TerminalEncoding getTerminalEncoding()
 	{
 		return scope.getTerminal().getEncoding();
+	}
+
+	/**
+	 * Indicates that the terminal encoding should be auto-detected.
+	 *
+	 * @return this
+	 * @see #withTerminalEncoding(TerminalEncoding)
+	 */
+	public GlobalConfiguration withDefaultTerminalEncoding()
+	{
+		scope.getTerminal().useBestEncoding();
+		return this;
 	}
 
 	/**
@@ -82,80 +95,70 @@ public final class GlobalConfiguration
 	}
 
 	/**
-	 * Indicates that the terminal encoding should be auto-detected.
+	 * @return true if exceptions should remove references to this library from their stack traces ({@code true} by default)
+	 * @see #withLibraryRemovedFromStacktrace()
+	 * @see #withoutLibraryRemovedFromStacktrace()
+	 */
+	public boolean isLibraryRemovedFromStacktrace()
+	{
+		return removeLibraryFromStacktrace.get();
+	}
+
+	/**
+	 * Indicates that exceptions should remove references to this library from their stack traces.
 	 *
 	 * @return this
-	 * @see #withTerminalEncoding(TerminalEncoding)
+	 * @see #isLibraryRemovedFromStacktrace()
 	 */
-	public GlobalConfiguration withDefaultTerminalEncoding()
+	public GlobalConfiguration withLibraryRemovedFromStacktrace()
 	{
-		scope.getTerminal().useBestEncoding();
+		removeLibraryFromStacktrace.set(true);
 		return this;
 	}
 
 	/**
-	 * @return true if exception stack-traces should contain elements from this API (false by default)
-	 */
-	public boolean isApiInStacktrace()
-	{
-		return apiInStacktrace;
-	}
-
-	/**
-	 * Indicates that exception stack-traces should contain elements from this API.
+	 * Indicates that exceptions shouldn't remove references to this library from their stack traces.
 	 *
 	 * @return this
-	 * @see #isApiInStacktrace
+	 * @see #isLibraryRemovedFromStacktrace()
 	 */
-	public GlobalConfiguration withApiInStacktrace()
+	public GlobalConfiguration withoutLibraryRemovedFromStacktrace()
 	{
-		this.apiInStacktrace = true;
+		removeLibraryFromStacktrace.set(false);
 		return this;
 	}
 
 	/**
-	 * Indicates that exception stack-traces should not contain elements from this API.
-	 *
-	 * @return this
-	 * @see #isApiInStacktrace
-	 */
-	public GlobalConfiguration withoutApiInStacktrace()
-	{
-		this.apiInStacktrace = false;
-		return this;
-	}
-
-	/**
-	 * @return true if exceptions should show the difference between the actual and expected values
-	 *         (true by default)
+	 * @return true if exceptions should show the difference between the actual and expected values ({@code true} by default)
 	 * @see #withDiff()
 	 * @see #withoutDiff()
 	 */
 	public boolean isDiffEnabled()
 	{
-		return diffEnabled;
+		return diffEnabled.get();
 	}
 
 	/**
 	 * Indicates that exceptions should show the difference between the actual and expected values.
 	 *
 	 * @return this
+	 * @see #isDiffEnabled()
 	 */
 	public GlobalConfiguration withDiff()
 	{
-		this.diffEnabled = true;
+		diffEnabled.set(true);
 		return this;
 	}
 
 	/**
-	 * Indicates that exceptions should not show the difference between the actual and expected
-	 * values.
+	 * Indicates that exceptions should not show the difference between the actual and expected values.
 	 *
 	 * @return this
+	 * @see #isDiffEnabled()
 	 */
 	public GlobalConfiguration withoutDiff()
 	{
-		this.diffEnabled = false;
+		diffEnabled.set(false);
 		return this;
 	}
 }

@@ -13,7 +13,7 @@ public interface Configurable
 {
 	/**
 	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
-	 *         shouldn't do anything
+	 * shouldn't do anything
 	 */
 	boolean assertionsAreEnabled();
 
@@ -113,4 +113,9 @@ public interface Configurable
 	 * @throws NullPointerException if {@code configuration} is null
 	 */
 	Configurable withConfiguration(Configuration configuration);
+
+	/**
+	 * @return the global configuration shared by all verifiers
+	 */
+	GlobalConfiguration getGlobalConfiguration();
 }

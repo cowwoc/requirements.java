@@ -4,6 +4,7 @@
  */
 module org.bitbucket.cowwoc.requirements.java
 {
+	requires org.bitbucket.cowwoc.requirements.natives;
 	requires org.bitbucket.cowwoc.diffmatchpatch;
 	requires org.slf4j;
 	requires org.bitbucket.cowwoc.pouch;
