@@ -70,7 +70,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	protected final Configuration config;
 
 	/**
-	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope, Configuration) DefaultJavaVerifier(scope, scope.getGlobalConfiguration()}.
+	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope, Configuration) DefaultJavaVerifier(scope, scope.getGlobalConfiguration())}.
 	 *
 	 * @param scope the application configuration
 	 * @throws AssertionError if any of the arguments are null

@@ -76,31 +76,13 @@
 						<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
 					</links>
 					<!--
-					NOTE: <docfilessubdirs> is only needed when generating Javadoc for color diffs
+					NOTE: <docfilessubdirs> is only needed to generate Javadoc for ANSI String diffs, which is disabled by default.
 
 					<docfilessubdirs>true</docfilessubdirs>
 					-->
-
-					<sourcepath>${project.basedir}/../guava/src/main/java:${project.build.directory}/javadoc-sources</sourcepath>
-					<!-- whitelist in order to exclude internal classes -->
-					<sourceFileIncludes>
-						<include>org/bitbucket/cowwoc/requirements/code-generator/**.java</include>
-						<include>org/bitbucket/cowwoc/requirements/java/*.java</include>
-						<include>org/bitbucket/cowwoc/requirements/java/annotations/*.java</include>
-						<include>org/bitbucket/cowwoc/requirements/java/capabilities/*.java</include>
-						<include>org/bitbucket/cowwoc/requirements/java/terminal/*.java</include>
-						<include>org/bitbucket/cowwoc/requirements/guava/**.java</include>
-					</sourceFileIncludes>
-					<additionalDependencies>
-						<additionalDependency>
-							<groupId>com.google.guava</groupId>
-							<artifactId>guava</artifactId>
-							<version>${guava.version}</version>
-						</additionalDependency>
-					</additionalDependencies>
 					<show>public</show>
-					<doctitle>Requirements ${project.version} API</doctitle>
-					<windowtitle>Requirements ${project.version} API</windowtitle>
+					<doctitle>Requirements-Java ${project.version} API</doctitle>
+					<windowtitle>Requirements-Java ${project.version} API</windowtitle>
 				</configuration>
 			</plugin>
 			<!--

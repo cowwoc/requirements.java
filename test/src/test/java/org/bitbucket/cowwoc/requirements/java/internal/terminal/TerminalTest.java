@@ -35,7 +35,7 @@ public final class TerminalTest
 	}
 
 	/**
-	 * Force verifies to output using an encoding that might not be supported by the terminal.
+	 * Force verifiers to output using an encoding that might not be supported by the terminal.
 	 *
 	 * @throws IOException if an operation fails
 	 */

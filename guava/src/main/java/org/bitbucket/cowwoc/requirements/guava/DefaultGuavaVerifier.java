@@ -52,7 +52,8 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	}
 
 	/**
-	 * Equivalent to {@link #DefaultGuavaVerifier(ApplicationScope, Configuration) DefaultJavaVerifier(scope, scope.getGlobalConfiguration()}.
+	 * Equivalent to
+	 * {@link #DefaultGuavaVerifier(ApplicationScope, Configuration) DefaultJavaVerifier(scope, scope.getGlobalConfiguration())}.
 	 *
 	 * @param scope the application configuration
 	 * @throws AssertionError if any of the arguments are null

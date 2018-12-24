@@ -15,8 +15,14 @@
 
 	<build>
 		<directory>${basedir}/target/${platform}-${build.type}</directory>
-		<sourceDirectory>src/main/cpp</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -28,7 +34,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/main/java</source>
+								<source>src/main/cpp</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -96,7 +102,7 @@
 							<outputDirectory>${project.build.directory}/sources</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.build.sourceDirectory}</directory>
+									<directory>${project.basedir}/src/main/cpp</directory>
 								</resource>
 							</resources>
 						</configuration>
