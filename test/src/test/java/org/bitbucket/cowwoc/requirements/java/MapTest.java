@@ -23,7 +23,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.emptyMap();
-			new Requirements(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(actual, null);
 		}
 	}
 
@@ -33,7 +33,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.emptyMap();
-			new Requirements(scope).requireThat("", actual);
+			new Requirements(scope).requireThat(actual, "");
 		}
 	}
 
@@ -43,7 +43,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.emptyMap();
-			new Requirements(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -53,7 +53,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -63,7 +63,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -73,7 +73,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.emptyMap();
-			new Requirements(scope).requireThat("actual", actual).isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -83,7 +83,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).keySet().contains("key");
+			new Requirements(scope).requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -93,7 +93,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("notKey", "value");
-			new Requirements(scope).requireThat("actual", actual).keySet().contains("key");
+			new Requirements(scope).requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -103,7 +103,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).keySet().
+			new Requirements(scope).requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -114,7 +114,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("notKey", "value");
-			new Requirements(scope).requireThat("actual", actual).keySet().
+			new Requirements(scope).requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -125,7 +125,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).values().contains("value");
+			new Requirements(scope).requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -135,7 +135,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "notValue");
-			new Requirements(scope).requireThat("actual", actual).values().contains("value");
+			new Requirements(scope).requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -145,7 +145,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).values().
+			new Requirements(scope).requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -156,7 +156,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "notValue");
-			new Requirements(scope).requireThat("actual", actual).values().
+			new Requirements(scope).requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -167,7 +167,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).entrySet().
+			new Requirements(scope).requireThat(actual, "actual").entrySet().
 				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
@@ -178,7 +178,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("notKey", "value");
-			new Requirements(scope).requireThat("actual", actual).entrySet().
+			new Requirements(scope).requireThat(actual, "actual").entrySet().
 				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
@@ -189,7 +189,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).entrySet().
+			new Requirements(scope).requireThat(actual, "actual").entrySet().
 				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
@@ -200,7 +200,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("notKey", "value");
-			new Requirements(scope).requireThat("actual", actual).entrySet().
+			new Requirements(scope).requireThat(actual, "actual").entrySet().
 				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
@@ -211,7 +211,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(1);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -221,7 +221,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("notKey", "value");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(2);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -231,7 +231,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(2);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -241,7 +241,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("notKey", "value");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(1);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -252,7 +252,7 @@ public final class MapTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Map<?, ?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
 		}
 	}
 
@@ -262,7 +262,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				keySet(k -> k.contains("key")).
 				values(v -> v.contains("value"));
 		}
@@ -274,7 +274,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				keySet(k -> k.contains("notTheKey")).
 				values(v -> v.contains("value"));
 		}
@@ -286,7 +286,7 @@ public final class MapTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Map<String, String> actual = Collections.singletonMap("key", "value");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				keySet(k -> k.contains("key")).
 				values(v -> v.contains("notTheValue"));
 		}

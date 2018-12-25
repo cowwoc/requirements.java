@@ -29,14 +29,13 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is greater than the specified the specified value.
 	 *
-	 * @param name  the name of the lower bound
 	 * @param value a lower bound
+	 * @param name  the name of the lower bound
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is less than or
-	 *                                  equal to {@code value}
+	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}. If {@code name} is empty.
 	 */
-	S isGreaterThan(String name, T value);
+	S isGreaterThan(T value, String name);
 
 	/**
 	 * Ensures that the actual value is greater than or equal to the specified value.
@@ -51,14 +50,13 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is greater than or equal to the specified value.
 	 *
-	 * @param name  the name of the minimum value
 	 * @param value the minimum value
+	 * @param name  the name of the minimum value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is less than to
-	 *                                  {@code value}
+	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws IllegalArgumentException if the actual value is less than to {@code value}. If {@code name} is empty.
 	 */
-	S isGreaterThanOrEqualTo(String name, T value);
+	S isGreaterThanOrEqualTo(T value, String name);
 
 	/**
 	 * Ensures that the actual value is less than the specified value.
@@ -73,14 +71,13 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is less than the value of the specified value.
 	 *
-	 * @param name  the name of the upper bound
 	 * @param value the upper bound
+	 * @param name  the name of the upper bound
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is greater than
-	 *                                  or equal to {@code value}
+	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}. If {@code name} is empty.
 	 */
-	S isLessThan(String name, T value);
+	S isLessThan(T value, String name);
 
 	/**
 	 * Ensures that the actual value is less than or equal to the specified value.
@@ -95,14 +92,13 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is less than or equal to the specified value.
 	 *
-	 * @param name  the name of the maximum value
 	 * @param value the maximum value
+	 * @param name  the name of the maximum value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is greater than
-	 *                                  {@code value}
+	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws IllegalArgumentException if the actual value is greater than {@code value}. If {@code name} is empty.
 	 */
-	S isLessThanOrEqualTo(String name, T value);
+	S isLessThanOrEqualTo(T value, String name);
 
 	/**
 	 * Ensures that the actual value is comparable to the expected value.
@@ -117,13 +113,13 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is comparable to the expected value.
 	 *
-	 * @param name     the name of the expected value
 	 * @param expected the expected value
+	 * @param name     the name of the expected value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code expected} are null
-	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}. If {@code name} is empty.
 	 */
-	S isComparableTo(String name, T expected);
+	S isComparableTo(T expected, String name);
 
 	/**
 	 * Ensures that the actual value is not comparable to another value.
@@ -138,13 +134,13 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is not comparable to another value.
 	 *
-	 * @param name  the name of the other value
 	 * @param other the other value
+	 * @param name  the name of the other value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code other} are null
-	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}
+	 * @throws NullPointerException     if {@code other} or {@code name} are null
+	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}. If {@code name} is empty.
 	 */
-	S isNotComparableTo(String name, T other);
+	S isNotComparableTo(T other, String name);
 
 	/**
 	 * Ensures that the actual value is within range.
@@ -153,8 +149,7 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param endExclusive   the upper bound of the range (exclusive)
 	 * @return this
 	 * @throws NullPointerException     if {@code startInclusive} or {@code endExclusive} are null
-	 * @throws IllegalArgumentException if {@code endExclusive} is less than {@code startInclusive};
-	 *                                  if the actual value is not in range
+	 * @throws IllegalArgumentException if {@code endExclusive} is less than {@code startInclusive}. If the actual value is not in range.
 	 */
 	S isBetween(T startInclusive, T endExclusive);
 
@@ -165,8 +160,7 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param endInclusive   the upper bound of the range (inclusive)
 	 * @return this
 	 * @throws NullPointerException     if {@code startInclusive} or {@code endInclusive} are null
-	 * @throws IllegalArgumentException if {@code endInclusive} is less than {@code startInclusive};
-	 *                                  if the actual value is not in range
+	 * @throws IllegalArgumentException if {@code endInclusive} is less than {@code startInclusive}. If the actual value is not in range.
 	 */
 	S isBetweenClosed(T startInclusive, T endInclusive);
 }

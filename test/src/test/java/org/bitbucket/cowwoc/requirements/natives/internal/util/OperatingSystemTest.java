@@ -16,7 +16,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1.2.3");
 		Version expected = new Version(1, 2, 3);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -24,7 +24,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseWindowsVersion("Microsoft Windows [Version 10.0.16299.125]");
 		Version expected = new Version(10, 0, 16299, 125);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -32,7 +32,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1");
 		Version expected = new Version(1);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1.2");
 		Version expected = new Version(1, 2);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1.2.3");
 		Version expected = new Version(1, 2, 3);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1.2.3.4");
 		Version expected = new Version(1, 2, 3, 4);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1.2");
 		Version expected = new Version(1, 2, 0);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1");
 		Version expected = new Version(1, 0);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public final class OperatingSystemTest
 	{
 		Version actual = Version.parseVersion("1.0.0");
 		Version expected = new Version(1, 0, 0, 0);
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public final class OperatingSystemTest
 	{
 		String expected = "1";
 		String actual = Version.parseVersion(expected).toString();
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public final class OperatingSystemTest
 	{
 		String expected = "1.0";
 		String actual = Version.parseVersion(expected).toString();
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 
 	@Test
@@ -104,6 +104,6 @@ public final class OperatingSystemTest
 	{
 		String expected = "1.0.0";
 		String actual = Version.parseVersion(expected).toString();
-		requireThat("actual", actual).isEqualTo("expected", expected);
+		requireThat(actual, "actual").isEqualTo(expected, "expected");
 	}
 }

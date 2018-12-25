@@ -32,7 +32,7 @@ public final class ExceptionsTest
 		RuntimeException result = exceptions.createException(NullPointerException.class, "message", null, true);
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		new Requirements().addContext("exception", exceptions.getClass()).
-			assertThat("optimizedException", optimizedException).isTrue();
+			requireThat(optimizedException, "optimizedException").isTrue();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public final class ExceptionsTest
 		RuntimeException result = exceptions.createException(IllegalArgumentException.class, "message", null, true);
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		new Requirements().addContext("exception", exceptions.getClass()).
-			assertThat("optimizedException", optimizedException).isTrue();
+			requireThat(optimizedException, "optimizedException").isTrue();
 	}
 
 	/**
@@ -56,6 +56,6 @@ public final class ExceptionsTest
 		RuntimeException result = exceptions.createException(IllegalStateException.class, "message", null, true);
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		new Requirements().addContext("exception", exceptions.getClass()).
-			assertThat("optimizedException", optimizedException).isFalse();
+			requireThat(optimizedException, "optimizedException").isFalse();
 	}
 }

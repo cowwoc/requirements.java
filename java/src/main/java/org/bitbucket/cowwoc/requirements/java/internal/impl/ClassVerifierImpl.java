@@ -22,7 +22,7 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected ClassVerifierImpl(ApplicationScope scope, String name, Class<T> actual, Configuration config)
 	{
@@ -32,7 +32,7 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 	@Override
 	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat("type", type).isNotNull();
+		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (actual.isAssignableFrom(type))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,

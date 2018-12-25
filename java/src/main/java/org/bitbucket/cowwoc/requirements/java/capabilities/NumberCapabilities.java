@@ -93,13 +93,13 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is a multiple of the specified value.
 	 *
-	 * @param name    the name of the divisor
 	 * @param divisor the value being divided by
+	 * @param name    the name of the divisor
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is not a multiple of {@code divisor}
+	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}. If {@code name} is empty.
 	 */
-	S isMultipleOf(String name, T divisor);
+	S isMultipleOf(T divisor, String name);
 
 	/**
 	 * Ensures that the actual value is not a multiple of the specified value.
@@ -114,11 +114,11 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	/**
 	 * Ensures that the actual value is not a multiple of the specified value.
 	 *
-	 * @param name    the name of the divisor
 	 * @param divisor the value being divided by
+	 * @param name    the name of the divisor
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is a multiple of {@code divisor}
+	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}. If {@code name} is empty.
 	 */
-	S isNotMultipleOf(String name, T divisor);
+	S isNotMultipleOf(T divisor, String name);
 }

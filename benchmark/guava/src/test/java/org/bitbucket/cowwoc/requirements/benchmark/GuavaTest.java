@@ -56,6 +56,6 @@ public class GuavaTest
 	@Benchmark
 	public CollectionVerifier<List<Integer>, Integer> requirementsRequireThat()
 	{
-		return new Requirements().requireThat(name, list).doesNotContainDuplicates();
+		return new Requirements().requireThat(list, name).doesNotContainDuplicates();
 	}
 }

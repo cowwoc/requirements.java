@@ -52,7 +52,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S contains(String name, E expected)
+	public S contains(E expected, String name)
 		throws NullPointerException, IllegalArgumentException
 	{
 		return getThis();
@@ -65,7 +65,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S containsExactly(String name, Collection<E> expected)
+	public S containsExactly(Collection<E> expected, String name)
 	{
 		return getThis();
 	}
@@ -77,7 +77,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S containsAny(String name, Collection<E> expected)
+	public S containsAny(Collection<E> expected, String name)
 	{
 		return getThis();
 	}
@@ -89,7 +89,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S containsAll(String name, Collection<E> expected)
+	public S containsAll(Collection<E> expected, String name)
 	{
 		return getThis();
 	}
@@ -101,7 +101,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S doesNotContain(String name, E element)
+	public S doesNotContain(E element, String name)
 	{
 		return getThis();
 	}
@@ -113,7 +113,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S doesNotContainExactly(String name, Collection<E> element)
+	public S doesNotContainExactly(Collection<E> element, String name)
 	{
 		return getThis();
 	}
@@ -125,7 +125,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S doesNotContainAny(String name, Collection<E> elements)
+	public S doesNotContainAny(Collection<E> element, String names)
 	{
 		return getThis();
 	}
@@ -137,7 +137,7 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public S doesNotContainAll(String name, Collection<E> elements)
+	public S doesNotContainAll(Collection<E> element, String names)
 	{
 		return getThis();
 	}

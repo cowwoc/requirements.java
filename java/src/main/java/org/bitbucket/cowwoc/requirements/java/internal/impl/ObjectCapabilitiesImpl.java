@@ -38,7 +38,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected ObjectCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
@@ -79,9 +79,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isEqualTo(String name, Object expected)
+	public S isEqualTo(Object expected, String name)
 	{
-		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
 
@@ -107,9 +107,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotEqualTo(String name, Object other)
+	public S isNotEqualTo(Object other, String name)
 	{
-		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, other))
 			return getThis();
 
@@ -120,9 +120,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isSameObjectAs(String name, Object expected)
+	public S isSameObjectAs(Object expected, String name)
 	{
-		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual == expected)
 			return getThis();
 
@@ -136,9 +136,9 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotSameObjectAs(String name, Object other)
+	public S isNotSameObjectAs(Object other, String name)
 	{
-		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual != other)
 			return getThis();
 
@@ -151,7 +151,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isIn(Collection<? super T> collection)
 	{
-		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 			return getThis();
 
@@ -165,7 +165,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	public S isNotIn(Collection<? super T> collection)
 	{
 		// Use-case: "actual" may not be equal to one or more reserved values
-		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
 
@@ -178,7 +178,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat("type", type).isNotNull();
+		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (type.isInstance(actual))
 			return getThis();
 
@@ -197,7 +197,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotInstanceOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat("type", type).isNotNull();
+		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (!type.isInstance(actual))
 			return getThis();
 

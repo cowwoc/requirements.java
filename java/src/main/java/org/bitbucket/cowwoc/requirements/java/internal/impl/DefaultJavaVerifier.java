@@ -201,512 +201,512 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	}
 
 	@Override
-	public <T> ObjectVerifier<T> requireThat(String name, T actual)
+	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
 		verifyName(name);
 		return new ObjectVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <T> ObjectVerifier<T> assertThat(String name, T actual)
+	public <T> ObjectVerifier<T> assertThat(T actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpObjectVerifier<>(config);
 	}
 
 	@Override
-	public <C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(String name, C actual)
+	public <C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name)
 	{
 		verifyName(name);
 		return new CollectionVerifierImpl<>(scope, name, actual, Pluralizer.ELEMENT, config);
 	}
 
 	@Override
-	public <C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(String name, C actual)
+	public <C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(C actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpCollectionVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveByteArrayVerifier requireThat(String name, byte[] actual)
+	public PrimitiveByteArrayVerifier requireThat(byte[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveByteArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveByteArrayVerifier assertThat(String name, byte[] actual)
+	public PrimitiveByteArrayVerifier assertThat(byte[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveByteArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveShortArrayVerifier requireThat(String name, short[] actual)
+	public PrimitiveShortArrayVerifier requireThat(short[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveShortArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveShortArrayVerifier assertThat(String name, short[] actual)
+	public PrimitiveShortArrayVerifier assertThat(short[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveShortArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveIntegerArrayVerifier requireThat(String name, int[] actual)
+	public PrimitiveIntegerArrayVerifier requireThat(int[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveIntegerArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveIntegerArrayVerifier assertThat(String name, int[] actual)
+	public PrimitiveIntegerArrayVerifier assertThat(int[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveIntegerArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveLongArrayVerifier requireThat(String name, long[] actual)
+	public PrimitiveLongArrayVerifier requireThat(long[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveLongArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveLongArrayVerifier assertThat(String name, long[] actual)
+	public PrimitiveLongArrayVerifier assertThat(long[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveLongArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveFloatArrayVerifier requireThat(String name, float[] actual)
+	public PrimitiveFloatArrayVerifier requireThat(float[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveFloatArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveFloatArrayVerifier assertThat(String name, float[] actual)
+	public PrimitiveFloatArrayVerifier assertThat(float[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveFloatArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveDoubleArrayVerifier requireThat(String name, double[] actual)
+	public PrimitiveDoubleArrayVerifier requireThat(double[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveDoubleArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveDoubleArrayVerifier assertThat(String name, double[] actual)
+	public PrimitiveDoubleArrayVerifier assertThat(double[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveDoubleArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveBooleanArrayVerifier requireThat(String name, boolean[] actual)
+	public PrimitiveBooleanArrayVerifier requireThat(boolean[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveBooleanArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveBooleanArrayVerifier assertThat(String name, boolean[] actual)
+	public PrimitiveBooleanArrayVerifier assertThat(boolean[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveBooleanArrayVerifier(config);
 	}
 
 	@Override
-	public PrimitiveCharacterArrayVerifier requireThat(String name, char[] actual)
+	public PrimitiveCharacterArrayVerifier requireThat(char[] actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveCharacterArrayVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveCharacterArrayVerifier assertThat(String name, char[] actual)
+	public PrimitiveCharacterArrayVerifier assertThat(char[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveCharacterArrayVerifier(config);
 	}
 
 	@Override
-	public <E> ArrayVerifier<E> requireThat(String name, E[] actual)
+	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
 		verifyName(name);
 		return new ArrayVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <E> ArrayVerifier<E> assertThat(String name, E[] actual)
+	public <E> ArrayVerifier<E> assertThat(E[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpArrayVerifier<>(config);
 	}
 
 	@Override
-	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(String name, T actual)
+	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name)
 	{
 		verifyName(name);
 		return new ComparableVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(String name, T actual)
+	public <T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpComparableVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveBooleanVerifier requireThat(String name, boolean actual)
+	public PrimitiveBooleanVerifier requireThat(boolean actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveBooleanVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveBooleanVerifier assertThat(String name, boolean actual)
+	public PrimitiveBooleanVerifier assertThat(boolean actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveBooleanVerifier(config);
 	}
 
 	@Override
-	public BooleanVerifier requireThat(String name, Boolean actual)
+	public BooleanVerifier requireThat(Boolean actual, String name)
 	{
 		verifyName(name);
 		return new BooleanVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public BooleanVerifier assertThat(String name, Boolean actual)
+	public BooleanVerifier assertThat(Boolean actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpBooleanVerifier(config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Byte> requireThat(String name, byte actual)
+	public PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Byte> assertThat(String name, byte actual)
+	public PrimitiveNumberVerifier<Byte> assertThat(byte actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveCharacterVerifier requireThat(String name, char actual)
+	public PrimitiveCharacterVerifier requireThat(char actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveCharacterVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveCharacterVerifier assertThat(String name, char actual)
+	public PrimitiveCharacterVerifier assertThat(char actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveCharacterVerifier(config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Short> requireThat(String name, short actual)
+	public PrimitiveNumberVerifier<Short> requireThat(short actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Short> assertThat(String name, short actual)
+	public PrimitiveNumberVerifier<Short> assertThat(short actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveNumberVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier<Integer> requireThat(String name, int actual)
+	public PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveIntegerVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier<Integer> assertThat(String name, int actual)
+	public PrimitiveIntegerVerifier<Integer> assertThat(int actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveIntegerVerifier<>(config);
 	}
 
 	@Override
-	public IntegerVerifier<Integer> requireThat(String name, Integer actual)
+	public IntegerVerifier<Integer> requireThat(Integer actual, String name)
 	{
 		verifyName(name);
 		return new IntegerVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public IntegerVerifier<Integer> assertThat(String name, Integer actual)
+	public IntegerVerifier<Integer> assertThat(Integer actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpIntegerVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier<Long> requireThat(String name, long actual)
+	public PrimitiveIntegerVerifier<Long> requireThat(long actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveLongVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveIntegerVerifier<Long> assertThat(String name, long actual)
+	public PrimitiveIntegerVerifier<Long> assertThat(long actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveIntegerVerifier<>(config);
 	}
 
 	@Override
-	public IntegerVerifier<Long> requireThat(String name, Long actual)
+	public IntegerVerifier<Long> requireThat(Long actual, String name)
 	{
 		verifyName(name);
 		return new LongVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public IntegerVerifier<Long> assertThat(String name, Long actual)
+	public IntegerVerifier<Long> assertThat(Long actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpIntegerVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveFloatingPointVerifier<Float> requireThat(String name, float actual)
+	public PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveFloatVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveFloatingPointVerifier<Float> assertThat(String name, float actual)
+	public PrimitiveFloatingPointVerifier<Float> assertThat(float actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveFloatingPointVerifier<>(config);
 	}
 
 	@Override
-	public FloatingPointVerifier<Float> requireThat(String name, Float actual)
+	public FloatingPointVerifier<Float> requireThat(Float actual, String name)
 	{
 		verifyName(name);
 		return new FloatVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public FloatingPointVerifier<Float> assertThat(String name, Float actual)
+	public FloatingPointVerifier<Float> assertThat(Float actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpFloatingPointVerifier<>(config);
 	}
 
 	@Override
-	public PrimitiveFloatingPointVerifier<Double> requireThat(String name, double actual)
+	public PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name)
 	{
 		verifyName(name);
 		return new PrimitiveDoubleVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PrimitiveFloatingPointVerifier<Double> assertThat(String name, double actual)
+	public PrimitiveFloatingPointVerifier<Double> assertThat(double actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPrimitiveFloatingPointVerifier<>(config);
 	}
 
 	@Override
-	public FloatingPointVerifier<Double> requireThat(String name, Double actual)
+	public FloatingPointVerifier<Double> requireThat(Double actual, String name)
 	{
 		verifyName(name);
 		return new DoubleVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public FloatingPointVerifier<Double> assertThat(String name, Double actual)
+	public FloatingPointVerifier<Double> assertThat(Double actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpFloatingPointVerifier<>(config);
 	}
 
 	@Override
-	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(String name, T actual)
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual, String name)
 	{
 		verifyName(name);
 		return new NumberVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(String name, T actual)
+	public <T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpNumberVerifier<>(config);
 	}
 
 	@Override
-	public BigDecimalVerifier requireThat(String name, BigDecimal actual)
+	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
 		verifyName(name);
 		return new BigDecimalVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public BigDecimalVerifier assertThat(String name, BigDecimal actual)
+	public BigDecimalVerifier assertThat(BigDecimal actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpBigDecimalVerifier(config);
 	}
 
 	@Override
-	public <K, V> MapVerifier<K, V> requireThat(String name, Map<K, V> actual)
+	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
 		verifyName(name);
 		return new MapVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <K, V> MapVerifier<K, V> assertThat(String name, Map<K, V> actual)
+	public <K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpMapVerifier<>(config);
 	}
 
 	@Override
-	public PathVerifier requireThat(String name, Path actual)
+	public PathVerifier requireThat(Path actual, String name)
 	{
 		verifyName(name);
 		return new PathVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public PathVerifier assertThat(String name, Path actual)
+	public PathVerifier assertThat(Path actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpPathVerifier(config);
 	}
 
 	@Override
-	public StringVerifier requireThat(String name, String actual)
+	public StringVerifier requireThat(String actual, String name)
 	{
 		verifyName(name);
 		return new StringVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public StringVerifier assertThat(String name, String actual)
+	public StringVerifier assertThat(String actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpStringVerifier(config);
 	}
 
 	@Override
-	public UriVerifier requireThat(String name, URI actual)
+	public UriVerifier requireThat(URI actual, String name)
 	{
 		verifyName(name);
 		return new UriVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public UriVerifier assertThat(String name, URI actual)
+	public UriVerifier assertThat(URI actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpUriVerifier(config);
 	}
 
 	@Override
-	public <T> ClassVerifier<T> requireThat(String name, Class<T> actual)
+	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
 		verifyName(name);
 		return new ClassVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <T> ClassVerifier<T> assertThat(String name, Class<T> actual)
+	public <T> ClassVerifier<T> assertThat(Class<T> actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpClassVerifier<>(config);
 	}
 
 	@Override
-	public OptionalVerifier requireThat(String name, Optional<?> actual)
+	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
 		verifyName(name);
 		return new OptionalVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public OptionalVerifier assertThat(String name, Optional<?> actual)
+	public OptionalVerifier assertThat(Optional<?> actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpOptionalVerifier(config);
 	}
 
 	@Override
-	public InetAddressVerifier requireThat(String name, InetAddress actual)
+	public InetAddressVerifier requireThat(InetAddress actual, String name)
 	{
 		verifyName(name);
 		return new InetAddressVerifierImpl(scope, name, actual, config);
 	}
 
 	@Override
-	public InetAddressVerifier assertThat(String name, InetAddress actual)
+	public InetAddressVerifier assertThat(InetAddress actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpInetAddressVerifier(config);
 	}
 }

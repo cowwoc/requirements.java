@@ -81,7 +81,7 @@ public abstract class NoOpNumberCapabilities<S, T extends Number & Comparable<? 
 	}
 
 	@Override
-	public S isMultipleOf(String name, T divisor)
+	public S isMultipleOf(T divisor, String name)
 	{
 		return getThis();
 	}
@@ -93,7 +93,7 @@ public abstract class NoOpNumberCapabilities<S, T extends Number & Comparable<? 
 	}
 
 	@Override
-	public S isNotMultipleOf(String name, T divisor)
+	public S isNotMultipleOf(T divisor, String name)
 	{
 		return getThis();
 	}

@@ -29,7 +29,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected ComparableCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
@@ -39,7 +39,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isLessThan(T value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return getThis();
@@ -51,11 +51,11 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isLessThan(String name, T value)
+	public S isLessThan(T value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return getThis();
@@ -69,7 +69,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isLessThanOrEqualTo(T value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return getThis();
@@ -81,11 +81,11 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(String name, T value)
+	public S isLessThanOrEqualTo(T value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return getThis();
@@ -99,7 +99,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isGreaterThan(T value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return getThis();
@@ -111,11 +111,11 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isGreaterThan(String name, T value)
+	public S isGreaterThan(T value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return getThis();
@@ -129,7 +129,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	@Override
 	public S isGreaterThanOrEqualTo(T value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return getThis();
@@ -141,11 +141,11 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(String name, T value)
+	public S isGreaterThanOrEqualTo(T value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(value, "value").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return getThis();
@@ -160,7 +160,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isComparableTo(T expected)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("expected", expected).isNotNull();
+		verifier.requireThat(expected, "expected").isNotNull();
 		if (actual.compareTo(expected) == 0)
 			return getThis();
 		String expectedAsString = secretConfiguration.toString(config, expected);
@@ -171,11 +171,11 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isComparableTo(String name, T expected)
+	public S isComparableTo(T expected, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("expected", expected).isNotNull();
+		verifier.requireThat(expected, "expected").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.compareTo(expected) == 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -189,7 +189,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isNotComparableTo(T value)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(value, "value").isNotNull();
 		if (actual.compareTo(value) != 0)
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
@@ -200,11 +200,11 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isNotComparableTo(String name, T other)
+	public S isNotComparableTo(T other, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", other).isNotNull();
+		verifier.requireThat(other, "other").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.compareTo(other) != 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -218,9 +218,9 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isBetween(T startInclusive, T endExclusive)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("startInclusive", startInclusive).isNotNull();
-		verifier.requireThat("endExclusive", endExclusive).isNotNull().
-			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
+		verifier.requireThat(endExclusive, "endExclusive").isNotNull().
+			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endExclusive) < 0)
 			return getThis();
 		String startAsString = secretConfiguration.toString(config, startInclusive);
@@ -235,9 +235,9 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	public S isBetweenClosed(T startInclusive, T endInclusive)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("startInclusive", startInclusive).isNotNull();
-		verifier.requireThat("endInclusive", endInclusive).isNotNull().
-			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
+		verifier.requireThat(endInclusive, "endInclusive").isNotNull().
+			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endInclusive) <= 0)
 			return getThis();
 		String startAsString = secretConfiguration.toString(config, startInclusive);

@@ -25,6 +25,6 @@ public final class ConfigurationTest
 		Configurable second = new Configuration();
 		second = second.addContext("name2", "value2");
 
-		assertThat("first.config", first).isNotEqualTo("second.config", second);
+		assertThat(first, "first.config").isNotEqualTo(second, "second.config");
 	}
 }

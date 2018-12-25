@@ -42,9 +42,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 
 	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final ApplicationScope scope;
+	private final String name;
 	private final E[] actual;
 	private final List<E> actualAsList;
-	private final String name;
 	private final Configuration config;
 	private final CollectionVerifier<Collection<E>, E> asCollection;
 
@@ -53,7 +53,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected ArrayVerifierImpl(ApplicationScope scope, String name, E[] actual, Configuration config)
 	{
@@ -61,12 +61,11 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 		assert (!name.isEmpty()) : "name may not be empty";
 		assert (config != null) : "config may not be null";
 		this.scope = scope;
+		this.name = name;
 		this.actual = actual;
 		this.actualAsList = asList(actual);
-		this.name = name;
 		this.config = config;
-		this.asCollection = new CollectionVerifierImpl<>(scope, name, actualAsList, Pluralizer.ELEMENT,
-			config);
+		this.asCollection = new CollectionVerifierImpl<>(scope, name, actualAsList, Pluralizer.ELEMENT, config);
 	}
 
 	@Override
@@ -77,9 +76,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> isEqualTo(String name, Object expected)
+	public ArrayVerifier<E> isEqualTo(Object expected, String name)
 	{
-		asCollection.isEqualTo(name, expected);
+		asCollection.isEqualTo(expected, name);
 		return this;
 	}
 
@@ -91,30 +90,30 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> isNotEqualTo(String name, Object value)
+	public ArrayVerifier<E> isNotEqualTo(Object value, String name)
 	{
-		asCollection.isNotEqualTo(name, value);
+		asCollection.isNotEqualTo(value, name);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> isSameObjectAs(String name, Object expected)
+	public ArrayVerifier<E> isSameObjectAs(Object expected, String name)
 	{
-		asCollection.isSameObjectAs(name, expected);
+		asCollection.isSameObjectAs(expected, name);
 		return this;
 	}
 
 	@Override
-	public ArrayVerifier<E> isNotSameObjectAs(String name, Object value)
+	public ArrayVerifier<E> isNotSameObjectAs(Object value, String name)
 	{
-		asCollection.isNotSameObjectAs(name, value);
+		asCollection.isNotSameObjectAs(value, name);
 		return this;
 	}
 
 	@Override
 	public ArrayVerifier<E> isIn(Collection<? super E[]> collection)
 	{
-		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 			return this;
 		String collectionAsString = secretConfiguration.toString(config, collection);
@@ -127,7 +126,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public ArrayVerifier<E> isNotIn(Collection<? super E[]> collection)
 	{
-		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 			return this;
 		String collectionAsString = secretConfiguration.toString(config, collection);
@@ -187,9 +186,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> contains(String name, E expected)
+	public ArrayVerifier<E> contains(E expected, String name)
 	{
-		asCollection.contains(name, expected);
+		asCollection.contains(expected, name);
 		return this;
 	}
 
@@ -201,9 +200,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsExactly(String name, Collection<E> expected)
+	public ArrayVerifier<E> containsExactly(Collection<E> expected, String name)
 	{
-		asCollection.containsExactly(name, expected);
+		asCollection.containsExactly(expected, name);
 		return this;
 	}
 
@@ -215,9 +214,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAny(String name, Collection<E> elements)
+	public ArrayVerifier<E> containsAny(Collection<E> elements, String name)
 	{
-		asCollection.containsAny(name, elements);
+		asCollection.containsAny(elements, name);
 		return this;
 	}
 
@@ -229,9 +228,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> containsAll(String name, Collection<E> expected)
+	public ArrayVerifier<E> containsAll(Collection<E> expected, String name)
 	{
-		asCollection.containsAll(name, expected);
+		asCollection.containsAll(expected, name);
 		return this;
 	}
 
@@ -243,9 +242,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContain(String name, E element)
+	public ArrayVerifier<E> doesNotContain(E element, String name)
 	{
-		asCollection.doesNotContain(name, element);
+		asCollection.doesNotContain(element, name);
 		return this;
 	}
 
@@ -257,9 +256,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContainExactly(String name, Collection<E> element)
+	public ArrayVerifier<E> doesNotContainExactly(Collection<E> element, String name)
 	{
-		asCollection.doesNotContainExactly(name, element);
+		asCollection.doesNotContainExactly(element, name);
 		return this;
 	}
 
@@ -271,9 +270,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContainAny(String name, Collection<E> elements)
+	public ArrayVerifier<E> doesNotContainAny(Collection<E> elements, String name)
 	{
-		asCollection.doesNotContainAny(name, elements);
+		asCollection.doesNotContainAny(elements, name);
 		return this;
 	}
 
@@ -285,9 +284,9 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	}
 
 	@Override
-	public ArrayVerifier<E> doesNotContainAll(String name, Collection<E> elements)
+	public ArrayVerifier<E> doesNotContainAll(Collection<E> elements, String name)
 	{
-		asCollection.doesNotContainAll(name, elements);
+		asCollection.doesNotContainAll(elements, name);
 		return this;
 	}
 
@@ -301,8 +300,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actual.length,
-			Pluralizer.ELEMENT, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actual.length, Pluralizer.ELEMENT, config);
 	}
 
 	@Override

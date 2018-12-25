@@ -45,7 +45,7 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isEqualTo(String name, Object value)
+	public S isEqualTo(Object value, String name)
 	{
 		return getThis();
 	}
@@ -57,19 +57,19 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isNotEqualTo(String name, Object value)
+	public S isNotEqualTo(Object value, String name)
 	{
 		return getThis();
 	}
 
 	@Override
-	public S isSameObjectAs(String name, Object expected)
+	public S isSameObjectAs(Object expected, String name)
 	{
 		return getThis();
 	}
 
 	@Override
-	public S isNotSameObjectAs(String name, Object other)
+	public S isNotSameObjectAs(Object other, String name)
 	{
 		return getThis();
 	}

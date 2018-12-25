@@ -101,17 +101,17 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	}
 
 	@Override
-	public <K, V> MultimapVerifier<K, V> requireThat(String name, Multimap<K, V> actual)
+	public <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
 	{
 		verifyName(name);
 		return new MultimapVerifierImpl<>(scope, name, actual, config);
 	}
 
 	@Override
-	public <K, V> MultimapVerifier<K, V> assertThat(String name, Multimap<K, V> actual)
+	public <K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name)
 	{
 		if (config.assertionsAreEnabled())
-			return requireThat(name, actual);
+			return requireThat(actual, name);
 		return new NoOpMultimapVerifier<>(config);
 	}
 

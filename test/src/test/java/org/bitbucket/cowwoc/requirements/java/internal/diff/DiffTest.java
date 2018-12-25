@@ -5,10 +5,10 @@
 package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 import org.bitbucket.cowwoc.requirements.java.SameToStringDifferentHashCode;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
@@ -34,7 +34,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -58,7 +58,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -84,7 +84,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -110,7 +110,7 @@ public final class DiffTest
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -136,7 +136,7 @@ public final class DiffTest
 		{
 			String actual = "actual";
 			String expected = "expected";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -161,7 +161,7 @@ public final class DiffTest
 		{
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -184,7 +184,7 @@ public final class DiffTest
 		{
 			String actual = "\nactual";
 			String expected = "expected";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -215,7 +215,7 @@ public final class DiffTest
 		{
 			String actual = "actual\n";
 			String expected = "expected";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -246,7 +246,7 @@ public final class DiffTest
 		{
 			String actual = "\n\nvalue";
 			String expected = "value";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -276,7 +276,7 @@ public final class DiffTest
 		{
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -310,7 +310,7 @@ public final class DiffTest
 		{
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
-			new Requirements(scope).requireThat("actual", actual).isEqualTo(expected);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -362,7 +362,7 @@ public final class DiffTest
 		SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				isEqualTo(new SameToStringDifferentHashCode());
 		}
 		catch (IllegalArgumentException e)

@@ -42,7 +42,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	 * @param actual             the actual value
 	 * @param actualAsCollection the {@code Collection} representation of the array
 	 * @param config             the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected ArrayCapabilitiesImpl(ApplicationScope scope, String name, R actual, Collection<E> actualAsCollection, Configuration config)
 	{
@@ -59,9 +59,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S isEqualTo(String name, Object expected)
+	public S isEqualTo(Object expected, String name)
 	{
-		asCollection.isEqualTo(name, expected);
+		asCollection.isEqualTo(expected, name);
 		return getThis();
 	}
 
@@ -73,16 +73,16 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S isNotEqualTo(String name, Object value)
+	public S isNotEqualTo(Object value, String name)
 	{
-		asCollection.isNotEqualTo(name, value);
+		asCollection.isNotEqualTo(value, name);
 		return getThis();
 	}
 
 	@Override
-	public S isSameObjectAs(String name, Object expected)
+	public S isSameObjectAs(Object expected, String name)
 	{
-		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual == expected)
 			return getThis();
 
@@ -96,9 +96,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S isNotSameObjectAs(String name, Object other)
+	public S isNotSameObjectAs(Object other, String name)
 	{
-		scope.getInternalVerifier().requireThat("name", name).isNotNull().trim().isNotEmpty();
+		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual != other)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -110,7 +110,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	@Override
 	public S isIn(Collection<? super R> collection)
 	{
-		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 			return getThis();
 		String collectionAsString = secretConfiguration.toString(config, collection);
@@ -123,7 +123,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	@Override
 	public S isNotIn(Collection<? super R> collection)
 	{
-		scope.getInternalVerifier().requireThat("collection", collection).isNotNull();
+		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
 		String collectionAsString = secretConfiguration.toString(config, collection);
@@ -183,9 +183,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S contains(String name, E expected)
+	public S contains(E expected, String name)
 	{
-		asCollection.contains(name, expected);
+		asCollection.contains(expected, name);
 		return getThis();
 	}
 
@@ -197,9 +197,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S containsExactly(String name, Collection<E> expected)
+	public S containsExactly(Collection<E> expected, String name)
 	{
-		asCollection.containsExactly(name, expected);
+		asCollection.containsExactly(expected, name);
 		return getThis();
 	}
 
@@ -211,9 +211,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S containsAny(String name, Collection<E> elements)
+	public S containsAny(Collection<E> elements, String name)
 	{
-		asCollection.containsAny(name, elements);
+		asCollection.containsAny(elements, name);
 		return getThis();
 	}
 
@@ -225,9 +225,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S containsAll(String name, Collection<E> expected)
+	public S containsAll(Collection<E> expected, String name)
 	{
-		asCollection.containsAll(name, expected);
+		asCollection.containsAll(expected, name);
 		return getThis();
 	}
 
@@ -239,9 +239,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S doesNotContain(String name, E element)
+	public S doesNotContain(E element, String name)
 	{
-		asCollection.doesNotContain(name, element);
+		asCollection.doesNotContain(element, name);
 		return getThis();
 	}
 
@@ -253,9 +253,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S doesNotContainExactly(String name, Collection<E> other)
+	public S doesNotContainExactly(Collection<E> other, String name)
 	{
-		asCollection.doesNotContainExactly(name, other);
+		asCollection.doesNotContainExactly(other, name);
 		return getThis();
 	}
 
@@ -267,9 +267,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S doesNotContainAny(String name, Collection<E> elements)
+	public S doesNotContainAny(Collection<E> elements, String name)
 	{
-		asCollection.doesNotContainAny(name, elements);
+		asCollection.doesNotContainAny(elements, name);
 		return getThis();
 	}
 
@@ -281,9 +281,9 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public S doesNotContainAll(String name, Collection<E> elements)
+	public S doesNotContainAll(Collection<E> elements, String name)
 	{
-		asCollection.doesNotContainAll(name, elements);
+		asCollection.doesNotContainAll(elements, name);
 		return getThis();
 	}
 

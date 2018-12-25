@@ -31,7 +31,7 @@ public final class BigDecimalVerifierImpl
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected BigDecimalVerifierImpl(ApplicationScope scope, String name, BigDecimal actual, Configuration config)
 	{
@@ -134,7 +134,7 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isMultipleOf(BigDecimal divisor)
 	{
-		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
 		if (isMultipleOf(actual, divisor))
 			return this;
 		String divisorAsString = secretConfiguration.toString(config, divisor);
@@ -145,11 +145,11 @@ public final class BigDecimalVerifierImpl
 	}
 
 	@Override
-	public BigDecimalVerifier isMultipleOf(String name, BigDecimal divisor)
+	public BigDecimalVerifier isMultipleOf(BigDecimal divisor, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("divisor", divisor).isNotNull();
+		verifier.requireThat(divisor, "divisor").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (isMultipleOf(actual, divisor))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -162,7 +162,7 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor)
 	{
-		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
 		if (!isMultipleOf(actual, divisor))
 			return this;
 		String divisorAsString = secretConfiguration.toString(config, divisor);
@@ -173,11 +173,11 @@ public final class BigDecimalVerifierImpl
 	}
 
 	@Override
-	public BigDecimalVerifier isNotMultipleOf(String name, BigDecimal divisor)
+	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("divisor", divisor).isNotNull();
+		verifier.requireThat(divisor, "divisor").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!isMultipleOf(actual, divisor))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,

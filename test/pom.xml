@@ -39,35 +39,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>org/bitbucket/cowwoc/requirements/**</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>org/bitbucket/cowwoc/requirements/**</include>
-							</includes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>requirements-maven-plugin</artifactId>
 				<version>${project.version}</version>

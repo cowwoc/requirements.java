@@ -46,18 +46,16 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value contains an element.
 	 *
-	 * @param name     the name of the expected element
 	 * @param expected the element that must exist
+	 * @param name     the name of the expected element
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection does not contain
-	 *                                  {@code expected}
+	 * @throws IllegalArgumentException if the collection does not contain {@code expected}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> contains(String name, E expected);
+	CollectionVerifier<C, E> contains(E expected, String name);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements (nothing more, nothing
-	 * less).
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -69,18 +67,16 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	CollectionVerifier<C, E> containsExactly(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements (nothing more, nothing
-	 * less).
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
 	 *
-	 * @param name     the name of the expected elements
 	 * @param expected the elements that must exist
+	 * @param name     the name of the expected elements
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code expected} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection is missing any
-	 *                                  elements in {@code expected}; if the collection contains
-	 *                                  elements not found in {@code expected}
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection is missing any elements in {@code expected}. If the collection contains elements
+	 *                                  not found in {@code expected}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> containsExactly(String name, Collection<E> expected);
+	CollectionVerifier<C, E> containsExactly(Collection<E> expected, String name);
 
 	/**
 	 * Ensures that the actual value contains any of specified elements.
@@ -95,14 +91,13 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value contains any of the specified elements.
 	 *
-	 * @param name     the name of the expected elements
 	 * @param expected the elements that must exist
+	 * @param name     the name of the expected elements
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code expected} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection does not contain
-	 *                                  any of {@code expected}
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> containsAny(String name, Collection<E> expected);
+	CollectionVerifier<C, E> containsAny(Collection<E> expected, String name);
 
 	/**
 	 * Ensures that the actual value contains all of the specified elements.
@@ -117,14 +112,13 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value contains all of the specified elements.
 	 *
-	 * @param name     the name of the expected elements
 	 * @param expected the elements that must exist
+	 * @param name     the name of the expected elements
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code expected} null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection does not contain
-	 *                                  all of {@code expected}
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> containsAll(String name, Collection<E> expected);
+	CollectionVerifier<C, E> containsAll(Collection<E> expected, String name);
 
 	/**
 	 * Ensures that the actual value does not contain an element.
@@ -138,39 +132,35 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value does not contain an element.
 	 *
-	 * @param name    the name of the element
 	 * @param element the element that must not exist
+	 * @param name    the name of the element
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection contains
-	 *                                  {@code element}
+	 * @throws IllegalArgumentException if the collection contains {@code element}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> doesNotContain(String name, E element);
+	CollectionVerifier<C, E> doesNotContain(E element, String name);
 
 	/**
-	 * Ensures that the actual value does not contain exactly the specified elements (nothing more,
-	 * nothing less).
+	 * Ensures that the actual value does not contain exactly the specified elements; nothing less, nothing more.
 	 *
 	 * @param other the elements that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code other} is null
-	 * @throws IllegalArgumentException if the collection contains all of the elements in
-	 *                                  {@code other} (nothing more, nothing less).
+	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other}; nothing less, nothing more).
 	 */
 	CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other);
 
 	/**
-	 * Ensures that the actual value does not contain exactly the specified elements (nothing more,
-	 * nothing less).
+	 * Ensures that the actual value does not contain exactly the specified elements; nothing less, nothing more.
 	 *
-	 * @param name  the name of the collection
 	 * @param other the elements that must not exist
+	 * @param name  the name of the collection
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code other} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection contains all of
-	 *                                  the elements in {@code other} (nothing more, nothing less).
+	 * @throws NullPointerException     if {@code other} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other}; nothing less, nothing more. If
+	 *                                  {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> doesNotContainExactly(String name, Collection<E> other);
+	CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other, String name);
 
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.
@@ -185,14 +175,13 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
-	 * @param name     the name of the elements
 	 * @param elements the elements that must not exist
+	 * @param name     the name of the elements
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code elements} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection contains any of
-	 *                                  {@code elements}
+	 * @throws NullPointerException     if {@code elements} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection contains any of {@code elements}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> doesNotContainAny(String name, Collection<E> elements);
+	CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name);
 
 	/**
 	 * Ensures that the actual value does not contain all of the specified elements.
@@ -207,14 +196,13 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value does not contain all of the specified elements.
 	 *
-	 * @param name     the name of the elements
 	 * @param elements the elements that must not exist
+	 * @param name     the name of the elements
 	 * @return this
-	 * @throws NullPointerException     if {@code name} or {@code elements} are null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the collection contains all of
-	 *                                  {@code elements}
+	 * @throws NullPointerException     if {@code elements} or {@code name} are null
+	 * @throws IllegalArgumentException if the collection contains all of {@code elements}. If {@code name} is empty.
 	 */
-	CollectionVerifier<C, E> doesNotContainAll(String name, Collection<E> elements);
+	CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name);
 
 	/**
 	 * Ensures that the actual value does not contain any duplicate elements.

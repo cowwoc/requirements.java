@@ -33,7 +33,7 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isGreaterThan(String name, T value)
+	public S isGreaterThan(T value, String name)
 	{
 		return getThis();
 	}
@@ -45,7 +45,7 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isGreaterThanOrEqualTo(String name, T value)
+	public S isGreaterThanOrEqualTo(T value, String name)
 	{
 		return getThis();
 	}
@@ -57,7 +57,7 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isLessThan(String name, T value)
+	public S isLessThan(T value, String name)
 	{
 		return getThis();
 	}
@@ -69,7 +69,7 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isLessThanOrEqualTo(String name, T value)
+	public S isLessThanOrEqualTo(T value, String name)
 	{
 		return getThis();
 	}
@@ -81,7 +81,7 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isComparableTo(String name, T expected)
+	public S isComparableTo(T expected, String name)
 	{
 		return getThis();
 	}
@@ -93,7 +93,7 @@ public abstract class NoOpComparableCapabilities<S, T extends Comparable<? super
 	}
 
 	@Override
-	public S isNotComparableTo(String name, T other)
+	public S isNotComparableTo(T other, String name)
 	{
 		return getThis();
 	}

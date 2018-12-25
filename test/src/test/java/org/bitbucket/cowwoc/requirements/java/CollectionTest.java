@@ -25,7 +25,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.emptyList();
-			new Requirements(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(actual, null);
 		}
 	}
 
@@ -35,7 +35,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.emptyList();
-			new Requirements(scope).requireThat("", actual);
+			new Requirements(scope).requireThat(actual, "");
 		}
 	}
 
@@ -45,7 +45,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.emptyList();
-			new Requirements(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -55,7 +55,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.singleton("element");
-			new Requirements(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -65,7 +65,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.singleton("element");
-			new Requirements(scope).requireThat("actual", actual).isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -75,7 +75,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.emptyList();
-			new Requirements(scope).requireThat("actual", actual).isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -85,7 +85,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).contains("element");
+			new Requirements(scope).requireThat(actual, "actual").contains("element");
 		}
 	}
 
@@ -95,7 +95,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("notElement");
-			new Requirements(scope).requireThat("actual", actual).contains("element");
+			new Requirements(scope).requireThat(actual, "actual").contains("element");
 		}
 	}
 
@@ -105,8 +105,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).
-				contains("nameOfExpected", "element");
+			new Requirements(scope).requireThat(actual, "actual").
+				contains("element", "nameOfExpected");
 		}
 	}
 
@@ -116,8 +116,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("notElement");
-			new Requirements(scope).requireThat("actual", actual).
-				contains("nameOfExpected", "element");
+			new Requirements(scope).requireThat(actual, "actual").
+				contains("element", "nameOfExpected");
 		}
 	}
 
@@ -127,7 +127,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -138,7 +138,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -149,7 +149,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -160,8 +160,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsExactly("nameOfExpected", Arrays.asList("one", "two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two", "three"), "nameOfExpected");
 		}
 	}
 
@@ -171,8 +171,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsExactly("nameOfExpected", Arrays.asList("one", "two"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two"), "nameOfExpected");
 		}
 	}
 
@@ -182,8 +182,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new Requirements(scope).requireThat("actual", actual).
-				containsExactly("expected", Arrays.asList("one", "two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two", "three"), "expected");
 		}
 	}
 
@@ -193,8 +193,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsExactly(" ", Arrays.asList("one", "two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two", "three"), " ");
 		}
 	}
 
@@ -204,7 +204,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsAny(Arrays.asList("two", "four"));
 		}
 	}
@@ -215,7 +215,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsAny(Arrays.asList("four", "five"));
 		}
 	}
@@ -226,8 +226,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsAny("nameOfExpected", Arrays.asList("two", "four"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsAny(Arrays.asList("two", "four"), "nameOfExpected");
 		}
 	}
 
@@ -237,8 +237,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsAny("nameOfExpected", Arrays.asList("four", "five"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsAny(Arrays.asList("four", "five"), "nameOfExpected");
 		}
 	}
 
@@ -248,8 +248,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsAny(" ", Arrays.asList("two", "four"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsAny(Arrays.asList("two", "four"), " ");
 		}
 	}
 
@@ -259,7 +259,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "three"));
 		}
 	}
@@ -270,7 +270,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "four"));
 		}
 	}
@@ -281,8 +281,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsAll("nameOfExpected", Arrays.asList("two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsAll(Arrays.asList("two", "three"), "nameOfExpected");
 		}
 	}
 
@@ -292,8 +292,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsAll("nameOfExpected", Arrays.asList("two", "four"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsAll(Arrays.asList("two", "four"), "nameOfExpected");
 		}
 	}
 
@@ -303,8 +303,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				containsAll(" ", Arrays.asList("two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				containsAll(Arrays.asList("two", "three"), " ");
 		}
 	}
 
@@ -314,7 +314,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("notElement");
-			new Requirements(scope).requireThat("actual", actual).doesNotContain("element");
+			new Requirements(scope).requireThat(actual, "actual").doesNotContain("element");
 		}
 	}
 
@@ -324,7 +324,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).doesNotContain("element");
+			new Requirements(scope).requireThat(actual, "actual").doesNotContain("element");
 		}
 	}
 
@@ -334,8 +334,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("notElement");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContain("nameOfExpected", "element");
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContain("element", "nameOfExpected");
 		}
 	}
 
@@ -345,8 +345,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContain("nameOfExpected", "element");
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContain("element", "nameOfExpected");
 		}
 	}
 
@@ -356,8 +356,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("notElement");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContain(" ", "element");
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContain("element", " ");
 		}
 	}
 
@@ -367,7 +367,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -378,7 +378,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -389,7 +389,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -400,8 +400,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainExactly("nameOfExpected", Arrays.asList("one", "two"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainExactly(Arrays.asList("one", "two"), "nameOfExpected");
 		}
 	}
 
@@ -411,8 +411,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainExactly("expected", Arrays.asList("one", "two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainExactly(Arrays.asList("one", "two", "three"), "expected");
 		}
 	}
 
@@ -422,8 +422,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainExactly("nameOfExpected", Arrays.asList("one", "two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainExactly(Arrays.asList("one", "two", "three"), "nameOfExpected");
 		}
 	}
 
@@ -433,7 +433,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"));
 		}
 	}
@@ -444,7 +444,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("three", "four", "five"));
 		}
 	}
@@ -455,8 +455,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainAny("nameOfExpected", Arrays.asList("four", "five", "six"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainAny(Arrays.asList("four", "five", "six"), "nameOfExpected");
 		}
 	}
 
@@ -466,8 +466,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainAny("nameOfExpected", Arrays.asList("three", "four", "five"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainAny(Arrays.asList("three", "four", "five"), "nameOfExpected");
 		}
 	}
 
@@ -477,8 +477,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainAny(" ", Arrays.asList("four", "five", "six"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainAny(Arrays.asList("four", "five", "six"), " ");
 		}
 	}
 
@@ -488,7 +488,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"));
 		}
 	}
@@ -499,7 +499,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three", "four");
-			new Requirements(scope).requireThat("actual", actual).
+			new Requirements(scope).requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -510,8 +510,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainAll("nameOfExpected", Arrays.asList("one", "two", "four"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainAll(Arrays.asList("one", "two", "four"), "nameOfExpected");
 		}
 	}
 
@@ -521,8 +521,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three", "four");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainAll("nameOfExpected", Arrays.asList("one", "two", "three"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainAll(Arrays.asList("one", "two", "three"), "nameOfExpected");
 		}
 	}
 
@@ -532,8 +532,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).
-				doesNotContainAll(" ", Arrays.asList("one", "two", "four"));
+			new Requirements(scope).requireThat(actual, "actual").
+				doesNotContainAll(Arrays.asList("one", "two", "four"), " ");
 		}
 	}
 
@@ -543,7 +543,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new Requirements(scope).requireThat("actual", actual).doesNotContainDuplicates();
+			new Requirements(scope).requireThat(actual, "actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -553,7 +553,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three", "two", "four");
-			new Requirements(scope).requireThat("actual", actual).doesNotContainDuplicates();
+			new Requirements(scope).requireThat(actual, "actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -563,7 +563,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(1);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -573,7 +573,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(2);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -583,8 +583,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().
-				isEqualTo("nameOfExpected", 1);
+			new Requirements(scope).requireThat(actual, "actual").size().
+				isEqualTo(1, "nameOfExpected");
 		}
 	}
 
@@ -594,8 +594,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().
-				isEqualTo("nameOfExpected", 2);
+			new Requirements(scope).requireThat(actual, "actual").size().
+				isEqualTo(2, "nameOfExpected");
 		}
 	}
 
@@ -605,7 +605,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(" ", 1);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(1, " ");
 		}
 	}
 
@@ -615,7 +615,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(null);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(null);
 		}
 	}
 
@@ -625,7 +625,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isEqualTo(1L);
+			new Requirements(scope).requireThat(actual, "actual").size().isEqualTo(1L);
 		}
 	}
 
@@ -635,7 +635,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(2);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -645,7 +645,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(1);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -655,8 +655,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().
-				isNotEqualTo("nameOfExpected", 2);
+			new Requirements(scope).requireThat(actual, "actual").size().
+				isNotEqualTo(2, "nameOfExpected");
 		}
 	}
 
@@ -666,8 +666,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().
-				isNotEqualTo("nameOfExpected", 1);
+			new Requirements(scope).requireThat(actual, "actual").size().
+				isNotEqualTo(1, "nameOfExpected");
 		}
 	}
 
@@ -677,7 +677,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(" ", 2);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(2, " ");
 		}
 	}
 
@@ -687,7 +687,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(null);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(null);
 		}
 	}
 
@@ -697,7 +697,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("element");
-			new Requirements(scope).requireThat("actual", actual).size().isNotEqualTo(1L);
+			new Requirements(scope).requireThat(actual, "actual").size().isNotEqualTo(1L);
 		}
 	}
 
@@ -707,7 +707,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3);
-			new Requirements(scope).requireThat("actual", actual).size().isBetween(3, 5);
+			new Requirements(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -717,7 +717,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4);
-			new Requirements(scope).requireThat("actual", actual).size().isBetween(3, 5);
+			new Requirements(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -727,7 +727,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
-			new Requirements(scope).requireThat("actual", actual).size().isBetween(3, 5);
+			new Requirements(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -737,7 +737,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2);
-			new Requirements(scope).requireThat("actual", actual).size().isBetween(3, 5);
+			new Requirements(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -747,7 +747,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
-			new Requirements(scope).requireThat("actual", actual).size().isBetweenClosed(3, 5);
+			new Requirements(scope).requireThat(actual, "actual").size().isBetweenClosed(3, 5);
 		}
 	}
 
@@ -758,8 +758,8 @@ public final class CollectionTest
 		{
 			Requirements requirements = new Requirements(scope);
 			List<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
-			List<Integer> expected = requirements.requireThat("actual", actual).getActual();
-			requirements.requireThat("actual", actual).isEqualTo("expected", expected);
+			List<Integer> expected = requirements.requireThat(actual, "actual").getActual();
+			requirements.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 
@@ -770,8 +770,8 @@ public final class CollectionTest
 		{
 			Requirements requirements = new Requirements(scope);
 			Iterable<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
-			Iterable<Integer> expected = requirements.requireThat("actual", actual).getActual();
-			requirements.requireThat("actual", actual).isEqualTo("expected", expected);
+			Iterable<Integer> expected = requirements.requireThat(actual, "actual").getActual();
+			requirements.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 
@@ -786,9 +786,9 @@ public final class CollectionTest
 					1, 2, 3, 4, 5
 				};
 			Collection<Integer> actual = Arrays.asList(array);
-			Integer[] output = requirements.requireThat("actual", actual).
+			Integer[] output = requirements.requireThat(actual, "actual").
 				asArray(Integer.class).getActual();
-			requirements.requireThat("Input", array).isEqualTo("Output", output);
+			requirements.requireThat(array, "Input").isEqualTo(output, "Output");
 		}
 	}
 
@@ -806,9 +806,9 @@ public final class CollectionTest
 				{
 					5, 4, 3, 2, 1
 				};
-			Integer[] actualOutput = requirements.requireThat("actual", actual).
+			Integer[] actualOutput = requirements.requireThat(actual, "actual").
 				asArray(Integer.class).getActual();
-			requirements.requireThat("actualOutput", actualOutput).isEqualTo("wrongOutput", wrongOutput);
+			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}
 
@@ -819,7 +819,7 @@ public final class CollectionTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Collection<?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
 		}
 	}
 }

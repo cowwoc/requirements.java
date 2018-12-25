@@ -36,16 +36,14 @@ public interface ObjectCapabilities<S, T>
 	/**
 	 * Ensures that the actual value is equal to the expected value.
 	 *
-	 * @param name     the name of the expected value
 	 * @param expected the expected value
+	 * @param name     the name of the expected value
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is not equal to
-	 *                                  the variable
-	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of
-	 * the output format</a>
+	 * @throws IllegalArgumentException if the actual value is not equal to {@code expected}. If {@code name} is empty.
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
 	 */
-	S isEqualTo(String name, Object expected);
+	S isEqualTo(Object expected, String name);
 
 	/**
 	 * Ensures that the actual value is not equal to another value.
@@ -59,34 +57,35 @@ public interface ObjectCapabilities<S, T>
 	/**
 	 * Ensures that the actual value is not equal to another variable.
 	 *
-	 * @param name  the name of the variable
 	 * @param other the value to compare to
+	 * @param name  the name of the variable
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty; if the actual value is equal to the
-	 *                                  variable
+	 * @throws IllegalArgumentException if the actual value is equal to {@code other}. If {@code name} is empty.
 	 */
-	S isNotEqualTo(String name, Object other);
+	S isNotEqualTo(Object other, String name);
 
 	/**
 	 * Ensures that the actual and expected objects are one and the same object.
 	 *
-	 * @param name     the name of the expected object
 	 * @param expected the expected object
+	 * @param name     the name of the expected object
 	 * @return this
-	 * @throws IllegalArgumentException if {@code actual != expected}
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code actual != expected}. If {@code name} is empty.
 	 */
-	S isSameObjectAs(String name, Object expected);
+	S isSameObjectAs(Object expected, String name);
 
 	/**
 	 * Ensures that the actual value does not reference a specific object.
 	 *
-	 * @param name  the name of the other object
 	 * @param other the object to compare to
+	 * @param name  the name of the other object
 	 * @return this
-	 * @throws IllegalArgumentException if {@code actual == other}
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code actual == other}. If {@code name} is empty.
 	 */
-	S isNotSameObjectAs(String name, Object other);
+	S isNotSameObjectAs(Object other, String name);
 
 	/**
 	 * Ensures that a collection contains the actual value.

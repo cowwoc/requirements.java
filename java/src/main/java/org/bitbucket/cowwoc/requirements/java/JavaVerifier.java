@@ -54,777 +54,777 @@ public interface JavaVerifier extends Configurable
 	 * Verifies the requirements of an {@code Object}.
 	 *
 	 * @param <T>    the type of the value
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<T> ObjectVerifier<T> requireThat(String name, T actual);
+	<T> ObjectVerifier<T> requireThat(T actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <T>    the type of the value
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<T> ObjectVerifier<T> assertThat(String name, T actual);
+	<T> ObjectVerifier<T> assertThat(T actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Collection}.
 	 *
 	 * @param <C>    the type of the collection
 	 * @param <E>    the type of elements in the collection
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(String name, C actual);
+	<C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <C>    the type of the collection
 	 * @param <E>    the type of elements in the collection
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(String name, C actual);
+	<C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(C actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code byte} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveByteArrayVerifier requireThat(String name, byte[] actual);
+	PrimitiveByteArrayVerifier requireThat(byte[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, byte[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(byte[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveByteArrayVerifier assertThat(String name, byte[] actual);
+	PrimitiveByteArrayVerifier assertThat(byte[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code short} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveShortArrayVerifier requireThat(String name, short[] actual);
+	PrimitiveShortArrayVerifier requireThat(short[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, short[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(short[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveShortArrayVerifier assertThat(String name, short[] actual);
+	PrimitiveShortArrayVerifier assertThat(short[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code int} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveIntegerArrayVerifier requireThat(String name, int[] actual);
+	PrimitiveIntegerArrayVerifier requireThat(int[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, int[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(int[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveIntegerArrayVerifier assertThat(String name, int[] actual);
+	PrimitiveIntegerArrayVerifier assertThat(int[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code long} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveLongArrayVerifier requireThat(String name, long[] actual);
+	PrimitiveLongArrayVerifier requireThat(long[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, long[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(long[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveLongArrayVerifier assertThat(String name, long[] actual);
+	PrimitiveLongArrayVerifier assertThat(long[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code float} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveFloatArrayVerifier requireThat(String name, float[] actual);
+	PrimitiveFloatArrayVerifier requireThat(float[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, float[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(float[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveFloatArrayVerifier assertThat(String name, float[] actual);
+	PrimitiveFloatArrayVerifier assertThat(float[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code double} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveDoubleArrayVerifier requireThat(String name, double[] actual);
+	PrimitiveDoubleArrayVerifier requireThat(double[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, double[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(double[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveDoubleArrayVerifier assertThat(String name, double[] actual);
+	PrimitiveDoubleArrayVerifier assertThat(double[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code boolean} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveBooleanArrayVerifier requireThat(String name, boolean[] actual);
+	PrimitiveBooleanArrayVerifier requireThat(boolean[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, boolean[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(boolean[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveBooleanArrayVerifier assertThat(String name, boolean[] actual);
+	PrimitiveBooleanArrayVerifier assertThat(boolean[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code char} array.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveCharacterArrayVerifier requireThat(String name, char[] actual);
+	PrimitiveCharacterArrayVerifier requireThat(char[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, char[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(char[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveCharacterArrayVerifier assertThat(String name, char[] actual);
+	PrimitiveCharacterArrayVerifier assertThat(char[] actual, String name);
 
 	/**
 	 * Verifies the requirements of an {@code Object} array.
 	 *
 	 * @param <E>    the type of elements in the array
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<E> ArrayVerifier<E> requireThat(String name, E[] actual);
+	<E> ArrayVerifier<E> requireThat(E[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <E>    the type of elements in the collection
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<E> ArrayVerifier<E> assertThat(String name, E[] actual);
+	<E> ArrayVerifier<E> assertThat(E[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Comparable}.
 	 *
 	 * @param <T>    the type of objects that the value may be compared to
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<T extends Comparable<? super T>> ComparableVerifier<T> requireThat(String name, T actual);
+	<T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <T>    the type of the number
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(String name, T actual);
+	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code byte}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Byte> requireThat(String name, byte actual);
+	PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(byte, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Byte> assertThat(String name, byte actual);
+	PrimitiveNumberVerifier<Byte> assertThat(byte actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code short}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Short> requireThat(String name, short actual);
+	PrimitiveNumberVerifier<Short> requireThat(short actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(short, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveNumberVerifier<Short> assertThat(String name, short actual);
+	PrimitiveNumberVerifier<Short> assertThat(short actual, String name);
 
 	/**
 	 * Verifies the requirements of an {@code int}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveIntegerVerifier<Integer> requireThat(String name, int actual);
+	PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, int)} but does nothing if assertions are disabled for this
+	 * Same as {@link #requireThat(int, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveIntegerVerifier<Integer> assertThat(String name, int actual);
+	PrimitiveIntegerVerifier<Integer> assertThat(int actual, String name);
 
 	/**
 	 * Verifies the requirements of an {@code Integer}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	IntegerVerifier<Integer> requireThat(String name, Integer actual);
+	IntegerVerifier<Integer> requireThat(Integer actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Integer)} but does nothing if assertions are disabled for this
+	 * Same as {@link #requireThat(Integer, String)} but does nothing if assertions are disabled for this
 	 * class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	IntegerVerifier<Integer> assertThat(String name, Integer actual);
+	IntegerVerifier<Integer> assertThat(Integer actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code long}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveIntegerVerifier<Long> requireThat(String name, long actual);
+	PrimitiveIntegerVerifier<Long> requireThat(long actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(long, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveIntegerVerifier<Long> assertThat(String name, long actual);
+	PrimitiveIntegerVerifier<Long> assertThat(long actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Long}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	IntegerVerifier<Long> requireThat(String name, Long actual);
+	IntegerVerifier<Long> requireThat(Long actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(Long, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	IntegerVerifier<Long> assertThat(String name, Long actual);
+	IntegerVerifier<Long> assertThat(Long actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code float}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveFloatingPointVerifier<Float> requireThat(String name, float actual);
+	PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(float, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveFloatingPointVerifier<Float> assertThat(String name, float actual);
+	PrimitiveFloatingPointVerifier<Float> assertThat(float actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code double}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveFloatingPointVerifier<Double> requireThat(String name, double actual);
+	PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(double, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveFloatingPointVerifier<Double> assertThat(String name, double actual);
+	PrimitiveFloatingPointVerifier<Double> assertThat(double actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code boolean}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveBooleanVerifier requireThat(String name, boolean actual);
+	PrimitiveBooleanVerifier requireThat(boolean actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(boolean, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveBooleanVerifier assertThat(String name, boolean actual);
+	PrimitiveBooleanVerifier assertThat(boolean actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code char}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveCharacterVerifier requireThat(String name, char actual);
+	PrimitiveCharacterVerifier requireThat(char actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(char, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveCharacterVerifier assertThat(String name, char actual);
+	PrimitiveCharacterVerifier assertThat(char actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Number}.
 	 *
 	 * @param <T>    the type of the number
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(String name, T actual);
+	<T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Number, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <T>    the type of the number
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	<T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(String name, T actual);
+	<T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Boolean}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	BooleanVerifier requireThat(String name, Boolean actual);
+	BooleanVerifier requireThat(Boolean actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled for
+	 * Same as {@link #requireThat(Boolean, String)} but does nothing if assertions are disabled for
 	 * this class.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	BooleanVerifier assertThat(String name, Boolean actual);
+	BooleanVerifier assertThat(Boolean actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Float}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	FloatingPointVerifier<Float> requireThat(String name, Float actual);
+	FloatingPointVerifier<Float> requireThat(Float actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Float, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	FloatingPointVerifier<Float> assertThat(String name, Float actual);
+	FloatingPointVerifier<Float> assertThat(Float actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Double}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	FloatingPointVerifier<Double> requireThat(String name, Double actual);
+	FloatingPointVerifier<Double> requireThat(Double actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	FloatingPointVerifier<Double> assertThat(String name, Double actual);
+	FloatingPointVerifier<Double> assertThat(Double actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code BigDecimal}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	BigDecimalVerifier requireThat(String name, BigDecimal actual);
+	BigDecimalVerifier requireThat(BigDecimal actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	BigDecimalVerifier assertThat(String name, BigDecimal actual);
+	BigDecimalVerifier assertThat(BigDecimal actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Map}.
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<K, V> MapVerifier<K, V> requireThat(String name, Map<K, V> actual);
+	<K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Map, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <K>    the type of key in the map
 	 * @param <V>    the type of value in the map
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	<K, V> MapVerifier<K, V> assertThat(String name, Map<K, V> actual);
+	<K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Path}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PathVerifier requireThat(String name, Path actual);
+	PathVerifier requireThat(Path actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	PathVerifier assertThat(String name, Path actual);
+	PathVerifier assertThat(Path actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code String}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	StringVerifier requireThat(String name, String actual);
+	StringVerifier requireThat(String actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	StringVerifier assertThat(String name, String actual);
+	StringVerifier assertThat(String actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Uri}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	UriVerifier requireThat(String name, URI actual);
+	UriVerifier requireThat(URI actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	UriVerifier assertThat(String name, URI actual);
+	UriVerifier assertThat(URI actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Class}.
 	 *
 	 * @param <T>    the type of class
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<T> ClassVerifier<T> requireThat(String name, Class<T> actual);
+	<T> ClassVerifier<T> requireThat(Class<T> actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Class, String)} but does nothing if assertions are disabled.
 	 *
 	 * @param <T>    the type of class
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	<T> ClassVerifier<T> assertThat(String name, Class<T> actual);
+	<T> ClassVerifier<T> assertThat(Class<T> actual, String name);
 
 	/**
 	 * Verifies the requirements of an {@code Optional}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	OptionalVerifier requireThat(String name, Optional<?> actual);
+	OptionalVerifier requireThat(Optional<?> actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	OptionalVerifier assertThat(String name, Optional<?> actual);
+	OptionalVerifier assertThat(Optional<?> actual, String name);
 
 	/**
 	 * Verifies the requirements of an {@code InetAddress}.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	InetAddressVerifier requireThat(String name, InetAddress actual);
+	InetAddressVerifier requireThat(InetAddress actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are disabled.
+	 * Same as {@link #requireThat(InetAddress, String)} but does nothing if assertions are disabled.
 	 *
-	 * @param name   the name of the value
 	 * @param actual the actual value
+	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if name is null
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	InetAddressVerifier assertThat(String name, InetAddress actual);
+	InetAddressVerifier assertThat(InetAddress actual, String name);
 	// TODO: Document mechanism for combining multiple checks into a single statement (i.e. using methods that take Consumer)
 }

@@ -56,7 +56,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> contains(String name, Object element)
+	public CollectionVerifier<C, E> contains(Object element, String name)
 	{
 		return this;
 	}
@@ -68,7 +68,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsExactly(String name, Collection<E> elements)
+	public CollectionVerifier<C, E> containsExactly(Collection<E> elements, String name)
 	{
 		return this;
 	}
@@ -80,7 +80,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsAny(String name, Collection<E> elements)
+	public CollectionVerifier<C, E> containsAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
@@ -92,7 +92,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsAll(String name, Collection<E> elements)
+	public CollectionVerifier<C, E> containsAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
@@ -104,7 +104,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContain(String name, E element)
+	public CollectionVerifier<C, E> doesNotContain(E element, String name)
 	{
 		return this;
 	}
@@ -116,7 +116,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainExactly(String name, Collection<E> other)
+	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other, String name)
 	{
 		return this;
 	}
@@ -128,7 +128,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainAny(String name, Collection<E> elements)
+	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
@@ -140,7 +140,7 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainAll(String name, Collection<E> elements)
+	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		return this;
 	}

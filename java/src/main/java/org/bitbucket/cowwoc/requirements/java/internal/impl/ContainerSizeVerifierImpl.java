@@ -37,7 +37,7 @@ public final class ContainerSizeVerifierImpl
 	 * @param pluralizer    returns the singular or plural form of the container's element type
 	 * @param config        the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name}, {@code container} or {@code config} are
-	 *                        null; if {@code name} is empty
+	 *                        null. If {@code name} is empty.
 	 */
 	public ContainerSizeVerifierImpl(ApplicationScope scope, String containerName, Object container, String sizeName, int size,
 	                                 Pluralizer pluralizer, Configuration config)
@@ -55,7 +55,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isGreaterThanOrEqualTo(Integer value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual >= value)
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
@@ -68,11 +68,11 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isGreaterThanOrEqualTo(String name, Integer value)
+	public PrimitiveNumberVerifier<Integer> isGreaterThanOrEqualTo(Integer value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(value, "value").isNotNull();
 		if (actual >= value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -87,7 +87,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isGreaterThan(Integer value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual > value)
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
@@ -100,11 +100,11 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isGreaterThan(String name, Integer value)
+	public PrimitiveNumberVerifier<Integer> isGreaterThan(Integer value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(value, "value").isNotNull();
 		if (actual > value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -119,7 +119,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isLessThanOrEqualTo(Integer value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual <= value)
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
@@ -132,11 +132,11 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isLessThanOrEqualTo(String name, Integer value)
+	public PrimitiveNumberVerifier<Integer> isLessThanOrEqualTo(Integer value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(value, "value").isNotNull();
 		if (actual <= value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -151,7 +151,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isLessThan(Integer value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isNotNull();
+		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual < value)
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
@@ -164,11 +164,11 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isLessThan(String name, Integer value)
+	public PrimitiveNumberVerifier<Integer> isLessThan(Integer value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(value, "value").isNotNull();
 		if (actual < value)
 			return getThis();
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -194,8 +194,6 @@ public final class ContainerSizeVerifierImpl
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			String.format("%s must contain at least one %s.", containerName, pluralizer.nameOf(1))).
 			addContext("Actual", actual);
-		if (actual > 0)
-			eb.addContext(containerName, container);
 		throw eb.build();
 	}
 
@@ -238,15 +236,15 @@ public final class ContainerSizeVerifierImpl
 	public PrimitiveNumberVerifier<Integer> isBetween(Integer startInclusive, Integer endExclusive)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("startInclusive", startInclusive).isNotNull();
-		verifier.requireThat("endExclusive", endExclusive).isNotNull().
-			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
+		verifier.requireThat(endExclusive, "endExclusive").isNotNull().
+			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual >= startInclusive && actual < endExclusive)
 			return getThis();
 		String startAsString = secretConfiguration.toString(config, startInclusive);
 		String endAsString = secretConfiguration.toString(config, endExclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d) %s.", containerName, startAsString, endAsString, pluralizer.nameOf(2))).
+			String.format("%s must contain [%s, %s) %s.", containerName, startAsString, endAsString, pluralizer.nameOf(2))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -254,19 +252,18 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isBetweenClosed(Integer startInclusive,
-	                                                        Integer endInclusive)
+	public PrimitiveNumberVerifier<Integer> isBetweenClosed(Integer startInclusive, Integer endInclusive)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("startInclusive", startInclusive).isNotNull();
-		verifier.requireThat("endInclusive", endInclusive).isNotNull().
-			isGreaterThanOrEqualTo("startInclusive", startInclusive);
+		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
+		verifier.requireThat(endInclusive, "endInclusive").isNotNull().
+			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual >= startInclusive && actual <= endInclusive)
 			return getThis();
 		String startAsString = secretConfiguration.toString(config, startInclusive);
 		String endAsString = secretConfiguration.toString(config, endInclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain [%d, %d] %s.", containerName, startAsString, endAsString, pluralizer.nameOf(2))).
+			String.format("%s must contain [%s, %s] %s.", containerName, startAsString, endAsString, pluralizer.nameOf(2))).
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -276,7 +273,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isEqualTo(Object expected)
 	{
-		scope.getInternalVerifier().requireThat("expected", expected).isInstanceOf(Integer.class);
+		scope.getInternalVerifier().requireThat(expected, "expected").isInstanceOf(Integer.class);
 		if (!(expected instanceof Integer))
 			return super.isEqualTo(expected);
 		if (Objects.equals(actual, expected))
@@ -292,11 +289,11 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isEqualTo(String name, Object expected)
+	public PrimitiveNumberVerifier<Integer> isEqualTo(Object expected, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("expected", expected).isInstanceOf(Integer.class);
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(expected, "expected").isInstanceOf(Integer.class);
 		if (Objects.equals(actual, expected))
 			return getThis();
 		int expectedAsInt = (Integer) expected;
@@ -312,7 +309,7 @@ public final class ContainerSizeVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Object value)
 	{
-		scope.getInternalVerifier().requireThat("value", value).isInstanceOf(Integer.class);
+		scope.getInternalVerifier().requireThat(value, "value").isInstanceOf(Integer.class);
 		if (!(value instanceof Integer))
 		{
 			String valueAsString = secretConfiguration.toString(config, value);
@@ -333,11 +330,11 @@ public final class ContainerSizeVerifierImpl
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> isNotEqualTo(String name, Object value)
+	public PrimitiveNumberVerifier<Integer> isNotEqualTo(Object value, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("value", value).isInstanceOf(Integer.class);
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(value, "value").isInstanceOf(Integer.class);
 		if (!(value instanceof Integer))
 		{
 			String valueAsString = secretConfiguration.toString(config, value);

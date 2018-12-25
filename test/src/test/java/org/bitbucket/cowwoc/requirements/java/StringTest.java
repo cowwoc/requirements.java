@@ -5,10 +5,11 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.TestApplicationScope;
 import org.testng.annotations.Test;
+
+import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class StringTest
 {
@@ -18,7 +19,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat(null, actual);
+			new Requirements(scope).requireThat(actual, null);
 		}
 	}
 
@@ -28,7 +29,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat("", actual);
+			new Requirements(scope).requireThat(actual, "");
 		}
 	}
 
@@ -38,7 +39,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			new Requirements(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -48,7 +49,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new Requirements(scope).requireThat("actual", actual).isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -58,7 +59,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new Requirements(scope).requireThat("actual", actual).trim().isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").trim().isEmpty();
 		}
 	}
 
@@ -68,7 +69,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat("actual", actual).trim().isEmpty();
+			new Requirements(scope).requireThat(actual, "actual").trim().isEmpty();
 		}
 	}
 
@@ -78,7 +79,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new Requirements(scope).requireThat("actual", actual).isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -88,7 +89,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			new Requirements(scope).requireThat("actual", actual).isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -98,7 +99,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat("actual", actual).trim().isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
@@ -108,7 +109,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "   ";
-			new Requirements(scope).requireThat("actual", actual).trim().isNotEmpty();
+			new Requirements(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
@@ -118,7 +119,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "abc";
-			new Requirements(scope).requireThat("actual", actual).isTrimmed();
+			new Requirements(scope).requireThat(actual, "actual").isTrimmed();
 		}
 	}
 
@@ -128,7 +129,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = " abc";
-			new Requirements(scope).requireThat("actual", actual).isTrimmed();
+			new Requirements(scope).requireThat(actual, "actual").isTrimmed();
 		}
 	}
 
@@ -138,7 +139,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "abc ";
-			new Requirements(scope).requireThat("actual", actual).isTrimmed();
+			new Requirements(scope).requireThat(actual, "actual").isTrimmed();
 		}
 	}
 
@@ -149,7 +150,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = prefix + "1234";
-			new Requirements(scope).requireThat("actual", actual).startsWith(prefix);
+			new Requirements(scope).requireThat(actual, "actual").startsWith(prefix);
 		}
 	}
 
@@ -160,7 +161,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = "1234" + prefix;
-			new Requirements(scope).requireThat("actual", actual).startsWith(prefix);
+			new Requirements(scope).requireThat(actual, "actual").startsWith(prefix);
 		}
 	}
 
@@ -171,7 +172,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = "1234" + prefix;
-			new Requirements(scope).requireThat("actual", actual).doesNotStartWith(prefix);
+			new Requirements(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
 		}
 	}
 
@@ -182,7 +183,7 @@ public final class StringTest
 		{
 			String prefix = "home";
 			String actual = prefix + "1234";
-			new Requirements(scope).requireThat("actual", actual).doesNotStartWith(prefix);
+			new Requirements(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
 		}
 	}
 
@@ -193,7 +194,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = "1234" + suffix;
-			new Requirements(scope).requireThat("actual", actual).endsWith(suffix);
+			new Requirements(scope).requireThat(actual, "actual").endsWith(suffix);
 		}
 	}
 
@@ -204,7 +205,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = suffix + "1234";
-			new Requirements(scope).requireThat("actual", actual).endsWith(suffix);
+			new Requirements(scope).requireThat(actual, "actual").endsWith(suffix);
 		}
 	}
 
@@ -215,7 +216,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = suffix + "1234";
-			new Requirements(scope).requireThat("actual", actual).doesNotEndWith(suffix);
+			new Requirements(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
 		}
 	}
 
@@ -226,7 +227,7 @@ public final class StringTest
 		{
 			String suffix = "home";
 			String actual = "1234" + suffix;
-			new Requirements(scope).requireThat("actual", actual).doesNotEndWith(suffix);
+			new Requirements(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
 		}
 	}
 
@@ -237,7 +238,7 @@ public final class StringTest
 		{
 			String expected = "cat";
 			String actual = "my " + expected + " is the best";
-			new Requirements(scope).requireThat("actual", actual).contains(expected);
+			new Requirements(scope).requireThat(actual, "actual").contains(expected);
 		}
 	}
 
@@ -248,7 +249,7 @@ public final class StringTest
 		{
 			String expected = "cat";
 			String actual = "my dog is the best";
-			new Requirements(scope).requireThat("actual", actual).contains(expected);
+			new Requirements(scope).requireThat(actual, "actual").contains(expected);
 		}
 	}
 
@@ -259,7 +260,7 @@ public final class StringTest
 		{
 			String expected = "cat";
 			String actual = "my dog is the best";
-			new Requirements(scope).requireThat("actual", actual).doesNotContain(expected);
+			new Requirements(scope).requireThat(actual, "actual").doesNotContain(expected);
 		}
 	}
 
@@ -270,7 +271,7 @@ public final class StringTest
 		{
 			String expected = "cat";
 			String actual = "my " + expected + " is the best";
-			new Requirements(scope).requireThat("actual", actual).doesNotContain(expected);
+			new Requirements(scope).requireThat(actual, "actual").doesNotContain(expected);
 		}
 	}
 
@@ -280,7 +281,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat("actual", actual).length().
+			new Requirements(scope).requireThat(actual, "actual").length().
 				isEqualTo(actual.length());
 		}
 	}
@@ -291,7 +292,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1234567890";
-			new Requirements(scope).requireThat("actual", actual).length().
+			new Requirements(scope).requireThat(actual, "actual").length().
 				isEqualTo(actual.length() + 1);
 		}
 	}
@@ -302,7 +303,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat("actual", actual).length().
+			new Requirements(scope).requireThat(actual, "actual").length().
 				isNotEqualTo(actual.length() + 1);
 		}
 	}
@@ -313,7 +314,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "1234567890";
-			new Requirements(scope).requireThat("actual", actual).length().
+			new Requirements(scope).requireThat(actual, "actual").length().
 				isNotEqualTo(actual.length());
 		}
 	}
@@ -325,7 +326,7 @@ public final class StringTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			String actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat("actual", actual).isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
 		}
 	}
 }

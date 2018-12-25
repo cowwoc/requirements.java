@@ -29,7 +29,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
 	protected NumberCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{
@@ -138,7 +138,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isMultipleOf(T divisor)
 	{
-		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
@@ -150,11 +150,11 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	}
 
 	@Override
-	public S isMultipleOf(String name, T divisor)
+	public S isMultipleOf(T divisor, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("divisor", divisor).isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
@@ -168,7 +168,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotMultipleOf(T divisor)
 	{
-		scope.getInternalVerifier().requireThat("divisor", divisor).isNotNull();
+		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
@@ -180,11 +180,11 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	}
 
 	@Override
-	public S isNotMultipleOf(String name, T divisor)
+	public S isNotMultipleOf(T divisor, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat("name", name).isNotNull().trim().isNotEmpty();
-		verifier.requireThat("divisor", divisor).isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();

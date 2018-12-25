@@ -20,7 +20,7 @@ public final class SetsTest
 	{
 		Collection<Integer> input = ImmutableList.of(1, 2, 3);
 		Set<Integer> output = Sets.fromCollection(input);
-		requireThat("input", input).isNotSameObjectAs("output", output);
+		requireThat(input, "input").isNotSameObjectAs(output, "output");
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public final class SetsTest
 	{
 		Collection<Integer> input = ImmutableSet.of(1, 2, 3);
 		Set<Integer> output = Sets.fromCollection(input);
-		requireThat("input", input).isSameObjectAs("output", output);
+		requireThat(input, "input").isSameObjectAs(output, "output");
 	}
 
 	@Test
@@ -37,7 +37,7 @@ public final class SetsTest
 		Set<Integer> first = ImmutableSet.of(1, 2, 3);
 		Set<Integer> second = ImmutableSet.of(2, 3, 4);
 		Set<Integer> difference = Sets.difference(first, second);
-		requireThat("difference", difference).containsExactly(ImmutableSet.of(1));
+		requireThat(difference, "difference").containsExactly(ImmutableSet.of(1));
 	}
 
 	@Test
@@ -46,6 +46,6 @@ public final class SetsTest
 		Set<Integer> first = ImmutableSet.of(1, 2, 3);
 		Set<Integer> second = ImmutableSet.of(2, 3, 4);
 		Set<Integer> intersection = Sets.intersection(first, second);
-		requireThat("intersection", intersection).containsExactly(ImmutableSet.of(2, 3));
+		requireThat(intersection, "intersection").containsExactly(ImmutableSet.of(2, 3));
 	}
 }
