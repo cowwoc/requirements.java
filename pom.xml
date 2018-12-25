@@ -41,7 +41,7 @@
 	<modules>
 		<module>code-generator</module>
 		<module>java</module>
-		<module>native</module>
+		<module>natives</module>
 		<module>guava</module>
 		<module>maven-plugin</module>
 	</modules>
@@ -150,7 +150,7 @@
 				<executions>
 					<execution>
 						<id>aggregate</id>
-						<goals>  
+						<goals>
 							<goal>aggregate</goal>
 						</goals>
 						<phase>site</phase>

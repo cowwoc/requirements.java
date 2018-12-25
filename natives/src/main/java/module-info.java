@@ -1,4 +1,3 @@
-// "native" is a keyword, so we use "natives" instead
 module org.bitbucket.cowwoc.requirements.natives {
 	requires org.bitbucket.cowwoc.pouch;
 

@@ -131,7 +131,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-native</artifactId>
+			<artifactId>requirements-natives</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
