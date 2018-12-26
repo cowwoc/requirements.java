@@ -10,6 +10,7 @@
 	<artifactId>requirements-benchmark-java</artifactId>
 	<packaging>jar</packaging>
 	<name>Requirements-Benchmark-Java</name>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -18,6 +19,7 @@
 				<version>${project.version}</version>
 				<executions>
 					<execution>
+						<id>generate-api</id>
 						<goals>
 							<goal>generate-api</goal>
 						</goals>
@@ -27,18 +29,13 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<compilerArgs>
-						<arg>-Xdiags:verbose</arg>
-						<arg>-Werror</arg>
-						<arg>-Xlint:-requires-automatic</arg>
-						<arg>-implicit:class</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>requirements-java</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>

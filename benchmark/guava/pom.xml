@@ -7,16 +7,10 @@
 		<artifactId>requirements-benchmark</artifactId>
 		<version>4.0.5-SNAPSHOT</version>
 	</parent>
-	<artifactId>requirements-benchmark-guava-without-asserts</artifactId>
+	<artifactId>requirements-benchmark-guava</artifactId>
 	<packaging>jar</packaging>
-	<name>Requirements-Benchmark-Guava-Without-Asserts</name>
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-guava</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+	<name>Requirements-Benchmark-Guava</name>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -35,18 +29,13 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<compilerArgs>
-						<arg>-Xdiags:verbose</arg>
-						<arg>-Werror</arg>
-						<arg>-Xlint:-requires-automatic</arg>
-						<arg>-implicit:class</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>requirements-guava</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>
