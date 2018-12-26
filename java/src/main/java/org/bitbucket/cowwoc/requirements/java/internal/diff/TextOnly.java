@@ -167,7 +167,7 @@ public final class TextOnly extends AbstractDiffWriter
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	static final String PADDING_MARKER = " ";
+	public static final String PADDING_MARKER = " ";
 	private final StringBuilder middleLine;
 	private final List<String> middleList;
 	private List<String> middle;

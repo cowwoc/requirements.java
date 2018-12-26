@@ -48,9 +48,17 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:-requires-automatic</arg>
+						<arg>-Xlint:-module,-requires-automatic</arg>
 						<arg>-implicit:class</arg>
 					</compilerArgs>
+					<annotationProcessorPaths>
+						<!-- WORKAROUND: https://stackoverflow.com/a/53928409/14731 -->
+						<path>
+							<groupId>org.openjdk.jmh</groupId>
+							<artifactId>jmh-generator-annprocess</artifactId>
+							<version>${jmh.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -84,7 +92,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<skipBenchmarks>true</skipBenchmarks>
+		<skipBenchmarks>false</skipBenchmarks>
 		<jmh.version>1.21</jmh.version>
 	</properties>
 	<profiles>

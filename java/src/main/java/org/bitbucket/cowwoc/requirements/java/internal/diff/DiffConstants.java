@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * Constants used for generating diffs.
  */
-final class DiffConstants
+public final class DiffConstants
 {
 	/**
 	 * A pattern matching newline characters anywhere in a string.

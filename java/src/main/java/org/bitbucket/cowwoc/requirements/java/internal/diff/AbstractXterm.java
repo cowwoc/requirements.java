@@ -148,10 +148,10 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	 * A padding character used to align values vertically.
 	 */
 	static final String PADDING_MARKER = "/";
-	final String paddingColor;
-	final String insertColor;
-	final String deleteColor;
-	final String resetColor;
+	public final String paddingColor;
+	public final String insertColor;
+	public final String deleteColor;
+	public final String resetColor;
 	private boolean needToResetActual;
 	private boolean needToResetExpected;
 

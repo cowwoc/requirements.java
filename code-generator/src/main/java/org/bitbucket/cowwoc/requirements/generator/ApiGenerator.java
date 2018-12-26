@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 public final class ApiGenerator
 {
 	private boolean guavaEnabled;
+	private boolean forTests;
 
 	/**
 	 * @param args the command-line arguments
@@ -63,6 +64,14 @@ public final class ApiGenerator
 	public void setGuavaEnabled(boolean value)
 	{
 		this.guavaEnabled = value;
+	}
+
+	/**
+	 * @param value true if the API will be used by automated tests
+	 */
+	public void setForTests(boolean value)
+	{
+		this.forTests = value;
 	}
 
 	/**
@@ -142,10 +151,8 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;\n" +
-				"\n" +
+				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n");
+			writer.write("\n" +
 				"import java.math.BigDecimal;\n" +
 				"import java.net.InetAddress;\n" +
 				"import java.net.URI;\n" +
@@ -169,9 +176,9 @@ public final class ApiGenerator
 			writer.write(" */\n" +
 				"public final class DefaultRequirements\n" +
 				"{\n" +
-				"\tprivate static final JavaVerifier JAVA_VERIFIER = new DefaultJavaVerifier(MainApplicationScope.INSTANCE);\n");
+				"\tprivate static final JavaVerifier JAVA_VERIFIER = new DefaultJavaVerifier();\n");
 			if (guavaEnabled)
-				writer.write("\tprivate static final GuavaVerifier GUAVA_VERIFIER = new DefaultGuavaVerifier(MainApplicationScope.INSTANCE);\n");
+				writer.write("\tprivate static final GuavaVerifier GUAVA_VERIFIER = new DefaultGuavaVerifier();\n");
 			writer.write("\n" +
 				"\t/**\n" +
 				"\t * @return true if assertions are enabled for this class\n" +
@@ -1217,7 +1224,7 @@ public final class ApiGenerator
 				"\t */\n" +
 				"\tpublic static GlobalConfiguration getGlobalConfiguration()\n" +
 				"\t{\n" +
-				"\t\treturn DefaultJvmScope.INSTANCE.getGlobalConfiguration();\n" +
+				"\t\treturn JAVA_VERIFIER.getGlobalConfiguration();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
@@ -1318,11 +1325,10 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;\n" +
-				"\n" +
+				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n");
+			if (forTests)
+				writer.write("import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n");
+			writer.write("\n" +
 				"import java.math.BigDecimal;\n" +
 				"import java.net.InetAddress;\n" +
 				"import java.net.URI;\n" +
@@ -1355,23 +1361,28 @@ public final class ApiGenerator
 			writer.write("\n" +
 				"\tpublic Requirements()\n" +
 				"\t{\n" +
-				"\t\tthis(MainApplicationScope.INSTANCE);\n" +
-				"\t}\n" +
-				"\n" +
-				"\t/**\n" +
-				"\t * \t * This constructor is meant to be used by automated tests, not by users.\n" +
-				"\t *\n" +
-				"\t * @param scope the application configuration\n" +
-				"\t * @throws AssertionError if any of the arguments are null\n" +
-				"\t */\n" +
-				"\tpublic Requirements(ApplicationScope scope)\n" +
-				"\t{\n" +
-				"\t\tassert (scope != null) : \"scope may not be null\";\n" +
-				"\t\tthis.javaVerifier = new DefaultJavaVerifier(scope);\n");
+				"\t\tthis.javaVerifier = new DefaultJavaVerifier();\n");
 			if (guavaEnabled)
-				writer.write("\t\tthis.guavaVerifier = new DefaultGuavaVerifier(scope);\n");
-			writer.write("\t}\n" +
-				"\n" +
+				writer.write("\t\tthis.guavaVerifier = new DefaultGuavaVerifier();\n");
+			if (forTests)
+			{
+				writer.write("\t}\n" +
+					"\n" +
+					"\t/**\n" +
+					"\t * This constructor is meant to be used by automated tests, not by users.\n" +
+					"\t *\n" +
+					"\t * @param scope the application configuration\n" +
+					"\t * @throws AssertionError if any of the arguments are null\n" +
+					"\t */\n" +
+					"\tpublic Requirements(ApplicationScope scope)\n" +
+					"\t{\n" +
+					"\t\tassert (scope != null) : \"scope may not be null\";\n" +
+					"\t\tthis.javaVerifier = new DefaultJavaVerifier(scope);\n");
+				if (guavaEnabled)
+					writer.write("\t\tthis.guavaVerifier = new DefaultGuavaVerifier(scope);\n");
+				writer.write("\t}\n");
+			}
+			writer.write("\n" +
 				"\t/**\n" +
 				"\t * @param javaVerifier  the Java verifier to delegate to\n");
 			if (guavaEnabled)
@@ -1566,7 +1577,7 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic GlobalConfiguration getGlobalConfiguration()\n" +
 				"\t{\n" +
-				"\t\treturn DefaultJvmScope.INSTANCE.getGlobalConfiguration();\n" +
+				"\t\treturn javaVerifier.getGlobalConfiguration();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +

@@ -5,6 +5,8 @@
 package org.bitbucket.cowwoc.requirements.java.internal.util;
 
 import org.bitbucket.cowwoc.requirements.java.annotations.OptimizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -69,6 +71,7 @@ public final class Exceptions
 		new ConcurrentHashMap<>(3);
 	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithCause =
 		new ConcurrentHashMap<>(3);
+	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
 
 	/**
 	 * @param name  the name of a Java package
@@ -163,11 +166,14 @@ public final class Exceptions
 		try
 		{
 			// Instantiate a proxy that filters the stack trace lazily
-			return Optional.of(Class.forName(exceptionProxy));
+			Class<?> result = Class.forName(exceptionProxy);
+			log.debug("Found optimized exception: {}", exceptionProxy);
+			return Optional.of(result);
 		}
 		catch (ClassNotFoundException unused)
 		{
 			// Instantiate the original exception
+			log.debug("Could not find optimized exception: {}", exceptionProxy);
 			return Optional.empty();
 		}
 	}

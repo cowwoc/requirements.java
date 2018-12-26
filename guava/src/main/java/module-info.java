@@ -6,5 +6,6 @@ module org.bitbucket.cowwoc.requirements.guava
 {
 	requires com.google.common;
 	requires transitive org.bitbucket.cowwoc.requirements.java;
+
 	exports org.bitbucket.cowwoc.requirements.guava;
 }

@@ -97,7 +97,7 @@ public final class OperatingSystem
 		 * @return the version
 		 * @throws AssertionError if the version is not supported
 		 */
-		static Version parseWindowsVersion(String versionAsString)
+		public static Version parseWindowsVersion(String versionAsString)
 		{
 			Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
 			if (!matcher.find())
@@ -110,7 +110,7 @@ public final class OperatingSystem
 		 * @return the version of the operating system
 		 * @throws AssertionError if the version is not supported
 		 */
-		static Version parseVersion(String versionAsString)
+		public static Version parseVersion(String versionAsString)
 		{
 			Matcher matcher = VERSION_PATTERN.matcher(versionAsString);
 			if (!matcher.find())

@@ -85,6 +85,8 @@ public final class GenerateApiMojo extends AbstractMojo
 			guavaEnabled = overrideGuavaEnabled;
 		ApiGenerator generator = new ApiGenerator();
 		generator.setGuavaEnabled(guavaEnabled);
+		if (scope.equals("test"))
+			generator.setForTests(true);
 		try
 		{
 			Files.createDirectories(targetPath);

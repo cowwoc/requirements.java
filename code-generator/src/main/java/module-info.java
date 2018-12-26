@@ -5,5 +5,6 @@
 module org.bitbucket.cowwoc.requirements.generator
 {
 	requires org.slf4j;
+
 	exports org.bitbucket.cowwoc.requirements.generator;
 }

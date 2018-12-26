@@ -37,6 +37,7 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.math.BigDecimal;
@@ -70,7 +71,16 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	protected final Configuration config;
 
 	/**
+	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope) DefaultJavaVerifier(MainApplicationScope.INSTANCE)}.
+	 */
+	public DefaultJavaVerifier()
+	{
+		this(MainApplicationScope.INSTANCE);
+	}
+
+	/**
 	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope, Configuration) DefaultJavaVerifier(scope, scope.getGlobalConfiguration())}.
+	 * This constructor is meant to be used by internal classes, not by users.
 	 *
 	 * @param scope the application configuration
 	 * @throws AssertionError if any of the arguments are null

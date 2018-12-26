@@ -6,8 +6,8 @@
 	</appender>
 
 	<root level="debug">
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="STDOUT"/>
 	</root>
-	<logger name="org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal" level="WARN"/>
-	<logger name="org.bitbucket.cowwoc.requirements.java.internal.terminal.NativeTerminal" level="OFF"/>
+	<logger name="org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal" level="warn"/>
+	<logger name="org.bitbucket.cowwoc.requirements.java.internal.terminal.NativeTerminal" level="warn"/>
 </configuration>
