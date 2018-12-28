@@ -826,5 +826,4 @@ public interface JavaVerifier extends Configurable
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	InetAddressVerifier assertThat(InetAddress actual, String name);
-	// TODO: Document mechanism for combining multiple checks into a single statement (i.e. using methods that take Consumer)
 }

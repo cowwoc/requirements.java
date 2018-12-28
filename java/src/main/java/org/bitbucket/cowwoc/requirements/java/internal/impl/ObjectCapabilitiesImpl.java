@@ -236,7 +236,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, NullPointerException.class,
-			String.format("%s may not be null", name)).
+			name + " may not be null").
 			build();
 	}
 

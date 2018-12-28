@@ -45,7 +45,7 @@ public final class BigDecimalVerifierImpl
 		if (actual.signum() == 0)
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be zero", name)).
+			name + " must be zero").
 			addContext("Actual", actual).
 			build();
 	}

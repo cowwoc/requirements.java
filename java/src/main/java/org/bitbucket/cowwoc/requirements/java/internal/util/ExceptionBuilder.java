@@ -13,7 +13,6 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -142,8 +141,15 @@ public final class ExceptionBuilder
 		}
 
 		// null entries denote a newline between DIFF sections
-		int maxKeyLength = mergedContext.stream().filter(Objects::nonNull).map(Entry::getKey).
-			mapToInt(String::length).max().orElse(0);
+		int maxKeyLength = 0;
+		for (Entry<String, Object> entry : mergedContext)
+		{
+			if (entry == null)
+				continue;
+			int length = entry.getKey().length();
+			if (length > maxKeyLength)
+				maxKeyLength = length;
+		}
 		for (Entry<String, Object> entry : mergedContext)
 		{
 			if (entry == null)

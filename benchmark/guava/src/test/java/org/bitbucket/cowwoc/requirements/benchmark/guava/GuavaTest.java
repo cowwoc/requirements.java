@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class GuavaTest
 {
 	private String name = "multimap";
-	private Multimap<String, String> value = HashMultimap.create();
+	private Multimap<String, String> value = HashMultimap.create(1, 2);
 	private Multimap<?, ?> nullMultimap = null;
 	private List<Integer> list;
 
