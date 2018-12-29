@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@2.13">
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.31">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -20,17 +20,17 @@
           <defaultValue>default</defaultValue>
           <successfulOnly>true</successfulOnly>
         </com.gem.persistentparameter.PersistentStringParameterDefinition>
-        <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
+        <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.4">
           <name>releaseVersion</name>
           <description>What version number should be released?</description>
-          <defaultValue>3.0.13</defaultValue>
+          <defaultValue>4.0.0-RC</defaultValue>
           <regex>\d+\.\d+\.\d+(-RC)?</regex>
           <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-RC]</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
-        <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.3">
+        <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.4">
           <name>nextVersion</name>
           <description>What SNAPSHOT version should be used after the release?</description>
-          <defaultValue>3.0.14-SNAPSHOT</defaultValue>
+          <defaultValue>4.0.1-SNAPSHOT</defaultValue>
           <regex>.+-SNAPSHOT</regex>
           <failedValidationMessage>Version number must end with -SNAPSHOT</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
@@ -49,7 +49,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.36.1">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.61">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -66,10 +66,10 @@
 //
 // GCC outputs dynamically-linked libraries that depend on specific versions of the glibc library.
 // https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html lists which GLIBCXX version ships with each version of GCC.
-// As of 2017-03-09, AWS linux images ship with GCC 4.8.3: https://aws.amazon.com/amazon-linux-ami/2015.09-release-notes/
+// As of 2017-03-09, AWS linux images ship with GCC 6.4: https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/
 // Therefore, we must use this version of GCC or older.
 //
-// Using a newer version of GCC results in the following error:
+// Using a newer version of GCC results in the following kind of error:
 //
 // java.lang.UnsatisfiedLinkError: librequirements.so: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21&apos; not found (required by librequirements.so)
 //
@@ -83,7 +83,7 @@ def stagingProfileId = &quot;353562598afa&quot;
 def stagingRepositoryId
 def branch = &quot;default&quot;
 
-node(&quot;linux &amp;&amp; amd64&quot;)
+node(&quot;linux&quot;)
 {
     // http://stackoverflow.com/a/33630506/14731
     withCredentials([[$class: &quot;UsernamePasswordMultiBinding&quot;, credentialsId: &quot;bitbucket&quot;, usernameVariable: &quot;HG_USERNAME&quot;, passwordVariable: &quot;HG_PASSWORD&quot;]])
@@ -91,7 +91,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
         def authenticatedRepository = &quot;https://${HG_USERNAME}:${HG_PASSWORD}@${repository}&quot;
         timeout(2)
         {
-            stage(&quot;Checkout (linux-amd64)&quot;)
+            stage(&quot;Checkout (linux)&quot;)
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
@@ -100,7 +100,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
         }
         timeout(10)
         {
-            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;,
+            withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;,
                 &quot;HGUSER=Gili Tzabari &lt;gili.tzabari@gmail.com&gt;&quot;])
             {
                 stage(&quot;Create release branch&quot;)
@@ -141,15 +141,13 @@ node(&quot;linux &amp;&amp; amd64&quot;)
 // Build and release from all platforms
 try
 {
-    parallel linux_i386:
+    parallel linux:
     {
-        // Linux-i386 deploys the portable modules as well as its platform-specific binaries.
-        // Remaining platforms only deploy platform-specific binaries.
-        node(&quot;linux &amp;&amp; i386&quot;)
+        node(&quot;linux&quot;)
         {
             timeout(2)
             {
-                stage(&quot;Checkout (linux-i386)&quot;)
+                stage(&quot;Checkout&quot;)
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
@@ -158,55 +156,16 @@ try
             }
             timeout(15)
             {
-                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
                 {
-                    // &quot;portable&quot; profile can&apos;t run unit tests so we skip the build step and deploy directly.
-                    stage(&quot;Deploy (portable)&quot;)
-                    {
-                        // Deploy empty main JAR
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
-                    }
-                    stage(&quot;Deploy (linux-i386)&quot;)
-                    {
-                        // Deploy platform-specific JAR
-                        // Use the same GCC version as AWS. See top of this script for more information.
-                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.7 g++-4.7 -y
-                            export CC=/usr/bin/gcc-4.7
-                            export CXX=/usr/bin/g++-4.7
-                            cd native
-                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_32-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}
-                            strings target/linux-x86_32-release/classes/librequirements.so | (! grep GLIBCXX_3.4.21)&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, native/target/linux-x86_32-release/classes/librequirements.so&quot;
-                    }
-                }
-            }
-        }
-    }, linux_amd64:
-    {
-        node(&quot;linux &amp;&amp; amd64&quot;)
-        {
-            timeout(2)
-            {
-                stage(&quot;Checkout (linux-amd64)&quot;)
-                {
-                    // Wipe out local repository in case it contains extra commits from a previous (broken) build
-                    deleteDir()
-                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
-                }
-            }
-            timeout(15)
-            {
-                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
-                {
-                    stage(&quot;Deploy (linux-amd64)&quot;)
+                    stage(&quot;Deploy (linux)&quot;)
                     {
                         // Use the same GCC version as AWS. See top of this script for more information.
                         sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.7 g++-4.7 -y
-                            export CC=/usr/bin/gcc-4.7
-                            export CXX=/usr/bin/g++-4.7
+                            export CC=/usr/bin/gcc-6
+                            export CXX=/usr/bin/g++-6
                             cd native
-                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}
-                            strings target/linux-x86_64-release/classes/librequirements.so | (! grep GLIBCXX_3.4.21)&quot;&quot;&quot;
+                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts &quot;**/target/*.jar, native/target/linux-x86_64-release/classes/librequirements.so&quot;
                     }
                 }
@@ -227,9 +186,9 @@ try
             }
             timeout(15)
             {
-                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
                 {
-                    stage(&quot;Deploy (mac-x86_64)&quot;)
+                    stage(&quot;Deploy (mac)&quot;)
                     {
                         sh script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pmac-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
@@ -240,7 +199,7 @@ try
         }
     }, windows:
     {
-        node(&quot;windows &amp;&amp; i386 &amp;&amp; amd64&quot;)
+        node(&quot;windows&quot;)
         {
             timeout(2)
             {
@@ -253,21 +212,9 @@ try
             }
             timeout(15)
             {
-                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA32_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
                 {
-                    stage(&quot;Deploy (windows-x86_32)&quot;)
-                    {
-                        bat script: &quot;&quot;&quot;cd native
-                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_32-release -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, native/target/windows-x86_32-release/classes/*.dll, native/target/windows-x86_32-release/classes/*.pdb&quot;
-                    }
-                }
-            }
-            timeout(15)
-            {
-                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
-                {
-                    stage(&quot;Deploy (windows-x86_64)&quot;)
+                    stage(&quot;Deploy (windows)&quot;)
                     {
                         bat script: &quot;&quot;&quot;cd native
                             mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
@@ -285,11 +232,11 @@ catch (e)
     try
     {
         // Drop staging repository
-        node(&quot;linux &amp;&amp; amd64&quot;)
+        node(&quot;linux&quot;)
         {
             timeout(2)
             {
-                stage(&quot;Checkout (linux-amd64)&quot;)
+                stage(&quot;Checkout (linux)&quot;)
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
@@ -298,7 +245,7 @@ catch (e)
             }
             timeout(5)
             {
-                withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
                 {
                     sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-drop -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
                 }
@@ -313,11 +260,11 @@ catch (e)
 }
 
 // Close the release
-node(&quot;linux &amp;&amp; amd64&quot;)
+node(&quot;linux&quot;)
 {
     timeout(2)
     {
-        stage(&quot;Checkout (linux-amd64)&quot;)
+        stage(&quot;Checkout (linux)&quot;)
         {
             // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
@@ -326,7 +273,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
     }
     timeout(10)
     {
-        withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA64_HOME&apos; }&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+        withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
         {
             stage(&quot;Close release&quot;)
             {
@@ -335,7 +282,7 @@ node(&quot;linux &amp;&amp; amd64&quot;)
         }
     }
 }</script>
-    <sandbox>true</sandbox>
+    <sandbox>false</sandbox>
   </definition>
   <triggers/>
   <disabled>false</disabled>
