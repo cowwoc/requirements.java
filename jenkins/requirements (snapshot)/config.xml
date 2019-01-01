@@ -122,11 +122,6 @@ try
             {
                 withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
-                    stage(&quot;Deploy (portable)&quot;)
-                    {
-                        // Deploy empty main JAR
-                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
-                    }
                     stage(&quot;Deploy (linux)&quot;)
                     {
                         // Deploy platform-specific JAR
@@ -134,9 +129,10 @@ try
                         sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-6 g++-6 -y
                             export CC=/usr/bin/gcc-6
                             export CXX=/usr/bin/g++-6
-                            cd native
+                            cd natives
+                            mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release clean install
                             mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, native/target/linux-x86_64-release/classes/librequirements.so&quot;
+                        archiveArtifacts &quot;**/target/*.jar, natives/target/linux-x86_64-release/classes/librequirements.so&quot;
                     }
                 }
             }
@@ -160,9 +156,10 @@ try
                 {
                     stage(&quot;Deploy (mac)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;cd native
+                        sh script: &quot;&quot;&quot;cd natives
+                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pmac-x86_64-release clean install
                             mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pmac-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, native/target/mac-x86_64-release/classes/librequirements.dylib&quot;
+                        archiveArtifacts &quot;**/target/*.jar, natives/target/mac-x86_64-release/classes/librequirements.dylib&quot;
                     }
                 }
             }
@@ -186,9 +183,10 @@ try
                 {
                     stage(&quot;Deploy (windows)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;cd native
+                        bat script: &quot;&quot;&quot;cd natives
+                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_64-release clean install
                             mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, native/target/windows-x86_64-release/classes/*.dll, native/target/windows-x86_64-release/classes/*.pdb&quot;
+                        archiveArtifacts &quot;**/target/*.jar, natives/target/windows-x86_64-release/classes/*.dll, natives/target/windows-x86_64-release/classes/*.pdb&quot;
                     }
                 }
             }
@@ -227,6 +225,30 @@ catch (e)
         // Ignore and throw the original exception
     }
     throw e;
+}
+
+// Close the staging repository
+node(&quot;linux&quot;)
+{
+    timeout(2)
+    {
+        stage(&quot;Checkout (linux)&quot;)
+        {
+            // Wipe out local repository in case it contains extra commits from a previous (broken) build
+            deleteDir()
+            checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;${branch}&quot;]
+        }
+    }
+    timeout(10)
+    {
+        withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+        {
+            stage(&quot;Close release&quot;)
+            {
+                sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-close -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+            }
+        }
+    }
 }</script>
     <sandbox>true</sandbox>
   </definition>
