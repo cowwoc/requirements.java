@@ -343,21 +343,6 @@
 							</execution>
 						</executions>
 					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>deploy+gpg1</id>
-			<activation>
-				<property>
-					<name>deploy</name>
-				</property>
-				<os>
-					<family>!mac</family>
-				</os>
-			</activation>
-			<build>
-				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
