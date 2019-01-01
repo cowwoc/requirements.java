@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import java.net.URI;
 import java.net.URL;
 
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class UriTest
 {

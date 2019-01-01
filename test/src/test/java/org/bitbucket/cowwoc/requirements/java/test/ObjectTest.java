@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class ObjectTest
 {

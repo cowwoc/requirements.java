@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
 

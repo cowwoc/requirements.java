@@ -8,9 +8,9 @@ import org.bitbucket.cowwoc.pouch.ConcurrentLazyFactory;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Factory;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.NativeTerminal;
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
+import org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,8 +64,7 @@ public final class DefaultJvmScope implements JvmScope
 			}
 		}
 	};
-	private final Reference<Terminal> terminal = ConcurrentLazyReference.create(() ->
-		new Terminal(nativeTerminal.getValue()));
+	private final Reference<Terminal> terminal = ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
 	private final Reference<GlobalConfiguration> globalConfiguration = ConcurrentLazyReference.create(() -> new GlobalConfiguration(this));
 	public final Thread shutdownHook;
 	public final AtomicBoolean closed = new AtomicBoolean();
@@ -83,8 +82,7 @@ public final class DefaultJvmScope implements JvmScope
 		{
 			nativeLibraryLoaded = false;
 			terminalLog.debug("Failed to load \"requirements\" native library. Please see " +
-				"https://bitbucket.org/cowwoc/requirements/wiki/Deploying%20native%20libraries for more " +
-				"information.\n" +
+				"https://bitbucket.org/cowwoc/requirements/wiki/Deploying%20native%20libraries for more information.\n" +
 				"\n" +
 				"Relevant System Properties\n" +
 				"--------------------------\n" +

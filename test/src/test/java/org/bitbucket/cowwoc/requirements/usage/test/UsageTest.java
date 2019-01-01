@@ -20,7 +20,7 @@ import java.util.Set;
 
 import static org.bitbucket.cowwoc.requirements.DefaultRequirements.assertThat;
 import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class UsageTest
 {

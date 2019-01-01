@@ -13,7 +13,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class MapTest
 {

@@ -6,11 +6,9 @@ package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretTerminalEncoding;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.LinkedList;
 
@@ -23,7 +21,6 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 public final class DiffGenerator
 {
 	private final ApplicationScope scope;
-	private final SecretTerminalEncoding secretTerminalEncoding = SharedSecrets.INSTANCE.secretTerminalEncoding;
 
 	/**
 	 * @param scope the application configuration
@@ -66,7 +63,7 @@ public final class DiffGenerator
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
-		DiffWriter writer = secretTerminalEncoding.diff(scope.getTerminalEncoding().get(), actual, expected);
+		DiffWriter writer = createDiffWriter(scope.getTerminalEncoding().get(), actual, expected);
 		for (Diff component : components)
 		{
 			switch (component.operation)
@@ -93,5 +90,30 @@ public final class DiffGenerator
 		writer.close();
 		return new DiffResult(writer.getActual(), writer.getMiddle(), writer.getExpected(),
 			writer.getPaddingMarker());
+	}
+
+	/**
+	 * @param encoding a terminal encoding
+	 * @param actual   the actual value
+	 * @param expected the expected value
+	 * @return a writer that generates the diff of {@code actual} and {@code expected}
+	 */
+	private DiffWriter createDiffWriter(TerminalEncoding encoding, String actual, String expected)
+	{
+		switch (encoding)
+		{
+			case NONE:
+				return new TextOnly(actual, expected);
+			case XTERM_8COLOR:
+				return new Xterm8Color(actual, expected);
+			case XTERM_16COLOR:
+				return new Xterm16Color(actual, expected);
+			case XTERM_256COLOR:
+				return new Xterm256Color(actual, expected);
+			case RGB_888COLOR:
+				return new Rgb888Color(actual, expected);
+			default:
+				throw new AssertionError(encoding.name());
+		}
 	}
 }

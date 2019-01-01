@@ -21,13 +21,11 @@ public final class OperatingSystem
 	/**
 	 * Extracts the Windows version number from the output of the "ver" command.
 	 */
-	private static final Pattern WINDOWS_VERSION = Pattern.compile(
-		"Microsoft Windows \\[Version ([^]]+)]");
+	private static final Pattern WINDOWS_VERSION = Pattern.compile("Microsoft Windows \\[Version ([^]]+)]");
 	/**
 	 * Version format used by Linux and Mac.
 	 */
-	private static final Pattern VERSION_PATTERN = Pattern.compile(
-		"(\\d+)(?:\\.(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?)?");
+	private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)(?:\\.(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?)?");
 
 	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(() ->
 	{

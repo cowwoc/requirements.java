@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class MultimapTest
 {

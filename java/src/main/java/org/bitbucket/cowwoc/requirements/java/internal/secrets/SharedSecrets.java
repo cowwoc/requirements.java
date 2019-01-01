@@ -12,7 +12,6 @@ package org.bitbucket.cowwoc.requirements.java.internal.secrets;
 public final class SharedSecrets
 {
 	public static final SharedSecrets INSTANCE = new SharedSecrets();
-	public SecretTerminalEncoding secretTerminalEncoding;
 	public SecretConfiguration secretConfiguration;
 
 	/**

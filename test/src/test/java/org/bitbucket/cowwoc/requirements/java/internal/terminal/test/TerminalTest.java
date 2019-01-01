@@ -6,14 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal.terminal.test;
 
 import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.NativeTerminal;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
+import org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.RGB_888COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888COLOR;
 
 public final class TerminalTest
 {

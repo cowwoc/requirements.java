@@ -6,9 +6,10 @@ package org.bitbucket.cowwoc.requirements.java.internal.terminal;
 
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
+import org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem;
 import org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem.Version;
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,11 +23,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem.Type.WINDOWS;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.RGB_888COLOR;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_16COLOR;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_256COLOR;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_8COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_8COLOR;
 
 /**
  * The terminal associated with the JVM.
@@ -86,11 +87,9 @@ public final class Terminal
 		String term = System.getenv("TERM");
 		if (term == null)
 			return Collections.singleton(NONE);
-		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't
-		// attempt to support all possible terminal types. Instead, we support mainstream types and
-		// require the terminal to support or emulate them.
-		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length /
-			0.75));
+		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to support all possible terminal
+		// types. Instead, we support mainstream types and require the terminal to support or emulate them.
+		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length / 0.75));
 		result.add(NONE);
 		switch (term)
 		{
@@ -121,8 +120,7 @@ public final class Terminal
 				break;
 			}
 		}
-		// There is no reliable way to detect RGB_888COLOR support:
-		// https://gist.github.com/XVilka/8346728#detection
+		// There is no reliable way to detect RGB_888COLOR support: https://gist.github.com/XVilka/8346728#detection
 		return result;
 	}
 

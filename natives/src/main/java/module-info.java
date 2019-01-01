@@ -7,4 +7,8 @@ module org.bitbucket.cowwoc.requirements.natives {
 
 	exports org.bitbucket.cowwoc.requirements.natives.internal.util to org.bitbucket.cowwoc.requirements.java,
 		org.bitbucket.cowwoc.requirements.maven.plugin, org.bitbucket.cowwoc.requirements.test;
+	exports org.bitbucket.cowwoc.requirements.natives.internal.terminal to org.bitbucket.cowwoc.requirements.java,
+		org.bitbucket.cowwoc.requirements.test;
+
+	exports org.bitbucket.cowwoc.requirements.natives.terminal;
 }

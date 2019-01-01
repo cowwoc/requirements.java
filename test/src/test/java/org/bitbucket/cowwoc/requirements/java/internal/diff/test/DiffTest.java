@@ -5,13 +5,13 @@
 package org.bitbucket.cowwoc.requirements.java.internal.diff.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
-import org.bitbucket.cowwoc.requirements.java.test.SameToStringDifferentHashCode;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Rgb888Color;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm16Color;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm256Color;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
+import org.bitbucket.cowwoc.requirements.java.test.SameToStringDifferentHashCode;
 import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
@@ -20,10 +20,10 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.TextOnly.PADDING_MARKER;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.RGB_888COLOR;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_16COLOR;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_256COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256COLOR;
 
 public final class DiffTest
 {

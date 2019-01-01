@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.terminal.test;
 
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_16COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16COLOR;
 
 public final class TerminalEncodingTest
 {

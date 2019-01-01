@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
 

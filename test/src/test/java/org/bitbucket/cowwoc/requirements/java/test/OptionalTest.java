@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
-import static org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class OptionalTest
 {

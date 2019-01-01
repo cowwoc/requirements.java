@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
-import org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;

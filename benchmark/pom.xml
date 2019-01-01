@@ -92,7 +92,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<skipBenchmarks>false</skipBenchmarks>
+		<skipBenchmarks>true</skipBenchmarks>
 		<jmh.version>1.21</jmh.version>
 	</properties>
 	<profiles>

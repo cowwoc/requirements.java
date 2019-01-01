@@ -401,12 +401,5 @@
 				<module>benchmark</module>
 			</modules>
 		</profile>
-		<profile>
-			<id>portable</id>
-			<!--
-			Sonatype requires a main jar, even for platform-specific artifacts, so we supply it with an
-			empty file.
-			-->
-		</profile>
 	</profiles>
 </project>
