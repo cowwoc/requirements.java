@@ -371,39 +371,7 @@
 								<configuration>
 									<!-- See https://maven.apache.org/guides/mini/guide-encryption.html -->
 									<passphraseServerId>gpg.passphrase</passphraseServerId>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>deploy+gpg2</id>
-			<activation>
-				<property>
-					<name>deploy</name>
-				</property>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-								<configuration>
-									<!-- See https://maven.apache.org/guides/mini/guide-encryption.html -->
-									<passphraseServerId>gpg.passphrase</passphraseServerId>
-									<!-- See https://myshittycode.com/2017/08/07/maven-gpg-plugin-prevent-signing-prompt-or-gpg-signing-failed-no-such-file-or-directory-error/ -->
+									<!-- See https://stackoverflow.com/a/53992951/14731 -->
 									<gpgArguments>
 										<arg>--pinentry-mode</arg>
 										<arg>loopback</arg>
