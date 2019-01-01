@@ -23,14 +23,14 @@
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.4">
           <name>releaseVersion</name>
           <description>What version number should be released?</description>
-          <defaultValue>4.0.0-RC</defaultValue>
+          <defaultValue>4.0.5-RC</defaultValue>
           <regex>\d+\.\d+\.\d+(-RC)?</regex>
           <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-RC]</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.4">
           <name>nextVersion</name>
           <description>What SNAPSHOT version should be used after the release?</description>
-          <defaultValue>4.0.1-SNAPSHOT</defaultValue>
+          <defaultValue>4.0.6-SNAPSHOT</defaultValue>
           <regex>.+-SNAPSHOT</regex>
           <failedValidationMessage>Version number must end with -SNAPSHOT</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
@@ -89,7 +89,7 @@ node(&quot;linux&quot;)
     withCredentials([[$class: &quot;UsernamePasswordMultiBinding&quot;, credentialsId: &quot;bitbucket&quot;, usernameVariable: &quot;HG_USERNAME&quot;, passwordVariable: &quot;HG_PASSWORD&quot;]])
     {
         def authenticatedRepository = &quot;https://${HG_USERNAME}:${HG_PASSWORD}@${repository}&quot;
-        timeout(2)
+        timeout(10)
         {
             stage(&quot;Checkout (linux)&quot;)
             {
@@ -143,6 +143,8 @@ try
 {
     parallel linux:
     {
+        // Linux deploys the portable modules as well as its platform-specific binaries.
+        // Remaining platforms only deploy platform-specific binaries.
         node(&quot;linux&quot;)
         {
             timeout(2)
@@ -156,16 +158,22 @@ try
             }
             timeout(15)
             {
-                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
+                    stage(&quot;Deploy (portable)&quot;)
+                    {
+                        // Deploy empty main JAR
+                        sh script: &quot;mvn --batch-mode -e -DosDetection=false -Pportable -Ddeploy deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
+                    }
                     stage(&quot;Deploy (linux)&quot;)
                     {
+                        // Deploy platform-specific JAR
                         // Use the same GCC version as AWS. See top of this script for more information.
-                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-4.7 g++-4.7 -y
+                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-6 g++-6 -y
                             export CC=/usr/bin/gcc-6
                             export CXX=/usr/bin/g++-6
                             cd native
-                            mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
+                            mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Ddeploy clean deploy -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;&quot;&quot;
                         archiveArtifacts &quot;**/target/*.jar, native/target/linux-x86_64-release/classes/librequirements.so&quot;
                     }
                 }
@@ -175,7 +183,7 @@ try
     {
         node(&quot;mac&quot;)
         {
-            timeout(2)
+            timeout(10)
             {
                 stage(&quot;Checkout (mac)&quot;)
                 {
@@ -186,7 +194,7 @@ try
             }
             timeout(15)
             {
-                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
                     stage(&quot;Deploy (mac)&quot;)
                     {
@@ -201,7 +209,7 @@ try
     {
         node(&quot;windows&quot;)
         {
-            timeout(2)
+            timeout(10)
             {
                 stage(&quot;Checkout (windows)&quot;)
                 {
@@ -245,7 +253,7 @@ catch (e)
             }
             timeout(5)
             {
-                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
                     sh script: &quot;mvn --batch-mode -U -e nexus-staging:rc-drop -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId}&quot;
                 }
