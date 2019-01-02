@@ -35,10 +35,6 @@
 						<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
 					</links>
 
-					<!-- whitelist in order to exclude internal classes -->
-					<sourceFileIncludes>
-						<include>org/bitbucket/cowwoc/requirements/guava/**.java</include>
-					</sourceFileIncludes>
 					<show>public</show>
 					<doctitle>Requirements-Guava ${project.version} API</doctitle>
 					<windowtitle>Requirements-Guava ${project.version} API</windowtitle>

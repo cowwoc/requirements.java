@@ -45,35 +45,12 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
-			<!--<plugin>-->
-			<!--&lt;!&ndash; WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-478 &ndash;&gt;-->
-			<!--<artifactId>maven-antrun-plugin</artifactId>-->
-			<!--<executions>-->
-			<!--<execution>-->
-			<!--<id>default-cli</id>-->
-			<!--<phase>generate-sources</phase>-->
-			<!--<goals>-->
-			<!--<goal>run</goal>-->
-			<!--</goals>-->
-			<!--<configuration>-->
-			<!--<target>-->
-			<!--<copy todir="${project.build.directory}/javadoc-sources">-->
-			<!--<fileset dir="${project.build.sourceDirectory}">-->
-			<!--<exclude name="org/bitbucket/cowwoc/requirements/guava/**"/>-->
-			<!--</fileset>-->
-			<!--</copy>-->
-			<!--</target>-->
-			<!--</configuration>-->
-			<!--</execution>-->
-			<!--</executions>-->
-			<!--</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<links>
 						<link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-						<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
 					</links>
 					<!--
 					NOTE: <docfilessubdirs> is only needed to generate Javadoc for ANSI String diffs, which is disabled by default.
