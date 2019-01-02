@@ -10,31 +10,7 @@
 	<artifactId>requirements-benchmark</artifactId>
 	<packaging>pom</packaging>
 	<name>Requirements-Benchmark</name>
-	<dependencies>
-		<dependency>
-			<groupId>org.openjdk.jmh</groupId>
-			<artifactId>jmh-core</artifactId>
-			<version>${jmh.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openjdk.jmh</groupId>
-			<artifactId>jmh-generator-annprocess</artifactId>
-			<version>${jmh.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng.version}</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+
 	<modules>
 		<module>java</module>
 		<module>guava</module>
@@ -91,6 +67,31 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<version>${jmh.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-generator-annprocess</artifactId>
+			<version>${jmh.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<properties>
 		<skipBenchmarks>true</skipBenchmarks>
 		<jmh.version>1.21</jmh.version>
