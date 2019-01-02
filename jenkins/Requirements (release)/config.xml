@@ -77,7 +77,8 @@
 
 
 // Create release candidate branch
-def repository = &quot;bitbucket.org/cowwoc/requirements/&quot;
+def unauthenticatedRepository = &quot;bitbucket.org/cowwoc/requirements/&quot;
+def repository = &quot;https://${unauthenticatedRepository}&quot;
 // One can look up a project&apos;s profileId by running: mvn nexus-staging:rc-list-profiles -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/
 def stagingProfileId = &quot;353562598afa&quot;
 def stagingRepositoryId
@@ -88,14 +89,14 @@ node(&quot;linux&quot;)
     // http://stackoverflow.com/a/33630506/14731
     withCredentials([[$class: &quot;UsernamePasswordMultiBinding&quot;, credentialsId: &quot;bitbucket&quot;, usernameVariable: &quot;HG_USERNAME&quot;, passwordVariable: &quot;HG_PASSWORD&quot;]])
     {
-        def authenticatedRepository = &quot;https://${HG_USERNAME}:${HG_PASSWORD}@${repository}&quot;
+        def authenticatedRepository = &quot;https://${HG_USERNAME}:${HG_PASSWORD}@${unauthenticatedRepository}&quot;
         timeout(10)
         {
             stage(&quot;Checkout (linux)&quot;)
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;${branch}&quot;]
+                checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: &quot;${branch}&quot;]
             }
         }
         timeout(10)
@@ -153,7 +154,7 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
+                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
                 }
             }
             timeout(15)
@@ -184,7 +185,7 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
+                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
                 }
             }
             timeout(15)
@@ -211,7 +212,7 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
+                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
                 }
             }
             timeout(15)
@@ -244,7 +245,7 @@ catch (e)
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
+                    checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
                 }
             }
             timeout(5)
@@ -272,7 +273,7 @@ node(&quot;linux&quot;)
         {
             // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
-            checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: &quot;https://bitbucket.org/cowwoc/requirements/&quot;], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: &quot;https://bitbucket.org/cowwoc/requirements/&quot;, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
+            checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: &quot;release-${releaseVersion}&quot;, revisionType: &quot;TAG&quot;]
         }
     }
     timeout(10)
