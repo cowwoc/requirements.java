@@ -29,23 +29,28 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<links>
-						<link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-						<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
-					</links>
-					<offlineLinks>
-						<!-- The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support such a configuration -->
-						<offlineLink>
-							<url>https://cowwoc.bitbucket.io/requirements/javadoc/${project.version}/java/</url>
-							<location>${project.basedir}/../java/target/site/apidocs</location>
-						</offlineLink>
-					</offlineLinks>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<configuration>
+							<links>
+								<link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+								<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
+							</links>
+							<offlineLinks>
+								<!-- The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support such a configuration -->
+								<offlineLink>
+									<url>https://cowwoc.bitbucket.io/requirements/javadoc/${project.version}/java/</url>
+									<location>${project.basedir}/../java/target/apidocs</location>
+								</offlineLink>
+							</offlineLinks>
 
-					<show>public</show>
-					<doctitle>Requirements-Guava ${project.version} API</doctitle>
-					<windowtitle>Requirements-Guava ${project.version} API</windowtitle>
-				</configuration>
+							<show>public</show>
+							<doctitle>Requirements-Guava ${project.version} API</doctitle>
+							<windowtitle>Requirements-Guava ${project.version} API</windowtitle>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<!--
 			<plugin>
