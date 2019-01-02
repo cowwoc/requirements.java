@@ -14,7 +14,6 @@
 	<url>https://bitbucket.org/cowwoc/requirements/</url>
 
 	<build>
-		<directory>${basedir}/target/${platform}-${build.type}</directory>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -57,7 +56,7 @@
 						</goals>
 						<configuration>
 							<sourcePath>${project.build.directory}/sources</sourcePath>
-							<targetPath>${project.build.directory}/cmake</targetPath>
+							<targetPath>${project.build.directory}/${platform}-${build.type}/cmake</targetPath>
 							<generator>${cmake.generator}</generator>
 							<classifier>${cmake.classifier}</classifier>
 							<options>${cmake.options}</options>
@@ -74,7 +73,7 @@
 							<goal>compile</goal>
 						</goals>
 						<configuration>
-							<projectDirectory>${project.build.directory}/cmake</projectDirectory>
+							<projectDirectory>${project.build.directory}/${platform}-${build.type}/cmake</projectDirectory>
 							<classifier>${cmake.classifier}</classifier>
 							<config>${cmake.config}</config>
 						</configuration>
@@ -100,30 +99,6 @@
 							</resources>
 						</configuration>
 					</execution>
-					<execution>
-						<id>copy-binaries</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/cmake/build</directory>
-									<includes>
-										<!-- windows -->
-										<include>*.dll</include>
-										<include>*.pdb</include>
-										<!-- linux -->
-										<include>*.so</include>
-										<!-- mac -->
-										<include>*.dylib</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
 				</executions>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
@@ -132,7 +107,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
 				<executions>
 					<execution>
 						<id>create-native-jar</id>
@@ -142,6 +116,17 @@
 						</goals>
 						<configuration>
 							<classifier>${classifier}</classifier>
+							<classesDirectory>${project.build.directory}/${platform}-${build.type}/cmake/build/</classesDirectory>
+							<includes>
+								<!-- windows -->
+								<include>*.dll</include>
+								<include>*.pdb</include>
+								<!-- linux -->
+								<include>*.so</include>
+								<!-- mac -->
+								<include>*.dylib</include>
+							</includes>
+							<outputDirectory>${project.build.directory}/${platform}-${build.type}</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
