@@ -13,8 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints classes that expose a different number of methods depending on
- * the plugins that are available at build-time.
+ * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints that expose a different number of methods depending on the
+ * plugins that are available at build-time.
  */
 public final class ApiGenerator
 {
@@ -57,7 +57,7 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * Indicates if the generated API should reference the guava plugin.
+	 * Indicates if the generated class should assume that the guava plugin is enabled.
 	 *
 	 * @param value true if the Guava plugin is enabled
 	 */

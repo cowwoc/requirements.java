@@ -37,8 +37,8 @@ public final class GenerateApiMojo extends AbstractMojo
 	@Parameter(property = "scope", defaultValue = "compile")
 	private String scope;
 	/**
-	 * Indicates if the generated API should reference the guava plugin. If the guava plugin is present as a project dependency (of any
-	 * scope) this value is true by default; otherwise, it is false by default.
+	 * Indicates if the generated class should assume that the guava plugin is enabled. If the guava plugin is present as a project
+	 * dependency (of any scope) this value is true by default; otherwise, it is false by default.
 	 */
 	@Parameter(property = "guavaEnabled")
 	private Boolean overrideGuavaEnabled;
