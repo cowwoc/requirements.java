@@ -3,14 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.bitbucket.cowwoc</groupId>
-		<artifactId>requirements</artifactId>
+		<groupId>org.bitbucket.cowwoc.requirements</groupId>
+		<artifactId>root</artifactId>
 		<version>4.0.5-SNAPSHOT</version>
 	</parent>
-	<artifactId>requirements-maven-plugin</artifactId>
+	<artifactId>maven_plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>Requirements-Maven-Plugin</name>
-	<description>Maven plugin for the Requirements API library</description>
+	<description>Maven plugin for the Requirements library</description>
 	<prerequisites>
 		<maven>${maven.version}</maven>
 	</prerequisites>
@@ -134,12 +133,12 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-code-generator</artifactId>
+			<artifactId>code_generator</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements-natives</artifactId>
+			<artifactId>natives</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

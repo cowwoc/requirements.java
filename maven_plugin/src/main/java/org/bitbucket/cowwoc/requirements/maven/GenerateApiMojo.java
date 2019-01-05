@@ -78,7 +78,7 @@ public final class GenerateApiMojo extends AbstractMojo
 		{
 			if (!dependency.getGroupId().equals(plugin.getGroupId()))
 				continue;
-			if (dependency.getArtifactId().equals("requirements-guava"))
+			if (dependency.getArtifactId().equals("guava"))
 				guavaEnabled = true;
 		}
 		if (overrideGuavaEnabled != null)

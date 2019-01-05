@@ -7,8 +7,8 @@
 		<artifactId>oss-parent</artifactId>
 		<version>9</version>
 	</parent>
-	<groupId>org.bitbucket.cowwoc</groupId>
-	<artifactId>requirements</artifactId>
+	<groupId>org.bitbucket.cowwoc.requirements</groupId>
+	<artifactId>root</artifactId>
 	<version>4.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
@@ -39,11 +39,11 @@
 	</developers>
 
 	<modules>
-		<module>code-generator</module>
+		<module>code_generator</module>
 		<module>java</module>
 		<module>natives</module>
 		<module>guava</module>
-		<module>maven-plugin</module>
+		<module>maven_plugin</module>
 	</modules>
 
 	<build>
