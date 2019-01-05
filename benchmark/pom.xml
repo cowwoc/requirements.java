@@ -28,7 +28,7 @@
 						<arg>-implicit:class</arg>
 					</compilerArgs>
 					<annotationProcessorPaths>
-						<!-- WORKAROUND: https://stackoverflow.com/a/53928409/14731 -->
+						<!-- WORKAROUND: https://issues.apache.org/jira/browse/MCOMPILER-369 -->
 						<path>
 							<groupId>org.openjdk.jmh</groupId>
 							<artifactId>jmh-generator-annprocess</artifactId>

@@ -1368,10 +1368,10 @@ public final class ApiGenerator
 				"\t\tthis.javaVerifier = new DefaultJavaVerifier();\n");
 			if (guavaEnabled)
 				writer.write("\t\tthis.guavaVerifier = new DefaultGuavaVerifier();\n");
+			writer.write("\t}\n");
 			if (forTests)
 			{
-				writer.write("\t}\n" +
-					"\n" +
+				writer.write("\n" +
 					"\t/**\n" +
 					"\t * This constructor is meant to be used by automated tests, not by users.\n" +
 					"\t *\n" +

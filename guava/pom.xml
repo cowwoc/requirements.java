@@ -32,13 +32,16 @@
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
 						<configuration>
-							<links>
-								<link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-								<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
-							</links>
+							<!-- WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-555 -->
+							<!--<links>-->
+							<!--<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>-->
+							<!--</links>-->
 							<offlineLinks>
-								<!-- The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support such a configuration -->
+								<!-- The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support this layout -->
 								<offlineLink>
 									<url>https://cowwoc.bitbucket.io/requirements/javadoc/${project.version}/java/</url>
 									<location>${project.basedir}/../java/target/apidocs</location>
@@ -46,8 +49,8 @@
 							</offlineLinks>
 
 							<show>public</show>
-							<doctitle>Requirements-Guava ${project.version} API</doctitle>
-							<windowtitle>Requirements-Guava ${project.version} API</windowtitle>
+							<doctitle>Requirements Guava Plugin ${project.version} API</doctitle>
+							<windowtitle>Requirements Guava Plugin ${project.version} API</windowtitle>
 						</configuration>
 					</execution>
 				</executions>

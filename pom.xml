@@ -171,16 +171,14 @@
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
 					</compilerArgs>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
+					<release>${maven.compiler.release}</release>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.release>11</maven.compiler.release>
 		<maven.version>3.5.4</maven.version>
 		<guava.version>27.0.1-jre</guava.version>
 		<slf4j.version>1.8.0-beta2</slf4j.version>
