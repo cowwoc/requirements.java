@@ -37,7 +37,7 @@ public interface ApplicationScope extends JvmScope
 	/**
 	 * @return true if exceptions should remove references to this library from their stack traces (value may change with every invocation)
 	 */
-	Supplier<Boolean> isLibraryRemovedFromStacktrace();
+	Supplier<Boolean> isLibraryRemovedFromStackTrace();
 
 	DiffGenerator getDiffGenerator();
 

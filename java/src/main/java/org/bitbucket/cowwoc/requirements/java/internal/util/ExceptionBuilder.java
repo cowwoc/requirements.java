@@ -26,7 +26,7 @@ public final class ExceptionBuilder
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final Throwable cause;
-	private final boolean removeLibraryFromStacktrace;
+	private final boolean removeLibraryFromStackTrace;
 	/**
 	 * Contextual information associated with the exception (name-value pairs).
 	 */
@@ -38,11 +38,11 @@ public final class ExceptionBuilder
 	 * @param type                        the type of the exception
 	 * @param message                     the exception message
 	 * @param cause                       the underlying cause of the exception ({@code null} if absent)
-	 * @param removeLibraryFromStacktrace true if exceptions should remove references to this library from their stack traces
+	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from their stack traces
 	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message} are null
 	 */
 	private ExceptionBuilder(Configuration configuration, Exceptions exceptions, Class<? extends RuntimeException> type, String message,
-	                         Throwable cause, boolean removeLibraryFromStacktrace)
+	                         Throwable cause, boolean removeLibraryFromStackTrace)
 	{
 		assert (configuration != null) : "configuration may not be null";
 		assert (exceptions != null) : "exceptions may not be null";
@@ -52,13 +52,13 @@ public final class ExceptionBuilder
 		this.type = config.getException().orElse(type);
 		this.message = message;
 		this.cause = cause;
-		this.removeLibraryFromStacktrace = removeLibraryFromStacktrace;
+		this.removeLibraryFromStackTrace = removeLibraryFromStackTrace;
 	}
 
 	/**
 	 * Equivalent to
 	 * {@link #ExceptionBuilder(Configuration, Exceptions, Class, String, Throwable, boolean)
-	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStacktrace().get())}.
+	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStackTrace().get())}.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
@@ -70,7 +70,7 @@ public final class ExceptionBuilder
 	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message,
 	                        Throwable cause)
 	{
-		this(configuration, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStacktrace().get());
+		this(configuration, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStackTrace().get());
 	}
 
 	/**
@@ -158,6 +158,6 @@ public final class ExceptionBuilder
 				messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
 					secretConfiguration.toString(config, entry.getValue())));
 		}
-		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStacktrace);
+		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStackTrace);
 	}
 }

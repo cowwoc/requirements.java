@@ -27,9 +27,9 @@ public final class GlobalConfiguration
 {
 	private final JvmScope scope;
 	/**
-	 * True if API elements should show up in exception stacktraces.
+	 * True if exceptions should remove references to this library from their stack traces.
 	 */
-	private final AtomicBoolean removeLibraryFromStacktrace = new AtomicBoolean(true);
+	private final AtomicBoolean removeLibraryFromStackTrace = new AtomicBoolean(true);
 	/**
 	 * True if exceptions should contain a diff of the values being compared.
 	 */
@@ -96,23 +96,23 @@ public final class GlobalConfiguration
 
 	/**
 	 * @return true if exceptions should remove references to this library from their stack traces ({@code true} by default)
-	 * @see #withLibraryRemovedFromStacktrace()
-	 * @see #withoutLibraryRemovedFromStacktrace()
+	 * @see #withLibraryRemovedFromStackTrace()
+	 * @see #withoutLibraryRemovedFromStackTrace()
 	 */
-	public boolean isLibraryRemovedFromStacktrace()
+	public boolean isLibraryRemovedFromStackTrace()
 	{
-		return removeLibraryFromStacktrace.get();
+		return removeLibraryFromStackTrace.get();
 	}
 
 	/**
 	 * Indicates that exceptions should remove references to this library from their stack traces.
 	 *
 	 * @return this
-	 * @see #isLibraryRemovedFromStacktrace()
+	 * @see #isLibraryRemovedFromStackTrace()
 	 */
-	public GlobalConfiguration withLibraryRemovedFromStacktrace()
+	public GlobalConfiguration withLibraryRemovedFromStackTrace()
 	{
-		removeLibraryFromStacktrace.set(true);
+		removeLibraryFromStackTrace.set(true);
 		return this;
 	}
 
@@ -120,11 +120,11 @@ public final class GlobalConfiguration
 	 * Indicates that exceptions shouldn't remove references to this library from their stack traces.
 	 *
 	 * @return this
-	 * @see #isLibraryRemovedFromStacktrace()
+	 * @see #isLibraryRemovedFromStackTrace()
 	 */
-	public GlobalConfiguration withoutLibraryRemovedFromStacktrace()
+	public GlobalConfiguration withoutLibraryRemovedFromStackTrace()
 	{
-		removeLibraryFromStacktrace.set(false);
+		removeLibraryFromStackTrace.set(false);
 		return this;
 	}
 

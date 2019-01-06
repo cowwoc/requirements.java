@@ -9,7 +9,6 @@
 	</parent>
 	<artifactId>code_generator</artifactId>
 	<packaging>jar</packaging>
-	<name>Requirements-Code-Generator</name>
 
 	<build>
 		<plugins>

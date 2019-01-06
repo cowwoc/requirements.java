@@ -208,8 +208,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the value\n" +
 				"\t * @param actual the actual value\n" +
@@ -241,8 +240,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <C>    the type of the collection\n" +
 				"\t * @param <E>    the type of elements in the collection\n" +
@@ -498,8 +496,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <E>    the type of elements in the array\n" +
 				"\t * @param actual the actual value\n" +
@@ -529,8 +526,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of objects that the value may be compared to\n" +
 				"\t * @param actual the actual value\n" +
@@ -559,8 +555,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -588,8 +583,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -673,8 +667,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -702,8 +695,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -731,8 +723,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -760,8 +751,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -789,8 +779,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -804,8 +793,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -848,8 +836,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the number\n" +
 				"\t * @param actual the actual value\n" +
@@ -878,8 +865,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -907,8 +893,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -936,8 +921,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -965,8 +949,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -996,8 +979,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <K>    the type of key in the map\n" +
 				"\t * @param <V>    the type of value in the map\n" +
@@ -1027,8 +1009,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1056,8 +1037,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1085,8 +1065,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1115,8 +1094,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of class\n" +
 				"\t * @param actual the actual value\n" +
@@ -1145,8 +1123,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1174,8 +1151,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1405,9 +1381,7 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write("\t\tthis.guavaVerifier = guavaVerifier;\n");
 			writer.write("\t}\n" +
-				"\t/**\n" +
-				"\t * @return true if assertions are enabled for this class\n" +
-				"\t */\n" +
+				"\n" +
 				"\t/**\n" +
 				"\t * @return true if assertions are enabled for this class\n" +
 				"\t */\n" +
@@ -1578,6 +1552,7 @@ public final class ApiGenerator
 				"\t{\n" +
 				"\t\treturn javaVerifier.getConfiguration();\n" +
 				"\t}\n" +
+				"\n" +
 				"\t@Override\n" +
 				"\tpublic GlobalConfiguration getGlobalConfiguration()\n" +
 				"\t{\n" +
@@ -1600,8 +1575,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the value\n" +
 				"\t * @param actual the actual value\n" +
@@ -1632,8 +1606,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <C>    the type of the collection\n" +
 				"\t * @param <E>    the type of elements in the collection\n" +
@@ -1888,8 +1861,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <E>    the type of elements in the array\n" +
 				"\t * @param actual the actual value\n" +
@@ -1919,8 +1891,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of objects that the value may be compared to\n" +
 				"\t * @param actual the actual value\n" +
@@ -1949,8 +1920,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1978,8 +1948,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2063,8 +2032,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2092,8 +2060,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2121,8 +2088,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2150,8 +2116,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2179,8 +2144,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2194,8 +2158,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2238,8 +2201,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the number\n" +
 				"\t * @param actual the actual value\n" +
@@ -2268,8 +2230,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2297,8 +2258,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2326,8 +2286,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2355,8 +2314,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2386,8 +2344,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <K>    the type of key in the map\n" +
 				"\t * @param <V>    the type of value in the map\n" +
@@ -2417,8 +2374,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2446,8 +2402,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2475,8 +2430,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2505,8 +2459,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of class\n" +
 				"\t * @param actual the actual value\n" +
@@ -2535,8 +2488,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled for\n" +
-				"\t * this class.\n" +
+				"\t * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -2564,8 +2516,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are disabled\n" +
-				"\t * for this class.\n" +
+				"\t * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are disabled for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +

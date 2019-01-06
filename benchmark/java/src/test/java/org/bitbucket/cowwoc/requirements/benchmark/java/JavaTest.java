@@ -103,7 +103,7 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public void throwAndConsumeStacktrace(Blackhole bh)
+	public void throwAndConsumeStackTrace(Blackhole bh)
 	{
 		try
 		{
@@ -118,7 +118,7 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public void requirementsThrowAndConsumeStacktrace(Blackhole bh)
+	public void requirementsThrowAndConsumeStackTrace(Blackhole bh)
 	{
 		try
 		{

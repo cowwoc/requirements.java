@@ -33,11 +33,11 @@ public final class Exceptions
 	private final MethodType constructorWithoutCause = MethodType.methodType(void.class, String.class);
 	private final MethodType optimizedConstructorWithCause = MethodType.methodType(void.class, Exceptions.class, String.class, Throwable.class);
 	private final MethodType optimizedConstructorWithoutCause = MethodType.methodType(void.class, Exceptions.class, String.class);
-	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithCause = (clazz, removeLibraryFromStacktrace) ->
+	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithCause = (clazz, removeLibraryFromStackTrace) ->
 	{
 		try
 		{
-			if (removeLibraryFromStacktrace)
+			if (removeLibraryFromStackTrace)
 			{
 				Class<?> optimizedException = getOptimizedException(clazz).orElse(null);
 				if (optimizedException != null)
@@ -50,11 +50,11 @@ public final class Exceptions
 			throw new RuntimeException(e);
 		}
 	};
-	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithoutCause = (clazz, removeLibraryFromStacktrace) ->
+	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithoutCause = (clazz, removeLibraryFromStackTrace) ->
 	{
 		try
 		{
-			if (removeLibraryFromStacktrace)
+			if (removeLibraryFromStackTrace)
 			{
 				Class<?> optimizedException = getOptimizedException(clazz).orElse(null);
 				if (optimizedException != null)
@@ -100,12 +100,12 @@ public final class Exceptions
 	 * @param type                        the type of the exception
 	 * @param message                     an explanation of what went wrong
 	 * @param cause                       the cause of the exception ({@code null} if absent)
-	 * @param removeLibraryFromStacktrace true if exceptions should remove references to this library from their stack traces
+	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from their stack traces
 	 * @return the exception
 	 * @throws AssertionError if {@code type} is null
 	 */
 	public <E extends RuntimeException> RuntimeException createException(Class<E> type, String message, Throwable cause,
-	                                                                     boolean removeLibraryFromStacktrace)
+	                                                                     boolean removeLibraryFromStackTrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
 		//
@@ -117,13 +117,13 @@ public final class Exceptions
 		// Caused by: message of underlying exception
 		//   at Cause.method1(Cause.java:1)
 		//
-		// If removeLibraryFromstacktrace is true, we need to strip out the top 3 stack trace elements. But we are also forced to strip out
+		// If removeLibraryFromstackTrace is true, we need to strip out the top 3 stack trace elements. But we are also forced to strip out
 		// the exception cause because it was thrown inside our API.
 		assert (type != null) : "type may not be null";
 		try
 		{
-			boolean withCause = !removeLibraryFromStacktrace && cause != null;
-			MethodHandle constructor = getConstructor(type, withCause, removeLibraryFromStacktrace);
+			boolean withCause = !removeLibraryFromStackTrace && cause != null;
+			MethodHandle constructor = getConstructor(type, withCause, removeLibraryFromStackTrace);
 			boolean isOptimized = isOptimizedException(constructor.type().returnType());
 			// Convert the exception type to RuntimeException
 			constructor = constructor.asType(constructor.type().changeReturnType(RuntimeException.class));
@@ -142,10 +142,13 @@ public final class Exceptions
 					result = (RuntimeException) constructor.invokeExact(message, cause);
 				else
 					result = (RuntimeException) constructor.invokeExact(message);
-				if (removeLibraryFromStacktrace)
+				if (removeLibraryFromStackTrace)
 				{
-					// We need to strip the library from the stacktrace eagerly because we don't have an optimized exception
-					removeLibraryFromStacktrace(result);
+					// We need to strip the stack trace eagerly because we don't have an optimized exception
+					StackTraceElement[] stackTrace = result.getStackTrace();
+					StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
+					if (newStackTrace != stackTrace)
+						result.setStackTrace(newStackTrace);
 				}
 			}
 			return result;
@@ -181,21 +184,21 @@ public final class Exceptions
 	/**
 	 * @param type                        the type of the exception
 	 * @param withCause                   true if the constructor takes an exception cause
-	 * @param removeLibraryFromStacktrace true if exceptions should remove references to this library from their stack traces
+	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from their stack traces
 	 * @return the constructor of the exception
 	 * @throws Throwable if an error occurs
 	 */
-	private MethodHandle getConstructor(Class<?> type, boolean withCause, boolean removeLibraryFromStacktrace) throws Throwable
+	private MethodHandle getConstructor(Class<?> type, boolean withCause, boolean removeLibraryFromStackTrace) throws Throwable
 	{
 		try
 		{
 			if (withCause)
 			{
 				return classToConstructorsWithCause.computeIfAbsent(type, clazz ->
-					computeConstructorWithCause.apply(clazz, removeLibraryFromStacktrace));
+					computeConstructorWithCause.apply(clazz, removeLibraryFromStackTrace));
 			}
 			return classToConstructorsWithoutCause.computeIfAbsent(type, clazz ->
-				computeConstructorWithoutCause.apply(clazz, removeLibraryFromStacktrace));
+				computeConstructorWithoutCause.apply(clazz, removeLibraryFromStackTrace));
 		}
 		catch (RuntimeException e)
 		{
@@ -208,11 +211,13 @@ public final class Exceptions
 	/**
 	 * Removes references to this library from an exception stack trace.
 	 *
-	 * @param throwable the {@code Throwable} to process
+	 * @param elements the stack trace elements to process
+	 * @return the updated stack trace elements
+	 * @throws NullPointerException if {@code elements} are null
 	 */
-	public void removeLibraryFromStacktrace(Throwable throwable)
+	public StackTraceElement[] removeLibraryFromStackTrace(StackTraceElement[] elements)
 	{
-		filterStacktrace(throwable, element ->
+		return filterStackTrace(elements, element ->
 		{
 			String className = element.getClassName();
 			return className.startsWith(libraryPackage) && !className.endsWith("Test");
@@ -225,13 +230,13 @@ public final class Exceptions
 	 * This method can be used to remove lines that hold little value for the end user (such as
 	 * internal methods invoked by this library).
 	 *
-	 * @param throwable     the {@code Throwable} to process
+	 * @param elements      the stack trace elements to process
 	 * @param elementFilter returns true if the current stack trace element and methods it invokes should be removed
+	 * @return the updated stack trace elements
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	private void filterStacktrace(Throwable throwable, Predicate<StackTraceElement> elementFilter)
+	private StackTraceElement[] filterStackTrace(StackTraceElement[] elements, Predicate<StackTraceElement> elementFilter)
 	{
-		// Method needs to be public to hide 3rd-party verifiers located in in other packages
-		StackTraceElement[] elements = throwable.getStackTrace();
 		int i = elements.length - 1;
 		while (true)
 		{
@@ -239,10 +244,10 @@ public final class Exceptions
 			if (elementFilter.test(element))
 				break;
 			if (i == 0)
-				return;
+				return elements;
 			--i;
 		}
-		throwable.setStackTrace(Arrays.copyOfRange(elements, i + 1, elements.length));
+		return Arrays.copyOfRange(elements, i + 1, elements.length);
 	}
 
 	/**

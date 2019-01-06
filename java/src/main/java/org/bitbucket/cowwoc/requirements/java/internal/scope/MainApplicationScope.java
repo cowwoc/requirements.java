@@ -72,9 +72,9 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public Supplier<Boolean> isLibraryRemovedFromStacktrace()
+	public Supplier<Boolean> isLibraryRemovedFromStackTrace()
 	{
-		return globalConfiguration::isLibraryRemovedFromStacktrace;
+		return globalConfiguration::isLibraryRemovedFromStackTrace;
 	}
 
 	@Override

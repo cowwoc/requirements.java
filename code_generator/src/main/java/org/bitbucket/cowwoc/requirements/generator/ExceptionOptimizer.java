@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 
 /**
  * Optimizes the exceptions thrown by the library. For example, stack traces are stripped lazily. See
- * {@code org.bitbucket.cowwoc.requirements.java.GlobalConfiguration.isLibraryRemovedFromStacktrace()}.
+ * {@code org.bitbucket.cowwoc.requirements.java.GlobalConfiguration.isLibraryRemovedFromStackTrace()}.
  */
 public final class ExceptionOptimizer
 {
@@ -147,7 +147,7 @@ public final class ExceptionOptimizer
 				"/**\n" +
 				" * Generates exceptions that strip this library from their stack traces lazily.\n" +
 				" *\n" +
-				" * @see GlobalConfiguration#isLibraryRemovedFromStacktrace()\n" +
+				" * @see GlobalConfiguration#isLibraryRemovedFromStackTrace()\n" +
 				" */\n" +
 				"@OptimizedException\n" +
 				"public final class " + wrapperSimpleName + " extends " + exceptionSimpleName + "\n" +
@@ -196,23 +196,29 @@ public final class ExceptionOptimizer
 			writer.write("\t@Override\n" +
 				"\tpublic void printStackTrace(PrintStream s)\n" +
 				"\t{\n" +
-				"\t\tif (!filtered)\n" +
-				"\t\t{\n" +
-				"\t\t\texceptions.removeLibraryFromStacktrace(this);\n" +
-				"\t\t\tfiltered = true;\n" +
-				"\t\t}\n" +
+				"\t\tfilterStackTrace();\n" +
 				"\t\tsuper.printStackTrace(s);\n" +
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
 				"\tpublic StackTraceElement[] getStackTrace()\n" +
 				"\t{\n" +
-				"\t\tif (!filtered)\n" +
-				"\t\t{\n" +
-				"\t\t\texceptions.removeLibraryFromStacktrace(this);\n" +
-				"\t\t\tfiltered = true;\n" +
-				"\t\t}\n" +
+				"\t\tfilterStackTrace();\n" +
 				"\t\treturn super.getStackTrace();\n" +
+				"\t}\n" +
+				"\n" +
+				"\t/**\n" +
+				"\t * Removes references to this library from the exception stack trace.\n" +
+				"\t */\n" +
+				"\tprivate synchronized void filterStackTrace()\n" +
+				"\t{\n" +
+				"\t\tif (filtered)\n" +
+				"\t\t\treturn;\n" +
+				"\t\tStackTraceElement[] stackTrace = super.getStackTrace();\n" +
+				"\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);\n" +
+				"\t\tif (newStackTrace != stackTrace)\n" +
+				"\t\t\tsetStackTrace(newStackTrace);\n" +
+				"\t\tfiltered = true;\n" +
 				"\t}\n" +
 				"}\n");
 			// There is no easy way to override writeObject(ObjectOutputStream) so we don't try to

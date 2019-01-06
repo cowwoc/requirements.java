@@ -66,7 +66,7 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public Supplier<Boolean> isLibraryRemovedFromStacktrace()
+	public Supplier<Boolean> isLibraryRemovedFromStackTrace()
 	{
 		return FALSE;
 	}

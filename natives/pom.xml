@@ -9,7 +9,6 @@
 	</parent>
 	<artifactId>natives</artifactId>
 	<packaging>jar</packaging>
-	<name>Requirements-Natives</name>
 	<description>Native component of the Requirements API.</description>
 	<url>https://bitbucket.org/cowwoc/requirements/</url>
 
