@@ -70,7 +70,7 @@ public final class ExceptionBuilder
 	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message,
 	                        Throwable cause)
 	{
-		this(configuration, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStackTrace().get());
+		this(configuration, scope.getExceptions(), type, message, cause, scope.getGlobalConfiguration().isLibraryRemovedFromStackTrace());
 	}
 
 	/**

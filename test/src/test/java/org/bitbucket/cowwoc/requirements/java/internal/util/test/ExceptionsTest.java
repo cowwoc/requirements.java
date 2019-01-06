@@ -5,8 +5,13 @@
 package org.bitbucket.cowwoc.requirements.java.internal.util.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 import org.testng.annotations.Test;
+
+import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class ExceptionsTest
 {
@@ -32,8 +37,11 @@ public final class ExceptionsTest
 	{
 		RuntimeException result = exceptions.createException(NullPointerException.class, "message", null, true);
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
-		new Requirements().addContext("exception", exceptions.getClass()).
-			requireThat(optimizedException, "optimizedException").isTrue();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Requirements(scope).addContext("exception", exceptions.getClass()).
+				requireThat(optimizedException, "optimizedException").isTrue();
+		}
 	}
 
 	/**
@@ -44,8 +52,11 @@ public final class ExceptionsTest
 	{
 		RuntimeException result = exceptions.createException(IllegalArgumentException.class, "message", null, true);
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
-		new Requirements().addContext("exception", exceptions.getClass()).
-			requireThat(optimizedException, "optimizedException").isTrue();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Requirements(scope).addContext("exception", exceptions.getClass()).
+				requireThat(optimizedException, "optimizedException").isTrue();
+		}
 	}
 
 	/**
@@ -56,7 +67,25 @@ public final class ExceptionsTest
 	{
 		RuntimeException result = exceptions.createException(IllegalStateException.class, "message", null, true);
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
-		new Requirements().addContext("exception", exceptions.getClass()).
-			requireThat(optimizedException, "optimizedException").isFalse();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Requirements(scope).addContext("exception", exceptions.getClass()).
+				requireThat(optimizedException, "optimizedException").isFalse();
+		}
+	}
+
+	@Test
+	public void optimizedExceptionRemovesLibraryFromStackTrace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			scope.getGlobalConfiguration().withLibraryRemovedFromStackTrace();
+			new Requirements(scope).requireThat("expected", "expected").isEqualTo("actual");
+		}
+		catch (IllegalArgumentException e)
+		{
+			for (StackTraceElement element : e.getStackTrace())
+				requireThat(element.getClassName(), "stacktrace").doesNotStartWith(Requirements.class.getPackage().getName());
+		}
 	}
 }

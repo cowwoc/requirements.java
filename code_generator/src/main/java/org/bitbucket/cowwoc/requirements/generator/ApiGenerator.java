@@ -131,7 +131,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;\n" +
+				"import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
@@ -166,9 +166,10 @@ public final class ApiGenerator
 				"import java.util.Optional;\n" +
 				"\n" +
 				"/**\n" +
-				" * Verifies API requirements using the {@link GlobalConfiguration default configuration}.\n" +
+				" * Verifies API requirements using the {@link GlobalConfigurable default configuration}.\n" +
 				" * <p>\n" +
-				" * The assertion status of the {@link Configuration} class determines whether {@code assertThat()} carries out a verification or does\n" +
+				" * The assertion status of the {@link Configuration} class determines whether {@code assertThat()} carries out a verification " +
+				"or does\n" +
 				" * nothing.\n" +
 				" * <p>\n" +
 				" * This class is immutable.\n" +
@@ -1202,7 +1203,7 @@ public final class ApiGenerator
 			writer.write("\t/**\n" +
 				"\t * @return the global configuration shared by all verifiers\n" +
 				"\t */\n" +
-				"\tpublic static GlobalConfiguration getGlobalConfiguration()\n" +
+				"\tpublic static GlobalConfigurable getGlobalConfiguration()\n" +
 				"\t{\n" +
 				"\t\treturn JAVA_VERIFIER.getGlobalConfiguration();\n" +
 				"\t}\n" +
@@ -1281,7 +1282,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.Configurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;\n" +
+				"import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
@@ -1321,9 +1322,11 @@ public final class ApiGenerator
 				"/**\n" +
 				" * An entry point for verifying API requirements.\n" +
 				" * <p>\n" +
-				" * Unlike {@link DefaultRequirements}, instances of this interface are configurable.\n" +
+				" * This class holds its own configuration whereas {@link DefaultRequirements} always uses the {@link GlobalConfigurable global " +
+				"configuration}.\n" +
 				" * <p>\n" +
-				" * The assertion status of the {@link Configuration} class determines whether {@code assertThat()} carries out a verification or does\n" +
+				" * The assertion status of the {@link Configuration} class determines whether {@code assertThat()} carries out a verification " +
+				"or does\n" +
 				" * nothing.\n" +
 				" * <p>\n" +
 				" * This class is immutable.\n" +
@@ -1554,7 +1557,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
-				"\tpublic GlobalConfiguration getGlobalConfiguration()\n" +
+				"\tpublic GlobalConfigurable getGlobalConfiguration()\n" +
 				"\t{\n" +
 				"\t\treturn javaVerifier.getGlobalConfiguration();\n" +
 				"\t}\n" +

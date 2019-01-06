@@ -38,12 +38,9 @@ public final class TerminalTest
 
 	/**
 	 * Force verifiers to output using an encoding that might not be supported by the terminal.
-	 *
-	 * @throws IOException if an operation fails
 	 */
 	@Test
-	@SuppressWarnings("try")
-	public void forceUnsupportedEncoding() throws IOException
+	public void forceUnsupportedEncoding()
 	{
 		try (JvmScope jvm = DefaultJvmScope.INSTANCE)
 		{

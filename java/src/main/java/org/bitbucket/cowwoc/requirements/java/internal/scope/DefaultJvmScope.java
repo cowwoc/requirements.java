@@ -8,6 +8,7 @@ import org.bitbucket.cowwoc.pouch.ConcurrentLazyFactory;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Factory;
 import org.bitbucket.cowwoc.pouch.Reference;
+import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
@@ -65,7 +66,7 @@ public final class DefaultJvmScope implements JvmScope
 		}
 	};
 	private final Reference<Terminal> terminal = ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
-	private final Reference<GlobalConfiguration> globalConfiguration = ConcurrentLazyReference.create(() -> new GlobalConfiguration(this));
+	private final Reference<GlobalConfigurable> globalConfiguration = ConcurrentLazyReference.create(() -> new GlobalConfiguration(this));
 	public final Thread shutdownHook;
 	public final AtomicBoolean closed = new AtomicBoolean();
 	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);
@@ -111,7 +112,7 @@ public final class DefaultJvmScope implements JvmScope
 	}
 
 	@Override
-	public GlobalConfiguration getGlobalConfiguration()
+	public GlobalConfigurable getGlobalConfiguration()
 	{
 		return globalConfiguration.getValue();
 	}

@@ -117,5 +117,5 @@ public interface Configurable
 	/**
 	 * @return the global configuration shared by all verifiers
 	 */
-	GlobalConfiguration getGlobalConfiguration();
+	GlobalConfigurable getGlobalConfiguration();
 }

@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 
 /**
@@ -22,7 +22,7 @@ public interface JvmScope extends AutoCloseable
 	/**
 	 * @return the global configuration inherited by all verifiers
 	 */
-	GlobalConfiguration getGlobalConfiguration();
+	GlobalConfigurable getGlobalConfiguration();
 
 	@Override
 	void close();

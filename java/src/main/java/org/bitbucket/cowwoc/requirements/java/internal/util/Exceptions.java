@@ -220,7 +220,7 @@ public final class Exceptions
 		return filterStackTrace(elements, element ->
 		{
 			String className = element.getClassName();
-			return className.startsWith(libraryPackage) && !className.endsWith("Test");
+			return className.startsWith(libraryPackage);
 		});
 	}
 

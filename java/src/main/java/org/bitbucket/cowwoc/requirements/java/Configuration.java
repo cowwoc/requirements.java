@@ -27,8 +27,6 @@ import java.util.function.Function;
  * Configures a requirements verifier.
  * <p>
  * This class is immutable.
- *
- * @see Configurable
  */
 @SuppressWarnings(
 	{
@@ -302,7 +300,7 @@ public final class Configuration implements Configurable
 	}
 
 	@Override
-	public GlobalConfiguration getGlobalConfiguration()
+	public GlobalConfigurable getGlobalConfiguration()
 	{
 		return DefaultJvmScope.INSTANCE.getGlobalConfiguration();
 	}

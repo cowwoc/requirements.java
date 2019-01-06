@@ -5,9 +5,8 @@
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
-import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
 
@@ -18,7 +17,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 {
 	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
 	public final JvmScope parent;
-	public final GlobalConfiguration globalConfiguration;
+	public final GlobalConfigurable globalConfiguration;
 	public final Supplier<Configuration> defaultConfigurationSupplier;
 
 	/**
@@ -42,7 +41,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public GlobalConfiguration getGlobalConfiguration()
+	public GlobalConfigurable getGlobalConfiguration()
 	{
 		return parent.getGlobalConfiguration();
 	}
@@ -57,24 +56,6 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	public Supplier<Configuration> getDefaultConfiguration()
 	{
 		return defaultConfigurationSupplier;
-	}
-
-	@Override
-	public Supplier<TerminalEncoding> getTerminalEncoding()
-	{
-		return globalConfiguration::getTerminalEncoding;
-	}
-
-	@Override
-	public Supplier<Boolean> isDiffEnabled()
-	{
-		return globalConfiguration::isDiffEnabled;
-	}
-
-	@Override
-	public Supplier<Boolean> isLibraryRemovedFromStackTrace()
-	{
-		return globalConfiguration::isLibraryRemovedFromStackTrace;
 	}
 
 	@Override

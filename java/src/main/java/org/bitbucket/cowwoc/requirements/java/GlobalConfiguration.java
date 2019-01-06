@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The global configuration inherited by all verifiers.
@@ -23,17 +22,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * This class is thread-safe.
  */
-public final class GlobalConfiguration
+public final class GlobalConfiguration extends AbstractGlobalConfigurable
 {
 	private final JvmScope scope;
-	/**
-	 * True if exceptions should remove references to this library from their stack traces.
-	 */
-	private final AtomicBoolean removeLibraryFromStackTrace = new AtomicBoolean(true);
-	/**
-	 * True if exceptions should contain a diff of the values being compared.
-	 */
-	private final AtomicBoolean diffEnabled = new AtomicBoolean(true);
 
 	/**
 	 * @param scope the system configuration
@@ -45,120 +36,31 @@ public final class GlobalConfiguration
 		this.scope = scope;
 	}
 
-	/**
-	 * @return the terminal encodings available to the JVM
-	 * @see #withTerminalEncoding(TerminalEncoding)
-	 * @see #withDefaultTerminalEncoding()
-	 */
+	@Override
 	public Set<TerminalEncoding> listTerminalEncodings()
 	{
 		return scope.getTerminal().getSupportedTypes();
 	}
 
-	/**
-	 * @return the current terminal encoding (defaults to the auto-detected encoding)
-	 */
+	@Override
 	public TerminalEncoding getTerminalEncoding()
 	{
 		return scope.getTerminal().getEncoding();
 	}
 
-	/**
-	 * Indicates that the terminal encoding should be auto-detected.
-	 *
-	 * @return this
-	 * @see #withTerminalEncoding(TerminalEncoding)
-	 */
-	public GlobalConfiguration withDefaultTerminalEncoding()
+	@Override
+	public GlobalConfigurable withDefaultTerminalEncoding()
 	{
 		scope.getTerminal().useBestEncoding();
 		return this;
 	}
 
-	/**
-	 * Indicates the type of encoding that verifiers will output.
-	 * <p>
-	 * This feature can be used to force the use of ANSI colors even when their support is not
-	 * detected.
-	 *
-	 * @param encoding the type of encoding that verifiers will output
-	 * @return this
-	 * @throws NullPointerException if {@code encoding} is null
-	 * @see #withDefaultTerminalEncoding()
-	 */
-	public GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding)
+	@Override
+	public GlobalConfigurable withTerminalEncoding(TerminalEncoding encoding)
 	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
 		scope.getTerminal().setEncoding(encoding);
-		return this;
-	}
-
-	/**
-	 * @return true if exceptions should remove references to this library from their stack traces ({@code true} by default)
-	 * @see #withLibraryRemovedFromStackTrace()
-	 * @see #withoutLibraryRemovedFromStackTrace()
-	 */
-	public boolean isLibraryRemovedFromStackTrace()
-	{
-		return removeLibraryFromStackTrace.get();
-	}
-
-	/**
-	 * Indicates that exceptions should remove references to this library from their stack traces.
-	 *
-	 * @return this
-	 * @see #isLibraryRemovedFromStackTrace()
-	 */
-	public GlobalConfiguration withLibraryRemovedFromStackTrace()
-	{
-		removeLibraryFromStackTrace.set(true);
-		return this;
-	}
-
-	/**
-	 * Indicates that exceptions shouldn't remove references to this library from their stack traces.
-	 *
-	 * @return this
-	 * @see #isLibraryRemovedFromStackTrace()
-	 */
-	public GlobalConfiguration withoutLibraryRemovedFromStackTrace()
-	{
-		removeLibraryFromStackTrace.set(false);
-		return this;
-	}
-
-	/**
-	 * @return true if exceptions should show the difference between the actual and expected values ({@code true} by default)
-	 * @see #withDiff()
-	 * @see #withoutDiff()
-	 */
-	public boolean isDiffEnabled()
-	{
-		return diffEnabled.get();
-	}
-
-	/**
-	 * Indicates that exceptions should show the difference between the actual and expected values.
-	 *
-	 * @return this
-	 * @see #isDiffEnabled()
-	 */
-	public GlobalConfiguration withDiff()
-	{
-		diffEnabled.set(true);
-		return this;
-	}
-
-	/**
-	 * Indicates that exceptions should not show the difference between the actual and expected values.
-	 *
-	 * @return this
-	 * @see #isDiffEnabled()
-	 */
-	public GlobalConfiguration withoutDiff()
-	{
-		diffEnabled.set(false);
 		return this;
 	}
 }

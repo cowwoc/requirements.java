@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
-import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
 
@@ -23,21 +22,6 @@ public interface ApplicationScope extends JvmScope
 	 * @return the default configuration (value may change with every invocation)
 	 */
 	Supplier<Configuration> getDefaultConfiguration();
-
-	/**
-	 * @return the terminal encoding that verifiers will output (value may change with every invocation)
-	 */
-	Supplier<TerminalEncoding> getTerminalEncoding();
-
-	/**
-	 * @return true if exceptions should show the difference between the actual and expected values (value may change with every invocation)
-	 */
-	Supplier<Boolean> isDiffEnabled();
-
-	/**
-	 * @return true if exceptions should remove references to this library from their stack traces (value may change with every invocation)
-	 */
-	Supplier<Boolean> isLibraryRemovedFromStackTrace();
 
 	DiffGenerator getDiffGenerator();
 
