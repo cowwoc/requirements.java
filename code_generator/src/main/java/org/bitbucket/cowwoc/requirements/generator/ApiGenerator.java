@@ -1200,7 +1200,8 @@ public final class ApiGenerator
 					"\t}\n" +
 					"\n");
 			}
-			writer.write("\t/**\n" +
+			writer.write("\n" +
+				"\t/**\n" +
 				"\t * @return the global configuration shared by all verifiers\n" +
 				"\t */\n" +
 				"\tpublic static GlobalConfigurable getGlobalConfiguration()\n" +
