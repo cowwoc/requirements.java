@@ -171,7 +171,6 @@
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
 					</compilerArgs>
-					<release>${maven.compiler.release}</release>
 				</configuration>
 			</plugin>
 		</plugins>
