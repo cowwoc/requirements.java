@@ -45,7 +45,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (actual.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be empty.", name)).
+			name + " must be empty.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -56,7 +56,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (!actual.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be empty", name)).
+			name + " may not be empty").
 			build();
 	}
 
@@ -76,7 +76,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (trimmed.equals(actual))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain leading or trailing whitespace", name)).
+			name + " may not contain leading or trailing whitespace").
 			addContext("Actual", actual).
 			build();
 	}
@@ -88,14 +88,14 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (actual.isEmpty())
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s may not be empty", name)).
+				name + " may not be empty").
 				build();
 		}
 		char firstCharacter = actual.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s must contain a valid IP address or hostname format.", name)).
+				name + " must contain a valid IP address or hostname format.").
 				addContext("Actual", actual).
 				build();
 		}
@@ -107,7 +107,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		catch (UnknownHostException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s must contain a valid IP address or hostname format.", name), e).
+				name + " must contain a valid IP address or hostname format.", e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -132,7 +132,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		catch (IllegalArgumentException unused)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s does not contain a valid URI format", name)).
+				name + " does not contain a valid URI format").
 				addContext("Actual", actual).
 				build();
 		}
@@ -156,7 +156,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		catch (MalformedURLException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s is not a valid URL", name), e).
+				name + " is not a valid URL", e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -175,7 +175,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (actual.startsWith(prefix))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must start with \"%s\".", name, prefix)).
+			name + " must start with \"" + prefix + "\".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -186,7 +186,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (!actual.startsWith(prefix))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not start with \"%s\".", name, prefix)).
+			name + " may not start with \"" + prefix + "\".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -197,7 +197,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (actual.endsWith(suffix))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must end with \"%s\".", name, suffix)).
+			name + " must end with \"" + suffix + "\".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -208,7 +208,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (!actual.endsWith(suffix))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not end with \"%s\".", name, suffix)).
+			name + " may not end with \"" + suffix + "\".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -219,7 +219,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (actual.contains(expected))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain \"%s\".", name, expected)).
+			name + " must contain \"" + expected + "\".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -230,7 +230,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		if (!actual.contains(value))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not contain \"%s\".", name, value)).
+			name + " may not contain \"" + value + "\".").
 			addContext("Actual", actual).
 			build();
 	}

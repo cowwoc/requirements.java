@@ -45,7 +45,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be less than %s.", this.name, valueAsString)).
+			this.name + " must be less than " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -60,7 +60,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (difference < 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be less than %s.", this.name, name)).
+			this.name + " must be less than " + name + ".").
 			addContext("Actual", actual).
 			addContext("Exclusive maximum", value).
 			build();
@@ -75,7 +75,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be less than or equal to %s.", name, valueAsString)).
+			name + " must be less than or equal to " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -90,7 +90,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (difference <= 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be less than or equal to %s.", this.name, name)).
+			this.name + " must be less than or equal to " + name + ".").
 			addContext("Actual", actual).
 			addContext("Maximum", value).
 			build();
@@ -105,7 +105,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be greater than %s.", name, valueAsString)).
+			name + " must be greater than " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -120,7 +120,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (difference > 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be greater than %s.", this.name, name)).
+			this.name + " must be greater than " + name + ".").
 			addContext("Actual", actual).
 			addContext("Exclusive minimum", value).
 			build();
@@ -135,7 +135,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be greater than or equal to %s.", name, valueAsString)).
+			name + " must be greater than or equal to " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -150,7 +150,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (difference >= 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be greater than or equal to %s.", this.name, name)).
+			this.name + " must be greater than or equal to " + name + ".").
 			addContext("Actual", actual).
 			addContext("Minimum", value).
 			build();
@@ -165,7 +165,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			return getThis();
 		String expectedAsString = secretConfiguration.toString(config, expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be comparable to %s.", name, expectedAsString)).
+			name + " must be comparable to " + expectedAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -179,7 +179,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (actual.compareTo(expected) == 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be comparable to %s.", this.name, name)).
+			this.name + " must be comparable to " + name + ".").
 			addContext("Actual", actual).
 			addContext("Expected", expected).
 			build();
@@ -194,7 +194,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			return getThis();
 		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be comparable to %s.", name, valueAsString)).
+			name + " may not be comparable to " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -208,7 +208,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		if (actual.compareTo(other) != 0)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be comparable to %s.", this.name, name)).
+			this.name + " may not be comparable to " + name + ".").
 			addContext("Actual", actual).
 			addContext("Other", other).
 			build();
@@ -226,7 +226,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		String startAsString = secretConfiguration.toString(config, startInclusive);
 		String endAsString = secretConfiguration.toString(config, endExclusive);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be in range [%s, %s).", name, startAsString, endAsString)).
+			name + " must be in range [" + startAsString + ", " + endAsString + ").").
 			addContext("Actual", actual).
 			build();
 	}
@@ -243,7 +243,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		String startAsString = secretConfiguration.toString(config, startInclusive);
 		String endAsString = secretConfiguration.toString(config, endInclusive);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be in range [%s, %s].", name, startAsString, endAsString)).
+			name + " must be in range [" + startAsString + ", " + endAsString + "].").
 			addContext("Actual", actual).
 			build();
 	}

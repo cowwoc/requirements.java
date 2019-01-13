@@ -42,7 +42,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (actual.doubleValue() < 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be negative.", name)).
+			name + " must be negative.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -53,7 +53,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (actual.doubleValue() >= 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be negative.", name)).
+			name + " may not be negative.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -64,7 +64,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (actual.doubleValue() == 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be zero.", name)).
+			name + " must be zero.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -75,7 +75,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (actual.doubleValue() != 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be zero", name)).
+			name + " may not be zero").
 			build();
 	}
 
@@ -85,7 +85,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (actual.doubleValue() > 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be positive.", name)).
+			name + " must be positive.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -96,7 +96,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (actual.doubleValue() <= 0L)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be positive.", name)).
+			name + " may not be positive.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -107,7 +107,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (isWholeNumber(actual.doubleValue()))
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a whole number.", name)).
+			name + " must be a whole number.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -130,7 +130,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a whole number.", name)).
+			name + " may not be a whole number.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -144,7 +144,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 			return getThis();
 		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a multiple of %s.", name, divisorAsString)).
+			name + " must be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -159,7 +159,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a multiple of %s.", this.name, name)).
+			this.name + " must be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).
 			build();
@@ -174,7 +174,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 			return getThis();
 		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a multiple of %s.", name, divisorAsString)).
+			name + " may not be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -189,7 +189,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (divisorAsDouble == 0 || isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a multiple of %s.", this.name, name)).
+			this.name + " may not be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).
 			build();

@@ -155,9 +155,21 @@ public final class ExceptionBuilder
 			if (entry == null)
 				messageWithContext.add("");
 			else
-				messageWithContext.add(String.format("%-" + maxKeyLength + "s: %s", entry.getKey(),
-					secretConfiguration.toString(config, entry.getValue())));
+				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " + secretConfiguration.toString(config, entry.getValue()));
 		}
 		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStackTrace);
+	}
+
+	/**
+	 * @param text      the {@code String} to align
+	 * @param minLength the minimum length of {@code text}
+	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to {@code minLength}
+	 */
+	private String alignLeft(String text, int minLength)
+	{
+		int actualLength = text.length();
+		if (actualLength > minLength)
+			return text;
+		return text + " ".repeat(minLength - actualLength);
 	}
 }

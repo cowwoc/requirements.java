@@ -35,7 +35,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isZero()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be zero", name), null).
+			name + " can never be zero", null).
 			build();
 	}
 
@@ -44,7 +44,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isNotZero()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be zero", name), null).
+			name + " can never be zero", null).
 			build();
 	}
 
@@ -53,7 +53,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isNotPositive()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be zero or negative", name), null).
+			name + " can never be zero or negative", null).
 			build();
 	}
 
@@ -62,7 +62,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isPositive()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be zero or negative", name), null).
+			name + " can never be zero or negative", null).
 			build();
 	}
 
@@ -71,7 +71,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isNotNegative()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be negative", name), null).
+			name + " can never be negative", null).
 			build();
 	}
 
@@ -80,7 +80,7 @@ public final class BigDecimalPrecisionVerifierImpl
 	public BigDecimalPrecisionVerifier isNegative()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be negative", name), null).
+			name + " can never be negative", null).
 			build();
 	}
 }

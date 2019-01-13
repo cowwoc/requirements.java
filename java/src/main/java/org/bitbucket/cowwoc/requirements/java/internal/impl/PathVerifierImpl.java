@@ -40,7 +40,7 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		if (Files.exists(actual))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s refers to a non-existent path", name)).
+			name + " refers to a non-existent path").
 			addContext("Actual", actual.toAbsolutePath()).
 			build();
 	}
@@ -56,14 +56,14 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		catch (NoSuchFileException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path", name), e).
+				name + " refers to a non-existent path", e).
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
 		if (!attrs.isRegularFile())
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s must refer to a file.", name)).
+				name + " must refer to a file.").
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
@@ -81,14 +81,14 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		catch (NoSuchFileException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s refers to a non-existent path", name), e).
+				name + " refers to a non-existent path", e).
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
 		if (!attrs.isDirectory())
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s must refer to a directory.", name)).
+				name + " must refer to a directory.").
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
@@ -101,7 +101,7 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		if (!actual.isAbsolute())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must refer to a relative path.", name)).
+			name + " must refer to a relative path.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -112,7 +112,7 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		if (actual.isAbsolute())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must refer to an absolute path.", name)).
+			name + " must refer to an absolute path.").
 			addContext("Actual", actual).
 			build();
 	}

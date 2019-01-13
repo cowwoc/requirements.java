@@ -36,7 +36,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 		if (!actual.isNaN())
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a number.", name)).
+			name + " must be a number.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -47,7 +47,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 		if (actual.isNaN())
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a number.", name)).
+			name + " may not be a number.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -58,7 +58,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 		if (!actual.isInfinite())
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be finite.", name)).
+			name + " must be finite.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -69,7 +69,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 		if (actual.isInfinite())
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be infinite.", name)).
+			name + " must be infinite.").
 			addContext("Actual", actual).
 			build();
 	}

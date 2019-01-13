@@ -42,7 +42,7 @@ public abstract class IntegerVerifierCapabilitiesImpl<S, T extends Number & Comp
 	public S isNotWholeNumber()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a whole number.", name)).
+			name + " may not be a whole number.").
 			addContext("Actual", actual).
 			build();
 	}

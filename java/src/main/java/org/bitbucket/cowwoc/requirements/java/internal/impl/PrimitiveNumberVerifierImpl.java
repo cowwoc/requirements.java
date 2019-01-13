@@ -35,7 +35,7 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	public PrimitiveNumberVerifier<T> isNull()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be null", name), null).
+			name + " can never be null", null).
 			build();
 	}
 
@@ -44,7 +44,7 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	public PrimitiveNumberVerifier<T> isNotNull()
 	{
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s can never be null", name), null).
+			name + " can never be null", null).
 			build();
 	}
 }

@@ -40,7 +40,7 @@ public final class OptionalVerifierImpl
 		if (actual.isPresent())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be present", name)).
+			name + " must be present").
 			build();
 	}
 
@@ -50,7 +50,7 @@ public final class OptionalVerifierImpl
 		if (!actual.isPresent())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be empty.", name)).
+			name + " must be empty.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -65,7 +65,7 @@ public final class OptionalVerifierImpl
 			return this;
 		String valueAsString = secretConfiguration.toString(config, value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s.", name, valueAsString)).
+			name + " must contain " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -77,7 +77,7 @@ public final class OptionalVerifierImpl
 		if (actual.equals(expectedAsOptional))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must contain %s.", this.name, name)).
+			this.name + " must contain " + name + ".").
 			addContext("Actual", actual).
 			addContext("Expected", expectedAsOptional).
 			build();

@@ -44,7 +44,7 @@ public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, U
 		catch (URISyntaxException e)
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				String.format("%s is not a valid URI", name), e).
+				name + " is not a valid URI", e).
 				addContext("Actual", actual).
 				build();
 		}

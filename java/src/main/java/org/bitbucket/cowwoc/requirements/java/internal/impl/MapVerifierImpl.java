@@ -86,7 +86,7 @@ public final class MapVerifierImpl<K, V>
 		if (actual.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be empty.", name)).
+			name + " must be empty.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -97,7 +97,7 @@ public final class MapVerifierImpl<K, V>
 		if (!actual.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be empty", name)).
+			name + " may not be empty").
 			build();
 	}
 

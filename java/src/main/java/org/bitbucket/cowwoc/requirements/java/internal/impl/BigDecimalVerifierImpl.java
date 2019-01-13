@@ -57,7 +57,7 @@ public final class BigDecimalVerifierImpl
 		if (actual.signum() != 0)
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be zero", name)).
+			name + " may not be zero").
 			build();
 	}
 
@@ -93,7 +93,7 @@ public final class BigDecimalVerifierImpl
 		if (isWholeNumber(actual))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a whole number.", name)).
+			name + " must be a whole number.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -115,7 +115,7 @@ public final class BigDecimalVerifierImpl
 		if (!isWholeNumber(actual))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a whole number.", name)).
+			name + " may not be a whole number.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -139,7 +139,7 @@ public final class BigDecimalVerifierImpl
 			return this;
 		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a multiple of %s.", name, divisorAsString)).
+			name + " must be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -153,7 +153,7 @@ public final class BigDecimalVerifierImpl
 		if (isMultipleOf(actual, divisor))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be a multiple of %s.", this.name, name)).
+			this.name + " must be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).
 			build();
@@ -167,7 +167,7 @@ public final class BigDecimalVerifierImpl
 			return this;
 		String divisorAsString = secretConfiguration.toString(config, divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a multiple of %s.", name, divisorAsString)).
+			name + " may not be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -181,7 +181,7 @@ public final class BigDecimalVerifierImpl
 		if (!isMultipleOf(actual, divisor))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be a multiple of %s.", this.name, name)).
+			this.name + " may not be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).
 			build();

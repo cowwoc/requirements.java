@@ -39,7 +39,7 @@ public final class InetAddressVerifierImpl
 		if (actual instanceof Inet4Address)
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be an IP v4 address.", name)).
+			name + " must be an IP v4 address.").
 			addContext("Actual", actual).
 			build();
 	}
@@ -50,7 +50,7 @@ public final class InetAddressVerifierImpl
 		if (actual instanceof Inet6Address)
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be an IP v6 address.", name)).
+			name + " must be an IP v6 address.").
 			addContext("Actual", actual).
 			build();
 	}

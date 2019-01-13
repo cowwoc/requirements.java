@@ -73,7 +73,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s had an unexpected value.", name)).
+			name + " had an unexpected value.").
 			addContext(context).
 			build();
 	}
@@ -89,7 +89,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be equal to %s.", this.name, name)).
+			this.name + " must be equal to " + name + ".").
 			addContext(context).
 			build();
 	}
@@ -102,7 +102,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 
 		String value = secretConfiguration.toString(config, other);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be equal to %s", name, value)).
+			name + " may not be equal to " + value).
 			build();
 	}
 
@@ -114,7 +114,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be equal to %s.", this.name, name)).
+			this.name + " may not be equal to " + name + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -130,7 +130,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be the same object as %s.", this.name, name)).
+			this.name + " must be the same object as " + name + ".").
 			addContext(context).
 			build();
 	}
@@ -143,7 +143,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be the same object as %s.", this.name, name)).
+			this.name + " may not be the same object as " + name + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -156,7 +156,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be one of %s.", this.name, collection)).
+			this.name + " must be one of " + collection + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -170,7 +170,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be in %s.", this.name, collection)).
+			this.name + " may not be in " + collection + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -188,7 +188,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		else
 			actualClass = actual.getClass().getName();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be an instance of %s.", name, type.getName())).
+			name + " must be an instance of " + type.getName() + ".").
 			addContext("Actual.getClass()", actualClass).
 			addContext("Actual", actual).
 			build();
@@ -207,7 +207,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		else
 			actualClass = actual.getClass().getName();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be an instance of %s.", name, type.getName())).
+			name + " may not be an instance of " + type.getName() + ".").
 			addContext("Actual.getClass()", actualClass).
 			addContext("Actual", actual).
 			build();
@@ -224,7 +224,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			null);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be null.", name)).
+			name + " must be null.").
 			addContext(context).
 			build();
 	}

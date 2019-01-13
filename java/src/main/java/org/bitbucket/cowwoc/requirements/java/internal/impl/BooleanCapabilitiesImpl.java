@@ -36,7 +36,7 @@ public abstract class BooleanCapabilitiesImpl<S>
 		if (actual)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be true", name)).
+			name + " must be true").
 			build();
 	}
 
@@ -46,7 +46,7 @@ public abstract class BooleanCapabilitiesImpl<S>
 		if (!actual)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be false", name)).
+			name + " must be false").
 			build();
 	}
 }

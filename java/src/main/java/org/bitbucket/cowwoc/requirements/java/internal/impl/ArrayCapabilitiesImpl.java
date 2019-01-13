@@ -90,7 +90,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
 			expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be the same object as %s.", this.name, name)).
+			this.name + " must be the same object as " + name + ".").
 			addContext(context).
 			build();
 	}
@@ -102,7 +102,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 		if (actual != other)
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be the same object as %s.", this.name, name)).
+			this.name + " may not be the same object as " + name + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -115,7 +115,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 			return getThis();
 		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be one of %s.", this.name, collectionAsString)).
+			this.name + " must be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -128,7 +128,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 			return getThis();
 		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be in %s.", this.name, collectionAsString)).
+			this.name + " may not be in " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}

@@ -12,6 +12,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.text.NumberFormat;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +83,8 @@ public final class Configuration implements Configurable
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.diffEnabled = true;
 		this.typeToStringConverter = new HashMap<>(13);
+		ThreadLocal<NumberFormat> decimalFormat = ThreadLocal.withInitial(NumberFormat::getInstance);
+
 		typeToStringConverter.put(boolean[].class, o -> Arrays.toString((boolean[]) o));
 		typeToStringConverter.put(byte[].class, o -> Arrays.toString((byte[]) o));
 		typeToStringConverter.put(char[].class, o -> Arrays.toString((char[]) o));
@@ -91,8 +94,8 @@ public final class Configuration implements Configurable
 		typeToStringConverter.put(float[].class, o -> Arrays.toString((float[]) o));
 		typeToStringConverter.put(double[].class, o -> Arrays.toString((double[]) o));
 		typeToStringConverter.put(Object[].class, o -> Arrays.toString((Object[]) o));
-		typeToStringConverter.put(Integer.class, o -> String.format("%,d", o));
-		typeToStringConverter.put(Long.class, o -> String.format("%,d", o));
+		typeToStringConverter.put(Integer.class, o -> decimalFormat.get().format(o));
+		typeToStringConverter.put(Long.class, o -> decimalFormat.get().format(o));
 		typeToStringConverter.put(BigDecimal.class, o -> ((BigDecimal) o).toPlainString());
 		typeToStringConverter.put(Path.class, o -> ((Path) o).toAbsolutePath().toString());
 	}

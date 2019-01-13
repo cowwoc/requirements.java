@@ -118,7 +118,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 			return this;
 		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s must be one of %s.", this.name, collectionAsString)).
+			this.name + " must be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -131,7 +131,7 @@ public class ArrayVerifierImpl<E> implements ArrayVerifier<E>
 			return this;
 		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			String.format("%s may not be in %s.", this.name, collectionAsString)).
+			this.name + " may not be in " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
