@@ -18,6 +18,7 @@ public interface PrimitiveCharacterVerifier extends ComparableCapabilities<Primi
 	 */
 	@Override
 	@Deprecated
+	@SuppressWarnings("EmptyMethod")
 	PrimitiveCharacterVerifier isNull();
 
 	/**
@@ -27,5 +28,6 @@ public interface PrimitiveCharacterVerifier extends ComparableCapabilities<Primi
 	 */
 	@Override
 	@Deprecated
+	@SuppressWarnings("EmptyMethod")
 	PrimitiveCharacterVerifier isNotNull();
 }

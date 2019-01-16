@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class MapTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

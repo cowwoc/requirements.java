@@ -75,7 +75,8 @@ public final class ExceptionBuilder
 
 	/**
 	 * Equivalent to
-	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, Class, String) ExceptionBuilder(scope, configuration, message, null)}.
+	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, Class, String, Throwable)
+	 * ExceptionBuilder(scope, configuration, type, message, null)}.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration

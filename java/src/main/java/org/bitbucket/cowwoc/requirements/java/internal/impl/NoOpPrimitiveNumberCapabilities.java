@@ -29,6 +29,7 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("EmptyMethod")
 	public S isNegative()
 	{
 		return super.isNegative();
@@ -36,6 +37,7 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("EmptyMethod")
 	public S isNotNegative()
 	{
 		return super.isNotNegative();
@@ -43,6 +45,7 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("EmptyMethod")
 	public S isZero()
 	{
 		return super.isZero();
@@ -50,6 +53,7 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("EmptyMethod")
 	public S isNotZero()
 	{
 		return super.isNotZero();
@@ -57,6 +61,7 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("EmptyMethod")
 	public S isPositive()
 	{
 		return super.isPositive();
@@ -64,6 +69,7 @@ public abstract class NoOpPrimitiveNumberCapabilities<S, T extends Number & Comp
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("EmptyMethod")
 	public S isNotPositive()
 	{
 		return super.isNotPositive();

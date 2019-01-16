@@ -88,24 +88,26 @@ public interface ObjectCapabilities<S, T>
 	S isNotSameObjectAs(Object other, String name);
 
 	/**
-	 * Ensures that a collection contains the actual value.
+	 * Ensures that the actual value is one of the elements in a collection. This is typically used to ensure that the actual value is
+	 * valid.
 	 *
 	 * @param collection a collection
 	 * @return this
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} does not contain the actual value
 	 */
-	S isIn(Collection<? super T> collection);
+	S isOneOf(Collection<? super T> collection);
 
 	/**
-	 * Ensures that a collection does not contain the actual value.
+	 * Ensures that the actual value is not one of the elements in a collection. This is typically used to ensure that the actual value is
+	 * not equal to one or more reserved values.
 	 *
 	 * @param collection a collection
 	 * @return this
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} contains the actual value
 	 */
-	S isNotIn(Collection<? super T> collection);
+	S isNotOneOf(Collection<? super T> collection);
 
 	/**
 	 * Ensures that the actual value is an instance of a class.

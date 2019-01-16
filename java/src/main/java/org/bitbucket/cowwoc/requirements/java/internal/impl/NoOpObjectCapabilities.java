@@ -75,13 +75,13 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isIn(Collection<? super T> collection)
+	public S isOneOf(Collection<? super T> collection)
 	{
 		return getThis();
 	}
 
 	@Override
-	public S isNotIn(Collection<? super T> collection)
+	public S isNotOneOf(Collection<? super T> collection)
 	{
 		return getThis();
 	}

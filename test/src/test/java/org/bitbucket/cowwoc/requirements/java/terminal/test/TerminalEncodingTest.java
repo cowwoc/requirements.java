@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.bitbucket.cowwoc.requirements.DefaultRequirements.requireThat;
@@ -22,11 +21,11 @@ public final class TerminalEncodingTest
 	public void sortOrder()
 	{
 		List<TerminalEncoding> availableEncodings = new ArrayList<>(Arrays.asList(XTERM_16COLOR, NONE));
-		Collections.sort(availableEncodings, TerminalEncoding.sortByDecreasingRank());
+		availableEncodings.sort(TerminalEncoding.sortByDecreasingRank());
 		requireThat(availableEncodings.get(0), "availableEncoding.get(0)").isEqualTo(XTERM_16COLOR);
 
 		availableEncodings = new ArrayList<>(Arrays.asList(NONE, XTERM_16COLOR));
-		Collections.sort(availableEncodings, TerminalEncoding.sortByDecreasingRank());
+		availableEncodings.sort(TerminalEncoding.sortByDecreasingRank());
 		requireThat(availableEncodings.get(0), "availableEncoding.get(0)").isEqualTo(XTERM_16COLOR);
 	}
 }

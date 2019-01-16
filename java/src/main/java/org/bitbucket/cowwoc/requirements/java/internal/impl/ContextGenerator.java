@@ -41,11 +41,11 @@ public final class ContextGenerator
 
 	/**
 	 * @param diff the textual diff of two lines
-	 * @return true if the lines being compared are equal to each other
+	 * @return true if the lines being compared are different from each other
 	 */
-	private static boolean linesAreEqual(String diff)
+	private static boolean linesAreDifferent(String diff)
 	{
-		return !LINES_NOT_EQUAL.matcher(diff).find();
+		return LINES_NOT_EQUAL.matcher(diff).find();
 	}
 
 	private final Configuration config;
@@ -152,7 +152,7 @@ public final class ContextGenerator
 		if (lines == 1)
 		{
 			result.add(new SimpleImmutableEntry<>(actualName, actualDiffs.get(0)));
-			if (!middleDiffs.isEmpty() && !linesAreEqual(middleDiffs.get(0)))
+			if (!middleDiffs.isEmpty() && linesAreDifferent(middleDiffs.get(0)))
 				result.add(new SimpleImmutableEntry<>("Diff", middleDiffs.get(0)));
 			result.add(new SimpleImmutableEntry<>(expectedName, expectedDiffs.get(0)));
 			return result;
@@ -189,7 +189,7 @@ public final class ContextGenerator
 				skipDuplicateLines(result);
 			}
 			result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
-			if (!middleDiffs.isEmpty() && !linesAreEqual(middleDiffs.get(i)))
+			if (!middleDiffs.isEmpty() && linesAreDifferent(middleDiffs.get(i)))
 				result.add(new SimpleImmutableEntry<>("Diff", middleDiffs.get(i)));
 			String expectedNameForLine;
 			if (Strings.containsOnly(expectedLine, diff.getPaddingMarker()))

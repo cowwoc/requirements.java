@@ -37,7 +37,7 @@ public final class ConfigurationTest
 			{
 				@SuppressWarnings("unchecked")
 				List<Integer> result = new ArrayList<>(s);
-				Collections.sort(result, Comparator.reverseOrder());
+				result.sort(Comparator.reverseOrder());
 				return result.toString();
 			}).requireThat(actual, "actual").isEqualTo(notEqual);
 		}

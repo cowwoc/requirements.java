@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabili
  *
  * @param <T> the type of the floating-point number
  */
-@SuppressWarnings("MarkerInterface")
 public interface FloatingPointVerifier<T extends Number & Comparable<? super T>>
 	extends FloatingPointCapabilities<FloatingPointVerifier<T>, T>
 {

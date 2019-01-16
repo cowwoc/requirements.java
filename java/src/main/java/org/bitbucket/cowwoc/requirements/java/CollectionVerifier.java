@@ -55,7 +55,8 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	CollectionVerifier<C, E> contains(E expected, String name);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more. This method is equivalent to
+	 * an {@link #isEqualTo(Object) equality comparison} that ignores element ordering.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -67,7 +68,8 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	CollectionVerifier<C, E> containsExactly(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more. This method is equivalent to
+	 * an {@link #isEqualTo(Object) equality comparison} that ignores element ordering.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements

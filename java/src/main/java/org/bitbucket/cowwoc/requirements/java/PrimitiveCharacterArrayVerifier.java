@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 /**
  * Verifies the requirements of a char array.
  */
-@SuppressWarnings("MarkerInterface")
 public interface PrimitiveCharacterArrayVerifier extends ArrayCapabilities<PrimitiveCharacterArrayVerifier, Character, char[]>
 {
 }

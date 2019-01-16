@@ -117,7 +117,7 @@ public final class Exceptions
 		// Caused by: message of underlying exception
 		//   at Cause.method1(Cause.java:1)
 		//
-		// If removeLibraryFromstackTrace is true, we need to strip out the top 3 stack trace elements. But we are also forced to strip out
+		// If removeLibraryFromStackTrace is true, we need to strip out the top 3 stack trace elements. But we are also forced to strip out
 		// the exception cause because it was thrown inside our API.
 		assert (type != null) : "type may not be null";
 		try

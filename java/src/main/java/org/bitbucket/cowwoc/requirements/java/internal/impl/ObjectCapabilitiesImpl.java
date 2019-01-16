@@ -149,28 +149,29 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public S isIn(Collection<? super T> collection)
+	public S isOneOf(Collection<? super T> collection)
 	{
 		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 			return getThis();
 
+		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			this.name + " must be one of " + collection + ".").
+			this.name + " must be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
-	public S isNotIn(Collection<? super T> collection)
+	public S isNotOneOf(Collection<? super T> collection)
 	{
-		// Use-case: "actual" may not be equal to one or more reserved values
 		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
 
+		String collectionAsString = secretConfiguration.toString(config, collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			this.name + " may not be in " + collection + ".").
+			this.name + " may not be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -201,11 +202,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (!type.isInstance(actual))
 			return getThis();
 
-		String actualClass;
-		if (actual == null)
-			actualClass = "null";
-		else
-			actualClass = actual.getClass().getName();
+		String actualClass = actual.getClass().getName();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " may not be an instance of " + type.getName() + ".").
 			addContext("Actual.getClass()", actualClass).

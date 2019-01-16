@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.java.test;
 /**
  * A class whose instances have the same toString() and hashCode() but are never equal.
  */
-@SuppressWarnings("EqualsAndHashcode")
 public final class SameToStringAndHashCodeDifferentIdentity
 {
 	@Override

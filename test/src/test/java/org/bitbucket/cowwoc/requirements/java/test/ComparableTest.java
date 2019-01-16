@@ -14,6 +14,7 @@ import java.time.Year;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class ComparableTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -245,7 +246,7 @@ public final class ComparableTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year actual = Year.of(0);
-			new Requirements(scope).requireThat(actual, "paramter").isGreaterThan(actual);
+			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(actual);
 		}
 	}
 

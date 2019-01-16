@@ -222,7 +222,7 @@ public final class Terminal
 	{
 		Set<TerminalEncoding> supportedTypes = getSupportedTypes();
 		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
-		Collections.sort(sortedTypes, TerminalEncoding.sortByDecreasingRank());
+		sortedTypes.sort(TerminalEncoding.sortByDecreasingRank());
 		setEncodingImpl(sortedTypes.get(0), false);
 	}
 

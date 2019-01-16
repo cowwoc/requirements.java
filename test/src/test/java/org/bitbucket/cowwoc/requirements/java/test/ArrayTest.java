@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class ArrayTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -1003,7 +1004,7 @@ public final class ArrayTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asArray_False()
+	public void asCollection_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -1012,10 +1013,7 @@ public final class ArrayTest
 				{
 					1, 2, 3, 4, 5
 				};
-			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(new Integer[]
-				{
-					5, 4, 3, 2, 1
-				}));
+			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
 			List<Integer> actualOutput = new ArrayList<>(requirements.requireThat(actual, "actual").
 				asCollection().getActual());
 			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
@@ -1256,7 +1254,7 @@ public final class ArrayTest
 				};
 			new Requirements(scope).withStringConverter(int[].class, o -> "primitive[]").
 				requireThat(actual, "actual").isEqualTo(expected);
-			assert (false) : "Expection was never thrown";
+			assert (false) : "Exception was never thrown";
 		}
 		catch (IllegalArgumentException e)
 		{

@@ -51,14 +51,9 @@ public final class OperatingSystem
 	{
 		private static final Reference<Version> DETECTED = ConcurrentLazyReference.create(() ->
 		{
-			Type type = Type.detected();
-			switch (type)
-			{
-				case WINDOWS:
-					return getWindowsVersion();
-				default:
-					return parseVersion(System.getProperty("os.version"));
-			}
+			if (Type.detected() == Type.WINDOWS)
+				return getWindowsVersion();
+			return parseVersion(System.getProperty("os.version"));
 		});
 
 		/**

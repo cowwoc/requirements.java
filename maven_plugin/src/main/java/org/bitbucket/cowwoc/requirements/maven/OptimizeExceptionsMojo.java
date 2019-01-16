@@ -24,6 +24,7 @@ import java.util.List;
  * Optimizes the exceptions thrown by the library. Specifically, stack traces are stripped lazily.
  */
 @Mojo(name = "optimize-exceptions", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public final class OptimizeExceptionsMojo extends AbstractMojo
 {
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)

@@ -16,6 +16,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class MultimapTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

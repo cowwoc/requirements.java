@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilitie
  *
  * @param <T> the type of the value
  */
-@SuppressWarnings("MarkerInterface")
 public interface ComparableVerifier<T extends Comparable<? super T>>
 	extends ComparableCapabilities<ComparableVerifier<T>, T>
 {

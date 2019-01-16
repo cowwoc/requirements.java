@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class BigDecimalTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

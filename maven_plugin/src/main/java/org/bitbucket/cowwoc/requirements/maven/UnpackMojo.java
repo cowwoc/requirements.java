@@ -9,7 +9,6 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -46,7 +45,7 @@ public final class UnpackMojo extends AbstractMojo
 	private BuildPluginManager pluginManager;
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException
+	public void execute() throws MojoExecutionException
 	{
 		OperatingSystem os = OperatingSystem.detected();
 		String classifier = os.type.name().toLowerCase() + "-" + os.architecture.name().toLowerCase();

@@ -11,6 +11,8 @@ import java.io.IOException;
 /**
  * Native functions for interacting with the JVM terminal.
  */
+// WORKAROUND: https://youtrack.jetbrains.com/issue/IDEA-205525
+@SuppressWarnings("RedundantThrows")
 public final class NativeTerminal
 {
 	/**

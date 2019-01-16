@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class CharacterTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

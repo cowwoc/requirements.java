@@ -182,7 +182,6 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getActual()
 	{
 		if (!closed)
@@ -191,7 +190,6 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getExpected()
 	{
 		if (!closed)

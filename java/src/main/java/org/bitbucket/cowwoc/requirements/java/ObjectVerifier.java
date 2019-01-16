@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
  *
  * @param <T> the type of the value
  */
-@SuppressWarnings("MarkerInterface")
 public interface ObjectVerifier<T> extends ObjectCapabilities<ObjectVerifier<T>, T>
 {
 }

@@ -2,8 +2,6 @@
  * Copyright (c) 2016 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.java.internal;
-
 /**
  * Design guide:
  * <p>
@@ -27,3 +25,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
  * <li>As such, we load native libraries outside the Java classes that depend on them.</li>
  * </ul>
  */
+package org.bitbucket.cowwoc.requirements.java.internal;
+
+import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;

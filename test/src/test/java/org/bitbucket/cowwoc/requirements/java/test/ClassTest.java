@@ -13,6 +13,7 @@ import java.util.Random;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class ClassTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

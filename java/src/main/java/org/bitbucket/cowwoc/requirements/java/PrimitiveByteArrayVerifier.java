@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 /**
  * Verifies the requirements of a byte array.
  */
-@SuppressWarnings("MarkerInterface")
 public interface PrimitiveByteArrayVerifier extends
 	ArrayCapabilities<PrimitiveByteArrayVerifier, Byte, byte[]>
 {

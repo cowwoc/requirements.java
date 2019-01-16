@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
  *
  * @param <T> the type of the integer number
  */
-@SuppressWarnings("MarkerInterface")
 public interface IntegerVerifier<T extends Number & Comparable<? super T>>
 	extends IntegerCapabilities<IntegerVerifier<T>, T>
 {

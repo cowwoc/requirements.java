@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class OptionalTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

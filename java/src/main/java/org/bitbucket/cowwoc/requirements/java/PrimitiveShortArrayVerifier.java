@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 /**
  * Verifies the requirements of a short array.
  */
-@SuppressWarnings("MarkerInterface")
 public interface PrimitiveShortArrayVerifier extends ArrayCapabilities<PrimitiveShortArrayVerifier, Short, short[]>
 {
 }

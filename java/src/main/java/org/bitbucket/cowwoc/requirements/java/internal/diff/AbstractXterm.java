@@ -202,7 +202,6 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	}
 
 	@Override
-	@SuppressWarnings("NoopMethodInAbstractClass")
 	protected void afterClose()
 	{
 	}
@@ -225,7 +224,6 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	}
 
 	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getMiddle()
 	{
 		if (!closed)

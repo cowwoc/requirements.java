@@ -23,7 +23,7 @@ public final class ExceptionsTest
 	 * {@code java.lang.invoke.WrongMethodTypeException: expected (String,Throwable)RuntimeException but found (String)RuntimeException}
 	 */
 	@Test
-	@SuppressWarnings("ThrowableResultIgnored")
+	@SuppressWarnings("ThrowableNotThrown")
 	public void createExceptionWithCauseButNotInApi()
 	{
 		exceptions.createException(RuntimeException.class, "message", new Exception(), false);

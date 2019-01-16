@@ -49,7 +49,6 @@ public final class DiffResult
 	 *
 	 * @return an unmodifiable list
 	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getActual()
 	{
 		return actual;
@@ -69,7 +68,6 @@ public final class DiffResult
 	 *
 	 * @return an unmodifiable list
 	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getMiddle()
 	{
 		return middle;
@@ -80,7 +78,6 @@ public final class DiffResult
 	 *
 	 * @return an unmodifiable list
 	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getExpected()
 	{
 		return expected;

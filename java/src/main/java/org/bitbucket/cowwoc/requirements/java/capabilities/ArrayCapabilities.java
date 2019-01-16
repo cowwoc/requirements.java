@@ -17,10 +17,10 @@ import java.util.function.Consumer;
  *
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of the array elements
- * @param <R> the type of the array
+ * @param <A> the type of the array
  */
-public interface ArrayCapabilities<S, E, R>
-	extends ObjectCapabilities<S, R>
+public interface ArrayCapabilities<S, E, A>
+	extends ObjectCapabilities<S, A>
 {
 	/**
 	 * Ensures that the array is empty.

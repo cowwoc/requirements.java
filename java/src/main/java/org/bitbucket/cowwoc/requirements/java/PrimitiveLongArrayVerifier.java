@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 /**
  * Verifies the requirements of a long array.
  */
-@SuppressWarnings("MarkerInterface")
 public interface PrimitiveLongArrayVerifier extends ArrayCapabilities<PrimitiveLongArrayVerifier, Long, long[]>
 {
 }

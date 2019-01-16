@@ -24,11 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 // Fields may not be final: http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 @State(Scope.Benchmark)
+@SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
 public class GuavaTest
 {
 	private String name = "multimap";
 	private Multimap<String, String> value = HashMultimap.create(1, 2);
-	private Multimap<?, ?> nullMultimap = null;
 	private List<Integer> list;
 
 	public GuavaTest()

@@ -26,11 +26,11 @@ import java.util.function.Consumer;
  *
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of the array elements
- * @param <R> the type of the array
+ * @param <A> the type of the array
  */
-public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, R>
-	extends ObjectCapabilitiesImpl<S, R>
-	implements ArrayCapabilities<S, E, R>
+public abstract class ArrayCapabilitiesImpl<S, E, A>
+	extends ObjectCapabilitiesImpl<S, A>
+	implements ArrayCapabilities<S, E, A>
 {
 	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final Collection<E> actualAsCollection;
@@ -44,7 +44,7 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	 * @param config             the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected ArrayCapabilitiesImpl(ApplicationScope scope, String name, R actual, Collection<E> actualAsCollection, Configuration config)
+	protected ArrayCapabilitiesImpl(ApplicationScope scope, String name, A actual, Collection<E> actualAsCollection, Configuration config)
 	{
 		super(scope, name, actual, config);
 		this.actualAsCollection = actualAsCollection;
@@ -103,32 +103,6 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 			return getThis();
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			this.name + " may not be the same object as " + name + ".").
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public S isIn(Collection<? super R> collection)
-	{
-		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
-		if (collection.contains(actual))
-			return getThis();
-		String collectionAsString = secretConfiguration.toString(config, collection);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			this.name + " must be one of " + collectionAsString + ".").
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public S isNotIn(Collection<? super R> collection)
-	{
-		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
-		if (!collection.contains(actual))
-			return getThis();
-		String collectionAsString = secretConfiguration.toString(config, collection);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			this.name + " may not be in " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
 	}
@@ -335,14 +309,13 @@ public abstract class ArrayCapabilitiesImpl<S, E extends Comparable<? super E>, 
 	}
 
 	@Override
-	public Optional<R> getActualIfPresent()
+	public Optional<A> getActualIfPresent()
 	{
 		return Optional.of(actual);
 	}
 
 	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
-	public R getActual()
+	public A getActual()
 	{
 		return actual;
 	}

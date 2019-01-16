@@ -14,6 +14,7 @@ import java.net.URL;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class UriTest
 {
 	@Test(expectedExceptions = NullPointerException.class)

@@ -16,6 +16,7 @@ import java.util.Optional;
 /**
  * Default implementation of OptionalVerifier.
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class OptionalVerifierImpl
 	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
 	implements OptionalVerifier
@@ -47,7 +48,7 @@ public final class OptionalVerifierImpl
 	@Override
 	public OptionalVerifier isEmpty()
 	{
-		if (!actual.isPresent())
+		if (actual.isEmpty())
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be empty.").

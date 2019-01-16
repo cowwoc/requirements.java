@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class NumberTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -480,6 +481,7 @@ public final class NumberTest
 	}
 
 	@Test
+	@SuppressWarnings("NumericOverflow")
 	public void isNotFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -490,6 +492,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
+	@SuppressWarnings("NumericOverflow")
 	public void isNotFinite_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -514,7 +517,7 @@ public final class NumberTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 0.0 / 0.0;
+			Double actual = Double.NaN;
 			new Requirements(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
@@ -524,7 +527,7 @@ public final class NumberTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 0.0 / 0.0;
+			Double actual = Double.NaN;
 			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}

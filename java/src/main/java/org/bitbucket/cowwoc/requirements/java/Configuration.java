@@ -29,10 +29,7 @@ import java.util.function.Function;
  * <p>
  * This class is immutable.
  */
-@SuppressWarnings(
-	{
-		"NestedAssignment", "AssertWithSideEffects"
-	})
+@SuppressWarnings({"ConstantConditions", "AssertWithSideEffects"})
 public final class Configuration implements Configurable
 {
 	private static final boolean CLASS_ASSERTIONS_ENABLED;
@@ -188,7 +185,6 @@ public final class Configuration implements Configurable
 	 * @return an unmodifiable list of name-value pairs to append to the exception message
 	 * @see #addContext(String, Object)
 	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	private List<Entry<String, Object>> getContext()
 	{
 		return context;

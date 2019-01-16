@@ -235,7 +235,6 @@ public final class TextOnly extends AbstractDiffWriter
 	}
 
 	@Override
-	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public List<String> getMiddle()
 	{
 		if (!closed)

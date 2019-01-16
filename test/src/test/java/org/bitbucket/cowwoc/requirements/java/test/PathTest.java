@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class PathTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -158,7 +159,7 @@ public final class PathTest
 	}
 
 	@Test
-	public void isRelative() throws IOException
+	public void isRelative()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -168,7 +169,7 @@ public final class PathTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRelative_False() throws IOException
+	public void isRelative_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -178,7 +179,7 @@ public final class PathTest
 	}
 
 	@Test
-	public void isAbsolute() throws IOException
+	public void isAbsolute()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -188,7 +189,7 @@ public final class PathTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isAbsolute_False() throws IOException
+	public void isAbsolute_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{

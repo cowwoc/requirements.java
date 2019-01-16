@@ -10,12 +10,14 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicatio
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
+@SuppressWarnings("ConstantConditions")
 public final class ObjectTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -163,7 +165,7 @@ public final class ObjectTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "UnnecessaryBoxing", "CachedNumberConstructorCall"})
 	public void isSameObject_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -175,7 +177,7 @@ public final class ObjectTest
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "UnnecessaryBoxing", "CachedNumberConstructorCall"})
 	public void isNotSameObject()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -207,7 +209,7 @@ public final class ObjectTest
 			@SuppressWarnings("RedundantStringConstructorCall")
 			String equivalent = new String(actual);
 
-			new Requirements(scope).requireThat(actual, "actual").isIn(Arrays.asList("first",
+			new Requirements(scope).requireThat(actual, "actual").isOneOf(Arrays.asList("first",
 				equivalent, "third"));
 		}
 	}
@@ -218,7 +220,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "value";
-			new Requirements(scope).requireThat(actual, "actual").isIn(Arrays.asList("first",
+			new Requirements(scope).requireThat(actual, "actual").isOneOf(Arrays.asList("first",
 				"second", "third"));
 		}
 	}
@@ -380,14 +382,15 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Object actual = new HashSet<>(Arrays.asList(1));
-			Object expected = new LinkedHashSet<>(Arrays.asList(2));
+			Object actual = new HashSet<>(Collections.singletonList(1));
+			Object expected = new LinkedHashSet<>(Collections.singletonList(2));
 
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 
 	@Test
+	@SuppressWarnings("ConstantConditions")
 	public void assertionsDisabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 /**
  * Verifies the requirements of a boolean array.
  */
-@SuppressWarnings("MarkerInterface")
 public interface PrimitiveBooleanArrayVerifier extends
 	ArrayCapabilities<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
 {
