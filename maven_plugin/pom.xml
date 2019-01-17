@@ -54,11 +54,21 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<show>public</show>
-					<doctitle>Requirements Maven Plugin ${project.version} API</doctitle>
-					<windowtitle>Requirements Maven Plugin ${project.version} API</windowtitle>
-				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<show>public</show>
+							<doctitle>Requirements Maven Plugin ${project.version} API</doctitle>
+							<windowtitle>Requirements Maven Plugin ${project.version} API</windowtitle>
+							<!-- WORKAROUND: https://bugs.openjdk.java.net/browse/JDK-8212233 -->
+							<detectOfflineLinks>false</detectOfflineLinks>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

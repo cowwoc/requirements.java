@@ -35,7 +35,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.61">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.62">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -62,6 +62,10 @@
 // See http://stackoverflow.com/a/17275650/14731 for overriding the GCC version used by CMake
 
 // Per https://issues.sonatype.org/browse/NEXUS-18753 we cannot use Staging Workflows for SNAPSHOT builds.
+//
+// nexus-staging-maven-plugin does not allow us to run unit tests and deploy at the same time because skipNexusStagingDeployMojo cannot be set to true
+// in the last module. Therefore we build twice. The first time we run unit tests without deploying. The second time we deploy without running unit tests.
+// -Dmaven.javadoc.skip=true is a workaround for https://bugs.openjdk.java.net/browse/JDK-8216170
 def repository = &quot;https://bitbucket.org/cowwoc/requirements/&quot;
 def branch = &quot;default&quot;
 
@@ -92,7 +96,7 @@ parallel linux:
                     sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-6 g++-6 -y
                         export CC=/usr/bin/gcc-6
                         export CXX=/usr/bin/g++-6
-                        mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release clean install
+                        mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Dmaven.javadoc.skip=true clean install
                         mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DosDetection=false -Plinux-x86_64-release -Ddeploy deploy&quot;&quot;&quot;
                     archiveArtifacts &quot;**/target/*.jar, natives/target/linux-x86_64-release/classes/librequirements.so&quot;
                 }
@@ -119,7 +123,7 @@ parallel linux:
             {
                 stage(&quot;Deploy (mac)&quot;)
                 {
-                    sh script: &quot;&quot;&quot;mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pmac-x86_64-release clean install
+                    sh script: &quot;&quot;&quot;mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pmac-x86_64-release -Dmaven.javadoc.skip=true clean install
                         mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pmac-x86_64-release -Ddeploy deploy&quot;&quot;&quot;
                     archiveArtifacts &quot;**/target/*.jar, natives/target/mac-x86_64-release/classes/librequirements.dylib&quot;
                 }
@@ -145,7 +149,7 @@ parallel linux:
             {
                 stage(&quot;Deploy (windows)&quot;)
                 {
-                    bat script: &quot;&quot;&quot;call mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_64-release clean install
+                    bat script: &quot;&quot;&quot;call mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_64-release -Dmaven.javadoc.skip=true clean install
                         call mvn --batch-mode -e -U -Dsurefire.useFile=false -DosDetection=false -Pwindows-x86_64-release -Ddeploy deploy&quot;&quot;&quot;
                     archiveArtifacts &quot;**/target/*.jar, natives/target/windows-x86_64-release/classes/*.dll, natives/target/windows-x86_64-release/classes/*.pdb&quot;
                 }

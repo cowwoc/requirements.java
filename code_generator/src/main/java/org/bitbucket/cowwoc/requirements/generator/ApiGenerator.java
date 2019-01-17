@@ -88,7 +88,7 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * Writes {@code DefaultRequirements.java}.
+	 * Generates {@code org.bitbucket.cowwoc.requirements.DefaultRequirements}.
 	 *
 	 * @param path the path of the file
 	 * @return true if the file was updated
@@ -1239,7 +1239,7 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * Writes {@code Requirements.java}.
+	 * Generates {@code org.bitbucket.cowwoc.requirements.Requirements}.
 	 *
 	 * @param path the path of the file
 	 * @return true if the file was updated
