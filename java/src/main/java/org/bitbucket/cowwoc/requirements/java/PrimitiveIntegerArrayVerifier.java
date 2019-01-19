@@ -9,6 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 /**
  * Verifies the requirements of an int array.
  */
-public interface PrimitiveIntegerArrayVerifier extends ArrayCapabilities<PrimitiveIntegerArrayVerifier, Integer, int[]>
+public interface PrimitiveIntegerArrayVerifier
+	extends ArrayCapabilities<PrimitiveIntegerArrayVerifier, Integer, int[]>
 {
 }

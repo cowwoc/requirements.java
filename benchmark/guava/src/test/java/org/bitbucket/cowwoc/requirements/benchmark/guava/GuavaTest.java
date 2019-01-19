@@ -22,9 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-// Fields may not be final: http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
+// Fields may not be final:
+// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 @State(Scope.Benchmark)
-@SuppressWarnings({"FieldCanBeLocal", "CanBeFinal"})
+@SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "LongLine"})
 public class GuavaTest
 {
 	private String name = "multimap";

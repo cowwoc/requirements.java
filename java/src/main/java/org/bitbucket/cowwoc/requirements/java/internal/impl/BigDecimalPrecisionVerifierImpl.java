@@ -25,7 +25,8 @@ public final class BigDecimalPrecisionVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected BigDecimalPrecisionVerifierImpl(ApplicationScope scope, String name, BigDecimal actual, Configuration config)
+	protected BigDecimalPrecisionVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
+	                                          Configuration config)
 	{
 		super(scope, name + ".precision()", actual.precision(), config);
 	}

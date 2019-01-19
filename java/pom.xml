@@ -55,7 +55,8 @@
 						</goals>
 						<configuration>
 							<!--
-							NOTE: <docfilessubdirs> is only needed to generate Javadoc for ANSI String diffs, which is disabled by default.
+							NOTE: <docfilessubdirs> is only needed to generate Javadoc for ANSI String diffs, which is
+							disabled by default.
 
 							<docfilessubdirs>true</docfilessubdirs>
 							-->

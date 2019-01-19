@@ -30,7 +30,8 @@ extern "C" {
 #ifdef _WIN32
 			const DWORD DEFAULT_LANGUAGE = MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT);
 			/**
-			* Returns the String representation of the error. The caller must the LocalFree() function to free the buffer when it is no longer needed.
+			* Returns the String representation of the error. The caller must the LocalFree() function to
+			* free the buffer when it is no longer needed.
 			*
 			* @param errorCode the error code returned by GetLastError()
 			* @return 0 on failure

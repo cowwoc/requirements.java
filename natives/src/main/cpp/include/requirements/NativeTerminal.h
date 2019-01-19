@@ -20,7 +20,8 @@ JNIEXPORT void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_t
  * Method:    isConnectedToStdout
  * Signature: ()Z
  */
-JNIEXPORT jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
+JNIEXPORT jboolean JNICALL
+  Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
   (JNIEnv *, jobject);
 
 /*
@@ -28,7 +29,8 @@ JNIEXPORT jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_natives_intern
  * Method:    setEncoding
  * Signature: (Lorg/bitbucket/cowwoc/requirements/natives/terminal/TerminalEncoding;)V
  */
-JNIEXPORT void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_setEncoding
+JNIEXPORT void JNICALL
+  Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_setEncoding
   (JNIEnv *, jobject, jobject);
 
 /*
@@ -36,7 +38,8 @@ JNIEXPORT void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_t
  * Method:    disconnect
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_disconnect
+JNIEXPORT void JNICALL
+  Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_disconnect
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

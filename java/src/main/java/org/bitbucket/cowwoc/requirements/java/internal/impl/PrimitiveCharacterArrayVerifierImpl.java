@@ -40,7 +40,8 @@ public class PrimitiveCharacterArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected PrimitiveCharacterArrayVerifierImpl(ApplicationScope scope, String name, char[] actual, Configuration config)
+	protected PrimitiveCharacterArrayVerifierImpl(ApplicationScope scope, String name, char[] actual,
+	                                              Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

@@ -28,9 +28,11 @@ public final class OptionalVerifierImpl
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
+	 *                        empty.
 	 */
-	protected OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual, Configuration config)
+	protected OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual,
+	                               Configuration config)
 	{
 		super(scope, name, actual, config);
 	}

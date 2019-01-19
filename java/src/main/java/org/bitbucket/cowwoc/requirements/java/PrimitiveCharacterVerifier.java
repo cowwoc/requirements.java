@@ -9,7 +9,8 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilitie
 /**
  * Verifies the requirements of a {@code char} value.
  */
-public interface PrimitiveCharacterVerifier extends ComparableCapabilities<PrimitiveCharacterVerifier, Character>
+public interface PrimitiveCharacterVerifier
+	extends ComparableCapabilities<PrimitiveCharacterVerifier, Character>
 {
 	/**
 	 * {@inheritDoc}

@@ -38,7 +38,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
+	 *                        empty.
 	 */
 	protected ObjectCapabilitiesImpl(ApplicationScope scope, String name, T actual, Configuration config)
 	{

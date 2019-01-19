@@ -22,8 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints classes that expose a different number of methods depending on
- * the plugins that are available at build-time.
+ * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints classes that expose a different
+ * number of methods depending on the plugins that are available at build-time.
  */
 @Mojo(name = "generate-api", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public final class GenerateApiMojo extends AbstractMojo
@@ -37,8 +37,9 @@ public final class GenerateApiMojo extends AbstractMojo
 	@Parameter(property = "scope", defaultValue = "compile")
 	private String scope;
 	/**
-	 * Indicates if the generated class should assume that the guava plugin is enabled. If the guava plugin is present as a project
-	 * dependency (of any scope) this value is true by default; otherwise, it is false by default.
+	 * Indicates if the generated class should assume that the guava plugin is enabled. If the guava plugin
+	 * is present as a project dependency (of any scope) this value is true by default; otherwise, it is
+	 * false by default.
 	 */
 	@Parameter(property = "guavaEnabled")
 	private Boolean overrideGuavaEnabled;

@@ -40,7 +40,8 @@ public class PrimitiveDoubleArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected PrimitiveDoubleArrayVerifierImpl(ApplicationScope scope, String name, double[] actual, Configuration config)
+	protected PrimitiveDoubleArrayVerifierImpl(ApplicationScope scope, String name, double[] actual,
+	                                           Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

@@ -25,7 +25,8 @@ public final class OperatingSystem
 	/**
 	 * Version format used by Linux and Mac.
 	 */
-	private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)(?:\\.(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?)?");
+	private static final Pattern VERSION_PATTERN =
+		Pattern.compile("(\\d+)(?:\\.(\\d+)(?:\\.(\\d+)(?:\\.(\\d+))?)?)?");
 
 	private static final Reference<OperatingSystem> DETECTED = ConcurrentLazyReference.create(() ->
 	{

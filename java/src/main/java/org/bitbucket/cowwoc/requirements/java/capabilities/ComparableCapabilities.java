@@ -7,8 +7,8 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
 
 /**
- * Verifies the requirements of a value that extends {@link Comparable} but the implementing verifier is not guaranteed
- * to be a {@link ComparableVerifier}.
+ * Verifies the requirements of a value that extends {@link Comparable} but the implementing verifier is
+ * not guaranteed to be a {@link ComparableVerifier}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -33,7 +33,8 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param name  the name of the lower bound
 	 * @return this
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}. If
+	 *                                  {@code name} is empty.
 	 */
 	S isGreaterThan(T value, String name);
 
@@ -54,7 +55,8 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param name  the name of the minimum value
 	 * @return this
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if the actual value is less than to {@code value}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is less than to {@code value}. If {@code name}
+	 *                                  is empty.
 	 */
 	S isGreaterThanOrEqualTo(T value, String name);
 
@@ -75,7 +77,8 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param name  the name of the upper bound
 	 * @return this
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}. If
+	 *                                  {@code name} is empty.
 	 */
 	S isLessThan(T value, String name);
 
@@ -96,7 +99,8 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param name  the name of the maximum value
 	 * @return this
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if the actual value is greater than {@code value}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is greater than {@code value}. If {@code name}
+	 *                                  is empty.
 	 */
 	S isLessThanOrEqualTo(T value, String name);
 
@@ -149,7 +153,8 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param endExclusive   the upper bound of the range (exclusive)
 	 * @return this
 	 * @throws NullPointerException     if {@code startInclusive} or {@code endExclusive} are null
-	 * @throws IllegalArgumentException if {@code endExclusive} is less than {@code startInclusive}. If the actual value is not in range.
+	 * @throws IllegalArgumentException if {@code endExclusive} is less than {@code startInclusive}. If the
+	 *                                  actual value is not in range.
 	 */
 	S isBetween(T startInclusive, T endExclusive);
 
@@ -160,7 +165,8 @@ public interface ComparableCapabilities<S, T extends Comparable<? super T>>
 	 * @param endInclusive   the upper bound of the range (inclusive)
 	 * @return this
 	 * @throws NullPointerException     if {@code startInclusive} or {@code endInclusive} are null
-	 * @throws IllegalArgumentException if {@code endInclusive} is less than {@code startInclusive}. If the actual value is not in range.
+	 * @throws IllegalArgumentException if {@code endInclusive} is less than {@code startInclusive}. If the
+	 *                                  actual value is not in range.
 	 */
 	S isBetweenClosed(T startInclusive, T endInclusive);
 }

@@ -13,6 +13,7 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabi
  * @param <T> the type of the floating-point number
  */
 public interface PrimitiveFloatingPointVerifier<T extends Number & Comparable<? super T>> extends
-	FloatingPointCapabilities<PrimitiveFloatingPointVerifier<T>, T>, PrimitiveNumberCapabilities<PrimitiveFloatingPointVerifier<T>, T>
+	FloatingPointCapabilities<PrimitiveFloatingPointVerifier<T>, T>,
+	PrimitiveNumberCapabilities<PrimitiveFloatingPointVerifier<T>, T>
 {
 }

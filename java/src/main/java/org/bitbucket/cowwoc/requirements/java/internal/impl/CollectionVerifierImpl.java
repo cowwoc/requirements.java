@@ -42,9 +42,11 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	 * @param actual     the actual value
 	 * @param pluralizer returns the singular or plural form of an element type
 	 * @param config     the instance configuration
-	 * @throws AssertionError if {@code name}, {@code pluralizer} or {@code config} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code name}, {@code pluralizer} or {@code config} are null. If
+	 *                        {@code name} is empty.
 	 */
-	public CollectionVerifierImpl(ApplicationScope scope, String name, C actual, Pluralizer pluralizer, Configuration config)
+	public CollectionVerifierImpl(ApplicationScope scope, String name, C actual, Pluralizer pluralizer,
+	                              Configuration config)
 	{
 		super(scope, name, actual, config);
 		assert (pluralizer != null) : "pluralizer may not be null";
@@ -351,7 +353,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(), pluralizer, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(), pluralizer,
+			config);
 	}
 
 	@Override

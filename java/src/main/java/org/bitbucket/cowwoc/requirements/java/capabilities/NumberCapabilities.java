@@ -7,8 +7,8 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 import org.bitbucket.cowwoc.requirements.java.NumberVerifier;
 
 /**
- * Verifies the requirements of a value that extends {@link Number} but the implementing verifier is not guaranteed
- * to be a {@link NumberVerifier}.
+ * Verifies the requirements of a value that extends {@link Number} but the implementing verifier is not
+ * guaranteed to be a {@link NumberVerifier}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -97,7 +97,8 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 * @param name    the name of the divisor
 	 * @return this
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}. If
+	 *                                  {@code name} is empty.
 	 */
 	S isMultipleOf(T divisor, String name);
 
@@ -118,7 +119,8 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 * @param name    the name of the divisor
 	 * @return this
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}. If
+	 *                                  {@code name} is empty.
 	 */
 	S isNotMultipleOf(T divisor, String name);
 }

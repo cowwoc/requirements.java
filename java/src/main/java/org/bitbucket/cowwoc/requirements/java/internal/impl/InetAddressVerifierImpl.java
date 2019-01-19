@@ -28,7 +28,8 @@ public final class InetAddressVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected InetAddressVerifierImpl(ApplicationScope scope, String name, InetAddress actual, Configuration config)
+	protected InetAddressVerifierImpl(ApplicationScope scope, String name, InetAddress actual,
+	                                  Configuration config)
 	{
 		super(scope, name, actual, config);
 	}
@@ -58,8 +59,9 @@ public final class InetAddressVerifierImpl
 	@Override
 	public StringVerifier asString()
 	{
-		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into InetAddress.getByName(String). Instead, we
-		// use InetAddress.getHostName() which returns the desired format.
+		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
+		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
+		// format.
 		String hostName = actual.getHostName();
 		return new StringVerifierImpl(scope, hostName, name, config);
 	}

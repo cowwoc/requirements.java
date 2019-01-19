@@ -12,7 +12,8 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveIntegerCapab
  *
  * @param <T> the type of the integer number
  */
-public interface PrimitiveIntegerVerifier<T extends Number & Comparable<? super T>> extends
-	IntegerCapabilities<PrimitiveIntegerVerifier<T>, T>, PrimitiveIntegerCapabilities<PrimitiveIntegerVerifier<T>, T>
+public interface PrimitiveIntegerVerifier<T extends Number & Comparable<? super T>>
+	extends IntegerCapabilities<PrimitiveIntegerVerifier<T>, T>,
+	PrimitiveIntegerCapabilities<PrimitiveIntegerVerifier<T>, T>
 {
 }

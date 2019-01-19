@@ -145,11 +145,13 @@ std::string toString(JNIEnv* env, jobject o)
 	 */
 	bool isWindowsVersionOrGreater(WORD majorVersion, WORD minorVersion, WORD buildVersion)
 	{
-		// See http://stackoverflow.com/a/36545162/14731 and https://github.com/DarthTon/Blackbone/blob/master/contrib/VersionHelpers.h#L78
+		// See http://stackoverflow.com/a/36545162/14731 and
+		// https://github.com/DarthTon/Blackbone/blob/master/contrib/VersionHelpers.h#L78
 		RTL_OSVERSIONINFOW verInfo = { 0 };
 		verInfo.dwOSVersionInfoSize = sizeof(verInfo);
 
-		static auto RtlGetVersion = (RtlGetVersionPtr) GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "RtlGetVersion");
+		static auto RtlGetVersion = (RtlGetVersionPtr) GetProcAddress(
+		  GetModuleHandleW(L"ntdll.dll"), "RtlGetVersion");
 
 		if (RtlGetVersion != 0 && RtlGetVersion(&verInfo) == 0)
 		{
@@ -174,7 +176,8 @@ std::string toString(JNIEnv* env, jobject o)
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
+	jboolean JNICALL
+	Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
 	(JNIEnv* env, jobject jthis)
 	{
 		return state.connectedToStdout;
@@ -196,19 +199,22 @@ std::string toString(JNIEnv* env, jobject o)
 		else
 		{
 			std::deque<char*> supportedEncodings;
-			// build 10586 added 16-bit color support: http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
+			// build 10586 added 16-bit color support:
+			// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
 			assert(IsWindowsVersionOrGreater(10, 0, 10586));
 			supportedEncodings.push_back("XTERM_8COLOR");
 			supportedEncodings.push_back("XTERM_16COLOR");
 
 			if (IsWindowsVersionOrGreater(10, 0, 14931))
 			{
-				// build 14931 added 24-bit color support: https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
+				// build 14931 added 24-bit color support:
+				// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
 				supportedEncodings.push_back("RGB_888COLOR");
 			}
 
 			bool matchFound;
-			for (std::deque<char*>::iterator i = supportedEncodings.begin(); i != supportedEncodings.end(); ++i)
+			for (std::deque<char*>::iterator i = supportedEncodings.begin(); i != supportedEncodings.end();
+			  ++i)
 			{
 				jobject expectedEnum = terminalEncoding(env, *i);
 				if (env->IsSameObject(encoding, expectedEnum))
@@ -221,7 +227,8 @@ std::string toString(JNIEnv* env, jobject o)
 			{
 				supportedEncodings.push_front("NONE");
 				std::string message("Expected encoding to be one of [");
-				for (std::deque<char*>::iterator i = supportedEncodings.begin(); i != supportedEncodings.end(); ++i)
+				for (std::deque<char*>::iterator i = supportedEncodings.begin();
+				  i != supportedEncodings.end(); ++i)
 				{
 					message += *i;
 					if (i != supportedEncodings.end() - 1)
@@ -282,7 +289,8 @@ std::string toString(JNIEnv* env, jobject o)
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	jboolean JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
+	jboolean JNICALL
+	Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
 	(JNIEnv* env, jobject jthis)
 	{
 		return isatty(STDOUT_FILENO);

@@ -44,11 +44,13 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	 * @param config             the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected ArrayCapabilitiesImpl(ApplicationScope scope, String name, A actual, Collection<E> actualAsCollection, Configuration config)
+	protected ArrayCapabilitiesImpl(ApplicationScope scope, String name, A actual,
+	                                Collection<E> actualAsCollection, Configuration config)
 	{
 		super(scope, name, actual, config);
 		this.actualAsCollection = actualAsCollection;
-		this.asCollection = new CollectionVerifierImpl<>(scope, name, actualAsCollection, Pluralizer.ELEMENT, config);
+		this.asCollection = new CollectionVerifierImpl<>(scope, name, actualAsCollection, Pluralizer.ELEMENT,
+			config);
 	}
 
 	@Override
@@ -271,7 +273,8 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	@Override
 	public PrimitiveNumberVerifier<Integer> length()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.size(), Pluralizer.ELEMENT, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.size(),
+			Pluralizer.ELEMENT, config);
 	}
 
 	@Override

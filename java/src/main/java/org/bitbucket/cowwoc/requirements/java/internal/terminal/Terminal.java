@@ -34,8 +34,10 @@ import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncodin
  */
 public final class Terminal
 {
-	private final Reference<Set<TerminalEncoding>> supportedTypes = ConcurrentLazyReference.create(this::getSupportedTypesImpl);
-	private final Reference<Boolean> connectedToStdout = ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
+	private final Reference<Set<TerminalEncoding>> supportedTypes =
+		ConcurrentLazyReference.create(this::getSupportedTypesImpl);
+	private final Reference<Boolean> connectedToStdout =
+		ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
 	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
 	private final Optional<NativeTerminal> nativeTerminal;
 	private final Logger log = LoggerFactory.getLogger(Terminal.class);
@@ -87,8 +89,9 @@ public final class Terminal
 		String term = System.getenv("TERM");
 		if (term == null)
 			return Collections.singleton(NONE);
-		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to support all possible terminal
-		// types. Instead, we support mainstream types and require the terminal to support or emulate them.
+		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
+		// support all possible terminal types. Instead, we support mainstream types and require the terminal
+		// to support or emulate them.
 		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length / 0.75));
 		result.add(NONE);
 		switch (term)

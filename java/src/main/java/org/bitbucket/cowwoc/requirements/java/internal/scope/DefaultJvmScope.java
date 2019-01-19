@@ -65,8 +65,10 @@ public final class DefaultJvmScope implements JvmScope
 			}
 		}
 	};
-	private final Reference<Terminal> terminal = ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
-	private final Reference<GlobalConfigurable> globalConfiguration = ConcurrentLazyReference.create(() -> new GlobalConfiguration(this));
+	private final Reference<Terminal> terminal =
+		ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
+	private final Reference<GlobalConfigurable> globalConfiguration =
+		ConcurrentLazyReference.create(() -> new GlobalConfiguration(this));
 	public final Thread shutdownHook;
 	public final AtomicBoolean closed = new AtomicBoolean();
 	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);

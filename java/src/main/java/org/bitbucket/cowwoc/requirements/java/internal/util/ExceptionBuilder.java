@@ -38,10 +38,12 @@ public final class ExceptionBuilder
 	 * @param type                        the type of the exception
 	 * @param message                     the exception message
 	 * @param cause                       the underlying cause of the exception ({@code null} if absent)
-	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from their stack traces
+	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from
+	 *                                    their stack traces
 	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message} are null
 	 */
-	private ExceptionBuilder(Configuration configuration, Exceptions exceptions, Class<? extends RuntimeException> type, String message,
+	private ExceptionBuilder(Configuration configuration, Exceptions exceptions,
+	                         Class<? extends RuntimeException> type, String message,
 	                         Throwable cause, boolean removeLibraryFromStackTrace)
 	{
 		assert (configuration != null) : "configuration may not be null";
@@ -58,7 +60,8 @@ public final class ExceptionBuilder
 	/**
 	 * Equivalent to
 	 * {@link #ExceptionBuilder(Configuration, Exceptions, Class, String, Throwable, boolean)
-	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause, scope.isLibraryRemovedFromStackTrace().get())}.
+	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause,
+	 * scope.isLibraryRemovedFromStackTrace().get())}.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
@@ -67,10 +70,12 @@ public final class ExceptionBuilder
 	 * @param cause         the underlying cause of the exception ({@code null} if absent)
 	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message,
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
+	                        Class<? extends RuntimeException> type, String message,
 	                        Throwable cause)
 	{
-		this(configuration, scope.getExceptions(), type, message, cause, scope.getGlobalConfiguration().isLibraryRemovedFromStackTrace());
+		this(configuration, scope.getExceptions(), type, message, cause,
+			scope.getGlobalConfiguration().isLibraryRemovedFromStackTrace());
 	}
 
 	/**
@@ -84,7 +89,8 @@ public final class ExceptionBuilder
 	 * @param message       the exception message
 	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<? extends RuntimeException> type, String message)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
+	                        Class<? extends RuntimeException> type, String message)
 	{
 		this(scope, configuration, type, message, null);
 	}
@@ -156,7 +162,8 @@ public final class ExceptionBuilder
 			if (entry == null)
 				messageWithContext.add("");
 			else
-				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " + secretConfiguration.toString(config, entry.getValue()));
+				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " +
+					secretConfiguration.toString(config, entry.getValue()));
 		}
 		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStackTrace);
 	}
@@ -164,7 +171,8 @@ public final class ExceptionBuilder
 	/**
 	 * @param text      the {@code String} to align
 	 * @param minLength the minimum length of {@code text}
-	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to {@code minLength}
+	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to
+	 * {@code minLength}
 	 */
 	private String alignLeft(String text, int minLength)
 	{

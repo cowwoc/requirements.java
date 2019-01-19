@@ -14,8 +14,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Verifies the requirements of a value that extends {@link Object} but the implementing verifier is not guaranteed
- * to be an {@link ObjectVerifier}.
+ * Verifies the requirements of a value that extends {@link Object} but the implementing verifier is not
+ * guaranteed to be an {@link ObjectVerifier}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -40,8 +40,10 @@ public interface ObjectCapabilities<S, T>
 	 * @param name     the name of the expected value
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the actual value is not equal to {@code expected}. If {@code name} is empty.
-	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output format</a>
+	 * @throws IllegalArgumentException if the actual value is not equal to {@code expected}. If
+	 *                                  {@code name} is empty.
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the
+	 * output format</a>
 	 */
 	S isEqualTo(Object expected, String name);
 
@@ -88,8 +90,8 @@ public interface ObjectCapabilities<S, T>
 	S isNotSameObjectAs(Object other, String name);
 
 	/**
-	 * Ensures that the actual value is one of the elements in a collection. This is typically used to ensure that the actual value is
-	 * valid.
+	 * Ensures that the actual value is one of the elements in a collection. This is typically used to ensure
+	 * that the actual value is valid.
 	 *
 	 * @param collection a collection
 	 * @return this
@@ -99,8 +101,8 @@ public interface ObjectCapabilities<S, T>
 	S isOneOf(Collection<? super T> collection);
 
 	/**
-	 * Ensures that the actual value is not one of the elements in a collection. This is typically used to ensure that the actual value is
-	 * not a reserved value.
+	 * Ensures that the actual value is not one of the elements in a collection. This is typically used to
+	 * ensure that the actual value is not a reserved value.
 	 *
 	 * @param collection a collection
 	 * @return this

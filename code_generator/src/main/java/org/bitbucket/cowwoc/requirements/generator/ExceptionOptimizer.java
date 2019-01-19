@@ -122,7 +122,8 @@ public final class ExceptionOptimizer
 
 		String wrapperName = exceptionToWrapperName(exception.getName());
 		String wrapperSimpleName = getSimpleName(wrapperName);
-		String wrapperPackageName = wrapperName.substring(0, wrapperName.length() - (1 + wrapperSimpleName.length()));
+		String wrapperPackageName = wrapperName.substring(0,
+			wrapperName.length() - (1 + wrapperSimpleName.length()));
 
 		try (StringWriter sw = new StringWriter();
 		     BufferedWriter writer = new BufferedWriter(sw))
@@ -157,7 +158,8 @@ public final class ExceptionOptimizer
 				"\n" +
 				"\t/**\n" +
 				"\t * @param exceptions an instance of {@link Exceptions}\n" +
-				"\t * @param message    the detail message. The detail message is saved for later retrieval by the {@link #getMessage()} method\n" +
+				"\t * @param message    the detail message. The detail message is saved for later retrieval by " +
+				"the {@link #getMessage()} method\n" +
 				"\t */\n" +
 				"\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message)\n" +
 				"\t{\n" +
@@ -180,9 +182,12 @@ public final class ExceptionOptimizer
 			{
 				writer.write("\t/**\n" +
 					"\t * @param exceptions an instance of {@link Exceptions}\n" +
-					"\t * @param message    the detail message. The detail message is saved for later retrieval by the {@link #getMessage()} method\n" +
-					"\t * @param cause      the cause (which is saved for later retrieval by the {@link #getCause()} method).  (A {@code null}\n" +
-					"\t *                   value is permitted, and indicates that the cause is nonexistent or unknown.)\n" +
+					"\t * @param message    the detail message. The detail message is saved for later retrieval by " +
+					"the {@link #getMessage()} method\n" +
+					"\t * @param cause      the cause (which is saved for later retrieval by the {@link #getCause()} " +
+					"method).  (A {@code null}\n" +
+					"\t *                   value is permitted, and indicates that the cause is nonexistent or " +
+					"unknown.)\n" +
 					"\t */\n" +
 					"\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message, Throwable cause)\n" +
 					"\t{\n" +

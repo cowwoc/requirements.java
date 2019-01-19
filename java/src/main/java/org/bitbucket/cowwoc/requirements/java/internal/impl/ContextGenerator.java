@@ -71,7 +71,8 @@ public final class ContextGenerator
 	 * @param expectedValue the expected value
 	 * @return the list of name-value pairs to append to the exception message
 	 */
-	public List<Entry<String, Object>> getContext(String actualName, Object actualValue, String expectedName, Object expectedValue)
+	public List<Entry<String, Object>> getContext(String actualName, Object actualValue, String expectedName,
+	                                              Object expectedValue)
 	{
 		// This class outputs the String representation of the values. If those are equal, it also
 		// outputs the first of getClass(), hashCode(), or System.identityHashCode()] that differs.
@@ -114,7 +115,8 @@ public final class ContextGenerator
 				return result;
 			}
 			String actualIdentityHashCode = secretConfiguration.toString(config, System.identityHashCode(actualValue));
-			String expectedIdentityHashCode = secretConfiguration.toString(config, System.identityHashCode(expectedValue));
+			String expectedIdentityHashCode = secretConfiguration.toString(config,
+				System.identityHashCode(expectedValue));
 			result.addAll(getContext(actualName + ".identityHashCode", actualIdentityHashCode,
 				actualType, expectedName + ".identityHashCode", expectedIdentityHashCode));
 		}
@@ -130,8 +132,8 @@ public final class ContextGenerator
 	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	private List<Entry<String, Object>> getContext(String actualName, String actualValue, Class<?> actualType, String expectedName,
-	                                               String expectedValue)
+	private List<Entry<String, Object>> getContext(String actualName, String actualValue, Class<?> actualType,
+	                                               String expectedName, String expectedValue)
 	{
 		assert (actualName != null) : "actualName may not be null";
 		assert (expectedName != null) : "expectedName may not be null";

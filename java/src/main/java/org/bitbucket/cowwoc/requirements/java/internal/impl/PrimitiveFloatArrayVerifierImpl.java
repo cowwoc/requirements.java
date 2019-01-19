@@ -40,7 +40,8 @@ public class PrimitiveFloatArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	public PrimitiveFloatArrayVerifierImpl(ApplicationScope scope, String name, float[] actual, Configuration config)
+	public PrimitiveFloatArrayVerifierImpl(ApplicationScope scope, String name, float[] actual,
+	                                       Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

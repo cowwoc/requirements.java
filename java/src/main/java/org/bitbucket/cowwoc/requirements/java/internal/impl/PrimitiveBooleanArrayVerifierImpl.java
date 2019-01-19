@@ -40,7 +40,8 @@ public class PrimitiveBooleanArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	public PrimitiveBooleanArrayVerifierImpl(ApplicationScope scope, String name, boolean[] actual, Configuration config)
+	public PrimitiveBooleanArrayVerifierImpl(ApplicationScope scope, String name, boolean[] actual,
+	                                         Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

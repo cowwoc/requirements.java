@@ -71,7 +71,8 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	protected final Configuration config;
 
 	/**
-	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope) DefaultJavaVerifier(MainApplicationScope.INSTANCE)}.
+	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope)
+	 * DefaultJavaVerifier(MainApplicationScope.INSTANCE)}.
 	 */
 	public DefaultJavaVerifier()
 	{
@@ -79,7 +80,8 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	}
 
 	/**
-	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope, Configuration) DefaultJavaVerifier(scope, scope.getGlobalConfiguration())}.
+	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope, Configuration)
+	 * DefaultJavaVerifier(scope, scope.getGlobalConfiguration())}.
 	 * This constructor is meant to be used by internal classes, not by users.
 	 *
 	 * @param scope the application configuration

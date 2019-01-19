@@ -33,7 +33,8 @@ public final class MapVerifierImpl<K, V>
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
+	 *                        empty.
 	 */
 	protected MapVerifierImpl(ApplicationScope scope, String name, Map<K, V> actual, Configuration config)
 	{
@@ -69,7 +70,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".entrySet()", actual.entrySet(), Pluralizer.ENTRY, config);
+		return new CollectionVerifierImpl<>(scope, name + ".entrySet()", actual.entrySet(), Pluralizer.ENTRY,
+			config);
 	}
 
 	@Override
@@ -104,7 +106,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(), Pluralizer.ENTRY, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
+			Pluralizer.ENTRY, config);
 	}
 
 	@Override

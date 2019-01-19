@@ -40,7 +40,10 @@
 							<!--<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>-->
 							<!--</links>-->
 							<offlineLinks>
-								<!-- The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support this layout -->
+								<!--
+								The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support
+								this layout
+								-->
 								<offlineLink>
 									<url>https://cowwoc.bitbucket.io/requirements/javadoc/${project.version}/java/</url>
 									<location>${project.basedir}/../java/target/apidocs</location>

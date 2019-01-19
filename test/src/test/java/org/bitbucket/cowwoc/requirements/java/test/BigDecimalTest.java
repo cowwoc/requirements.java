@@ -355,7 +355,8 @@ public final class BigDecimalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.valueOf(3);
-			new Requirements(scope).requireThat(actual, "actual").isLessThanOrEqualTo(BigDecimal.valueOf(2), "expected");
+			new Requirements(scope).requireThat(actual, "actual").isLessThanOrEqualTo(BigDecimal.valueOf(2),
+				"expected");
 		}
 	}
 
@@ -479,7 +480,8 @@ public final class BigDecimalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.ONE;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(BigDecimal.valueOf(2), "expected");
+			new Requirements(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(BigDecimal.valueOf(2),
+				"expected");
 		}
 	}
 

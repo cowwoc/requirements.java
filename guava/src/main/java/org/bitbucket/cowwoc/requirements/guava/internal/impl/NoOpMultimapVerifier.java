@@ -73,7 +73,8 @@ public final class NoOpMultimapVerifier<K, V>
 	}
 
 	@Override
-	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer)
+	public MultimapVerifier<K, V> entries(
+		Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
 		return this;
 	}

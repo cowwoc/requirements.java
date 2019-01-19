@@ -5,6 +5,7 @@
 /**
  * Classes that enable developers to enforce method contracts.
  * <p>
- * Interfaces in this package may be implemented but may not be extended (because methods contain a fixed return type).
+ * Interfaces in this package may be implemented but may not be extended (because methods contain a fixed
+ * return type).
  */
 package org.bitbucket.cowwoc.requirements.java;

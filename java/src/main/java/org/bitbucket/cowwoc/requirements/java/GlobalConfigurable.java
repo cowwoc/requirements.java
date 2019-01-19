@@ -11,13 +11,15 @@ import java.util.Set;
 /**
  * The global configuration inherited by all verifiers.
  * <p>
- * <b>Note</b>: Verifiers inherit from the global configuration at instantiation time. Their {@link Configuration local configuration} is
- * not affected by subsequent changes to the global configuration.
+ * <b>Note</b>: Verifiers inherit from the global configuration at instantiation time. Their
+ * {@link Configuration local configuration} is not affected by subsequent changes to the global
+ * configuration.
  * <p>
- * However, updating settings not found in {@link Configuration} (such as {@link #withTerminalEncoding(TerminalEncoding)}) will impact
- * the behavior of existing verifiers. Users are encouraged to update these settings at startup, or take active measures to ensure that
- * verifiers are idle while the configuration is being updated. Failing to do so may result in undesirable behavior such as verifiers
- * outputting ANSI colors to a terminal that is no longer configured to render them.
+ * However, updating settings not found in {@link Configuration} (such as
+ * {@link #withTerminalEncoding(TerminalEncoding)}) will impact the behavior of existing verifiers. Users
+ * are encouraged to update these settings at startup, or take active measures to ensure that verifiers are
+ * idle while the configuration is being updated. Failing to do so may result in undesirable behavior such
+ * as verifiers outputting ANSI colors to a terminal that is no longer configured to render them.
  */
 public interface GlobalConfigurable
 {
@@ -54,7 +56,8 @@ public interface GlobalConfigurable
 	GlobalConfigurable withTerminalEncoding(TerminalEncoding encoding);
 
 	/**
-	 * @return true if exceptions should remove references to this library from their stack traces ({@code true} by default)
+	 * @return true if exceptions should remove references to this library from their stack traces
+	 * ({@code true} by default)
 	 * @see #withLibraryRemovedFromStackTrace()
 	 * @see #withoutLibraryRemovedFromStackTrace()
 	 */
@@ -77,7 +80,8 @@ public interface GlobalConfigurable
 	GlobalConfigurable withoutLibraryRemovedFromStackTrace();
 
 	/**
-	 * @return true if exceptions should show the difference between the actual and expected values ({@code true} by default)
+	 * @return true if exceptions should show the difference between the actual and expected values
+	 * ({@code true} by default)
 	 * @see #withDiff()
 	 * @see #withoutDiff()
 	 */

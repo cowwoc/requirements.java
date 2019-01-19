@@ -19,8 +19,7 @@ import java.util.function.Consumer;
  * @param <E> the Object representation of the array elements
  * @param <A> the type of the array
  */
-public interface ArrayCapabilities<S, E, A>
-	extends ObjectCapabilities<S, A>
+public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 {
 	/**
 	 * Ensures that the array is empty.
@@ -64,8 +63,8 @@ public interface ArrayCapabilities<S, E, A>
 	 * @param expected the elements that must exist
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} is null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the array contains any element
-	 *                                  not found in {@code expected}.
+	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If
+	 *                                  the array contains any element not found in {@code expected}.
 	 */
 	S containsExactly(Collection<E> expected);
 
@@ -76,8 +75,9 @@ public interface ArrayCapabilities<S, E, A>
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the array contains any element
-	 *                                  not found in {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the
+	 *                                  array contains any element not found in {@code expected}. If
+	 *                                  {@code name} is empty.
 	 */
 	S containsExactly(Collection<E> expected, String name);
 
@@ -98,7 +98,8 @@ public interface ArrayCapabilities<S, E, A>
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}. If
+	 *                                  {@code name} is empty.
 	 */
 	S containsAny(Collection<E> expected, String name);
 
@@ -119,7 +120,8 @@ public interface ArrayCapabilities<S, E, A>
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If {@code name}
+	 *                                  is empty.
 	 */
 	S containsAll(Collection<E> expected, String name);
 
@@ -149,7 +151,8 @@ public interface ArrayCapabilities<S, E, A>
 	 * @param other the elements that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code other} is null
-	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other}; nothing less, nothing more.
+	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
+	 *                                  nothing less, nothing more.
 	 */
 	S doesNotContainExactly(Collection<E> other);
 
@@ -160,8 +163,8 @@ public interface ArrayCapabilities<S, E, A>
 	 * @param name  the name of the element
 	 * @return this
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
-	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other}; nothing less, nothing more. If
-	 *                                  {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
+	 *                                  nothing less, nothing more. If {@code name} is empty.
 	 */
 	S doesNotContainExactly(Collection<E> other, String name);
 

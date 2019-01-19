@@ -39,8 +39,8 @@ public final class ContainerSizeVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name}, {@code container} or {@code config} are
 	 *                        null. If {@code name} is empty.
 	 */
-	public ContainerSizeVerifierImpl(ApplicationScope scope, String containerName, Object container, String sizeName, int size,
-	                                 Pluralizer pluralizer, Configuration config)
+	public ContainerSizeVerifierImpl(ApplicationScope scope, String containerName, Object container,
+	                                 String sizeName, int size, Pluralizer pluralizer, Configuration config)
 	{
 		super(scope, sizeName, size, config);
 		assert (containerName != null) : "containerName may not be null";
@@ -244,7 +244,8 @@ public final class ContainerSizeVerifierImpl
 		String startAsString = secretConfiguration.toString(config, startInclusive);
 		String endAsString = secretConfiguration.toString(config, endExclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			containerName + " must contain [" + startAsString + ", " + endAsString + ") " + pluralizer.nameOf(2) + ".").
+			containerName + " must contain [" + startAsString + ", " + endAsString + ") " + pluralizer.nameOf(2) +
+				".").
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);
@@ -263,7 +264,8 @@ public final class ContainerSizeVerifierImpl
 		String startAsString = secretConfiguration.toString(config, startInclusive);
 		String endAsString = secretConfiguration.toString(config, endInclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			containerName + " must contain [" + startAsString + ", " + endAsString + "] " + pluralizer.nameOf(2) + ".").
+			containerName + " must contain [" + startAsString + ", " + endAsString + "] " + pluralizer.nameOf(2) +
+				".").
 			addContext("Actual", actual);
 		if (actual > 0)
 			eb.addContext(containerName, container);

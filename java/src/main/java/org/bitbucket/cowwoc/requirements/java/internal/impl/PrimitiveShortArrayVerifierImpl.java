@@ -40,7 +40,8 @@ public class PrimitiveShortArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected PrimitiveShortArrayVerifierImpl(ApplicationScope scope, String name, short[] actual, Configuration config)
+	protected PrimitiveShortArrayVerifierImpl(ApplicationScope scope, String name, short[] actual,
+	                                          Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

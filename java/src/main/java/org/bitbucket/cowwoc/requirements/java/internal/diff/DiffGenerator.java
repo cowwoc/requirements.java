@@ -63,7 +63,8 @@ public final class DiffGenerator
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
-		DiffWriter writer = createDiffWriter(scope.getGlobalConfiguration().getTerminalEncoding(), actual, expected);
+		DiffWriter writer = createDiffWriter(scope.getGlobalConfiguration().getTerminalEncoding(), actual,
+			expected);
 		for (Diff component : components)
 		{
 			switch (component.operation)

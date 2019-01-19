@@ -20,7 +20,8 @@ public final class ExceptionsTest
 	/**
 	 * Regression test. Exceptions.createException() was throwing:
 	 * <p>
-	 * {@code java.lang.invoke.WrongMethodTypeException: expected (String,Throwable)RuntimeException but found (String)RuntimeException}
+	 * {@code java.lang.invoke.WrongMethodTypeException: expected (String,Throwable)RuntimeException but
+	 * found (String)RuntimeException}
 	 */
 	@Test
 	@SuppressWarnings("ThrowableNotThrown")
@@ -85,7 +86,10 @@ public final class ExceptionsTest
 		catch (IllegalArgumentException e)
 		{
 			for (StackTraceElement element : e.getStackTrace())
-				requireThat(element.getClassName(), "stacktrace").doesNotStartWith(Requirements.class.getPackage().getName());
+			{
+				requireThat(element.getClassName(), "stacktrace").
+					doesNotStartWith(Requirements.class.getPackage().getName());
+			}
 		}
 	}
 }

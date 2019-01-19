@@ -16,8 +16,10 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
  */
 public abstract class AbstractApplicationScope implements ApplicationScope
 {
-	private final Reference<JavaVerifier> internalVerifier = ConcurrentLazyReference.create(() -> new DefaultJavaVerifier(this));
-	private final Reference<DiffGenerator> diffGenerator = ConcurrentLazyReference.create(() -> new DiffGenerator(this));
+	private final Reference<JavaVerifier> internalVerifier =
+		ConcurrentLazyReference.create(() -> new DefaultJavaVerifier(this));
+	private final Reference<DiffGenerator> diffGenerator =
+		ConcurrentLazyReference.create(() -> new DiffGenerator(this));
 	private final Exceptions exceptions = new Exceptions();
 
 	@Override

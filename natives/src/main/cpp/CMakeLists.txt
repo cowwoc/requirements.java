@@ -4,7 +4,8 @@
 
 # Returns all header files in the current directory, recursing into sub-directories.
 FUNCTION (get_headers DIRECTORY RESULT)
-	FILE (GLOB_RECURSE HEADER_FILES_TMP "${DIRECTORY}/*.h" "${DIRECTORY}/*.hpp" "${DIRECTORY}/*.inl" "${DIRECTORY}/*.pch" "${DIRECTORY}/*.tsd" "${DIRECTORY}/*.tsp")
+	FILE (GLOB_RECURSE HEADER_FILES_TMP "${DIRECTORY}/*.h" "${DIRECTORY}/*.hpp" "${DIRECTORY}/*.inl"
+	  "${DIRECTORY}/*.pch" "${DIRECTORY}/*.tsd" "${DIRECTORY}/*.tsp")
 	SET (${RESULT} ${HEADER_FILES_TMP} PARENT_SCOPE)
 ENDFUNCTION ()
 
@@ -73,7 +74,8 @@ get_sources ("${CMAKE_CURRENT_SOURCE_DIR}/source" SOURCE_FILES)
 # (e.g. Visual Studio and XCode) to output to the same path regardless of the build type:
 # http://stackoverflow.com/a/6595001/14731
 #
-# Archive = lib, Library = so, runtime = dll: https://cmake.org/cmake/help/v3.0/prop_tgt/LIBRARY_OUTPUT_DIRECTORY.html
+# Archive = lib, Library = so, runtime = dll:
+# https://cmake.org/cmake/help/v3.0/prop_tgt/LIBRARY_OUTPUT_DIRECTORY.html
 SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)

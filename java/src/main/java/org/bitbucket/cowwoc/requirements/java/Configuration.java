@@ -67,7 +67,9 @@ public final class Configuration implements Configurable
 	 * <ul>
 	 * <li>With an empty context.</li>
 	 * <li>That throws the default exception type.</li>
-	 * <li>Whose assertions are enabled if <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">assertions are enabled on this class</a>.</li>
+	 * <li>Whose assertions are enabled if
+	 * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">
+	 * assertions are enabled on this class</a>.</li>
 	 * <li>That shows the difference between the actual and expected values.</li>
 	 * <li>That invokes {@code Arrays.toString()} for arrays and {@code Object.toString()} for all
 	 * other objects to convert them to a {@code String}.</li>
@@ -312,14 +314,16 @@ public final class Configuration implements Configurable
 		if (!(o instanceof Configuration))
 			return false;
 		Configuration other = (Configuration) o;
-		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) && exception.equals(other.exception) &&
-			diffEnabled == other.diffEnabled && typeToStringConverter.equals(other.typeToStringConverter);
+		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
+			exception.equals(other.exception) && diffEnabled == other.diffEnabled &&
+			typeToStringConverter.equals(other.typeToStringConverter);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Configuration[context=" + context + ", exception=" + exception + ", assertionsEnabled=" + assertionsEnabled + ", " +
-			"diffEnabled=" + diffEnabled + ", typeToStringConverter=" + typeToStringConverter + "]";
+		return "Configuration[context=" + context + ", exception=" + exception + ", assertionsEnabled=" +
+			assertionsEnabled + ", " + "diffEnabled=" + diffEnabled + ", typeToStringConverter=" +
+			typeToStringConverter + "]";
 	}
 }

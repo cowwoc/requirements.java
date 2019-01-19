@@ -73,8 +73,9 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the array contains any element
-	 *                                  not found in {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the
+	 *                                  array contains any element not found in {@code expected}. If
+	 *                                  {@code name} is empty.
 	 */
 	ArrayVerifier<E> containsExactly(Collection<E> expected, String name)
 		throws NullPointerException, IllegalArgumentException;
@@ -97,7 +98,8 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}. If
+	 *                                  {@code name} is empty.
 	 */
 	ArrayVerifier<E> containsAny(Collection<E> expected, String name)
 		throws NullPointerException, IllegalArgumentException;
@@ -120,7 +122,8 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If
+	 *                                  {@code name} is empty.
 	 */
 	ArrayVerifier<E> containsAll(Collection<E> expected, String name)
 		throws NullPointerException, IllegalArgumentException;
@@ -152,7 +155,8 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @param other the elements that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code other} is null
-	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other}; nothing less, nothing more.
+	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
+	 *                                  nothing less, nothing more.
 	 */
 	ArrayVerifier<E> doesNotContainExactly(Collection<E> other);
 
@@ -163,8 +167,8 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 	 * @param name  the name of the collection
 	 * @return this
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other}; nothing less, nothing more. If
-	 *                                  {@code name} is empty.
+	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
+	 *                                  nothing less, nothing more. If {@code name} is empty.
 	 */
 	ArrayVerifier<E> doesNotContainExactly(Collection<E> other, String name);
 

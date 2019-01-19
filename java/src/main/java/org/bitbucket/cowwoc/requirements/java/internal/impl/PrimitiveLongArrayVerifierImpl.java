@@ -40,7 +40,8 @@ public class PrimitiveLongArrayVerifierImpl
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
 	 */
-	protected PrimitiveLongArrayVerifierImpl(ApplicationScope scope, String name, long[] actual, Configuration config)
+	protected PrimitiveLongArrayVerifierImpl(ApplicationScope scope, String name, long[] actual,
+	                                         Configuration config)
 	{
 		super(scope, name, actual, asCollection(actual), config);
 	}

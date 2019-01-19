@@ -42,7 +42,8 @@ public final class MultimapVerifierImpl<K, V>
 	 * @param config the instance configuration
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null; if {@code name} is empty
 	 */
-	public MultimapVerifierImpl(ApplicationScope scope, String name, Multimap<K, V> actual, Configuration config)
+	public MultimapVerifierImpl(ApplicationScope scope, String name, Multimap<K, V> actual,
+	                            Configuration config)
 	{
 		super(scope, name, actual, config);
 	}
@@ -76,7 +77,8 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".entries()", actual.entries(), Pluralizer.ENTRY, config);
+		return new CollectionVerifierImpl<>(scope,
+			name + ".entries()", actual.entries(), Pluralizer.ENTRY, config);
 	}
 
 	@Override
@@ -112,7 +114,8 @@ public final class MultimapVerifierImpl<K, V>
 	@Override
 	public PrimitiveNumberVerifier<Integer> size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(), Pluralizer.ENTRY, config);
+		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
+			Pluralizer.ENTRY, config);
 	}
 
 	@Override

@@ -81,13 +81,15 @@ public final class Objects
 		{
 			int[] valueAsArray = (int[]) array;
 			int length = valueAsArray.length;
-			return Arrays.stream(valueAsArray, 0, length).boxed().collect(Collectors.toCollection(() -> new ArrayList<>(length)));
+			return Arrays.stream(valueAsArray, 0, length).boxed().
+				collect(Collectors.toCollection(() -> new ArrayList<>(length)));
 		}
 		if (type == long[].class)
 		{
 			long[] valueAsArray = (long[]) array;
 			int length = valueAsArray.length;
-			return Arrays.stream(valueAsArray, 0, length).boxed().collect(Collectors.toCollection(() -> new ArrayList<>(length)));
+			return Arrays.stream(valueAsArray, 0, length).boxed().
+				collect(Collectors.toCollection(() -> new ArrayList<>(length)));
 		}
 		if (type == float[].class)
 		{
@@ -100,7 +102,8 @@ public final class Objects
 		{
 			double[] valueAsArray = (double[]) array;
 			int length = valueAsArray.length;
-			return Arrays.stream(valueAsArray, 0, length).boxed().collect(Collectors.toCollection(() -> new ArrayList<>(length)));
+			return Arrays.stream(valueAsArray, 0, length).boxed().
+				collect(Collectors.toCollection(() -> new ArrayList<>(length)));
 		}
 		throw new AssertionError("Unexpected array type: " + type);
 	}
