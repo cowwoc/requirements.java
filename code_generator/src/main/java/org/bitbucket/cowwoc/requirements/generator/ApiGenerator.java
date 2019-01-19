@@ -17,8 +17,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints that expose a different number of methods depending on the
- * plugins that are available at build-time.
+ * Generates {@code Requirements} and {@code DefaultRequirements} endpoints. The contents of these classes depend on which plugins are
+ * enabled.
  */
 public final class ApiGenerator
 {

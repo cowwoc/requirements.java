@@ -100,7 +100,7 @@ public interface ObjectCapabilities<S, T>
 
 	/**
 	 * Ensures that the actual value is not one of the elements in a collection. This is typically used to ensure that the actual value is
-	 * not equal to one or more reserved values.
+	 * not a reserved value.
 	 *
 	 * @param collection a collection
 	 * @return this

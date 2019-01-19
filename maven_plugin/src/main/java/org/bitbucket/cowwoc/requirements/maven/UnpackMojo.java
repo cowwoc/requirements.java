@@ -24,7 +24,7 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 import java.io.File;
 
 /**
- * Unpacks native binaries.
+ * Unpacks native binaries used by this library.
  */
 @Mojo(name = "unpack", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true)
 public final class UnpackMojo extends AbstractMojo

@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Optimizes the exceptions thrown by the library. For example, stack traces are stripped lazily. See
+ * Optimizes the exceptions thrown by the library, such as evaluating stack traces are lazily. See
  * {@code org.bitbucket.cowwoc.requirements.java.GlobalConfiguration.isLibraryRemovedFromStackTrace()}.
  */
 public final class ExceptionOptimizer
