@@ -155,7 +155,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n");
+				"import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;\n");
 			writer.write("\n" +
 				"import java.math.BigDecimal;\n" +
 				"import java.net.InetAddress;\n" +
@@ -1349,7 +1349,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;\n");
+				"import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;\n");
 			if (forTests)
 				writer.write("import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n");
 			writer.write("\n" +

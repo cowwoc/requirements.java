@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Reference;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
-import org.bitbucket.cowwoc.requirements.java.internal.impl.DefaultJavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 
 /**

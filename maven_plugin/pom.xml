@@ -64,8 +64,6 @@
 							<show>public</show>
 							<doctitle>Requirements Maven Plugin ${project.version} API</doctitle>
 							<windowtitle>Requirements Maven Plugin ${project.version} API</windowtitle>
-							<!-- WORKAROUND: https://bugs.openjdk.java.net/browse/JDK-8212233 -->
-							<detectOfflineLinks>false</detectOfflineLinks>
 						</configuration>
 					</execution>
 				</executions>
