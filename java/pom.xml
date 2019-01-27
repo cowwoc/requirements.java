@@ -125,7 +125,7 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.bitbucket.cowwoc</groupId>
+			<groupId>org.bitbucket.cowwoc.pouch</groupId>
 			<artifactId>pouch</artifactId>
 			<version>${pouch.version}</version>
 		</dependency>

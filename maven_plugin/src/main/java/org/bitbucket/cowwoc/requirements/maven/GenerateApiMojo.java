@@ -13,6 +13,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.bitbucket.cowwoc.requirements.generator.ApiGenerator;
+import org.bitbucket.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,9 @@ public final class GenerateApiMojo extends AbstractMojo
 {
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	private File targetDirectory;
+
+	@Parameter(defaultValue = "${project.groupId}", readonly = true)
+	private String pluginGroupId;
 
 	/**
 	 * The scope to export for. One of {@code [compile, test]}.
@@ -86,8 +90,8 @@ public final class GenerateApiMojo extends AbstractMojo
 			guavaEnabled = overrideGuavaEnabled;
 		ApiGenerator generator = new ApiGenerator();
 		generator.setGuavaEnabled(guavaEnabled);
-		if (scope.equals("test"))
-			generator.setForTests(true);
+		if (project.getGroupId().equals(pluginGroupId) && project.getArtifactId().equals("test"))
+			SharedSecrets.INSTANCE.secretApiGenerator.exportScope(generator);
 		try
 		{
 			Files.createDirectories(targetPath);

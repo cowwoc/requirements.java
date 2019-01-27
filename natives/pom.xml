@@ -156,7 +156,7 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.bitbucket.cowwoc</groupId>
+			<groupId>org.bitbucket.cowwoc.pouch</groupId>
 			<artifactId>pouch</artifactId>
 			<version>${pouch.version}</version>
 		</dependency>

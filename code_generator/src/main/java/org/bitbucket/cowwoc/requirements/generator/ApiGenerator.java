@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.generator;
 
+import org.bitbucket.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +23,13 @@ import java.nio.file.Paths;
  */
 public final class ApiGenerator
 {
+	static
+	{
+		SharedSecrets.INSTANCE.secretApiGenerator = generator -> generator.exportScope();
+	}
+
 	private boolean guavaEnabled;
-	private boolean forTests;
+	private boolean exportScope;
 
 	/**
 	 * @param args the command-line arguments
@@ -61,7 +67,8 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * Indicates if the generated class should assume that the guava plugin is enabled.
+	 * Indicates if the user will have the guava plugin enabled (in which case additional methods are
+	 * generated for it).
 	 *
 	 * @param value true if the Guava plugin is enabled
 	 */
@@ -71,11 +78,12 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * @param value true if the API will be used by automated tests
+	 * Indicates that {@code ApplicationScope}-related methods should be generated. These methods are used by
+	 * automated tests.
 	 */
-	public void setForTests(boolean value)
+	private void exportScope()
 	{
-		this.forTests = value;
+		this.exportScope = true;
 	}
 
 	/**
@@ -1350,7 +1358,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;\n");
-			if (forTests)
+			if (exportScope)
 				writer.write("import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n");
 			writer.write("\n" +
 				"import java.math.BigDecimal;\n" +
@@ -1391,7 +1399,7 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write("\t\tthis.guavaVerifier = new DefaultGuavaVerifier();\n");
 			writer.write("\t}\n");
-			if (forTests)
+			if (exportScope)
 			{
 				writer.write("\n" +
 					"\t/**\n" +

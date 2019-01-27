@@ -112,7 +112,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	/**
 	 * Equivalent to {@link #DefaultJavaVerifier(ApplicationScope, Configuration)
 	 * DefaultJavaVerifier(scope, scope.getGlobalConfiguration())}.
-	 * This constructor is meant to be used by internal classes, not by users.
+	 * This constructor is meant to be used by secrets classes, not by users.
 	 *
 	 * @param scope the application configuration
 	 * @throws AssertionError if any of the arguments are null

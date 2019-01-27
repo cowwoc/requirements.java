@@ -43,13 +43,19 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Automatic-Module-Name>org.bitbucket.cowwoc.requirements.maven.plugin</Automatic-Module-Name>
-						</manifestEntries>
-					</archive>
-				</configuration>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<configuration>
+							<archive>
+								<manifestEntries>
+									<Automatic-Module-Name>org.bitbucket.cowwoc.requirements.maven_plugin
+									</Automatic-Module-Name>
+								</manifestEntries>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -64,6 +70,21 @@
 							<show>public</show>
 							<doctitle>Requirements Maven Plugin ${project.version} API</doctitle>
 							<windowtitle>Requirements Maven Plugin ${project.version} API</windowtitle>
+							<additionalOptions>
+								<!--
+								Maven plugins cannot be full-fledged modules due to Maven's use of split packages.
+								automatic-modules are treated as unnamed modules so we need to explicitly export packages
+								to them.
+								-->
+								<option>--add-exports</option>
+								<option>
+									org.bitbucket.cowwoc.requirements.natives/org.bitbucket.cowwoc.requirements.natives.internal.util=ALL-UNNAMED
+								</option>
+								<option>--add-exports</option>
+								<option>
+									org.bitbucket.cowwoc.requirements.generator/org.bitbucket.cowwoc.requirements.generator.internal.secrets=ALL-UNNAMED
+								</option>
+							</additionalOptions>
 						</configuration>
 					</execution>
 				</executions>
