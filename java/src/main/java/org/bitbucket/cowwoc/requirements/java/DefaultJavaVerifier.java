@@ -97,7 +97,13 @@ public final class DefaultJavaVerifier implements JavaVerifier
 			throw new IllegalArgumentException("name may not be empty");
 	}
 
+	/**
+	 * The application configuration.
+	 */
 	protected final ApplicationScope scope;
+	/**
+	 * The instance configuration.
+	 */
 	protected final Configuration config;
 
 	/**

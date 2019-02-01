@@ -24,6 +24,8 @@ import java.util.Set;
 public interface GlobalConfigurable
 {
 	/**
+	 * Returns the terminal encodings available to the JVM.
+	 *
 	 * @return the terminal encodings available to the JVM
 	 * @see #withTerminalEncoding(TerminalEncoding)
 	 * @see #withDefaultTerminalEncoding()
@@ -31,6 +33,8 @@ public interface GlobalConfigurable
 	Set<TerminalEncoding> listTerminalEncodings();
 
 	/**
+	 * Returns the current terminal encoding.
+	 *
 	 * @return the current terminal encoding (defaults to the auto-detected encoding)
 	 */
 	TerminalEncoding getTerminalEncoding();
@@ -56,7 +60,9 @@ public interface GlobalConfigurable
 	GlobalConfigurable withTerminalEncoding(TerminalEncoding encoding);
 
 	/**
-	 * @return true if exceptions should remove references to this library from their stack traces
+	 * Indicates if exceptions should remove references to this library from their stack trace.
+	 *
+	 * @return true if exceptions should remove references to this library from their stack trace
 	 * ({@code true} by default)
 	 * @see #withLibraryRemovedFromStackTrace()
 	 * @see #withoutLibraryRemovedFromStackTrace()
@@ -64,7 +70,7 @@ public interface GlobalConfigurable
 	boolean isLibraryRemovedFromStackTrace();
 
 	/**
-	 * Indicates that exceptions should remove references to this library from their stack traces.
+	 * Indicates that exceptions should remove references to this library from their stack trace.
 	 *
 	 * @return this
 	 * @see #isLibraryRemovedFromStackTrace()
@@ -80,6 +86,8 @@ public interface GlobalConfigurable
 	GlobalConfigurable withoutLibraryRemovedFromStackTrace();
 
 	/**
+	 * Indicates if exceptions should show the difference between the actual and expected values.
+	 *
 	 * @return true if exceptions should show the difference between the actual and expected values
 	 * ({@code true} by default)
 	 * @see #withDiff()

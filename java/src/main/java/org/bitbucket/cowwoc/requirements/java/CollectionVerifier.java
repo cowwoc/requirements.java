@@ -224,23 +224,33 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	CollectionVerifier<C, E> doesNotContainDuplicates();
 
 	/**
+	 * Returns a verifier for the collection's size.
+	 *
 	 * @return a verifier for the collection's size
 	 */
 	PrimitiveNumberVerifier<Integer> size();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the collection's size
 	 * @return this
 	 */
 	CollectionVerifier<C, E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 
 	/**
+	 * Returns a verifier for the actual value as an array.
+	 *
 	 * @param type the array type
 	 * @return a verifier for the actual value as an array
 	 */
 	ArrayVerifier<E> asArray(Class<E> type);
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param type     the array type
 	 * @param consumer verifies the actual value as an array
 	 * @return this

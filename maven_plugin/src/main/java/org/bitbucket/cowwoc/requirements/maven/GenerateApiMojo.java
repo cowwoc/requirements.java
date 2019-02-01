@@ -23,8 +23,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints classes that expose a different
- * number of methods depending on the plugins that are available at build-time.
+ * Generates the {@code Requirements}, {@code DefaultRequirements} endpoints. The contents of these classes
+ * depend on which plugins are enabled.
  */
 @Mojo(name = "generate-api", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public final class GenerateApiMojo extends AbstractMojo

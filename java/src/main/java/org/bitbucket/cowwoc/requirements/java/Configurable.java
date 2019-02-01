@@ -12,8 +12,10 @@ import java.util.function.Function;
 public interface Configurable
 {
 	/**
-	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it
-	 * shouldn't do anything
+	 * Indicates if assertions are enabled.
+	 *
+	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it shouldn't
+	 * do anything
 	 */
 	boolean assertionsAreEnabled();
 
@@ -103,11 +105,15 @@ public interface Configurable
 	<T> Configurable withoutStringConverter(Class<T> type);
 
 	/**
+	 * Returns the configuration associated with the verifier.
+	 *
 	 * @return the configuration associated with the verifier
 	 */
 	Configuration getConfiguration();
 
 	/**
+	 * Returns a verifier with the updated configuration.
+	 *
 	 * @param configuration a new configuration
 	 * @return a verifier with the updated configuration
 	 * @throws NullPointerException if {@code configuration} is null
@@ -115,6 +121,8 @@ public interface Configurable
 	Configurable withConfiguration(Configuration configuration);
 
 	/**
+	 * Returns the global configuration shared by all verifiers.
+	 *
 	 * @return the global configuration shared by all verifiers
 	 */
 	GlobalConfigurable getGlobalConfiguration();

@@ -15,12 +15,16 @@ import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
 public interface BooleanCapabilities<S> extends ComparableCapabilities<S, Boolean>
 {
 	/**
+	 * Ensures that the actual value is {@code true}.
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not true
 	 */
 	S isTrue();
 
 	/**
+	 * Ensures that the actual value is {@code false}.
+	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not false
 	 */

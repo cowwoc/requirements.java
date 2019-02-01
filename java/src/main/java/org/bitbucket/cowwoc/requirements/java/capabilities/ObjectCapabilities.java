@@ -148,11 +148,16 @@ public interface ObjectCapabilities<S, T>
 	S isNotNull();
 
 	/**
+	 * Returns a verifier for the String representation of the actual value.
+	 *
 	 * @return a verifier for the String representation of the actual value
 	 */
 	StringVerifier asString();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the String representation of the actual value
 	 * @return this
 	 */

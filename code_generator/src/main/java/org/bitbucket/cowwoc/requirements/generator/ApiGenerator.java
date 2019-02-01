@@ -32,6 +32,8 @@ public final class ApiGenerator
 	private boolean exportScope;
 
 	/**
+	 * The command-line entry point for this class.
+	 *
 	 * @param args the command-line arguments
 	 * @throws IOException if an I/O error occurs while writing the files
 	 */
@@ -87,6 +89,8 @@ public final class ApiGenerator
 	}
 
 	/**
+	 * Returns the path of the {@code DefaultRequirements.java} file.
+	 *
 	 * @param rootPackage the path of the root package
 	 * @return the path of the {@code DefaultRequirements.java} file
 	 */
@@ -1280,6 +1284,8 @@ public final class ApiGenerator
 	}
 
 	/**
+	 * Returns the path of the {@code Requirements.java} file.
+	 *
 	 * @param rootPackage the path of the root package
 	 * @return the path of the {@code Requirements.java} file
 	 */

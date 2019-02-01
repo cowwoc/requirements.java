@@ -187,6 +187,9 @@
 							<additionalOptions>
 								<option>--add-modules</option>
 								<option>java.xml</option>
+								<!-- https://stackoverflow.com/a/54468139/14731 -->
+								<option>--override-methods</option>
+								<option>summary</option>
 							</additionalOptions>
 						</configuration>
 					</execution>

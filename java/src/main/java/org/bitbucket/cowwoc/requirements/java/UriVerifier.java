@@ -23,13 +23,16 @@ public interface UriVerifier extends ObjectCapabilities<UriVerifier, URI>
 	UriVerifier isAbsolute();
 
 	/**
+	 * Returns a verifier for the URL representation of the value.
+	 *
 	 * @return a verifier for the URL representation of the value
 	 * @throws IllegalArgumentException if the actual value cannot be converted to a URL
 	 */
 	UrlVerifier asUrl();
 
 	/**
-	 * Ensures that the actual value contains a valid URL format.
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
 	 *
 	 * @param consumer verifies URLs
 	 * @return this

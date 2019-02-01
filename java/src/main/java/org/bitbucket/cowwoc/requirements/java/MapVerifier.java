@@ -21,33 +21,48 @@ import java.util.function.Consumer;
 public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>, Map<K, V>>
 {
 	/**
+	 * Returns a verifier for the {@link Map#keySet()}.
+	 *
 	 * @return a verifier for the {@link Map#keySet()}
 	 */
 	CollectionVerifier<Set<K>, K> keySet();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Map#keySet()}
 	 * @return this;
 	 */
 	MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer);
 
 	/**
+	 * Returns a verifier for the {@link Map#values()}.
+	 *
 	 * @return a verifier for the {@link Map#values()}
 	 */
 	CollectionVerifier<Collection<V>, V> values();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Map#values()}
 	 * @return this
 	 */
 	MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer);
 
 	/**
+	 * Returns a verifier for the {@link Map#entrySet()}.
+	 *
 	 * @return a verifier for the {@link Map#entrySet()}
 	 */
 	CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Map#entrySet()}
 	 * @return this
 	 */
@@ -70,11 +85,16 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 	MapVerifier<K, V> isNotEmpty();
 
 	/**
+	 * Returns a verifier for {@link Map#size()}.
+	 *
 	 * @return a verifier for {@link Map#size()}
 	 */
 	PrimitiveNumberVerifier<Integer> size();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Map#size()}
 	 * @return this
 	 */

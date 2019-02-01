@@ -228,22 +228,32 @@ public interface ArrayVerifier<E> extends ObjectCapabilities<ArrayVerifier<E>, E
 		throws IllegalArgumentException;
 
 	/**
-	 * @return a verifier for the array's length
+	 * Returns a verifier over the array's length.
+	 *
+	 * @return a verifier over the array's length
 	 */
 	PrimitiveNumberVerifier<Integer> length();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the array's length
 	 * @return this
 	 */
 	ArrayVerifier<E> length(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
 
 	/**
+	 * Returns a verifier for the actual value as a collection.
+	 *
 	 * @return a verifier for the actual value as a collection
 	 */
 	CollectionVerifier<Collection<E>, E> asCollection();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the actual value as a collection
 	 * @return this
 	 */

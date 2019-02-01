@@ -52,6 +52,11 @@
 							<show>public</show>
 							<doctitle>Requirements Guava Plugin ${project.version} API</doctitle>
 							<windowtitle>Requirements Guava Plugin ${project.version} API</windowtitle>
+							<additionalOptions>
+								<!-- https://stackoverflow.com/a/54468139/14731 -->
+								<option>--override-methods</option>
+								<option>summary</option>
+							</additionalOptions>
 						</configuration>
 					</execution>
 				</executions>

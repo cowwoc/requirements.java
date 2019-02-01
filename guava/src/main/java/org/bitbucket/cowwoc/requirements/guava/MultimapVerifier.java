@@ -29,28 +29,37 @@ public interface MultimapVerifier<K, V>
 	CollectionVerifier<Set<K>, K> keySet();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Multimap#keySet()}
 	 * @return this
 	 */
 	MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer);
 
 	/**
-	 * @return verifier over {@link Multimap#values()}
+	 * @return a verifier over {@link Multimap#values()}
 	 */
 	CollectionVerifier<Collection<V>, V> values();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Multimap#values()}
 	 * @return this
 	 */
 	MultimapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer);
 
 	/**
-	 * @return verifier over {@link Multimap#entries()}
+	 * @return a verifier over {@link Multimap#entries()}
 	 */
 	CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@link Multimap#entries()}
 	 * @return this
 	 */
@@ -73,11 +82,14 @@ public interface MultimapVerifier<K, V>
 	MultimapVerifier<K, V> isNotEmpty();
 
 	/**
-	 * @return verifier over {@link Multimap#size()}
+	 * @return a verifier over {@link Multimap#size()}
 	 */
 	PrimitiveNumberVerifier<Integer> size();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the multimap's size
 	 * @return this
 	 */

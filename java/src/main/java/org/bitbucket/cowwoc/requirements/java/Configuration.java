@@ -204,6 +204,8 @@ public final class Configuration implements Configurable
 	}
 
 	/**
+	 * Indicates if exceptions should show the difference between the actual and expected values.
+	 *
 	 * @return true if exceptions should show the difference between the actual and expected values
 	 */
 	public boolean isDiffEnabled()

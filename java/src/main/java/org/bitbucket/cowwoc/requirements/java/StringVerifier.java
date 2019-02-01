@@ -86,11 +86,16 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	StringVerifier isNotEmpty();
 
 	/**
+	 * Returns a verifier for the length of the actual value.
+	 *
 	 * @return a verifier for the length of the actual value
 	 */
 	PrimitiveNumberVerifier<Integer> length();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the length of the actual value
 	 * @return this
 	 */
@@ -122,7 +127,8 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	InetAddressVerifier asInetAddress();
 
 	/**
-	 * Ensures that the actual value contains a valid Internet address format.
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
 	 *
 	 * @param consumer verifies Internet addresses
 	 * @return this
@@ -147,7 +153,8 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	UriVerifier asUri();
 
 	/**
-	 * Ensures that the actual value contains a valid URI format.
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
 	 *
 	 * @param consumer verifies URIs
 	 * @return this
@@ -156,13 +163,16 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	StringVerifier asUri(Consumer<UriVerifier> consumer);
 
 	/**
+	 * Returns a verifier for the URL representation of the value.
+	 *
 	 * @return a verifier for the URL representation of the value
 	 * @throws IllegalArgumentException if the actual value cannot be converted to a URL
 	 */
 	UrlVerifier asUrl();
 
 	/**
-	 * Ensures that the actual value contains a valid URL format.
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
 	 *
 	 * @param consumer verifies URLs
 	 * @return this

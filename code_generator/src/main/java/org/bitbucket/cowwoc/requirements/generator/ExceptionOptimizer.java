@@ -24,6 +24,8 @@ import java.nio.file.Paths;
 public final class ExceptionOptimizer
 {
 	/**
+	 * The command-line entry point for this class.
+	 *
 	 * @param args the command-line arguments
 	 * @throws IOException if an I/O error occurs while writing the files
 	 */
@@ -75,6 +77,8 @@ public final class ExceptionOptimizer
 	}
 
 	/**
+	 * Returns the path of the exception wrapper.
+	 *
 	 * @param rootPackage   the path of the root package
 	 * @param exceptionName the exception to wrap
 	 * @return the path of the exception wrapper

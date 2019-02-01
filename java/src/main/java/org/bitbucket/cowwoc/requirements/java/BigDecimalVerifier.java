@@ -15,22 +15,32 @@ import java.util.function.Consumer;
 public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifier, BigDecimal>
 {
 	/**
+	 * Returns a verifier for {@code BigDecimal.precision()}.
+	 *
 	 * @return a verifier for {@code BigDecimal.precision()}
 	 */
 	BigDecimalPrecisionVerifier precision();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@code BigDecimal.precision()}
 	 * @return this
 	 */
 	BigDecimalVerifier precision(Consumer<BigDecimalPrecisionVerifier> consumer);
 
 	/**
+	 * Returns a verifier for {@code BigDecimal.scale()}.
+	 *
 	 * @return a verifier for {@code BigDecimal.scale()}
 	 */
 	PrimitiveNumberVerifier<Integer> scale();
 
 	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 *
 	 * @param consumer verifies the {@code BigDecimal.scale()}
 	 * @return this
 	 */
