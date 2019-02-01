@@ -145,7 +145,7 @@
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<classifier>no_aop</classifier>
-			<version>4.2.1</version>
+			<version>4.2.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -157,7 +157,7 @@
 			<groupId>org.sonatype.sisu</groupId>
 			<artifactId>sisu-guice</artifactId>
 			<classifier>no_aop</classifier>
-			<version>3.2.5</version>
+			<version>4.2.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
