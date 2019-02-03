@@ -11,6 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.util.function.Function;
 
@@ -19,19 +20,6 @@ import java.util.function.Function;
  */
 public final class DefaultGuavaVerifier implements GuavaVerifier
 {
-	/**
-	 * @param name the name of the actual value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	private static void verifyName(String name)
-	{
-		if (name == null)
-			throw new NullPointerException("name may not be null");
-		if (name.trim().isEmpty())
-			throw new IllegalArgumentException("name may not be empty");
-	}
-
 	/**
 	 * @param scope the application configuration
 	 * @return scope
@@ -106,6 +94,27 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	{
 		verifyName(name);
 		return new MultimapVerifierImpl<>(scope, name, actual, config);
+	}
+
+	/**
+	 * @param name the name of the actual value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	private void verifyName(String name)
+	{
+		if (name == null)
+		{
+			throw new ExceptionBuilder(scope, config, NullPointerException.class,
+				"name may not be null").
+				build();
+		}
+		if (name.trim().isEmpty())
+		{
+			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+				"name may not be empty").
+				build();
+		}
 	}
 
 	@Override
