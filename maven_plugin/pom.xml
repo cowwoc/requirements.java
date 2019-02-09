@@ -88,14 +88,16 @@
 								automatic-modules are treated as unnamed modules so we need to explicitly export packages
 								to them.
 								-->
-								<option>--add-exports</option>
-								<option>
-									org.bitbucket.cowwoc.requirements.natives/org.bitbucket.cowwoc.requirements.natives.internal.util=ALL-UNNAMED
-								</option>
-								<option>--add-exports</option>
-								<option>
-									org.bitbucket.cowwoc.requirements.generator/org.bitbucket.cowwoc.requirements.generator.internal.secrets=ALL-UNNAMED
-								</option>
+
+								<!-- WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-568 -->
+								<!--<option>&#45;&#45;add-exports</option>-->
+								<!--<option>-->
+								<!--org.bitbucket.cowwoc.requirements.natives/org.bitbucket.cowwoc.requirements.natives.internal.util=ALL-UNNAMED-->
+								<!--</option>-->
+								<!--<option>&#45;&#45;add-exports</option>-->
+								<!--<option>-->
+								<!--org.bitbucket.cowwoc.requirements.generator/org.bitbucket.cowwoc.requirements.generator.internal.secrets=ALL-UNNAMED-->
+								<!--</option>-->
 								<!-- https://stackoverflow.com/a/54468139/14731 -->
 								<option>--override-methods</option>
 								<option>summary</option>
