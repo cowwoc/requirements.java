@@ -55,7 +55,7 @@ public final class UsageTest
 			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{
-				verifier.addContext("SomeName", "SomeContext").
+				verifier.putContext("SomeName", "SomeContext").
 					requireThat(bucket, "bucket").contains(duration);
 			}
 			catch (IllegalArgumentException e)

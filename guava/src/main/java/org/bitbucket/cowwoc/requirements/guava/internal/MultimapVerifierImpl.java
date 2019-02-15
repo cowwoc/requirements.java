@@ -14,7 +14,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.ContainerSizeVerifierImpl
 import org.bitbucket.cowwoc.requirements.java.internal.ObjectCapabilitiesImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 

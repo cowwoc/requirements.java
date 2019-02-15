@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
-import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
+import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
@@ -36,7 +36,7 @@ public final class DiffGenerator
 	 * Generates the diff of two strings.
 	 * <p>
 	 * <b>NOTE</b>: Colors may be disabled when stdin or stdout are redirected. To override this
-	 * behavior, use {@link GlobalConfigurable#withTerminalEncoding(TerminalEncoding)}.
+	 * behavior, use {@link GlobalRequirements#withTerminalEncoding(TerminalEncoding)}.
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value

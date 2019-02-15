@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.guava;
 
 import com.google.common.collect.Multimap;
-import org.bitbucket.cowwoc.requirements.java.Configurable;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 
 import java.util.function.Function;
@@ -15,10 +14,13 @@ import java.util.function.Function;
  * <p>
  * Implementations must be immutable.
  */
-public interface GuavaVerifier extends Configurable
+public interface GuavaVerifier extends Configuration
 {
 	@Override
-	GuavaVerifier addContext(String name, Object value);
+	GuavaVerifier putContext(String name, Object value);
+
+	@Override
+	GuavaVerifier removeContext(String name);
 
 	@Override
 	GuavaVerifier withDefaultException();

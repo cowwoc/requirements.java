@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 
 import java.util.function.Supplier;
@@ -17,7 +16,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 {
 	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
 	public final JvmScope parent;
-	public final GlobalConfigurable globalConfiguration;
+	public final GlobalConfiguration globalConfiguration;
 	public final Supplier<Configuration> defaultConfigurationSupplier;
 
 	/**
@@ -30,7 +29,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 			throw new NullPointerException("parent may not be null");
 		this.parent = parent;
 		this.globalConfiguration = parent.getGlobalConfiguration();
-		Configuration defaultConfiguration = new Configuration();
+		Configuration defaultConfiguration = new MainConfiguration();
 		this.defaultConfigurationSupplier = () ->
 		{
 			Configuration result = defaultConfiguration;
@@ -41,7 +40,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public GlobalConfigurable getGlobalConfiguration()
+	public GlobalConfiguration getGlobalConfiguration()
 	{
 		return parent.getGlobalConfiguration();
 	}

@@ -138,9 +138,20 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	}
 
 	@Override
-	public JavaVerifier addContext(String name, Object value)
+	public JavaVerifier putContext(String name, Object value)
 	{
-		Configuration newConfig = config.addContext(name, value);
+		Configuration newConfig = config.putContext(name, value);
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultJavaVerifier(scope, newConfig);
+	}
+
+	@Override
+	public JavaVerifier removeContext(String name)
+	{
+		Configuration newConfig = config.removeContext(name);
+		if (newConfig.equals(config))
+			return this;
 		return new DefaultJavaVerifier(scope, newConfig);
 	}
 
@@ -228,12 +239,6 @@ public final class DefaultJavaVerifier implements JavaVerifier
 		if (configuration.equals(config))
 			return this;
 		return new DefaultJavaVerifier(scope, configuration);
-	}
-
-	@Override
-	public GlobalConfigurable getGlobalConfiguration()
-	{
-		return config.getGlobalConfiguration();
 	}
 
 	@Override

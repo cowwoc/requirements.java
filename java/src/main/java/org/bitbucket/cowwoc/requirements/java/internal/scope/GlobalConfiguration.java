@@ -2,8 +2,9 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.java;
+package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;
@@ -12,8 +13,7 @@ import java.util.Set;
  * The global configuration inherited by all verifiers.
  * <p>
  * <b>Note</b>: Verifiers inherit from the global configuration at instantiation time. Their
- * {@link Configuration local configuration} is not affected by subsequent changes to the global
- * configuration.
+ * {@link Configuration configuration} is not affected by subsequent changes to the global configuration.
  * <p>
  * However, updating settings not found in {@link Configuration} (such as
  * {@link #withTerminalEncoding(TerminalEncoding)}) will impact the behavior of existing verifiers. Users
@@ -21,7 +21,7 @@ import java.util.Set;
  * idle while the configuration is being updated. Failing to do so may result in undesirable behavior such
  * as verifiers outputting ANSI colors to a terminal that is no longer configured to render them.
  */
-public interface GlobalConfigurable
+public interface GlobalConfiguration
 {
 	/**
 	 * Returns the terminal encodings available to the JVM.
@@ -45,7 +45,7 @@ public interface GlobalConfigurable
 	 * @return this
 	 * @see #withTerminalEncoding(TerminalEncoding)
 	 */
-	GlobalConfigurable withDefaultTerminalEncoding();
+	GlobalConfiguration withDefaultTerminalEncoding();
 
 	/**
 	 * Indicates the type of encoding that verifiers will output.
@@ -57,7 +57,7 @@ public interface GlobalConfigurable
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #withDefaultTerminalEncoding()
 	 */
-	GlobalConfigurable withTerminalEncoding(TerminalEncoding encoding);
+	GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding);
 
 	/**
 	 * Indicates if exceptions should remove references to this library from their stack trace.
@@ -75,7 +75,7 @@ public interface GlobalConfigurable
 	 * @return this
 	 * @see #isLibraryRemovedFromStackTrace()
 	 */
-	GlobalConfigurable withLibraryRemovedFromStackTrace();
+	GlobalConfiguration withLibraryRemovedFromStackTrace();
 
 	/**
 	 * Indicates that exceptions shouldn't remove references to this library from their stack traces.
@@ -83,7 +83,7 @@ public interface GlobalConfigurable
 	 * @return this
 	 * @see #isLibraryRemovedFromStackTrace()
 	 */
-	GlobalConfigurable withoutLibraryRemovedFromStackTrace();
+	GlobalConfiguration withoutLibraryRemovedFromStackTrace();
 
 	/**
 	 * Indicates if exceptions should show the difference between the actual and expected values.
@@ -101,7 +101,7 @@ public interface GlobalConfigurable
 	 * @return this
 	 * @see #isDiffEnabled()
 	 */
-	GlobalConfigurable withDiff();
+	GlobalConfiguration withDiff();
 
 	/**
 	 * Indicates that exceptions should not show the difference between the actual and expected values.
@@ -109,5 +109,5 @@ public interface GlobalConfigurable
 	 * @return this
 	 * @see #isDiffEnabled()
 	 */
-	GlobalConfigurable withoutDiff();
+	GlobalConfiguration withoutDiff();
 }

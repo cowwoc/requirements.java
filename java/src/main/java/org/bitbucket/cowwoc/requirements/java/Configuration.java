@@ -4,149 +4,36 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Lists;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
-
-import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.text.NumberFormat;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Configures a requirements verifier.
- * <p>
- * This class is immutable.
+ * Configures the behavior of a single verifier.
  */
-@SuppressWarnings({"ConstantConditions", "AssertWithSideEffects"})
-public final class Configuration implements Configurable
+public interface Configuration
 {
-	private static final boolean CLASS_ASSERTIONS_ENABLED;
-
-	static
-	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		CLASS_ASSERTIONS_ENABLED = assertionsEnabled;
-
-		SharedSecrets.INSTANCE.secretConfiguration = new SecretConfiguration()
-		{
-			@Override
-			public List<Entry<String, Object>> getContext(Configuration configuration)
-			{
-				return configuration.getContext();
-			}
-
-			@Override
-			public String toString(Configuration configuration, Object o)
-			{
-				return configuration.toString(o);
-			}
-		};
-	}
-
-	private final List<Entry<String, Object>> context;
-	private final Optional<Class<? extends RuntimeException>> exception;
-	private final boolean assertionsEnabled;
-	private final boolean diffEnabled;
-	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
-
 	/**
-	 * Creates a new configuration:
-	 * <ul>
-	 * <li>With an empty context.</li>
-	 * <li>That throws the default exception type.</li>
-	 * <li>Whose assertions are enabled if
-	 * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">
-	 * assertions are enabled on this class</a>.</li>
-	 * <li>That shows the difference between the actual and expected values.</li>
-	 * <li>That invokes {@code Arrays.toString()} for arrays and {@code Object.toString()} for all
-	 * other objects to convert them to a {@code String}.</li>
-	 * </ul>
-	 */
-	public Configuration()
-	{
-		this.context = Collections.emptyList();
-		this.exception = Optional.empty();
-		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
-		this.diffEnabled = true;
-		this.typeToStringConverter = new HashMap<>(13);
-		ThreadLocal<NumberFormat> decimalFormat = ThreadLocal.withInitial(NumberFormat::getInstance);
-
-		typeToStringConverter.put(boolean[].class, o -> Arrays.toString((boolean[]) o));
-		typeToStringConverter.put(byte[].class, o -> Arrays.toString((byte[]) o));
-		typeToStringConverter.put(char[].class, o -> Arrays.toString((char[]) o));
-		typeToStringConverter.put(short[].class, o -> Arrays.toString((short[]) o));
-		typeToStringConverter.put(int[].class, o -> Arrays.toString((int[]) o));
-		typeToStringConverter.put(long[].class, o -> Arrays.toString((long[]) o));
-		typeToStringConverter.put(float[].class, o -> Arrays.toString((float[]) o));
-		typeToStringConverter.put(double[].class, o -> Arrays.toString((double[]) o));
-		typeToStringConverter.put(Object[].class, o -> Arrays.toString((Object[]) o));
-		typeToStringConverter.put(Integer.class, o -> decimalFormat.get().format(o));
-		typeToStringConverter.put(Long.class, o -> decimalFormat.get().format(o));
-		typeToStringConverter.put(BigDecimal.class, o -> ((BigDecimal) o).toPlainString());
-		typeToStringConverter.put(Path.class, o -> ((Path) o).toAbsolutePath().toString());
-	}
-
-	/**
-	 * Copies a configuration.
+	 * Indicates if assertions are enabled.
 	 *
-	 * @param context               the list of name-value pairs to append to the exception message
-	 * @param exception             the type of exception to throw
-	 * @param assertionsEnabled     true if {@code assertThat()} should invoke {@code requireThat()};
-	 *                              false if {@code assertThat()} should do nothing
-	 * @param diffEnabled           indicates whether exceptions should show the difference between the
-	 *                              actual and expected values
-	 * @param typeToStringConverter map from an object type to a function that converts the object to
-	 *                              a String
-	 * @throws AssertionError if any of the arguments are null
+	 * @return true if {@code assertThat()} should delegate to {@code requireThat()}; false if it shouldn't
+	 * do anything
 	 */
-	private Configuration(List<Entry<String, Object>> context,
-	                      Optional<Class<? extends RuntimeException>> exception, boolean assertionsEnabled,
-	                      boolean diffEnabled, Map<Class<?>, Function<Object, String>> typeToStringConverter)
-	{
-		assert (context != null) : "context may not be null";
-		assert (exception != null) : "exception may not be null";
-		assert (typeToStringConverter != null) : "typeToStringConverter may not be null";
-		this.context = Lists.unmodifiable(context);
-		this.exception = exception;
-		this.assertionsEnabled = assertionsEnabled;
-		this.diffEnabled = diffEnabled;
-		this.typeToStringConverter = Maps.unmodifiable(typeToStringConverter);
-	}
+	boolean assertionsAreEnabled();
 
-	@Override
-	public boolean assertionsAreEnabled()
-	{
-		return assertionsEnabled;
-	}
+	/**
+	 * Indicates that {@code assertThat()} should invoke {@code requireThat()}.
+	 *
+	 * @return the updated configurable
+	 */
+	Configuration withAssertionsEnabled();
 
-	@Override
-	public Configuration withAssertionsEnabled()
-	{
-		if (assertionsEnabled)
-			return this;
-		return new Configuration(context, exception, true, diffEnabled, typeToStringConverter);
-	}
-
-	@Override
-	public Configuration withAssertionsDisabled()
-	{
-		if (!assertionsEnabled)
-			return this;
-		return new Configuration(context, exception, false, diffEnabled, typeToStringConverter);
-	}
+	/**
+	 * Indicates that {@code assertThat()} shouldn't do anything.
+	 *
+	 * @return the updated configurable
+	 */
+	Configuration withAssertionsDisabled();
 
 	/**
 	 * Returns the type of exception that will be thrown if a verification fails.
@@ -155,177 +42,123 @@ public final class Configuration implements Configurable
 	 * @see #withException(Class)
 	 * @see #withDefaultException()
 	 */
-	public Optional<Class<? extends RuntimeException>> getException()
-	{
-		return exception;
-	}
-
-	@Override
-	public Configuration withException(Class<? extends RuntimeException> exception)
-	{
-		if (exception == null)
-			throw new NullPointerException("exception may not be null");
-		Optional<Class<? extends RuntimeException>> newException = Optional.of(exception);
-		if (this.exception.equals(newException))
-			return this;
-		return new Configuration(context, newException, assertionsEnabled, diffEnabled, typeToStringConverter);
-	}
-
-	@Override
-	public Configuration withDefaultException()
-	{
-		Optional<Class<? extends RuntimeException>> newException = Optional.empty();
-		if (this.exception.equals(newException))
-			return this;
-		return new Configuration(context, newException, assertionsEnabled, diffEnabled, typeToStringConverter);
-	}
+	Optional<Class<? extends RuntimeException>> getException();
 
 	/**
-	 * Returns a list of name-value pairs to append to the exception message. Null elements denote
-	 * empty lines.
+	 * Overrides the type of exception that will get thrown if a verification fails.
+	 * <p>
+	 * The exception class must define the following constructors:
+	 * <p>
+	 * {@code <init>(String message)}<br>
+	 * {@code <init>(String message, Throwable cause)}
 	 *
-	 * @return an unmodifiable list of name-value pairs to append to the exception message
-	 * @see #addContext(String, Object)
+	 * @param exception the type of exception to throw
+	 * @return the updated configurable
+	 * @throws NullPointerException if {@code exception} is null
 	 */
-	private List<Entry<String, Object>> getContext()
-	{
-		return context;
-	}
+	Configuration withException(Class<? extends RuntimeException> exception);
 
-	@Override
-	public Configuration addContext(String name, Object value)
-	{
-		if (name == null)
-			throw new NullPointerException("name may not be null");
-		List<Entry<String, Object>> newContext = new ArrayList<>(context.size() + 1);
-		newContext.addAll(context);
-		newContext.add(new SimpleImmutableEntry<>(name, value));
-		return new Configuration(newContext, exception, assertionsEnabled, diffEnabled, typeToStringConverter);
-	}
+	/**
+	 * Throws the default exception type if a verification fails.
+	 *
+	 * @return the updated configurable
+	 */
+	Configuration withDefaultException();
 
 	/**
 	 * Indicates if exceptions should show the difference between the actual and expected values.
 	 *
 	 * @return true if exceptions should show the difference between the actual and expected values
 	 */
-	public boolean isDiffEnabled()
-	{
-		return diffEnabled;
-	}
+	boolean isDiffEnabled();
 
-	@Override
-	public Configuration withDiff()
-	{
-		if (this.diffEnabled)
-			return this;
-		return new Configuration(context, exception, assertionsEnabled, true, typeToStringConverter);
-	}
+	/**
+	 * Indicates that exceptions should show the difference between the actual and expected values.
+	 *
+	 * @return the updated configurable
+	 */
+	Configuration withDiff();
 
-	@Override
-	public Configuration withoutDiff()
-	{
-		if (!this.diffEnabled)
-			return this;
-		return new Configuration(context, exception, assertionsEnabled, false, typeToStringConverter);
-	}
+	/**
+	 * Indicates that exceptions should not show the difference between the actual and expected
+	 * values.
+	 *
+	 * @return the updated configurable
+	 */
+	Configuration withoutDiff();
+
+	/**
+	 * Returns a map to append to the exception message.
+	 *
+	 * @return an unmodifiable map to append to the exception message
+	 * @see #putContext(String, Object)
+	 */
+	Map<String, Object> getContext();
+
+	/**
+	 * Adds or updates contextual information associated with the exception message.
+	 *
+	 * @param name  the name of the parameter
+	 * @param value the value of the parameter
+	 * @return the updated configurable
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	Configuration putContext(String name, Object value);
+
+	/**
+	 * Removes contextual information associated with the exception message.
+	 *
+	 * @param name the name of the parameter
+	 * @return the updated configurable
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	Configuration removeContext(String name);
 
 	/**
 	 * @param o an object
 	 * @return the String representation of the object
 	 * @see #withStringConverter(Class, Function)
 	 */
-	private String toString(Object o)
-	{
-		if (o == null)
-			return "null";
-		Class<?> type = o.getClass();
-		Function<Object, String> converter;
-		if (type.isArray() && !type.getComponentType().isPrimitive())
-			converter = typeToStringConverter.get(Object[].class);
-		else
-			converter = typeToStringConverter.get(type);
-		if (converter != null)
-			return converter.apply(o);
-		return o.toString();
-	}
+	String toString(Object o);
 
-	@Override
-	public <T> Configuration withStringConverter(Class<T> type, Function<T, String> converter)
-	{
-		if (type == null)
-			throw new NullPointerException("type may not be null");
-		if (converter == null)
-			throw new NullPointerException("converter may not be null");
-		Function<?, String> existingConverter = typeToStringConverter.get(type);
-		if (converter.equals(existingConverter))
-			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter = new HashMap<>(typeToStringConverter);
-		@SuppressWarnings("unchecked")
-		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
-		newTypeToStringConverter.put(type, unsafeConverter);
-		return new Configuration(context, exception, assertionsEnabled, false, newTypeToStringConverter);
-	}
+	/**
+	 * Indicates that a function should be used to convert an object to a String.
+	 * <p>
+	 * Please note that {@code type} must be an exact match (e.g. configuring a converter for
+	 * {@code Set} will not match values of type {@code HashSet}).
+	 *
+	 * @param <T>       the type of object being converted
+	 * @param type      the type of object being converted (non-primitive arrays are mapped to
+	 *                  {@code Object[].class})
+	 * @param converter a function that converts an object of the specified type to a String
+	 * @return the updated configurable
+	 * @throws NullPointerException if any of the arguments are null
+	 */
+	<T> Configuration withStringConverter(Class<T> type, Function<T, String> converter);
 
-	@Override
-	public <T> Configuration withoutStringConverter(Class<T> type)
-	{
-		if (type == null)
-			throw new NullPointerException("type may not be null");
-		if (!typeToStringConverter.containsKey(type))
-			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter = new HashMap<>(typeToStringConverter);
-		newTypeToStringConverter.remove(type);
-		return new Configuration(context, exception, assertionsEnabled, false, newTypeToStringConverter);
-	}
+	/**
+	 * Indicates that an object's {@code toString()} method should be used to convert it to a String.
+	 *
+	 * @param <T>  the type of object being converted
+	 * @param type the type of object being converted
+	 * @return the updated configurable
+	 * @throws NullPointerException if {@code type} is null
+	 */
+	<T> Configuration withoutStringConverter(Class<T> type);
 
-	@Override
-	public Configurable withConfiguration(Configuration configuration)
-	{
-		if (configuration == null)
-			throw new NullPointerException("configuration may not be null");
-		return configuration;
-	}
+	/**
+	 * Returns the configuration associated with the verifier.
+	 *
+	 * @return the configuration associated with the verifier
+	 */
+	Configuration getConfiguration();
 
-	@Override
-	public Configuration getConfiguration()
-	{
-		return this;
-	}
-
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 23 * hash + context.hashCode();
-		hash = 23 * hash + exception.hashCode();
-		hash = 23 * hash + Boolean.hashCode(assertionsEnabled);
-		hash = 23 * hash + Boolean.hashCode(diffEnabled);
-		return 23 * hash + typeToStringConverter.hashCode();
-	}
-
-	@Override
-	public GlobalConfigurable getGlobalConfiguration()
-	{
-		return DefaultJvmScope.INSTANCE.getGlobalConfiguration();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (o == this)
-			return true;
-		if (!(o instanceof Configuration))
-			return false;
-		Configuration other = (Configuration) o;
-		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
-			exception.equals(other.exception) && diffEnabled == other.diffEnabled &&
-			typeToStringConverter.equals(other.typeToStringConverter);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Configuration[context=" + context + ", exception=" + exception + ", assertionsEnabled=" +
-			assertionsEnabled + ", " + "diffEnabled=" + diffEnabled + ", typeToStringConverter=" +
-			typeToStringConverter + "]";
-	}
+	/**
+	 * Returns a verifier with the updated configuration.
+	 *
+	 * @param configuration a new configuration
+	 * @return the updated configurable
+	 * @throws NullPointerException if {@code configuration} is null
+	 */
+	Configuration withConfiguration(Configuration configuration);
 }

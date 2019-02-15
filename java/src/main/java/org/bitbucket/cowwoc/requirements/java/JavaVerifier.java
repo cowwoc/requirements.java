@@ -18,10 +18,13 @@ import java.util.function.Function;
  * <p>
  * Implementations must be immutable.
  */
-public interface JavaVerifier extends Configurable
+public interface JavaVerifier extends Configuration
 {
 	@Override
-	JavaVerifier addContext(String name, Object value);
+	JavaVerifier putContext(String name, Object value);
+
+	@Override
+	JavaVerifier removeContext(String name);
 
 	@Override
 	JavaVerifier withDefaultException();

@@ -4,12 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
+import org.bitbucket.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Base class for {@code GlobalConfigurable} instances.
  */
-public abstract class AbstractGlobalConfigurable implements GlobalConfigurable
+public abstract class AbstractGlobalConfiguration implements GlobalConfiguration
 {
 	/**
 	 * True if exceptions should remove references to this library from their stack traces.
@@ -27,14 +29,14 @@ public abstract class AbstractGlobalConfigurable implements GlobalConfigurable
 	}
 
 	@Override
-	public GlobalConfigurable withLibraryRemovedFromStackTrace()
+	public GlobalConfiguration withLibraryRemovedFromStackTrace()
 	{
 		removeLibraryFromStackTrace.set(true);
 		return this;
 	}
 
 	@Override
-	public GlobalConfigurable withoutLibraryRemovedFromStackTrace()
+	public GlobalConfiguration withoutLibraryRemovedFromStackTrace()
 	{
 		removeLibraryFromStackTrace.set(false);
 		return this;
@@ -47,14 +49,14 @@ public abstract class AbstractGlobalConfigurable implements GlobalConfigurable
 	}
 
 	@Override
-	public GlobalConfigurable withDiff()
+	public GlobalConfiguration withDiff()
 	{
 		diffEnabled.set(true);
 		return this;
 	}
 
 	@Override
-	public GlobalConfigurable withoutDiff()
+	public GlobalConfiguration withoutDiff()
 	{
 		diffEnabled.set(false);
 		return this;

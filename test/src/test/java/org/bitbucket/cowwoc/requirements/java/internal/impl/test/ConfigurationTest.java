@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.impl.test;
 
-import org.bitbucket.cowwoc.requirements.java.Configurable;
+import org.bitbucket.cowwoc.requirements.DefaultRequirements;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.testng.annotations.Test;
 
@@ -19,12 +19,18 @@ public final class ConfigurationTest
 	@Test
 	public void separateConfigurations()
 	{
-		Configurable first = new Configuration();
-		first = first.addContext("name1", "value1");
+		Configuration first = new Configuration();
+		first = first.putContext("name1", "value1");
 
-		Configurable second = new Configuration();
-		second = second.addContext("name2", "value2");
+		Configuration second = new Configuration();
+		second = second.putContext("name2", "value2");
 
 		assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+	}
+
+	@Test
+	public void threadConfiguration()
+	{
+		DefaultRequirements.getThreadConfiguration().fixme;
 	}
 }

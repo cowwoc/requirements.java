@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope.test;
 
-import org.bitbucket.cowwoc.requirements.java.AbstractGlobalConfigurable;
+import org.bitbucket.cowwoc.requirements.java.AbstractGlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Collections;
 import java.util.Set;
 
-public final class TestGlobalConfiguration extends AbstractGlobalConfigurable
+public final class TestGlobalConfiguration extends AbstractGlobalConfiguration
 {
 	private final TerminalEncoding terminalEncoding;
 

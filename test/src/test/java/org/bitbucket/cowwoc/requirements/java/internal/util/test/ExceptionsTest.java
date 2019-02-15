@@ -40,7 +40,7 @@ public final class ExceptionsTest
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new Requirements(scope).addContext("exception", exceptions.getClass()).
+			new Requirements(scope).putContext("exception", exceptions.getClass()).
 				requireThat(optimizedException, "optimizedException").isTrue();
 		}
 	}
@@ -55,7 +55,7 @@ public final class ExceptionsTest
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new Requirements(scope).addContext("exception", exceptions.getClass()).
+			new Requirements(scope).putContext("exception", exceptions.getClass()).
 				requireThat(optimizedException, "optimizedException").isTrue();
 		}
 	}
@@ -70,7 +70,7 @@ public final class ExceptionsTest
 		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new Requirements(scope).addContext("exception", exceptions.getClass()).
+			new Requirements(scope).putContext("exception", exceptions.getClass()).
 				requireThat(optimizedException, "optimizedException").isFalse();
 		}
 	}

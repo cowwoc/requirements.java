@@ -28,7 +28,6 @@ module org.bitbucket.cowwoc.requirements.java
 		org.bitbucket.cowwoc.requirements.benchmark.guava;
 	exports org.bitbucket.cowwoc.requirements.java.internal.terminal to org.bitbucket.cowwoc.requirements.test;
 	exports org.bitbucket.cowwoc.requirements.java.internal.diff to org.bitbucket.cowwoc.requirements.test;
-	exports org.bitbucket.cowwoc.requirements.java.internal.secrets to org.bitbucket.cowwoc.requirements.guava;
 	exports org.bitbucket.cowwoc.requirements.java.internal.util to org.bitbucket.cowwoc.requirements.guava,
 		org.bitbucket.cowwoc.requirements.test;
 }

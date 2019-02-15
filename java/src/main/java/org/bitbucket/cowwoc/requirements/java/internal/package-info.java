@@ -10,7 +10,7 @@
  * <li>Users own the actual value: Users are expected to pass method arguments directly into this
  * API. As such, verifiers may not modify the actual value. The value passed into and out of
  * verifiers is owned by users.</li>
- * <li>{@link org.bitbucket.cowwoc.requirements.java.GlobalConfiguration GlobalConfiguration} is a
+ * <li>{@link org.bitbucket.cowwoc.requirements.java.GlobalRequirements GlobalConfiguration} is a
  * mechanism for exposing a selective subset of
  * {@link org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope JvmScope} to users.</li>
  * </ul>

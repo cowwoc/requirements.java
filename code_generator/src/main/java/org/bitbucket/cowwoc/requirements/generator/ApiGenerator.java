@@ -25,7 +25,7 @@ public final class ApiGenerator
 {
 	static
 	{
-		SharedSecrets.INSTANCE.secretApiGenerator = generator -> generator.exportScope();
+		SharedSecrets.INSTANCE.secretApiGenerator = ApiGenerator::exportScope;
 	}
 
 	private boolean guavaEnabled;
@@ -141,9 +141,7 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.ClassVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
@@ -178,7 +176,7 @@ public final class ApiGenerator
 				"import java.util.Optional;\n" +
 				"\n" +
 				"/**\n" +
-				" * Verifies API requirements using the {@link GlobalConfigurable default configuration}.\n" +
+				" * Verifies API requirements using the {@link GlobalRequirements default configuration}.\n" +
 				" * <p>\n" +
 				" * The assertion status of the {@link Configuration} class determines whether " +
 				"{@code assertThat()} carries\n" +
@@ -1256,14 +1254,6 @@ public final class ApiGenerator
 			}
 			writer.write("\n" +
 				"\t/**\n" +
-				"\t * @return the global configuration shared by all verifiers\n" +
-				"\t */\n" +
-				"\tpublic static GlobalConfigurable getGlobalConfiguration()\n" +
-				"\t{\n" +
-				"\t\treturn JAVA_VERIFIER.getGlobalConfiguration();\n" +
-				"\t}\n" +
-				"\n" +
-				"\t/**\n" +
 				"\t * Prevent construction.\n" +
 				"\t */\n" +
 				"\tprivate DefaultRequirements()\n" +
@@ -1339,7 +1329,6 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.Configurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
@@ -1393,7 +1382,7 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write(" * @see GuavaVerifier\n");
 			writer.write(" */\n" +
-				"public final class Requirements implements Configurable\n" +
+				"public final class Requirements implements LocalConfigurable\n" +
 				"{\n" +
 				"\tprivate final JavaVerifier javaVerifier;\n");
 			if (guavaEnabled)
@@ -1547,10 +1536,28 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
-				"\tpublic Requirements addContext(String name, Object value)\n" +
+				"\tpublic Requirements putContext(String name, Object value)\n" +
 				"\t{\n" +
 				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.addContext(name, value);\n" +
+				"\t\tConfiguration newConfig = config.putContext(name, value);\n" +
+				"\t\tif (newConfig.equals(config))\n" +
+				"\t\t\treturn this;\n" +
+				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
+			if (guavaEnabled)
+				writer.write("\t\tGuavaVerifier newGuavaVerifier = guavaVerifier.withConfiguration(newConfig);\n");
+			writer.write("\t\treturn new Requirements(newJavaVerifier");
+			if (guavaEnabled)
+				writer.write(", newGuavaVerifier");
+			writer.write(");\n" +
+				"\t}\n" +
+				"\n" +
+				"\t@Override\n" +
+				"\tpublic Requirements removeContext(String name)\n" +
+				"\t{\n" +
+				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
+				"\t\tConfiguration newConfig = config.removeContext(name);\n" +
+				"\t\tif (newConfig.equals(config))\n" +
+				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
 				writer.write("\t\tGuavaVerifier newGuavaVerifier = guavaVerifier.withConfiguration(newConfig);\n");
@@ -1611,12 +1618,6 @@ public final class ApiGenerator
 				"\tpublic Configuration getConfiguration()\n" +
 				"\t{\n" +
 				"\t\treturn javaVerifier.getConfiguration();\n" +
-				"\t}\n" +
-				"\n" +
-				"\t@Override\n" +
-				"\tpublic GlobalConfigurable getGlobalConfiguration()\n" +
-				"\t{\n" +
-				"\t\treturn javaVerifier.getGlobalConfiguration();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +

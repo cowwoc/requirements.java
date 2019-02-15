@@ -7,11 +7,11 @@ package org.bitbucket.cowwoc.requirements.java.internal.util;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringJoiner;
 
@@ -134,17 +134,21 @@ public final class ExceptionBuilder
 		StringJoiner messageWithContext = new StringJoiner("\n");
 		messageWithContext.add(message);
 
-		List<Entry<String, Object>> contextPostfix = secretConfiguration.getContext(config);
-		assert (Lists.isUnmodifiable(contextPostfix)) : "contextPostfix may not be modifiable";
+		Map<String, Object> localContext = secretConfiguration.getContext(config);
+		assert (Maps.isUnmodifiable(localContext)) : "localContext may not be modifiable";
+
+		Map<String, Object> threadContext = secretConfiguration.getContext(config);
+		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
 
 		List<Entry<String, Object>> mergedContext;
-		if (contextPostfix.isEmpty())
+		if (localContext.isEmpty() && threadContext.isEmpty())
 			mergedContext = context;
 		else
 		{
-			mergedContext = new ArrayList<>(context.size() + contextPostfix.size());
+			mergedContext = new ArrayList<>(context.size() + threadContext.size() + localContext.size());
 			mergedContext.addAll(context);
-			mergedContext.addAll(contextPostfix);
+			mergedContext.addAll(localContext.entrySet());
+			mergedContext.addAll(threadContext.entrySet());
 		}
 
 		// null entries denote a newline between DIFF sections

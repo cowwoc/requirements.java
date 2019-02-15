@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2017 Gili Tzabari
+ * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package org.bitbucket.cowwoc.requirements.java;
+package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope;
+import org.bitbucket.cowwoc.requirements.java.AbstractGlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;
@@ -24,15 +25,16 @@ import java.util.Set;
  * <p>
  * This class is thread-safe.
  */
-public final class GlobalConfiguration extends AbstractGlobalConfigurable
+public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 {
+	public final GlobalConfiguration INSTANCE = new MainGlobalConfiguration(DefaultJvmScope.INSTANCE);
 	private final JvmScope scope;
 
 	/**
 	 * @param scope the system configuration
 	 * @throws AssertionError if {@code scope} is null
 	 */
-	public GlobalConfiguration(JvmScope scope)
+	public MainGlobalConfiguration(JvmScope scope)
 	{
 		assert (scope != null);
 		this.scope = scope;
@@ -51,18 +53,26 @@ public final class GlobalConfiguration extends AbstractGlobalConfigurable
 	}
 
 	@Override
-	public GlobalConfigurable withDefaultTerminalEncoding()
+	public GlobalConfiguration withDefaultTerminalEncoding()
 	{
 		scope.getTerminal().useBestEncoding();
 		return this;
 	}
 
 	@Override
-	public GlobalConfigurable withTerminalEncoding(TerminalEncoding encoding)
+	public GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding)
 	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
 		scope.getTerminal().setEncoding(encoding);
 		return this;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "MainGlobalConfiguration[terminalEncoding=" + getTerminalEncoding() +
+			", libraryRemovedFromStackTrace=" + isLibraryRemovedFromStackTrace() +
+			", diffEnabled=" + isDiffEnabled() + "]";
 	}
 }

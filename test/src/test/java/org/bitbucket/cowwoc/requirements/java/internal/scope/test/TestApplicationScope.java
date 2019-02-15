@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal.scope.test;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
+import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.AbstractApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public final class TestApplicationScope extends AbstractApplicationScope
 {
 	private final Configuration defaultConfiguration = new Configuration();
-	private final GlobalConfigurable globalConfiguration;
+	private final GlobalRequirements globalConfiguration;
 
 	/**
 	 * @param terminalEncoding the type of encoding that verifiers should output
@@ -30,7 +30,7 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public GlobalConfigurable getGlobalConfiguration()
+	public GlobalRequirements getGlobalConfiguration()
 	{
 		return globalConfiguration;
 	}

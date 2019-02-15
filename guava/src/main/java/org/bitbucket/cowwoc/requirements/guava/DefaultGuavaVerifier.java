@@ -8,7 +8,6 @@ import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.internal.MultimapVerifierImpl;
 import org.bitbucket.cowwoc.requirements.guava.internal.NoOpMultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.GlobalConfigurable;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
@@ -162,9 +161,18 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	}
 
 	@Override
-	public GuavaVerifier addContext(String name, Object value)
+	public GuavaVerifier putContext(String name, Object value)
 	{
-		Configuration newConfig = config.addContext(name, value);
+		Configuration newConfig = config.putContext(name, value);
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaVerifier(scope, newConfig);
+	}
+
+	@Override
+	public GuavaVerifier removeContext(String name)
+	{
+		Configuration newConfig = config.removeContext(name);
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultGuavaVerifier(scope, newConfig);
@@ -200,11 +208,5 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 		if (config.equals(configuration))
 			return this;
 		return new DefaultGuavaVerifier(scope, configuration);
-	}
-
-	@Override
-	public GlobalConfigurable getGlobalConfiguration()
-	{
-		return config.getGlobalConfiguration();
 	}
 }

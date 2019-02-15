@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffResult;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SharedSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -84,8 +83,7 @@ public final class ContextGenerator
 		else
 			actualType = actualValue.getClass();
 		List<Entry<String, Object>> result = new ArrayList<>(3);
-		result.addAll(getContext(actualName, actualAsString, actualType, expectedName,
-			expectedAsString));
+		result.addAll(getContext(actualName, actualAsString, actualType, expectedName, expectedAsString));
 		if (actualAsString.equals(expectedAsString))
 		{
 			result.add(null);
@@ -129,7 +127,7 @@ public final class ContextGenerator
 	 * @param actualType    the type of the actual value
 	 * @param expectedName  the name of the expected value
 	 * @param expectedValue the expected value
-	 * @return the list of name-value pairs to append to the exception message
+	 * @return the map to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
 	private List<Entry<String, Object>> getContext(String actualName, String actualValue, Class<?> actualType,
