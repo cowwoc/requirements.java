@@ -96,7 +96,8 @@ public interface Configuration
 	Map<String, Object> getContext();
 
 	/**
-	 * Adds or updates contextual information associated with the exception message.
+	 * Adds or updates contextual information associated with the exception message. Overrides any values
+	 * associated with the {@code name} at the {@link ThreadRequirements} level.
 	 *
 	 * @param name  the name of the parameter
 	 * @param value the value of the parameter

@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Sets;
@@ -32,7 +31,6 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	extends ObjectCapabilitiesImpl<CollectionVerifier<C, E>, C>
 	implements CollectionVerifier<C, E>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final Pluralizer pluralizer;
 
 	/**

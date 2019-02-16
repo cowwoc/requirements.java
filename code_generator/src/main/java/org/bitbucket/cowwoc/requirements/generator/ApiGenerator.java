@@ -1326,7 +1326,6 @@ public final class ApiGenerator
 				"import org.bitbucket.cowwoc.requirements.java.ClassVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.Configurable;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
@@ -1382,7 +1381,7 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write(" * @see GuavaVerifier\n");
 			writer.write(" */\n" +
-				"public final class Requirements implements LocalConfigurable\n" +
+				"public final class Requirements implements Configuration\n" +
 				"{\n" +
 				"\tprivate final JavaVerifier javaVerifier;\n");
 			if (guavaEnabled)
@@ -1472,6 +1471,12 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
+				"\tpublic Optional<Class<? extends RuntimeException>> getException()\n" +
+				"\t{\n" +
+				"\t\treturn javaVerifier.getException();\n" +
+				"\t}\n" +
+				"\n" +
+				"\t@Override\n" +
 				"\tpublic Requirements withException(Class<? extends RuntimeException> exception)\n" +
 				"\t{\n" +
 				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
@@ -1501,6 +1506,12 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write(", newGuavaVerifier");
 			writer.write(");\n" +
+				"\t}\n" +
+				"\n" +
+				"\t@Override\n" +
+				"\tpublic boolean isDiffEnabled()\n" +
+				"\t{\n" +
+				"\t\treturn javaVerifier.isDiffEnabled();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
@@ -1536,6 +1547,12 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
+				"\tpublic Map<String, Object> getContext()\n" +
+				"\t{\n" +
+				"\t\treturn javaVerifier.getContext();\n" +
+				"\t}\n" +
+				"\n" +
+				"\t@Override\n" +
 				"\tpublic Requirements putContext(String name, Object value)\n" +
 				"\t{\n" +
 				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
@@ -1565,6 +1582,12 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write(", newGuavaVerifier");
 			writer.write(");\n" +
+				"\t}\n" +
+				"\n" +
+				"\t@Override\n" +
+				"\tpublic String toString(Object o)\n" +
+				"\t{\n" +
+				"\t\treturn javaVerifier.toString(o);\n" +
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +

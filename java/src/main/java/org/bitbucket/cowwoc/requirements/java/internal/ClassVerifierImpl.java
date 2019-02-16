@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
@@ -18,8 +17,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVerifier<T>, Class<T>>
 	implements ClassVerifier<T>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
-
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
@@ -39,7 +36,7 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
 		if (actual.isAssignableFrom(type))
 			return this;
-		String actualAsString = secretConfiguration.toString(config, actual);
+		String actualAsString = config.toString(actual);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be a supertype of " + type + ".").
 			addContext("Actual", actualAsString).

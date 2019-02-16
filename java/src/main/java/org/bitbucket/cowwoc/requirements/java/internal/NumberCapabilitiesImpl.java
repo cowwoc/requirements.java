@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.NumberCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
@@ -21,8 +20,6 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	extends ComparableCapabilitiesImpl<S, T>
 	implements NumberCapabilities<S, T>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
-
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
@@ -142,7 +139,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
-		String divisorAsString = secretConfiguration.toString(config, divisor);
+		String divisorAsString = config.toString(divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
@@ -172,7 +169,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
-		String divisorAsString = secretConfiguration.toString(config, divisor);
+		String divisorAsString = config.toString(divisor);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " may not be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).

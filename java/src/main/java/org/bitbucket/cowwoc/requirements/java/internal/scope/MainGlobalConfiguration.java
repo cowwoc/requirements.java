@@ -27,7 +27,6 @@ import java.util.Set;
  */
 public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 {
-	public final GlobalConfiguration INSTANCE = new MainGlobalConfiguration(DefaultJvmScope.INSTANCE);
 	private final JvmScope scope;
 
 	/**

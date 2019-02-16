@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements;
 
+import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;
 import org.testng.annotations.BeforeSuite;
 
 public final class TestSuite
@@ -11,6 +12,6 @@ public final class TestSuite
 	@BeforeSuite
 	public void beforeSuite()
 	{
-		DefaultRequirements.getGlobalConfiguration().withoutLibraryRemovedFromStackTrace();
+		GlobalRequirements.withoutLibraryRemovedFromStackTrace();
 	}
 }

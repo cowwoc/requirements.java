@@ -46,6 +46,12 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
+	public Supplier<ThreadConfiguration> getThreadConfiguration()
+	{
+		return parent.getThreadConfiguration();
+	}
+
+	@Override
 	public Terminal getTerminal()
 	{
 		return parent.getTerminal();

@@ -6,13 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal.util;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.StringJoiner;
 
 /**
@@ -20,9 +21,9 @@ import java.util.StringJoiner;
  */
 public final class ExceptionBuilder
 {
+	private final ApplicationScope scope;
 	private final Configuration config;
 	private final Exceptions exceptions;
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final Throwable cause;
@@ -33,6 +34,7 @@ public final class ExceptionBuilder
 	private final List<Entry<String, Object>> context = new ArrayList<>(2);
 
 	/**
+	 * @param scope                       the application configuration
 	 * @param configuration               the instance configuration
 	 * @param exceptions                  an instance of {@code Exceptions}
 	 * @param type                        the type of the exception
@@ -42,13 +44,15 @@ public final class ExceptionBuilder
 	 *                                    their stack traces
 	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message} are null
 	 */
-	private ExceptionBuilder(Configuration configuration, Exceptions exceptions,
+	private ExceptionBuilder(ApplicationScope scope, Configuration configuration, Exceptions exceptions,
 	                         Class<? extends RuntimeException> type, String message,
 	                         Throwable cause, boolean removeLibraryFromStackTrace)
 	{
+		assert (scope != null) : "scope may not be null";
 		assert (configuration != null) : "configuration may not be null";
 		assert (exceptions != null) : "exceptions may not be null";
 		assert (message != null) : "message may not be null";
+		this.scope = scope;
 		this.config = configuration;
 		this.exceptions = exceptions;
 		this.type = config.getException().orElse(type);
@@ -59,7 +63,7 @@ public final class ExceptionBuilder
 
 	/**
 	 * Equivalent to
-	 * {@link #ExceptionBuilder(Configuration, Exceptions, Class, String, Throwable, boolean)
+	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, Exceptions, Class, String, Throwable, boolean)
 	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause,
 	 * scope.isLibraryRemovedFromStackTrace().get())}.
 	 *
@@ -74,7 +78,7 @@ public final class ExceptionBuilder
 	                        Class<? extends RuntimeException> type, String message,
 	                        Throwable cause)
 	{
-		this(configuration, scope.getExceptions(), type, message, cause,
+		this(scope, configuration, scope.getExceptions(), type, message, cause,
 			scope.getGlobalConfiguration().isLibraryRemovedFromStackTrace());
 	}
 
@@ -96,7 +100,8 @@ public final class ExceptionBuilder
 	}
 
 	/**
-	 * Adds contextual information to append to the exception message.
+	 * Adds contextual information to append to the exception message. Overrides any values
+	 * associated with the {@code name} at the {@link Configuration} level.
 	 *
 	 * @param name  the name of the value
 	 * @param value a value
@@ -134,10 +139,10 @@ public final class ExceptionBuilder
 		StringJoiner messageWithContext = new StringJoiner("\n");
 		messageWithContext.add(message);
 
-		Map<String, Object> localContext = secretConfiguration.getContext(config);
+		Map<String, Object> localContext = config.getContext();
 		assert (Maps.isUnmodifiable(localContext)) : "localContext may not be modifiable";
 
-		Map<String, Object> threadContext = secretConfiguration.getContext(config);
+		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
 		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
 
 		List<Entry<String, Object>> mergedContext;
@@ -146,9 +151,24 @@ public final class ExceptionBuilder
 		else
 		{
 			mergedContext = new ArrayList<>(context.size() + threadContext.size() + localContext.size());
-			mergedContext.addAll(context);
-			mergedContext.addAll(localContext.entrySet());
-			mergedContext.addAll(threadContext.entrySet());
+			Set<String> existingKeys = new HashSet<>();
+			for (Entry<String, Object> entry : context)
+			{
+				mergedContext.add(entry);
+				existingKeys.add(entry.getKey());
+			}
+
+			for (Entry<String, Object> entry : localContext.entrySet())
+			{
+				if (existingKeys.add(entry.getKey()))
+					mergedContext.add(entry);
+			}
+
+			for (Entry<String, Object> entry : threadContext.entrySet())
+			{
+				if (existingKeys.add(entry.getKey()))
+					mergedContext.add(entry);
+			}
 		}
 
 		// null entries denote a newline between DIFF sections
@@ -167,7 +187,7 @@ public final class ExceptionBuilder
 				messageWithContext.add("");
 			else
 				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " +
-					secretConfiguration.toString(config, entry.getValue()));
+					config.toString(entry.getValue()));
 		}
 		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStackTrace);
 	}

@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 
 /**
  * Optimizes the exceptions thrown by the library, such as evaluating stack traces are lazily. See
- * {@code org.bitbucket.cowwoc.requirements.java.GlobalConfiguration.isLibraryRemovedFromStackTrace()}.
+ * {@code org.bitbucket.cowwoc.requirements.java.GlobalRequirements.isLibraryRemovedFromStackTrace()}.
  */
 public final class ExceptionOptimizer
 {
@@ -138,7 +138,7 @@ public final class ExceptionOptimizer
 				" */\n" +
 				"package " + wrapperPackageName + ";\n" +
 				"\n");
-			writer.write("import org.bitbucket.cowwoc.requirements.java.GlobalConfiguration;\n" +
+			writer.write("import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.annotations.OptimizedException;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;\n" +
 				"\n" +
@@ -152,7 +152,7 @@ public final class ExceptionOptimizer
 				"/**\n" +
 				" * Generates exceptions that strip this library from their stack traces lazily.\n" +
 				" *\n" +
-				" * @see GlobalConfiguration#isLibraryRemovedFromStackTrace()\n" +
+				" * @see GlobalRequirements#isLibraryRemovedFromStackTrace()\n" +
 				" */\n" +
 				"@OptimizedException\n" +
 				"public final class " + wrapperSimpleName + " extends " + exceptionSimpleName + "\n" +

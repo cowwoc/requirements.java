@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
@@ -21,8 +20,6 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 	extends ObjectCapabilitiesImpl<S, T>
 	implements ComparableCapabilities<S, T>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
-
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
@@ -43,7 +40,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			this.name + " must be less than " + valueAsString + ".").
 			addContext("Actual", actual).
@@ -73,7 +70,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be less than or equal to " + valueAsString + ".").
 			addContext("Actual", actual).
@@ -103,7 +100,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be greater than " + valueAsString + ".").
 			addContext("Actual", actual).
@@ -133,7 +130,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be greater than or equal to " + valueAsString + ".").
 			addContext("Actual", actual).
@@ -163,7 +160,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat(expected, "expected").isNotNull();
 		if (actual.compareTo(expected) == 0)
 			return getThis();
-		String expectedAsString = secretConfiguration.toString(config, expected);
+		String expectedAsString = config.toString(expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be comparable to " + expectedAsString + ".").
 			addContext("Actual", actual).
@@ -192,7 +189,7 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual.compareTo(value) != 0)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " may not be comparable to " + valueAsString + ".").
 			addContext("Actual", actual).
@@ -223,8 +220,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endExclusive) < 0)
 			return getThis();
-		String startAsString = secretConfiguration.toString(config, startInclusive);
-		String endAsString = secretConfiguration.toString(config, endExclusive);
+		String startAsString = config.toString(startInclusive);
+		String endAsString = config.toString(endExclusive);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be in range [" + startAsString + ", " + endAsString + ").").
 			addContext("Actual", actual).
@@ -240,8 +237,8 @@ public abstract class ComparableCapabilitiesImpl<S, T extends Comparable<? super
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endInclusive) <= 0)
 			return getThis();
-		String startAsString = secretConfiguration.toString(config, startInclusive);
-		String endAsString = secretConfiguration.toString(config, endInclusive);
+		String startAsString = config.toString(startInclusive);
+		String endAsString = config.toString(endInclusive);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be in range [" + startAsString + ", " + endAsString + "].").
 			addContext("Actual", actual).

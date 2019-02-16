@@ -12,6 +12,8 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -125,6 +127,12 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	}
 
 	@Override
+	public Optional<Class<? extends RuntimeException>> getException()
+	{
+		return config.getException();
+	}
+
+	@Override
 	public GuavaVerifier withException(Class<? extends RuntimeException> exception)
 	{
 		Configuration newConfig = config.withException(exception);
@@ -140,6 +148,12 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultGuavaVerifier(scope, newConfig);
+	}
+
+	@Override
+	public boolean isDiffEnabled()
+	{
+		return config.isDiffEnabled();
 	}
 
 	@Override
@@ -161,6 +175,12 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	}
 
 	@Override
+	public Map<String, Object> getContext()
+	{
+		return config.getContext();
+	}
+
+	@Override
 	public GuavaVerifier putContext(String name, Object value)
 	{
 		Configuration newConfig = config.putContext(name, value);
@@ -176,6 +196,12 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultGuavaVerifier(scope, newConfig);
+	}
+
+	@Override
+	public String toString(Object o)
+	{
+		return config.toString(o);
 	}
 
 	@Override

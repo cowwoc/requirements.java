@@ -13,7 +13,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ContainerSizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ObjectCapabilitiesImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
@@ -32,8 +31,6 @@ public final class MultimapVerifierImpl<K, V>
 	extends ObjectCapabilitiesImpl<MultimapVerifier<K, V>, Multimap<K, V>>
 	implements MultimapVerifier<K, V>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
-
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the parameter
@@ -93,7 +90,7 @@ public final class MultimapVerifierImpl<K, V>
 	{
 		if (actual.isEmpty())
 			return this;
-		String actualAsString = secretConfiguration.toString(config, actual);
+		String actualAsString = config.toString(actual);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be empty.").
 			addContext("Actual", actualAsString).

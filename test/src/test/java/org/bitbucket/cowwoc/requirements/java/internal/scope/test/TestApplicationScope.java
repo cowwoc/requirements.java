@@ -5,8 +5,11 @@
 package org.bitbucket.cowwoc.requirements.java.internal.scope.test;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.AbstractApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.MainConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ThreadConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
@@ -17,8 +20,10 @@ import java.util.function.Supplier;
  */
 public final class TestApplicationScope extends AbstractApplicationScope
 {
-	private final Configuration defaultConfiguration = new Configuration();
-	private final GlobalRequirements globalConfiguration;
+	private final Configuration defaultConfiguration = new MainConfiguration();
+	private final GlobalConfiguration globalConfiguration;
+	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
+		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
 
 	/**
 	 * @param terminalEncoding the type of encoding that verifiers should output
@@ -30,9 +35,15 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	}
 
 	@Override
-	public GlobalRequirements getGlobalConfiguration()
+	public GlobalConfiguration getGlobalConfiguration()
 	{
 		return globalConfiguration;
+	}
+
+	@Override
+	public Supplier<ThreadConfiguration> getThreadConfiguration()
+	{
+		return threadConfiguration::get;
 	}
 
 	@Override

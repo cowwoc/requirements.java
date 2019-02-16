@@ -4,12 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.internal.scope.MainThreadConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ThreadConfiguration;
 
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
- * <p>
  * <p>
  * <b>Note</b>: This configuration is read by verifiers at every method invocation so updating it will
  * affect existing verifiers.
@@ -17,7 +16,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ThreadConfiguration
 public final class ThreadRequirements
 {
 	private static final ThreadLocal<ThreadConfiguration> DELEGATE =
-		ThreadLocal.withInitial(MainThreadConfiguration::new);
+		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
 	private static final ThreadRequirements INSTANCE = new ThreadRequirements();
 
 	/**

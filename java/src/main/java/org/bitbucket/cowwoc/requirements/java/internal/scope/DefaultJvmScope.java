@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.pouch.ConcurrentLazyFactory;
 import org.bitbucket.cowwoc.pouch.ConcurrentLazyReference;
 import org.bitbucket.cowwoc.pouch.Factory;
 import org.bitbucket.cowwoc.pouch.Reference;
-import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 /**
  * The default implementation of JvmScope.
@@ -66,8 +66,10 @@ public final class DefaultJvmScope implements JvmScope
 	};
 	private final Reference<Terminal> terminal =
 		ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
-	private final Reference<GlobalRequirements> globalConfiguration =
-		ConcurrentLazyReference.create(() -> new GlobalRequirements(this));
+	private final Reference<GlobalConfiguration> globalConfiguration =
+		ConcurrentLazyReference.create(() -> new MainGlobalConfiguration(this));
+	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
+		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
 	public final Thread shutdownHook;
 	public final AtomicBoolean closed = new AtomicBoolean();
 	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);
@@ -113,9 +115,15 @@ public final class DefaultJvmScope implements JvmScope
 	}
 
 	@Override
-	public GlobalRequirements getGlobalConfiguration()
+	public GlobalConfiguration getGlobalConfiguration()
 	{
 		return globalConfiguration.getValue();
+	}
+
+	@Override
+	public Supplier<ThreadConfiguration> getThreadConfiguration()
+	{
+		return threadConfiguration::get;
 	}
 
 	@Override

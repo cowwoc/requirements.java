@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.ContainerSizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
@@ -22,7 +21,6 @@ public final class ContainerSizeVerifierImpl
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
 	implements ContainerSizeVerifier
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final String containerName;
 	private final Object container;
 	private final Pluralizer pluralizer;
@@ -57,7 +55,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual >= value)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " must contain at least " + valueAsString + " " + pluralizer.nameOf(value) + ".").
 			addContext("Actual", actual);
@@ -89,7 +87,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual > value)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " must contain more than " + valueAsString + " " + pluralizer.nameOf(value)).
 			addContext("Actual", actual);
@@ -121,7 +119,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual <= value)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " may not contain more than " + valueAsString + " " + pluralizer.nameOf(value) + ".").
 			addContext("Actual", actual);
@@ -153,7 +151,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isNotNull();
 		if (actual < value)
 			return getThis();
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " must contain less than " + valueAsString + " " + pluralizer.nameOf(value) + ".").
 			addContext("Actual", actual);
@@ -240,8 +238,8 @@ public final class ContainerSizeVerifierImpl
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual >= startInclusive && actual < endExclusive)
 			return getThis();
-		String startAsString = secretConfiguration.toString(config, startInclusive);
-		String endAsString = secretConfiguration.toString(config, endExclusive);
+		String startAsString = config.toString(startInclusive);
+		String endAsString = config.toString(endExclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " must contain [" + startAsString + ", " + endAsString + ") " + pluralizer.nameOf(2) +
 				".").
@@ -260,8 +258,8 @@ public final class ContainerSizeVerifierImpl
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual >= startInclusive && actual <= endInclusive)
 			return getThis();
-		String startAsString = secretConfiguration.toString(config, startInclusive);
-		String endAsString = secretConfiguration.toString(config, endInclusive);
+		String startAsString = config.toString(startInclusive);
+		String endAsString = config.toString(endInclusive);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " must contain [" + startAsString + ", " + endAsString + "] " + pluralizer.nameOf(2) +
 				".").
@@ -280,7 +278,7 @@ public final class ContainerSizeVerifierImpl
 		if (Objects.equals(actual, expected))
 			return getThis();
 		int expectedAsInt = (Integer) expected;
-		String expectedAsString = secretConfiguration.toString(config, expected);
+		String expectedAsString = config.toString(expected);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " must contain " + expectedAsString + " " + pluralizer.nameOf(expectedAsInt) + ".").
 			addContext("Actual", actual);
@@ -313,7 +311,7 @@ public final class ContainerSizeVerifierImpl
 		scope.getInternalVerifier().requireThat(value, "value").isInstanceOf(Integer.class);
 		if (!(value instanceof Integer))
 		{
-			String valueAsString = secretConfiguration.toString(config, value);
+			String valueAsString = config.toString(value);
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 				name + " can never be equal to " + valueAsString, null).
 				build();
@@ -321,7 +319,7 @@ public final class ContainerSizeVerifierImpl
 		if (!Objects.equals(actual, value))
 			return getThis();
 		int valueAsInt = (Integer) value;
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		ExceptionBuilder eb = new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			containerName + " may not contain " + valueAsString + " " + pluralizer.nameOf(valueAsInt) + ".").
 			addContext("Actual", actual);
@@ -338,7 +336,7 @@ public final class ContainerSizeVerifierImpl
 		verifier.requireThat(value, "value").isInstanceOf(Integer.class);
 		if (!(value instanceof Integer))
 		{
-			String valueAsString = secretConfiguration.toString(config, value);
+			String valueAsString = config.toString(value);
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 				name + " can never be equal to " + valueAsString, null).
 				build();

@@ -8,7 +8,6 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Objects;
 
@@ -26,7 +25,6 @@ import java.util.function.Consumer;
  */
 public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities<S, T>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	protected final ApplicationScope scope;
 	protected final String name;
 	protected final T actual;
@@ -100,7 +98,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (!Objects.equals(actual, other))
 			return getThis();
 
-		String value = secretConfiguration.toString(config, other);
+		String value = config.toString(other);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " may not be equal to " + value).
 			build();
@@ -155,7 +153,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (collection.contains(actual))
 			return getThis();
 
-		String collectionAsString = secretConfiguration.toString(config, collection);
+		String collectionAsString = config.toString(collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			this.name + " must be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
@@ -169,7 +167,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (!collection.contains(actual))
 			return getThis();
 
-		String collectionAsString = secretConfiguration.toString(config, collection);
+		String collectionAsString = config.toString(collection);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			this.name + " may not be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
@@ -240,7 +238,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public StringVerifier asString()
 	{
-		String value = secretConfiguration.toString(config, actual);
+		String value = config.toString(actual);
 		return new StringVerifierImpl(scope, name, value, config);
 	}
 

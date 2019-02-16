@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.util.Optional;
@@ -20,8 +19,6 @@ public final class OptionalVerifierImpl
 	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
 	implements OptionalVerifier
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
-
 	/**
 	 * @param scope  the application configuration
 	 * @param name   the name of the value
@@ -65,7 +62,7 @@ public final class OptionalVerifierImpl
 		Optional<?> expected = Optional.of(value);
 		if (actual.equals(expected))
 			return this;
-		String valueAsString = secretConfiguration.toString(config, value);
+		String valueAsString = config.toString(value);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must contain " + valueAsString + ".").
 			addContext("Actual", actual).

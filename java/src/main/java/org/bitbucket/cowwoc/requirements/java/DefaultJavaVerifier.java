@@ -138,6 +138,12 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	}
 
 	@Override
+	public Map<String, Object> getContext()
+	{
+		return config.getContext();
+	}
+
+	@Override
 	public JavaVerifier putContext(String name, Object value)
 	{
 		Configuration newConfig = config.putContext(name, value);
@@ -153,6 +159,12 @@ public final class DefaultJavaVerifier implements JavaVerifier
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultJavaVerifier(scope, newConfig);
+	}
+
+	@Override
+	public Optional<Class<? extends RuntimeException>> getException()
+	{
+		return config.getException();
 	}
 
 	@Override
@@ -192,6 +204,12 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	}
 
 	@Override
+	public boolean isDiffEnabled()
+	{
+		return config.isDiffEnabled();
+	}
+
+	@Override
 	public JavaVerifier withDiff()
 	{
 		Configuration newConfig = config.withDiff();
@@ -207,6 +225,12 @@ public final class DefaultJavaVerifier implements JavaVerifier
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultJavaVerifier(scope, newConfig);
+	}
+
+	@Override
+	public String toString(Object o)
+	{
+		return config.toString(o);
 	}
 
 	@Override

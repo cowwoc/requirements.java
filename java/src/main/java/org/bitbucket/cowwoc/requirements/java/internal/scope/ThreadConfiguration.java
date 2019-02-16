@@ -4,9 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
+import java.util.Map;
+
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
- * <p>
  * <p>
  * <b>Note</b>: This configuration is read by verifiers at every method invocation so updating it will
  * affect existing verifiers.
@@ -14,11 +15,19 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 public interface ThreadConfiguration
 {
 	/**
+	 * Returns a map to append to the exception message.
+	 *
+	 * @return an unmodifiable map to append to the exception message
+	 * @see #putContext(String, Object)
+	 */
+	Map<String, Object> getContext();
+
+	/**
 	 * Adds or updates contextual information associated with the exception message.
 	 *
 	 * @param name  the name of the parameter
 	 * @param value the value of the parameter
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	ThreadConfiguration putContext(String name, Object value);
@@ -27,15 +36,8 @@ public interface ThreadConfiguration
 	 * Removes contextual information associated with the exception message.
 	 *
 	 * @param name the name of the parameter
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	ThreadConfiguration removeContext(String name);
-
-	/**
-	 * Returns the configuration shared by all verifiers.
-	 *
-	 * @return the configuration shared by all verifiers
-	 */
-	GlobalConfiguration getGlobalConfiguration();
 }

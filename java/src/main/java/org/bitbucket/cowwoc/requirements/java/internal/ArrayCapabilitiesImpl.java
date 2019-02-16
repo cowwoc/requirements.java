@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
@@ -31,7 +30,6 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	extends ObjectCapabilitiesImpl<S, A>
 	implements ArrayCapabilities<S, E, A>
 {
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 	private final Collection<E> actualAsCollection;
 	private final CollectionVerifier<Collection<E>, E> asCollection;
 
@@ -286,7 +284,7 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	@Override
 	public StringVerifier asString()
 	{
-		String value = secretConfiguration.toString(config, actual);
+		String value = config.toString(actual);
 		return new StringVerifierImpl(scope, name, value, config);
 	}
 

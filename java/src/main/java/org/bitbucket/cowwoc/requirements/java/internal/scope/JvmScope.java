@@ -6,6 +6,8 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 
+import java.util.function.Supplier;
+
 /**
  * The JVM configuration.
  * <p>
@@ -22,6 +24,11 @@ public interface JvmScope extends AutoCloseable
 	 * @return the global configuration inherited by all verifiers
 	 */
 	GlobalConfiguration getGlobalConfiguration();
+
+	/**
+	 * @return the configuration of all verifiers invoked by the current thread
+	 */
+	Supplier<ThreadConfiguration> getThreadConfiguration();
 
 	@Override
 	void close();

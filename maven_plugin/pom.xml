@@ -90,14 +90,14 @@
 								-->
 
 								<!-- WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-568 -->
-								<!--<option>&#45;&#45;add-exports</option>-->
-								<!--<option>-->
-								<!--org.bitbucket.cowwoc.requirements.natives/org.bitbucket.cowwoc.requirements.natives.internal.util=ALL-UNNAMED-->
-								<!--</option>-->
-								<!--<option>&#45;&#45;add-exports</option>-->
-								<!--<option>-->
-								<!--org.bitbucket.cowwoc.requirements.generator/org.bitbucket.cowwoc.requirements.generator.internal.secrets=ALL-UNNAMED-->
-								<!--</option>-->
+								<option>--add-exports</option>
+								<option>
+									org.bitbucket.cowwoc.requirements.natives/org.bitbucket.cowwoc.requirements.natives.internal.util=ALL-UNNAMED
+								</option>
+								<option>--add-exports</option>
+								<option>
+									org.bitbucket.cowwoc.requirements.generator/org.bitbucket.cowwoc.requirements.generator.internal.secrets=ALL-UNNAMED
+								</option>
 								<!-- https://stackoverflow.com/a/54468139/14731 -->
 								<option>--override-methods</option>
 								<option>summary</option>
@@ -114,6 +114,12 @@
 			<groupId>org.twdata.maven</groupId>
 			<artifactId>mojo-executor</artifactId>
 			<version>2.3.0</version>
+		</dependency>
+		<!-- Upgrade transitive dependency of mojo-executor -->
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>3.1.1</version>
 		</dependency>
 
 		<!-- Upgrade transitive dependency of maven-plugin-plugin to avoid parsing error for Java9+ classes -->
@@ -175,6 +181,16 @@
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
 			<version>3.6.0</version>
 		</dependency>
 		<dependency>

@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffResult;
-import org.bitbucket.cowwoc.requirements.java.internal.secrets.SecretConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -24,7 +23,6 @@ import java.util.regex.Pattern;
 public final class ContextGenerator
 {
 	private static final Pattern LINES_NOT_EQUAL = Pattern.compile("[^=]+");
-	private final SecretConfiguration secretConfiguration = SharedSecrets.INSTANCE.secretConfiguration;
 
 	/**
 	 * Updates the last context entry to indicate that duplicate lines were skipped.
@@ -75,8 +73,8 @@ public final class ContextGenerator
 	{
 		// This class outputs the String representation of the values. If those are equal, it also
 		// outputs the first of getClass(), hashCode(), or System.identityHashCode()] that differs.
-		String actualAsString = secretConfiguration.toString(config, actualValue);
-		String expectedAsString = secretConfiguration.toString(config, expectedValue);
+		String actualAsString = config.toString(actualValue);
+		String expectedAsString = config.toString(expectedValue);
 		Class<?> actualType;
 		if (actualValue == null)
 			actualType = null;
@@ -104,17 +102,16 @@ public final class ContextGenerator
 					expectedName + ".class", expectedClassName));
 				return result;
 			}
-			String actualHashCode = secretConfiguration.toString(config, Objects.hashCode(actualValue));
-			String expectedHashCode = secretConfiguration.toString(config, Objects.hashCode(expectedValue));
+			String actualHashCode = config.toString(Objects.hashCode(actualValue));
+			String expectedHashCode = config.toString(Objects.hashCode(expectedValue));
 			if (!actualHashCode.equals(expectedHashCode))
 			{
 				result.addAll(getContext(actualName + ".hashCode", actualHashCode, actualType,
 					expectedName + ".hashCode", expectedHashCode));
 				return result;
 			}
-			String actualIdentityHashCode = secretConfiguration.toString(config, System.identityHashCode(actualValue));
-			String expectedIdentityHashCode = secretConfiguration.toString(config,
-				System.identityHashCode(expectedValue));
+			String actualIdentityHashCode = config.toString(System.identityHashCode(actualValue));
+			String expectedIdentityHashCode = config.toString(System.identityHashCode(expectedValue));
 			result.addAll(getContext(actualName + ".identityHashCode", actualIdentityHashCode,
 				actualType, expectedName + ".identityHashCode", expectedIdentityHashCode));
 		}
