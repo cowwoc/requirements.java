@@ -64,6 +64,13 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	}
 
 	@Override
+	public ThreadConfiguration removeAllContext()
+	{
+		context.clear();
+		return this;
+	}
+
+	@Override
 	public String toString()
 	{
 		return "MainThreadConfiguration[context=" + context + "]";

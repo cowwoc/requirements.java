@@ -40,4 +40,11 @@ public interface ThreadConfiguration
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	ThreadConfiguration removeContext(String name);
+
+	/**
+	 * Removes all contextual information associated with the exception message.
+	 *
+	 * @return this
+	 */
+	ThreadConfiguration removeAllContext();
 }

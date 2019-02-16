@@ -4,8 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ThreadConfiguration;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
@@ -15,8 +18,8 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ThreadConfiguration
  */
 public final class ThreadRequirements
 {
-	private static final ThreadLocal<ThreadConfiguration> DELEGATE =
-		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
+	private static final Supplier<ThreadConfiguration> DELEGATE =
+		DefaultJvmScope.INSTANCE.getThreadConfiguration();
 	private static final ThreadRequirements INSTANCE = new ThreadRequirements();
 
 	/**
@@ -27,19 +30,27 @@ public final class ThreadRequirements
 	}
 
 	/**
+	 * Returns a map to append to the exception message.
+	 *
+	 * @return an unmodifiable map to append to the exception message
+	 * @see #putContext(String, Object)
+	 */
+	public static Map<String, Object> getContext()
+	{
+		return DELEGATE.get().getContext();
+	}
+
+	/**
 	 * Adds or updates contextual information associated with the exception message.
 	 *
 	 * @param name  the name of the parameter
 	 * @param value the value of the parameter
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	public static ThreadRequirements putContext(String name, Object value)
 	{
-		ThreadConfiguration oldConfig = DELEGATE.get();
-		ThreadConfiguration newConfig = oldConfig.putContext(name, value);
-		if (!newConfig.equals(oldConfig))
-			DELEGATE.set(newConfig);
+		DELEGATE.get().putContext(name, value);
 		return INSTANCE;
 	}
 
@@ -47,15 +58,23 @@ public final class ThreadRequirements
 	 * Removes contextual information associated with the exception message.
 	 *
 	 * @param name the name of the parameter
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	public static ThreadRequirements removeContext(String name)
 	{
-		ThreadConfiguration oldConfig = DELEGATE.get();
-		ThreadConfiguration newConfig = oldConfig.removeContext(name);
-		if (!newConfig.equals(oldConfig))
-			DELEGATE.set(newConfig);
+		DELEGATE.get().removeContext(name);
+		return INSTANCE;
+	}
+
+	/**
+	 * Removes all contextual information associated with the exception message.
+	 *
+	 * @return this
+	 */
+	public static ThreadRequirements removeAllContext()
+	{
+		DELEGATE.get().removeAllContext();
 		return INSTANCE;
 	}
 }
