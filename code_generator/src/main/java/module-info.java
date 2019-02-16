@@ -10,6 +10,5 @@ module org.bitbucket.cowwoc.requirements.generator
 	requires org.slf4j;
 
 	exports org.bitbucket.cowwoc.requirements.generator;
-	// WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-568
-//	exports org.bitbucket.cowwoc.requirements.generator.internal.secrets to org.bitbucket.cowwoc.requirements.maven_plugin;
+	exports org.bitbucket.cowwoc.requirements.generator.internal.secrets to org.bitbucket.cowwoc.requirements.maven_plugin;
 }

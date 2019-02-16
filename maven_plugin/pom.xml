@@ -89,15 +89,6 @@
 								to them.
 								-->
 
-								<!-- WORKAROUND: https://issues.apache.org/jira/browse/MJAVADOC-568 -->
-								<option>--add-exports</option>
-								<option>
-									org.bitbucket.cowwoc.requirements.natives/org.bitbucket.cowwoc.requirements.natives.internal.util=ALL-UNNAMED
-								</option>
-								<option>--add-exports</option>
-								<option>
-									org.bitbucket.cowwoc.requirements.generator/org.bitbucket.cowwoc.requirements.generator.internal.secrets=ALL-UNNAMED
-								</option>
 								<!-- https://stackoverflow.com/a/54468139/14731 -->
 								<option>--override-methods</option>
 								<option>summary</option>
