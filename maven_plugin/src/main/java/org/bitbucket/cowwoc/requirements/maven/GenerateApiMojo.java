@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.maven;
 
 import org.apache.maven.model.Dependency;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -14,8 +13,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.bitbucket.cowwoc.requirements.generator.ApiGenerator;
 import org.bitbucket.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +24,7 @@ import java.nio.file.Path;
  * depend on which plugins are enabled.
  */
 @Mojo(name = "generate-api", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
-public final class GenerateApiMojo extends AbstractMojo
+public final class GenerateApiMojo extends AbstractGeneratorMojo
 {
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	private File targetDirectory;
@@ -57,27 +54,7 @@ public final class GenerateApiMojo extends AbstractMojo
 	@Override
 	public void execute() throws MojoExecutionException
 	{
-		if (scope == null)
-			throw new MojoExecutionException("scope may not be null");
-		Path targetPath;
-		switch (scope)
-		{
-			case "compile":
-			{
-				targetPath = targetDirectory.toPath().resolve("generated-sources/requirements");
-				break;
-			}
-			case "test":
-			{
-				targetPath = targetDirectory.toPath().resolve("generated-test-sources/requirements");
-				break;
-			}
-			default:
-			{
-				throw new MojoExecutionException("scope must be one of [compile, test].\n" +
-					"Actual: " + scope);
-			}
-		}
+		Path generatedSources = getGeneratedSourcesPath(scope, targetDirectory.toPath());
 		boolean guavaEnabled = false;
 		for (Dependency dependency : project.getDependencies())
 		{
@@ -94,49 +71,21 @@ public final class GenerateApiMojo extends AbstractMojo
 			SharedSecrets.INSTANCE.secretApiGenerator.exportScope(generator);
 		try
 		{
-			Files.createDirectories(targetPath);
+			Files.createDirectories(generatedSources);
 		}
 		catch (IOException e)
 		{
-			getLog().error("Failed to create: " + targetPath.toAbsolutePath());
+			getLog().error("Failed to create: " + generatedSources.toAbsolutePath());
 			throw new MojoExecutionException("", e);
 		}
 		try
 		{
-			Logger log = LoggerFactory.getLogger(ApiGenerator.class);
-			Path defaultRequirements = generator.getDefaultRequirementsPath(targetPath);
-			if (generator.writeDefaultRequirements(defaultRequirements))
-				log.info("{} was up-to-date", defaultRequirements);
-			else
-				log.info("Generated {}", defaultRequirements);
-
-			Path requirements = generator.getRequirementsPath(targetPath);
-			if (generator.writeRequirements(requirements))
-				log.info("{} was up-to-date", requirements);
-			else
-				log.info("Generated {}", requirements);
+			generator.apply(generatedSources);
 		}
 		catch (IOException e)
 		{
 			throw new MojoExecutionException("", e);
 		}
-		switch (scope)
-		{
-			case "compile":
-			{
-				project.addCompileSourceRoot(targetPath.toString());
-				break;
-			}
-			case "test":
-			{
-				project.addTestCompileSourceRoot(targetPath.toString());
-				break;
-			}
-			default:
-			{
-				throw new MojoExecutionException("scope must be one of [compile, test].\n" +
-					"Actual: " + scope);
-			}
-		}
+		addFilesToSources(project, scope, generatedSources);
 	}
 }

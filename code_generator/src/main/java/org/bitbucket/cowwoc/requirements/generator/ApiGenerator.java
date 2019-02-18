@@ -4,16 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.generator;
 
+import org.bitbucket.cowwoc.requirements.generator.internal.util.Generators;
 import org.bitbucket.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -27,9 +25,6 @@ public final class ApiGenerator
 	{
 		SharedSecrets.INSTANCE.secretApiGenerator = ApiGenerator::exportScope;
 	}
-
-	private boolean guavaEnabled;
-	private boolean exportScope;
 
 	/**
 	 * The command-line entry point for this class.
@@ -53,19 +48,35 @@ public final class ApiGenerator
 
 		Path directory = Paths.get(args[0]);
 		ApiGenerator generator = new ApiGenerator();
+		generator.apply(directory);
+	}
 
-		Logger log = LoggerFactory.getLogger(ApiGenerator.class);
-		Path defaultRequirements = generator.getDefaultRequirementsPath(directory);
-		if (generator.writeDefaultRequirements(defaultRequirements))
-			log.info("{} was up-to-date", defaultRequirements);
-		else
+	private boolean guavaEnabled;
+	private boolean exportScope;
+	private final Logger log = LoggerFactory.getLogger(ApiGenerator.class);
+
+	/**
+	 * Writes all API endpoints and logs the result..
+	 *
+	 * @param directory the directory to generate files into
+	 * @throws NullPointerException if any of the arguments are null
+	 * @throws IOException          if an I/O error occurs
+	 */
+	public void apply(Path directory) throws IOException
+	{
+		if (directory == null)
+			throw new NullPointerException("directory may not be null");
+		Path defaultRequirements = getDefaultRequirementsPath(directory);
+		if (writeDefaultRequirements(defaultRequirements))
 			log.info("Generated {}", defaultRequirements);
-
-		Path requirements = generator.getRequirementsPath(directory);
-		if (generator.writeRequirements(requirements))
-			log.info("{} was up-to-date", requirements);
 		else
+			log.info("Skipped {} because it was up-to-date", defaultRequirements);
+
+		Path requirements = getRequirementsPath(directory);
+		if (writeRequirements(requirements))
 			log.info("Generated {}", requirements);
+		else
+			log.info("Skipped {} because it was up-to-date", requirements);
 	}
 
 	/**
@@ -94,7 +105,7 @@ public final class ApiGenerator
 	 * @param rootPackage the path of the root package
 	 * @return the path of the {@code DefaultRequirements.java} file
 	 */
-	public Path getDefaultRequirementsPath(Path rootPackage)
+	private Path getDefaultRequirementsPath(Path rootPackage)
 	{
 		return rootPackage.resolve("org/bitbucket/cowwoc/requirements/DefaultRequirements.java");
 	}
@@ -106,21 +117,10 @@ public final class ApiGenerator
 	 * @return true if the file was updated
 	 * @throws IOException if an I/O error occurs while writing the file
 	 */
-	public boolean writeDefaultRequirements(Path path) throws IOException
+	private boolean writeDefaultRequirements(Path path) throws IOException
 	{
-		Files.createDirectories(path.getParent());
-
-		String oldValue;
-		try
-		{
-			oldValue = Files.readString(path);
-		}
-		catch (NoSuchFileException unused)
-		{
-			oldValue = "";
-		}
-		try (StringWriter sw = new StringWriter();
-		     BufferedWriter writer = new BufferedWriter(sw))
+		StringWriter sw = new StringWriter();
+		try (BufferedWriter writer = new BufferedWriter(sw))
 		{
 			writer.write("/*\n" +
 				" * Copyright 2013 Gili Tzabari.\n" +
@@ -1260,17 +1260,8 @@ public final class ApiGenerator
 				"\t{\n" +
 				"\t}\n" +
 				"}\n");
-			writer.close();
-
-			String newValue = sw.toString();
-			if (oldValue.equals(newValue))
-				return false;
-			try (FileWriter fw = new FileWriter(path.toFile()))
-			{
-				fw.write(newValue);
-			}
 		}
-		return true;
+		return Generators.writeIfChanged(path, sw.toString());
 	}
 
 	/**
@@ -1279,7 +1270,7 @@ public final class ApiGenerator
 	 * @param rootPackage the path of the root package
 	 * @return the path of the {@code Requirements.java} file
 	 */
-	public Path getRequirementsPath(Path rootPackage)
+	private Path getRequirementsPath(Path rootPackage)
 	{
 		return rootPackage.resolve("org/bitbucket/cowwoc/requirements/Requirements.java");
 	}
@@ -1291,21 +1282,10 @@ public final class ApiGenerator
 	 * @return true if the file was updated
 	 * @throws IOException if an I/O error occurs while writing the file
 	 */
-	public boolean writeRequirements(Path path) throws IOException
+	private boolean writeRequirements(Path path) throws IOException
 	{
-		Files.createDirectories(path.getParent());
-
-		String oldValue;
-		try
-		{
-			oldValue = Files.readString(path);
-		}
-		catch (NoSuchFileException unused)
-		{
-			oldValue = "";
-		}
-		try (StringWriter sw = new StringWriter();
-		     BufferedWriter writer = new BufferedWriter(sw))
+		StringWriter sw = new StringWriter();
+		try (BufferedWriter writer = new BufferedWriter(sw))
 		{
 			writer.write("/*\n" +
 				" * Copyright 2013 Gili Tzabari.\n" +
@@ -2684,16 +2664,7 @@ public final class ApiGenerator
 					"\t}\n");
 			}
 			writer.write("}\n");
-			writer.close();
-
-			String newValue = sw.toString();
-			if (oldValue.equals(newValue))
-				return false;
-			try (FileWriter fw = new FileWriter(path.toFile()))
-			{
-				fw.write(newValue);
-			}
 		}
-		return true;
+		return Generators.writeIfChanged(path, sw.toString());
 	}
 }

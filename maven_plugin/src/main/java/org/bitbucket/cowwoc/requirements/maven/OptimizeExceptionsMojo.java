@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.maven;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -26,7 +25,7 @@ import java.util.List;
  */
 @Mojo(name = "optimize-exceptions", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-public final class OptimizeExceptionsMojo extends AbstractMojo
+public final class OptimizeExceptionsMojo extends AbstractGeneratorMojo
 {
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	private File targetDirectory;
@@ -48,35 +47,15 @@ public final class OptimizeExceptionsMojo extends AbstractMojo
 	@Override
 	public void execute() throws MojoExecutionException
 	{
-		if (scope == null)
-			throw new MojoExecutionException("scope may not be null");
-		Path targetPath;
-		switch (scope)
-		{
-			case "compile":
-			{
-				targetPath = targetDirectory.toPath().resolve("generated-sources/requirements");
-				break;
-			}
-			case "test":
-			{
-				targetPath = targetDirectory.toPath().resolve("generated-test-sources/requirements");
-				break;
-			}
-			default:
-			{
-				throw new MojoExecutionException("scope must be one of [compile, test].\n" +
-					"Actual: " + scope);
-			}
-		}
+		Path generatedSources = getGeneratedSourcesPath(scope, targetDirectory.toPath());
 		ExceptionOptimizer optimizer = new ExceptionOptimizer();
 		try
 		{
-			Files.createDirectories(targetPath);
+			Files.createDirectories(generatedSources);
 		}
 		catch (IOException e)
 		{
-			getLog().error("Failed to create: " + targetPath.toAbsolutePath());
+			getLog().error("Failed to create: " + generatedSources.toAbsolutePath());
 			throw new MojoExecutionException("", e);
 		}
 		try
@@ -94,34 +73,13 @@ public final class OptimizeExceptionsMojo extends AbstractMojo
 					log.error("Cannot find " + exceptionName);
 					continue;
 				}
-				Path path = ExceptionOptimizer.getWrapperPath(targetPath, exceptionName);
-				if (optimizer.writeWrapper(path, exception))
-					log.info("{} was up-to-date", path);
-				else
-					log.info("Generated {}", path);
+				optimizer.apply(generatedSources, exception);
 			}
 		}
 		catch (IOException e)
 		{
 			throw new MojoExecutionException("", e);
 		}
-		switch (scope)
-		{
-			case "compile":
-			{
-				project.addCompileSourceRoot(targetPath.toString());
-				break;
-			}
-			case "test":
-			{
-				project.addTestCompileSourceRoot(targetPath.toString());
-				break;
-			}
-			default:
-			{
-				throw new MojoExecutionException("scope must be one of [compile, test].\n" +
-					"Actual: " + scope);
-			}
-		}
+		addFilesToSources(project, scope, generatedSources);
 	}
 }

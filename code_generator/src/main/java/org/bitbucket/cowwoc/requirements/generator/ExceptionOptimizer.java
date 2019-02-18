@@ -4,16 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.generator;
 
+import org.bitbucket.cowwoc.requirements.generator.internal.util.Generators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -58,13 +56,28 @@ public final class ExceptionOptimizer
 			exception = null;
 		}
 		ExceptionOptimizer optimizer = new ExceptionOptimizer();
+		optimizer.writeWrapper(directory, exception);
+	}
 
-		Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
-		Path wrapperPath = getWrapperPath(directory, exceptionName);
-		if (optimizer.writeWrapper(wrapperPath, exception))
-			log.info("{} was up-to-date", wrapperPath);
-		else
+	private final Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
+
+	/**
+	 * Writes an exception wrapper and logs the result.
+	 *
+	 * @param directory the directory to generate files into
+	 * @param exception the exception to wrap
+	 * @throws NullPointerException if any of the arguments are null
+	 * @throws IOException          if an I/O error occurs
+	 */
+	public void apply(Path directory, Class<?> exception) throws IOException
+	{
+		if (directory == null)
+			throw new NullPointerException("directory may not be null");
+		Path wrapperPath = getWrapperPath(directory, exception.getName());
+		if (writeWrapper(wrapperPath, exception))
 			log.info("Generated {}", wrapperPath);
+		else
+			log.info("Skipped {} because it was up-to-date", wrapperPath);
 	}
 
 	/**
@@ -83,7 +96,7 @@ public final class ExceptionOptimizer
 	 * @param exceptionName the exception to wrap
 	 * @return the path of the exception wrapper
 	 */
-	public static Path getWrapperPath(Path rootPackage, String exceptionName)
+	private static Path getWrapperPath(Path rootPackage, String exceptionName)
 	{
 		return rootPackage.resolve(exceptionToWrapperName(exceptionName).replace('.', '/') + ".java");
 	}
@@ -107,20 +120,8 @@ public final class ExceptionOptimizer
 	 * @return true if the file was updated
 	 * @throws IOException if an I/O error occurs while writing the file
 	 */
-	public boolean writeWrapper(Path path, Class<?> exception) throws IOException
+	private boolean writeWrapper(Path path, Class<?> exception) throws IOException
 	{
-		Files.createDirectories(path.getParent());
-
-		String oldValue;
-		try
-		{
-			oldValue = Files.readString(path);
-		}
-		catch (NoSuchFileException unused)
-		{
-			oldValue = "";
-		}
-
 		String exceptionSimpleName = exception.getSimpleName();
 		String packageName = exception.getPackage().getName();
 
@@ -129,8 +130,8 @@ public final class ExceptionOptimizer
 		String wrapperPackageName = wrapperName.substring(0,
 			wrapperName.length() - (1 + wrapperSimpleName.length()));
 
-		try (StringWriter sw = new StringWriter();
-		     BufferedWriter writer = new BufferedWriter(sw))
+		StringWriter sw = new StringWriter();
+		try (BufferedWriter writer = new BufferedWriter(sw))
 		{
 			writer.write("/*\n" +
 				" * Copyright 2018 Gili Tzabari.\n" +
@@ -231,16 +232,7 @@ public final class ExceptionOptimizer
 				"\t}\n" +
 				"}\n");
 			// There is no easy way to override writeObject(ObjectOutputStream) so we don't try to
-			writer.close();
-
-			String newValue = sw.toString();
-			if (oldValue.equals(newValue))
-				return false;
-			try (FileWriter fw = new FileWriter(path.toFile()))
-			{
-				fw.write(newValue);
-			}
 		}
-		return true;
+		return Generators.writeIfChanged(path, sw.toString());
 	}
 }
