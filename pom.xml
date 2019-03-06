@@ -175,7 +175,13 @@
 						</goals>
 						<!-- Reminder: Use "-pl !test,!benchmark" to exclude test modules -->
 						<configuration>
+							<show>public</show>
 							<additionalOptions>
+								<!--
+								Maven plugins cannot be full-fledged modules due to Maven's use of split packages.
+								automatic-modules are treated as unnamed modules so we need to explicitly export packages
+								to them.
+								-->
 								<option>--add-modules</option>
 								<option>java.xml</option>
 								<!-- https://stackoverflow.com/a/54468139/14731 -->

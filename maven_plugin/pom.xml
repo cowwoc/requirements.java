@@ -83,12 +83,6 @@
 							<doctitle>Requirements Maven Plugin ${project.version} API</doctitle>
 							<windowtitle>Requirements Maven Plugin ${project.version} API</windowtitle>
 							<additionalOptions>
-								<!--
-								Maven plugins cannot be full-fledged modules due to Maven's use of split packages.
-								automatic-modules are treated as unnamed modules so we need to explicitly export packages
-								to them.
-								-->
-
 								<!-- https://stackoverflow.com/a/54468139/14731 -->
 								<option>--override-methods</option>
 								<option>summary</option>
