@@ -41,7 +41,7 @@ public final class ConfigurationTest
 			Requirements requirements = new Requirements(scope);
 			requirements = requirements.putContext("verifierName", "verifierValue");
 			scope.getThreadConfiguration().get().putContext("threadName", "threadValue");
-			RuntimeException actual = new ExceptionBuilder(scope, requirements.getConfiguration(),
+			RuntimeException actual = new ExceptionBuilder(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue").build();
 			assertThat(actual.getMessage(), "message").contains("exceptionName: exceptionValue");
@@ -58,7 +58,7 @@ public final class ConfigurationTest
 			Requirements requirements = new Requirements(scope);
 			requirements = requirements.putContext("name", "verifierValue");
 			scope.getThreadConfiguration().get().putContext("name", "threadValue");
-			RuntimeException actual = new ExceptionBuilder(scope, requirements.getConfiguration(),
+			RuntimeException actual = new ExceptionBuilder(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue").build();
 			assertThat(actual.getMessage(), "message").contains("exceptionName: exceptionValue");
@@ -74,7 +74,7 @@ public final class ConfigurationTest
 			Requirements requirements = new Requirements(scope);
 			requirements = requirements.putContext("name", "verifierValue");
 			scope.getThreadConfiguration().get().putContext("name", "threadValue");
-			RuntimeException actual = new ExceptionBuilder(scope, requirements.getConfiguration(),
+			RuntimeException actual = new ExceptionBuilder(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("name", "exceptionValue").build();
 			assertThat(actual.getMessage(), "message").contains("name: exceptionValue");

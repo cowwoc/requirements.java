@@ -252,12 +252,6 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	}
 
 	@Override
-	public Configuration getConfiguration()
-	{
-		return config;
-	}
-
-	@Override
 	public JavaVerifier withConfiguration(Configuration configuration)
 	{
 		if (configuration.equals(config))

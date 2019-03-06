@@ -270,12 +270,6 @@ public final class MainConfiguration implements Configuration
 		return configuration;
 	}
 
-	@Override
-	public Configuration getConfiguration()
-	{
-		return this;
-	}
-
 	public int hashCode()
 	{
 		int hash = 3;

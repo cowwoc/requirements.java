@@ -223,12 +223,6 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	}
 
 	@Override
-	public Configuration getConfiguration()
-	{
-		return config;
-	}
-
-	@Override
 	public GuavaVerifier withConfiguration(Configuration configuration)
 	{
 		if (config.equals(configuration))

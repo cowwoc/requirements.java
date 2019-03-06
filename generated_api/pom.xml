@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.bitbucket.cowwoc.requirements</groupId>
+		<artifactId>root</artifactId>
+		<version>4.0.6-SNAPSHOT</version>
+	</parent>
+	<artifactId>generated_api</artifactId>
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>maven_plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-api</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerArgs>
+						<arg>-Xdiags:verbose</arg>
+						<arg>-Werror</arg>
+						<!-- WORKAROUND: https://issues.apache.org/jira/browse/MCOMPILER-368 -->
+						<arg>-Xpkginfo:always</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<show>public</show>
+							<doctitle>Requirements Module ${project.version} API</doctitle>
+							<windowtitle>Requirements Module ${project.version} API</windowtitle>
+							<additionalOptions>
+								<!-- https://stackoverflow.com/a/54468139/14731 -->
+								<option>--override-methods</option>
+								<option>summary</option>
+							</additionalOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>java</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>guava</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

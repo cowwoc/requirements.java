@@ -391,6 +391,7 @@
 				</property>
 			</activation>
 			<modules>
+				<module>generated_api</module>
 				<module>test</module>
 				<module>benchmark</module>
 			</modules>

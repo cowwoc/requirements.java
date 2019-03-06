@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.generator;
 
-import org.bitbucket.cowwoc.requirements.generator.internal.util.Generators;
 import org.bitbucket.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
+import org.bitbucket.cowwoc.requirements.generator.internal.util.Generators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,50 +122,7 @@ public final class ApiGenerator
 		StringWriter sw = new StringWriter();
 		try (BufferedWriter writer = new BufferedWriter(sw))
 		{
-			writer.write("/*\n" +
-				" * Copyright 2013 Gili Tzabari.\n" +
-				" * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0\n" +
-				" */\n" +
-				"package org.bitbucket.cowwoc.requirements;\n" +
-				"\n");
-			if (guavaEnabled)
-			{
-				writer.write("import com.google.common.collect.Multimap;\n" +
-					"import org.bitbucket.cowwoc.requirements.guava.DefaultGuavaVerifier;\n" +
-					"import org.bitbucket.cowwoc.requirements.guava.GuavaVerifier;\n" +
-					"import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;\n");
-			}
-			writer.write("import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.ClassVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.MapVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.NumberVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PathVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveByteArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;\n");
+			writeHeader(writer);
 			writer.write("\n" +
 				"import java.math.BigDecimal;\n" +
 				"import java.net.InetAddress;\n" +
@@ -176,7 +133,7 @@ public final class ApiGenerator
 				"import java.util.Optional;\n" +
 				"\n" +
 				"/**\n" +
-				" * Verifies API requirements using the {@link GlobalRequirements default configuration}.\n" +
+				" * Verifies API requirements using the default {@link Configuration configuration}.\n" +
 				" * <p>\n" +
 				" * The assertion status of the {@link Configuration} class determines whether " +
 				"{@code assertThat()} carries\n" +
@@ -222,7 +179,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the value\n" +
@@ -255,7 +212,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -288,7 +245,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, byte[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(byte[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -316,7 +273,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, short[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(short[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -344,7 +301,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, int[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(int[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -372,7 +329,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, long[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(long[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -400,7 +357,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, float[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(float[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -428,7 +385,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, double[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(double[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -456,7 +413,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, boolean[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(boolean[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -484,7 +441,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, char[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(char[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -513,7 +470,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -546,7 +503,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -578,7 +535,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(byte, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -607,7 +564,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(short, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -636,7 +593,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, int)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(int, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -665,7 +622,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Integer)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Integer, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -694,7 +651,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(long, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -723,7 +680,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Long, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -752,7 +709,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(float, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -781,7 +738,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(double, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -810,7 +767,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(boolean, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -825,7 +782,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(char, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -872,7 +829,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Number, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the number\n" +
@@ -903,7 +860,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Boolean, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -932,7 +889,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Float, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -961,7 +918,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -990,7 +947,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -1022,7 +979,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Map, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <K>    the type of key in the map\n" +
@@ -1053,7 +1010,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -1111,7 +1068,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -1141,7 +1098,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Class, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of class\n" +
@@ -1171,7 +1128,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -1201,7 +1158,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are " +
+				"\t * Same as {@link #requireThat(InetAddress, String)} but does nothing if assertions are " +
 				"disabled for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -1235,7 +1192,7 @@ public final class ApiGenerator
 					"\t}\n" +
 					"\n" +
 					"\t/**\n" +
-					"\t * Same as {@link #requireThat(String, Multimap)} but does nothing if assertions are " +
+					"\t * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are " +
 					"disabled.\n" +
 					"\t *\n" +
 					"\t * @param <K>    the type of key in the multimap\n" +
@@ -1287,51 +1244,7 @@ public final class ApiGenerator
 		StringWriter sw = new StringWriter();
 		try (BufferedWriter writer = new BufferedWriter(sw))
 		{
-			writer.write("/*\n" +
-				" * Copyright 2013 Gili Tzabari.\n" +
-				" * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0\n" +
-				" */\n" +
-				"package org.bitbucket.cowwoc.requirements;\n" +
-				"\n");
-			if (guavaEnabled)
-			{
-				writer.write("import com.google.common.collect.Multimap;\n" +
-					"import org.bitbucket.cowwoc.requirements.guava.DefaultGuavaVerifier;\n" +
-					"import org.bitbucket.cowwoc.requirements.guava.GuavaVerifier;\n" +
-					"import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;\n");
-			}
-			writer.write("import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.ClassVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.MapVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.NumberVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PathVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveByteArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;\n");
+			writeHeader(writer);
 			if (exportScope)
 				writer.write("import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n");
 			writer.write("\n" +
@@ -1345,10 +1258,12 @@ public final class ApiGenerator
 				"import java.util.function.Function;\n" +
 				"\n" +
 				"/**\n" +
-				" * An entry point for verifying API requirements.\n" +
+				" * Verifies API requirements using a custom {@link Configuration configuration}." +
+				" " +
+				"for verifying API requirements.\n" +
 				" * <p>\n" +
 				" * This class holds its own configuration whereas {@link DefaultRequirements} always uses the\n" +
-				" * {@link GlobalConfigurable global configuration}.\n" +
+				" * default {@link Configuration configuration}.\n" +
 				" * <p>\n" +
 				" * The assertion status of the {@link Configuration} class determines whether " +
 				"{@code assertThat()} carries\n" +
@@ -1421,9 +1336,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withAssertionsEnabled()\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withAssertionsEnabled();\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withAssertionsEnabled();\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1437,9 +1351,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withAssertionsDisabled()\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withAssertionsDisabled();\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withAssertionsDisabled();\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1459,9 +1372,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withException(Class<? extends RuntimeException> exception)\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withException(exception);\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withException(exception);\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1475,9 +1387,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withDefaultException()\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withDefaultException();\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withDefaultException();\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1497,9 +1408,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withDiff()\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withDiff();\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withDiff();\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1513,9 +1423,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withoutDiff()\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withoutDiff();\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withoutDiff();\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1535,9 +1444,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements putContext(String name, Object value)\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.putContext(name, value);\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.putContext(name, value);\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1551,9 +1459,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements removeContext(String name)\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.removeContext(name);\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.removeContext(name);\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1573,9 +1480,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic <T> Requirements withStringConverter(Class<T> type, Function<T, String> converter)\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withStringConverter(type, converter);\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withStringConverter(type, converter);\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1589,9 +1495,8 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic <T> Requirements withoutStringConverter(Class<T> type)\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tConfiguration newConfig = config.withoutStringConverter(type);\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tConfiguration newConfig = javaVerifier.withoutStringConverter(type);\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1605,8 +1510,7 @@ public final class ApiGenerator
 				"\t@Override\n" +
 				"\tpublic Requirements withConfiguration(Configuration newConfig)\n" +
 				"\t{\n" +
-				"\t\tConfiguration config = javaVerifier.getConfiguration();\n" +
-				"\t\tif (newConfig.equals(config))\n" +
+				"\t\tif (newConfig.equals(javaVerifier))\n" +
 				"\t\t\treturn this;\n" +
 				"\t\tJavaVerifier newJavaVerifier = javaVerifier.withConfiguration(newConfig);\n");
 			if (guavaEnabled)
@@ -1615,12 +1519,6 @@ public final class ApiGenerator
 			if (guavaEnabled)
 				writer.write(", newGuavaVerifier");
 			writer.write(");\n" +
-				"\t}\n" +
-				"\n" +
-				"\t@Override\n" +
-				"\tpublic Configuration getConfiguration()\n" +
-				"\t{\n" +
-				"\t\treturn javaVerifier.getConfiguration();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
@@ -1639,7 +1537,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the value\n" +
@@ -1671,7 +1569,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Collection)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -1703,7 +1601,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, byte[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(byte[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1731,7 +1629,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, short[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(short[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1759,7 +1657,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, int[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(int[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1787,7 +1685,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, long[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(long[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1815,7 +1713,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, float[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(float[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1843,7 +1741,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, double[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(double[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1871,7 +1769,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, boolean[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(boolean[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1899,7 +1797,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, char[])} but does nothing if assertions are disabled.\n" +
+				"\t * Same as {@link #requireThat(char[], String)} but does nothing if assertions are disabled.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
 				"\t * @param name   the name of the value\n" +
@@ -1928,7 +1826,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Object[])} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -1960,7 +1858,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Comparable)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -1992,7 +1890,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, byte)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(byte, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2021,7 +1919,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, short)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(short, String)} but does nothing if assertions are disabled " +
 				"for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2050,7 +1948,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, int)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(int, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2079,7 +1977,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Integer)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Integer, String)} but does nothing if assertions are disabled " +
 				"for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2108,7 +2006,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, long)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(long, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2137,7 +2035,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Long)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Long, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2166,7 +2064,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, float)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(float, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2195,7 +2093,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, double)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(double, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2224,7 +2122,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, boolean)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(boolean, String)} but does nothing if assertions are disabled " +
 				"for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2239,7 +2137,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, char)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(char, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2284,7 +2182,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Number)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Number, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of the number\n" +
@@ -2315,7 +2213,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Boolean)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Boolean, String)} but does nothing if assertions are disabled " +
 				"for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2344,7 +2242,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Float)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Float, String)} but does nothing if assertions are disabled " +
 				"for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2373,7 +2271,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Double)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled " +
 				"for this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2402,7 +2300,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, BigDecimal)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -2434,7 +2332,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Map)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Map, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <K>    the type of key in the map\n" +
@@ -2465,7 +2363,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Path)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2523,7 +2421,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, URI)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param actual the actual value\n" +
@@ -2553,7 +2451,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Class)} but does nothing if assertions are disabled for " +
+				"\t * Same as {@link #requireThat(Class, String)} but does nothing if assertions are disabled for " +
 				"this class.\n" +
 				"\t *\n" +
 				"\t * @param <T>    the type of class\n" +
@@ -2583,7 +2481,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, Optional)} but does nothing if assertions are disabled " +
+				"\t * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled " +
 				"for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -2613,7 +2511,7 @@ public final class ApiGenerator
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Same as {@link #requireThat(String, InetAddress)} but does nothing if assertions are " +
+				"\t * Same as {@link #requireThat(InetAddress, String)} but does nothing if assertions are " +
 				"disabled for this\n" +
 				"\t * class.\n" +
 				"\t *\n" +
@@ -2647,7 +2545,7 @@ public final class ApiGenerator
 					"\t}\n" +
 					"\n" +
 					"\t/**\n" +
-					"\t * Same as {@link #requireThat(String, Multimap)} but does nothing if assertions are " +
+					"\t * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are " +
 					"disabled.\n" +
 					"\t *\n" +
 					"\t * @param <K>    the type of key in the multimap\n" +
@@ -2666,5 +2564,60 @@ public final class ApiGenerator
 			writer.write("}\n");
 		}
 		return Generators.writeIfChanged(path, sw.toString());
+	}
+
+	/**
+	 * Writes the copyright information and imports at the top of each file.
+	 *
+	 * @param writer the writer to write into
+	 * @throws IOException if an I/O error occurs
+	 */
+	private void writeHeader(BufferedWriter writer) throws IOException
+	{
+		writer.write("/*\n" +
+			" * Copyright 2013 Gili Tzabari.\n" +
+			" * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0\n" +
+			" */\n" +
+			"package org.bitbucket.cowwoc.requirements;\n" +
+			"\n");
+		if (guavaEnabled)
+		{
+			writer.write("import com.google.common.collect.Multimap;\n" +
+				"import org.bitbucket.cowwoc.requirements.guava.DefaultGuavaVerifier;\n" +
+				"import org.bitbucket.cowwoc.requirements.guava.GuavaVerifier;\n" +
+				"import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;\n");
+		}
+		writer.write("import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.ClassVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.Configuration;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.JavaVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.MapVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.NumberVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PathVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveByteArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.StringVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.UriVerifier;\n" +
+			"import org.bitbucket.cowwoc.requirements.java.DefaultJavaVerifier;\n");
 	}
 }
