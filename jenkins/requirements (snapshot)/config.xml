@@ -1,5 +1,4 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<!--suppress LongLine -->
 <flow-definition plugin="workflow-job@2.31">
   <actions/>
   <description></description>
@@ -36,7 +35,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.62">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.63">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -88,7 +87,7 @@ parallel linux:
         }
         timeout(15)
         {
-            withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${tool &apos;JDK12_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (linux)&quot;)
                 {
@@ -120,7 +119,7 @@ parallel linux:
         timeout(15)
         {
             // gpg resides in /usr/local/bin
-            withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${tool &apos;JDK12_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
             {
                 stage(&quot;Deploy (mac)&quot;)
                 {
@@ -146,7 +145,7 @@ parallel linux:
         }
         timeout(15)
         {
-            withEnv([&quot;JAVA_HOME=${tool &apos;JDK11_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${tool &apos;JDK12_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (windows)&quot;)
                 {
