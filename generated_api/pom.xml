@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.bitbucket.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>4.0.6-SNAPSHOT</version>
+		<version>4.0.6-RC</version>
 	</parent>
 	<artifactId>generated_api</artifactId>
 	<packaging>jar</packaging>
