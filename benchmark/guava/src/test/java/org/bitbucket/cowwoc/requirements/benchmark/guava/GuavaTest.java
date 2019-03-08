@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.benchmark.guava;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.Requirements;
-import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -18,8 +18,6 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 // Fields may not be final:
@@ -47,6 +45,6 @@ public class GuavaTest
 	@Benchmark
 	public MultimapVerifier<String, String> requirementsRequireThat()
 	{
-		return new Requirements().requireThat(name, value).isNotNull();
+		return new Requirements().requireThat(value, name).isNotNull();
 	}
 }
