@@ -29,17 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class GuavaTest
 {
 	private String name = "multimap";
-	private Multimap<String, String> value = HashMultimap.create(1, 2);
-	private List<Integer> list;
-
-	public GuavaTest()
-	{
-		value.put("key", "value");
-		value.put("key", "value");
-		list = new ArrayList<>(100);
-		for (int i = 0; i < 100; ++i)
-			list.add(i);
-	}
+	private Multimap<String, String> value = HashMultimap.create();
 
 	@Test
 	public void runBenchmarks() throws RunnerException
@@ -55,8 +45,8 @@ public class GuavaTest
 	}
 
 	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> requirementsRequireThat()
+	public MultimapVerifier<String, String> requirementsRequireThat()
 	{
-		return new Requirements().requireThat(list, name).doesNotContainDuplicates();
+		return new Requirements().requireThat(name, value).isNotNull();
 	}
 }

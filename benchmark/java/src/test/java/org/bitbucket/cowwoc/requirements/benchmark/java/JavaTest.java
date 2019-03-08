@@ -32,14 +32,6 @@ public class JavaTest
 	private String name = "actual";
 	private String value = "value";
 	private Object nullObject = null;
-	private List<Integer> list;
-
-	public JavaTest()
-	{
-		list = new ArrayList<>(100);
-		for (int i = 0; i < 100; ++i)
-			list.add(i);
-	}
 
 	@Test
 	public void runBenchmarks() throws RunnerException
@@ -61,22 +53,22 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> requirementsWithAssertionsDisabledAssertThat()
+	public StringVerifier requirementsWithAssertionsDisabledAssertThat()
 	{
-		return new Requirements().withAssertionsDisabled().assertThat(list, name).doesNotContainDuplicates();
+		return new Requirements().withAssertionsDisabled().assertThat(name, value).isNotNull();
 	}
 
 	@Benchmark
-	public CollectionVerifier<?, ?> requirementsRequireThat()
+	public StringVerifier requirementsRequireThat()
 	{
-		return new Requirements().requireThat(list, name).doesNotContainDuplicates();
+		return new Requirements().requireThat(name, value).isNotNull();
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can be faster than requireThat() even though it delegates to it
 	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> requirementsWithAssertionsEnabledAssertThat()
+	public StringVerifier requirementsWithAssertionsEnabledAssertThat()
 	{
-		return new Requirements().withAssertionsEnabled().assertThat(list, name).doesNotContainDuplicates();
+		return new Requirements().withAssertionsEnabled().assertThat(name, value).isNotNull();
 	}
 
 	@Benchmark
