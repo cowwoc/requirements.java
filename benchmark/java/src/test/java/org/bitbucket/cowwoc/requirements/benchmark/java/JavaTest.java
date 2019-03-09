@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.benchmark.java;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
@@ -19,6 +20,8 @@ import org.testng.annotations.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 // Fields may not be final:
@@ -30,6 +33,14 @@ public class JavaTest
 	private String name = "actual";
 	private String value = "value";
 	private Object nullObject = null;
+	private List<Integer> list;
+
+	public JavaTest()
+	{
+		list = new ArrayList<Integer>(100);
+		for (int i = 0; i < 100; ++i)
+			list.add(i);
+	}
 
 	@Test
 	public void runBenchmarks() throws RunnerException
@@ -51,22 +62,29 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public StringVerifier requirementsWithAssertionsDisabledAssertThat()
-	{
-		return new Requirements().withAssertionsDisabled().assertThat(name, value).isNotNull();
-	}
-
-	@Benchmark
 	public StringVerifier requirementsRequireThat()
 	{
 		return new Requirements().requireThat(name, value).isNotNull();
 	}
 
-	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() can be faster than requireThat() even though it delegates to it
+	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
+	// though it delegates to it
 	@Benchmark
 	public StringVerifier requirementsWithAssertionsEnabledAssertThat()
 	{
 		return new Requirements().withAssertionsEnabled().assertThat(name, value).isNotNull();
+	}
+
+	@Benchmark
+	public CollectionVerifier<List<Integer>, Integer> requirementsRequireThatDoesNotContainDuplicates()
+	{
+		return new Requirements().requireThat(list, name).doesNotContainDuplicates();
+	}
+
+	@Benchmark
+	public CollectionVerifier<List<Integer>, Integer> requirementsAssertThatDoesNotContainDuplicates()
+	{
+		return new Requirements().withAssertionsDisabled().assertThat(list, name).doesNotContainDuplicates();
 	}
 
 	@Benchmark
