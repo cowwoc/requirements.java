@@ -103,7 +103,6 @@
 	</dependencies>
 	<properties>
 		<skipBenchmarks>true</skipBenchmarks>
-		<jmh.version>1.21</jmh.version>
 	</properties>
 	<profiles>
 		<profile>
