@@ -156,6 +156,8 @@ public final class ApiGenerator
 			}
 			writer.write("\n" +
 				"\t/**\n" +
+				"\t/* Returns true if assertions are enabled for this class.\n" +
+				"\t/*\n" +
 				"\t * @return true if assertions are enabled for this class\n" +
 				"\t */\n" +
 				"\tpublic static boolean assertionsAreEnabled()\n" +
@@ -1326,6 +1328,8 @@ public final class ApiGenerator
 			writer.write("\t}\n" +
 				"\n" +
 				"\t/**\n" +
+				"\t/* Returns true if assertions are enabled for this class.\n" +
+				"\t/*\n" +
 				"\t * @return true if assertions are enabled for this class\n" +
 				"\t */\n" +
 				"\tpublic boolean assertionsAreEnabled()\n" +

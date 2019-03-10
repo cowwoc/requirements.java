@@ -7,6 +7,8 @@ package org.bitbucket.cowwoc.requirements.benchmark.java;
 import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -17,6 +19,7 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -34,12 +37,14 @@ public class JavaTest
 	private String value = "value";
 	private Object nullObject = null;
 	private List<Integer> list;
+	private ApplicationScope unmodifiedStackTrace = new TestApplicationScope(TerminalEncoding.NONE);
 
 	public JavaTest()
 	{
 		list = new ArrayList<Integer>(100);
 		for (int i = 0; i < 100; ++i)
 			list.add(i);
+		unmodifiedStackTrace.getGlobalConfiguration().withoutCleanStackTrace();
 	}
 
 	@Test
@@ -62,7 +67,7 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public StringVerifier requirementsRequireThat()
+	public StringVerifier requireThat()
 	{
 		return new Requirements().requireThat(name, value).isNotNull();
 	}
@@ -70,19 +75,19 @@ public class JavaTest
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
 	// though it delegates to it
 	@Benchmark
-	public StringVerifier requirementsWithAssertionsEnabledAssertThat()
+	public StringVerifier assertThatWithAssertionsEnabled()
 	{
 		return new Requirements().withAssertionsEnabled().assertThat(name, value).isNotNull();
 	}
 
 	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> requirementsRequireThatDoesNotContainDuplicates()
+	public CollectionVerifier<List<Integer>, Integer> requireThatDoesNotContainDuplicates()
 	{
 		return new Requirements().requireThat(list, name).doesNotContainDuplicates();
 	}
 
 	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> requirementsAssertThatDoesNotContainDuplicates()
+	public CollectionVerifier<List<Integer>, Integer> assertThatDoesNotContainDuplicates()
 	{
 		return new Requirements().withAssertionsDisabled().assertThat(list, name).doesNotContainDuplicates();
 	}
@@ -101,7 +106,7 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public void requirementsThrowException(Blackhole bh)
+	public void requireThatThrowException(Blackhole bh)
 	{
 		try
 		{
@@ -129,11 +134,26 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public void requirementsThrowAndConsumeStackTrace(Blackhole bh)
+	public void requireThatThrowAndConsumeStackTrace(Blackhole bh)
 	{
 		try
 		{
 			new Requirements().requireThat(nullObject, name).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			bh.consume(sw.toString());
+		}
+	}
+
+	@Benchmark
+	public void requireThatThrowAndConsumeUnmodifiedStackTrace(Blackhole bh)
+	{
+		try
+		{
+			new Requirements(unmodifiedStackTrace).requireThat(nullObject, name).isNotNull();
 		}
 		catch (NullPointerException e)
 		{

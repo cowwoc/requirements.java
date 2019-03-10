@@ -86,39 +86,38 @@ public final class GlobalRequirements
 	}
 
 	/**
-	 * Indicates if exceptions should remove references to this library from their stack trace.
+	 * Indicates if exception stack traces should omit references to this library.
 	 *
-	 * @return true if exceptions should remove references to this library from their stack trace
-	 * ({@code true} by default)
-	 * @see #withLibraryRemovedFromStackTrace()
-	 * @see #withoutLibraryRemovedFromStackTrace()
+	 * @return {@code true} by default
+	 * @see #withCleanStackTrace()
+	 * @see #withoutCleanStackTrace()
 	 */
-	public static boolean isLibraryRemovedFromStackTrace()
+	public static boolean isCleanStackTrace()
 	{
-		return DELEGATE.isLibraryRemovedFromStackTrace();
+		return DELEGATE.isCleanStackTrace();
 	}
 
 	/**
-	 * Indicates that exceptions should remove references to this library from their stack trace.
+	 * Indicates that exception stack traces should omit references to this library.
 	 *
 	 * @return this
-	 * @see #isLibraryRemovedFromStackTrace()
+	 * @see #isCleanStackTrace()
 	 */
-	public static GlobalRequirements withLibraryRemovedFromStackTrace()
+	public static GlobalRequirements withCleanStackTrace()
 	{
-		DELEGATE.withLibraryRemovedFromStackTrace();
+		DELEGATE.withCleanStackTrace();
 		return INSTANCE;
 	}
 
 	/**
-	 * Indicates that exceptions shouldn't remove references to this library from their stack traces.
+	 * Indicates that exception stack traces should contain references to this library.
 	 *
 	 * @return this
-	 * @see #isLibraryRemovedFromStackTrace()
+	 * @see #isCleanStackTrace()
 	 */
-	public static GlobalRequirements withoutLibraryRemovedFromStackTrace()
+	public static GlobalRequirements withoutCleanStackTrace()
 	{
-		DELEGATE.withoutLibraryRemovedFromStackTrace();
+		DELEGATE.withoutCleanStackTrace();
 		return INSTANCE;
 	}
 

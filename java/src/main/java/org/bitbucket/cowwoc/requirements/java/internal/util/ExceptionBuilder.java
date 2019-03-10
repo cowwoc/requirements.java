@@ -27,26 +27,25 @@ public final class ExceptionBuilder
 	private Class<? extends RuntimeException> type;
 	private final String message;
 	private final Throwable cause;
-	private final boolean removeLibraryFromStackTrace;
+	private final boolean cleanStackTrace;
 	/**
 	 * Contextual information associated with the exception (name-value pairs).
 	 */
 	private final List<Entry<String, Object>> context = new ArrayList<>(2);
 
 	/**
-	 * @param scope                       the application configuration
-	 * @param configuration               the instance configuration
-	 * @param exceptions                  an instance of {@code Exceptions}
-	 * @param type                        the type of the exception
-	 * @param message                     the exception message
-	 * @param cause                       the underlying cause of the exception ({@code null} if absent)
-	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from
-	 *                                    their stack traces
+	 * @param scope           the application configuration
+	 * @param configuration   the instance configuration
+	 * @param exceptions      an instance of {@code Exceptions}
+	 * @param type            the type of the exception
+	 * @param message         the exception message
+	 * @param cause           the underlying cause of the exception ({@code null} if absent)
+	 * @param cleanStackTrace true if stack traces should omit references to this library
 	 * @throws AssertionError if {@code configuration}, {@code exceptions} or {@code message} are null
 	 */
 	private ExceptionBuilder(ApplicationScope scope, Configuration configuration, Exceptions exceptions,
 	                         Class<? extends RuntimeException> type, String message,
-	                         Throwable cause, boolean removeLibraryFromStackTrace)
+	                         Throwable cause, boolean cleanStackTrace)
 	{
 		assert (scope != null) : "scope may not be null";
 		assert (configuration != null) : "configuration may not be null";
@@ -58,14 +57,14 @@ public final class ExceptionBuilder
 		this.type = config.getException().orElse(type);
 		this.message = message;
 		this.cause = cause;
-		this.removeLibraryFromStackTrace = removeLibraryFromStackTrace;
+		this.cleanStackTrace = cleanStackTrace;
 	}
 
 	/**
 	 * Equivalent to
 	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, Exceptions, Class, String, Throwable, boolean)
 	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause,
-	 * scope.isLibraryRemovedFromStackTrace().get())}.
+	 * scope.isCleanStackTrace().get())}.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
@@ -79,7 +78,7 @@ public final class ExceptionBuilder
 	                        Throwable cause)
 	{
 		this(scope, configuration, scope.getExceptions(), type, message, cause,
-			scope.getGlobalConfiguration().isLibraryRemovedFromStackTrace());
+			scope.getGlobalConfiguration().isCleanStackTrace());
 	}
 
 	/**
@@ -189,7 +188,7 @@ public final class ExceptionBuilder
 				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " +
 					config.toString(entry.getValue()));
 		}
-		return exceptions.createException(type, messageWithContext.toString(), cause, removeLibraryFromStackTrace);
+		return exceptions.createException(type, messageWithContext.toString(), cause, cleanStackTrace);
 	}
 
 	/**

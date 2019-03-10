@@ -71,7 +71,6 @@ public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 	public String toString()
 	{
 		return "MainGlobalConfiguration[terminalEncoding=" + getTerminalEncoding() +
-			", libraryRemovedFromStackTrace=" + isLibraryRemovedFromStackTrace() +
-			", diffEnabled=" + isDiffEnabled() + "]";
+			", cleanStackTrace=" + isCleanStackTrace() + ", diffEnabled=" + isDiffEnabled() + "]";
 	}
 }

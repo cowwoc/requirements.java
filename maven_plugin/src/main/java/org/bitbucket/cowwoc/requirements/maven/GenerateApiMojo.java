@@ -67,8 +67,11 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 			guavaEnabled = overrideGuavaEnabled;
 		ApiGenerator generator = new ApiGenerator();
 		generator.setGuavaEnabled(guavaEnabled);
-		if (project.getGroupId().equals(pluginGroupId) && project.getArtifactId().equals("test"))
+		if (project.getGroupId().equals(pluginGroupId) &&
+			(project.getArtifactId().equals("test") || project.getArtifactId().equals("benchmark.java")))
+		{
 			SharedSecrets.INSTANCE.secretApiGenerator.exportScope(generator);
+		}
 		try
 		{
 			Files.createDirectories(generatedSources);

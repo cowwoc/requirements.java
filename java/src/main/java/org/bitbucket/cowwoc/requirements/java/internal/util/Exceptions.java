@@ -37,11 +37,11 @@ public final class Exceptions
 	private final MethodType optimizedConstructorWithoutCause = MethodType.methodType(void.class,
 		Exceptions.class, String.class);
 	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithCause =
-		(clazz, removeLibraryFromStackTrace) ->
+		(clazz, cleanStackTrace) ->
 		{
 			try
 			{
-				if (removeLibraryFromStackTrace)
+				if (cleanStackTrace)
 				{
 					Class<?> optimizedException = getOptimizedException(clazz).orElse(null);
 					if (optimizedException != null)
@@ -55,11 +55,11 @@ public final class Exceptions
 			}
 		};
 	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithoutCause =
-		(clazz, removeLibraryFromStackTrace) ->
+		(clazz, cleanStackTrace) ->
 		{
 			try
 			{
-				if (removeLibraryFromStackTrace)
+				if (cleanStackTrace)
 				{
 					Class<?> optimizedException = getOptimizedException(clazz).orElse(null);
 					if (optimizedException != null)
@@ -101,19 +101,18 @@ public final class Exceptions
 	/**
 	 * Throws an exception with the specified message and cause.
 	 *
-	 * @param <E>                         the type of the exception
-	 * @param type                        the type of the exception
-	 * @param message                     an explanation of what went wrong
-	 * @param cause                       the cause of the exception ({@code null} if absent)
-	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from
-	 *                                    their stack traces
+	 * @param <E>             the type of the exception
+	 * @param type            the type of the exception
+	 * @param message         an explanation of what went wrong
+	 * @param cause           the cause of the exception ({@code null} if absent)
+	 * @param cleanStackTrace true if stack traces should omit references to this library
 	 * @return the exception
 	 * @throws AssertionError if {@code type} is null
 	 */
 	@SuppressWarnings("LongLine")
 	public <E extends RuntimeException> RuntimeException createException(Class<E> type, String message,
 	                                                                     Throwable cause,
-	                                                                     boolean removeLibraryFromStackTrace)
+	                                                                     boolean cleanStackTrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
 		//
@@ -125,14 +124,13 @@ public final class Exceptions
 		// Caused by: message of underlying exception
 		//   at Cause.method1(Cause.java:1)
 		//
-		// If removeLibraryFromStackTrace is true, we need to strip out the top 3 stack trace elements. But we
-		// are also forced to strip out
-		// the exception cause because it was thrown inside our API.
+		// If cleanStackTrace is true, we need to strip out the top 3 stack trace elements. But we are also
+		// forced to strip out the exception cause because it was thrown inside our API.
 		assert (type != null) : "type may not be null";
 		try
 		{
-			boolean withCause = !removeLibraryFromStackTrace && cause != null;
-			MethodHandle constructor = getConstructor(type, withCause, removeLibraryFromStackTrace);
+			boolean withCause = !cleanStackTrace && cause != null;
+			MethodHandle constructor = getConstructor(type, withCause, cleanStackTrace);
 			boolean isOptimized = isOptimizedException(constructor.type().returnType());
 			// Convert the exception type to RuntimeException
 			constructor = constructor.asType(constructor.type().changeReturnType(RuntimeException.class));
@@ -151,7 +149,7 @@ public final class Exceptions
 					result = (RuntimeException) constructor.invokeExact(message, cause);
 				else
 					result = (RuntimeException) constructor.invokeExact(message);
-				if (removeLibraryFromStackTrace)
+				if (cleanStackTrace)
 				{
 					// We need to strip the stack trace eagerly because we don't have an optimized exception
 					StackTraceElement[] stackTrace = result.getStackTrace();
@@ -191,25 +189,24 @@ public final class Exceptions
 	}
 
 	/**
-	 * @param type                        the type of the exception
-	 * @param withCause                   true if the constructor takes an exception cause
-	 * @param removeLibraryFromStackTrace true if exceptions should remove references to this library from
-	 *                                    their stack traces
+	 * @param type            the type of the exception
+	 * @param withCause       true if the constructor takes an exception cause
+	 * @param cleanStackTrace true if stack traces should omit references to this library
 	 * @return the constructor of the exception
 	 * @throws Throwable if an error occurs
 	 */
-	private MethodHandle getConstructor(Class<?> type, boolean withCause,
-	                                    boolean removeLibraryFromStackTrace) throws Throwable
+	private MethodHandle getConstructor(Class<?> type, boolean withCause, boolean cleanStackTrace)
+		throws Throwable
 	{
 		try
 		{
 			if (withCause)
 			{
 				return classToConstructorsWithCause.computeIfAbsent(type, clazz ->
-					computeConstructorWithCause.apply(clazz, removeLibraryFromStackTrace));
+					computeConstructorWithCause.apply(clazz, cleanStackTrace));
 			}
 			return classToConstructorsWithoutCause.computeIfAbsent(type, clazz ->
-				computeConstructorWithoutCause.apply(clazz, removeLibraryFromStackTrace));
+				computeConstructorWithoutCause.apply(clazz, cleanStackTrace));
 		}
 		catch (RuntimeException e)
 		{

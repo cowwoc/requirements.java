@@ -4,4 +4,5 @@ module org.bitbucket.cowwoc.requirements.benchmark.java
 	requires testng;
 
 	requires org.bitbucket.cowwoc.requirements.java;
+	requires org.bitbucket.cowwoc.requirements.natives;
 }

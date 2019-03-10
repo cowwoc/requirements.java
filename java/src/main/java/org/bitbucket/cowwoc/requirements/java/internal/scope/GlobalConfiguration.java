@@ -60,36 +60,34 @@ public interface GlobalConfiguration
 	GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding);
 
 	/**
-	 * Indicates if exceptions should remove references to this library from their stack trace.
+	 * Indicates if exception stack traces should omit references to this library.
 	 *
-	 * @return true if exceptions should remove references to this library from their stack trace
-	 * ({@code true} by default)
-	 * @see #withLibraryRemovedFromStackTrace()
-	 * @see #withoutLibraryRemovedFromStackTrace()
+	 * @return {@code true} by default
+	 * @see #withCleanStackTrace()
+	 * @see #withoutCleanStackTrace()
 	 */
-	boolean isLibraryRemovedFromStackTrace();
+	boolean isCleanStackTrace();
 
 	/**
-	 * Indicates that exceptions should remove references to this library from their stack trace.
+	 * Indicates that exception stack traces should omit references to this library.
 	 *
 	 * @return this
-	 * @see #isLibraryRemovedFromStackTrace()
+	 * @see #isCleanStackTrace()
 	 */
-	GlobalConfiguration withLibraryRemovedFromStackTrace();
+	GlobalConfiguration withCleanStackTrace();
 
 	/**
-	 * Indicates that exceptions shouldn't remove references to this library from their stack traces.
+	 * Indicates that exception stack traces should contain references to this library.
 	 *
 	 * @return this
-	 * @see #isLibraryRemovedFromStackTrace()
+	 * @see #isCleanStackTrace()
 	 */
-	GlobalConfiguration withoutLibraryRemovedFromStackTrace();
+	GlobalConfiguration withoutCleanStackTrace();
 
 	/**
 	 * Indicates if exceptions should show the difference between the actual and expected values.
 	 *
-	 * @return true if exceptions should show the difference between the actual and expected values
-	 * ({@code true} by default)
+	 * @return {@code true} by default
 	 * @see #withDiff()
 	 * @see #withoutDiff()
 	 */

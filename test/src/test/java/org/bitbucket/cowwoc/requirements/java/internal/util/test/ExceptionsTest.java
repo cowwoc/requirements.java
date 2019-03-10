@@ -80,7 +80,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			scope.getGlobalConfiguration().withLibraryRemovedFromStackTrace();
+			scope.getGlobalConfiguration().withCleanStackTrace();
 			new Requirements(scope).requireThat("expected", "expected").isEqualTo("actual");
 		}
 		catch (IllegalArgumentException e)

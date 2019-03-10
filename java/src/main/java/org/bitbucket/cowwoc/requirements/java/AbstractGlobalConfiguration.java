@@ -14,31 +14,31 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class AbstractGlobalConfiguration implements GlobalConfiguration
 {
 	/**
-	 * True if exceptions should remove references to this library from their stack traces.
+	 * True if exception stack traces should omit references to this library.
 	 */
-	private final AtomicBoolean removeLibraryFromStackTrace = new AtomicBoolean(true);
+	private final AtomicBoolean cleanStackTrace = new AtomicBoolean(true);
 	/**
 	 * True if exceptions should contain a diff of the values being compared.
 	 */
 	private final AtomicBoolean diffEnabled = new AtomicBoolean(true);
 
 	@Override
-	public boolean isLibraryRemovedFromStackTrace()
+	public boolean isCleanStackTrace()
 	{
-		return removeLibraryFromStackTrace.get();
+		return cleanStackTrace.get();
 	}
 
 	@Override
-	public GlobalConfiguration withLibraryRemovedFromStackTrace()
+	public GlobalConfiguration withCleanStackTrace()
 	{
-		removeLibraryFromStackTrace.set(true);
+		cleanStackTrace.set(true);
 		return this;
 	}
 
 	@Override
-	public GlobalConfiguration withoutLibraryRemovedFromStackTrace()
+	public GlobalConfiguration withoutCleanStackTrace()
 	{
-		removeLibraryFromStackTrace.set(false);
+		cleanStackTrace.set(false);
 		return this;
 	}
 

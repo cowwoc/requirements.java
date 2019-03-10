@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 
 /**
  * Optimizes the exceptions thrown by the library, such as evaluating stack traces are lazily. See
- * {@code org.bitbucket.cowwoc.requirements.java.GlobalRequirements.isLibraryRemovedFromStackTrace()}.
+ * {@code org.bitbucket.cowwoc.requirements.java.GlobalRequirements.isCleanStackTrace()}.
  */
 public final class ExceptionOptimizer
 {
@@ -153,7 +153,7 @@ public final class ExceptionOptimizer
 				"/**\n" +
 				" * Generates exceptions that strip this library from their stack traces lazily.\n" +
 				" *\n" +
-				" * @see GlobalRequirements#isLibraryRemovedFromStackTrace()\n" +
+				" * @see GlobalRequirements#isCleanStackTrace()\n" +
 				" */\n" +
 				"@OptimizedException\n" +
 				"public final class " + wrapperSimpleName + " extends " + exceptionSimpleName + "\n" +
@@ -206,21 +206,21 @@ public final class ExceptionOptimizer
 			writer.write("\t@Override\n" +
 				"\tpublic void printStackTrace(PrintStream s)\n" +
 				"\t{\n" +
-				"\t\tfilterStackTrace();\n" +
+				"\t\tcleanStackTrace();\n" +
 				"\t\tsuper.printStackTrace(s);\n" +
 				"\t}\n" +
 				"\n" +
 				"\t@Override\n" +
 				"\tpublic StackTraceElement[] getStackTrace()\n" +
 				"\t{\n" +
-				"\t\tfilterStackTrace();\n" +
+				"\t\tcleanStackTrace();\n" +
 				"\t\treturn super.getStackTrace();\n" +
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
 				"\t * Removes references to this library from the exception stack trace.\n" +
 				"\t */\n" +
-				"\tprivate synchronized void filterStackTrace()\n" +
+				"\tprivate synchronized void cleanStackTrace()\n" +
 				"\t{\n" +
 				"\t\tif (filtered)\n" +
 				"\t\t\treturn;\n" +

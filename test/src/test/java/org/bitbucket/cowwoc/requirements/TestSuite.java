@@ -12,6 +12,6 @@ public final class TestSuite
 	@BeforeSuite
 	public void beforeSuite()
 	{
-		GlobalRequirements.withoutLibraryRemovedFromStackTrace();
+		GlobalRequirements.withoutCleanStackTrace();
 	}
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Optimizes the exceptions thrown by the library, such as evaluating stack traces are lazily. See
- * {@code org.bitbucket.cowwoc.requirements.java.GlobalConfiguration.isLibraryRemovedFromStackTrace()}.
+ * {@code org.bitbucket.cowwoc.requirements.java.GlobalConfiguration.isCleanStackTrace()}.
  */
 @Mojo(name = "optimize-exceptions", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")

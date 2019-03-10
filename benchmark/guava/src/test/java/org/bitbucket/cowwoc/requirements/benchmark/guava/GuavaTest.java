@@ -43,7 +43,7 @@ public class GuavaTest
 	}
 
 	@Benchmark
-	public MultimapVerifier<String, String> requirementsRequireThat()
+	public MultimapVerifier<String, String> requireThat()
 	{
 		return new Requirements().requireThat(value, name).isNotNull();
 	}
