@@ -156,7 +156,9 @@ public interface ObjectCapabilities<S, T>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the String representation of the actual value
 	 * @return this

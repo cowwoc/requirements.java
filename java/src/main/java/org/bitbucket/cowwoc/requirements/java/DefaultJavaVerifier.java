@@ -68,8 +68,8 @@ import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Verifiers;
 
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -262,29 +262,8 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new ObjectVerifierImpl<>(scope, name, actual, config);
-	}
-
-	/**
-	 * @param name the name of the actual value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	private void verifyName(String name)
-	{
-		if (name == null)
-		{
-			throw new ExceptionBuilder(scope, config, NullPointerException.class,
-				"name may not be null").
-				build();
-		}
-		if (name.trim().isEmpty())
-		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				"name may not be empty").
-				build();
-		}
 	}
 
 	@Override
@@ -298,7 +277,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new CollectionVerifierImpl<>(scope, name, actual, Pluralizer.ELEMENT, config);
 	}
 
@@ -313,7 +292,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveByteArrayVerifier requireThat(byte[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveByteArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -328,7 +307,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveShortArrayVerifier requireThat(short[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveShortArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -343,7 +322,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveIntegerArrayVerifier requireThat(int[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveIntegerArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -358,7 +337,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveLongArrayVerifier requireThat(long[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveLongArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -373,7 +352,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveFloatArrayVerifier requireThat(float[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveFloatArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -388,7 +367,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveDoubleArrayVerifier requireThat(double[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveDoubleArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -403,7 +382,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveBooleanArrayVerifier requireThat(boolean[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveBooleanArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -418,7 +397,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveCharacterArrayVerifier requireThat(char[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveCharacterArrayVerifierImpl(scope, name, actual, config);
 	}
 
@@ -433,7 +412,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new ArrayVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -448,7 +427,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new ComparableVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -463,7 +442,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveBooleanVerifier requireThat(boolean actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveBooleanVerifierImpl(scope, name, actual, config);
 	}
 
@@ -478,7 +457,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public BooleanVerifier requireThat(Boolean actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new BooleanVerifierImpl(scope, name, actual, config);
 	}
 
@@ -493,7 +472,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -508,7 +487,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveCharacterVerifier requireThat(char actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveCharacterVerifierImpl(scope, name, actual, config);
 	}
 
@@ -523,7 +502,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveNumberVerifier<Short> requireThat(short actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -538,7 +517,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveIntegerVerifierImpl(scope, name, actual, config);
 	}
 
@@ -553,7 +532,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public IntegerVerifier<Integer> requireThat(Integer actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new IntegerVerifierImpl(scope, name, actual, config);
 	}
 
@@ -568,7 +547,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveIntegerVerifier<Long> requireThat(long actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveLongVerifierImpl(scope, name, actual, config);
 	}
 
@@ -583,7 +562,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public IntegerVerifier<Long> requireThat(Long actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new LongVerifierImpl(scope, name, actual, config);
 	}
 
@@ -598,7 +577,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveFloatVerifierImpl(scope, name, actual, config);
 	}
 
@@ -613,7 +592,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public FloatingPointVerifier<Float> requireThat(Float actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new FloatVerifierImpl(scope, name, actual, config);
 	}
 
@@ -628,7 +607,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PrimitiveDoubleVerifierImpl(scope, name, actual, config);
 	}
 
@@ -643,7 +622,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public FloatingPointVerifier<Double> requireThat(Double actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new DoubleVerifierImpl(scope, name, actual, config);
 	}
 
@@ -658,7 +637,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new NumberVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -673,7 +652,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new BigDecimalVerifierImpl(scope, name, actual, config);
 	}
 
@@ -688,7 +667,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new MapVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -703,7 +682,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public PathVerifier requireThat(Path actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new PathVerifierImpl(scope, name, actual, config);
 	}
 
@@ -718,7 +697,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public StringVerifier requireThat(String actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new StringVerifierImpl(scope, name, actual, config);
 	}
 
@@ -733,7 +712,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public UriVerifier requireThat(URI actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new UriVerifierImpl(scope, name, actual, config);
 	}
 
@@ -748,7 +727,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new ClassVerifierImpl<>(scope, name, actual, config);
 	}
 
@@ -763,7 +742,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new OptionalVerifierImpl(scope, name, actual, config);
 	}
 
@@ -778,7 +757,7 @@ public final class DefaultJavaVerifier implements JavaVerifier
 	@Override
 	public InetAddressVerifier requireThat(InetAddress actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new InetAddressVerifierImpl(scope, name, actual, config);
 	}
 

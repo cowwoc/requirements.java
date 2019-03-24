@@ -471,7 +471,7 @@ public final class NumberTest
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("divzero")
+	@SuppressWarnings({"divzero", "NumericOverflow"})
 	public void isFinite_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -482,7 +482,7 @@ public final class NumberTest
 	}
 
 	@Test
-	@SuppressWarnings("divzero")
+	@SuppressWarnings({"divzero", "NumericOverflow"})
 	public void isNotFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

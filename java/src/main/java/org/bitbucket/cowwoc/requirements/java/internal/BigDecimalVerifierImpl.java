@@ -132,7 +132,8 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isMultipleOf(BigDecimal divisor)
 	{
-		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(divisor, "divisor").isNotNull();
 		if (isMultipleOf(actual, divisor))
 			return this;
 		String divisorAsString = config.toString(divisor);
@@ -160,7 +161,8 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor)
 	{
-		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(divisor, "divisor").isNotNull();
 		if (!isMultipleOf(actual, divisor))
 			return this;
 		String divisorAsString = config.toString(divisor);

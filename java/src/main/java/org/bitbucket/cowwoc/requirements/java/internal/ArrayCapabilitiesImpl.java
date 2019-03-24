@@ -10,12 +10,9 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -76,34 +73,6 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	{
 		asCollection.isNotEqualTo(value, name);
 		return getThis();
-	}
-
-	@Override
-	public S isSameObjectAs(Object expected, String name)
-	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (actual == expected)
-			return getThis();
-
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
-		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
-			expected);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			this.name + " must be the same object as " + name + ".").
-			addContext(context).
-			build();
-	}
-
-	@Override
-	public S isNotSameObjectAs(Object other, String name)
-	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (actual != other)
-			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			this.name + " may not be the same object as " + name + ".").
-			addContext("Actual", actual).
-			build();
 	}
 
 	@Override

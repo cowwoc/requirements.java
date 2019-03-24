@@ -49,18 +49,7 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 	@Override
 	public PathVerifier isRegularFile(LinkOption... options) throws IOException
 	{
-		BasicFileAttributes attrs;
-		try
-		{
-			attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
-		}
-		catch (NoSuchFileException e)
-		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				name + " refers to a non-existent path", e).
-				addContext("Actual", actual.toAbsolutePath()).
-				build();
-		}
+		BasicFileAttributes attrs = getFileAttributes();
 		if (!attrs.isRegularFile())
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -71,13 +60,17 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 		return this;
 	}
 
-	@Override
-	public PathVerifier isDirectory(LinkOption... options) throws IOException
+	/**
+	 * @param options options indicating how symbolic links are handled
+	 * @return the file attributes of {@code actual}
+	 * @throws IllegalArgumentException if {@code actual} does not exist
+	 * @throws IOException              if an I/O error occurs while reading the file attributes
+	 */
+	private BasicFileAttributes getFileAttributes(LinkOption... options) throws IOException
 	{
-		BasicFileAttributes attrs;
 		try
 		{
-			attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
+			return Files.readAttributes(actual, BasicFileAttributes.class, options);
 		}
 		catch (NoSuchFileException e)
 		{
@@ -86,6 +79,12 @@ public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier,
 				addContext("Actual", actual.toAbsolutePath()).
 				build();
 		}
+	}
+
+	@Override
+	public PathVerifier isDirectory(LinkOption... options) throws IOException
+	{
+		BasicFileAttributes attrs = getFileAttributes();
 		if (!attrs.isDirectory())
 		{
 			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,

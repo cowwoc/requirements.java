@@ -129,47 +129,45 @@ public final class OperatingSystem
 			}
 		}
 
-		public final int major;
-		public final Integer minor;
 		/**
-		 * The minor number, or zero if the component is absent.
+		 * The value of absent version components.
 		 */
-		public final int minorOrZero;
-		public final Integer build;
+		private static final int ABSENT = -1;
 		/**
-		 * The build number, or zero if the component is absent.
+		 * The major version number.
 		 */
-		public final int buildOrZero;
+		private final int major;
 		/**
-		 * Hotfix of an old build. See Stackoverflow for
+		 * The minor version number.
+		 */
+		private final int minor;
+		/**
+		 * The build version number.
+		 */
+		private final int build;
+		/**
+		 * The hotfix version number. See Stackoverflow for
 		 * <a href="https://softwareengineering.stackexchange.com/a/171381/42177">more details</a>.
 		 */
-		public final Integer revision;
-		/**
-		 * The revision number, or zero if the component is absent.
-		 */
-		public final int revisionOrZero;
+		public final int revision;
 
 		/**
-		 * @param major    the major component of the version number
-		 * @param minor    the minor component of the version number
-		 * @param build    the build component of the version number
-		 * @param revision the revision component of the version number
+		 * @param major the major component of the version number
+		 * @throws AssertionError if {@code major} is negative
+		 */
+		public Version(int major)
+		{
+			this(major, null, null, null, true);
+		}
+
+		/**
+		 * @param major the major component of the version number
+		 * @param minor the minor component of the version number
 		 * @throws AssertionError if any of the components are negative
 		 */
-		public Version(int major, int minor, int build, int revision)
+		public Version(int major, int minor)
 		{
-			assert (major >= 0) : "major: " + major;
-			assert (minor >= 0) : "minor: " + minor;
-			assert (build >= 0) : "build: " + build;
-			assert (revision >= 0) : "revision: " + revision;
-			this.major = major;
-			this.minor = minor;
-			this.minorOrZero = minor;
-			this.build = build;
-			this.buildOrZero = build;
-			this.revision = revision;
-			this.revisionOrZero = revision;
+			this(major, minor, null, null, true);
 		}
 
 		/**
@@ -180,50 +178,58 @@ public final class OperatingSystem
 		 */
 		public Version(int major, int minor, int build)
 		{
-			assert (major >= 0) : "major: " + major;
-			assert (minor >= 0) : "minor: " + minor;
-			assert (build >= 0) : "build: " + build;
-			this.major = major;
-			this.minor = minor;
-			this.minorOrZero = minor;
-			this.build = build;
-			this.buildOrZero = build;
-			this.revision = null;
-			this.revisionOrZero = 0;
+			this(major, minor, build, null, true);
 		}
 
 		/**
-		 * @param major the major component of the version number
-		 * @param minor the minor component of the version number
+		 * @param major    the major component of the version number
+		 * @param minor    the minor component of the version number
+		 * @param build    the build component of the version number
+		 * @param revision the revision component of the version number
 		 * @throws AssertionError if any of the components are negative
 		 */
-		public Version(int major, int minor)
+		public Version(int major, int minor, int build, int revision)
 		{
-			assert (major >= 0) : "major: " + major;
-			assert (minor >= 0) : "minor: " + minor;
-			this.major = major;
-			this.minor = minor;
-			this.minorOrZero = minor;
-			this.build = null;
-			this.buildOrZero = 0;
-			this.revision = null;
-			this.revisionOrZero = 0;
+			this(major, minor, build, revision, true);
 		}
 
 		/**
-		 * @param major the major component of the version number
-		 * @throws AssertionError if {@code major} is negative
+		 * @param major    the major component of the version number
+		 * @param minor    the minor component of the version number ({@code null} if absent)
+		 * @param build    the build component of the version number ({@code null} if absent)
+		 * @param revision the revision component of the version number ({@code null} if absent)
+		 * @param internal an unused value that differentiates between the public and private constructors
+		 * @throws AssertionError if any of the components are negative
 		 */
-		public Version(int major)
+		@SuppressWarnings("SameParameterValue")
+		private Version(int major, Integer minor, Integer build, Integer revision, boolean internal)
 		{
 			assert (major >= 0) : "major: " + major;
 			this.major = major;
-			this.minor = null;
-			this.minorOrZero = 0;
-			this.build = null;
-			this.buildOrZero = 0;
-			this.revision = null;
-			this.revisionOrZero = 0;
+
+			if (minor == null)
+				this.minor = ABSENT;
+			else
+			{
+				assert (minor >= 0) : "minor: " + minor;
+				this.minor = minor;
+			}
+
+			if (build == null)
+				this.build = ABSENT;
+			else
+			{
+				assert (build >= 0) : "build : " + build;
+				this.build = build;
+			}
+
+			if (revision == null)
+				this.revision = ABSENT;
+			else
+			{
+				assert (revision >= 0) : "revision: " + revision;
+				this.revision = revision;
+			}
 		}
 
 		@Override
@@ -232,13 +238,13 @@ public final class OperatingSystem
 			int result = major - other.major;
 			if (result != 0)
 				return result;
-			result = minorOrZero - other.minorOrZero;
+			result = minor - other.minor;
 			if (result != 0)
 				return result;
-			result = buildOrZero - other.buildOrZero;
+			result = build - other.build;
 			if (result != 0)
 				return result;
-			return revisionOrZero - other.revisionOrZero;
+			return revision - other.revision;
 		}
 
 		@Override
@@ -247,8 +253,8 @@ public final class OperatingSystem
 			if (!(obj instanceof Version))
 				return false;
 			Version other = (Version) obj;
-			return major == other.major && minorOrZero == other.minorOrZero &&
-				buildOrZero == other.buildOrZero && revisionOrZero == other.revisionOrZero;
+			return major == other.major && minor == other.minor &&
+				build == other.build && revision == other.revision;
 		}
 
 		@Override
@@ -262,11 +268,11 @@ public final class OperatingSystem
 		{
 			StringBuilder result = new StringBuilder(10);
 			result.append(major);
-			if (minor != null)
+			if (minor != ABSENT)
 				result.append(".").append(minor);
-			if (build != null)
+			if (build != ABSENT)
 				result.append(".").append(build);
-			if (revision != null)
+			if (revision != ABSENT)
 				result.append(".").append(revision);
 			return result.toString();
 		}

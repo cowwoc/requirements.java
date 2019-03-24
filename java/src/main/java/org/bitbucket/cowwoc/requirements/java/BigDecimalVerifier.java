@@ -23,7 +23,9 @@ public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifie
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@code BigDecimal.precision()}
 	 * @return this
@@ -39,7 +41,9 @@ public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifie
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@code BigDecimal.scale()}
 	 * @return this

@@ -682,7 +682,7 @@ public final class CollectionTest
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
+	@Test
 	public void sizeIsNotEqualTo_valueIsNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -692,7 +692,7 @@ public final class CollectionTest
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
+	@Test
 	public void sizeIsNotEqualTo_valueIsNotInteger()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

@@ -227,7 +227,9 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the array's length
 	 * @return this
@@ -243,7 +245,9 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the actual value as a collection
 	 * @return this

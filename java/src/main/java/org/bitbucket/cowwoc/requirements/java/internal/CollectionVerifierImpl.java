@@ -85,7 +85,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> contains(E element, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.contains(element))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -98,7 +99,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> containsExactly(Collection<E> expected)
 	{
-		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(expected, "expected").isNotNull();
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
@@ -137,7 +139,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> containsAny(Collection<E> expected)
 	{
-		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(expected, "expected").isNotNull();
 		if (actualContainsAny(expected))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -176,7 +179,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> containsAll(Collection<E> expected)
 	{
-		scope.getInternalVerifier().requireThat(expected, "expected").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(expected, "expected").isNotNull();
 		if (actual.containsAll(expected))
 			return this;
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
@@ -222,7 +226,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> doesNotContain(E element, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!actual.contains(element))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
@@ -235,7 +240,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<E> otherAsSet = Sets.fromCollection(other);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(otherAsSet, actualAsSet);
@@ -250,7 +256,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		Set<E> otherAsSet = Sets.fromCollection(other);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(otherAsSet, actualAsSet);
@@ -266,7 +273,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
 	{
-		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
 		if (!actualContainsAny(elements))
 			return this;
 		Set<E> elementsAsSet = Sets.fromCollection(elements);
@@ -301,7 +309,8 @@ public class CollectionVerifierImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements)
 	{
-		scope.getInternalVerifier().requireThat(elements, "elements").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(elements, "elements").isNotNull();
 		if (!actual.containsAll(elements))
 			return this;
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,

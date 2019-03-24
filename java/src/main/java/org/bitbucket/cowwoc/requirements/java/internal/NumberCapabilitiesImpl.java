@@ -135,7 +135,8 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isMultipleOf(T divisor)
 	{
-		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
@@ -150,8 +151,8 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	public S isMultipleOf(T divisor, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		verifier.requireThat(divisor, "divisor").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
@@ -165,7 +166,8 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotMultipleOf(T divisor)
 	{
-		scope.getInternalVerifier().requireThat(divisor, "divisor").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
@@ -180,8 +182,8 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	public S isNotMultipleOf(T divisor, String name)
 	{
 		JavaVerifier verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		verifier.requireThat(divisor, "divisor").isNotNull();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();

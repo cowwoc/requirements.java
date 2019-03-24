@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import java.util.function.Function;
 
 /**
- * Verifies the requirements of the Guava library API.
+ * Verifies the requirements types from of the Guava library API.
  * <p>
  * Implementations must be immutable.
  */

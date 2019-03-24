@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
@@ -66,26 +67,32 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (Objects.equals(actual, expected))
 			return getThis();
 
-		ContextGenerator contextGenerator = new ContextGenerator(config,
-			scope.getDiffGenerator());
-		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
-			expected);
+		List<Entry<String, Object>> context = getContext(expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " had an unexpected value.").
 			addContext(context).
 			build();
 	}
 
+	/**
+	 * @param expected the expected value
+	 * @return the list of name-value pairs to append to the exception message
+	 */
+	private List<Entry<String, Object>> getContext(Object expected)
+	{
+		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
+		return contextGenerator.getContext("Actual", actual, "Expected", expected);
+	}
+
 	@Override
 	public S isEqualTo(Object expected, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
 
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
-		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
-			expected);
+		List<Entry<String, Object>> context = getContext(expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			this.name + " must be equal to " + name + ".").
 			addContext(context).
@@ -107,7 +114,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotEqualTo(Object other, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, other))
 			return getThis();
 
@@ -120,13 +128,12 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isSameObjectAs(Object expected, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual == expected)
 			return getThis();
 
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
-		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
-			expected);
+		List<Entry<String, Object>> context = getContext(expected);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			this.name + " must be the same object as " + name + ".").
 			addContext(context).
@@ -136,7 +143,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotSameObjectAs(Object other, String name)
 	{
-		scope.getInternalVerifier().requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual != other)
 			return getThis();
 
@@ -149,7 +157,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isOneOf(Collection<? super T> collection)
 	{
-		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 			return getThis();
 
@@ -163,7 +172,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotOneOf(Collection<? super T> collection)
 	{
-		scope.getInternalVerifier().requireThat(collection, "collection").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
 
@@ -177,7 +187,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(type, "type").isNotNull();
 		if (type.isInstance(actual))
 			return getThis();
 
@@ -196,7 +207,8 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotInstanceOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(type, "type").isNotNull();
 		if (!type.isInstance(actual))
 			return getThis();
 
@@ -215,9 +227,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		// Output a diff because actual.toString() may return "null" which is misleading
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
-		List<Entry<String, Object>> context = contextGenerator.getContext("Actual", actual, "Expected",
-			null);
+		List<Entry<String, Object>> context = getContext(null);
 		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
 			name + " must be null.").
 			addContext(context).

@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Verifies the requirements of the Java library API.
+ * Verifies the requirements of types from the Java core API.
  * <p>
  * Implementations must be immutable.
  */

@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
@@ -33,7 +34,8 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 	@Override
 	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
-		scope.getInternalVerifier().requireThat(type, "type").isNotNull();
+		JavaVerifier verifier = scope.getInternalVerifier();
+		verifier.requireThat(type, "type").isNotNull();
 		if (actual.isAssignableFrom(type))
 			return this;
 		String actualAsString = config.toString(actual);

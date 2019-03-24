@@ -30,7 +30,9 @@ public interface MultimapVerifier<K, V>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Multimap#keySet()}
 	 * @return this
@@ -44,7 +46,9 @@ public interface MultimapVerifier<K, V>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Multimap#values()}
 	 * @return this
@@ -58,7 +62,9 @@ public interface MultimapVerifier<K, V>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Multimap#entries()}
 	 * @return this
@@ -88,7 +94,9 @@ public interface MultimapVerifier<K, V>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the multimap's size
 	 * @return this

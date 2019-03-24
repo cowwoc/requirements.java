@@ -29,7 +29,9 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#keySet()}
 	 * @return this;
@@ -45,7 +47,9 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#values()}
 	 * @return this
@@ -61,7 +65,9 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#entrySet()}
 	 * @return this
@@ -93,7 +99,9 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">group related requirements</a>.
+	 * <a
+	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#size()}
 	 * @return this

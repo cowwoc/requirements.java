@@ -60,27 +60,27 @@ public final class OperatingSystemTest
 	}
 
 	@Test
-	public void missingBuildIsZero()
+	public void missingBuildComesFirst()
 	{
-		Version actual = Version.parseVersion("1.2");
-		Version expected = new Version(1, 2, 0);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		Version first = Version.parseVersion("1.2");
+		Version second = new Version(1, 2, 0);
+		requireThat(first, "first").isLessThan(second, "second");
 	}
 
 	@Test
-	public void missingMinorIsZero()
+	public void missingMinorComesFirst()
 	{
-		Version actual = Version.parseVersion("1");
-		Version expected = new Version(1, 0);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		Version first = Version.parseVersion("1");
+		Version second = new Version(1, 0);
+		requireThat(first, "first").isLessThan(second, "second");
 	}
 
 	@Test
-	public void missingRevisionIsZero()
+	public void missingRevisionComesFirst()
 	{
-		Version actual = Version.parseVersion("1.0.0");
-		Version expected = new Version(1, 0, 0, 0);
-		requireThat(actual, "actual").isEqualTo(expected, "expected");
+		Version first = Version.parseVersion("1.0.0");
+		Version second = new Version(1, 0, 0, 0);
+		requireThat(first, "first").isLessThan(second, "second");
 	}
 
 	@Test

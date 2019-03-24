@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.guava.internal.NoOpMultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Verifiers;
 
 import java.util.Map;
 import java.util.Optional;
@@ -93,29 +93,8 @@ public final class DefaultGuavaVerifier implements GuavaVerifier
 	@Override
 	public <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
 	{
-		verifyName(name);
+		Verifiers.verifyName(scope, config, name);
 		return new MultimapVerifierImpl<>(scope, name, actual, config);
-	}
-
-	/**
-	 * @param name the name of the actual value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
-	 */
-	private void verifyName(String name)
-	{
-		if (name == null)
-		{
-			throw new ExceptionBuilder(scope, config, NullPointerException.class,
-				"name may not be null").
-				build();
-		}
-		if (name.trim().isEmpty())
-		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				"name may not be empty").
-				build();
-		}
 	}
 
 	@Override
