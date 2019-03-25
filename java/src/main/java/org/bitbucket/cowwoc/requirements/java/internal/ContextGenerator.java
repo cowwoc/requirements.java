@@ -29,7 +29,7 @@ public final class ContextGenerator
 	 *
 	 * @param entries the exception context
 	 */
-	private static void skipDuplicateLines(List<Map.Entry<String, Object>> entries)
+	private static void skipDuplicateLines(List<Entry<String, Object>> entries)
 	{
 		Entry<String, Object> lastEntry = entries.get(entries.size() - 1);
 		String newValue = lastEntry.getValue() + "\n[...]\n";
@@ -124,13 +124,14 @@ public final class ContextGenerator
 	 * @param actualType    the type of the actual value
 	 * @param expectedName  the name of the expected value
 	 * @param expectedValue the expected value
-	 * @return the map to append to the exception message
+	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
 	private List<Entry<String, Object>> getContext(String actualName, String actualValue, Class<?> actualType,
 	                                               String expectedName, String expectedValue)
 	{
 		assert (actualName != null) : "actualName may not be null";
+		// actualType is null if actualValue is null
 		assert (expectedName != null) : "expectedName may not be null";
 		boolean typeIsDiffable = (actualType != boolean.class) && (actualType != Boolean.class);
 		if (!typeIsDiffable || !config.isDiffEnabled())

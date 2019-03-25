@@ -10,23 +10,13 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 /**
  * An xterm terminal that supports an 8 color palette.
  */
-public final class Xterm8Color extends AbstractXterm
+public final class Xterm8Colors extends AbstractXterm
 {
 	private static final String GRAY_FOREGROUND = "37";
 	private static final String BLACK_FOREGROUND = "30";
 	private static final String GREEN_BACKGROUND = "42";
 	private static final String RED_BACKGROUND = "41";
 	private static final String GRAY_BACKGROUND = "47";
-
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	public Xterm8Color(String actual, String expected)
-	{
-		super(actual, expected);
-	}
 
 	@Override
 	public String getColorForPadding()

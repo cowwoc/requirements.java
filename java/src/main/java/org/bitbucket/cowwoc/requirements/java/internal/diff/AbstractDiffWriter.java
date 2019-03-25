@@ -8,49 +8,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.LINE_LENGTH;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
-import static org.bitbucket.cowwoc.requirements.java.internal.util.ConsoleConstants.LINE_LENGTH;
 
 /**
  * Base implementation for all diff writers.
  */
 abstract class AbstractDiffWriter implements DiffWriter
 {
-	protected final StringBuilder actualLine;
-	protected final StringBuilder expectedLine;
+	protected final StringBuilder actualLine = new StringBuilder(LINE_LENGTH);
+	protected final StringBuilder expectedLine = new StringBuilder(LINE_LENGTH);
 	/**
 	 * A padding character used to align values vertically.
 	 */
 	private final String paddingMarker;
-	private final List<String> actualList;
-	private final List<String> expectedList;
+	private final List<String> actualList = new ArrayList<>();
+	private final List<String> expectedList = new ArrayList<>();
+	/**
+	 * The actual value. Set by {@link #close()}.
+	 */
 	private List<String> actual;
+	/**
+	 * The expected value. Set by {@link #close()}.
+	 */
 	private List<String> expected;
 	protected boolean closed;
 
 	/**
-	 * @param actual        the actual value
-	 * @param expected      the expected value
 	 * @param paddingMarker a padding character used to align values vertically
 	 * @throws NullPointerException     if any of the arguments are null
 	 * @throws IllegalArgumentException if {@code paddingMarker} is empty
 	 */
-	AbstractDiffWriter(String actual, String expected, String paddingMarker)
+	AbstractDiffWriter(String paddingMarker)
 	{
-		if (actual == null)
-			throw new NullPointerException("actual may not be null");
-		if (expected == null)
-			throw new NullPointerException("expected may not be null");
 		if (paddingMarker == null)
 			throw new NullPointerException("paddingMarker may not be null");
 		if (paddingMarker.isEmpty())
 			throw new IllegalArgumentException("paddingMarker may not be empty");
 		this.paddingMarker = paddingMarker;
-		this.actualLine = new StringBuilder(LINE_LENGTH);
-		this.expectedLine = new StringBuilder(LINE_LENGTH);
-		this.actualList = new ArrayList<>(Math.max(1, actual.length() / LINE_LENGTH));
-		this.expectedList = new ArrayList<>(Math.max(1, expected.length() / LINE_LENGTH));
 	}
 
 	/**

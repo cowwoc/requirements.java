@@ -24,10 +24,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bitbucket.cowwoc.requirements.natives.internal.util.OperatingSystem.Type.WINDOWS;
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888COLOR;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16COLOR;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256COLOR;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_8COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888_COLORS;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16_COLORS;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256_COLORS;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_8_COLORS;
 
 /**
  * The terminal associated with the JVM.
@@ -73,13 +73,13 @@ public final class Terminal
 				// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
 				Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
 				result.add(NONE);
-				result.add(XTERM_8COLOR);
-				result.add(XTERM_16COLOR);
+				result.add(XTERM_8_COLORS);
+				result.add(XTERM_16_COLORS);
 				if (os.version.compareTo(new Version(10, 0, 14931)) >= 0)
 				{
 					// build 14931 added 24-bit color support:
 					// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
-					result.add(RGB_888COLOR);
+					result.add(RGB_888_COLORS);
 				}
 				log.debug("Returning {}", result);
 				return result;
@@ -99,22 +99,22 @@ public final class Terminal
 			case "xterm":
 			{
 				// Used by older Linux deployments (e.g. routers)
-				result.add(XTERM_8COLOR);
+				result.add(XTERM_8_COLORS);
 				break;
 			}
 			case "xterm-16color":
 			{
 				// http://stackoverflow.com/a/10039347/14731
-				result.add(XTERM_16COLOR);
-				result.add(XTERM_8COLOR);
+				result.add(XTERM_16_COLORS);
+				result.add(XTERM_8_COLORS);
 				break;
 			}
 			case "xterm-256color":
 			{
 				// Used by Linux and OSX 10.9+
-				result.add(XTERM_256COLOR);
-				result.add(XTERM_16COLOR);
-				result.add(XTERM_8COLOR);
+				result.add(XTERM_256_COLORS);
+				result.add(XTERM_16_COLORS);
+				result.add(XTERM_8_COLORS);
 				break;
 			}
 			default:
@@ -123,17 +123,17 @@ public final class Terminal
 				break;
 			}
 		}
-		// There is no reliable way to detect RGB_888COLOR support: https://gist.github.com/XVilka/8346728#detection
+		// There is no reliable way to detect RGB_888_COLORS support: https://gist.github.com/XVilka/8346728#detection
 		return result;
 	}
 
 	/**
-	 * Indicates the type of encoding that verifiers will output.
+	 * Indicates the type of encoding that the terminal supports.
 	 * <p>
 	 * This feature can be used to force the use of ANSI colors even when their support is not
 	 * detected.
 	 *
-	 * @param encoding the type of encoding that verifiers will output
+	 * @param encoding the type of encoding that the terminal supports
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #useBestEncoding()
 	 */
@@ -143,12 +143,12 @@ public final class Terminal
 	}
 
 	/**
-	 * Indicates the type of encoding that verifiers will output.
+	 * Indicates the type of encoding that the terminal supports.
 	 * <p>
 	 * This feature can be used to force the use of ANSI colors even when their support is not
 	 * detected.
 	 *
-	 * @param encoding the type of encoding that verifiers will output
+	 * @param encoding the type of encoding that the terminal supports
 	 * @param force    true if the encoding should be forced regardless of what the system supports
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #useBestEncoding()
@@ -189,10 +189,10 @@ public final class Terminal
 	}
 
 	/**
-	 * Indicates the type of encoding that verifiers will output.
+	 * Indicates the type of encoding that the terminal supports.
 	 *
-	 * @param encoding the type of encoding that verifiers will output (null if the best available
-	 *                 encoding should be used)
+	 * @param encoding the type of encoding that the terminal supports (null if the best available encoding
+	 *                 should be used)
 	 * @param force    true if the encoding should be forced regardless of what the system supports
 	 * @return true on success
 	 */
@@ -230,7 +230,7 @@ public final class Terminal
 	}
 
 	/**
-	 * @return the encoding that verifiers will output (defaults to the best available encoding)
+	 * @return the encoding that the terminal supports (defaults to the best available encoding)
 	 */
 	public TerminalEncoding getEncoding()
 	{

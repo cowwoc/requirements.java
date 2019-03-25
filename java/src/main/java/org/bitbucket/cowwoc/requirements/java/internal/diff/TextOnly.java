@@ -11,8 +11,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
-import static org.bitbucket.cowwoc.requirements.java.internal.util.ConsoleConstants.LINE_LENGTH;
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.LINE_LENGTH;
 
 /**
  * A diff representation that does not use ANSI escape codes.
@@ -168,28 +169,20 @@ public final class TextOnly extends AbstractDiffWriter
 	 * A padding character used to align values vertically.
 	 */
 	public static final String PADDING_MARKER = " ";
-	private final StringBuilder middleLine;
-	private final List<String> middleList;
+	private final StringBuilder middleLine = new StringBuilder(LINE_LENGTH);
+	private final List<String> middleList = new ArrayList<>();
 	private List<String> middle;
 
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	public TextOnly(String actual, String expected)
+	public TextOnly()
 	{
-		super(actual, expected, PADDING_MARKER);
-		this.middleLine = new StringBuilder(LINE_LENGTH);
-		this.middleList = new ArrayList<>(Math.max(1,
-			Math.max(actual.length(), expected.length()) / LINE_LENGTH));
+		super(PADDING_MARKER);
 	}
 
 	@Override
 	protected void keepLine(String line)
 	{
 		actualLine.append(line);
-		middleLine.append(Strings.repeat("=", line.length()));
+		middleLine.append(Strings.repeat(DIFF_EQUAL, line.length()));
 		expectedLine.append(line);
 	}
 

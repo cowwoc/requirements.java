@@ -89,7 +89,7 @@ public final class Strings
 	 * @param source the string to search within
 	 * @param target the string to search for
 	 * @return the index of the last consecutive occurrence of {@code target} in {@code source}, or
-	 *         {@code -1} if there is no such occurrence.
+	 * {@code -1} if there is no such occurrence.
 	 */
 	public static int lastConsecutiveIndexOf(String source, String target)
 	{
@@ -112,8 +112,8 @@ public final class Strings
 	/**
 	 * @param source the string to search within
 	 * @param target the string to search for
-	 * @return true if {@code source} only contains occurrences of {@code target} or if
-	 *         {@code source} is empty
+	 * @return true if {@code source} only contains (potentially multiple) occurrences of {@code target} or if
+	 * {@code source} is empty
 	 */
 	public static boolean containsOnly(String source, String target)
 	{

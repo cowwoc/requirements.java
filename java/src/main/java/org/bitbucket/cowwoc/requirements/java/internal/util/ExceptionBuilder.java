@@ -63,7 +63,7 @@ public final class ExceptionBuilder
 	/**
 	 * Equivalent to
 	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, Exceptions, Class, String, Throwable, boolean)
-	 * ExceptionBuilder(configuration, message, scope.getExceptions(), type, message, cause,
+	 * ExceptionBuilder(scope, configuration, scope.getExceptions(), type, message, cause,
 	 * scope.isCleanStackTrace().get())}.
 	 *
 	 * @param scope         the application configuration
@@ -118,7 +118,7 @@ public final class ExceptionBuilder
 	/**
 	 * Adds contextual information to append to the exception message.
 	 *
-	 * @param context the name-value pairs to add
+	 * @param context the list of name-value pairs to append to the exception message
 	 * @return this
 	 * @throws NullPointerException if {@code context} is null
 	 */

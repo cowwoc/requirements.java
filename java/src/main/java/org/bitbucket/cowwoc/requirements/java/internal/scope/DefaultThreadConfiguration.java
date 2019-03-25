@@ -12,8 +12,6 @@ import java.util.Map;
 
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
- * <p>
- * This class is immutable.
  */
 public final class DefaultThreadConfiguration implements ThreadConfiguration
 {

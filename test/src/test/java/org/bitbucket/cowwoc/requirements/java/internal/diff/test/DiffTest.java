@@ -6,8 +6,8 @@ package org.bitbucket.cowwoc.requirements.java.internal.diff.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Rgb888Color;
-import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm16Color;
-import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm256Color;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm16Colors;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm256Colors;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
@@ -21,9 +21,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.TextOnly.PADDING_MARKER;
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888COLOR;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16COLOR;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888_COLORS;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16_COLORS;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256_COLORS;
 
 public final class DiffTest
 {
@@ -52,12 +52,12 @@ public final class DiffTest
 	}
 
 	/**
-	 * Ensure that XTERM_16COLOR diffs generate the expected value.
+	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
 	 */
 	@Test
 	public void diffArraySize_XTerm_16Color()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(XTERM_16COLOR))
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
@@ -65,7 +65,7 @@ public final class DiffTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			Xterm16Color scheme = new Xterm16Color("actual", "expected");
+			Xterm16Colors scheme = new Xterm16Colors();
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
@@ -78,12 +78,12 @@ public final class DiffTest
 	}
 
 	/**
-	 * Ensure that XTERM_256COLOR diffs generate the expected value.
+	 * Ensure that XTERM_256_COLORS diffs generate the expected value.
 	 */
 	@Test
 	public void diffArraySize_XTerm_256Color()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(XTERM_256COLOR))
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_256_COLORS))
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
@@ -91,7 +91,7 @@ public final class DiffTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			Xterm256Color scheme = new Xterm256Color("actual", "expected");
+			Xterm256Colors scheme = new Xterm256Colors();
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
@@ -104,12 +104,12 @@ public final class DiffTest
 	}
 
 	/**
-	 * Ensure that RGB_888COLOR diffs generate the expected value.
+	 * Ensure that RGB_888_COLORS diffs generate the expected value.
 	 */
 	@Test
 	public void diffArraySize_Rgb888Color()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(RGB_888COLOR))
+		try (ApplicationScope scope = new TestApplicationScope(RGB_888_COLORS))
 		{
 			String actual = "int[6]";
 			String expected = "int[5]";
@@ -117,7 +117,7 @@ public final class DiffTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			Rgb888Color scheme = new Rgb888Color("actual", "expected");
+			Rgb888Color scheme = new Rgb888Color();
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +

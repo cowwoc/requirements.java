@@ -20,16 +20,6 @@ public final class Rgb888Color extends AbstractXterm
 	private static final String RED_BACKGROUND = "48;2;175;0;0";
 	private static final String GRAY_BACKGROUND = "48;2;66;66;66";
 
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	public Rgb888Color(String actual, String expected)
-	{
-		super(actual, expected);
-	}
-
 	@Override
 	public String getColorForPadding()
 	{

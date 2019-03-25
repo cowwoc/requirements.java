@@ -34,7 +34,7 @@ public final class NativeTerminal
 	 * Most terminals support ANSI escape codes by default, but some platforms (e.g. Windows) require
 	 * support to be enabled.
 	 *
-	 * @param encoding the type of encoding that verifiers will output
+	 * @param encoding the type of encoding that the terminal supports
 	 * @throws IOException if the operation fails
 	 */
 	public native void setEncoding(TerminalEncoding encoding) throws IOException;

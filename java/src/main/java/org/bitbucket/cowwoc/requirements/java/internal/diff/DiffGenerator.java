@@ -40,7 +40,7 @@ public final class DiffGenerator
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
-	 * @return a writer
+	 * @return the calculated diff
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	public DiffResult diff(String actual, String expected)
@@ -63,8 +63,7 @@ public final class DiffGenerator
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
-		DiffWriter writer = createDiffWriter(scope.getGlobalConfiguration().getTerminalEncoding(), actual,
-			expected);
+		DiffWriter writer = createDiffWriter(scope.getGlobalConfiguration().getTerminalEncoding());
 		for (Diff component : components)
 		{
 			switch (component.operation)
@@ -95,24 +94,22 @@ public final class DiffGenerator
 
 	/**
 	 * @param encoding a terminal encoding
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @return a writer that generates the diff of {@code actual} and {@code expected}
+	 * @return a writer for the specified encoding
 	 */
-	private DiffWriter createDiffWriter(TerminalEncoding encoding, String actual, String expected)
+	private DiffWriter createDiffWriter(TerminalEncoding encoding)
 	{
 		switch (encoding)
 		{
 			case NONE:
-				return new TextOnly(actual, expected);
-			case XTERM_8COLOR:
-				return new Xterm8Color(actual, expected);
-			case XTERM_16COLOR:
-				return new Xterm16Color(actual, expected);
-			case XTERM_256COLOR:
-				return new Xterm256Color(actual, expected);
-			case RGB_888COLOR:
-				return new Rgb888Color(actual, expected);
+				return new TextOnly();
+			case XTERM_8_COLORS:
+				return new Xterm8Colors();
+			case XTERM_16_COLORS:
+				return new Xterm16Colors();
+			case XTERM_256_COLORS:
+				return new Xterm256Colors();
+			case RGB_888_COLORS:
+				return new Rgb888Color();
 			default:
 				throw new AssertionError(encoding.name());
 		}

@@ -10,7 +10,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 /**
  * An xterm terminal that supports a 256 color palette.
  */
-public final class Xterm256Color extends AbstractXterm
+public final class Xterm256Colors extends AbstractXterm
 {
 	// OSX 10.9 renders color 15 as light gray while others render it as white. Codes 16-231 seem to
 	// be more portable.
@@ -19,16 +19,6 @@ public final class Xterm256Color extends AbstractXterm
 	private static final String GREEN_BACKGROUND = "48;5;28";
 	private static final String RED_BACKGROUND = "48;5;124";
 	private static final String GRAY_BACKGROUND = "48;5;244";
-
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	public Xterm256Color(String actual, String expected)
-	{
-		super(actual, expected);
-	}
 
 	@Override
 	public String getColorForPadding()

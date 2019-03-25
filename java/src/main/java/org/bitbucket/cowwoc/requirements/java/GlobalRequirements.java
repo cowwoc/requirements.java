@@ -70,11 +70,11 @@ public final class GlobalRequirements
 	}
 
 	/**
-	 * Indicates the type of encoding that verifiers will output.
+	 * Indicates the type of encoding that the terminal supports.
 	 * <p>
 	 * This feature can be used to force the use of ANSI colors even when their support is not detected.
 	 *
-	 * @param encoding the type of encoding that verifiers will output
+	 * @param encoding the type of encoding that the terminal supports
 	 * @return this
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #withDefaultTerminalEncoding()

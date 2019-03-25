@@ -9,9 +9,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 
 /**
  * An xterm terminal that supports a 16 color palette. Adds "bold" and "aixterm" extensions on top
- * of {@link Xterm8Color}.
+ * of {@link Xterm8Colors}.
  */
-public final class Xterm16Color extends AbstractXterm
+public final class Xterm16Colors extends AbstractXterm
 {
 	// On Ubuntu 16.04 and Netbeans 8.1, if we omit ;0 then the bold attribute of the previous
 	// character gets used.
@@ -21,16 +21,6 @@ public final class Xterm16Color extends AbstractXterm
 	// The standard colors (white on gray) are hard to read but not all terminals support aixterm.
 	// Terminals that do not support aixterm will fallback to the basic colors.
 	private static final String GRAY_BACKGROUND = "47;100";
-
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	public Xterm16Color(String actual, String expected)
-	{
-		super(actual, expected);
-	}
 
 	@Override
 	public String getColorForPadding()

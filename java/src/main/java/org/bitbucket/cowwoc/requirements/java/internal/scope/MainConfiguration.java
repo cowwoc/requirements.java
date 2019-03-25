@@ -88,7 +88,7 @@ public final class MainConfiguration implements Configuration
 	 *                              false if {@code assertThat()} should do nothing
 	 * @param diffEnabled           indicates whether exceptions should show the difference between the
 	 *                              actual and expected values
-	 * @param typeToStringConverter map from an object type to a function that converts the object to
+	 * @param typeToStringConverter a map from an object type to a function that converts the object to
 	 *                              a String
 	 * @throws AssertionError if any of the arguments are null
 	 */

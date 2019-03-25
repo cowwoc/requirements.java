@@ -16,21 +16,21 @@ public enum TerminalEncoding
 	 */
 	NONE,
 	/**
-	 * Terminal supports an 8-color palette.
+	 * Terminal supports 8 colors.
 	 */
-	XTERM_8COLOR,
+	XTERM_8_COLORS,
 	/**
-	 * Terminal supports a 16-color palette.
+	 * Terminal supports 16 colors.
 	 */
-	XTERM_16COLOR,
+	XTERM_16_COLORS,
 	/**
-	 * Terminal supports a 256-color palette.
+	 * Terminal supports 256 colors.
 	 */
-	XTERM_256COLOR,
+	XTERM_256_COLORS,
 	/**
-	 * Terminal supports a 24-bit color palette.
+	 * Terminal supports 16 millions.
 	 */
-	RGB_888COLOR;
+	RGB_888_COLORS;
 
 	/**
 	 * @return a comparator that sorts encodings based on their ranking, from most-desirable to least-desirable

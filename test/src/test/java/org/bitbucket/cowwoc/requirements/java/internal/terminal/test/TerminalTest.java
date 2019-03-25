@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
-import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888COLOR;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888_COLORS;
 
 public final class TerminalTest
 {
@@ -44,7 +44,7 @@ public final class TerminalTest
 		try (JvmScope jvm = DefaultJvmScope.INSTANCE)
 		{
 			Terminal terminal = jvm.getTerminal();
-			terminal.setEncoding(RGB_888COLOR);
+			terminal.setEncoding(RGB_888_COLORS);
 		}
 	}
 }

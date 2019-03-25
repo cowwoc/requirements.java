@@ -155,14 +155,9 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	private boolean needToResetActual;
 	private boolean needToResetExpected;
 
-	/**
-	 * @param actual   the actual value
-	 * @param expected the expected value
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	protected AbstractXterm(String actual, String expected)
+	protected AbstractXterm()
 	{
-		super(actual, expected, PADDING_MARKER);
+		super(PADDING_MARKER);
 		this.paddingColor = getColorForPadding();
 		this.insertColor = getColorForInsert();
 		this.deleteColor = getColorForDelete();
