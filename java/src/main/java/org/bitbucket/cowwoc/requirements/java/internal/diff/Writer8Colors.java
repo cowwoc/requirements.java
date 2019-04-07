@@ -14,34 +14,43 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  */
 public final class Writer8Colors extends AbstractColorWriter
 {
-	private static final String GRAY_FOREGROUND = "37";
+	// IntelliJ IDEA 2019.1 Darcula color scheme:
+	// * inverts black/white colors
+	// * Resets the background color to default even if only the foreground color is changed
+	//
+	// Therefore:
+	// * We use the default background color instead of black/white which are unreliable.
+	// * We always set the background color even if we only want to change the foreground color.
+	// * We use a white foreground instead of gray to increase the contrast of the text.
+	private static final String WHITE_FOREGROUND = "97";
 	private static final String BLACK_FOREGROUND = "30";
 	private static final String GREEN_BACKGROUND = "42";
 	private static final String RED_BACKGROUND = "41";
 	private static final String GRAY_BACKGROUND = "47";
+	private static final String DEFAULT_BACKGROUND = "49";
 	private static final String BLACK_BACKGROUND = "40";
 
 	@Override
 	public String getColorForKeep()
 	{
-		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForPadding()
 	{
-		return PREFIX + BLACK_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX;
+		return PREFIX + BLACK_FOREGROUND + ";" + DEFAULT_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForInsert()
 	{
-		return PREFIX + GRAY_FOREGROUND + ";" + GREEN_BACKGROUND + POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + ";" + GREEN_BACKGROUND + POSTFIX;
 	}
 
 	@Override
 	public String getColorForDelete()
 	{
-		return PREFIX + GRAY_FOREGROUND + ";" + RED_BACKGROUND + POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + ";" + RED_BACKGROUND + POSTFIX;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.Map;
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
  * <p>
- * <p>
  * <b>Note</b>: This configuration is read by verifiers at every method invocation so updating it will
  * affect existing verifiers.
  */

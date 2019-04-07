@@ -15,7 +15,6 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 public final class Writer16Colors extends AbstractColorWriter
 {
 	private static final String WHITE_FOREGROUND = "37;1";
-	private static final String GRAY_FOREGROUND = "30;1";
 	private static final String GREEN_BACKGROUND = "42";
 	private static final String RED_BACKGROUND = "41";
 	private static final String GRAY_BACKGROUND = "100";
@@ -24,7 +23,7 @@ public final class Writer16Colors extends AbstractColorWriter
 	@Override
 	public String getColorForKeep()
 	{
-		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
 	}
 
 	@Override

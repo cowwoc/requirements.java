@@ -39,10 +39,11 @@
 	</developers>
 
 	<modules>
-		<module>code_generator</module>
-		<module>java</module>
+		<module>annotations</module>
 		<module>natives</module>
+		<module>java</module>
 		<module>guava</module>
+		<module>code_generator</module>
 		<module>maven_plugin</module>
 	</modules>
 

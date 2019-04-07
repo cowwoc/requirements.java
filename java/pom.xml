@@ -94,8 +94,8 @@
 						<skipDiffReport>true</skipDiffReport>
 						<includes>
 							<include>org.bitbucket.cowwoc.requirements</include>
+							<include>org.bitbucket.cowwoc.requirements.annotations</include>
 							<include>org.bitbucket.cowwoc.requirements.java</include>
-							<include>org.bitbucket.cowwoc.requirements.java.annotations</include>
 							<include>org.bitbucket.cowwoc.requirements.java.capabilities</include>
 							<include>org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding</include>
 						</includes>

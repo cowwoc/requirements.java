@@ -10,7 +10,6 @@
 	<artifactId>natives</artifactId>
 	<packaging>jar</packaging>
 	<description>Native component of the Requirements API.</description>
-	<url>https://bitbucket.org/cowwoc/requirements/</url>
 
 	<build>
 		<plugins>
@@ -167,6 +166,11 @@
 			<groupId>org.bitbucket.cowwoc.pouch</groupId>
 			<artifactId>pouch</artifactId>
 			<version>${pouch.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>annotations</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<profiles>

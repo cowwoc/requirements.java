@@ -11,13 +11,13 @@
  */
 module org.bitbucket.cowwoc.requirements.java
 {
+	requires transitive org.bitbucket.cowwoc.requirements.annotations;
 	requires org.bitbucket.cowwoc.requirements.natives;
 	requires org.bitbucket.cowwoc.diffmatchpatch;
 	requires org.slf4j;
 	requires org.bitbucket.cowwoc.pouch;
 
 	exports org.bitbucket.cowwoc.requirements.java;
-	exports org.bitbucket.cowwoc.requirements.java.annotations;
 	exports org.bitbucket.cowwoc.requirements.java.capabilities;
 
 	exports org.bitbucket.cowwoc.requirements.java.internal to org.bitbucket.cowwoc.requirements.guava,

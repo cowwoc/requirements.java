@@ -139,8 +139,8 @@ public final class ExceptionOptimizer
 				" */\n" +
 				"package " + wrapperPackageName + ";\n" +
 				"\n");
-			writer.write("import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;\n" +
-				"import org.bitbucket.cowwoc.requirements.java.annotations.OptimizedException;\n" +
+			writer.write("import org.bitbucket.cowwoc.requirements.annotations.OptimizedException;\n" +
+				"import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;\n" +
 				"\n" +
 				"import java.io.PrintStream;\n");

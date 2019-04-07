@@ -7,6 +7,7 @@
  */
 module org.bitbucket.cowwoc.requirements.natives {
 	requires org.bitbucket.cowwoc.pouch;
+	requires org.bitbucket.cowwoc.requirements.annotations;
 
 	exports org.bitbucket.cowwoc.requirements.natives.internal.util to org.bitbucket.cowwoc.requirements.java,
 		org.bitbucket.cowwoc.requirements.maven_plugin, org.bitbucket.cowwoc.requirements.test;

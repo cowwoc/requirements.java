@@ -21,7 +21,7 @@ public final class Writer256Colors extends AbstractColorWriter
 	private static final String GREEN_BACKGROUND = "48;5;28";
 	private static final String RED_BACKGROUND = "48;5;124";
 	private static final String GRAY_BACKGROUND = "48;5;244";
-	private static final String BLACK_BACKGROUND = "48;5;0";
+	private static final String BLACK_BACKGROUND = "48;5;16";
 
 	@Override
 	public String getColorForKeep()

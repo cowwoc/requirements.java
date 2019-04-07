@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.util;
 
-import org.bitbucket.cowwoc.requirements.java.annotations.OptimizedException;
+import org.bitbucket.cowwoc.requirements.annotations.OptimizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
