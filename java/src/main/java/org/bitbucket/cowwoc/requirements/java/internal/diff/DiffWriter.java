@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal.diff;
 import java.util.List;
 
 /**
- * Generates a String representing the diff of {@code Actual} and {@code Expected} Strings.
+ * Generates the String representation of a diff between {@code actual} and {@code expected} values.
  */
 public interface DiffWriter extends AutoCloseable
 {
@@ -37,7 +37,7 @@ public interface DiffWriter extends AutoCloseable
 
 	/**
 	 * @return the lines to optionally display after "actual" and before "expected" (the lines are
-	 *         empty if they should not be displayed)
+	 * empty if they should not be displayed)
 	 * @throws IllegalStateException if the writer is open
 	 */
 	List<String> getMiddle();

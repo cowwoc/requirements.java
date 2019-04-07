@@ -179,27 +179,27 @@ public final class TextOnly extends AbstractDiffWriter
 	}
 
 	@Override
-	protected void keepLine(String line)
+	protected void keepText(String text)
 	{
-		actualLine.append(line);
-		middleLine.append(Strings.repeat(DIFF_EQUAL, line.length()));
-		expectedLine.append(line);
+		actualLine.append(text);
+		middleLine.append(Strings.repeat(DIFF_EQUAL, text.length()));
+		expectedLine.append(text);
 	}
 
 	@Override
-	protected void insertLine(String line)
+	protected void insertText(String text)
 	{
-		int length = line.length();
+		int length = text.length();
 		actualLine.append(Strings.repeat(getPaddingMarker(), length));
 		middleLine.append(Strings.repeat(DIFF_INSERT, length));
-		expectedLine.append(line);
+		expectedLine.append(text);
 	}
 
 	@Override
-	protected void deleteLine(String line)
+	protected void deleteText(String text)
 	{
-		actualLine.append(line);
-		int length = line.length();
+		actualLine.append(text);
+		int length = text.length();
 		middleLine.append(Strings.repeat(DIFF_DELETE, length));
 		expectedLine.append(Strings.repeat(getPaddingMarker(), length));
 	}

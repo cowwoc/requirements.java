@@ -8,15 +8,24 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
 /**
- * An xterm terminal that supports an 8 color palette.
+ * A terminal that supports an 8 colors.
+ *
+ * @see <a href="https://stackoverflow.com/a/33206814/14731">Summary of ANSI color sequences</a>
  */
-public final class Xterm8Colors extends AbstractXterm
+public final class Writer8Colors extends AbstractColorWriter
 {
 	private static final String GRAY_FOREGROUND = "37";
 	private static final String BLACK_FOREGROUND = "30";
 	private static final String GREEN_BACKGROUND = "42";
 	private static final String RED_BACKGROUND = "41";
 	private static final String GRAY_BACKGROUND = "47";
+	private static final String BLACK_BACKGROUND = "40";
+
+	@Override
+	public String getColorForKeep()
+	{
+		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
+	}
 
 	@Override
 	public String getColorForPadding()

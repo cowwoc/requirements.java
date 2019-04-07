@@ -8,19 +8,24 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
 /**
- * An xterm terminal that supports a 16 color palette. Adds "bold" and "aixterm" extensions on top
- * of {@link Xterm8Colors}.
+ * A terminal that supports 16 colors.
+ *
+ * @see <a href="https://stackoverflow.com/a/33206814/14731">Summary of ANSI color sequences</a>
  */
-public final class Xterm16Colors extends AbstractXterm
+public final class Writer16Colors extends AbstractColorWriter
 {
-	// On Ubuntu 16.04 and Netbeans 8.1, if we omit ;0 then the bold attribute of the previous
-	// character gets used.
 	private static final String WHITE_FOREGROUND = "37;1";
+	private static final String GRAY_FOREGROUND = "30;1";
 	private static final String GREEN_BACKGROUND = "42";
 	private static final String RED_BACKGROUND = "41";
-	// The standard colors (white on gray) are hard to read but not all terminals support aixterm.
-	// Terminals that do not support aixterm will fallback to the basic colors.
-	private static final String GRAY_BACKGROUND = "47;100";
+	private static final String GRAY_BACKGROUND = "100";
+	private static final String BLACK_BACKGROUND = "40";
+
+	@Override
+	public String getColorForKeep()
+	{
+		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
+	}
 
 	@Override
 	public String getColorForPadding()

@@ -8,9 +8,11 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
 /**
- * An xterm terminal that supports a 256 color palette.
+ * A terminal that supports a 256 color palette.
+ *
+ * @see <a href="https://stackoverflow.com/a/33206814/14731">Summary of ANSI color sequences</a>
  */
-public final class Xterm256Colors extends AbstractXterm
+public final class Writer256Colors extends AbstractColorWriter
 {
 	// OSX 10.9 renders color 15 as light gray while others render it as white. Codes 16-231 seem to
 	// be more portable.
@@ -19,6 +21,13 @@ public final class Xterm256Colors extends AbstractXterm
 	private static final String GREEN_BACKGROUND = "48;5;28";
 	private static final String RED_BACKGROUND = "48;5;124";
 	private static final String GRAY_BACKGROUND = "48;5;244";
+	private static final String BLACK_BACKGROUND = "48;5;0";
+
+	@Override
+	public String getColorForKeep()
+	{
+		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
+	}
 
 	@Override
 	public String getColorForPadding()

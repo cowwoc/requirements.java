@@ -103,13 +103,13 @@ public final class DiffGenerator
 			case NONE:
 				return new TextOnly();
 			case XTERM_8_COLORS:
-				return new Xterm8Colors();
+				return new Writer8Colors();
 			case XTERM_16_COLORS:
-				return new Xterm16Colors();
+				return new Writer16Colors();
 			case XTERM_256_COLORS:
-				return new Xterm256Colors();
+				return new Writer256Colors();
 			case RGB_888_COLORS:
-				return new Rgb888Color();
+				return new Writer16MillionColors();
 			default:
 				throw new AssertionError(encoding.name());
 		}

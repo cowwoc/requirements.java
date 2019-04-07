@@ -5,9 +5,9 @@
 package org.bitbucket.cowwoc.requirements.java.internal.diff.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
-import org.bitbucket.cowwoc.requirements.java.internal.diff.Rgb888Color;
-import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm16Colors;
-import org.bitbucket.cowwoc.requirements.java.internal.diff.Xterm256Colors;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer16Colors;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer16MillionColors;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer256Colors;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
@@ -55,7 +55,7 @@ public final class DiffTest
 	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
 	 */
 	@Test
-	public void diffArraySize_XTerm_16Color()
+	public void diffArraySize_16Colors()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
@@ -65,13 +65,13 @@ public final class DiffTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			Xterm16Colors scheme = new Xterm16Colors();
+			Writer16Colors scheme = new Writer16Colors();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
-				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
-				scheme.insertColor + "5" + scheme.resetColor + "]";
+			String expectedMessage = "Actual  : " + scheme.keepColor + "int[" + scheme.deleteColor + "6" +
+				scheme.paddingColor + scheme.getPaddingMarker() + scheme.keepColor + "]" + scheme.resetColor + "\n" +
+				"Expected: " + scheme.keepColor + "int[" + scheme.paddingColor + scheme.getPaddingMarker() +
+				scheme.insertColor + "5" + scheme.keepColor + "]" + scheme.resetColor;
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
@@ -81,7 +81,7 @@ public final class DiffTest
 	 * Ensure that XTERM_256_COLORS diffs generate the expected value.
 	 */
 	@Test
-	public void diffArraySize_XTerm_256Color()
+	public void diffArraySize_256Colors()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_256_COLORS))
 		{
@@ -91,13 +91,13 @@ public final class DiffTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			Xterm256Colors scheme = new Xterm256Colors();
+			Writer256Colors scheme = new Writer256Colors();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
-				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
-				scheme.insertColor + "5" + scheme.resetColor + "]";
+			String expectedMessage = "Actual  : " + scheme.keepColor + "int[" + scheme.deleteColor + "6" +
+				scheme.paddingColor + scheme.getPaddingMarker() + scheme.keepColor + "]" + scheme.resetColor + "\n" +
+				"Expected: " + scheme.keepColor + "int[" + scheme.paddingColor + scheme.getPaddingMarker() +
+				scheme.insertColor + "5" + scheme.keepColor + "]" + scheme.resetColor;
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
@@ -107,7 +107,7 @@ public final class DiffTest
 	 * Ensure that RGB_888_COLORS diffs generate the expected value.
 	 */
 	@Test
-	public void diffArraySize_Rgb888Color()
+	public void diffArraySize_16MillionColors()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(RGB_888_COLORS))
 		{
@@ -117,13 +117,13 @@ public final class DiffTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			Rgb888Color scheme = new Rgb888Color();
+			Writer16MillionColors scheme = new Writer16MillionColors();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.getPaddingMarker() + scheme.resetColor + "]\n" +
-				"Expected: int[" + scheme.paddingColor + scheme.getPaddingMarker() +
-				scheme.insertColor + "5" + scheme.resetColor + "]";
+			String expectedMessage = "Actual  : " + scheme.keepColor + "int[" + scheme.deleteColor + "6" +
+				scheme.paddingColor + scheme.getPaddingMarker() + scheme.keepColor + "]" + scheme.resetColor + "\n" +
+				"Expected: " + scheme.keepColor + "int[" + scheme.paddingColor + scheme.getPaddingMarker() +
+				scheme.insertColor + "5" + scheme.keepColor + "]" + scheme.resetColor;
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}

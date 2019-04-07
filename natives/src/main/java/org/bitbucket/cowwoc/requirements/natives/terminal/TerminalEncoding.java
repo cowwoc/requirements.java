@@ -33,7 +33,8 @@ public enum TerminalEncoding
 	RGB_888_COLORS;
 
 	/**
-	 * @return a comparator that sorts encodings based on their ranking, from most-desirable to least-desirable
+	 * @return a comparator that sorts encodings based on the number of colors that they support, from the most
+	 * to the least number of colors
 	 */
 	public static Comparator<TerminalEncoding> sortByDecreasingRank()
 	{

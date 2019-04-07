@@ -16,9 +16,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * Base implementation for all XTerm terminals.
  * <h3>Basic Rules</h3>
  * <ul>
- * <li>Red characters need to be deleted from {@code Actual}.</li>
- * <li>Uncolored characters are equal in {@code Actual} and {@code Expected}.</li>
- * <li>Green characters need to be inserted into {@code Actual}.</li>
+ * <li>Red characters need to be deleted from {@code actual}.</li>
+ * <li>Uncolored characters are equal in {@code actual} and {@code expected}.</li>
+ * <li>Green characters need to be inserted into {@code actual}.</li>
  * <li>Characters in the opposite direction of insertions and deletions are padded with {@code /}
  * characters to line up the strings vertically. This padding does not contribute any characters to
  * the string it is found in. Read on for concrete examples.</li>
@@ -31,7 +31,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <p>
  * <img src="doc-files/xterm-example1.png" alt="diff output">
  * <p>
- * Meaning, to go from {@code Actual} to {@code Expected} we need to insert "text".
+ * Meaning, to go from {@code actual} to {@code expected} we need to insert "text".
  * <h3>Example 2: delete</h3>
  * <pre>{@code
  * Actual   = "text"
@@ -41,7 +41,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <p>
  * <img src="doc-files/xterm-example2.png" alt="diff output">
  * <p>
- * Meaning, to go from {@code Actual} to {@code Expected} we need to delete "text".
+ * Meaning, to go from {@code actual} to {@code expected} we need to delete "text".
  * <h3>Example 3: padding</h3>
  * <pre>{@code
  * Actual   = "foo"
@@ -53,9 +53,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <p>
  * Meaning:
  * <ul>
- * <li>To go from {@code Actual} to {@code Expected} we need to insert three spaces at the beginning
- * of {@code Actual}.</li>
- * <li>There are no {@code ///} characters in {@code Expected} in front of "foo". This padding is
+ * <li>To go from {@code actual} to {@code expected} we need to insert three spaces at the beginning
+ * of {@code actual}.</li>
+ * <li>There are no {@code ///} characters in {@code expected} in front of "foo". This padding is
  * used to line up the strings vertically.</li>
  * </ul>
  * <h3>Example 4: delete, keep, insert</h3>
@@ -80,11 +80,11 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <li>If objects are not equal, and their {@code toString()} values differ, we output their String
  * representations.</li>
  * <li>If the {@code toString()} values are equal, but their types differ, we output the string
- * representation of {@code Actual} followed by the two types (i.e. {@code Actual.class} vs
- * {@code Expected.class}).</li>
+ * representation of {@code actual} followed by the two types (i.e. {@code actual.getClass()} vs
+ * {@code expected.getClass()}).</li>
  * <li>If their classes are equal, but their {@code hashCode()} values differ, we output the string
- * representation of {@code Actual} followed by the two hashcodes (i.e. {@code Actual.hashCode()} vs
- * {@code Expected.hashCode()}).</li>
+ * representation of {@code actual} followed by the two hashcodes (i.e. {@code actual.hashCode()} vs
+ * {@code expected.hashCode()}).</li>
  * </ul>
  * For example:
  * <pre>{@code
@@ -98,7 +98,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * When comparing multi-line strings:
  * <ul>
  * <li>We display the diff on a per-line basis.</li>
- * <li>{@code Actual} and {@code Expected} are followed by a line number.</li>
+ * <li>{@code actual} and {@code expected} are followed by a line number.</li>
  * <li>Lines that are identical (with the exception of the first and last line) are omitted.</li>
  * </ul>
  * For example:
@@ -124,7 +124,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * Lines ending with "\n\n" or "\0\0" represents the literal string "\n" followed by a newline
  * character, or the literal string "\0" followed by the end of string, respectively.
  * <h3>Example 5: Missing Line Numbers</h3>
- * When {@code Actual} or {@code Expected} contain a line that does not have a corresponding line on
+ * When {@code actual} or {@code expected} contain a line that does not have a corresponding line on
  * the other side we omit the latter's line number.
  * <pre>{@code
  * Actual   = "Foo\nBar"
@@ -140,52 +140,57 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <li>Expected did not have a line that corresponded to Actual line 1.</li>
  * <li>We need to delete line 1 and retain line 2 unchanged.</li>
  * </ul>
+ *
+ * @see <a href="https://stackoverflow.com/a/33206814/14731">Summary of ANSI color sequences</a>
  */
-abstract class AbstractXterm extends AbstractDiffWriter
+abstract class AbstractColorWriter extends AbstractDiffWriter
 	implements ColoredDiff
 {
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	static final String PADDING_MARKER = "/";
+	public static final String PADDING_MARKER = "/";
 	public final String paddingColor;
+	public final String keepColor;
 	public final String insertColor;
 	public final String deleteColor;
 	public final String resetColor;
 	private boolean needToResetActual;
 	private boolean needToResetExpected;
 
-	protected AbstractXterm()
+	protected AbstractColorWriter()
 	{
 		super(PADDING_MARKER);
 		this.paddingColor = getColorForPadding();
+		this.keepColor = getColorForKeep();
 		this.insertColor = getColorForInsert();
 		this.deleteColor = getColorForDelete();
 		this.resetColor = PREFIX + "0" + POSTFIX;
 	}
 
 	@Override
-	protected void keepLine(String line)
+	protected void keepText(String text)
 	{
-		resetColors();
-		actualLine.append(line);
-		expectedLine.append(line);
-	}
-
-	@Override
-	protected void insertLine(String line)
-	{
-		actualLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), line.length()));
-		expectedLine.append(insertColor).append(line);
+		actualLine.append(keepColor).append(text);
+		expectedLine.append(keepColor).append(text);
 		needToResetActual = true;
 		needToResetExpected = true;
 	}
 
 	@Override
-	protected void deleteLine(String line)
+	protected void insertText(String text)
 	{
-		actualLine.append(deleteColor).append(line);
-		expectedLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), line.length()));
+		actualLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), text.length()));
+		expectedLine.append(insertColor).append(text);
+		needToResetActual = true;
+		needToResetExpected = true;
+	}
+
+	@Override
+	protected void deleteText(String text)
+	{
+		actualLine.append(deleteColor).append(text);
+		expectedLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), text.length()));
 		needToResetActual = true;
 		needToResetExpected = true;
 	}
@@ -202,7 +207,7 @@ abstract class AbstractXterm extends AbstractDiffWriter
 	}
 
 	/**
-	 * Resets the colors of {@code Expected} and {@code Actual}.
+	 * Resets the colors of {@code expected} and {@code actual}.
 	 */
 	private void resetColors()
 	{

@@ -50,25 +50,25 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	/**
-	 * Keeps a line of text in both {@code Actual} and {@code Expected}.
+	 * Indicates that text should be kept in both {@code actual} and {@code expected}.
 	 *
-	 * @param line the line
+	 * @param text the text
 	 */
-	protected abstract void keepLine(String line);
+	protected abstract void keepText(String text);
 
 	/**
-	 * Inserts a line that is present in {@code Expected} but not {@code Actual}.
+	 * Indicates that text is present in {@code expected} but not {@code actual}.
 	 *
-	 * @param line the text
+	 * @param text the text
 	 */
-	protected abstract void insertLine(String line);
+	protected abstract void insertText(String text);
 
 	/**
-	 * Deletes a line that is present in {@code Actual} but not {@code Expected}.
+	 * Indicates that text is present in {@code actual} but not {@code expected}.
 	 *
-	 * @param line the text
+	 * @param text the text
 	 */
-	protected abstract void deleteLine(String line);
+	protected abstract void deleteText(String text);
 
 	/**
 	 * Invoked before flushing each line.
@@ -97,7 +97,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 			String line = lines[i];
 			if (i < size - 1)
 				line += NEWLINE_MARKER;
-			keepLine(line);
+			keepText(line);
 
 			if (i < size - 1)
 			{
@@ -119,7 +119,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 			if (i < size - 1)
 				line += NEWLINE_MARKER;
 			if (line.length() > 0)
-				insertLine(line);
+				insertText(line);
 			if (i < size - 1)
 			{
 				// (i == size - 1) does not necessarily indicate the end of a line
@@ -140,7 +140,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 			if (i < size - 1)
 				line += NEWLINE_MARKER;
 			if (line.length() > 0)
-				deleteLine(line);
+				deleteText(line);
 			if (i < size - 1)
 			{
 				// (i == size - 1) does not necessarily indicate the end of a line

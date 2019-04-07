@@ -8,17 +8,25 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
 /**
- * A terminal that supports a 24-bit color palette.
+ * A terminal that supports 16 million colors.
  *
+ * @see <a href="https://stackoverflow.com/a/33206814/14731">Summary of ANSI color sequences</a>
  * @see <a href="https://gist.github.com/XVilka/8346728">https://gist.github.com/XVilka/8346728</a>
  */
-public final class Rgb888Color extends AbstractXterm
+public final class Writer16MillionColors extends AbstractColorWriter
 {
 	private static final String WHITE_FOREGROUND = "38;2;255;255;255";
 	private static final String GRAY_FOREGROUND = "38;2;188;188;188";
 	private static final String GREEN_BACKGROUND = "48;2;0;135;0";
 	private static final String RED_BACKGROUND = "48;2;175;0;0";
 	private static final String GRAY_BACKGROUND = "48;2;66;66;66";
+	private static final String BLACK_BACKGROUND = "48;2;0;0;0";
+
+	@Override
+	public String getColorForKeep()
+	{
+		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + BLACK_BACKGROUND + POSTFIX;
+	}
 
 	@Override
 	public String getColorForPadding()

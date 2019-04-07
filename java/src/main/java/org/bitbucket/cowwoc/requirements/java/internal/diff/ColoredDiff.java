@@ -15,6 +15,11 @@ interface ColoredDiff
 	String getColorForPadding();
 
 	/**
+	 * @return the ANSI code to insert before text that should be kept unchanged
+	 */
+	String getColorForKeep();
+
+	/**
 	 * @return the ANSI code to insert before text that should be inserted
 	 */
 	String getColorForInsert();

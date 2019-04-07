@@ -133,6 +133,7 @@ public final class ContextGenerator
 		assert (actualName != null) : "actualName may not be null";
 		// actualType is null if actualValue is null
 		assert (expectedName != null) : "expectedName may not be null";
+		// Don't diff booleans
 		boolean typeIsDiffable = (actualType != boolean.class) && (actualType != Boolean.class);
 		if (!typeIsDiffable || !config.isDiffEnabled())
 		{
