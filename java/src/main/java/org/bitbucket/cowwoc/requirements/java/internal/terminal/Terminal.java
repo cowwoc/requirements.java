@@ -123,7 +123,8 @@ public final class Terminal
 				break;
 			}
 		}
-		// There is no reliable way to detect RGB_888_COLORS support: https://gist.github.com/XVilka/8346728#detection
+		// There is no reliable way to detect RGB_888_COLORS support:
+		// https://gist.github.com/XVilka/8346728#true-color-detection
 		return result;
 	}
 
@@ -177,7 +178,7 @@ public final class Terminal
 			// Only Windows needs nativeSetEncoding() to be invoked
 			if (nativeSetEncoding(encoding, force) || force)
 			{
-				log.debug("Setting {}", encoding);
+				log.debug("Setting encoding to {}", encoding);
 				this.encoding.set(encoding);
 			}
 			else
@@ -186,6 +187,8 @@ public final class Terminal
 				this.encoding.set(NONE);
 			}
 		}
+		this.encoding.set(encoding);
+		log.debug("Setting encoding to {} without native interaction", encoding);
 	}
 
 	/**
@@ -224,6 +227,7 @@ public final class Terminal
 	public void useBestEncoding()
 	{
 		Set<TerminalEncoding> supportedTypes = getSupportedTypes();
+		log.debug("supportedType: {}", supportedTypes);
 		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
 		sortedTypes.sort(TerminalEncoding.sortByDecreasingRank());
 		setEncodingImpl(sortedTypes.get(0), false);
@@ -235,6 +239,7 @@ public final class Terminal
 	public TerminalEncoding getEncoding()
 	{
 		TerminalEncoding result = encoding.get();
+		log.debug("encoding is {}", result);
 		if (result == null)
 		{
 			useBestEncoding();
