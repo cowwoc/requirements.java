@@ -83,7 +83,7 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 		}
 		try
 		{
-			generator.apply(generatedSources);
+			generator.writeTo(generatedSources);
 		}
 		catch (IOException e)
 		{

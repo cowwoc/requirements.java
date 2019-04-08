@@ -48,7 +48,7 @@ public final class ApiGenerator
 
 		Path directory = Paths.get(args[0]);
 		ApiGenerator generator = new ApiGenerator();
-		generator.apply(directory);
+		generator.writeTo(directory);
 	}
 
 	private boolean guavaEnabled;
@@ -56,13 +56,13 @@ public final class ApiGenerator
 	private final Logger log = LoggerFactory.getLogger(ApiGenerator.class);
 
 	/**
-	 * Writes all API endpoints and logs the result..
+	 * Writes all API endpoints and logs the result.
 	 *
 	 * @param directory the directory to generate files into
 	 * @throws NullPointerException if any of the arguments are null
 	 * @throws IOException          if an I/O error occurs
 	 */
-	public void apply(Path directory) throws IOException
+	public void writeTo(Path directory) throws IOException
 	{
 		if (directory == null)
 			throw new NullPointerException("directory may not be null");
