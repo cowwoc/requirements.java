@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 {
 	/**
-	 * Ensures that the array is empty.
+	 * Ensures that the actual value is empty.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array is not empty
@@ -30,7 +30,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S isEmpty();
 
 	/**
-	 * Ensures that the array is not empty.
+	 * Ensures that the actual value is not empty.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array is empty
@@ -38,7 +38,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S isNotEmpty();
 
 	/**
-	 * Ensures that the array contains an element.
+	 * Ensures that the actual value contains an element.
 	 *
 	 * @param expected the element
 	 * @return this
@@ -47,7 +47,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S contains(E expected);
 
 	/**
-	 * Ensures that the array contains an element.
+	 * Ensures that the actual value contains an element.
 	 *
 	 * @param expected the element
 	 * @param name     the name of the element
@@ -58,18 +58,18 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S contains(E expected, String name);
 
 	/**
-	 * Ensures that the array contains the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains the specified elements; nothing less, nothing more.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} is null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If
-	 *                                  the array contains any element not found in {@code expected}.
+	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected};
+	 *                                  if the array contains any element not found in {@code expected}
 	 */
 	S containsExactly(Collection<E> expected);
 
 	/**
-	 * Ensures that the array contains the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains the specified elements; nothing less, nothing more.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
@@ -82,7 +82,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S containsExactly(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the array contains any of the specified elements.
+	 * Ensures that the actual value contains any of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -92,7 +92,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S containsAny(Collection<E> expected);
 
 	/**
-	 * Ensures that the array contains any of the specified elements.
+	 * Ensures that the actual value contains any of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
@@ -104,7 +104,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S containsAny(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the array contains all of the specified elements.
+	 * Ensures that the actual value contains all of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return this
@@ -114,19 +114,19 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S containsAll(Collection<E> expected);
 
 	/**
-	 * Ensures that the array contains all of the specified elements.
+	 * Ensures that the actual value contains all of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
 	 * @return this
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If {@code name}
-	 *                                  is empty.
+	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If
+	 *                                  {@code name} is empty.
 	 */
 	S containsAll(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the array does not contain an element.
+	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @return this
@@ -135,7 +135,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S doesNotContain(E element);
 
 	/**
-	 * Ensures that the array does not contain an element.
+	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param element the element that must not exist
 	 * @param name    the name of the element
@@ -151,7 +151,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	 * @param other the elements that must not exist
 	 * @return this
 	 * @throws NullPointerException     if {@code other} is null
-	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
+	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
 	 *                                  nothing less, nothing more.
 	 */
 	S doesNotContainExactly(Collection<E> other);
@@ -160,16 +160,16 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	 * Ensures that the actual value does not contain exactly the specified elements; nothing less, nothing more.
 	 *
 	 * @param other the elements that must not exist
-	 * @param name  the name of the element
+	 * @param name  the name of the collection
 	 * @return this
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
-	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
+	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
 	 *                                  nothing less, nothing more. If {@code name} is empty.
 	 */
 	S doesNotContainExactly(Collection<E> other, String name);
 
 	/**
-	 * Ensures that the array does not contain any of the specified elements.
+	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -179,7 +179,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S doesNotContainAny(Collection<E> elements);
 
 	/**
-	 * Ensures that the array does not contain any of the specified elements.
+	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -190,7 +190,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S doesNotContainAny(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the array does not contain all of the specified elements.
+	 * Ensures that the actual value does not contain all of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return this
@@ -200,7 +200,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S doesNotContainAll(Collection<E> elements);
 
 	/**
-	 * Ensures that the array does not contain all of specified elements.
+	 * Ensures that the actual value does not contain all of specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -211,7 +211,7 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S doesNotContainAll(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the array does not contain any duplicate elements.
+	 * Ensures that the actual value does not contain any duplicate elements.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the array contains any duplicate elements
@@ -219,9 +219,9 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	S doesNotContainDuplicates();
 
 	/**
-	 * Returns a verifier for the array's length.
+	 * Returns a verifier over the array's length.
 	 *
-	 * @return a verifier for the array's length
+	 * @return a verifier over the array's length
 	 */
 	PrimitiveNumberVerifier<Integer> length();
 
