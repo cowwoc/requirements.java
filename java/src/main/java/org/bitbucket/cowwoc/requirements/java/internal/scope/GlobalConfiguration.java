@@ -24,9 +24,9 @@ import java.util.Set;
 public interface GlobalConfiguration
 {
 	/**
-	 * Returns the terminal encodings available to the JVM.
+	 * Returns the encodings supported by the terminal.
 	 *
-	 * @return the terminal encodings available to the JVM
+	 * @return the encodings supported by the terminal
 	 * @see #withTerminalEncoding(TerminalEncoding)
 	 * @see #withDefaultTerminalEncoding()
 	 */

@@ -9,30 +9,40 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.LINE_LENGTH;
-import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
-import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
 
 /**
  * Base implementation for all diff writers.
  */
 abstract class AbstractDiffWriter implements DiffWriter
 {
-	protected final StringBuilder actualLine = new StringBuilder(LINE_LENGTH);
-	protected final StringBuilder expectedLine = new StringBuilder(LINE_LENGTH);
+	/**
+	 * Builds a line of the actual value.
+	 */
+	protected final StringBuilder actualLineBuilder = new StringBuilder(LINE_LENGTH);
+	/**
+	 * Builds a line of the expected value.
+	 */
+	protected final StringBuilder expectedLineBuilder = new StringBuilder(LINE_LENGTH);
 	/**
 	 * A padding character used to align values vertically.
 	 */
 	private final String paddingMarker;
-	private final List<String> actualList = new ArrayList<>();
-	private final List<String> expectedList = new ArrayList<>();
 	/**
-	 * The actual value. Set by {@link #close()}.
+	 * Builds the list of lines in the actual value.
 	 */
-	private List<String> actual;
+	private final List<String> actualLinesBuilder = new ArrayList<>();
 	/**
-	 * The expected value. Set by {@link #close()}.
+	 * Builds the list of lines in the expected value.
 	 */
-	private List<String> expected;
+	private final List<String> expectedLinesBuilder = new ArrayList<>();
+	/**
+	 * The final list of lines in the actual value.
+	 */
+	private List<String> actualLines;
+	/**
+	 * The final list of lines in the expected value.
+	 */
+	private List<String> expectedLines;
 	protected boolean closed;
 
 	/**
@@ -50,30 +60,9 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	/**
-	 * Indicates that text should be kept in both {@code actual} and {@code expected}.
-	 *
-	 * @param text the text
+	 * Invoked before ending each line.
 	 */
-	protected abstract void keepText(String text);
-
-	/**
-	 * Indicates that text is present in {@code expected} but not {@code actual}.
-	 *
-	 * @param text the text
-	 */
-	protected abstract void insertText(String text);
-
-	/**
-	 * Indicates that text is present in {@code actual} but not {@code expected}.
-	 *
-	 * @param text the text
-	 */
-	protected abstract void deleteText(String text);
-
-	/**
-	 * Invoked before flushing each line.
-	 */
-	protected abstract void beforeFlushLine();
+	protected abstract void beforeNewline();
 
 	/**
 	 * Invoked after closing the writer.
@@ -87,82 +76,14 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	@Override
-	public void keep(String text)
+	public void writeNewline()
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			keepText(line);
+		beforeNewline();
+		actualLinesBuilder.add(actualLineBuilder.toString());
+		actualLineBuilder.delete(0, actualLineBuilder.length());
 
-			if (i < size - 1)
-			{
-				// (i == size - 1) does not necessarily indicate the end of a line
-				flushLine();
-			}
-		}
-	}
-
-	@Override
-	public void insert(String text)
-	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			if (line.length() > 0)
-				insertText(line);
-			if (i < size - 1)
-			{
-				// (i == size - 1) does not necessarily indicate the end of a line
-				flushLine();
-			}
-		}
-	}
-
-	@Override
-	public void delete(String text)
-	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String line = lines[i];
-			if (i < size - 1)
-				line += NEWLINE_MARKER;
-			if (line.length() > 0)
-				deleteText(line);
-			if (i < size - 1)
-			{
-				// (i == size - 1) does not necessarily indicate the end of a line
-				flushLine();
-			}
-		}
-	}
-
-	/**
-	 * Flushes the contents of {@code actualLine}, {@code expectedLine} into {@code actualList},
-	 * {@code expectedList}.
-	 */
-	protected void flushLine()
-	{
-		beforeFlushLine();
-		String string = actualLine.toString();
-		actualList.add(string);
-		actualLine.delete(0, actualLine.length());
-
-		string = expectedLine.toString();
-		expectedList.add(string);
-		expectedLine.delete(0, expectedLine.length());
+		expectedLinesBuilder.add(expectedLineBuilder.toString());
+		expectedLineBuilder.delete(0, expectedLineBuilder.length());
 	}
 
 	@Override
@@ -171,25 +92,25 @@ abstract class AbstractDiffWriter implements DiffWriter
 		if (closed)
 			return;
 		closed = true;
-		flushLine();
-		this.actual = Collections.unmodifiableList(actualList);
-		this.expected = Collections.unmodifiableList(expectedList);
+		writeNewline();
+		this.actualLines = Collections.unmodifiableList(actualLinesBuilder);
+		this.expectedLines = Collections.unmodifiableList(expectedLinesBuilder);
 		afterClose();
 	}
 
 	@Override
-	public List<String> getActual()
+	public List<String> getActualLines()
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");
-		return actual;
+		return actualLines;
 	}
 
 	@Override
-	public List<String> getExpected()
+	public List<String> getExpectedLines()
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");
-		return expected;
+		return expectedLines;
 	}
 }

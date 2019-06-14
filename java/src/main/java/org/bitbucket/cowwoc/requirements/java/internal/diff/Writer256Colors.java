@@ -4,6 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
+import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
+
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
@@ -24,26 +26,27 @@ public final class Writer256Colors extends AbstractColorWriter
 	private static final String BLACK_BACKGROUND = "48;5;16";
 
 	@Override
-	public String getColorForKeep()
+	public String decorateUnchangedText(String text)
 	{
-		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX;
+		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX + text;
 	}
 
 	@Override
-	public String getColorForPadding()
+	public String decorateInsertedText(String text)
 	{
-		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + GRAY_BACKGROUND + POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + POSTFIX + PREFIX + GREEN_BACKGROUND + POSTFIX + text;
 	}
 
 	@Override
-	public String getColorForInsert()
+	public String decorateDeletedText(String text)
 	{
-		return PREFIX + WHITE_FOREGROUND + POSTFIX + PREFIX + GREEN_BACKGROUND + POSTFIX;
+		return PREFIX + WHITE_FOREGROUND + POSTFIX + PREFIX + RED_BACKGROUND + POSTFIX + text;
 	}
 
 	@Override
-	public String getColorForDelete()
+	public String decoratePadding(int length)
 	{
-		return PREFIX + WHITE_FOREGROUND + POSTFIX + PREFIX + RED_BACKGROUND + POSTFIX;
+		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + GRAY_BACKGROUND + POSTFIX +
+			Strings.repeat(PADDING_MARKER, length);
 	}
 }

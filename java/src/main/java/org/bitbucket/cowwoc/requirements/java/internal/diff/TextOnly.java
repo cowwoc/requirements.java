@@ -169,9 +169,9 @@ public final class TextOnly extends AbstractDiffWriter
 	 * A padding character used to align values vertically.
 	 */
 	public static final String PADDING_MARKER = " ";
-	private final StringBuilder middleLine = new StringBuilder(LINE_LENGTH);
-	private final List<String> middleList = new ArrayList<>();
-	private List<String> middle;
+	private final StringBuilder middleLineBuilder = new StringBuilder(LINE_LENGTH);
+	private final List<String> middleLinesBuilder = new ArrayList<>();
+	private List<String> middleLines;
 
 	public TextOnly()
 	{
@@ -179,59 +179,61 @@ public final class TextOnly extends AbstractDiffWriter
 	}
 
 	@Override
-	protected void keepText(String text)
+	public void writeUnchanged(String text)
 	{
-		actualLine.append(text);
-		middleLine.append(Strings.repeat(DIFF_EQUAL, text.length()));
-		expectedLine.append(text);
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		actualLineBuilder.append(text);
+		middleLineBuilder.append(Strings.repeat(DIFF_EQUAL, text.length()));
+		expectedLineBuilder.append(text);
 	}
 
 	@Override
-	protected void insertText(String text)
+	public void writeInserted(String text)
 	{
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
 		int length = text.length();
-		actualLine.append(Strings.repeat(getPaddingMarker(), length));
-		middleLine.append(Strings.repeat(DIFF_INSERT, length));
-		expectedLine.append(text);
+		actualLineBuilder.append(Strings.repeat(getPaddingMarker(), length));
+		middleLineBuilder.append(Strings.repeat(DIFF_INSERT, length));
+		expectedLineBuilder.append(text);
 	}
 
 	@Override
-	protected void deleteText(String text)
+	public void writeDeleted(String text)
 	{
-		actualLine.append(text);
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		actualLineBuilder.append(text);
 		int length = text.length();
-		middleLine.append(Strings.repeat(DIFF_DELETE, length));
-		expectedLine.append(Strings.repeat(getPaddingMarker(), length));
+		middleLineBuilder.append(Strings.repeat(DIFF_DELETE, length));
+		expectedLineBuilder.append(Strings.repeat(getPaddingMarker(), length));
 	}
 
 	@Override
-	protected void beforeFlushLine()
+	protected void beforeNewline()
 	{
 	}
 
-	/**
-	 * Flushes the contents of {@code actualLine}, {@code middleLine}, {@code expectedLine} into
-	 * {@code actualList}, {@code middleList}, {@code expectedList}.
-	 */
 	@Override
-	protected void flushLine()
+	public void writeNewline()
 	{
-		super.flushLine();
-		middleList.add(middleLine.toString());
-		middleLine.delete(0, middleLine.length());
+		super.writeNewline();
+		middleLinesBuilder.add(middleLineBuilder.toString());
+		middleLineBuilder.delete(0, middleLineBuilder.length());
 	}
 
 	@Override
 	protected void afterClose()
 	{
-		this.middle = Collections.unmodifiableList(middleList);
+		this.middleLines = Collections.unmodifiableList(middleLinesBuilder);
 	}
 
 	@Override
-	public List<String> getMiddle()
+	public List<String> getMiddleLines()
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");
-		return middle;
+		return middleLines;
 	}
 }

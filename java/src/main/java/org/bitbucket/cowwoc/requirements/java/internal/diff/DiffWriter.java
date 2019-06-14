@@ -12,41 +12,51 @@ import java.util.List;
 public interface DiffWriter extends AutoCloseable
 {
 	/**
-	 * @param text the text to keep in {@code Actual}
+	 * Adds text that did not change.
+	 *
+	 * @param text the text to keep in {@code actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
-	void keep(String text);
+	void writeUnchanged(String text);
 
 	/**
-	 * @param text the text that needs to be inserted into {@code Actual}
+	 * Adds text that is present in {@code expected} but not {@code actual}.
+	 *
+	 * @param text the text that needs to be inserted into {@code actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
-	void insert(String text);
+	void writeInserted(String text);
 
 	/**
-	 * @param text the text that needs to be deleted from {@code Actual}
+	 * Deletes text that is present in {@code actual} but not {@code expected}.
+	 *
+	 * @param text the text that needs to be deleted from {@code actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
-	void delete(String text);
+	void writeDeleted(String text);
+
+	/**
+	 * Ends the current line.
+	 */
+	void writeNewline();
 
 	/**
 	 * @return the lines of the actual value
 	 * @throws IllegalStateException if the writer is open
 	 */
-	List<String> getActual();
+	List<String> getActualLines();
 
 	/**
-	 * @return the lines to optionally display after "actual" and before "expected" (the lines are
-	 * empty if they should not be displayed)
+	 * @return the lines to display after "actual" and before "expected" (empty lines should not be displayed)
 	 * @throws IllegalStateException if the writer is open
 	 */
-	List<String> getMiddle();
+	List<String> getMiddleLines();
 
 	/**
 	 * @return the lines of the expected value
 	 * @throws IllegalStateException if the writer is open
 	 */
-	List<String> getExpected();
+	List<String> getExpectedLines();
 
 	/**
 	 * @return a padding character used to align values vertically

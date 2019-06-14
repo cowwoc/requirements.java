@@ -143,29 +143,29 @@ public final class ContextGenerator
 			return result;
 		}
 		DiffResult diff = diffGenerator.diff(actualValue, expectedValue);
-		List<String> actualDiffs = diff.getActual();
-		List<String> middleDiffs = diff.getMiddle();
-		List<String> expectedDiffs = diff.getExpected();
-		int lines = actualDiffs.size();
+		List<String> actualLines = diff.getActualLines();
+		List<String> middleLines = diff.getMiddleLines();
+		List<String> expectedLines = diff.getExpectedLines();
+		int lines = actualLines.size();
 		List<Map.Entry<String, Object>> result = new ArrayList<>(2 * lines);
 		if (lines == 1)
 		{
-			result.add(new SimpleImmutableEntry<>(actualName, actualDiffs.get(0)));
-			if (!middleDiffs.isEmpty() && linesAreDifferent(middleDiffs.get(0)))
-				result.add(new SimpleImmutableEntry<>("Diff", middleDiffs.get(0)));
-			result.add(new SimpleImmutableEntry<>(expectedName, expectedDiffs.get(0)));
+			result.add(new SimpleImmutableEntry<>(actualName, actualLines.get(0)));
+			if (!middleLines.isEmpty() && linesAreDifferent(middleLines.get(0)))
+				result.add(new SimpleImmutableEntry<>("Diff", middleLines.get(0)));
+			result.add(new SimpleImmutableEntry<>(expectedName, expectedLines.get(0)));
 			return result;
 		}
-		assert (expectedDiffs.size() == lines) : "lines: " + lines + ", expected.size(): " +
-			expectedDiffs.size();
+		assert (expectedLines.size() == lines) : "lines: " + lines + ", expected.size(): " +
+			expectedLines.size();
 		int actualLineNumber = 1;
 		int expectedLineNumber = 1;
 		// Indicates if the previous line was identical
 		boolean skippedDuplicates = false;
 		for (int i = 0; i < lines; ++i)
 		{
-			String actualLine = actualDiffs.get(i);
-			String expectedLine = expectedDiffs.get(i);
+			String actualLine = actualLines.get(i);
+			String expectedLine = expectedLines.get(i);
 			if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
 			{
 				// Skip identical lines, unless they are the first or last line.
@@ -188,8 +188,8 @@ public final class ContextGenerator
 				skipDuplicateLines(result);
 			}
 			result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
-			if (!middleDiffs.isEmpty() && linesAreDifferent(middleDiffs.get(i)))
-				result.add(new SimpleImmutableEntry<>("Diff", middleDiffs.get(i)));
+			if (!middleLines.isEmpty() && linesAreDifferent(middleLines.get(i)))
+				result.add(new SimpleImmutableEntry<>("Diff", middleLines.get(i)));
 			String expectedNameForLine;
 			if (Strings.containsOnly(expectedLine, diff.getPaddingMarker()))
 				expectedNameForLine = expectedName;

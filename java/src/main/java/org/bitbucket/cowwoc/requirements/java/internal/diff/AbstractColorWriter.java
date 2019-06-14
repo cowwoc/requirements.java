@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
-import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -149,56 +147,67 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	public static final String PADDING_MARKER = "/";
-	public final String paddingColor;
-	public final String keepColor;
-	public final String insertColor;
-	public final String deleteColor;
-	public final String resetColor;
+	protected static final String PADDING_MARKER = "/";
 	private boolean needToResetActual;
 	private boolean needToResetExpected;
 
 	protected AbstractColorWriter()
 	{
 		super(PADDING_MARKER);
-		this.paddingColor = getColorForPadding();
-		this.keepColor = getColorForKeep();
-		this.insertColor = getColorForInsert();
-		this.deleteColor = getColorForDelete();
-		this.resetColor = PREFIX + "0" + POSTFIX;
 	}
 
 	@Override
-	protected void keepText(String text)
+	public String stopDecoration()
 	{
-		actualLine.append(keepColor).append(text);
-		expectedLine.append(keepColor).append(text);
+		return PREFIX + "0" + POSTFIX;
+	}
+
+	@Override
+	public void writeUnchanged(String text)
+	{
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		actualLineBuilder.append(decorateUnchangedText(text));
+		expectedLineBuilder.append(decorateUnchangedText(text));
 		needToResetActual = true;
 		needToResetExpected = true;
 	}
 
 	@Override
-	protected void insertText(String text)
+	public void writeInserted(String text)
 	{
-		actualLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), text.length()));
-		expectedLine.append(insertColor).append(text);
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		actualLineBuilder.append(decoratePadding(text.length()));
+		expectedLineBuilder.append(decorateInsertedText(text));
 		needToResetActual = true;
 		needToResetExpected = true;
 	}
 
 	@Override
-	protected void deleteText(String text)
+	public void writeDeleted(String text)
 	{
-		actualLine.append(deleteColor).append(text);
-		expectedLine.append(paddingColor).append(Strings.repeat(getPaddingMarker(), text.length()));
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		actualLineBuilder.append(decorateDeletedText(text));
+		expectedLineBuilder.append(decoratePadding(text.length()));
 		needToResetActual = true;
 		needToResetExpected = true;
 	}
 
 	@Override
-	protected void beforeFlushLine()
+	protected void beforeNewline()
 	{
-		resetColors();
+		if (needToResetActual)
+		{
+			actualLineBuilder.append(stopDecoration());
+			needToResetActual = false;
+		}
+		if (needToResetExpected)
+		{
+			expectedLineBuilder.append(stopDecoration());
+			needToResetExpected = false;
+		}
 	}
 
 	@Override
@@ -206,25 +215,8 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 	}
 
-	/**
-	 * Resets the colors of {@code expected} and {@code actual}.
-	 */
-	private void resetColors()
-	{
-		if (needToResetActual)
-		{
-			actualLine.append(resetColor);
-			needToResetActual = false;
-		}
-		if (needToResetExpected)
-		{
-			expectedLine.append(resetColor);
-			needToResetExpected = false;
-		}
-	}
-
 	@Override
-	public List<String> getMiddle()
+	public List<String> getMiddleLines()
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");

@@ -68,10 +68,11 @@ public final class DiffTest
 			Writer16Colors scheme = new Writer16Colors();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.keepColor + "int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.getPaddingMarker() + scheme.keepColor + "]" + scheme.resetColor + "\n" +
-				"Expected: " + scheme.keepColor + "int[" + scheme.paddingColor + scheme.getPaddingMarker() +
-				scheme.insertColor + "5" + scheme.keepColor + "]" + scheme.resetColor;
+			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) +
+				scheme.decorateUnchangedText("]") + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
+				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
@@ -94,10 +95,11 @@ public final class DiffTest
 			Writer256Colors scheme = new Writer256Colors();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.keepColor + "int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.getPaddingMarker() + scheme.keepColor + "]" + scheme.resetColor + "\n" +
-				"Expected: " + scheme.keepColor + "int[" + scheme.paddingColor + scheme.getPaddingMarker() +
-				scheme.insertColor + "5" + scheme.keepColor + "]" + scheme.resetColor;
+			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) + scheme.decorateUnchangedText("]") +
+				scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
+				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
@@ -120,10 +122,11 @@ public final class DiffTest
 			Writer16MillionColors scheme = new Writer16MillionColors();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.keepColor + "int[" + scheme.deleteColor + "6" +
-				scheme.paddingColor + scheme.getPaddingMarker() + scheme.keepColor + "]" + scheme.resetColor + "\n" +
-				"Expected: " + scheme.keepColor + "int[" + scheme.paddingColor + scheme.getPaddingMarker() +
-				scheme.insertColor + "5" + scheme.keepColor + "]" + scheme.resetColor;
+			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) + scheme.decorateUnchangedText("]") +
+				scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
+				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}

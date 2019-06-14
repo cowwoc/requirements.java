@@ -10,22 +10,33 @@ package org.bitbucket.cowwoc.requirements.java.internal.diff;
 interface ColoredDiff
 {
 	/**
-	 * @return the ANSI code to insert before padding
+	 * @param text the text that did not change
+	 * @return the (possibly decorated) text
 	 */
-	String getColorForPadding();
+	String decorateUnchangedText(String text);
 
 	/**
-	 * @return the ANSI code to insert before text that should be kept unchanged
+	 * @param text the text that was inserted
+	 * @return the (possibly decorated) text
 	 */
-	String getColorForKeep();
+	String decorateInsertedText(String text);
 
 	/**
-	 * @return the ANSI code to insert before text that should be inserted
+	 * @param text the text that was deleted
+	 * @return the (possibly decorated) text
 	 */
-	String getColorForInsert();
+	String decorateDeletedText(String text);
 
 	/**
-	 * @return the ANSI code to insert before text that should be deleted
+	 * @param length the number of characters to pad
+	 * @return the (possibly decorated) text
 	 */
-	String getColorForDelete();
+	String decoratePadding(int length);
+
+	/**
+	 * Ends any ongoing text decoration.
+	 *
+	 * @return the text to insert
+	 */
+	String stopDecoration();
 }

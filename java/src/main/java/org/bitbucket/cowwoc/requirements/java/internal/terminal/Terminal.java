@@ -129,12 +129,12 @@ public final class Terminal
 	}
 
 	/**
-	 * Indicates the type of encoding that the terminal supports.
+	 * Indicates the type of encoding that the terminal should use.
 	 * <p>
 	 * This feature can be used to force the use of ANSI colors even when their support is not
 	 * detected.
 	 *
-	 * @param encoding the type of encoding that the terminal supports
+	 * @param encoding the type of encoding that the terminal should use
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #useBestEncoding()
 	 */
@@ -144,12 +144,12 @@ public final class Terminal
 	}
 
 	/**
-	 * Indicates the type of encoding that the terminal supports.
+	 * Indicates the type of encoding that the terminal should use.
 	 * <p>
 	 * This feature can be used to force the use of ANSI colors even when their support is not
 	 * detected.
 	 *
-	 * @param encoding the type of encoding that the terminal supports
+	 * @param encoding the type of encoding that the terminal should use
 	 * @param force    true if the encoding should be forced regardless of what the system supports
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #useBestEncoding()
@@ -192,9 +192,9 @@ public final class Terminal
 	}
 
 	/**
-	 * Indicates the type of encoding that the terminal supports.
+	 * Indicates the type of encoding that the terminal should use.
 	 *
-	 * @param encoding the type of encoding that the terminal supports (null if the best available encoding
+	 * @param encoding the type of encoding that the terminal should use (null if the best available encoding
 	 *                 should be used)
 	 * @param force    true if the encoding should be forced regardless of what the system supports
 	 * @return true on success
@@ -234,7 +234,7 @@ public final class Terminal
 	}
 
 	/**
-	 * @return the encoding that the terminal supports (defaults to the best available encoding)
+	 * @return the encoding that the terminal should use (defaults to the best available encoding)
 	 */
 	public TerminalEncoding getEncoding()
 	{

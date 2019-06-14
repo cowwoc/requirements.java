@@ -13,6 +13,7 @@ import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import java.util.LinkedList;
 
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
 
 /**
@@ -66,29 +67,45 @@ public final class DiffGenerator
 		DiffWriter writer = createDiffWriter(scope.getGlobalConfiguration().getTerminalEncoding());
 		for (Diff component : components)
 		{
-			switch (component.operation)
+			String[] lines = NEWLINE_PATTERN.split(component.text, -1);
+			for (int i = 0, size = lines.length; i < size; ++i)
 			{
-				case EQUAL:
+				String text = lines[i];
+				if (i < size - 1)
+					text += NEWLINE_MARKER;
+				if (!text.isEmpty())
 				{
-					writer.keep(component.text);
-					break;
+					switch (component.operation)
+					{
+						case EQUAL:
+						{
+							writer.writeUnchanged(text);
+							break;
+						}
+						case INSERT:
+						{
+							writer.writeInserted(text);
+							break;
+						}
+						case DELETE:
+						{
+							writer.writeDeleted(text);
+							break;
+						}
+						default:
+							throw new AssertionError(component.operation.name());
+					}
 				}
-				case INSERT:
+
+				if (i < size - 1)
 				{
-					writer.insert(component.text);
-					break;
+					// (i == size - 1) does not necessarily indicate the end of a line
+					writer.writeNewline();
 				}
-				case DELETE:
-				{
-					writer.delete(component.text);
-					break;
-				}
-				default:
-					throw new AssertionError(component.operation.name());
 			}
 		}
 		writer.close();
-		return new DiffResult(writer.getActual(), writer.getMiddle(), writer.getExpected(),
+		return new DiffResult(writer.getActualLines(), writer.getMiddleLines(), writer.getExpectedLines(),
 			writer.getPaddingMarker());
 	}
 
