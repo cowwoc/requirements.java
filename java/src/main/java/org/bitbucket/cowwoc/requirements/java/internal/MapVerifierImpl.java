@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * @param <V> the type of value in the map
  */
 public final class MapVerifierImpl<K, V>
-	extends ObjectCapabilitiesImpl<MapVerifier<K, V>, Map<K, V>>
+	extends AbstractObjectVerifier<MapVerifier<K, V>, Map<K, V>>
 	implements MapVerifier<K, V>
 {
 	/**

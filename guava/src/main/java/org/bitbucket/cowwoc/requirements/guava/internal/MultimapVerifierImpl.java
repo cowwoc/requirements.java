@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.ObjectCapabilitiesImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.AbstractObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * @param <V> the type of value in the multimap
  */
 public final class MultimapVerifierImpl<K, V>
-	extends ObjectCapabilitiesImpl<MultimapVerifier<K, V>, Multimap<K, V>>
+	extends AbstractObjectVerifier<MultimapVerifier<K, V>, Multimap<K, V>>
 	implements MultimapVerifier<K, V>
 {
 	/**

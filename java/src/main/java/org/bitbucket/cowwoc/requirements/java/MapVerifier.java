@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.Collection;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map
  */
-public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>, Map<K, V>>
+public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<K, V>, Map<K, V>>
 {
 	/**
 	 * Returns a verifier for the {@link Map#keySet()}.

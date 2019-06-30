@@ -28,35 +28,35 @@ import org.bitbucket.cowwoc.requirements.java.internal.LongValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.LongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.MapValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.MapVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpBigDecimalVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpBooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpClassVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpCollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpComparableVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpFloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpInetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpMapVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpObjectVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpOptionalVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPathVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveBooleanArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveBooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveByteArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveCharacterArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveCharacterVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveDoubleArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveFloatArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveFloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveIntegerArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveLongArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpPrimitiveShortArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpStringVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpUriVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.ArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.BigDecimalVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.BooleanVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.ClassVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.ComparableVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.FloatingPointVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.InetAddressVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.IntegerVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.MapVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.NumberVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.ObjectVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.OptionalVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatingPointVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.NumberValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.NumberVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ObjectValidatorImpl;
@@ -265,7 +265,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpObjectVerifier<>(config);
+		return new ObjectVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -287,7 +287,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpCollectionVerifier<>(config);
+		return new CollectionVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -309,7 +309,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveByteArrayVerifier(config);
+		return new PrimitiveByteArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -331,7 +331,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveShortArrayVerifier(config);
+		return new PrimitiveShortArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -353,7 +353,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveIntegerArrayVerifier(config);
+		return new PrimitiveIntegerArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -375,7 +375,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveLongArrayVerifier(config);
+		return new PrimitiveLongArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -397,7 +397,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveFloatArrayVerifier(config);
+		return new PrimitiveFloatArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -419,7 +419,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveDoubleArrayVerifier(config);
+		return new PrimitiveDoubleArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -441,7 +441,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveBooleanArrayVerifier(config);
+		return new PrimitiveBooleanArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -463,7 +463,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveCharacterArrayVerifier(config);
+		return new PrimitiveCharacterArrayVerifierNoOp(config);
 	}
 
 	@Override
@@ -485,7 +485,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpArrayVerifier<>(config);
+		return new ArrayVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -507,7 +507,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpComparableVerifier<>(config);
+		return new ComparableVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -529,7 +529,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveBooleanVerifier(config);
+		return new PrimitiveBooleanVerifierNoOp(config);
 	}
 
 	@Override
@@ -551,7 +551,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpBooleanVerifier(config);
+		return new BooleanVerifierNoOp(config);
 	}
 
 	@Override
@@ -573,7 +573,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new PrimitiveNumberVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -595,7 +595,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveCharacterVerifier(config);
+		return new PrimitiveCharacterVerifierNoOp(config);
 	}
 
 	@Override
@@ -617,7 +617,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new PrimitiveNumberVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -639,7 +639,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveIntegerVerifier<>(config);
+		return new PrimitiveIntegerVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -661,7 +661,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpIntegerVerifier<>(config);
+		return new IntegerVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -683,7 +683,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveIntegerVerifier<>(config);
+		return new PrimitiveIntegerVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -705,7 +705,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpIntegerVerifier<>(config);
+		return new IntegerVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -727,7 +727,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveFloatingPointVerifier<>(config);
+		return new PrimitiveFloatingPointVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -749,7 +749,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpFloatingPointVerifier<>(config);
+		return new FloatingPointVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -771,7 +771,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPrimitiveFloatingPointVerifier<>(config);
+		return new PrimitiveFloatingPointVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -793,7 +793,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpFloatingPointVerifier<>(config);
+		return new FloatingPointVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -815,7 +815,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpNumberVerifier<>(config);
+		return new NumberVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -837,7 +837,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpBigDecimalVerifier(config);
+		return new BigDecimalVerifierNoOp(config);
 	}
 
 	@Override
@@ -859,7 +859,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpMapVerifier<>(config);
+		return new MapVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -881,7 +881,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpPathVerifier(config);
+		return new PathVerifierNoOp(config);
 	}
 
 	@Override
@@ -903,7 +903,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpStringVerifier(config);
+		return new StringVerifierNoOp(config);
 	}
 
 	@Override
@@ -925,7 +925,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpUriVerifier(config);
+		return new UriVerifierNoOp(config);
 	}
 
 	@Override
@@ -947,7 +947,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpClassVerifier<>(config);
+		return new ClassVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -969,7 +969,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpOptionalVerifier(config);
+		return new OptionalVerifierNoOp(config);
 	}
 
 	@Override
@@ -991,7 +991,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpInetAddressVerifier(config);
+		return new InetAddressVerifierNoOp(config);
 	}
 
 	@Override

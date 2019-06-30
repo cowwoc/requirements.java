@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleIntegerVerifier;
 
 /**
  * Verifies the requirements of an integer number.
@@ -12,6 +12,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
  * @param <T> the type of the integer number
  */
 public interface IntegerVerifier<T extends Number & Comparable<? super T>>
-	extends IntegerCapabilities<IntegerVerifier<T>, T>
+	extends ExtensibleIntegerVerifier<IntegerVerifier<T>, T>
 {
 }

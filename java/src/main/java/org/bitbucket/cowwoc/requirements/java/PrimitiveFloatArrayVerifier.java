@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 
 /**
  * Verifies the requirements of a float array.
  */
 public interface PrimitiveFloatArrayVerifier
-	extends ArrayCapabilities<PrimitiveFloatArrayVerifier, Float, float[]>
+	extends ExtensibleArrayVerifier<PrimitiveFloatArrayVerifier, Float, float[]>
 {
 }

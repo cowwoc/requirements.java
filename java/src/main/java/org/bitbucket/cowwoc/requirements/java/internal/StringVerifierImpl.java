@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 /**
  * Default implementation of {@code StringVerifier}.
  */
-public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerifier, String>
+public final class StringVerifierImpl extends AbstractObjectVerifier<StringVerifier, String>
 	implements StringVerifier
 {
 	/**

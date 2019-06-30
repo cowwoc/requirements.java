@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  * Default implementation of {@code PrimitiveLongArrayVerifier}.
  */
 public final class PrimitiveLongArrayVerifierImpl
-	extends ArrayCapabilitiesImpl<PrimitiveLongArrayVerifier, Long, long[]>
+	extends AbstractArrayVerifier<PrimitiveLongArrayVerifier, Long, long[]>
 	implements PrimitiveLongArrayVerifier
 {
 	/**

@@ -15,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
  *
  * @param <T> the type of the class
  */
-public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVerifier<T>, Class<T>>
+public final class ClassVerifierImpl<T> extends AbstractObjectVerifier<ClassVerifier<T>, Class<T>>
 	implements ClassVerifier<T>
 {
 	/**

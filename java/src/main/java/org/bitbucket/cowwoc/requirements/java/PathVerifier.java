@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.io.IOException;
 import java.nio.file.LinkOption;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 /**
  * Verifies the requirements of a {@link Path}.
  */
-public interface PathVerifier extends ObjectCapabilities<PathVerifier, Path>
+public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Path>
 {
 	/**
 	 * Ensures that the actual value exists.

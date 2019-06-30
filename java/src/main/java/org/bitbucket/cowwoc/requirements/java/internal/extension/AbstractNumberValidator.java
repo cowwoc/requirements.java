@@ -14,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.List;
 
 /**
- * Default implementation of ExtensibleNumberValidator.
+ * Default implementation of {@code ExtensibleNumberValidator}.
  *
  * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value

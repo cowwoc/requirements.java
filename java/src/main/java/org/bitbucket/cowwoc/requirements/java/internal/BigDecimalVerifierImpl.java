@@ -9,6 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
  * Default implementation of {@code BigDecimalVerifier}.
  */
 public final class BigDecimalVerifierImpl
-	extends NumberCapabilitiesImpl<BigDecimalVerifier, BigDecimal>
+	extends AbstractNumberVerifier<BigDecimalVerifier, BigDecimal>
 	implements BigDecimalVerifier
 {
 	/**

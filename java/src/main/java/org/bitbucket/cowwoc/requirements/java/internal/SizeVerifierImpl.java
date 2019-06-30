@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
@@ -17,7 +18,7 @@ import java.util.Objects;
  * Default implementation of a {@code SizeVerifier}.
  */
 public final class SizeVerifierImpl
-	extends NumberCapabilitiesImpl<SizeVerifier, Integer>
+	extends AbstractNumberVerifier<SizeVerifier, Integer>
 	implements SizeVerifier
 {
 	private final String collectionName;

@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @param <E> the type of elements in the collection
  */
 public interface CollectionVerifier<C extends Collection<E>, E>
-	extends ObjectCapabilities<CollectionVerifier<C, E>, C>
+	extends ExtensibleObjectVerifier<CollectionVerifier<C, E>, C>
 {
 	/**
 	 * Ensures that the actual value is empty.

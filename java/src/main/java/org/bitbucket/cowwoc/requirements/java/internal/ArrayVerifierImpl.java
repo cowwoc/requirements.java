@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.Arrays;
@@ -17,7 +18,7 @@ import java.util.List;
  * @param <E> the type of elements in the array
  */
 public final class ArrayVerifierImpl<E>
-	extends ArrayCapabilitiesImpl<ArrayVerifier<E>, E, E[]>
+	extends AbstractArrayVerifier<ArrayVerifier<E>, E, E[]>
 	implements ArrayVerifier<E>
 {
 	/**

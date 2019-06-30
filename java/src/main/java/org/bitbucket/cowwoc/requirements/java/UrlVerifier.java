@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.net.URL;
 import java.util.function.Consumer;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 /**
  * Verifies the requirements of a {@link URL}.
  */
-public interface UrlVerifier extends ObjectCapabilities<UrlVerifier, URL>
+public interface UrlVerifier extends ExtensibleObjectVerifier<UrlVerifier, URL>
 {
 	/**
 	 * Returns a verifier for the URI representation of the value.

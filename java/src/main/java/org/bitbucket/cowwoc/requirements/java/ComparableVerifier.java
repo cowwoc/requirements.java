@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVerifier;
 
 /**
  * Verifies the requirements of a {@link Comparable}.
@@ -12,6 +12,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilitie
  * @param <T> the type of the value
  */
 public interface ComparableVerifier<T extends Comparable<? super T>>
-	extends ComparableCapabilities<ComparableVerifier<T>, T>
+	extends ExtensibleComparableVerifier<ComparableVerifier<T>, T>
 {
 }

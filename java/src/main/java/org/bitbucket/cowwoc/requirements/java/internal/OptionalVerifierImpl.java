@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class OptionalVerifierImpl
-	extends ObjectCapabilitiesImpl<OptionalVerifier, Optional<?>>
+	extends AbstractObjectVerifier<OptionalVerifier, Optional<?>>
 	implements OptionalVerifier
 {
 	/**

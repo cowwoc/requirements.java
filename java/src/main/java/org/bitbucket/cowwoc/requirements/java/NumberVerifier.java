@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.NumberCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier;
 
 /**
  * Verifies the requirements of for a {@link Number}.
@@ -12,6 +12,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.NumberCapabilities;
  * @param <T> the type of the value
  */
 public interface NumberVerifier<T extends Number & Comparable<? super T>>
-	extends NumberCapabilities<NumberVerifier<T>, T>
+	extends ExtensibleNumberVerifier<NumberVerifier<T>, T>
 {
 }

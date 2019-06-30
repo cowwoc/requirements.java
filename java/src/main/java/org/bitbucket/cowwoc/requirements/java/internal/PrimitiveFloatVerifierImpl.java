@@ -6,13 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatVerifierVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveFloatingPointVerifier} for {@code float}s.
  */
 public final class PrimitiveFloatVerifierImpl
-	extends FloatVerifierCapabilitiesImpl<PrimitiveFloatingPointVerifier<Float>>
+	extends AbstractFloatVerifierVerifier<PrimitiveFloatingPointVerifier<Float>>
 	implements PrimitiveFloatingPointVerifier<Float>
 {
 	/**

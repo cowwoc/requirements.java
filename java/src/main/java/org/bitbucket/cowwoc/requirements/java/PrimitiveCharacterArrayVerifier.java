@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 
 /**
  * Verifies the requirements of a char array.
  */
 public interface PrimitiveCharacterArrayVerifier
-	extends ArrayCapabilities<PrimitiveCharacterArrayVerifier, Character, char[]>
+	extends ExtensibleArrayVerifier<PrimitiveCharacterArrayVerifier, Character, char[]>
 {
 }

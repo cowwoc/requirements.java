@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of ExtensibleObjectValidator.
+ * Default implementation of {@code ExtensibleObjectValidator}.
  *
  * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value

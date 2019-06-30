@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.NumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
@@ -14,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
  * @param <T> the type of the value
  */
 public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
-	extends NumberCapabilitiesImpl<NumberVerifier<T>, T>
+	extends AbstractNumberVerifier<NumberVerifier<T>, T>
 	implements NumberVerifier<T>
 {
 	/**

@@ -6,13 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractBooleanVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveBooleanVerifier}.
  */
 public final class PrimitiveBooleanVerifierImpl
-	extends BooleanCapabilitiesImpl<PrimitiveBooleanVerifier>
+	extends AbstractBooleanVerifier<PrimitiveBooleanVerifier>
 	implements PrimitiveBooleanVerifier
 {
 	/**

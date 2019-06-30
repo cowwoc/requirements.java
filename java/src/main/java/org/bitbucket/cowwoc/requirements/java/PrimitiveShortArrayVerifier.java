@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 
 /**
  * Verifies the requirements of a short array.
  */
 public interface PrimitiveShortArrayVerifier
-	extends ArrayCapabilities<PrimitiveShortArrayVerifier, Short, short[]>
+	extends ExtensibleArrayVerifier<PrimitiveShortArrayVerifier, Short, short[]>
 {
 }

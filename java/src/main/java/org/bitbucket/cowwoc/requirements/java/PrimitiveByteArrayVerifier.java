@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 
 /**
  * Verifies the requirements of a byte array.
  */
 public interface PrimitiveByteArrayVerifier extends
-	ArrayCapabilities<PrimitiveByteArrayVerifier, Byte, byte[]>
+	ExtensibleArrayVerifier<PrimitiveByteArrayVerifier, Byte, byte[]>
 {
 }

@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 
 /**
  * Verifies the requirements of an array.
  *
  * @param <E> the type of elements in the array
  */
-public interface ArrayVerifier<E> extends ArrayCapabilities<ArrayVerifier<E>, E, E[]>
+public interface ArrayVerifier<E> extends ExtensibleArrayVerifier<ArrayVerifier<E>, E, E[]>
 {
 }

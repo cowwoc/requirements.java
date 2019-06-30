@@ -6,13 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code IntegerVerifier<Long>}.
  */
 public final class LongVerifierImpl
-	extends IntegerCapabilitiesImpl<IntegerVerifier<Long>, Long>
+	extends AbstractIntegerVerifier<IntegerVerifier<Long>, Long>
 	implements IntegerVerifier<Long>
 {
 	/**

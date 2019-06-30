@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 /**
  * Default implementation of {@code UriVerifier}.
  */
-public final class UriVerifierImpl extends ObjectCapabilitiesImpl<UriVerifier, URI>
+public final class UriVerifierImpl extends AbstractObjectVerifier<UriVerifier, URI>
 	implements UriVerifier
 {
 	/**

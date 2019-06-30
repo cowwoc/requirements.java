@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.NumberCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier;
 
 import java.math.BigDecimal;
 import java.util.function.Consumer;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 /**
  * Verifies the requirements of a {@link BigDecimal} value.
  */
-public interface BigDecimalVerifier extends NumberCapabilities<BigDecimalVerifier, BigDecimal>
+public interface BigDecimalVerifier extends ExtensibleNumberVerifier<BigDecimalVerifier, BigDecimal>
 {
 	/**
 	 * Returns a verifier for {@code BigDecimal.precision()}.

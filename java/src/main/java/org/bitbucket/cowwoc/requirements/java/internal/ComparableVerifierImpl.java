@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
@@ -14,7 +15,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
  * @param <T> the type of objects that the value may be compared to
  */
 public final class ComparableVerifierImpl<T extends Comparable<? super T>>
-	extends ComparableCapabilitiesImpl<ComparableVerifier<T>, T>
+	extends AbstractComparableVerifier<ComparableVerifier<T>, T>
 	implements ComparableVerifier<T>
 {
 	/**

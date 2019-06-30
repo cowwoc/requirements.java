@@ -6,13 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveCharacterVerifier}.
  */
 public final class PrimitiveCharacterVerifierImpl
-	extends ComparableCapabilitiesImpl<PrimitiveCharacterVerifier, Character>
+	extends AbstractComparableVerifier<PrimitiveCharacterVerifier, Character>
 	implements PrimitiveCharacterVerifier
 {
 	/**

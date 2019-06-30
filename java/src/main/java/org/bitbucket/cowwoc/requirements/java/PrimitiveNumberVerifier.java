@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberVerifier;
 
 /**
  * Verifies the requirements of a primitive number (e.g. {@link int}).
@@ -12,6 +12,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabi
  * @param <T> the type of the value
  */
 public interface PrimitiveNumberVerifier<T extends Number & Comparable<? super T>>
-	extends PrimitiveNumberCapabilities<PrimitiveNumberVerifier<T>, T>
+	extends ExtensiblePrimitiveNumberVerifier<PrimitiveNumberVerifier<T>, T>
 {
 }

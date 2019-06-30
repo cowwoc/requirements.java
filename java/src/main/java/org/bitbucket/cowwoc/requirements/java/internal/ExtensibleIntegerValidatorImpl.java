@@ -13,9 +13,9 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.List;
 
 /**
- * Extensible implementation of {@code FloatingPointCapabilities} for {@code double}s.
+ * Extensible implementation of {@code ExtensibleIntegerValidator}.
  *
- * @param <S> the type of verifier that methods should return
+ * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value
  */
 public abstract class ExtensibleIntegerValidatorImpl<S, T extends Number & Comparable<? super T>>

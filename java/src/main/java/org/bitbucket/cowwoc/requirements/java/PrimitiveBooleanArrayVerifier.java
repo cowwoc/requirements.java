@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 
 /**
  * Verifies the requirements of a boolean array.
  */
 public interface PrimitiveBooleanArrayVerifier extends
-	ArrayCapabilities<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
+	ExtensibleArrayVerifier<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
 {
 }

@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVerifier;
 
 /**
  * Verifies the requirements of a {@code char} value.
  */
 public interface PrimitiveCharacterVerifier
-	extends ComparableCapabilities<PrimitiveCharacterVerifier, Character>
+	extends ExtensibleComparableVerifier<PrimitiveCharacterVerifier, Character>
 {
 	/**
 	 * {@inheritDoc}

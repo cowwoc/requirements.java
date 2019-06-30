@@ -6,13 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractBooleanVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code BooleanVerifier}.
  */
 public final class BooleanVerifierImpl
-	extends BooleanCapabilitiesImpl<BooleanVerifier>
+	extends AbstractBooleanVerifier<BooleanVerifier>
 	implements BooleanVerifier
 {
 	/**

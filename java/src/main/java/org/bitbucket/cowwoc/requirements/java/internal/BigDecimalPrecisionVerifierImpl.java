@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
  * Default implementation of {@code BigDecimalPrecisionVerifier}.
  */
 public final class BigDecimalPrecisionVerifierImpl
-	extends NumberCapabilitiesImpl<BigDecimalPrecisionVerifier, Integer>
+	extends AbstractNumberVerifier<BigDecimalPrecisionVerifier, Integer>
 	implements BigDecimalPrecisionVerifier
 {
 	/**

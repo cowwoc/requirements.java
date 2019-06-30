@@ -9,9 +9,9 @@ import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpCollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpObjectCapabilities;
-import org.bitbucket.cowwoc.requirements.java.internal.NoOpSizeVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierNoOp;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * @param <V> the type of values in the multimap
  */
 public final class NoOpMultimapVerifier<K, V>
-	extends NoOpObjectCapabilities<MultimapVerifier<K, V>, Multimap<K, V>>
+	extends AbstractObjectVerifierNoOp<MultimapVerifier<K, V>, Multimap<K, V>>
 	implements MultimapVerifier<K, V>
 {
 	/**
@@ -45,7 +45,7 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new NoOpCollectionVerifier<>(config);
+		return new CollectionVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new NoOpCollectionVerifier<>(config);
+		return new CollectionVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new NoOpCollectionVerifier<>(config);
+		return new CollectionVerifierNoOp<>(config);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public SizeVerifier size()
 	{
-		return new NoOpSizeVerifier(config);
+		return new SizeVerifierNoOp(config);
 	}
 
 	@Override

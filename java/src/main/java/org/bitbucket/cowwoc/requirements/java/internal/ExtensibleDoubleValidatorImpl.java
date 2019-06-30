@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Extensible implementation of {@code ExtensibleFloatingPointValidator} for {@code double}s.
  *
- * @param <S> the type of verifier that methods should return
+ * @param <S> the type of validator returned by the methods
  */
 public abstract class ExtensibleDoubleValidatorImpl<S>
 	extends AbstractNumberValidator<S, Double>

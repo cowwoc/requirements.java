@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * @param <E> the type of elements in the collection
  */
 public final class CollectionVerifierImpl<C extends Collection<E>, E>
-	extends ObjectCapabilitiesImpl<CollectionVerifier<C, E>, C>
+	extends AbstractObjectVerifier<CollectionVerifier<C, E>, C>
 	implements CollectionVerifier<C, E>
 {
 	private final Pluralizer pluralizer;

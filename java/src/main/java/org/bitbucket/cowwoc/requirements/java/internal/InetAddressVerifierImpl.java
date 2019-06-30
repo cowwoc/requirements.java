@@ -18,7 +18,7 @@ import java.net.InetAddress;
  * Default implementation of {@code InetAddressVerifier}.
  */
 public final class InetAddressVerifierImpl
-	extends ObjectCapabilitiesImpl<InetAddressVerifier, InetAddress>
+	extends AbstractObjectVerifier<InetAddressVerifier, InetAddress>
 	implements InetAddressVerifier
 {
 	/**

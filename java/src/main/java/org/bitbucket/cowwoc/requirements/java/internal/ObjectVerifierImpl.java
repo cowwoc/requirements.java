@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
  *
  * @param <T> the type of the value
  */
-public final class ObjectVerifierImpl<T> extends ObjectCapabilitiesImpl<ObjectVerifier<T>, T>
+public final class ObjectVerifierImpl<T> extends AbstractObjectVerifier<ObjectVerifier<T>, T>
 	implements ObjectVerifier<T>
 {
 	/**

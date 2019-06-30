@@ -4,14 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.function.Consumer;
 
 /**
  * Verifies the requirements of a {@link String}.
  */
-public interface StringVerifier extends ObjectCapabilities<StringVerifier, String>
+public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier, String>
 {
 	/**
 	 * Ensures that the actual value starts with a value.

@@ -4,11 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.BooleanCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleBooleanVerifier;
 
 /**
  * Verifies the requirements of a {@code boolean} value.
  */
-public interface BooleanVerifier extends BooleanCapabilities<BooleanVerifier>
+public interface BooleanVerifier extends ExtensibleBooleanVerifier<BooleanVerifier>
 {
 }

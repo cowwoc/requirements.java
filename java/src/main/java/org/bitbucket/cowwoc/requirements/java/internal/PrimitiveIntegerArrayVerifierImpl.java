@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerArrayVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  * Default implementation of {@code PrimitiveIntegerArrayVerifier}.
  */
 public final class PrimitiveIntegerArrayVerifierImpl
-	extends ArrayCapabilitiesImpl<PrimitiveIntegerArrayVerifier, Integer, int[]>
+	extends AbstractArrayVerifier<PrimitiveIntegerArrayVerifier, Integer, int[]>
 	implements PrimitiveIntegerArrayVerifier
 {
 	/**

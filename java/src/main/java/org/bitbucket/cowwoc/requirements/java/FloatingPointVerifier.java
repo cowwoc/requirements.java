@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointVerifier;
 
 /**
  * Verifies the requirements of a floating-point number.
@@ -12,6 +12,6 @@ import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabili
  * @param <T> the type of the floating-point number
  */
 public interface FloatingPointVerifier<T extends Number & Comparable<? super T>>
-	extends FloatingPointCapabilities<FloatingPointVerifier<T>, T>
+	extends ExtensibleFloatingPointVerifier<FloatingPointVerifier<T>, T>
 {
 }

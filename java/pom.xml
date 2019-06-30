@@ -72,45 +72,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>com.github.siom79.japicmp</groupId>
-				<artifactId>japicmp-maven-plugin</artifactId>
-				<version>0.9.3</version>
-				<configuration>
-					<oldVersion>
-						<dependency>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.7</version>
-							<type>jar</type>
-						</dependency>
-					</oldVersion>
-					<parameter>
-						<breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
-						<breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
-						<onlyModified>true</onlyModified>
-						<skipXmlReport>true</skipXmlReport>
-						<skipDiffReport>true</skipDiffReport>
-						<includes>
-							<include>org.bitbucket.cowwoc.requirements</include>
-							<include>org.bitbucket.cowwoc.requirements.annotations</include>
-							<include>org.bitbucket.cowwoc.requirements.java</include>
-							<include>org.bitbucket.cowwoc.requirements.java.capabilities</include>
-							<include>org.bitbucket.cowwoc.requirements.java.terminal.TerminalEncoding</include>
-						</includes>
-					</parameter>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>cmp</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 	<dependencies>

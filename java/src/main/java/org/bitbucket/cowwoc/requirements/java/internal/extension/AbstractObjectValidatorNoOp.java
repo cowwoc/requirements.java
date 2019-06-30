@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * An ExtensibleObjectValidator that does nothing.
+ * An {@code ExtensibleObjectValidator} that does nothing.
  *
  * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value

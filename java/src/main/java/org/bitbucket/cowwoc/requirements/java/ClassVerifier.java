@@ -4,14 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 /**
  * Verifies the requirements of a {@link Class} value.
  *
  * @param <T> the type of the class
  */
-public interface ClassVerifier<T> extends ObjectCapabilities<ClassVerifier<T>, Class<T>>
+public interface ClassVerifier<T> extends ExtensibleObjectVerifier<ClassVerifier<T>, Class<T>>
 {
 	/**
 	 * Ensures that the actual value is a superclass or super-interface of a class.

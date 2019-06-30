@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Extensible implementation of ExtensibleBooleanValidator.
  *
- * @param <S> the type of verifier that methods should return
+ * @param <S> the type of validator returned by the methods
  */
 public abstract class AbstractBooleanValidator<S> extends AbstractComparableValidator<S, Boolean>
 	implements ExtensibleBooleanValidator<S>

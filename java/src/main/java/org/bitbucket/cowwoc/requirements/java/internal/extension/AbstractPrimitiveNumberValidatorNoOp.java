@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.List;
 
 /**
- * A PrimitiveNumberValidator that does nothing.
+ * An {@code ExtensiblePrimitiveNumberValidator} that does nothing.
  *
  * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value

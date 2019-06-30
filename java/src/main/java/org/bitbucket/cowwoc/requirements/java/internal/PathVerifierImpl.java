@@ -19,7 +19,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 /**
  * Default implementation of {@code PathVerifier}.
  */
-public final class PathVerifierImpl extends ObjectCapabilitiesImpl<PathVerifier, Path>
+public final class PathVerifierImpl extends AbstractObjectVerifier<PathVerifier, Path>
 	implements PathVerifier
 {
 	/**

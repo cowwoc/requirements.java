@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
-import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * @param <V> the type of value in the multimap
  */
 public interface MultimapVerifier<K, V>
-	extends ObjectCapabilities<MultimapVerifier<K, V>, Multimap<K, V>>
+	extends ExtensibleObjectVerifier<MultimapVerifier<K, V>, Multimap<K, V>>
 {
 	/**
 	 * @return a verifier over {@link Multimap#keySet()}

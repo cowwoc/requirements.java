@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  * An implementation of {@code PrimitiveNumberVerifier} for a {@link BigDecimal}'s scale.
  */
 public final class BigDecimalScaleVerifierImpl
-	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
+	extends AbstractNumberVerifier<PrimitiveNumberVerifier<Integer>, Integer>
 	implements PrimitiveNumberVerifier<Integer>
 {
 	/**
