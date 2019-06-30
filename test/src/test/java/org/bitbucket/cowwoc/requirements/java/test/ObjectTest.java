@@ -347,33 +347,6 @@ public final class ObjectTest
 		}
 	}
 
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void isNotNull_CustomException()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Object actual = null;
-			new Requirements(scope).withException(IllegalStateException.class).
-				requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	/**
-	 * BUG: {@code RequirementVerifier.withException(Class<? extends RuntimeException>)}
-	 * was throwing a {@code ClassCastException} if the instance was anything other than
-	 * {@code ObjectRequirementsImpl}.
-	 */
-	@Test
-	public void customExceptionRequirementSubclass()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Integer actual = 5;
-			new Requirements(scope).withException(IllegalStateException.class).
-				requireThat(actual, "actual").isNotNull();
-		}
-	}
-
 	/**
 	 * BUG: isEqualTo() was throwing AssertionError if actual.class != expected.class.
 	 */

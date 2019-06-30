@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayVerifier;
 
 /**
- * An implementation of {@link PrimitiveDoubleArrayVerifier} that does nothing.
+ * A {@code PrimitiveDoubleArrayVerifier} that does nothing.
  */
 public final class NoOpPrimitiveDoubleArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveDoubleArrayVerifier, Double, double[]>

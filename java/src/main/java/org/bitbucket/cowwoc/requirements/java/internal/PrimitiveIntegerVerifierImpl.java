@@ -6,14 +6,13 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
- * Default implementation of {@link IntegerCapabilities} for {@code int}s.
+ * Default implementation of {@code IntegerCapabilities} for {@code int}s.
  */
 public final class PrimitiveIntegerVerifierImpl
-	extends IntegerVerifierCapabilitiesImpl<PrimitiveIntegerVerifier<Integer>, Integer>
+	extends IntegerCapabilitiesImpl<PrimitiveIntegerVerifier<Integer>, Integer>
 	implements PrimitiveIntegerVerifier<Integer>
 {
 	/**

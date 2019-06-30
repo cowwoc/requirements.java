@@ -53,7 +53,7 @@ public final class ContextGenerator
 	 * @param diffGenerator an instance of {@link DiffGenerator}
 	 * @throws AssertionError if {@code configuration}, {@code diffGenerator} are null
 	 */
-	ContextGenerator(Configuration configuration, DiffGenerator diffGenerator)
+	public ContextGenerator(Configuration configuration, DiffGenerator diffGenerator)
 	{
 		assert (configuration != null) : "configuration may not be null";
 		assert (diffGenerator != null) : "diffGenerator may not be null";

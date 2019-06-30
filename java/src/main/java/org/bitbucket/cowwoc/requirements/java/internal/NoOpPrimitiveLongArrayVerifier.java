@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayVerifier;
 
 /**
- * An implementation of {@link PrimitiveLongArrayVerifier} that does nothing.
+ * A {@code PrimitiveLongArrayVerifier} that does nothing.
  */
 public final class NoOpPrimitiveLongArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveLongArrayVerifier, Long, long[]>

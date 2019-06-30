@@ -6,11 +6,10 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
- * Default implementation of {@link FloatingPointCapabilities} for {@code double}s.
+ * Default implementation of {@code FloatingPointCapabilities} for {@code double}s.
  */
 public final class PrimitiveDoubleVerifierImpl
 	extends DoubleVerifierCapabilitiesImpl<PrimitiveFloatingPointVerifier<Double>>

@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveShortArrayVerifier}.
+ * Default implementation of {@code PrimitiveShortArrayVerifier}.
  */
-public class PrimitiveShortArrayVerifierImpl
+public final class PrimitiveShortArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveShortArrayVerifier, Short, short[]>
 	implements PrimitiveShortArrayVerifier
 {

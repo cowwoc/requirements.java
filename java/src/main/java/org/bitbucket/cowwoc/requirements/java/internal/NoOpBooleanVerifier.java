@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 
 /**
- * An implementation of {@link BooleanVerifier} that does nothing.
+ * An implementation of {@code BooleanVerifier} that does nothing.
  */
 public final class NoOpBooleanVerifier
 	extends NoOpComparableCapabilities<BooleanVerifier, Boolean>

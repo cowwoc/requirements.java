@@ -16,7 +16,6 @@ import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
 public interface IntegerCapabilities<S, T extends Number & Comparable<? super T>>
 	extends NumberCapabilities<S, T>
 {
-
 	/**
 	 * {@inheritDoc}
 	 *

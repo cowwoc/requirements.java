@@ -18,15 +18,17 @@ import java.util.StringJoiner;
 
 /**
  * Builds an exception.
+ *
+ * @param <T> the type of exception being thrown
  */
-public final class ExceptionBuilder
+public final class ExceptionBuilder<T extends Exception>
 {
 	private final ApplicationScope scope;
 	private final Configuration config;
-	private final Exceptions exceptions;
-	private Class<? extends RuntimeException> type;
+	private final Class<T> type;
 	private final String message;
-	private final Throwable cause;
+	private Throwable cause;
+	private final Exceptions exceptions;
 	private final boolean cleanStackTrace;
 	/**
 	 * Contextual information associated with the exception (name-value pairs).
@@ -38,12 +40,9 @@ public final class ExceptionBuilder
 	 * @param configuration a verifier's configuration
 	 * @param type          the type of the exception
 	 * @param message       the exception message
-	 * @param cause         the underlying cause of the exception ({@code null} if absent)
 	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
-	                        Class<? extends RuntimeException> type, String message,
-	                        Throwable cause)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<T> type, String message)
 	{
 		assert (scope != null) : "scope may not be null";
 		assert (configuration != null) : "configuration may not be null";
@@ -51,39 +50,33 @@ public final class ExceptionBuilder
 		this.scope = scope;
 		this.config = configuration;
 		this.exceptions = scope.getExceptions();
-		this.type = config.getException().orElse(type);
+		this.type = type;
 		this.message = message;
-		this.cause = cause;
 		this.cleanStackTrace = scope.getGlobalConfiguration().isCleanStackTrace();
 	}
 
 	/**
-	 * Equivalent to
-	 * {@link #ExceptionBuilder(ApplicationScope, Configuration, Class, String, Throwable)
-	 * ExceptionBuilder(scope, configuration, type, message, null)}.
+	 * Sets the cause of the exception
 	 *
-	 * @param scope         the application configuration
-	 * @param configuration a verifier's configuration
-	 * @param type          the type of the exception
-	 * @param message       the exception message
-	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
+	 * @param cause the underlying cause of the exception ({@code null} if absent)
+	 * @return this
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration,
-	                        Class<? extends RuntimeException> type, String message)
+	public ExceptionBuilder<T> setCause(Throwable cause)
 	{
-		this(scope, configuration, type, message, null);
+		this.cause = cause;
+		return this;
 	}
 
 	/**
 	 * Adds contextual information to append to the exception message. Overrides any values
 	 * associated with the {@code name} at the {@link Configuration} level.
 	 *
-	 * @param name  the name of the value
-	 * @param value a value
+	 * @param name  the name of the variable
+	 * @param value the value of the variable
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	public ExceptionBuilder addContext(String name, Object value)
+	public ExceptionBuilder<T> addContext(String name, Object value)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
@@ -98,7 +91,7 @@ public final class ExceptionBuilder
 	 * @return this
 	 * @throws NullPointerException if {@code context} is null
 	 */
-	public ExceptionBuilder addContext(List<Entry<String, Object>> context)
+	public ExceptionBuilder<T> addContext(List<Entry<String, Object>> context)
 	{
 		if (context == null)
 			throw new NullPointerException("context may not be null");
@@ -109,7 +102,7 @@ public final class ExceptionBuilder
 	/**
 	 * @return a new exception
 	 */
-	public RuntimeException build()
+	public T build()
 	{
 		StringJoiner messageWithContext = new StringJoiner("\n");
 		messageWithContext.add(message);

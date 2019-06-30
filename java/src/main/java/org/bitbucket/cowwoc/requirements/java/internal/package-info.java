@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 /**
- * <h1>Design guide</h1>
+ * <h2>Design guide</h2>
  * <ul>
  * <li>Any method that returns a new verifier (e.g. MapVerifier.keySet()) is expected to provide an
  * overload that consumes the verifier instead of returning it.</li>
@@ -14,7 +14,7 @@
  * mechanism for exposing a selective subset of
  * {@link org.bitbucket.cowwoc.requirements.java.internal.scope.JvmScope JvmScope} to users.</li>
  * </ul>
- * <h1>JNI Strategy</h1>
+ * <h2>JNI Strategy</h2>
  * <ul>
  * <li>Libraries can only be loaded once per JVM (in theory, they can be unloaded when the enclosing
  * ClassLoader gets unloaded but this behavior is not required by the specification and its timing

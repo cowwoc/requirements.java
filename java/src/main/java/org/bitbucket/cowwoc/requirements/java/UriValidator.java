@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2019 Gili Tzabari
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package org.bitbucket.cowwoc.requirements.java;
+
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
+
+import java.net.URI;
+import java.util.function.Consumer;
+
+/**
+ * Validates the requirements of a {@link URI}.
+ */
+public interface UriValidator extends ExtensibleObjectValidator<UriValidator, URI>
+{
+	/**
+	 * Ensures that the actual value is absolute.
+	 *
+	 * @return this
+	 */
+	UriValidator isAbsolute();
+
+	/**
+	 * Returns a validator for the URL representation of the value.
+	 *
+	 * @return a validator for the URL representation of the value
+	 */
+	UrlValidator asUrl();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates URLs
+	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	@SuppressWarnings("LongLine")
+	UriValidator asUrl(Consumer<UrlValidator> consumer);
+}

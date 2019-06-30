@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@link BigDecimalVerifier} that does nothing.
+ * An implementation of {@code BigDecimalVerifier} that does nothing.
  */
 public final class NoOpBigDecimalVerifier
 	extends NoOpNumberCapabilities<BigDecimalVerifier, BigDecimal>

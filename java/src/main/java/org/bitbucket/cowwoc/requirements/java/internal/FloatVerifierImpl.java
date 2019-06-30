@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
- * Default implementation of {@link FloatingPointVerifier FloatingPointVerifier&lt;Float&gt;}.
+ * Default implementation of {@code FloatingPointVerifier<Float>}.
  */
 public final class FloatVerifierImpl
 	extends FloatVerifierCapabilitiesImpl<FloatingPointVerifier<Float>>

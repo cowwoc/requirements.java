@@ -44,7 +44,7 @@ public final class UrlTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new Requirements(scope).requireThat(actual, "actual").asUrl().getActual();
+			URL actualAsUrl = new Requirements(scope).requireThat(actual, "actual").asUrl().getActual().get();
 			assert (actualAsUrl.toString().equals(actual)) : "actualAsUrl: " + actualAsUrl + ", actual: " + actual;
 		}
 	}
@@ -55,7 +55,8 @@ public final class UrlTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URI actualAsUri = new Requirements(scope).requireThat(actual, "actual").asUrl().asUri().getActual();
+			URI actualAsUri = new Requirements(scope).requireThat(actual, "actual").asUrl().asUri().
+				getActual().get();
 			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " + actual;
 		}
 	}

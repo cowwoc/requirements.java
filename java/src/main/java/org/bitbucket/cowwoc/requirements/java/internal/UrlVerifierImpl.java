@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of {@link UrlVerifier}.
+ * Default implementation of {@code UrlVerifier}.
  */
 public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, URL>
 	implements UrlVerifier
@@ -29,7 +29,7 @@ public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, U
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
 	 *                        empty.
 	 */
-	protected UrlVerifierImpl(ApplicationScope scope, String name, URL actual, Configuration config)
+	public UrlVerifierImpl(ApplicationScope scope, String name, URL actual, Configuration config)
 	{
 		super(scope, name, actual, config);
 	}
@@ -44,8 +44,9 @@ public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, U
 		}
 		catch (URISyntaxException e)
 		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				name + " is not a valid URI", e).
+			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
+				name + " is not a valid URI").
+				setCause(e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -54,8 +55,9 @@ public final class UrlVerifierImpl extends ObjectCapabilitiesImpl<UrlVerifier, U
 	@Override
 	public UrlVerifier asUri(Consumer<UriVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asUri());
 		return this;
 	}
-
 }

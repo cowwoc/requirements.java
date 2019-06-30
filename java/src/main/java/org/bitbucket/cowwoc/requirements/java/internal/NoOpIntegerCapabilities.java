@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
 
 /**
- * Extendable implementation of {@link IntegerCapabilities} that does nothing.
+ * An {@code IntegerCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

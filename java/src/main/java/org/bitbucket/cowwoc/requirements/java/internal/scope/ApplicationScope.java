@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 
@@ -30,7 +30,7 @@ public interface ApplicationScope extends JvmScope
 	/**
 	 * @return a verifier that can be used to check a verifier's own parameters
 	 */
-	JavaVerifier getInternalVerifier();
+	JavaRequirements getInternalVerifier();
 
 	@Override
 	void close();

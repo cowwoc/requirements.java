@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveLongArrayVerifier}.
+ * Default implementation of {@code PrimitiveLongArrayVerifier}.
  */
-public class PrimitiveLongArrayVerifierImpl
+public final class PrimitiveLongArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveLongArrayVerifier, Long, long[]>
 	implements PrimitiveLongArrayVerifier
 {

@@ -10,12 +10,11 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
- * Extendable implementation of {@link BooleanCapabilities}.
+ * Extensible implementation of {@code BooleanCapabilities}.
  *
  * @param <S> the type of verifier that methods should return
  */
-public abstract class BooleanCapabilitiesImpl<S>
-	extends ComparableCapabilitiesImpl<S, Boolean>
+public abstract class BooleanCapabilitiesImpl<S> extends ComparableCapabilitiesImpl<S, Boolean>
 	implements BooleanCapabilities<S>
 {
 	/**
@@ -36,7 +35,7 @@ public abstract class BooleanCapabilitiesImpl<S>
 	{
 		if (actual)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be true").
 			build();
 	}
@@ -46,7 +45,7 @@ public abstract class BooleanCapabilitiesImpl<S>
 	{
 		if (!actual)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be false").
 			build();
 	}

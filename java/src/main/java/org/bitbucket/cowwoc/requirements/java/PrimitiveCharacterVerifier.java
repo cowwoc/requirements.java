@@ -19,7 +19,6 @@ public interface PrimitiveCharacterVerifier
 	 */
 	@Override
 	@Deprecated
-	@SuppressWarnings("EmptyMethod")
 	PrimitiveCharacterVerifier isNull();
 
 	/**
@@ -29,6 +28,5 @@ public interface PrimitiveCharacterVerifier
 	 */
 	@Override
 	@Deprecated
-	@SuppressWarnings("EmptyMethod")
 	PrimitiveCharacterVerifier isNotNull();
 }

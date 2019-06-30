@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
- * Default implementation of ObjectVerifier.
+ * Default implementation of {@code ObjectVerifier}.
  *
  * @param <T> the type of the value
  */

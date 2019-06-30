@@ -22,8 +22,6 @@ import java.util.Set;
  * are encouraged to update these settings at startup, or take active measures to ensure that verifiers
  * are idle while the configuration is being updated. Failing to do so may result in undesirable behavior
  * such as verifiers outputting ANSI colors to a terminal that is no longer configured to render them.
- * <p>
- * This class is thread-safe.
  */
 public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 {

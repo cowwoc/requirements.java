@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
- * Extendable implementation of {@link FloatingPointCapabilities} for {@code double}s.
+ * Extensible implementation of {@code FloatingPointCapabilities} for {@code double}s.
  *
  * @param <S> the type of verifier that methods should return
  */
@@ -37,7 +37,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 	{
 		if (!actual.isNaN())
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be a number.").
 			addContext("Actual", actual).
 			build();
@@ -48,7 +48,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 	{
 		if (actual.isNaN())
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be a number.").
 			addContext("Actual", actual).
 			build();
@@ -59,7 +59,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 	{
 		if (!actual.isInfinite())
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be finite.").
 			addContext("Actual", actual).
 			build();
@@ -70,7 +70,7 @@ public abstract class DoubleVerifierCapabilitiesImpl<S>
 	{
 		if (actual.isInfinite())
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be infinite.").
 			addContext("Actual", actual).
 			build();

@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveBooleanArrayVerifier}.
+ * Default implementation of {@code PrimitiveBooleanArrayVerifier}.
  */
-public class PrimitiveBooleanArrayVerifierImpl
+public final class PrimitiveBooleanArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
 	implements PrimitiveBooleanArrayVerifier
 {

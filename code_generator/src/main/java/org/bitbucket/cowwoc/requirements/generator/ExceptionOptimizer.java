@@ -164,7 +164,8 @@ public final class ExceptionOptimizer
 				"\t/**\n" +
 				"\t * @param exceptions an instance of {@link Exceptions}\n" +
 				"\t * @param message    the detail message. The detail message is saved for later retrieval by " +
-				"the {@link #getMessage()} method\n" +
+				"the\n" +
+				"\t *                   {@link #getMessage()} method\n" +
 				"\t */\n" +
 				"\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message)\n" +
 				"\t{\n" +
@@ -188,11 +189,13 @@ public final class ExceptionOptimizer
 				writer.write("\t/**\n" +
 					"\t * @param exceptions an instance of {@link Exceptions}\n" +
 					"\t * @param message    the detail message. The detail message is saved for later retrieval by " +
-					"the {@link #getMessage()} method\n" +
+					"the\n" +
+					"\t *                   {@link #getMessage()} method\n" +
 					"\t * @param cause      the cause (which is saved for later retrieval by the {@link #getCause()} " +
-					"method).  (A {@code null}\n" +
-					"\t *                   value is permitted, and indicates that the cause is nonexistent or " +
-					"unknown.)\n" +
+					"method).\n" +
+					"\t *                   (A {@code null} value is permitted, and indicates that the cause is " +
+					"nonexistent or\n" +
+					"\t *                   unknown.)\n" +
 					"\t */\n" +
 					"\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message, Throwable cause)\n" +
 					"\t{\n" +

@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.math.BigDecimal;
 
 /**
- * An implementation of {@link PrimitiveNumberVerifier} for a {@link BigDecimal}'s scale.
+ * An implementation of {@code PrimitiveNumberVerifier} for a {@link BigDecimal}'s scale.
  */
 public final class BigDecimalScaleVerifierImpl
 	extends NumberCapabilitiesImpl<PrimitiveNumberVerifier<Integer>, Integer>
@@ -25,8 +25,8 @@ public final class BigDecimalScaleVerifierImpl
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
 	 *                        empty.
 	 */
-	protected BigDecimalScaleVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-	                                      Configuration config)
+	public BigDecimalScaleVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
+	                                   Configuration config)
 	{
 		super(scope, name + ".scale()", actual.scale(), config);
 	}

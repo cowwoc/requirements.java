@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Extendable implementation of {@link ObjectCapabilities}.
+ * Default implementation of {@code ObjectCapabilities}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -68,7 +68,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		List<Entry<String, Object>> context = getContext(expected);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " had an unexpected value.").
 			addContext(context).
 			build();
@@ -87,13 +87,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isEqualTo(Object expected, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, expected))
 			return getThis();
 
 		List<Entry<String, Object>> context = getContext(expected);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " must be equal to " + name + ".").
 			addContext(context).
 			build();
@@ -106,7 +106,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			return getThis();
 
 		String value = config.toString(other);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be equal to " + value).
 			build();
 	}
@@ -114,12 +114,12 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotEqualTo(Object other, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, other))
 			return getThis();
 
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " may not be equal to " + name + ".").
 			addContext("Actual", actual).
 			build();
@@ -128,13 +128,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isSameObjectAs(Object expected, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual == expected)
 			return getThis();
 
 		List<Entry<String, Object>> context = getContext(expected);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " must be the same object as " + name + ".").
 			addContext(context).
 			build();
@@ -143,12 +143,12 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotSameObjectAs(Object other, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual != other)
 			return getThis();
 
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " may not be the same object as " + name + ".").
 			addContext("Actual", actual).
 			build();
@@ -157,13 +157,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isOneOf(Collection<? super T> collection)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 			return getThis();
 
 		String collectionAsString = config.toString(collection);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " must be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -172,13 +172,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotOneOf(Collection<? super T> collection)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 			return getThis();
 
 		String collectionAsString = config.toString(collection);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " may not be one of " + collectionAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -187,7 +187,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 		if (type.isInstance(actual))
 			return getThis();
@@ -197,7 +197,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 			actualClass = "null";
 		else
 			actualClass = actual.getClass().getName();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be an instance of " + type.getName() + ".").
 			addContext("Actual.getClass()", actualClass).
 			addContext("Actual", actual).
@@ -207,13 +207,13 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S isNotInstanceOf(Class<?> type)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 		if (!type.isInstance(actual))
 			return getThis();
 
 		String actualClass = actual.getClass().getName();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be an instance of " + type.getName() + ".").
 			addContext("Actual.getClass()", actualClass).
 			addContext("Actual", actual).
@@ -228,7 +228,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 
 		// Output a diff because actual.toString() may return "null" which is misleading
 		List<Entry<String, Object>> context = getContext(null);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be null.").
 			addContext(context).
 			build();
@@ -240,7 +240,7 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 		if (actual != null)
 			return getThis();
 
-		throw new ExceptionBuilder(scope, config, NullPointerException.class,
+		throw new ExceptionBuilder<>(scope, config, NullPointerException.class,
 			name + " may not be null").
 			build();
 	}
@@ -255,19 +255,15 @@ public abstract class ObjectCapabilitiesImpl<S, T> implements ObjectCapabilities
 	@Override
 	public S asString(Consumer<StringVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asString());
 		return getThis();
 	}
 
 	@Override
-	public Optional<T> getActualIfPresent()
+	public Optional<T> getActual()
 	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public T getActual()
-	{
-		return actual;
+		return Optional.ofNullable(actual);
 	}
 }

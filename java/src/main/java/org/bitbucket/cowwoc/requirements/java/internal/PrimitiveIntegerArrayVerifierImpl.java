@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveIntegerArrayVerifier}.
+ * Default implementation of {@code PrimitiveIntegerArrayVerifier}.
  */
-public class PrimitiveIntegerArrayVerifierImpl
+public final class PrimitiveIntegerArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveIntegerArrayVerifier, Integer, int[]>
 	implements PrimitiveIntegerArrayVerifier
 {

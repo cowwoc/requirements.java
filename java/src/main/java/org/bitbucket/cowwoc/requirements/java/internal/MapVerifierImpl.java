@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.MapVerifier;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of MapVerifier.
+ * Default implementation of {@code MapVerifier}.
  *
  * @param <K> the type of key in the map
  * @param <V> the type of value in the map
@@ -50,6 +50,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(keySet());
 		return this;
 	}
@@ -63,6 +65,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(values());
 		return this;
 	}
@@ -75,9 +79,10 @@ public final class MapVerifierImpl<K, V>
 	}
 
 	@Override
-	public MapVerifier<K, V> entrySet(
-		Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
+	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(entrySet());
 		return this;
 	}
@@ -87,7 +92,7 @@ public final class MapVerifierImpl<K, V>
 	{
 		if (actual.isEmpty())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be empty.").
 			addContext("Actual", actual).
 			build();
@@ -98,21 +103,23 @@ public final class MapVerifierImpl<K, V>
 	{
 		if (!actual.isEmpty())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be empty").
 			build();
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> size()
+	public SizeVerifier size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
+		return new SizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
 			Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public MapVerifier<K, V> size(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(size());
 		return this;
 	}

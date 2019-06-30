@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 
 /**
- * An implementation of {@link PrimitiveNumberVerifier} that does nothing.
+ * A {@code PrimitiveNumberVerifier} that does nothing.
  *
  * @param <T> the type of the value
  */

@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;
 
 /**
- * An implementation of {@link PrimitiveShortArrayVerifier} that does nothing.
+ * A {@code PrimitiveShortArrayVerifier} that does nothing.
  */
 public final class NoOpPrimitiveShortArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveShortArrayVerifier, Short, short[]>

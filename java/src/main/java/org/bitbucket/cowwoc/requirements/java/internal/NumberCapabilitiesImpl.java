@@ -5,13 +5,13 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.capabilities.NumberCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
- * Extendable implementation of {@link NumberCapabilities}.
+ * Default implementation of {@code NumberCapabilities}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -38,7 +38,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.doubleValue() < 0L)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be negative.").
 			addContext("Actual", actual).
 			build();
@@ -49,7 +49,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.doubleValue() >= 0L)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be negative.").
 			addContext("Actual", actual).
 			build();
@@ -60,7 +60,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.doubleValue() == 0L)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be zero.").
 			addContext("Actual", actual).
 			build();
@@ -71,7 +71,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.doubleValue() != 0L)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be zero").
 			build();
 	}
@@ -81,7 +81,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.doubleValue() > 0L)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be positive.").
 			addContext("Actual", actual).
 			build();
@@ -92,7 +92,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (actual.doubleValue() <= 0L)
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be positive.").
 			addContext("Actual", actual).
 			build();
@@ -103,7 +103,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	{
 		if (isWholeNumber(actual.doubleValue()))
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be a whole number.").
 			addContext("Actual", actual).
 			build();
@@ -126,7 +126,7 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 		if (!isWholeNumber(actual.doubleValue()))
 			return getThis();
 
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be a whole number.").
 			addContext("Actual", actual).
 			build();
@@ -135,13 +135,13 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isMultipleOf(T divisor)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
 		String divisorAsString = config.toString(divisor);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -150,13 +150,13 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isMultipleOf(T divisor, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " must be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).
@@ -166,13 +166,13 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotMultipleOf(T divisor)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
 		String divisorAsString = config.toString(divisor);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -181,13 +181,13 @@ public abstract class NumberCapabilitiesImpl<S, T extends Number & Comparable<? 
 	@Override
 	public S isNotMultipleOf(T divisor, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || isWholeNumber(actual.doubleValue() / divisorAsDouble))
 			return getThis();
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " may not be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).

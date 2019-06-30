@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Default implementation of {@link ArrayVerifier}.
+ * Default implementation of {@code ArrayVerifier}.
  *
  * @param <E> the type of elements in the array
  */
-public class ArrayVerifierImpl<E>
+public final class ArrayVerifierImpl<E>
 	extends ArrayCapabilitiesImpl<ArrayVerifier<E>, E, E[]>
 	implements ArrayVerifier<E>
 {
@@ -39,7 +39,8 @@ public class ArrayVerifierImpl<E>
 	 * @param name   the name of the value
 	 * @param actual the actual value
 	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
+	 *                        empty.
 	 */
 	public ArrayVerifierImpl(ApplicationScope scope, String name, E[] actual, Configuration config)
 	{

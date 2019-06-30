@@ -206,6 +206,22 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<properties>
@@ -218,8 +234,8 @@
 		<testng.version>6.14.3</testng.version>
 		<pouch.version>1.14</pouch.version>
 		<jmh.version>1.21</jmh.version>
+		<java.parser.version>3.14.5</java.parser.version>
 	</properties>
-
 	<profiles>
 		<profile>
 			<id>list-profiles</id>
@@ -266,10 +282,6 @@
 		<profile>
 			<id>windows-x86_64-release</id>
 			<activation>
-				<property>
-					<name>osDetection</name>
-					<value>!false</value>
-				</property>
 				<os>
 					<family>windows</family>
 					<arch>amd64</arch>
@@ -290,10 +302,6 @@
 		<profile>
 			<id>linux-x86_64-release</id>
 			<activation>
-				<property>
-					<name>osDetection</name>
-					<value>!false</value>
-				</property>
 				<os>
 					<family>linux</family>
 					<arch>amd64</arch>
@@ -314,10 +322,6 @@
 		<profile>
 			<id>mac-x86_64-release</id>
 			<activation>
-				<property>
-					<name>osDetection</name>
-					<value>!false</value>
-				</property>
 				<os>
 					<family>mac</family>
 					<arch>x86_64</arch>
@@ -330,6 +334,10 @@
 		</profile>
 		<profile>
 			<id>deploy</id>
+			<!--
+			Must use property-based activation because there is no way to activate no-deploy profile without it.
+			See https://stackoverflow.com/a/7481347/14731
+			-->
 			<activation>
 				<property>
 					<name>deploy</name>

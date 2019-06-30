@@ -64,7 +64,7 @@ public final class UriTest
 		{
 			String actual = "../index.html";
 			URI actualAsUri = new Requirements(scope).requireThat(actual, "actual").asUri().
-				getActual();
+				getActual().get();
 			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " +
 				actual;
 		}
@@ -77,7 +77,7 @@ public final class UriTest
 		{
 			String actual = "http://host.com/index.html";
 			URL actualAsUrl = new Requirements(scope).requireThat(actual, "actual").asUri().asUrl().
-				getActual();
+				getActual().get();
 			assert (actualAsUrl.toString().equals(actual)) : "actualAsUri: " + actualAsUrl + ", actual: " +
 				actual;
 		}

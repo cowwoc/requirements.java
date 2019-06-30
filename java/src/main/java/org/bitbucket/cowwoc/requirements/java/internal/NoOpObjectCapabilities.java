@@ -9,12 +9,11 @@ import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ObjectCapabilities;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Extendable implementation of {@link ObjectCapabilities} that does nothing.
+ * A {@code ObjectCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
@@ -123,14 +122,8 @@ public abstract class NoOpObjectCapabilities<S, T> implements ObjectCapabilities
 	}
 
 	@Override
-	public Optional<T> getActualIfPresent()
+	public Optional<T> getActual()
 	{
 		return Optional.empty();
-	}
-
-	@Override
-	public T getActual()
-	{
-		throw new NoSuchElementException("Assertions are disabled");
 	}
 }

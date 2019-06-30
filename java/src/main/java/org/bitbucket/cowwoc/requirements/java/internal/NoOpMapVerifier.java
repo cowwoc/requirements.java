@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.MapVerifier;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@link MapVerifier} that does nothing.
+ * A {@code MapVerifier} that does nothing.
  *
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map
@@ -89,13 +89,13 @@ public final class NoOpMapVerifier<K, V>
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> size()
+	public SizeVerifier size()
 	{
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new NoOpSizeVerifier(config);
 	}
 
 	@Override
-	public MapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public MapVerifier<K, V> size(Consumer<SizeVerifier> consumer)
 	{
 		return this;
 	}

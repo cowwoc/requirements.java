@@ -110,9 +110,8 @@ public final class Exceptions
 	 * @throws AssertionError if {@code type} is null
 	 */
 	@SuppressWarnings("LongLine")
-	public <E extends RuntimeException> RuntimeException createException(Class<E> type, String message,
-	                                                                     Throwable cause,
-	                                                                     boolean cleanStackTrace)
+	public <E extends Exception> E createException(Class<E> type, String message, Throwable cause,
+	                                               boolean cleanStackTrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
 		//
@@ -132,23 +131,35 @@ public final class Exceptions
 			boolean withCause = !cleanStackTrace && cause != null;
 			MethodHandle constructor = getConstructor(type, withCause, cleanStackTrace);
 			boolean isOptimized = isOptimizedException(constructor.type().returnType());
-			// Convert the exception type to RuntimeException
-			constructor = constructor.asType(constructor.type().changeReturnType(RuntimeException.class));
+			// Convert the exception type to Exception
+			constructor = constructor.asType(constructor.type().changeReturnType(Exception.class));
 
-			RuntimeException result;
+			E result;
 			if (isOptimized)
 			{
 				if (withCause)
-					result = (RuntimeException) constructor.invokeExact(this, message, cause);
+				{
+					//noinspection unchecked
+					result = (E) constructor.invokeExact(this, message, cause);
+				}
 				else
-					result = (RuntimeException) constructor.invokeExact(this, message);
+				{
+					//noinspection unchecked
+					result = (E) constructor.invokeExact(this, message);
+				}
 			}
 			else
 			{
 				if (withCause)
-					result = (RuntimeException) constructor.invokeExact(message, cause);
+				{
+					//noinspection unchecked
+					result = (E) constructor.invokeExact(message, cause);
+				}
 				else
-					result = (RuntimeException) constructor.invokeExact(message);
+				{
+					//noinspection unchecked
+					result = (E) constructor.invokeExact(message);
+				}
 				if (cleanStackTrace)
 				{
 					// We need to strip the stack trace eagerly because we don't have an optimized exception

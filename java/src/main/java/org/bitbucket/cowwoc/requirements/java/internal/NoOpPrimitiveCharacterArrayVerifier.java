@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterArrayVerifier;
 
 /**
- * An implementation of {@link PrimitiveCharacterArrayVerifier} that does nothing.
+ * An implementation of {@code PrimitiveCharacterArrayVerifier} that does nothing.
  */
 public final class NoOpPrimitiveCharacterArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveCharacterArrayVerifier, Character, char[]>

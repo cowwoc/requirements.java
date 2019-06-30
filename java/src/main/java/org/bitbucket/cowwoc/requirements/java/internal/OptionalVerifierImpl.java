@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import java.util.Optional;
 
 /**
- * Default implementation of OptionalVerifier.
+ * Default implementation of {@code OptionalVerifier}.
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class OptionalVerifierImpl
@@ -38,7 +38,7 @@ public final class OptionalVerifierImpl
 	{
 		if (actual.isPresent())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be present").
 			build();
 	}
@@ -48,7 +48,7 @@ public final class OptionalVerifierImpl
 	{
 		if (actual.isEmpty())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be empty.").
 			addContext("Actual", actual).
 			build();
@@ -63,7 +63,7 @@ public final class OptionalVerifierImpl
 		if (actual.equals(expected))
 			return this;
 		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must contain " + valueAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -75,7 +75,7 @@ public final class OptionalVerifierImpl
 		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
 		if (actual.equals(expectedAsOptional))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " must contain " + name + ".").
 			addContext("Actual", actual).
 			addContext("Expected", expectedAsOptional).

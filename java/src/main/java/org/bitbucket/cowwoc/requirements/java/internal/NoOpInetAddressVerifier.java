@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
 import java.net.InetAddress;
 
 /**
- * An implementation of {@link InetAddressVerifier} that does nothing.
+ * An {@code InetAddressVerifier} that does nothing.
  */
 public final class NoOpInetAddressVerifier
 	extends NoOpObjectCapabilities<InetAddressVerifier, InetAddress>

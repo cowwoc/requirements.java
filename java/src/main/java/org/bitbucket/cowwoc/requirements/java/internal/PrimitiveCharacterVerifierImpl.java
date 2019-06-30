@@ -29,17 +29,19 @@ public final class PrimitiveCharacterVerifierImpl
 		super(scope, name, actual, config);
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveCharacterVerifier isNotNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveCharacterVerifier isNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNull();
 	}
 }

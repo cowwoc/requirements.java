@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of {@link BigDecimalVerifier}.
+ * Default implementation of {@code BigDecimalVerifier}.
  */
 public final class BigDecimalVerifierImpl
 	extends NumberCapabilitiesImpl<BigDecimalVerifier, BigDecimal>
@@ -39,10 +39,11 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isZero()
 	{
-		// Number.longValue() truncates the fractional portion, which we need to take into account
+		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
+		// need to take into account.
 		if (actual.signum() == 0)
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be zero").
 			addContext("Actual", actual).
 			build();
@@ -51,10 +52,11 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isNotZero()
 	{
-		// Number.longValue() truncates the fractional portion, which we need to take into account
+		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
+		// need to take into account.
 		if (actual.signum() != 0)
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be zero").
 			build();
 	}
@@ -68,6 +70,8 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier precision(Consumer<BigDecimalPrecisionVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(precision());
 		return this;
 	}
@@ -81,6 +85,8 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier scale(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(scale());
 		return this;
 	}
@@ -90,7 +96,7 @@ public final class BigDecimalVerifierImpl
 	{
 		if (isWholeNumber(actual))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be a whole number.").
 			addContext("Actual", actual).
 			build();
@@ -112,7 +118,7 @@ public final class BigDecimalVerifierImpl
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (!isWholeNumber(actual))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be a whole number.").
 			addContext("Actual", actual).
 			build();
@@ -132,12 +138,12 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isMultipleOf(BigDecimal divisor)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		if (isMultipleOf(actual, divisor))
 			return this;
 		String divisorAsString = config.toString(divisor);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -146,12 +152,12 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isMultipleOf(BigDecimal divisor, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (isMultipleOf(actual, divisor))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " must be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).
@@ -161,12 +167,12 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		if (!isMultipleOf(actual, divisor))
 			return this;
 		String divisorAsString = config.toString(divisor);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be a multiple of " + divisorAsString + ".").
 			addContext("Actual", actual).
 			build();
@@ -175,12 +181,12 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor, String name)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!isMultipleOf(actual, divisor))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			this.name + " may not be a multiple of " + name + ".").
 			addContext("Actual", actual).
 			addContext("divisor", divisor).

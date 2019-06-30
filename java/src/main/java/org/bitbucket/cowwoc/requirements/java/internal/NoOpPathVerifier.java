@@ -11,7 +11,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
 /**
- * An implementation of {@link PathVerifier} that does nothing.
+ * A {@code PathVerifier} that does nothing.
  */
 public final class NoOpPathVerifier
 	extends NoOpObjectCapabilities<PathVerifier, Path>

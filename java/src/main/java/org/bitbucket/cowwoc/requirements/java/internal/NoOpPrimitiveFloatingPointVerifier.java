@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;
 
 /**
- * An implementation of {@link PrimitiveFloatingPointVerifier} that does nothing.
+ * A {@code PrimitiveFloatingPointVerifier} that does nothing.
  *
  * @param <T> the type of the floating-point number
  */

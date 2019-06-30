@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
 import org.bitbucket.cowwoc.requirements.java.UrlVerifier;
@@ -22,7 +22,7 @@ import java.net.UnknownHostException;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of {@link StringVerifier}.
+ * Default implementation of {@code StringVerifier}.
  */
 public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerifier, String>
 	implements StringVerifier
@@ -45,7 +45,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (actual.isEmpty())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be empty.").
 			addContext("Actual", actual).
 			build();
@@ -56,7 +56,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (!actual.isEmpty())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be empty").
 			build();
 	}
@@ -76,7 +76,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		String trimmed = actual.trim();
 		if (trimmed.equals(actual))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not contain leading or trailing whitespace").
 			addContext("Actual", actual).
 			build();
@@ -88,14 +88,14 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		// IPv4 must start with a digit. IPv6 must start with a colon.
 		if (actual.isEmpty())
 		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 				name + " may not be empty").
 				build();
 		}
 		char firstCharacter = actual.charAt(0);
 		if (Character.digit(firstCharacter, 16) == -1 && (firstCharacter != ':'))
 		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 				name + " must contain a valid IP address or hostname format.").
 				addContext("Actual", actual).
 				build();
@@ -107,8 +107,9 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		}
 		catch (UnknownHostException e)
 		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				name + " must contain a valid IP address or hostname format.", e).
+			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
+				name + " must contain a valid IP address or hostname format.").
+				setCause(e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -118,6 +119,8 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	@Override
 	public StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asInetAddress());
 		return this;
 	}
@@ -130,10 +133,11 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 			URI uri = URI.create(actual);
 			return new UriVerifierImpl(scope, name, uri, config);
 		}
-		catch (IllegalArgumentException unused)
+		catch (IllegalArgumentException e)
 		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 				name + " does not contain a valid URI format").
+				setCause(e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -142,6 +146,8 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	@Override
 	public StringVerifier asUri(Consumer<UriVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asUri());
 		return this;
 	}
@@ -156,8 +162,9 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 		}
 		catch (MalformedURLException e)
 		{
-			throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-				name + " is not a valid URL", e).
+			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
+				name + " is not a valid URL").
+				setCause(e).
 				addContext("Actual", actual).
 				build();
 		}
@@ -166,6 +173,8 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	@Override
 	public StringVerifier asUrl(Consumer<UrlVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asUrl());
 		return this;
 	}
@@ -175,7 +184,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (actual.startsWith(prefix))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must start with \"" + prefix + "\".").
 			addContext("Actual", actual).
 			build();
@@ -186,7 +195,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (!actual.startsWith(prefix))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not start with \"" + prefix + "\".").
 			addContext("Actual", actual).
 			build();
@@ -197,7 +206,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (actual.endsWith(suffix))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must end with \"" + suffix + "\".").
 			addContext("Actual", actual).
 			build();
@@ -208,7 +217,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (!actual.endsWith(suffix))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not end with \"" + suffix + "\".").
 			addContext("Actual", actual).
 			build();
@@ -219,7 +228,7 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (actual.contains(expected))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must contain \"" + expected + "\".").
 			addContext("Actual", actual).
 			build();
@@ -230,22 +239,24 @@ public final class StringVerifierImpl extends ObjectCapabilitiesImpl<StringVerif
 	{
 		if (!actual.contains(value))
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not contain \"" + value + "\".").
 			addContext("Actual", actual).
 			build();
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> length()
+	public SizeVerifier length()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length()", actual.length(),
+		return new SizeVerifierImpl(scope, name, actual, name + ".length()", actual.length(),
 			Pluralizer.CHARACTER, config);
 	}
 
 	@Override
-	public StringVerifier length(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public StringVerifier length(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(length());
 		return this;
 	}

@@ -5,11 +5,10 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabilities;
 
 /**
- * Extendable implementation of {@link PrimitiveNumberVerifier} that does nothing.
+ * A {@code PrimitiveNumberVerifier} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

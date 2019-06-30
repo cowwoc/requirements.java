@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;
 import java.util.Optional;
 
 /**
- * An implementation of {@link OptionalVerifier} that does nothing.
+ * An {@code OptionalVerifier} that does nothing.
  */
 public final class NoOpOptionalVerifier
 	extends NoOpObjectCapabilities<OptionalVerifier, Optional<?>>

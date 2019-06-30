@@ -17,7 +17,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
 
 /**
  * A diff representation that does not use ANSI escape codes.
- * <h3>Basic Rules</h3>
+ * <h2>Basic Rules</h2>
  * <ul>
  * <li>Space (&nbsp;) indicates characters that needs to be deleted from Actual.</li>
  * <li>Equal sign ({@code =}) indicates characters that are equal in Actual and Expected.</li>

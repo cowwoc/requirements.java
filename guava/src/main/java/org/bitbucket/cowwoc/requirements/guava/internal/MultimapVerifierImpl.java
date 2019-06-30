@@ -8,10 +8,10 @@ import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.ContainerSizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ObjectCapabilitiesImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of MultimapRequirements.
+ * Default implementation of MultimapVerifier.
  *
  * @param <K> the type of key in the multimap
  * @param <V> the type of value in the multimap
@@ -91,7 +91,7 @@ public final class MultimapVerifierImpl<K, V>
 		if (actual.isEmpty())
 			return this;
 		String actualAsString = config.toString(actual);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be empty.").
 			addContext("Actual", actualAsString).
 			build();
@@ -102,20 +102,20 @@ public final class MultimapVerifierImpl<K, V>
 	{
 		if (!actual.isEmpty())
 			return this;
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be empty").
 			build();
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> size()
+	public SizeVerifier size()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
+		return new SizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
 			Pluralizer.ENTRY, config);
 	}
 
 	@Override
-	public MultimapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public MultimapVerifier<K, V> size(Consumer<SizeVerifier> consumer)
 	{
 		consumer.accept(size());
 		return this;

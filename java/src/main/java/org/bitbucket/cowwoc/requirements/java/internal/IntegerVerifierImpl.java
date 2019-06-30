@@ -9,10 +9,10 @@ import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
- * Default implementation of {@link IntegerVerifier IntegerVerifier&lt;Integer&gt;}.
+ * Default implementation of {@code IntegerVerifier<Integer>}.
  */
 public final class IntegerVerifierImpl
-	extends IntegerVerifierCapabilitiesImpl<IntegerVerifier<Integer>, Integer>
+	extends IntegerCapabilitiesImpl<IntegerVerifier<Integer>, Integer>
 	implements IntegerVerifier<Integer>
 {
 	/**

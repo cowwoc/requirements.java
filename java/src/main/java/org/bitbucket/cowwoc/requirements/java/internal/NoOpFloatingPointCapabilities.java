@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabilities;
 
 /**
- * Extendable implementation of {@link FloatingPointCapabilities} that does nothing.
+ * Extensible implementation of {@code FloatingPointCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value

@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveFloatArrayVerifier}.
+ * Default implementation of {@code PrimitiveFloatArrayVerifier}.
  */
-public class PrimitiveFloatArrayVerifierImpl
+public final class PrimitiveFloatArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveFloatArrayVerifier, Float, float[]>
 	implements PrimitiveFloatArrayVerifier
 {

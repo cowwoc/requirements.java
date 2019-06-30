@@ -4,12 +4,12 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import java.math.BigDecimal;
+import org.bitbucket.cowwoc.requirements.java.capabilities.PrimitiveNumberCapabilities;
 
 /**
- * Verifies the requirements of a {@link BigDecimal#precision()}.
+ * Verifies the requirements of the size of a collection.
  */
-public interface ContainerSizeVerifier extends PrimitiveNumberVerifier<Integer>
+public interface SizeVerifier extends PrimitiveNumberCapabilities<SizeVerifier, Integer>
 {
 	/**
 	 * {@inheritDoc}
@@ -18,7 +18,7 @@ public interface ContainerSizeVerifier extends PrimitiveNumberVerifier<Integer>
 	 */
 	@Override
 	@Deprecated
-	PrimitiveNumberVerifier<Integer> isNegative();
+	SizeVerifier isNegative();
 
 	/**
 	 * {@inheritDoc}
@@ -27,5 +27,5 @@ public interface ContainerSizeVerifier extends PrimitiveNumberVerifier<Integer>
 	 */
 	@Override
 	@Deprecated
-	PrimitiveNumberVerifier<Integer> isNotNegative();
+	SizeVerifier isNotNegative();
 }

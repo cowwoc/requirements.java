@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.capabilities;
 
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -223,18 +223,19 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 	 *
 	 * @return a verifier over the array's length
 	 */
-	PrimitiveNumberVerifier<Integer> length();
+	SizeVerifier length();
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the array's length
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	S length(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
+	@SuppressWarnings("LongLine")
+	S length(Consumer<SizeVerifier> consumer);
 
 	/**
 	 * Returns a verifier for the actual value as a collection.
@@ -245,12 +246,13 @@ public interface ArrayCapabilities<S, E, A> extends ObjectCapabilities<S, A>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the actual value as a collection
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	S asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer);
 }

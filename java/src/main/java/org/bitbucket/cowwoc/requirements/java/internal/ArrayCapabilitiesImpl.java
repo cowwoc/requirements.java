@@ -6,18 +6,16 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.StringVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Extendable implementation of {@link ArrayCapabilities}.
+ * Extensible implementation of {@code ArrayCapabilities}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of the array elements
@@ -36,7 +34,8 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	 * @param actual             the actual value
 	 * @param actualAsCollection the {@code Collection} representation of the array
 	 * @param config             the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
+	 *                        empty.
 	 */
 	protected ArrayCapabilitiesImpl(ApplicationScope scope, String name, A actual,
 	                                Collection<E> actualAsCollection, Configuration config)
@@ -237,30 +236,18 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> length()
+	public SizeVerifier length()
 	{
-		return new ContainerSizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.size(),
+		return new SizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.size(),
 			Pluralizer.ELEMENT, config);
 	}
 
 	@Override
-	public S length(Consumer<PrimitiveNumberVerifier<Integer>> verifier)
+	public S length(Consumer<SizeVerifier> consumer)
 	{
-		verifier.accept(length());
-		return getThis();
-	}
-
-	@Override
-	public StringVerifier asString()
-	{
-		String value = config.toString(actual);
-		return new StringVerifierImpl(scope, name, value, config);
-	}
-
-	@Override
-	public S asString(Consumer<StringVerifier> consumer)
-	{
-		consumer.accept(asString());
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(length());
 		return getThis();
 	}
 
@@ -273,19 +260,9 @@ public abstract class ArrayCapabilitiesImpl<S, E, A>
 	@Override
 	public S asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asCollection());
 		return getThis();
-	}
-
-	@Override
-	public Optional<A> getActualIfPresent()
-	{
-		return Optional.of(actual);
-	}
-
-	@Override
-	public A getActual()
-	{
-		return actual;
 	}
 }

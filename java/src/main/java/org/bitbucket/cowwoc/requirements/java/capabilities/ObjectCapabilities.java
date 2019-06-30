@@ -4,12 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.java.capabilities;
 
-import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -28,8 +27,8 @@ public interface ObjectCapabilities<S, T>
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the actual value is not equal to value
-	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of
-	 * the output format</a>
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output
+	 * format</a>
 	 */
 	S isEqualTo(Object expected);
 
@@ -42,8 +41,8 @@ public interface ObjectCapabilities<S, T>
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the actual value is not equal to {@code expected}. If
 	 *                                  {@code name} is empty.
-	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the
-	 * output format</a>
+	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output
+	 * format</a>
 	 */
 	S isEqualTo(Object expected, String name);
 
@@ -156,41 +155,22 @@ public interface ObjectCapabilities<S, T>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the String representation of the actual value
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	S asString(Consumer<StringVerifier> consumer);
 
 	/**
 	 * Returns the actual value.
-	 * <p>
-	 * NOTE: The behavior of verifiers whose value is modified is undefined. Special care should be
-	 * taken to avoid modifying the returned value, or avoid the use of verifiers after their value is
-	 * modified.
 	 *
 	 * @return {@code Optional.empty()} if the actual value is not available (e.g. if
-	 * {@link JavaVerifier#assertThat(Object, String) assertThat()} is used when
+	 * {@link JavaRequirements#assertThat(Object, String) assertThat()} is used when
 	 * assertions are disabled, the verifier does not retain a reference to the actual value)
 	 */
-	Optional<T> getActualIfPresent();
-
-	/**
-	 * Returns the actual value.
-	 * <p>
-	 * NOTE: The behavior of verifiers whose value is modified is undefined. Special care should be
-	 * taken to avoid modifying the returned value, or avoid the use of verifiers after their value is
-	 * modified.
-	 *
-	 * @return the actual value
-	 * @throws NoSuchElementException if the verifier does not have access to the actual value (e.g.
-	 *                                if {@link JavaVerifier#assertThat(Object, String) assertThat()}
-	 *                                is used when assertions are disabled, the verifier does not need
-	 *                                to retain a reference to the actual value)
-	 * @see #getActualIfPresent()
-	 */
-	T getActual();
+	Optional<T> getActual();
 }

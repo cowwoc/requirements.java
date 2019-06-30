@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveByteArrayVerifier}.
+ * Default implementation of {@code PrimitiveByteArrayVerifier}.
  */
-public class PrimitiveByteArrayVerifierImpl
+public final class PrimitiveByteArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveByteArrayVerifier, Byte, byte[]>
 	implements PrimitiveByteArrayVerifier
 {

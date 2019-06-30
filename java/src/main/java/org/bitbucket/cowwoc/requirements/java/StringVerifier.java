@@ -90,18 +90,19 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 	 *
 	 * @return a verifier for the length of the actual value
 	 */
-	PrimitiveNumberVerifier<Integer> length();
+	SizeVerifier length();
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the length of the actual value
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	StringVerifier length(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
+	@SuppressWarnings("LongLine")
+	StringVerifier length(Consumer<SizeVerifier> consumer);
 
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.
@@ -130,15 +131,16 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asInetAddress()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies Internet addresses
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not contain a valid Internet address
-	 *                                  format
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer);
 
 	/**
@@ -158,14 +160,16 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asUri()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URIs
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not contain a valid URI format
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	StringVerifier asUri(Consumer<UriVerifier> consumer);
 
 	/**
@@ -178,13 +182,15 @@ public interface StringVerifier extends ObjectCapabilities<StringVerifier, Strin
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URLs
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not contain a valid URL format
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	StringVerifier asUrl(Consumer<UrlVerifier> consumer);
 }

@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@link UriVerifier} that does nothing.
+ * A {@code UriVerifier} that does nothing.
  */
 public final class NoOpUriVerifier
 	extends NoOpObjectCapabilities<UriVerifier, URI>

@@ -5,18 +5,17 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.capabilities.FloatingPointCapabilities;
 import org.bitbucket.cowwoc.requirements.java.capabilities.IntegerCapabilities;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
- * Extendable implementation of {@link FloatingPointCapabilities} for {@code double}s.
+ * Extensible implementation of {@code IntegerCapabilities}.
  *
  * @param <S> the type of verifier that methods should return
  * @param <T> the type of the value
  */
-public abstract class IntegerVerifierCapabilitiesImpl<S, T extends Number & Comparable<? super T>>
+public abstract class IntegerCapabilitiesImpl<S, T extends Number & Comparable<? super T>>
 	extends NumberCapabilitiesImpl<S, T>
 	implements IntegerCapabilities<S, T>
 {
@@ -28,8 +27,8 @@ public abstract class IntegerVerifierCapabilitiesImpl<S, T extends Number & Comp
 	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
 	 *                        empty.
 	 */
-	protected IntegerVerifierCapabilitiesImpl(ApplicationScope scope, String name, T actual,
-	                                          Configuration config)
+	protected IntegerCapabilitiesImpl(ApplicationScope scope, String name, T actual,
+	                                  Configuration config)
 	{
 		super(scope, name, actual, config);
 	}
@@ -43,7 +42,7 @@ public abstract class IntegerVerifierCapabilitiesImpl<S, T extends Number & Comp
 	@Override
 	public S isNotWholeNumber()
 	{
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " may not be a whole number.").
 			addContext("Actual", actual).
 			build();

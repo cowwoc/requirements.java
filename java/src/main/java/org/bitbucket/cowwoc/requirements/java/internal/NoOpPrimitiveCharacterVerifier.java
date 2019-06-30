@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterVerifier;
 
 /**
- * An implementation of {@link PrimitiveCharacterVerifier} that does nothing.
+ * A {@code PrimitiveCharacterVerifier} that does nothing.
  */
 public final class NoOpPrimitiveCharacterVerifier
 	extends NoOpComparableCapabilities<PrimitiveCharacterVerifier, Character>

@@ -29,13 +29,14 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#keySet()}
-	 * @return this;
+	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer);
 
 	/**
@@ -47,13 +48,14 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#values()}
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer);
 
 	/**
@@ -65,13 +67,14 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#entrySet()}
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer);
 
 	/**
@@ -95,16 +98,17 @@ public interface MapVerifier<K, V> extends ObjectCapabilities<MapVerifier<K, V>,
 	 *
 	 * @return a verifier for {@link Map#size()}
 	 */
-	PrimitiveNumberVerifier<Integer> size();
+	SizeVerifier size();
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#size()}
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	MapVerifier<K, V> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
+	@SuppressWarnings("LongLine")
+	MapVerifier<K, V> size(Consumer<SizeVerifier> consumer);
 }

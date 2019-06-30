@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Objects;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
@@ -15,14 +14,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 
 /**
  * Configures the behavior of a single verifier.
- * <p>
- * This class is immutable.
  */
 @SuppressWarnings({"ConstantConditions", "AssertWithSideEffects"})
 public final class MainConfiguration implements Configuration
@@ -38,8 +34,8 @@ public final class MainConfiguration implements Configuration
 
 	private final Map<String, Object> context;
 	private final Optional<Class<? extends RuntimeException>> exception;
-	private final boolean assertionsEnabled;
-	private final boolean diffEnabled;
+	private boolean assertionsEnabled;
+	private boolean diffEnabled;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
 
 	/**
@@ -57,7 +53,7 @@ public final class MainConfiguration implements Configuration
 	 */
 	public MainConfiguration()
 	{
-		this.context = Collections.emptyMap();
+		this.context = new HashMap<>();
 		this.exception = Optional.empty();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.diffEnabled = true;
@@ -117,51 +113,21 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withAssertionsEnabled()
 	{
-		if (assertionsEnabled)
-			return this;
-		return new MainConfiguration(context, exception, true, diffEnabled, typeToStringConverter);
+		this.assertionsEnabled = true;
+		return this;
 	}
 
 	@Override
 	public Configuration withAssertionsDisabled()
 	{
-		if (!assertionsEnabled)
-			return this;
-		return new MainConfiguration(context, exception, false, diffEnabled, typeToStringConverter);
-	}
-
-	@Override
-	public Optional<Class<? extends RuntimeException>> getException()
-	{
-		return exception;
-	}
-
-	@Override
-	public Configuration withException(Class<? extends RuntimeException> exception)
-	{
-		if (exception == null)
-			throw new NullPointerException("exception may not be null");
-		Optional<Class<? extends RuntimeException>> newException = Optional.of(exception);
-		if (this.exception.equals(newException))
-			return this;
-		return new MainConfiguration(context, newException, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
-	}
-
-	@Override
-	public Configuration withDefaultException()
-	{
-		Optional<Class<? extends RuntimeException>> newException = Optional.empty();
-		if (this.exception.equals(newException))
-			return this;
-		return new MainConfiguration(context, newException, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
+		this.assertionsEnabled = false;
+		return this;
 	}
 
 	@Override
 	public Map<String, Object> getContext()
 	{
-		return context;
+		return Collections.unmodifiableMap(context);
 	}
 
 	@Override
@@ -169,14 +135,8 @@ public final class MainConfiguration implements Configuration
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
-		Object oldValue = context.get(name);
-		if (Objects.equals(oldValue, value))
-			return this;
-		Map<String, Object> newContext = new HashMap<>((int) Math.ceil((context.size() + 1) / 0.75));
-		newContext.putAll(context);
-		newContext.put(name, value);
-		return new MainConfiguration(newContext, exception, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
+		context.put(name, value);
+		return this;
 	}
 
 	@Override
@@ -184,14 +144,8 @@ public final class MainConfiguration implements Configuration
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
-		if (!context.containsKey(name))
-			return this;
-		Map<String, Object> newContext = new HashMap<>((int) Math.ceil((context.size() - 1) / 0.75));
-		for (Entry<String, Object> entry : context.entrySet())
-			if (!entry.getKey().equals(name))
-				newContext.put(entry.getKey(), entry.getValue());
-		return new MainConfiguration(newContext, exception, assertionsEnabled, diffEnabled,
-			typeToStringConverter);
+		context.remove(name);
+		return this;
 	}
 
 	@Override
@@ -203,17 +157,15 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withDiff()
 	{
-		if (this.diffEnabled)
-			return this;
-		return new MainConfiguration(context, exception, assertionsEnabled, true, typeToStringConverter);
+		this.diffEnabled = true;
+		return this;
 	}
 
 	@Override
 	public Configuration withoutDiff()
 	{
-		if (!this.diffEnabled)
-			return this;
-		return new MainConfiguration(context, exception, assertionsEnabled, false, typeToStringConverter);
+		this.diffEnabled = false;
+		return this;
 	}
 
 	@Override
@@ -239,15 +191,10 @@ public final class MainConfiguration implements Configuration
 			throw new NullPointerException("type may not be null");
 		if (converter == null)
 			throw new NullPointerException("converter may not be null");
-		Function<?, String> existingConverter = typeToStringConverter.get(type);
-		if (converter.equals(existingConverter))
-			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter = new HashMap<>(typeToStringConverter);
 		@SuppressWarnings("unchecked")
 		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
-		newTypeToStringConverter.put(type, unsafeConverter);
-		return new MainConfiguration(context, exception, assertionsEnabled, false,
-			newTypeToStringConverter);
+		typeToStringConverter.put(type, unsafeConverter);
+		return this;
 	}
 
 	@Override
@@ -255,11 +202,8 @@ public final class MainConfiguration implements Configuration
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");
-		if (!typeToStringConverter.containsKey(type))
-			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter = new HashMap<>(typeToStringConverter);
-		newTypeToStringConverter.remove(type);
-		return new MainConfiguration(context, exception, assertionsEnabled, false, newTypeToStringConverter);
+		typeToStringConverter.remove(type);
+		return this;
 	}
 
 	@Override

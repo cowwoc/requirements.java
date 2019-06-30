@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -25,46 +24,16 @@ public interface Configuration
 	/**
 	 * Indicates that {@code assertThat()} should invoke {@code requireThat()}.
 	 *
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 */
 	Configuration withAssertionsEnabled();
 
 	/**
 	 * Indicates that {@code assertThat()} shouldn't do anything.
 	 *
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 */
 	Configuration withAssertionsDisabled();
-
-	/**
-	 * Returns the type of exception that will be thrown if a verification fails.
-	 *
-	 * @return {@code Optional.empty()} by default (meaning, the default exception type will get thrown)
-	 * @see #withException(Class)
-	 * @see #withDefaultException()
-	 */
-	Optional<Class<? extends RuntimeException>> getException();
-
-	/**
-	 * Overrides the type of exception that will get thrown if a verification fails.
-	 * <p>
-	 * The exception class must define the following constructors:
-	 * <p>
-	 * {@code <init>(String message)}<br>
-	 * {@code <init>(String message, Throwable cause)}
-	 *
-	 * @param exception the type of exception to throw
-	 * @return a verifier with the updated configuration
-	 * @throws NullPointerException if {@code exception} is null
-	 */
-	Configuration withException(Class<? extends RuntimeException> exception);
-
-	/**
-	 * Throws the default exception type if a verification fails.
-	 *
-	 * @return a verifier with the updated configuration
-	 */
-	Configuration withDefaultException();
 
 	/**
 	 * Indicates if exceptions should show the difference between the actual and expected values.
@@ -76,7 +45,7 @@ public interface Configuration
 	/**
 	 * Indicates that exceptions should show the difference between the actual and expected values.
 	 *
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 */
 	Configuration withDiff();
 
@@ -84,7 +53,7 @@ public interface Configuration
 	 * Indicates that exceptions should not show the difference between the actual and expected
 	 * values.
 	 *
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 */
 	Configuration withoutDiff();
 
@@ -102,7 +71,7 @@ public interface Configuration
 	 *
 	 * @param name  the name of the parameter
 	 * @param value the value of the parameter
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	Configuration putContext(String name, Object value);
@@ -111,7 +80,7 @@ public interface Configuration
 	 * Removes contextual information associated with the exception message.
 	 *
 	 * @param name the name of the parameter
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	Configuration removeContext(String name);
@@ -136,7 +105,7 @@ public interface Configuration
 	 * @param type      the type of object being converted (non-primitive arrays are mapped to
 	 *                  {@code Object[].class})
 	 * @param converter a function that converts an object of the specified type to a String
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	<T> Configuration withStringConverter(Class<T> type, Function<T, String> converter);
@@ -146,16 +115,16 @@ public interface Configuration
 	 *
 	 * @param <T>  the type of object being converted
 	 * @param type the type of object being converted
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code type} is null
 	 */
 	<T> Configuration withoutStringConverter(Class<T> type);
 
 	/**
-	 * Returns a verifier with the updated configuration.
+	 * Replaces a verifier's configuration.
 	 *
 	 * @param configuration a new configuration
-	 * @return a verifier with the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code configuration} is null
 	 */
 	Configuration withConfiguration(Configuration configuration);

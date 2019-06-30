@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default implementation of {@link PrimitiveDoubleArrayVerifier}.
+ * Default implementation of {@code PrimitiveDoubleArrayVerifier}.
  */
-public class PrimitiveDoubleArrayVerifierImpl
+public final class PrimitiveDoubleArrayVerifierImpl
 	extends ArrayCapabilitiesImpl<PrimitiveDoubleArrayVerifier, Double, double[]>
 	implements PrimitiveDoubleArrayVerifier
 {

@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayVerifier;
 
 /**
- * An implementation of {@link PrimitiveFloatArrayVerifier} that does nothing.
+ * A {@code PrimitiveFloatArrayVerifier} that does nothing.
  */
 public final class NoOpPrimitiveFloatArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveFloatArrayVerifier, Float, float[]>

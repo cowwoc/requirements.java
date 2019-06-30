@@ -11,43 +11,35 @@ import java.util.function.Function;
 
 /**
  * Verifies the requirements types from of the Guava library API.
- * <p>
- * Implementations must be immutable.
  */
-public interface GuavaVerifier extends Configuration
+public interface GuavaRequirements extends Configuration
 {
 	@Override
-	GuavaVerifier putContext(String name, Object value);
+	GuavaRequirements putContext(String name, Object value);
 
 	@Override
-	GuavaVerifier removeContext(String name);
+	GuavaRequirements removeContext(String name);
 
 	@Override
-	GuavaVerifier withDefaultException();
+	GuavaRequirements withAssertionsDisabled();
 
 	@Override
-	GuavaVerifier withException(Class<? extends RuntimeException> exception);
+	GuavaRequirements withAssertionsEnabled();
 
 	@Override
-	GuavaVerifier withAssertionsDisabled();
+	GuavaRequirements withDiff();
 
 	@Override
-	GuavaVerifier withAssertionsEnabled();
+	GuavaRequirements withoutDiff();
 
 	@Override
-	GuavaVerifier withDiff();
+	<T> GuavaRequirements withStringConverter(Class<T> type, Function<T, String> converter);
 
 	@Override
-	GuavaVerifier withoutDiff();
+	<T> GuavaRequirements withoutStringConverter(Class<T> type);
 
 	@Override
-	<T> GuavaVerifier withStringConverter(Class<T> type, Function<T, String> converter);
-
-	@Override
-	<T> GuavaVerifier withoutStringConverter(Class<T> type);
-
-	@Override
-	GuavaVerifier withConfiguration(Configuration configuration);
+	GuavaRequirements withConfiguration(Configuration configuration);
 
 	/**
 	 * Verifies the requirements of a {@code Multimap}.
@@ -74,4 +66,17 @@ public interface GuavaVerifier extends Configuration
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	<K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name);
+
+	/**
+	 * Verifies the requirements of a {@code Multimap}.
+	 *
+	 * @param <K>    the type of key in the multimap
+	 * @param <V>    the type of value in the multimap
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	<K, V> MultimapValidator<K, V> validateThat(Multimap<K, V> actual, String name);
 }

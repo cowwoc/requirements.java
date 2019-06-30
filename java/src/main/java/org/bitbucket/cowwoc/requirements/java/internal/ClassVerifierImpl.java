@@ -6,12 +6,12 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@link ClassVerifier}.
+ * Default implementation of {@code ClassVerifier}.
  *
  * @param <T> the type of the class
  */
@@ -34,12 +34,12 @@ public final class ClassVerifierImpl<T> extends ObjectCapabilitiesImpl<ClassVeri
 	@Override
 	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
-		JavaVerifier verifier = scope.getInternalVerifier();
+		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 		if (actual.isAssignableFrom(type))
 			return this;
 		String actualAsString = config.toString(actual);
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
 			name + " must be a supertype of " + type + ".").
 			addContext("Actual", actualAsString).
 			build();

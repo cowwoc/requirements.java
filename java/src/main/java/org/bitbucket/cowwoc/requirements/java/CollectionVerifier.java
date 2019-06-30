@@ -228,36 +228,39 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @return a verifier for the collection's size
 	 */
-	PrimitiveNumberVerifier<Integer> size();
+	SizeVerifier size();
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the collection's size
 	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	CollectionVerifier<C, E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer);
+	@SuppressWarnings("LongLine")
+	CollectionVerifier<C, E> size(Consumer<SizeVerifier> consumer);
 
 	/**
 	 * Returns a verifier for the actual value as an array.
 	 *
 	 * @param type the array type
 	 * @return a verifier for the actual value as an array
+	 * @throws NullPointerException if {@code type} is null
 	 */
 	ArrayVerifier<E> asArray(Class<E> type);
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
 	 * @param type     the array type
 	 * @param consumer verifies the actual value as an array
 	 * @return this
+	 * @throws NullPointerException if {@code type} or {@code consumer} are null
 	 */
+	@SuppressWarnings("LongLine")
 	CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer);
 }

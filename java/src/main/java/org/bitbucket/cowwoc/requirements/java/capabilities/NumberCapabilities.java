@@ -85,7 +85,7 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 *
 	 * @param divisor the value being divided by
 	 * @return this
-	 * @throws NullPointerException     if {@code value} is null
+	 * @throws NullPointerException     if {@code divisor} is null
 	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}
 	 */
 	S isMultipleOf(T divisor);
@@ -96,7 +96,7 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 * @param divisor the value being divided by
 	 * @param name    the name of the divisor
 	 * @return this
-	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws NullPointerException     if {@code divisor} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}. If
 	 *                                  {@code name} is empty.
 	 */
@@ -107,7 +107,7 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 *
 	 * @param divisor the value being divided by
 	 * @return this
-	 * @throws NullPointerException     if {@code value} is null
+	 * @throws NullPointerException     if {@code divisor} is null
 	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}
 	 */
 	S isNotMultipleOf(T divisor);
@@ -118,7 +118,7 @@ public interface NumberCapabilities<S, T extends Number & Comparable<? super T>>
 	 * @param divisor the value being divided by
 	 * @param name    the name of the divisor
 	 * @return this
-	 * @throws NullPointerException     if {@code value} or {@code name} are null
+	 * @throws NullPointerException     if {@code divisor} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}. If
 	 *                                  {@code name} is empty.
 	 */

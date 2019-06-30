@@ -18,7 +18,6 @@ public interface PrimitiveBooleanVerifier extends BooleanCapabilities<PrimitiveB
 	 */
 	@Override
 	@Deprecated
-	@SuppressWarnings("EmptyMethod")
 	PrimitiveBooleanVerifier isNull();
 
 	/**
@@ -28,6 +27,5 @@ public interface PrimitiveBooleanVerifier extends BooleanCapabilities<PrimitiveB
 	 */
 	@Override
 	@Deprecated
-	@SuppressWarnings("EmptyMethod")
 	PrimitiveBooleanVerifier isNotNull();
 }

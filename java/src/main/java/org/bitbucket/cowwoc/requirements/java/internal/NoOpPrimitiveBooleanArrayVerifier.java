@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanArrayVerifier;
 
 /**
- * An implementation of {@link PrimitiveBooleanArrayVerifier} that does nothing.
+ * An implementation of {@code PrimitiveBooleanArrayVerifier} that does nothing.
  */
 public final class NoOpPrimitiveBooleanArrayVerifier
 	extends NoOpArrayCapabilities<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>

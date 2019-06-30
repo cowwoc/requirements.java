@@ -7,13 +7,13 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 
 import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@link CollectionVerifier} that does nothing.
+ * An implementation of {@code CollectionVerifier} that does nothing.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
@@ -152,13 +152,13 @@ public final class NoOpCollectionVerifier<C extends Collection<E>, E>
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> size()
+	public SizeVerifier size()
 	{
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new NoOpSizeVerifier(config);
 	}
 
 	@Override
-	public CollectionVerifier<C, E> size(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public CollectionVerifier<C, E> size(Consumer<SizeVerifier> consumer)
 	{
 		return this;
 	}

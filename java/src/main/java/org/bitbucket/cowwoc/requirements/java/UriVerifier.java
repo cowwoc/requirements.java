@@ -32,13 +32,15 @@ public interface UriVerifier extends ObjectCapabilities<UriVerifier, URI>
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
-	 * <a
-	 * href="https://bitbucket.org/cowwoc/requirements/wiki/Home#markdown-header-grouping-nested-requirements">
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URLs
 	 * @return this
-	 * @throws IllegalArgumentException if the actual value does not contain a valid URL format
+	 * @throws NullPointerException if {@code consumer} is null
 	 */
+	@SuppressWarnings("LongLine")
 	UriVerifier asUrl(Consumer<UrlVerifier> consumer);
 }

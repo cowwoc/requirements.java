@@ -6,15 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.capabilities.ArrayCapabilities;
-import org.bitbucket.cowwoc.requirements.java.capabilities.ComparableCapabilities;
 
 import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * Extendable implementation of {@link ComparableCapabilities} that does nothing.
+ * Extensible implementation of {@code ComparableCapabilities} that does nothing.
  *
  * @param <S> the type of verifier that methods should return
  * @param <E> the Object representation of an array element
@@ -149,13 +148,13 @@ public abstract class NoOpArrayCapabilities<S, E, R>
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> length()
+	public SizeVerifier length()
 	{
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new NoOpSizeVerifier(config);
 	}
 
 	@Override
-	public S length(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public S length(Consumer<SizeVerifier> consumer)
 	{
 		return getThis();
 	}

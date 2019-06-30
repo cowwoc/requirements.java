@@ -10,7 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
- * Default implementation of {@link PrimitiveNumberVerifier}.
+ * Default implementation of {@code PrimitiveNumberVerifier}.
  *
  * @param <T> the type of the value
  */
@@ -35,17 +35,20 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	@Override
 	public PrimitiveNumberVerifier<T> isNull()
 	{
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			name + " can never be null", null).
-			build();
+		return neverNull();
 	}
 
 	@Deprecated
 	@Override
 	public PrimitiveNumberVerifier<T> isNotNull()
 	{
-		throw new ExceptionBuilder(scope, config, IllegalArgumentException.class,
-			name + " can never be null", null).
+		return neverNull();
+	}
+
+	private PrimitiveNumberVerifier<T> neverNull()
+	{
+		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
+			name + " can never be null").
 			build();
 	}
 }

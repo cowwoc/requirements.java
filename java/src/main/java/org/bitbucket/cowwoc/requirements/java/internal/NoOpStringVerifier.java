@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
 import org.bitbucket.cowwoc.requirements.java.UrlVerifier;
@@ -14,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.java.UrlVerifier;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@link StringVerifier} that does nothing.
+ * A {@code StringVerifier} that does nothing.
  */
 public final class NoOpStringVerifier
 	extends NoOpObjectCapabilities<StringVerifier, String>
@@ -132,13 +132,13 @@ public final class NoOpStringVerifier
 	}
 
 	@Override
-	public PrimitiveNumberVerifier<Integer> length()
+	public SizeVerifier length()
 	{
-		return new NoOpPrimitiveNumberVerifier<>(config);
+		return new NoOpSizeVerifier(config);
 	}
 
 	@Override
-	public StringVerifier length(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
+	public StringVerifier length(Consumer<SizeVerifier> consumer)
 	{
 		return this;
 	}
