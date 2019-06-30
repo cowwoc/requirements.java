@@ -63,24 +63,12 @@ public final class Generators
 	 * @param text some text
 	 * @return {@code text} using system-native line separator
 	 */
-	public static String toNativeNewline(String text)
+	private static String toNativeNewline(String text)
 	{
 		String nativeNewline = System.getProperty("line.separator");
 		if (nativeNewline.equals("\n"))
 			return text;
 		return text.replace("\n", nativeNewline);
-	}
-
-	/**
-	 * @param text some text
-	 * @return {@code text} using {@code '\n'} line separator
-	 */
-	public static String toUnixNewline(String text)
-	{
-		String nativeNewline = System.getProperty("line.separator");
-		if (nativeNewline.equals("\n"))
-			return text;
-		return text.replace(nativeNewline, "\n");
 	}
 }
 

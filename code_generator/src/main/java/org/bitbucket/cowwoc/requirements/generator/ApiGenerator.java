@@ -253,14 +253,10 @@ public final class ApiGenerator
 				out.append("\n");
 				method.getJavadoc().ifPresent(javadoc ->
 				{
-					String text = method.getJavadoc().get().toComment("\t").getContent();
-					// WORKAROUND: https://github.com/javaparser/javaparser/issues/2285
-					text = Generators.toUnixNewline(text);
-					// Strip leading newline
-					text = text.substring(1);
-					out.append("\t/**\n" +
-						text +
-						"*/\n");
+					String text = method.getJavadoc().get().toComment().toString(defaultFormatter);
+					// Increase indentation
+					text = "\t" + text.replace("\n", "\n\t");
+					out.append(text);
 				});
 				// Modifiers
 				method.addModifier(Keyword.PUBLIC);
