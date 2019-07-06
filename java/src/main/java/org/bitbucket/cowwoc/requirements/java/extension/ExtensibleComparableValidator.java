@@ -20,7 +20,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * Ensures that the actual value is greater than the specified value.
 	 *
 	 * @param value a lower bound
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code value} is null
 	 */
 	S isGreaterThan(T value);
@@ -30,7 +30,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param value a lower bound
 	 * @param name  the name of the lower bound
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} or {@code value} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -40,7 +40,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * Ensures that the actual value is greater than or equal to the specified value.
 	 *
 	 * @param value the minimum value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code value} is null
 	 */
 	S isGreaterThanOrEqualTo(T value);
@@ -50,7 +50,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param value the minimum value
 	 * @param name  the name of the minimum value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} or {@code value} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -60,7 +60,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * Ensures that the actual value is less than the specified value.
 	 *
 	 * @param value the upper bound
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code value} is null
 	 */
 	S isLessThan(T value);
@@ -70,7 +70,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param value the upper bound
 	 * @param name  the name of the upper bound
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -80,7 +80,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * Ensures that the actual value is less than or equal to the specified value.
 	 *
 	 * @param value the maximum value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code value} is null
 	 */
 	S isLessThanOrEqualTo(T value);
@@ -90,7 +90,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param value the maximum value
 	 * @param name  the name of the maximum value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -100,7 +100,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * Ensures that the actual value is comparable to the expected value.
 	 *
 	 * @param expected the expected value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code value} is null
 	 */
 	S isComparableTo(T expected);
@@ -110,7 +110,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param expected the expected value
 	 * @param name     the name of the expected value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -120,7 +120,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * Ensures that the actual value is not comparable to another value.
 	 *
 	 * @param other the other value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code value} is null
 	 */
 	S isNotComparableTo(T other);
@@ -130,7 +130,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param other the other value
 	 * @param name  the name of the other value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -141,7 +141,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param startInclusive the lower bound of the range (inclusive)
 	 * @param endExclusive   the upper bound of the range (exclusive)
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code startInclusive} or {@code endExclusive} are null
 	 */
 	S isBetween(T startInclusive, T endExclusive);
@@ -151,7 +151,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 *
 	 * @param startInclusive the lower bound of the range (inclusive)
 	 * @param endInclusive   the upper bound of the range (inclusive)
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code startInclusive} or {@code endInclusive} are null
 	 */
 	S isBetweenClosed(T startInclusive, T endInclusive);

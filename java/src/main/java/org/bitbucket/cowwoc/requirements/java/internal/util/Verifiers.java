@@ -30,15 +30,13 @@ public final class Verifiers
 	{
 		if (name == null)
 		{
-			throw new ExceptionBuilder<>(scope, configuration, NullPointerException.class,
-				"name may not be null").
-				build();
+			throw new ExceptionBuilder<>(scope, configuration, NullPointerException.class).
+				build("name may not be null");
 		}
 		if (name.trim().isEmpty())
 		{
-			throw new ExceptionBuilder<>(scope, configuration, IllegalArgumentException.class,
-				"name may not be empty").
-				build();
+			throw new ExceptionBuilder<>(scope, configuration, IllegalArgumentException.class).
+				build("name may not be empty");
 		}
 	}
 }

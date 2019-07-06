@@ -20,7 +20,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * Ensures that the actual value is greater than the specified value.
 	 *
 	 * @param value a lower bound
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}
 	 */
@@ -31,7 +31,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param value a lower bound
 	 * @param name  the name of the lower bound
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}. If
 	 *                                  {@code name} is empty.
@@ -42,7 +42,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * Ensures that the actual value is greater than or equal to the specified value.
 	 *
 	 * @param value the minimum value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if the actual value is less than to {@code value}
 	 */
@@ -53,7 +53,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param value the minimum value
 	 * @param name  the name of the minimum value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is less than to {@code value}. If {@code name}
 	 *                                  is empty.
@@ -64,7 +64,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * Ensures that the actual value is less than the specified value.
 	 *
 	 * @param value the upper bound
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}
 	 */
@@ -75,7 +75,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param value the upper bound
 	 * @param name  the name of the upper bound
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}. If
 	 *                                  {@code name} is empty.
@@ -86,7 +86,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * Ensures that the actual value is less than or equal to the specified value.
 	 *
 	 * @param value the maximum value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if the actual value is greater than {@code value}
 	 */
@@ -97,7 +97,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param value the maximum value
 	 * @param name  the name of the maximum value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is greater than {@code value}. If {@code name}
 	 *                                  is empty.
@@ -108,7 +108,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * Ensures that the actual value is comparable to the expected value.
 	 *
 	 * @param expected the expected value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}
 	 */
@@ -119,7 +119,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param expected the expected value
 	 * @param name     the name of the expected value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}. If {@code name} is empty.
 	 */
@@ -129,7 +129,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * Ensures that the actual value is not comparable to another value.
 	 *
 	 * @param other the other value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} is null
 	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}
 	 */
@@ -140,7 +140,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param other the other value
 	 * @param name  the name of the other value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}. If {@code name} is empty.
 	 */
@@ -151,7 +151,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param startInclusive the lower bound of the range (inclusive)
 	 * @param endExclusive   the upper bound of the range (exclusive)
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code startInclusive} or {@code endExclusive} are null
 	 * @throws IllegalArgumentException if {@code endExclusive} is less than {@code startInclusive}. If the
 	 *                                  actual value is not in range.
@@ -163,7 +163,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 *
 	 * @param startInclusive the lower bound of the range (inclusive)
 	 * @param endInclusive   the upper bound of the range (inclusive)
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code startInclusive} or {@code endInclusive} are null
 	 * @throws IllegalArgumentException if {@code endInclusive} is less than {@code startInclusive}. If the
 	 *                                  actual value is not in range.

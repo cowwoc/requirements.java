@@ -21,7 +21,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not empty
 	 */
 	CollectionVerifier<C, E> isEmpty();
@@ -29,7 +29,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is empty
 	 */
 	CollectionVerifier<C, E> isNotEmpty();
@@ -38,7 +38,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value contains an element.
 	 *
 	 * @param element the element that must exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the collection does not contain {@code element}
 	 */
 	CollectionVerifier<C, E> contains(E element);
@@ -48,7 +48,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param expected the element that must exist
 	 * @param name     the name of the expected element
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the collection does not contain {@code expected}. If {@code name}
 	 *                                  is empty.
@@ -61,7 +61,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * ordering.
 	 *
 	 * @param expected the elements that must exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection is missing any elements in {@code expected};
 	 *                                  if the collection contains elements not found in
@@ -76,7 +76,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection is missing any elements in {@code expected}. If
 	 *                                  the collection contains elements not found in {@code expected}. If
@@ -88,7 +88,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value contains any of specified elements.
 	 *
 	 * @param expected the elements that must exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}
 	 */
@@ -99,7 +99,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}. If
 	 *                                  {@code name} is empty.
@@ -110,7 +110,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value contains all of the specified elements.
 	 *
 	 * @param expected the elements that must exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}
 	 */
@@ -121,7 +121,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}. If
 	 *                                  {@code name} is empty.
@@ -132,7 +132,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value does not contain an element.
 	 *
 	 * @param element the element that must not exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the collection contains {@code element}
 	 */
 	CollectionVerifier<C, E> doesNotContain(E element);
@@ -142,7 +142,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param element the element that must not exist
 	 * @param name    the name of the element
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the collection contains {@code element}. If {@code name} is empty.
 	 */
@@ -152,7 +152,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value does not contain exactly the specified elements; nothing less, nothing more.
 	 *
 	 * @param other the elements that must not exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} is null
 	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
 	 *                                  nothing less, nothing more).
@@ -164,7 +164,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param other the elements that must not exist
 	 * @param name  the name of the collection
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
 	 *                                  nothing less, nothing more. If {@code name} is empty.
@@ -175,7 +175,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
 	 * @param expected the elements that must not exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection contains any of {@code expected}
 	 */
@@ -186,7 +186,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains any of {@code elements}. If {@code name}
 	 *                                  is empty.
@@ -197,7 +197,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * Ensures that the actual value does not contain all of the specified elements.
 	 *
 	 * @param expected the elements that must not exist
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the collection contains all of {@code expected}
 	 */
@@ -208,7 +208,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains all of {@code elements}. If {@code name}
 	 *                                  is empty.
@@ -218,7 +218,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	/**
 	 * Ensures that the actual value does not contain any duplicate elements.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the collection contains any duplicate elements
 	 */
 	CollectionVerifier<C, E> doesNotContainDuplicates();
@@ -236,7 +236,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the collection's size
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -258,7 +258,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 *
 	 * @param type     the array type
 	 * @param consumer verifies the actual value as an array
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code type} or {@code consumer} are null
 	 */
 	@SuppressWarnings("LongLine")

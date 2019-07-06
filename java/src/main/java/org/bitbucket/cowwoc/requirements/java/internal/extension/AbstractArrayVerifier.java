@@ -4,15 +4,14 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
+import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.AbstractObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -21,228 +20,161 @@ import java.util.function.Consumer;
  * An implementation of {@code ExtensibleArrayVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <E> the Object representation of the array elements
+ * @param <V> the type of validator used by the verifier
+ * @param <E> the type of elements in the array
  * @param <A> the type of the array
  */
-public abstract class AbstractArrayVerifier<S, E, A>
-	extends AbstractObjectVerifier<S, A>
+public abstract class AbstractArrayVerifier<S, V extends ExtensibleArrayValidator<V, E, A>, E, A>
+	extends AbstractObjectVerifier<S, V, A>
 	implements ExtensibleArrayVerifier<S, E, A>
 {
-	private final Collection<E> actualAsCollection;
-	private final CollectionVerifier<Collection<E>, E> asCollection;
-
 	/**
-	 * @param scope              the application configuration
-	 * @param name               the name of the value
-	 * @param actual             the actual value
-	 * @param actualAsCollection the {@code Collection} representation of the array
-	 * @param config             the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	protected AbstractArrayVerifier(ApplicationScope scope, String name, A actual,
-	                                Collection<E> actualAsCollection, Configuration config)
+	protected AbstractArrayVerifier(V validator)
 	{
-		super(scope, name, actual, config);
-		this.actualAsCollection = actualAsCollection;
-		this.asCollection = new CollectionVerifierImpl<>(scope, name, actualAsCollection, Pluralizer.ELEMENT,
-			config);
-	}
-
-	@Override
-	public S isEqualTo(Object expected)
-	{
-		asCollection.isEqualTo(expected);
-		return getThis();
-	}
-
-	@Override
-	public S isEqualTo(Object expected, String name)
-	{
-		asCollection.isEqualTo(expected, name);
-		return getThis();
-	}
-
-	@Override
-	public S isNotEqualTo(Object value)
-	{
-		asCollection.isNotEqualTo(value);
-		return getThis();
-	}
-
-	@Override
-	public S isNotEqualTo(Object value, String name)
-	{
-		asCollection.isNotEqualTo(value, name);
-		return getThis();
-	}
-
-	@Override
-	public S isInstanceOf(Class<?> type)
-	{
-		asCollection.isInstanceOf(type);
-		return getThis();
-	}
-
-	@Override
-	public S isNotInstanceOf(Class<?> type)
-	{
-		asCollection.isNotInstanceOf(type);
-		return getThis();
-	}
-
-	@Override
-	public S isNull()
-	{
-		asCollection.isNull();
-		return getThis();
-	}
-
-	@Override
-	public S isNotNull()
-	{
-		asCollection.isNotNull();
-		return getThis();
+		super(validator);
 	}
 
 	@Override
 	public S isEmpty()
 	{
-		asCollection.isEmpty();
-		return getThis();
+		validator = validator.isEmpty();
+		return validationResult();
 	}
 
 	@Override
 	public S isNotEmpty()
 	{
-		asCollection.isNotEmpty();
-		return getThis();
+		validator = validator.isNotEmpty();
+		return validationResult();
 	}
 
 	@Override
 	public S contains(E expected)
 	{
-		asCollection.contains(expected);
-		return getThis();
+		validator = validator.contains(expected);
+		return validationResult();
 	}
 
 	@Override
 	public S contains(E expected, String name)
 	{
-		asCollection.contains(expected, name);
-		return getThis();
+		validator = validator.contains(expected, name);
+		return validationResult();
 	}
 
 	@Override
 	public S containsExactly(Collection<E> expected)
 	{
-		asCollection.containsExactly(expected);
-		return getThis();
+		validator = validator.containsExactly(expected);
+		return validationResult();
 	}
 
 	@Override
 	public S containsExactly(Collection<E> expected, String name)
 	{
-		asCollection.containsExactly(expected, name);
-		return getThis();
+		validator = validator.containsExactly(expected, name);
+		return validationResult();
 	}
 
 	@Override
 	public S containsAny(Collection<E> expected)
 	{
-		asCollection.containsAny(expected);
-		return getThis();
+		validator = validator.containsAny(expected);
+		return validationResult();
 	}
 
 	@Override
 	public S containsAny(Collection<E> elements, String name)
 	{
-		asCollection.containsAny(elements, name);
-		return getThis();
+		validator = validator.containsAny(elements, name);
+		return validationResult();
 	}
 
 	@Override
 	public S containsAll(Collection<E> expected)
 	{
-		asCollection.containsAll(expected);
-		return getThis();
+		validator = validator.containsAll(expected);
+		return validationResult();
 	}
 
 	@Override
 	public S containsAll(Collection<E> expected, String name)
 	{
-		asCollection.containsAll(expected, name);
-		return getThis();
+		validator = validator.containsAll(expected, name);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContain(E element)
 	{
-		asCollection.doesNotContain(element);
-		return getThis();
+		validator = validator.doesNotContain(element);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContain(E element, String name)
 	{
-		asCollection.doesNotContain(element, name);
-		return getThis();
+		validator = validator.doesNotContain(element, name);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainExactly(Collection<E> other)
 	{
-		asCollection.doesNotContainExactly(other);
-		return getThis();
+		validator = validator.doesNotContainExactly(other);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainExactly(Collection<E> other, String name)
 	{
-		asCollection.doesNotContainExactly(other, name);
-		return getThis();
+		validator = validator.doesNotContainExactly(other, name);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainAny(Collection<E> elements)
 	{
-		asCollection.doesNotContainAny(elements);
-		return getThis();
+		validator = validator.doesNotContainAny(elements);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainAny(Collection<E> elements, String name)
 	{
-		asCollection.doesNotContainAny(elements, name);
-		return getThis();
+		validator = validator.doesNotContainAny(elements, name);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainAll(Collection<E> elements)
 	{
-		asCollection.doesNotContainAll(elements);
-		return getThis();
+		validator = validator.doesNotContainAll(elements);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainAll(Collection<E> elements, String name)
 	{
-		asCollection.doesNotContainAll(elements, name);
-		return getThis();
+		validator = validator.doesNotContainAll(elements, name);
+		return validationResult();
 	}
 
 	@Override
 	public S doesNotContainDuplicates()
 	{
-		asCollection.doesNotContainDuplicates();
-		return getThis();
+		validator = validator.doesNotContainDuplicates();
+		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier length()
 	{
-		return new SizeVerifierImpl(scope, name, actual, name + ".length", actualAsCollection.size(),
-			Pluralizer.ELEMENT, config);
+		SizeValidator newValidator = validator.length();
+		return validationResult(() -> new SizeVerifierImpl(newValidator));
 	}
 
 	@Override
@@ -257,7 +189,8 @@ public abstract class AbstractArrayVerifier<S, E, A>
 	@Override
 	public CollectionVerifier<Collection<E>, E> asCollection()
 	{
-		return asCollection;
+		CollectionValidator<Collection<E>, E> newValidator = validator.asCollection();
+		return validationResult(() -> new CollectionVerifierImpl<>(newValidator));
 	}
 
 	@Override

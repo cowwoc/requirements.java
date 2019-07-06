@@ -21,17 +21,29 @@ public class PrimitiveCharacterValidatorImpl
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveCharacterValidatorImpl(ApplicationScope scope, String name, char actual,
-	                                       Configuration config, List<ValidationFailure> failures)
+	public PrimitiveCharacterValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                       char actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected PrimitiveCharacterValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveCharacterValidator getNoOp()
+	{
+		return new PrimitiveCharacterValidatorNoOp(scope, config, failures);
 	}
 
 	@Override

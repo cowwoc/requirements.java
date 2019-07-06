@@ -4,30 +4,30 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveCharacterVerifier}.
  */
 public final class PrimitiveCharacterVerifierImpl
-	extends AbstractComparableVerifier<PrimitiveCharacterVerifier, Character>
+	extends AbstractComparableVerifier<PrimitiveCharacterVerifier, PrimitiveCharacterValidator, Character>
 	implements PrimitiveCharacterVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveCharacterVerifierImpl(ApplicationScope scope, String name, char actual,
-	                                      Configuration config)
+	public PrimitiveCharacterVerifierImpl(PrimitiveCharacterValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected PrimitiveCharacterVerifier getThis()
+	{
+		return this;
 	}
 
 	@Override

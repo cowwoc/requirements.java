@@ -10,6 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -49,12 +50,7 @@ public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObj
 	/**
 	 * @return this
 	 */
-	protected S getThis()
-	{
-		@SuppressWarnings("unchecked")
-		S result = (S) this;
-		return result;
-	}
+	protected abstract S getThis();
 
 	@Override
 	public Optional<T> getActual()
@@ -150,7 +146,10 @@ public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObj
 	public S asString(Consumer<StringValidator> consumer)
 	{
 		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		{
+			throw new ExceptionBuilder<>(scope, config, NullPointerException.class).
+				build("consumer may not be null");
+		}
 		return getThis();
 	}
 }

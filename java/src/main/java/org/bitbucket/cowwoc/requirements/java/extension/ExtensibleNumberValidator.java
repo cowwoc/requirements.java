@@ -19,7 +19,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is negative.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is not negative
 	 */
 	S isNegative();
@@ -27,7 +27,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is not negative.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is negative
 	 */
 	S isNotNegative();
@@ -35,7 +35,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is zero.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is not zero
 	 */
 	S isZero();
@@ -43,7 +43,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is not zero.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is zero
 	 */
 	S isNotZero();
@@ -51,7 +51,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is positive.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is not positive
 	 */
 	S isPositive();
@@ -59,7 +59,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is not positive.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is positive
 	 */
 	S isNotPositive();
@@ -67,7 +67,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is a whole value.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is not a whole number
 	 */
 	S isWholeNumber();
@@ -75,7 +75,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	/**
 	 * Ensures that the actual value is not a whole value.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is a whole number
 	 */
 	S isNotWholeNumber();
@@ -84,7 +84,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	 * Ensures that the actual value is a multiple of the specified value.
 	 *
 	 * @param divisor the value being divided by
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code divisor} is null
 	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}
 	 */
@@ -95,7 +95,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	 *
 	 * @param divisor the value being divided by
 	 * @param name    the name of the divisor
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code divisor} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}. If
 	 *                                  {@code name} is empty.
@@ -106,7 +106,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	 * Ensures that the actual value is not a multiple of the specified value.
 	 *
 	 * @param divisor the value being divided by
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code divisor} is null
 	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}
 	 */
@@ -117,7 +117,7 @@ public interface ExtensibleNumberValidator<S, T extends Number & Comparable<? su
 	 *
 	 * @param divisor the value being divided by
 	 * @param name    the name of the divisor
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code divisor} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}. If
 	 *                                  {@code name} is empty.

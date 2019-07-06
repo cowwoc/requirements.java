@@ -25,17 +25,17 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	protected AbstractNumberValidator(ApplicationScope scope, String name, T actual, Configuration config,
+	protected AbstractNumberValidator(ApplicationScope scope, Configuration config, String name, T actual,
 	                                  List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual.doubleValue() >= 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be negative.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -56,7 +56,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual.doubleValue() < 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be negative.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -69,7 +69,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual.doubleValue() != 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be zero.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -82,7 +82,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual.doubleValue() == 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be zero");
 			failures.add(failure);
 		}
@@ -94,7 +94,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual.doubleValue() <= 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be positive.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -107,7 +107,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual.doubleValue() > 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be positive.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -120,7 +120,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (!isWholeNumber(actual.doubleValue()))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a whole number.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -144,7 +144,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual.doubleValue()))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a whole number.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -161,7 +161,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -179,7 +179,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		// TODO: Is zero really a multiple of all numbers?
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
@@ -197,7 +197,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -214,7 +214,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);

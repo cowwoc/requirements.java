@@ -17,22 +17,34 @@ import java.util.List;
  *
  * @param <T> the type of objects that the value may be compared to
  */
-public class ComparableValidatorImpl<T extends Comparable<? super T>>
+public final class ComparableValidatorImpl<T extends Comparable<? super T>>
 	extends AbstractComparableValidator<ComparableValidator<T>, T>
 	implements ComparableValidator<T>
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public ComparableValidatorImpl(ApplicationScope scope, String name, T actual, Configuration config,
+	public ComparableValidatorImpl(ApplicationScope scope, Configuration config, String name, T actual,
 	                               List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected ComparableValidator<T> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected ComparableValidator<T> getNoOp()
+	{
+		return new ComparableValidatorNoOp<>(scope, config, failures);
 	}
 }

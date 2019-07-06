@@ -10,9 +10,26 @@ package org.bitbucket.cowwoc.requirements.java;
 public interface ValidationFailure
 {
 	/**
-	 * Returns the exception message associated with the failure.
+	 * Returns the message associated with the failure.
 	 *
-	 * @return the exception message associated with the failure
+	 * @return the message associated with the failure
 	 */
 	String getMessage();
+
+	/**
+	 * Returns the type of exception associated with the failure.
+	 *
+	 * @return the type of exception associated with the failure
+	 */
+	Class<? extends Exception> getExceptionType();
+
+	/**
+	 * Creates an exception containing the failure message.
+	 *
+	 * @param <E>  the type of the exception
+	 * @param type the type of the exception
+	 * @return the exception corresponding to the validation failure
+	 * @throws NullPointerException if {@code type} is null
+	 */
+	<E extends Exception> E createException(Class<E> type);
 }

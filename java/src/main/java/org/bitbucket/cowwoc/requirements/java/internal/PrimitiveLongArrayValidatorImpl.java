@@ -23,7 +23,7 @@ public class PrimitiveLongArrayValidatorImpl
 {
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @return null if the array is null; otherwise, a collection containing the array elements
 	 */
 	private static Collection<Long> asCollection(long[] array)
 	{
@@ -37,16 +37,28 @@ public class PrimitiveLongArrayValidatorImpl
 
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveLongArrayValidatorImpl(ApplicationScope scope, String name, long[] actual,
-	                                       Configuration config, List<ValidationFailure> failures)
+	public PrimitiveLongArrayValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                       long[] actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, asCollection(actual), config, failures);
+		super(scope, config, name, actual, asCollection(actual), failures);
+	}
+
+	@Override
+	protected PrimitiveLongArrayValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveLongArrayValidator getNoOp()
+	{
+		return new PrimitiveLongArrayValidatorNoOp(scope, config, failures);
 	}
 }

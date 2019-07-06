@@ -16,7 +16,7 @@ public final class PrimitiveCharacterVerifierNoOp
 	implements PrimitiveCharacterVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveCharacterVerifierNoOp(Configuration config)
@@ -34,6 +34,7 @@ public final class PrimitiveCharacterVerifierNoOp
 	@Override
 	public PrimitiveCharacterVerifier isNotNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
@@ -41,6 +42,7 @@ public final class PrimitiveCharacterVerifierNoOp
 	@Override
 	public PrimitiveCharacterVerifier isNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNull();
 	}
 }

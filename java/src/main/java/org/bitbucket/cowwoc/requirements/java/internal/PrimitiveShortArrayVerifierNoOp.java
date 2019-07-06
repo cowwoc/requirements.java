@@ -9,14 +9,14 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveShortArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifierNoOp;
 
 /**
- * A {@code PrimitiveShortArrayVerifier} that does nothing.
+ * An implementation of {@code PrimitiveShortArrayVerifier} that does nothing.
  */
 public final class PrimitiveShortArrayVerifierNoOp
 	extends AbstractArrayVerifierNoOp<PrimitiveShortArrayVerifier, Short, short[]>
 	implements PrimitiveShortArrayVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveShortArrayVerifierNoOp(Configuration config)

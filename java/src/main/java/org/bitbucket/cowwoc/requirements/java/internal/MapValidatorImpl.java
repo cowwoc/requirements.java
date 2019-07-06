@@ -32,24 +32,36 @@ public final class MapValidatorImpl<K, V>
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public MapValidatorImpl(ApplicationScope scope, String name, Map<K, V> actual, Configuration config,
+	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual,
 	                        List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected MapValidator<K, V> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected MapValidator<K, V> getNoOp()
+	{
+		return new MapValidatorNoOp<>(scope, config, failures);
 	}
 
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		return new CollectionValidatorImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			config, failures);
+		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
+			failures);
 	}
 
 	@Override
@@ -64,8 +76,8 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		return new CollectionValidatorImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE,
-			config, failures);
+		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
+			failures);
 	}
 
 	@Override
@@ -80,8 +92,8 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionValidatorImpl<>(scope, name + ".entrySet()", actual.entrySet(), Pluralizer.ENTRY,
-			config, failures);
+		return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", actual.entrySet(),
+			Pluralizer.ENTRY, failures);
 	}
 
 	@Override
@@ -98,7 +110,7 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (!actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -111,7 +123,7 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
 			failures.add(failure);
 		}
@@ -121,8 +133,8 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public SizeValidator size()
 	{
-		return new SizeValidatorImpl(scope, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, config, failures);
+		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
+			Pluralizer.ENTRY, failures);
 	}
 
 	@Override

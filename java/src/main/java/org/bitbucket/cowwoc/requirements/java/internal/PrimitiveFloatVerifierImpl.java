@@ -4,30 +4,24 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatVerifierVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatVerifier;
 
 /**
  * Default implementation of {@code PrimitiveFloatingPointVerifier} for {@code float}s.
  */
 public final class PrimitiveFloatVerifierImpl
-	extends AbstractFloatVerifierVerifier<PrimitiveFloatingPointVerifier<Float>>
+	extends AbstractFloatVerifier<PrimitiveFloatingPointVerifier<Float>, PrimitiveFloatingPointValidator<Float>>
 	implements PrimitiveFloatingPointVerifier<Float>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveFloatVerifierImpl(ApplicationScope scope, String name, Float actual,
-	                                  Configuration config)
+	public PrimitiveFloatVerifierImpl(PrimitiveFloatingPointValidator<Float> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override

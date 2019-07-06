@@ -4,249 +4,125 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.AbstractObjectVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
  * An implementation of {@code ExtensibleComparableVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
+ * @param <V> the type of validator used by the verifier
  * @param <T> the type of the value
  */
-public abstract class AbstractComparableVerifier<S, T extends Comparable<? super T>>
-	extends AbstractObjectVerifier<S, T>
+public abstract class AbstractComparableVerifier<S, V extends ExtensibleComparableValidator<V, T>,
+	T extends Comparable<? super T>>
+	extends AbstractObjectVerifier<S, V, T>
 	implements ExtensibleComparableVerifier<S, T>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	protected AbstractComparableVerifier(ApplicationScope scope, String name, T actual, Configuration config)
+	protected AbstractComparableVerifier(V validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override
 	public S isLessThan(T value)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		int difference = actual.compareTo(value);
-		if (difference < 0)
-			return getThis();
-		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be less than " + valueAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isLessThan(value);
+		return validationResult();
 	}
 
 	@Override
 	public S isLessThan(T value, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int difference = actual.compareTo(value);
-		if (difference < 0)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be less than " + name + ".").
-			addContext("Actual", actual).
-			addContext("Exclusive maximum", value).
-			build();
+		validator = validator.isLessThan(value, name);
+		return validationResult();
 	}
 
 	@Override
 	public S isLessThanOrEqualTo(T value)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		int difference = actual.compareTo(value);
-		if (difference <= 0)
-			return getThis();
-		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be less than or equal to " + valueAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isLessThanOrEqualTo(value);
+		return validationResult();
 	}
 
 	@Override
 	public S isLessThanOrEqualTo(T value, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int difference = actual.compareTo(value);
-		if (difference <= 0)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be less than or equal to " + name + ".").
-			addContext("Actual", actual).
-			addContext("Maximum", value).
-			build();
+		validator = validator.isLessThanOrEqualTo(value, name);
+		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThan(T value)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		int difference = actual.compareTo(value);
-		if (difference > 0)
-			return getThis();
-		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be greater than " + valueAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isGreaterThan(value);
+		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThan(T value, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int difference = actual.compareTo(value);
-		if (difference > 0)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be greater than " + name + ".").
-			addContext("Actual", actual).
-			addContext("Exclusive minimum", value).
-			build();
+		validator = validator.isGreaterThan(value, name);
+		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThanOrEqualTo(T value)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		int difference = actual.compareTo(value);
-		if (difference >= 0)
-			return getThis();
-		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be greater than or equal to " + valueAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isGreaterThanOrEqualTo(value);
+		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThanOrEqualTo(T value, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		int difference = actual.compareTo(value);
-		if (difference >= 0)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be greater than or equal to " + name + ".").
-			addContext("Actual", actual).
-			addContext("Minimum", value).
-			build();
+		validator = validator.isGreaterThanOrEqualTo(value, name);
+		return validationResult();
 	}
 
 	@Override
 	public S isComparableTo(T expected)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(expected, "expected").isNotNull();
-		if (actual.compareTo(expected) == 0)
-			return getThis();
-		String expectedAsString = config.toString(expected);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be comparable to " + expectedAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isComparableTo(expected);
+		return validationResult();
 	}
 
 	@Override
 	public S isComparableTo(T expected, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(expected, "expected").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (actual.compareTo(expected) == 0)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be comparable to " + name + ".").
-			addContext("Actual", actual).
-			addContext("Expected", expected).
-			build();
+		validator = validator.isComparableTo(expected, name);
+		return validationResult();
 	}
 
 	@Override
 	public S isNotComparableTo(T value)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(value, "value").isNotNull();
-		if (actual.compareTo(value) != 0)
-			return getThis();
-		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be comparable to " + valueAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isNotComparableTo(value);
+		return validationResult();
 	}
 
 	@Override
 	public S isNotComparableTo(T other, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(other, "other").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (actual.compareTo(other) != 0)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " may not be comparable to " + name + ".").
-			addContext("Actual", actual).
-			addContext("Other", other).
-			build();
+		validator = validator.isNotComparableTo(other, name);
+		return validationResult();
 	}
 
 	@Override
 	public S isBetween(T startInclusive, T endExclusive)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
-		verifier.requireThat(endExclusive, "endExclusive").isNotNull().
-			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
-		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endExclusive) < 0)
-			return getThis();
-		String startAsString = config.toString(startInclusive);
-		String endAsString = config.toString(endExclusive);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be in range [" + startAsString + ", " + endAsString + ").").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isBetween(startInclusive, endExclusive);
+		return validationResult();
 	}
 
 	@Override
 	public S isBetweenClosed(T startInclusive, T endInclusive)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
-		verifier.requireThat(endInclusive, "endInclusive").isNotNull().
-			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
-		if (actual.compareTo(startInclusive) >= 0 && actual.compareTo(endInclusive) <= 0)
-			return getThis();
-		String startAsString = config.toString(startInclusive);
-		String endAsString = config.toString(endInclusive);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be in range [" + startAsString + ", " + endAsString + "].").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isBetweenClosed(startInclusive, endInclusive);
+		return validationResult();
 	}
 }

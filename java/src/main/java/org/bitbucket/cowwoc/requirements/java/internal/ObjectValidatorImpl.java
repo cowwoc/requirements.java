@@ -22,16 +22,28 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failureS} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public ObjectValidatorImpl(ApplicationScope scope, String name, T actual, Configuration config,
+	public ObjectValidatorImpl(ApplicationScope scope, Configuration config, String name, T actual,
 	                           List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected ObjectValidator<T> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected ObjectValidator<T> getNoOp()
+	{
+		return new ObjectValidatorNoOp<>(scope, config, failures);
 	}
 }

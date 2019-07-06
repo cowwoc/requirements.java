@@ -18,7 +18,7 @@ public final class InetAddressVerifierNoOp
 	implements InetAddressVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public InetAddressVerifierNoOp(Configuration config)

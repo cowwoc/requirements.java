@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Default implementation of {@code PrimitiveDoubleArrayValidator}.
  */
-public class PrimitiveDoubleArrayValidatorImpl
+public final class PrimitiveDoubleArrayValidatorImpl
 	extends AbstractArrayValidator<PrimitiveDoubleArrayValidator, Double, double[]>
 	implements PrimitiveDoubleArrayValidator
 {
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @return null if the array is null; otherwise, a collection containing the array elements
 	 */
 	private static Collection<Double> asCollection(double[] array)
 	{
@@ -37,16 +37,28 @@ public class PrimitiveDoubleArrayValidatorImpl
 
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, String name, double[] actual,
-	                                         Configuration config, List<ValidationFailure> failures)
+	public PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                         double[] actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, asCollection(actual), config, failures);
+		super(scope, config, name, actual, asCollection(actual), failures);
+	}
+
+	@Override
+	protected PrimitiveDoubleArrayValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveDoubleArrayValidator getNoOp()
+	{
+		return new PrimitiveDoubleArrayValidatorNoOp(scope, config, failures);
 	}
 }

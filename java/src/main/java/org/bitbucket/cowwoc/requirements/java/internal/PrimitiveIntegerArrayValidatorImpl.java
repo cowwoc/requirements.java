@@ -23,7 +23,7 @@ public class PrimitiveIntegerArrayValidatorImpl
 {
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @return null if the array is null; otherwise, a collection containing the array elements
 	 */
 	private static Collection<Integer> asCollection(int[] array)
 	{
@@ -37,16 +37,28 @@ public class PrimitiveIntegerArrayValidatorImpl
 
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveIntegerArrayValidatorImpl(ApplicationScope scope, String name, int[] actual,
-	                                          Configuration config, List<ValidationFailure> failures)
+	public PrimitiveIntegerArrayValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                          int[] actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, asCollection(actual), config, failures);
+		super(scope, config, name, actual, asCollection(actual), failures);
+	}
+
+	@Override
+	protected PrimitiveIntegerArrayValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveIntegerArrayValidator getNoOp()
+	{
+		return new PrimitiveIntegerArrayValidatorNoOp(scope, config, failures);
 	}
 }

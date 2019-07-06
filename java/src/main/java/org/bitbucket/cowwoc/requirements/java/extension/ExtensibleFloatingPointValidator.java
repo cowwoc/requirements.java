@@ -19,7 +19,7 @@ public interface ExtensibleFloatingPointValidator<S, T extends Number & Comparab
 	/**
 	 * Ensures that the actual value is a number.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if actual value is not a number
 	 * @see Double#isNaN()
 	 */
@@ -28,7 +28,7 @@ public interface ExtensibleFloatingPointValidator<S, T extends Number & Comparab
 	/**
 	 * Ensures that the actual value is not a number.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if actual value is a number
 	 * @see Double#isNaN()
 	 */
@@ -37,7 +37,7 @@ public interface ExtensibleFloatingPointValidator<S, T extends Number & Comparab
 	/**
 	 * Ensures that the actual value is finite.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if actual value is not finite
 	 * @see Double#isInfinite()
 	 */
@@ -46,7 +46,7 @@ public interface ExtensibleFloatingPointValidator<S, T extends Number & Comparab
 	/**
 	 * Ensures that the actual value is not finite.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if actual value is finite
 	 * @see Double#isInfinite()
 	 */

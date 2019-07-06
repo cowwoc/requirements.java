@@ -37,16 +37,28 @@ public final class ArrayValidatorImpl<E> extends AbstractArrayValidator<ArrayVal
 	 * Creates new ArrayValidatorImpl.
 	 *
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code name}, {@code config} or {@code failures} are null. If {@code name}
-	 *                        is empty.
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
+	 *                        {@code name} is empty.
 	 */
-	public ArrayValidatorImpl(ApplicationScope scope, String name, E[] actual, Configuration config,
+	public ArrayValidatorImpl(ApplicationScope scope, Configuration config, String name, E[] actual,
 	                          List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, asCollection(actual), config, failures);
+		super(scope, config, name, actual, asCollection(actual), failures);
+	}
+
+	@Override
+	protected ArrayValidator<E> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected ArrayValidator<E> getNoOp()
+	{
+		return new ArrayValidatorNoOp<>(scope, config, failures);
 	}
 }

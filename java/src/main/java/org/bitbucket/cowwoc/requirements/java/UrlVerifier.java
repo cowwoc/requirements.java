@@ -37,7 +37,7 @@ public interface UrlVerifier extends ExtensibleObjectVerifier<UrlVerifier, URL>
 	 * See {@link #asUri()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URIs
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

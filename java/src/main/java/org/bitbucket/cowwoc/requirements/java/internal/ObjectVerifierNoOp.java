@@ -13,12 +13,11 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectV
  *
  * @param <T> the type of the value
  */
-public final class ObjectVerifierNoOp<T>
-	extends AbstractObjectVerifierNoOp<ObjectVerifier<T>, T>
+public final class ObjectVerifierNoOp<T> extends AbstractObjectVerifierNoOp<ObjectVerifier<T>, T>
 	implements ObjectVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public ObjectVerifierNoOp(Configuration config)

@@ -17,7 +17,7 @@ public interface UriVerifier extends ExtensibleObjectVerifier<UriVerifier, URI>
 	/**
 	 * Ensures that the actual value is absolute.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value is not absolute
 	 */
 	UriVerifier isAbsolute();
@@ -38,7 +38,7 @@ public interface UriVerifier extends ExtensibleObjectVerifier<UriVerifier, URI>
 	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URLs
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

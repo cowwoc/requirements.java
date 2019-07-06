@@ -4,44 +4,38 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.ClassValidator;
 import org.bitbucket.cowwoc.requirements.java.ClassVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 /**
  * Default implementation of {@code ClassVerifier}.
  *
  * @param <T> the type of the class
  */
-public final class ClassVerifierImpl<T> extends AbstractObjectVerifier<ClassVerifier<T>, Class<T>>
+public final class ClassVerifierImpl<T>
+	extends AbstractObjectVerifier<ClassVerifier<T>, ClassValidator<T>, Class<T>>
 	implements ClassVerifier<T>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public ClassVerifierImpl(ApplicationScope scope, String name, Class<T> actual, Configuration config)
+	public ClassVerifierImpl(ClassValidator<T> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected ClassVerifier<T> getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(type, "type").isNotNull();
-		if (actual.isAssignableFrom(type))
-			return this;
-		String actualAsString = config.toString(actual);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be a supertype of " + type + ".").
-			addContext("Actual", actualAsString).
-			build();
+		validator = validator.isSupertypeOf(type);
+		return validationResult();
 	}
 }

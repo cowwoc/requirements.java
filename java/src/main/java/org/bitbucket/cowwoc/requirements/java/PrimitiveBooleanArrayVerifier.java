@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 /**
  * Verifies the requirements of a boolean array.
  */
-public interface PrimitiveBooleanArrayVerifier extends
-	ExtensibleArrayVerifier<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
+public interface PrimitiveBooleanArrayVerifier
+	extends ExtensibleArrayVerifier<PrimitiveBooleanArrayVerifier, Boolean, boolean[]>
 {
 }

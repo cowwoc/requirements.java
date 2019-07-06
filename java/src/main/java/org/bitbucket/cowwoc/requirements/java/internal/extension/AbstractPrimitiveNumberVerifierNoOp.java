@@ -18,7 +18,7 @@ public abstract class AbstractPrimitiveNumberVerifierNoOp<S, T extends Number & 
 	implements ExtensiblePrimitiveNumberVerifier<S, T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public AbstractPrimitiveNumberVerifierNoOp(Configuration config)
@@ -28,49 +28,49 @@ public abstract class AbstractPrimitiveNumberVerifierNoOp<S, T extends Number & 
 
 	@Deprecated
 	@Override
-	@SuppressWarnings("EmptyMethod")
 	public S isNegative()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNegative();
 	}
 
 	@Deprecated
 	@Override
-	@SuppressWarnings("EmptyMethod")
 	public S isNotNegative()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotNegative();
 	}
 
 	@Deprecated
 	@Override
-	@SuppressWarnings("EmptyMethod")
 	public S isZero()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isZero();
 	}
 
 	@Deprecated
 	@Override
-	@SuppressWarnings("EmptyMethod")
 	public S isNotZero()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotZero();
 	}
 
 	@Deprecated
 	@Override
-	@SuppressWarnings("EmptyMethod")
 	public S isPositive()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isPositive();
 	}
 
 	@Deprecated
 	@Override
-	@SuppressWarnings("EmptyMethod")
 	public S isNotPositive()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotPositive();
 	}
 }

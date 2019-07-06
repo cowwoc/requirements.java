@@ -1,0 +1,185 @@
+/*
+ * Copyright (c) 2019 Gili Tzabari
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package org.bitbucket.cowwoc.requirements.java.internal.extension;
+
+import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.SizeValidator;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayValidator;
+import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+
+/**
+ * An {@code ExtensibleArrayValidator} that does nothing.
+ *
+ * @param <S> the type of validator returned by the methods
+ * @param <E> the type of elements in the array
+ * @param <A> the type of the array
+ */
+public abstract class AbstractArrayValidatorNoOp<S, E, A>
+	extends AbstractObjectValidatorNoOp<S, A>
+	implements ExtensibleArrayValidator<S, E, A>
+{
+	/**
+	 * @param scope    the application configuration
+	 * @param config   the instance configuration
+	 * @param failures the list of validation failures
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 */
+	public AbstractArrayValidatorNoOp(ApplicationScope scope, Configuration config,
+	                                  List<ValidationFailure> failures)
+	{
+		super(scope, config, failures);
+	}
+
+	@Override
+	public S isEmpty()
+	{
+		return getThis();
+	}
+
+	@Override
+	public S isNotEmpty()
+	{
+		return getThis();
+	}
+
+	@Override
+	public S contains(E expected)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S contains(E expected, String name)
+		throws NullPointerException, IllegalArgumentException
+	{
+		return getThis();
+	}
+
+	@Override
+	public S containsExactly(Collection<E> expected)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S containsExactly(Collection<E> expected, String name)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S containsAny(Collection<E> expected)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S containsAny(Collection<E> expected, String name)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S containsAll(Collection<E> expected)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S containsAll(Collection<E> expected, String name)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContain(E element)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContain(E element, String name)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainExactly(Collection<E> element)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainExactly(Collection<E> element, String name)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainAny(Collection<E> elements)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainAny(Collection<E> element, String names)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainAll(Collection<E> elements)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainAll(Collection<E> element, String names)
+	{
+		return getThis();
+	}
+
+	@Override
+	public S doesNotContainDuplicates()
+	{
+		return getThis();
+	}
+
+	@Override
+	public SizeValidator length()
+	{
+		return new SizeValidatorNoOp(scope, config, failures);
+	}
+
+	@Override
+	public S length(Consumer<SizeValidator> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return getThis();
+	}
+
+	@Override
+	public CollectionValidator<Collection<E>, E> asCollection()
+	{
+		return new CollectionValidatorNoOp<>(scope, config, failures);
+	}
+
+	@Override
+	public S asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return getThis();
+	}
+}

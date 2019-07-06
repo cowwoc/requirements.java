@@ -22,16 +22,28 @@ public final class BigDecimalScaleValidatorImpl
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public BigDecimalScaleValidatorImpl(ApplicationScope scope, String name, BigDecimal actual,
-	                                    Configuration config, List<ValidationFailure> failures)
+	public BigDecimalScaleValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                    BigDecimal actual, List<ValidationFailure> failures)
 	{
-		super(scope, name + ".scale()", actual.scale(), config, failures);
+		super(scope, config, name + ".scale()", actual.scale(), failures);
+	}
+
+	@Override
+	protected PrimitiveNumberValidator<Integer> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveNumberValidator<Integer> getNoOp()
+	{
+		return new PrimitiveNumberValidatorNoOp<>(scope, config, failures);
 	}
 }

@@ -31,6 +31,12 @@ public final class SizeValidatorNoOp
 	}
 
 	@Override
+	protected SizeValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
 	@Deprecated
 	public SizeValidator isNegative()
 	{

@@ -25,7 +25,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * Ensures that the actual value is equal to an expected value.
 	 *
 	 * @param expected the expected value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not equal to value
 	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output
 	 * format</a>
@@ -37,7 +37,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 *
 	 * @param expected the expected value
 	 * @param name     the name of the expected value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the actual value is not equal to {@code expected}. If
 	 *                                  {@code name} is empty.
@@ -50,7 +50,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * Ensures that the actual value is not equal to another value.
 	 *
 	 * @param other the value to compare to
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is equal to {@code value}
 	 */
 	S isNotEqualTo(Object other);
@@ -60,7 +60,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 *
 	 * @param other the value to compare to
 	 * @param name  the name of the variable
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the actual value is equal to {@code other}. If {@code name} is empty.
 	 */
@@ -71,7 +71,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 *
 	 * @param expected the expected object
 	 * @param name     the name of the expected object
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code actual != expected}. If {@code name} is empty.
 	 */
@@ -82,7 +82,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 *
 	 * @param other the object to compare to
 	 * @param name  the name of the other object
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code actual == other}. If {@code name} is empty.
 	 */
@@ -93,7 +93,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * that the actual value is valid.
 	 *
 	 * @param collection a collection
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} does not contain the actual value
 	 */
@@ -104,7 +104,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * ensure that the actual value is not a reserved value.
 	 *
 	 * @param collection a collection
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code collection} is null
 	 * @throws IllegalArgumentException if {@code collection} contains the actual value
 	 */
@@ -114,7 +114,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * Ensures that the actual value is an instance of a class.
 	 *
 	 * @param type the class to compare to
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code type} is null
 	 * @throws IllegalArgumentException if the actual value is not an instance of {@code type}
 	 */
@@ -124,7 +124,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * Ensures that the actual value is not an instance of a class.
 	 *
 	 * @param type the class to compare to
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code type} is null
 	 * @throws IllegalArgumentException if the actual value is an instance of {@code type}
 	 */
@@ -133,7 +133,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	/**
 	 * Ensures that the actual value is null.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not null
 	 */
 	S isNull();
@@ -141,7 +141,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	/**
 	 * Ensures that the actual value is not null.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if the actual value is null
 	 */
 	S isNotNull();
@@ -159,7 +159,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the String representation of the actual value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

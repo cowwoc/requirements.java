@@ -35,24 +35,11 @@ public interface ExtensibleObjectValidator<S, T>
 	 */
 	List<ValidationFailure> getFailures();
 
-//	/**
-//	 * If any validations failed, throws an exception based on the first failure; otherwise, does nothing.
-//	 *
-//	 * @param type the type of exception to throw
-//	 * @return this
-//	 * @throws NullPointerException     if the actual value was {@code null} when it was not supposed to be
-//	 * @throws IllegalArgumentException if any other validation failed
-//	 * @see <a href="https://bitbucket.org/cowwoc/requirements/wiki/Textual_diff">An explanation of the output
-//	 * format</a>
-//	 * @see #getFailures()
-//	 */
-//	<E extends Exception> S throwOnFailure(Class<E> type) throws E;
-
 	/**
 	 * Ensures that the actual value is equal to an expected value.
 	 *
 	 * @param expected the expected value
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isEqualTo(Object expected);
 
@@ -61,7 +48,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 *
 	 * @param expected the expected value
 	 * @param name     the name of the expected value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
@@ -71,7 +58,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * Ensures that the actual value is not equal to another value.
 	 *
 	 * @param other the value to compare to
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNotEqualTo(Object other);
 
@@ -80,7 +67,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 *
 	 * @param other the value to compare to
 	 * @param name  the name of the variable
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNotEqualTo(Object other, String name);
 
@@ -89,7 +76,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 *
 	 * @param expected the expected object
 	 * @param name     the name of the expected object
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isSameObjectAs(Object expected, String name);
 
@@ -98,7 +85,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 *
 	 * @param other the object to compare to
 	 * @param name  the name of the other object
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNotSameObjectAs(Object other, String name);
 
@@ -107,7 +94,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * that the actual value is valid.
 	 *
 	 * @param collection a collection
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isOneOf(Collection<? super T> collection);
 
@@ -116,7 +103,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * ensure that the actual value is not a reserved value.
 	 *
 	 * @param collection a collection
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNotOneOf(Collection<? super T> collection);
 
@@ -124,7 +111,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * Ensures that the actual value is an instance of a class.
 	 *
 	 * @param type the class to compare to
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isInstanceOf(Class<?> type);
 
@@ -132,21 +119,21 @@ public interface ExtensibleObjectValidator<S, T>
 	 * Ensures that the actual value is not an instance of a class.
 	 *
 	 * @param type the class to compare to
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNotInstanceOf(Class<?> type);
 
 	/**
 	 * Ensures that the actual value is null.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNull();
 
 	/**
 	 * Ensures that the actual value is not null.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	S isNotNull();
 
@@ -163,7 +150,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer validates the String representation of the actual value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

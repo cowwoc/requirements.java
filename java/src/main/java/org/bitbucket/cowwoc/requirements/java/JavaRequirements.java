@@ -399,7 +399,7 @@ public interface JavaRequirements extends Configuration
 	/**
 	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
 	 *
-	 * @param <E>    the type of elements in the collection
+	 * @param <E>    the type of elements in the array
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value

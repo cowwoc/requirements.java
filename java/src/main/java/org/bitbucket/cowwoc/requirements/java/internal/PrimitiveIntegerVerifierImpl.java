@@ -4,30 +4,27 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 
 /**
  * Default implementation of {@code PrimitiveIntegerVerifier} for {@code int}s.
  */
 public final class PrimitiveIntegerVerifierImpl
-	extends AbstractIntegerVerifier<PrimitiveIntegerVerifier<Integer>, Integer>
-	implements PrimitiveIntegerVerifier<Integer>
+	extends AbstractNumberVerifier
+	<PrimitiveIntegerVerifier<Integer>, PrimitiveIntegerValidator<Integer>, Integer>
+	implements PrimitiveIntegerVerifier<Integer>,
+	ExtensibleIntegerVerifier<PrimitiveIntegerVerifier<Integer>, Integer>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveIntegerVerifierImpl(ApplicationScope scope, String name, Integer actual,
-	                                    Configuration config)
+	public PrimitiveIntegerVerifierImpl(PrimitiveIntegerValidator<Integer> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override

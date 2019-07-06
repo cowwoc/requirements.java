@@ -18,7 +18,7 @@ public final class PrimitiveFloatingPointVerifierNoOp<T extends Number & Compara
 	implements PrimitiveFloatingPointVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveFloatingPointVerifierNoOp(Configuration config)

@@ -4,65 +4,54 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.InetAddressValidator;
 import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
+import org.bitbucket.cowwoc.requirements.java.StringValidator;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
-import java.net.Inet4Address;
-import java.net.Inet6Address;
 import java.net.InetAddress;
 
 /**
  * Default implementation of {@code InetAddressVerifier}.
  */
 public final class InetAddressVerifierImpl
-	extends AbstractObjectVerifier<InetAddressVerifier, InetAddress>
+	extends AbstractObjectVerifier<InetAddressVerifier, InetAddressValidator, InetAddress>
 	implements InetAddressVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public InetAddressVerifierImpl(ApplicationScope scope, String name, InetAddress actual,
-	                               Configuration config)
+	public InetAddressVerifierImpl(InetAddressValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected InetAddressVerifier getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public InetAddressVerifier isIpV4()
 	{
-		if (actual instanceof Inet4Address)
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be an IP v4 address.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isIpV4();
+		return validationResult();
 	}
 
 	@Override
 	public InetAddressVerifier isIpV6()
 	{
-		if (actual instanceof Inet6Address)
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be an IP v6 address.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isIpV6();
+		return validationResult();
 	}
 
 	@Override
 	public StringVerifier asString()
 	{
-		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
-		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
-		// format.
-		String hostName = actual.getHostName();
-		return new StringVerifierImpl(scope, hostName, name, config);
+		StringValidator newValidator = validator.asString();
+		return validationResult(() -> new StringVerifierImpl(newValidator));
 	}
 }

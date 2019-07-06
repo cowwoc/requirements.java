@@ -18,7 +18,7 @@ public final class FloatingPointVerifierNoOp<T extends Number & Comparable<? sup
 	implements FloatingPointVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public FloatingPointVerifierNoOp(Configuration config)

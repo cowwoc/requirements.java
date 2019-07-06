@@ -36,6 +36,12 @@ public final class InetAddressValidatorNoOp
 	}
 
 	@Override
+	protected InetAddressValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
 	public InetAddressValidator isIpV4()
 	{
 		return this;

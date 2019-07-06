@@ -4,52 +4,41 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.UriValidator;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
+import org.bitbucket.cowwoc.requirements.java.UrlValidator;
 import org.bitbucket.cowwoc.requirements.java.UrlVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.function.Consumer;
 
 /**
  * Default implementation of {@code UrlVerifier}.
  */
-public final class UrlVerifierImpl extends AbstractObjectVerifier<UrlVerifier, URL>
+public final class UrlVerifierImpl extends AbstractObjectVerifier<UrlVerifier, UrlValidator, URL>
 	implements UrlVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public UrlVerifierImpl(ApplicationScope scope, String name, URL actual, Configuration config)
+	public UrlVerifierImpl(UrlValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected UrlVerifier getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public UriVerifier asUri()
 	{
-		try
-		{
-			URI uri = actual.toURI();
-			return new UriVerifierImpl(scope, name, uri, config);
-		}
-		catch (URISyntaxException e)
-		{
-			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-				name + " is not a valid URI").
-				setCause(e).
-				addContext("Actual", actual).
-				build();
-		}
+		UriValidator newValidator = validator.asUri();
+		return validationResult(() -> new UriVerifierImpl(newValidator));
 	}
 
 	@Override

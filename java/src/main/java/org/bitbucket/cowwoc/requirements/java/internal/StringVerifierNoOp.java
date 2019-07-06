@@ -22,7 +22,7 @@ public final class StringVerifierNoOp
 	implements StringVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public StringVerifierNoOp(Configuration config)
@@ -75,6 +75,8 @@ public final class StringVerifierNoOp
 	@Override
 	public StringVerifier asInetAddress(Consumer<InetAddressVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -87,6 +89,8 @@ public final class StringVerifierNoOp
 	@Override
 	public StringVerifier asUri(Consumer<UriVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -99,6 +103,8 @@ public final class StringVerifierNoOp
 	@Override
 	public StringVerifier asUrl(Consumer<UrlVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -141,6 +147,8 @@ public final class StringVerifierNoOp
 	@Override
 	public StringVerifier length(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 

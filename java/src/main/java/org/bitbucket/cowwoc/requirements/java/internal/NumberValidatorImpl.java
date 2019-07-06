@@ -23,16 +23,28 @@ public final class NumberValidatorImpl<T extends Number & Comparable<? super T>>
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public NumberValidatorImpl(ApplicationScope scope, String name, T actual, Configuration config,
+	public NumberValidatorImpl(ApplicationScope scope, Configuration config, String name, T actual,
 	                           List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected NumberValidator<T> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected NumberValidator<T> getNoOp()
+	{
+		return new NumberValidatorNoOp<>(scope, config, failures);
 	}
 }

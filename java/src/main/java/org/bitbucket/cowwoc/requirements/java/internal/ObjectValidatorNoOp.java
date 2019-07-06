@@ -18,6 +18,7 @@ import java.util.List;
  * @param <T> the type of the value
  */
 public final class ObjectValidatorNoOp<T> extends AbstractObjectValidatorNoOp<ObjectValidator<T>, T>
+	implements ObjectValidator<T>
 {
 	/**
 	 * @param scope    the application configuration
@@ -25,10 +26,14 @@ public final class ObjectValidatorNoOp<T> extends AbstractObjectValidatorNoOp<Ob
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
 	 */
-	ObjectValidatorNoOp(ApplicationScope scope,
-	                    Configuration config,
-	                    List<ValidationFailure> failures)
+	public ObjectValidatorNoOp(ApplicationScope scope, Configuration config, List<ValidationFailure> failures)
 	{
 		super(scope, config, failures);
+	}
+
+	@Override
+	protected ObjectValidator<T> getThis()
+	{
+		return this;
 	}
 }

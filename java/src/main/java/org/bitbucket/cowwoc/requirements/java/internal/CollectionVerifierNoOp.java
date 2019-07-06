@@ -24,7 +24,7 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	implements CollectionVerifier<C, E>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public CollectionVerifierNoOp(Configuration config)
@@ -161,6 +161,8 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> size(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -173,6 +175,8 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	@Override
 	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 }

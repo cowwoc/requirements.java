@@ -16,7 +16,7 @@ public interface InetAddressVerifier extends ExtensibleObjectVerifier<InetAddres
 	/**
 	 * Ensures that the actual value is an IP v4 address.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value is not a IP v4 address
 	 */
 	InetAddressVerifier isIpV4();
@@ -24,7 +24,7 @@ public interface InetAddressVerifier extends ExtensibleObjectVerifier<InetAddres
 	/**
 	 * Ensures that the actual value is an IP v6 address.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value is not a IP v6 address
 	 */
 	InetAddressVerifier isIpV6();

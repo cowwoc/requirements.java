@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.NumberValidator;
 import org.bitbucket.cowwoc.requirements.java.NumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code NumberVerifier}.
@@ -15,19 +14,21 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
  * @param <T> the type of the value
  */
 public final class NumberVerifierImpl<T extends Number & Comparable<? super T>>
-	extends AbstractNumberVerifier<NumberVerifier<T>, T>
+	extends AbstractNumberVerifier<NumberVerifier<T>, NumberValidator<T>, T>
 	implements NumberVerifier<T>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public NumberVerifierImpl(ApplicationScope scope, String name, T actual, Configuration config)
+	public NumberVerifierImpl(NumberValidator<T> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected NumberVerifier<T> getThis()
+	{
+		return this;
 	}
 }

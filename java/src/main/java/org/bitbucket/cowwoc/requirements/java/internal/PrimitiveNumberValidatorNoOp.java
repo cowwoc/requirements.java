@@ -32,4 +32,10 @@ public final class PrimitiveNumberValidatorNoOp<T extends Number & Comparable<? 
 	{
 		super(scope, config, failures);
 	}
+
+	@Override
+	protected PrimitiveNumberValidator<T> getThis()
+	{
+		return this;
+	}
 }

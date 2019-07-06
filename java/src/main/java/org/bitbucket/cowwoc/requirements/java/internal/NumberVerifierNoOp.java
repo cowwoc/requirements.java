@@ -18,7 +18,7 @@ public final class NumberVerifierNoOp<T extends Number & Comparable<? super T>>
 	implements NumberVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public NumberVerifierNoOp(Configuration config)

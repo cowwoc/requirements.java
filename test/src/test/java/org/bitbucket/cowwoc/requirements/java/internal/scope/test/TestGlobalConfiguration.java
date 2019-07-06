@@ -4,7 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope.test;
 
-import org.bitbucket.cowwoc.requirements.java.AbstractGlobalConfiguration;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.AbstractGlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Collections;

@@ -18,15 +18,15 @@ import java.util.function.Consumer;
  * An {@code ExtensibleArrayVerifier} that does nothing.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <E> the Object representation of an array element
- * @param <R> the type of the array
+ * @param <E> the type of elements in the array
+ * @param <A> the type of the array
  */
-public abstract class AbstractArrayVerifierNoOp<S, E, R>
-	extends AbstractObjectVerifierNoOp<S, R>
-	implements ExtensibleArrayVerifier<S, E, R>
+public abstract class AbstractArrayVerifierNoOp<S, E, A>
+	extends AbstractObjectVerifierNoOp<S, A>
+	implements ExtensibleArrayVerifier<S, E, A>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public AbstractArrayVerifierNoOp(Configuration config)
@@ -158,6 +158,8 @@ public abstract class AbstractArrayVerifierNoOp<S, E, R>
 	@Override
 	public S length(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return getThis();
 	}
 
@@ -170,6 +172,8 @@ public abstract class AbstractArrayVerifierNoOp<S, E, R>
 	@Override
 	public S asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return getThis();
 	}
 }

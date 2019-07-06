@@ -16,7 +16,7 @@ public final class PrimitiveDoubleArrayVerifierNoOp
 	implements PrimitiveDoubleArrayVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveDoubleArrayVerifierNoOp(Configuration config)

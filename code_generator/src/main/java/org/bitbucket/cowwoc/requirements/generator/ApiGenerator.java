@@ -330,9 +330,13 @@ public final class ApiGenerator
 		addPackage(out);
 		addImports(out, plugins);
 		if (exportScope)
-			out.append("import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n");
-		out.append("\n" +
-			"import java.math.BigDecimal;\n" +
+		{
+			out.append("import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;\n" +
+				"import org.bitbucket.cowwoc.requirements.java.internal.secrets.JavaSecrets;\n" +
+				"import org.bitbucket.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;\n" +
+				"\n");
+		}
+		out.append("import java.math.BigDecimal;\n" +
 			"import java.net.InetAddress;\n" +
 			"import java.net.URI;\n" +
 			"import java.nio.file.Path;\n" +
@@ -340,8 +344,8 @@ public final class ApiGenerator
 			"import java.util.Map;\n" +
 			"import java.util.Optional;\n" +
 			"import java.util.function.Function;\n" +
-			"\n" +
-			"/**\n" +
+			"\n");
+		out.append("/**\n" +
 			" * Verifies API requirements using a custom {@link Configuration configuration}." +
 			" " +
 			"for verifying API requirements.\n" +
@@ -387,9 +391,9 @@ public final class ApiGenerator
 				"\tpublic Requirements(ApplicationScope scope)\n" +
 				"\t{\n" +
 				"\t\tassert (scope != null) : \"scope may not be null\";\n" +
-				"\t\tthis.javaRequirements = new DefaultJavaRequirements(scope);\n");
+				"\t\tthis.javaRequirements = JavaSecrets.INSTANCE.createRequirements(scope);\n");
 			if (guavaEnabled)
-				out.append("\t\tthis.guavaRequirements = new DefaultGuavaRequirements(scope);\n");
+				out.append("\t\tthis.guavaRequirements = GuavaSecrets.INSTANCE.createRequirements(scope);\n");
 			out.append("\t}\n");
 		}
 		out.append("\n" +
@@ -539,12 +543,21 @@ public final class ApiGenerator
 	private void addImports(StringBuilder out, List<CompilationUnit> plugins)
 	{
 		Set<String> namesImported = new HashSet<>();
+		boolean addNewline = false;
 		for (CompilationUnit plugin : plugins)
 		{
+			if (addNewline)
+			{
+				out.append("\n");
+				addNewline = false;
+			}
 			for (ImportDeclaration anImport : plugin.getImports())
 			{
 				if (namesImported.add(anImport.getNameAsString()))
+				{
 					out.append(anImport.toString(defaultFormatter));
+					addNewline = true;
+				}
 			}
 			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
 			String packageName = plugin.getPackageDeclaration().map(PackageDeclaration::getNameAsString).
@@ -556,6 +569,7 @@ public final class ApiGenerator
 				if (!namesImported.add(type))
 					continue;
 				out.append("import " + fullyQualifiedType(type, packageName) + ";\n");
+				addNewline = true;
 			}
 
 			// e.g. DefaultJavaRequirements, DefaultGuavaRequirements
@@ -563,7 +577,7 @@ public final class ApiGenerator
 			if (namesImported.add(defaultImplementationOfDelegate))
 			{
 				out.append("import " + packageName + "." + defaultImplementationOfDelegate + ";\n");
-				namesImported.add(defaultImplementationOfDelegate);
+				addNewline = true;
 			}
 
 			for (ClassOrInterfaceType extendedType : topLevel.getExtendedTypes())
@@ -573,6 +587,7 @@ public final class ApiGenerator
 				{
 					out.append("import " + fullyQualifiedType(type, packageName) + ";\n");
 					namesImported.add(type);
+					addNewline = true;
 				}
 			}
 		}

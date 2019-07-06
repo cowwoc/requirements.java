@@ -31,43 +31,69 @@ import java.util.function.Consumer;
 public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectValidator<S, T>
 {
 	protected final ApplicationScope scope;
-	protected final String name;
-	protected final T actual;
 	protected final Configuration config;
+	protected String name;
+	protected T actual;
 	protected final List<ValidationFailure> failures;
 
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	protected AbstractObjectValidator(ApplicationScope scope, String name, T actual,
-	                                  Configuration config, List<ValidationFailure> failures)
+	protected AbstractObjectValidator(ApplicationScope scope, Configuration config, String name, T actual,
+	                                  List<ValidationFailure> failures)
 	{
 		assert (scope != null) : "scope may not be null";
+		assert (config != null) : "config may not be null";
 		assert (name != null) : "name may not be null";
 		assert (!name.isEmpty()) : "name may not be empty";
-		assert (config != null) : "config may not be null";
 		assert (failures != null) : "failures may not be null";
 		this.scope = scope;
+		this.config = config;
 		this.name = name;
 		this.actual = actual;
-		this.config = config;
 		this.failures = failures;
 	}
 
 	/**
 	 * @return this
 	 */
-	protected S getThis()
+	protected abstract S getThis();
+
+	/**
+	 * @return a validator that does nothing
+	 */
+	protected abstract S getNoOp();
+
+	/**
+	 * @return the application configuration
+	 */
+	public ApplicationScope getScope()
 	{
-		@SuppressWarnings("unchecked")
-		S result = (S) this;
-		return result;
+		return scope;
+	}
+
+	/**
+	 * @return the instance configuration
+	 */
+	public Configuration getConfiguration()
+	{
+		return config;
+	}
+
+	/**
+	 * Returns the name of the actual value.
+	 *
+	 * @return the name of the actual value
+	 */
+	public String getName()
+	{
+		return name;
 	}
 
 	@Override
@@ -87,7 +113,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	{
 		if (!Objects.equals(actual, expected))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " had an unexpected value.").
 				addContext(getContext(expected));
 			failures.add(failure);
@@ -112,7 +138,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!Objects.equals(actual, expected))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be equal to " + name + ".").
 				addContext(getContext(expected));
 			failures.add(failure);
@@ -125,7 +151,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	{
 		if (Objects.equals(actual, other))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be equal to " + config.toString(other));
 			failures.add(failure);
 		}
@@ -139,7 +165,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (Objects.equals(actual, other))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be equal to " + name + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -154,7 +180,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual != expected)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be the same object as " + name + ".").
 				addContext(getContext(expected));
 			failures.add(failure);
@@ -169,7 +195,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual == other)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be the same object as " + name + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -184,7 +210,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(collection, "collection").isNotNull();
 		if (!collection.contains(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be one of " + config.toString(collection) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -199,7 +225,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(collection, "collection").isNotNull();
 		if (collection.contains(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be one of " + config.toString(collection) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -220,7 +246,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			else
 				actualClass = actual.getClass().getName();
 
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be an instance of " + type.getName() + ".").
 				addContext("Actual.getClass()", actualClass).
 				addContext("Actual", actual);
@@ -237,7 +263,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		if (type.isInstance(actual))
 		{
 			String actualClass = actual.getClass().getName();
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be an instance of " + type.getName() + ".").
 				addContext("Actual.getClass()", actualClass).
 				addContext("Actual", actual);
@@ -252,7 +278,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		if (actual != null)
 		{
 			// Output a diff because actual.toString() may return "null" which is misleading
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be null.").
 				addContext(getContext(null));
 			failures.add(failure);
@@ -263,21 +289,20 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isNotNull()
 	{
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(NullPointerException.class,
-				name + " may not be null").
-				addContext(getContext(null));
-			failures.add(failure);
-		}
-		return getThis();
+		if (actual != null)
+			return getThis();
+		ValidationFailure failure = new ValidationFailureImpl(this, NullPointerException.class,
+			name + " may not be null").
+			addContext(getContext(null));
+		failures.add(failure);
+		return getNoOp();
 	}
 
 	@Override
 	public StringValidator asString()
 	{
 		String value = config.toString(actual);
-		return new StringValidatorImpl(scope, name, value, config, failures);
+		return new StringValidatorImpl(scope, config, name, value, failures);
 	}
 
 	@Override

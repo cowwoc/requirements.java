@@ -23,17 +23,29 @@ public final class PrimitiveNumberValidatorImpl<T extends Number & Comparable<? 
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveNumberValidatorImpl(ApplicationScope scope, String name, T actual,
-	                                    Configuration config, List<ValidationFailure> failures)
+	public PrimitiveNumberValidatorImpl(ApplicationScope scope, Configuration config, String name, T actual,
+	                                    List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected PrimitiveNumberValidator<T> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveNumberValidator<T> getNoOp()
+	{
+		return new PrimitiveNumberValidatorNoOp<>(scope, config, failures);
 	}
 
 	@Deprecated
@@ -52,7 +64,7 @@ public final class PrimitiveNumberValidatorImpl<T extends Number & Comparable<? 
 
 	private PrimitiveNumberValidator<T> neverNull()
 	{
-		ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be null").
 			addContext("Actual", actual);
 		failures.add(failure);

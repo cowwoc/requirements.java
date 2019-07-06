@@ -4,28 +4,29 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.BooleanValidator;
 import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractBooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code BooleanVerifier}.
  */
 public final class BooleanVerifierImpl
-	extends AbstractBooleanVerifier<BooleanVerifier>
+	extends AbstractBooleanVerifier<BooleanVerifier, BooleanValidator>
 	implements BooleanVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public BooleanVerifierImpl(ApplicationScope scope, String name, Boolean actual, Configuration config)
+	public BooleanVerifierImpl(BooleanValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected BooleanVerifier getThis()
+	{
+		return this;
 	}
 }

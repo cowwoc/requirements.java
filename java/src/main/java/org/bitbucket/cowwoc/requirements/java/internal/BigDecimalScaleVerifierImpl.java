@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.math.BigDecimal;
 
@@ -15,20 +14,21 @@ import java.math.BigDecimal;
  * An implementation of {@code PrimitiveNumberVerifier} for a {@link BigDecimal}'s scale.
  */
 public final class BigDecimalScaleVerifierImpl
-	extends AbstractNumberVerifier<PrimitiveNumberVerifier<Integer>, Integer>
+	extends AbstractNumberVerifier<PrimitiveNumberVerifier<Integer>, BigDecimalPrecisionValidator, Integer>
 	implements PrimitiveNumberVerifier<Integer>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public BigDecimalScaleVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-	                                   Configuration config)
+	public BigDecimalScaleVerifierImpl(BigDecimalPrecisionValidator validator)
 	{
-		super(scope, name + ".scale()", actual.scale(), config);
+		super(validator);
+	}
+
+	@Override
+	protected PrimitiveNumberVerifier<Integer> getThis()
+	{
+		return this;
 	}
 }

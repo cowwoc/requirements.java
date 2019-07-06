@@ -18,7 +18,7 @@ public final class ArrayVerifierNoOp<E>
 	implements ArrayVerifier<E>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public ArrayVerifierNoOp(Configuration config)

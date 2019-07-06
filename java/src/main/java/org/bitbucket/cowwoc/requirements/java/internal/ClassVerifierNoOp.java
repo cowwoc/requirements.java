@@ -18,7 +18,7 @@ public final class ClassVerifierNoOp<T>
 	implements ClassVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public ClassVerifierNoOp(Configuration config)

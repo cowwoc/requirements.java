@@ -14,7 +14,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.List;
 
 /**
- * Default implementation of ExtensibleComparableValidator.
+ * An implementation of {@code ExtensibleComparableValidator}.
  *
  * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value
@@ -25,17 +25,17 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	protected AbstractComparableValidator(ApplicationScope scope, String name, T actual,
-	                                      Configuration config, List<ValidationFailure> failures)
+	protected AbstractComparableValidator(ApplicationScope scope, Configuration config, String name, T actual,
+	                                      List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be less than " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -63,7 +63,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be less than " + name + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive maximum", value);
@@ -80,7 +80,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be less than or equal to " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -97,7 +97,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be less than or equal to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Maximum", value);
@@ -114,7 +114,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be greater than " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -131,7 +131,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be greater than " + name + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive minimum", value);
@@ -148,7 +148,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be greater than or equal to " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -165,7 +165,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be greater than or equal to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Minimum", value);
@@ -181,7 +181,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		verifier.requireThat(expected, "expected").isNotNull();
 		if (actual.compareTo(expected) != 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be comparable to " + config.toString(expected) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -197,7 +197,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.compareTo(expected) != 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be comparable to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expected);
@@ -213,7 +213,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual.compareTo(value) == 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be comparable to " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -229,7 +229,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual.compareTo(other) == 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be comparable to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Other", other);
@@ -249,7 +249,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endExclusive);
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be in range [" + startAsString + ", " + endAsString + ").").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -268,7 +268,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endInclusive);
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be in range [" + startAsString + ", " + endAsString + "].").
 				addContext("Actual", actual);
 			failures.add(failure);

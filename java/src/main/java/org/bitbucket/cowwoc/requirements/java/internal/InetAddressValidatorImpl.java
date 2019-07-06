@@ -25,17 +25,29 @@ public final class InetAddressValidatorImpl
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public InetAddressValidatorImpl(ApplicationScope scope, String name, InetAddress actual,
-	                                Configuration config, List<ValidationFailure> failures)
+	public InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                InetAddress actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected InetAddressValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected InetAddressValidator getNoOp()
+	{
+		return new InetAddressValidatorNoOp(scope, config, failures);
 	}
 
 	@Override
@@ -43,7 +55,7 @@ public final class InetAddressValidatorImpl
 	{
 		if (!(actual instanceof Inet4Address))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be an IP v4 address.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -56,7 +68,7 @@ public final class InetAddressValidatorImpl
 	{
 		if (!(actual instanceof Inet6Address))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be an IP v6 address.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -71,6 +83,6 @@ public final class InetAddressValidatorImpl
 		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
 		// format.
 		String hostName = actual.getHostName();
-		return new StringValidatorImpl(scope, hostName, name, config, failures);
+		return new StringValidatorImpl(scope, config, hostName, name, failures);
 	}
 }

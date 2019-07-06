@@ -12,12 +12,12 @@ import org.bitbucket.cowwoc.requirements.java.BooleanValidator;
  *
  * @param <S> the type of validator returned by the methods
  */
-public interface ExtensibleBooleanValidator<S> extends ExtensibleComparableValidator<S, Boolean>
+public interface ExtensibleBooleanValidator<S> extends ExtensibleObjectValidator<S, Boolean>
 {
 	/**
 	 * Ensures that the actual value is {@code true}.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is not true
 	 */
 	S isTrue();
@@ -25,7 +25,7 @@ public interface ExtensibleBooleanValidator<S> extends ExtensibleComparableValid
 	/**
 	 * Ensures that the actual value is {@code false}.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if the actual value is not false
 	 */
 	S isFalse();

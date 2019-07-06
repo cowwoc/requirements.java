@@ -4,29 +4,24 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.FloatingPointValidator;
 import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatVerifierVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatVerifier;
 
 /**
  * Default implementation of {@code FloatingPointVerifier<Float>}.
  */
 public final class FloatVerifierImpl
-	extends AbstractFloatVerifierVerifier<FloatingPointVerifier<Float>>
+	extends AbstractFloatVerifier<FloatingPointVerifier<Float>, FloatingPointValidator<Float>>
 	implements FloatingPointVerifier<Float>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public FloatVerifierImpl(ApplicationScope scope, String name, Float actual, Configuration config)
+	public FloatVerifierImpl(FloatingPointValidator<Float> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public final class ComparableVerifierNoOp<T extends Comparable<? super T>>
 	implements ComparableVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public ComparableVerifierNoOp(Configuration config)

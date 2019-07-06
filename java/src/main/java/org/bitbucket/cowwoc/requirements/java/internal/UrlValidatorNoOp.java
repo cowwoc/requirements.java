@@ -34,6 +34,12 @@ public final class UrlValidatorNoOp extends AbstractObjectValidatorNoOp<UrlValid
 	}
 
 	@Override
+	protected UrlValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
 	public UriValidator asUri()
 	{
 		return new UriValidatorNoOp(scope, config, failures);
@@ -44,7 +50,6 @@ public final class UrlValidatorNoOp extends AbstractObjectValidatorNoOp<UrlValid
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
-		consumer.accept(asUri());
 		return this;
 	}
 }

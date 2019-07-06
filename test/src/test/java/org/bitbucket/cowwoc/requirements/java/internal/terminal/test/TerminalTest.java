@@ -23,6 +23,7 @@ public final class TerminalTest
 	 * @throws IOException if an operation fails
 	 */
 	@Test
+	@SuppressWarnings("try")
 	public void nativeMethods() throws IOException
 	{
 		try (JvmScope scope = DefaultJvmScope.INSTANCE)

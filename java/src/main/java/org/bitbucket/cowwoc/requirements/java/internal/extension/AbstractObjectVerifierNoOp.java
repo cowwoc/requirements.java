@@ -24,7 +24,7 @@ public abstract class AbstractObjectVerifierNoOp<S, T> implements ExtensibleObje
 	protected final Configuration config;
 
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public AbstractObjectVerifierNoOp(Configuration config)
@@ -119,6 +119,8 @@ public abstract class AbstractObjectVerifierNoOp<S, T> implements ExtensibleObje
 	@Override
 	public S asString(Consumer<StringVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return getThis();
 	}
 

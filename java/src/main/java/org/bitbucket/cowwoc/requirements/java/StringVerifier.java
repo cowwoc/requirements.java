@@ -17,7 +17,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Ensures that the actual value starts with a value.
 	 *
 	 * @param prefix the value that the string must start with
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value does not start with {@code prefix}
 	 */
 	StringVerifier startsWith(String prefix);
@@ -26,7 +26,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Ensures that the actual value does not start with a value.
 	 *
 	 * @param prefix the value that the string may not start with
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value starts with {@code prefix}
 	 */
 	StringVerifier doesNotStartWith(String prefix);
@@ -35,7 +35,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Ensures that the actual value ends with a value.
 	 *
 	 * @param suffix the value that the string must end with
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value does not end with {@code suffix}
 	 */
 	StringVerifier endsWith(String suffix);
@@ -44,7 +44,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Ensures that the actual value does not end with a value.
 	 *
 	 * @param suffix the value that the string may not end with
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value ends with {@code suffix}
 	 */
 	StringVerifier doesNotEndWith(String suffix);
@@ -53,7 +53,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Ensures that the actual value contains a value.
 	 *
 	 * @param expected the value that the string must contain
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value does not contain {@code expected}
 	 */
 	StringVerifier contains(String expected);
@@ -62,7 +62,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Ensures that the actual value does not contain a value.
 	 *
 	 * @param value the value that the string may not contain
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value contains {@code value}
 	 */
 	StringVerifier doesNotContain(String value);
@@ -70,7 +70,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not empty
 	 * @see #trim()
 	 */
@@ -79,7 +79,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is empty
 	 * @see #trim()
 	 */
@@ -98,7 +98,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the length of the actual value
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -107,14 +107,14 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.
 	 *
-	 * @return a verifier for the trimmed String representation
+	 * @return the updated verifier
 	 */
 	StringVerifier trim();
 
 	/**
 	 * Ensures that the actual value does not contain leading or trailing whitespace.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not trimmed
 	 * @see #trim()
 	 */
@@ -137,7 +137,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * See {@link #asInetAddress()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies Internet addresses
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -166,7 +166,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * See {@link #asUri()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URIs
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -188,7 +188,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer verifies URLs
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

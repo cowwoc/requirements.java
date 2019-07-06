@@ -19,7 +19,7 @@ public final class PathVerifierNoOp
 	implements PathVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PathVerifierNoOp(Configuration config)

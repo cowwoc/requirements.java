@@ -4,29 +4,24 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.IntegerValidator;
 import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 
 /**
  * Default implementation of {@code IntegerVerifier<Integer>}.
  */
 public final class IntegerVerifierImpl
-	extends AbstractIntegerVerifier<IntegerVerifier<Integer>, Integer>
+	extends AbstractNumberVerifier<IntegerVerifier<Integer>, IntegerValidator<Integer>, Integer>
 	implements IntegerVerifier<Integer>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public IntegerVerifierImpl(ApplicationScope scope, String name, Integer actual, Configuration config)
+	public IntegerVerifierImpl(IntegerValidator<Integer> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override

@@ -5,6 +5,7 @@
 /**
  * Annotations used by the library.
  */
-module org.bitbucket.cowwoc.requirements.annotations {
+module org.bitbucket.cowwoc.requirements.annotations
+{
 	exports org.bitbucket.cowwoc.requirements.annotations;
 }

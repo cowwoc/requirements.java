@@ -12,12 +12,12 @@ import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
  *
  * @param <S> the type of verifier returned by the methods
  */
-public interface ExtensibleBooleanVerifier<S> extends ExtensibleComparableVerifier<S, Boolean>
+public interface ExtensibleBooleanVerifier<S> extends ExtensibleObjectVerifier<S, Boolean>
 {
 	/**
 	 * Ensures that the actual value is {@code true}.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not true
 	 */
 	S isTrue();
@@ -25,7 +25,7 @@ public interface ExtensibleBooleanVerifier<S> extends ExtensibleComparableVerifi
 	/**
 	 * Ensures that the actual value is {@code false}.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not false
 	 */
 	S isFalse();

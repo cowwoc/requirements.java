@@ -25,17 +25,29 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public UriValidatorImpl(ApplicationScope scope, String name, URI actual, Configuration config,
+	public UriValidatorImpl(ApplicationScope scope, Configuration config, String name, URI actual,
 	                        List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected UriValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected UriValidator getNoOp()
+	{
+		return new UriValidatorNoOp(scope, config, failures);
 	}
 
 	@Override
@@ -43,7 +55,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	{
 		if (!actual.isAbsolute())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be absolute.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -57,11 +69,11 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 		try
 		{
 			URL url = actual.toURL();
-			return new UrlValidatorImpl(scope, name, url, config, failures);
+			return new UrlValidatorImpl(scope, config, name, url, failures);
 		}
 		catch (MalformedURLException | IllegalArgumentException e)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " is not a valid URL").
 				setCause(e).
 				addContext("Actual", actual);

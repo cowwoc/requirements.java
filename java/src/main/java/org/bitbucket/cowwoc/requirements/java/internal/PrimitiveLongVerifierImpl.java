@@ -4,29 +4,24 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 
 /**
  * Default implementation of {@code PrimitiveInteger} for {@code long}s.
  */
 public final class PrimitiveLongVerifierImpl
-	extends AbstractIntegerVerifier<PrimitiveIntegerVerifier<Long>, Long>
+	extends AbstractNumberVerifier<PrimitiveIntegerVerifier<Long>, PrimitiveIntegerValidator<Long>, Long>
 	implements PrimitiveIntegerVerifier<Long>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveLongVerifierImpl(ApplicationScope scope, String name, Long actual, Configuration config)
+	public PrimitiveLongVerifierImpl(PrimitiveIntegerValidator<Long> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override

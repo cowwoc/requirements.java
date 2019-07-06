@@ -17,7 +17,7 @@ public interface ClassValidator<T> extends ExtensibleObjectValidator<ClassValida
 	 * Ensures that the actual value is a superclass or super-interface of a class.
 	 *
 	 * @param type the class to compare to
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code type} is null
 	 */
 	ClassValidator<T> isSupertypeOf(Class<?> type);

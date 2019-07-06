@@ -4,14 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionValidator;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
+import org.bitbucket.cowwoc.requirements.java.BigDecimalValidator;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.math.BigDecimal;
 import java.util.function.Consumer;
@@ -20,52 +19,29 @@ import java.util.function.Consumer;
  * Default implementation of {@code BigDecimalVerifier}.
  */
 public final class BigDecimalVerifierImpl
-	extends AbstractNumberVerifier<BigDecimalVerifier, BigDecimal>
+	extends AbstractNumberVerifier<BigDecimalVerifier, BigDecimalValidator, BigDecimal>
 	implements BigDecimalVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public BigDecimalVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-	                              Configuration config)
+	public BigDecimalVerifierImpl(BigDecimalValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override
-	public BigDecimalVerifier isZero()
+	protected BigDecimalVerifier getThis()
 	{
-		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
-		// need to take into account.
-		if (actual.signum() == 0)
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be zero").
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public BigDecimalVerifier isNotZero()
-	{
-		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
-		// need to take into account.
-		if (actual.signum() != 0)
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be zero").
-			build();
+		return this;
 	}
 
 	@Override
 	public BigDecimalPrecisionVerifier precision()
 	{
-		return new BigDecimalPrecisionVerifierImpl(scope, name, actual, config);
+		BigDecimalPrecisionValidator newValidator = validator.precision();
+		return validationResult(() -> new BigDecimalPrecisionVerifierImpl(newValidator));
 	}
 
 	@Override
@@ -80,7 +56,8 @@ public final class BigDecimalVerifierImpl
 	@Override
 	public PrimitiveNumberVerifier<Integer> scale()
 	{
-		return new BigDecimalScaleVerifierImpl(scope, name, actual, config);
+		PrimitiveNumberValidator<Integer> newValidator = validator.scale();
+		return validationResult(() -> new PrimitiveNumberVerifierImpl<>(newValidator));
 	}
 
 	@Override
@@ -90,107 +67,5 @@ public final class BigDecimalVerifierImpl
 			throw new NullPointerException("consumer may not be null");
 		consumer.accept(scale());
 		return this;
-	}
-
-	@Override
-	public BigDecimalVerifier isWholeNumber()
-	{
-		if (isWholeNumber(actual))
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be a whole number.").
-			addContext("Actual", actual).
-			build();
-	}
-
-	/**
-	 * @param value a value
-	 * @return true if {@code value} is a whole number
-	 */
-	private static boolean isWholeNumber(BigDecimal value)
-	{
-		// Based on https://stackoverflow.com/a/12748321/14731
-		return value.signum() == 0 || value.stripTrailingZeros().scale() <= 0;
-	}
-
-	@Override
-	public BigDecimalVerifier isNotWholeNumber()
-	{
-		// Based on https://stackoverflow.com/a/12748321/14731
-		if (!isWholeNumber(actual))
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be a whole number.").
-			addContext("Actual", actual).
-			build();
-	}
-
-	/**
-	 * @param number the number being divided
-	 * @param factor the number dividing {@code number}
-	 * @return true if {@code number} is a multiple of {@code factor}
-	 */
-	private static boolean isMultipleOf(BigDecimal number, BigDecimal factor)
-	{
-		return factor.compareTo(BigDecimal.ZERO) != 0 &&
-			(number.compareTo(BigDecimal.ZERO) == 0 || number.remainder(factor).compareTo(BigDecimal.ZERO) == 0);
-	}
-
-	@Override
-	public BigDecimalVerifier isMultipleOf(BigDecimal divisor)
-	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(divisor, "divisor").isNotNull();
-		if (isMultipleOf(actual, divisor))
-			return this;
-		String divisorAsString = config.toString(divisor);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be a multiple of " + divisorAsString + ".").
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public BigDecimalVerifier isMultipleOf(BigDecimal divisor, String name)
-	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(divisor, "divisor").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (isMultipleOf(actual, divisor))
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must be a multiple of " + name + ".").
-			addContext("Actual", actual).
-			addContext("divisor", divisor).
-			build();
-	}
-
-	@Override
-	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor)
-	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(divisor, "divisor").isNotNull();
-		if (!isMultipleOf(actual, divisor))
-			return this;
-		String divisorAsString = config.toString(divisor);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be a multiple of " + divisorAsString + ".").
-			addContext("Actual", actual).
-			build();
-	}
-
-	@Override
-	public BigDecimalVerifier isNotMultipleOf(BigDecimal divisor, String name)
-	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(divisor, "divisor").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!isMultipleOf(actual, divisor))
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " may not be a multiple of " + name + ".").
-			addContext("Actual", actual).
-			addContext("divisor", divisor).
-			build();
 	}
 }

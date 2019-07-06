@@ -33,7 +33,7 @@ public interface MapValidator<K, V> extends ExtensibleObjectValidator<MapValidat
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#keySet()}
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -52,7 +52,7 @@ public interface MapValidator<K, V> extends ExtensibleObjectValidator<MapValidat
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#values()}
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -71,7 +71,7 @@ public interface MapValidator<K, V> extends ExtensibleObjectValidator<MapValidat
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#entrySet()}
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -80,14 +80,14 @@ public interface MapValidator<K, V> extends ExtensibleObjectValidator<MapValidat
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	MapValidator<K, V> isEmpty();
 
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	MapValidator<K, V> isNotEmpty();
 
@@ -104,7 +104,7 @@ public interface MapValidator<K, V> extends ExtensibleObjectValidator<MapValidat
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#size()}
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

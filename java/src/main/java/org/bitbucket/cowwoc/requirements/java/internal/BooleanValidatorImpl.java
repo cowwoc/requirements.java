@@ -21,40 +21,28 @@ public final class BooleanValidatorImpl
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public BooleanValidatorImpl(ApplicationScope scope, String name, Boolean actual,
-	                            Configuration config, List<ValidationFailure> failures)
+	public BooleanValidatorImpl(ApplicationScope scope, Configuration config, String name, Boolean actual,
+	                            List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
 	}
 
 	@Override
-	public BooleanValidator isTrue()
+	protected BooleanValidator getThis()
 	{
-		if (!actual)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
-				name + " must be true");
-			failures.add(failure);
-		}
 		return this;
 	}
 
 	@Override
-	public BooleanValidator isFalse()
+	protected BooleanValidator getNoOp()
 	{
-		if (actual)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
-				name + " must be false");
-			failures.add(failure);
-		}
-		return this;
+		return new BooleanValidatorNoOp(scope, config, failures);
 	}
 }

@@ -26,17 +26,29 @@ public final class BigDecimalValidatorImpl
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public BigDecimalValidatorImpl(ApplicationScope scope, String name, BigDecimal actual,
-	                               Configuration config, List<ValidationFailure> failures)
+	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration config, String name, BigDecimal actual,
+	                               List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected BigDecimalValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected BigDecimalValidator getNoOp()
+	{
+		return new BigDecimalValidatorNoOp(scope, config, failures);
 	}
 
 	@Override
@@ -46,7 +58,7 @@ public final class BigDecimalValidatorImpl
 		// need to take into account.
 		if (actual.signum() != 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be zero").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -61,7 +73,7 @@ public final class BigDecimalValidatorImpl
 		// need to take into account.
 		if (actual.signum() == 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be zero");
 			failures.add(failure);
 		}
@@ -71,7 +83,7 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalPrecisionValidator precision()
 	{
-		return new BigDecimalPrecisionValidatorImpl(scope, name, actual, config, failures);
+		return new BigDecimalPrecisionValidatorImpl(scope, config, name, actual, failures);
 	}
 
 	@Override
@@ -86,7 +98,7 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public PrimitiveNumberValidator<Integer> scale()
 	{
-		return new BigDecimalScaleValidatorImpl(scope, name, actual, config, failures);
+		return new BigDecimalScaleValidatorImpl(scope, config, name, actual, failures);
 	}
 
 	@Override
@@ -103,7 +115,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (!isWholeNumber(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a whole number.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -127,7 +139,7 @@ public final class BigDecimalValidatorImpl
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a whole number.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -154,7 +166,7 @@ public final class BigDecimalValidatorImpl
 		if (!isMultipleOf(actual, divisor))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -170,7 +182,7 @@ public final class BigDecimalValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!isMultipleOf(actual, divisor))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
@@ -187,7 +199,7 @@ public final class BigDecimalValidatorImpl
 		if (isMultipleOf(actual, divisor))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -203,7 +215,7 @@ public final class BigDecimalValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (isMultipleOf(actual, divisor))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);

@@ -27,7 +27,7 @@ public final class MapVerifierNoOp<K, V>
 	implements MapVerifier<K, V>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public MapVerifierNoOp(Configuration config)
@@ -50,6 +50,8 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public MapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -62,6 +64,8 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public MapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -74,6 +78,8 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public MapVerifier<K, V> entrySet(Consumer<CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -98,6 +104,8 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public MapVerifier<K, V> size(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 }

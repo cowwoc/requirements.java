@@ -4,63 +4,48 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.UriValidator;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
+import org.bitbucket.cowwoc.requirements.java.UrlValidator;
 import org.bitbucket.cowwoc.requirements.java.UrlVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.function.Consumer;
 
 /**
  * Default implementation of {@code UriVerifier}.
  */
-public final class UriVerifierImpl extends AbstractObjectVerifier<UriVerifier, URI>
+public final class UriVerifierImpl extends AbstractObjectVerifier<UriVerifier, UriValidator, URI>
 	implements UriVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public UriVerifierImpl(ApplicationScope scope, String name, URI actual, Configuration config)
+	public UriVerifierImpl(UriValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected UriVerifier getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public UriVerifier isAbsolute()
 	{
-		if (actual.isAbsolute())
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be absolute.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isAbsolute();
+		return validationResult();
 	}
 
 	@Override
 	public UrlVerifier asUrl()
 	{
-		try
-		{
-			URL url = actual.toURL();
-			return new UrlVerifierImpl(scope, name, url, config);
-		}
-		catch (MalformedURLException | IllegalArgumentException e)
-		{
-			throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-				name + " is not a valid URL").
-				setCause(e).
-				addContext("Actual", actual).
-				build();
-		}
+		UrlValidator newValidator = validator.asUrl();
+		return validationResult(() -> new UrlVerifierImpl(newValidator));
 	}
 
 	@Override

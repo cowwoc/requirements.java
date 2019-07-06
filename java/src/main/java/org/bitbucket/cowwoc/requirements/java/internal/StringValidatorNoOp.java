@@ -35,6 +35,12 @@ public final class StringValidatorNoOp extends AbstractObjectValidatorNoOp<Strin
 	}
 
 	@Override
+	protected StringValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
 	public StringValidator startsWith(String prefix)
 	{
 		return this;

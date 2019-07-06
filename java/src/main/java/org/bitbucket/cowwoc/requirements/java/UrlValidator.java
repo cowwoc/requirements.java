@@ -36,7 +36,7 @@ public interface UrlValidator extends ExtensibleObjectValidator<UrlValidator, UR
 	 * See {@link #asUri()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer validates URIs
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

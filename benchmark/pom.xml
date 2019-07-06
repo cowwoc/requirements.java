@@ -23,7 +23,7 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:-module,-requires-automatic</arg>
+						<arg>-Xlint:all,-module,-requires-automatic,-processing</arg>
 						<arg>-implicit:class</arg>
 					</compilerArgs>
 					<annotationProcessorPaths>
@@ -70,6 +70,19 @@
 				<executions>
 					<execution>
 						<id>default-install</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
 						<phase>none</phase>
 					</execution>
 				</executions>

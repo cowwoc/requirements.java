@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.OptionalValidator;
 import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 import java.util.Optional;
 
@@ -16,69 +15,49 @@ import java.util.Optional;
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class OptionalVerifierImpl
-	extends AbstractObjectVerifier<OptionalVerifier, Optional<?>>
+	extends AbstractObjectVerifier<OptionalVerifier, OptionalValidator, Optional<?>>
 	implements OptionalVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public OptionalVerifierImpl(ApplicationScope scope, String name, Optional<?> actual,
-	                            Configuration config)
+	public OptionalVerifierImpl(OptionalValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected OptionalVerifier getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public OptionalVerifier isPresent()
 	{
-		if (actual.isPresent())
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be present").
-			build();
+		validator.isPresent();
+		return validationResult();
 	}
 
 	@Override
 	public OptionalVerifier isEmpty()
 	{
-		if (actual.isEmpty())
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be empty.").
-			addContext("Actual", actual).
-			build();
+		validator.isEmpty();
+		return validationResult();
 	}
 
 	@Override
 	public OptionalVerifier contains(Object value)
 	{
-		if (value == null)
-			return isEmpty();
-		Optional<?> expected = Optional.of(value);
-		if (actual.equals(expected))
-			return this;
-		String valueAsString = config.toString(value);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must contain " + valueAsString + ".").
-			addContext("Actual", actual).
-			build();
+		validator.contains(value);
+		return validationResult();
 	}
 
 	@Override
 	public OptionalVerifier contains(Object expected, String name)
 	{
-		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
-		if (actual.equals(expectedAsOptional))
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			this.name + " must contain " + name + ".").
-			addContext("Actual", actual).
-			addContext("Expected", expectedAsOptional).
-			build();
+		validator.contains(expected, name);
+		return validationResult();
 	}
 }

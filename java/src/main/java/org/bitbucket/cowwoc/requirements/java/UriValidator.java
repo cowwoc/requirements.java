@@ -17,7 +17,7 @@ public interface UriValidator extends ExtensibleObjectValidator<UriValidator, UR
 	/**
 	 * Ensures that the actual value is absolute.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	UriValidator isAbsolute();
 
@@ -36,7 +36,7 @@ public interface UriValidator extends ExtensibleObjectValidator<UriValidator, UR
 	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer validates URLs
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

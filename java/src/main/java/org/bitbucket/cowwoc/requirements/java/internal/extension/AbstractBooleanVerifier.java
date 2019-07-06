@@ -4,49 +4,39 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleBooleanValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleBooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
  * An implementation of {@code ExtensibleBooleanVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
+ * @param <V> the type of validator used by the verifier
  */
-public abstract class AbstractBooleanVerifier<S> extends AbstractComparableVerifier<S, Boolean>
+public abstract class AbstractBooleanVerifier<S, V extends ExtensibleBooleanValidator<V>>
+	extends AbstractObjectVerifier<S, V, Boolean>
 	implements ExtensibleBooleanVerifier<S>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	protected AbstractBooleanVerifier(ApplicationScope scope, String name, Boolean actual, Configuration config)
+	protected AbstractBooleanVerifier(V validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override
 	public S isTrue()
 	{
-		if (actual)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be true").
-			build();
+		validator = validator.isTrue();
+		return validationResult();
 	}
 
 	@Override
 	public S isFalse()
 	{
-		if (!actual)
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be false").
-			build();
+		validator = validator.isFalse();
+		return validationResult();
 	}
 }

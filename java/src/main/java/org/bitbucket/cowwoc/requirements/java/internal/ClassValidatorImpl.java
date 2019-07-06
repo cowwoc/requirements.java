@@ -23,17 +23,29 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public ClassValidatorImpl(ApplicationScope scope, String name, Class<T> actual, Configuration config,
+	public ClassValidatorImpl(ApplicationScope scope, Configuration config, String name, Class<T> actual,
 	                          List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected ClassValidator<T> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected ClassValidator<T> getNoOp()
+	{
+		return new ClassValidatorNoOp<>(scope, config, failures);
 	}
 
 	@Override
@@ -43,7 +55,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		verifier.requireThat(type, "type").isNotNull();
 		if (!actual.isAssignableFrom(type))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a supertype of " + type + ".").
 				addContext("Actual", actual);
 			failures.add(failure);

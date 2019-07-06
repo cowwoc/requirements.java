@@ -33,7 +33,7 @@ public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#keySet()}
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -52,7 +52,7 @@ public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#values()}
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -71,7 +71,7 @@ public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#entrySet()}
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -80,7 +80,7 @@ public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value is not empty
 	 */
 	MapVerifier<K, V> isEmpty();
@@ -88,7 +88,7 @@ public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value is empty
 	 */
 	MapVerifier<K, V> isNotEmpty();
@@ -106,7 +106,7 @@ public interface MapVerifier<K, V> extends ExtensibleObjectVerifier<MapVerifier<
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Map#size()}
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

@@ -19,7 +19,7 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:-requires-automatic</arg>
+						<arg>-Xlint:all,-requires-automatic</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>

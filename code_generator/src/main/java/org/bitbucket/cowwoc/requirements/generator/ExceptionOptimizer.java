@@ -158,6 +158,7 @@ public final class ExceptionOptimizer
 				"@OptimizedException\n" +
 				"public final class " + wrapperSimpleName + " extends " + exceptionSimpleName + "\n" +
 				"{\n" +
+				"\tprivate static final long serialVersionUID = 0L;\n" +
 				"\tprivate final Exceptions exceptions;\n" +
 				"\tprivate boolean filtered;\n" +
 				"\n" +

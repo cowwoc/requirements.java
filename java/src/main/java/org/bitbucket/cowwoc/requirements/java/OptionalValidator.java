@@ -16,14 +16,14 @@ public interface OptionalValidator extends ExtensibleObjectValidator<OptionalVal
 	/**
 	 * Ensures that the actual value is present.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	OptionalValidator isPresent();
 
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	OptionalValidator isEmpty();
 
@@ -31,7 +31,7 @@ public interface OptionalValidator extends ExtensibleObjectValidator<OptionalVal
 	 * Ensures that the optional contains a value.
 	 *
 	 * @param value the expected value; {@code null} matches an empty optional
-	 * @return this
+	 * @return the updated validator
 	 */
 	OptionalValidator contains(Object value);
 
@@ -40,7 +40,7 @@ public interface OptionalValidator extends ExtensibleObjectValidator<OptionalVal
 	 *
 	 * @param expected the expected value ({@code null} matches an empty optional)
 	 * @param name     the name of the expected value
-	 * @return this
+	 * @return the updated validator
 	 */
 	OptionalValidator contains(Object expected, String name);
 }

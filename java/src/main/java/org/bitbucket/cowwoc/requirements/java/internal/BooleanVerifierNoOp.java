@@ -16,7 +16,7 @@ public final class BooleanVerifierNoOp
 	implements BooleanVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public BooleanVerifierNoOp(Configuration config)

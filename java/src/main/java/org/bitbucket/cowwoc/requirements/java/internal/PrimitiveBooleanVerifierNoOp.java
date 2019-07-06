@@ -16,7 +16,7 @@ public final class PrimitiveBooleanVerifierNoOp
 	implements PrimitiveBooleanVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveBooleanVerifierNoOp(Configuration config)
@@ -46,6 +46,7 @@ public final class PrimitiveBooleanVerifierNoOp
 	@Override
 	public PrimitiveBooleanVerifier isNotNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
@@ -53,6 +54,7 @@ public final class PrimitiveBooleanVerifierNoOp
 	@Override
 	public PrimitiveBooleanVerifier isNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNull();
 	}
 }

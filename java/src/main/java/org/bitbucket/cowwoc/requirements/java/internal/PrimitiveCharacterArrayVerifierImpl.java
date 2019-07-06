@@ -4,46 +4,30 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveCharacterArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Default implementation of {@code PrimitiveCharacterArrayVerifier}.
  */
 public final class PrimitiveCharacterArrayVerifierImpl
-	extends AbstractArrayVerifier<PrimitiveCharacterArrayVerifier, Character, char[]>
+	extends AbstractArrayVerifier
+	<PrimitiveCharacterArrayVerifier, PrimitiveCharacterArrayValidator, Character, char[]>
 	implements PrimitiveCharacterArrayVerifier
 {
 	/**
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	private static Collection<Character> asCollection(char[] array)
+	public PrimitiveCharacterArrayVerifierImpl(PrimitiveCharacterArrayValidator validator)
 	{
-		if (array == null)
-			return null;
-		List<Character> result = new ArrayList<>(array.length);
-		for (char element : array)
-			result.add(element);
-		return result;
+		super(validator);
 	}
 
-	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
-	 */
-	public PrimitiveCharacterArrayVerifierImpl(ApplicationScope scope, String name, char[] actual,
-	                                           Configuration config)
+	@Override
+	protected PrimitiveCharacterArrayVerifier getThis()
 	{
-		super(scope, name, actual, asCollection(actual), config);
+		return this;
 	}
 }

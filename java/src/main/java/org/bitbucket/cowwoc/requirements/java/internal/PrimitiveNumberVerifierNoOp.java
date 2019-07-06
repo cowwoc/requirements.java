@@ -18,7 +18,7 @@ public final class PrimitiveNumberVerifierNoOp<T extends Number & Comparable<? s
 	implements PrimitiveNumberVerifier<T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveNumberVerifierNoOp(Configuration config)

@@ -10,8 +10,8 @@ import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -24,14 +24,14 @@ import java.util.function.Consumer;
  * @param <K> the type of keys in the multimap
  * @param <V> the type of values in the multimap
  */
-public final class NoOpMultimapVerifier<K, V>
+public final class MultimapVerifierNoOp<K, V>
 	extends AbstractObjectVerifierNoOp<MultimapVerifier<K, V>, Multimap<K, V>>
 	implements MultimapVerifier<K, V>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 */
-	public NoOpMultimapVerifier(Configuration config)
+	public MultimapVerifierNoOp(Configuration config)
 	{
 		super(config);
 	}
@@ -51,6 +51,8 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -63,6 +65,8 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public MultimapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -73,9 +77,11 @@ public final class NoOpMultimapVerifier<K, V>
 	}
 
 	@Override
-	public MultimapVerifier<K, V> entries(
-		Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer)
+	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>>
+		                                      consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -100,6 +106,8 @@ public final class NoOpMultimapVerifier<K, V>
 	@Override
 	public MultimapVerifier<K, V> size(Consumer<SizeVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 }

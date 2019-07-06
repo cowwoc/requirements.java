@@ -17,7 +17,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value starts with a value.
 	 *
 	 * @param prefix the value that the string must start with
-	 * @return this
+	 * @return the updated validator
 	 */
 	StringValidator startsWith(String prefix);
 
@@ -25,7 +25,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value does not start with a value.
 	 *
 	 * @param prefix the value that the string may not start with
-	 * @return this
+	 * @return the updated validator
 	 */
 	StringValidator doesNotStartWith(String prefix);
 
@@ -33,7 +33,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value ends with a value.
 	 *
 	 * @param suffix the value that the string must end with
-	 * @return this
+	 * @return the updated validator
 	 */
 	StringValidator endsWith(String suffix);
 
@@ -41,7 +41,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value does not end with a value.
 	 *
 	 * @param suffix the value that the string may not end with
-	 * @return this
+	 * @return the updated validator
 	 */
 	StringValidator doesNotEndWith(String suffix);
 
@@ -49,7 +49,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value contains a value.
 	 *
 	 * @param expected the value that the string must contain
-	 * @return this
+	 * @return the updated validator
 	 */
 	StringValidator contains(String expected);
 
@@ -57,14 +57,14 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value does not contain a value.
 	 *
 	 * @param value the value that the string may not contain
-	 * @return this
+	 * @return the updated validator
 	 */
 	StringValidator doesNotContain(String value);
 
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @see #trim()
 	 */
 	StringValidator isEmpty();
@@ -72,7 +72,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @see #trim()
 	 */
 	StringValidator isNotEmpty();
@@ -90,7 +90,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * group related requirements</a>.
 	 *
 	 * @param consumer validates the length of the actual value
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -99,14 +99,14 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	/**
 	 * Trims whitespace at the beginning and end of the actual value.
 	 *
-	 * @return a validator for the trimmed String representation
+	 * @return the updated validator
 	 */
 	StringValidator trim();
 
 	/**
 	 * Ensures that the actual value does not contain leading or trailing whitespace.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @see #trim()
 	 */
 	StringValidator isTrimmed();
@@ -126,7 +126,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * See {@link #asInetAddress()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer validates Internet addresses
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -154,7 +154,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * See {@link #asUri()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer validates URIs
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -175,7 +175,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * See {@link #asUrl()} for exceptions that may be thrown to the consumer.
 	 *
 	 * @param consumer validates URLs
-	 * @return this
+	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

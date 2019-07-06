@@ -26,17 +26,29 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PathValidatorImpl(ApplicationScope scope, String name, Path actual, Configuration config,
+	public PathValidatorImpl(ApplicationScope scope, Configuration config, String name, Path actual,
 	                         List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected PathValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PathValidator getNoOp()
+	{
+		return new PathValidatorNoOp(scope, config, failures);
 	}
 
 	@Override
@@ -44,7 +56,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (!Files.exists(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " refers to a non-existent path.").
 				addContext("Actual", actual.toAbsolutePath());
 			failures.add(failure);
@@ -60,7 +72,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			BasicFileAttributes attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
 			if (!attrs.isRegularFile())
 			{
-				ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+				ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 					name + " must refer to a file.").
 					addContext("Actual", actual.toAbsolutePath());
 				failures.add(failure);
@@ -81,11 +93,18 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	private void addValidationFailure(IOException e)
 	{
 		String message;
+		Class<? extends Exception> type;
 		if (e instanceof NoSuchFileException)
+		{
+			type = IllegalArgumentException.class;
 			message = name + " refers to a non-existent path.";
+		}
 		else
+		{
+			type = e.getClass();
 			message = "Failed to read attributes of " + name + ".";
-		ValidationFailure failure = new ValidationFailureImpl(e.getClass(), message).
+		}
+		ValidationFailure failure = new ValidationFailureImpl(this, type, message).
 			setCause(e).
 			addContext("Actual", actual.toAbsolutePath());
 		failures.add(failure);
@@ -97,9 +116,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		try
 		{
 			BasicFileAttributes attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
-			if (!attrs.isRegularFile())
+			if (!attrs.isDirectory())
 			{
-				ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+				ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 					name + " must refer to a directory.").
 					addContext("Actual", actual.toAbsolutePath());
 				failures.add(failure);
@@ -117,7 +136,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual.isAbsolute())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must refer to a relative path.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -130,7 +149,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (!actual.isAbsolute())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must refer to an absolute path.").
 				addContext("Actual", actual);
 			failures.add(failure);

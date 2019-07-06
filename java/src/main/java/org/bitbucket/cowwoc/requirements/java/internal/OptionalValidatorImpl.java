@@ -22,17 +22,29 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public OptionalValidatorImpl(ApplicationScope scope, String name, Optional<?> actual,
-	                             Configuration config, List<ValidationFailure> failures)
+	public OptionalValidatorImpl(ApplicationScope scope, Configuration config, String name, Optional<?> actual,
+	                             List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected OptionalValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected OptionalValidator getNoOp()
+	{
+		return new OptionalValidatorNoOp(scope, config, failures);
 	}
 
 	@Override
@@ -40,7 +52,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be present");
 			failures.add(failure);
 		}
@@ -52,7 +64,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual.isPresent())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -68,7 +80,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 		Optional<?> expected = Optional.of(value);
 		if (!actual.equals(expected))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must contain " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -82,7 +94,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
 		if (!actual.equals(expectedAsOptional))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must contain " + name + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expectedAsOptional);

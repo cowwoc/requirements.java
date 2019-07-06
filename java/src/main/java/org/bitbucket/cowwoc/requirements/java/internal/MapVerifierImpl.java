@@ -4,13 +4,13 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.MapValidator;
 import org.bitbucket.cowwoc.requirements.java.MapVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 import java.util.Collection;
 import java.util.Map;
@@ -25,26 +25,29 @@ import java.util.function.Consumer;
  * @param <V> the type of value in the map
  */
 public final class MapVerifierImpl<K, V>
-	extends AbstractObjectVerifier<MapVerifier<K, V>, Map<K, V>>
+	extends AbstractObjectVerifier<MapVerifier<K, V>, MapValidator<K, V>, Map<K, V>>
 	implements MapVerifier<K, V>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public MapVerifierImpl(ApplicationScope scope, String name, Map<K, V> actual, Configuration config)
+	public MapVerifierImpl(MapValidator<K, V> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected MapVerifier<K, V> getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY, config);
+		CollectionValidator<Set<K>, K> newValidator = validator.keySet();
+		return validationResult(() -> new CollectionVerifierImpl<>(newValidator));
 	}
 
 	@Override
@@ -59,7 +62,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE, config);
+		CollectionValidator<Collection<V>, V> newValidator = validator.values();
+		return validationResult(() -> new CollectionVerifierImpl<>(newValidator));
 	}
 
 	@Override
@@ -74,8 +78,8 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionVerifierImpl<>(scope, name + ".entrySet()", actual.entrySet(), Pluralizer.ENTRY,
-			config);
+		CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> newValidator = validator.entrySet();
+		return validationResult(() -> new CollectionVerifierImpl<>(newValidator));
 	}
 
 	@Override
@@ -90,29 +94,22 @@ public final class MapVerifierImpl<K, V>
 	@Override
 	public MapVerifier<K, V> isEmpty()
 	{
-		if (actual.isEmpty())
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be empty.").
-			addContext("Actual", actual).
-			build();
+		validator.isEmpty();
+		return validationResult();
 	}
 
 	@Override
 	public MapVerifier<K, V> isNotEmpty()
 	{
-		if (!actual.isEmpty())
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be empty").
-			build();
+		validator.isNotEmpty();
+		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier size()
 	{
-		return new SizeVerifierImpl(scope, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, config);
+		SizeValidator newValidator = validator.size();
+		return validationResult(() -> new SizeVerifierImpl(newValidator));
 	}
 
 	@Override

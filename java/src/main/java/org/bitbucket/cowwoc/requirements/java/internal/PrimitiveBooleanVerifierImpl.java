@@ -4,36 +4,37 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractBooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code PrimitiveBooleanVerifier}.
  */
 public final class PrimitiveBooleanVerifierImpl
-	extends AbstractBooleanVerifier<PrimitiveBooleanVerifier>
+	extends AbstractBooleanVerifier<PrimitiveBooleanVerifier, PrimitiveBooleanValidator>
 	implements PrimitiveBooleanVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveBooleanVerifierImpl(ApplicationScope scope, String name, boolean actual,
-	                                    Configuration config)
+	public PrimitiveBooleanVerifierImpl(PrimitiveBooleanValidator validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected PrimitiveBooleanVerifier getThis()
+	{
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public PrimitiveBooleanVerifier isNotNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
@@ -41,6 +42,7 @@ public final class PrimitiveBooleanVerifierImpl
 	@Override
 	public PrimitiveBooleanVerifier isNull()
 	{
+		// Suppress warning about extending class with deprecated methods
 		return super.isNull();
 	}
 }

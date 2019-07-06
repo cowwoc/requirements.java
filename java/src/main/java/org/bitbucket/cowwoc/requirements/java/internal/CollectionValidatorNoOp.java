@@ -40,6 +40,12 @@ public final class CollectionValidatorNoOp<C extends Collection<E>, E>
 	}
 
 	@Override
+	protected CollectionValidator<C, E> getThis()
+	{
+		return this;
+	}
+
+	@Override
 	public CollectionValidator<C, E> isEmpty()
 	{
 		return this;

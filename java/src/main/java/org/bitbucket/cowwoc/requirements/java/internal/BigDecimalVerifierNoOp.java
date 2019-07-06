@@ -21,7 +21,7 @@ public final class BigDecimalVerifierNoOp
 	implements BigDecimalVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public BigDecimalVerifierNoOp(Configuration config)
@@ -44,6 +44,8 @@ public final class BigDecimalVerifierNoOp
 	@Override
 	public BigDecimalVerifier precision(Consumer<BigDecimalPrecisionVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 
@@ -56,6 +58,8 @@ public final class BigDecimalVerifierNoOp
 	@Override
 	public BigDecimalVerifier scale(Consumer<PrimitiveNumberVerifier<Integer>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 }

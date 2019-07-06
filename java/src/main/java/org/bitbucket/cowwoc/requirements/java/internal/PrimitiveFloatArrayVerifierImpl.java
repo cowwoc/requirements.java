@@ -4,46 +4,29 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Default implementation of {@code PrimitiveFloatArrayVerifier}.
  */
 public final class PrimitiveFloatArrayVerifierImpl
-	extends AbstractArrayVerifier<PrimitiveFloatArrayVerifier, Float, float[]>
+	extends AbstractArrayVerifier<PrimitiveFloatArrayVerifier, PrimitiveFloatArrayValidator, Float, float[]>
 	implements PrimitiveFloatArrayVerifier
 {
 	/**
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	private static Collection<Float> asCollection(float[] array)
+	public PrimitiveFloatArrayVerifierImpl(PrimitiveFloatArrayValidator validator)
 	{
-		if (array == null)
-			return null;
-		List<Float> result = new ArrayList<>(array.length);
-		for (float element : array)
-			result.add(element);
-		return result;
+		super(validator);
 	}
 
-	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
-	 */
-	public PrimitiveFloatArrayVerifierImpl(ApplicationScope scope, String name, float[] actual,
-	                                       Configuration config)
+	@Override
+	protected PrimitiveFloatArrayVerifier getThis()
 	{
-		super(scope, name, actual, asCollection(actual), config);
+		return this;
 	}
 }

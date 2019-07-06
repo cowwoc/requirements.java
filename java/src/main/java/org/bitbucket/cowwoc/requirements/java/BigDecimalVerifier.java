@@ -27,7 +27,7 @@ public interface BigDecimalVerifier extends ExtensibleNumberVerifier<BigDecimalV
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@code BigDecimal.precision()}
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
@@ -46,7 +46,7 @@ public interface BigDecimalVerifier extends ExtensibleNumberVerifier<BigDecimalV
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@code BigDecimal.scale()}
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")

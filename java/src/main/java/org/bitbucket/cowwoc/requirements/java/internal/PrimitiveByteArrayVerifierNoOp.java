@@ -16,7 +16,7 @@ public final class PrimitiveByteArrayVerifierNoOp
 	implements PrimitiveByteArrayVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public PrimitiveByteArrayVerifierNoOp(Configuration config)

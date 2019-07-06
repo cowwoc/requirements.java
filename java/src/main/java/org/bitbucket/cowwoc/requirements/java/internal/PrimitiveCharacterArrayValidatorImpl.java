@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Default implementation of {@code PrimitiveCharacterArrayValidator}.
  */
-public class PrimitiveCharacterArrayValidatorImpl
+public final class PrimitiveCharacterArrayValidatorImpl
 	extends AbstractArrayValidator<PrimitiveCharacterArrayValidator, Character, char[]>
 	implements PrimitiveCharacterArrayValidator
 {
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @return null if the array is null; otherwise, a collection containing the array elements
 	 */
 	private static Collection<Character> asCollection(char[] array)
 	{
@@ -37,16 +37,28 @@ public class PrimitiveCharacterArrayValidatorImpl
 
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveCharacterArrayValidatorImpl(ApplicationScope scope, String name, char[] actual,
-	                                            Configuration config, List<ValidationFailure> failures)
+	public PrimitiveCharacterArrayValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                            char[] actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, asCollection(actual), config, failures);
+		super(scope, config, name, actual, asCollection(actual), failures);
+	}
+
+	@Override
+	protected PrimitiveCharacterArrayValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveCharacterArrayValidator getNoOp()
+	{
+		return new PrimitiveCharacterArrayValidatorNoOp(scope, config, failures);
 	}
 }

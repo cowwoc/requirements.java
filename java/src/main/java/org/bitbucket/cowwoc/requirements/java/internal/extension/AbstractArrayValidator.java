@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of ExtensibleArrayValidator.
+ * Extensible implementation of ExtensibleCollectionValidator.
  *
  * @param <S> the type of validator returned by the methods
- * @param <E> the Object representation of the array elements
+ * @param <E> the type of elements in the array
  * @param <A> the type of the array
  */
 public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectValidator<S, A>
@@ -33,22 +33,21 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 
 	/**
 	 * @param scope              the application configuration
+	 * @param config             the instance configuration
 	 * @param name               the name of the value
 	 * @param actual             the actual value
 	 * @param actualAsCollection the {@code Collection} representation of the array
-	 * @param config             the instance configuration
 	 * @param failures           the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	protected AbstractArrayValidator(ApplicationScope scope, String name, A actual,
-	                                 Collection<E> actualAsCollection, Configuration config,
-	                                 List<ValidationFailure> failures)
+	protected AbstractArrayValidator(ApplicationScope scope, Configuration config, String name, A actual,
+	                                 Collection<E> actualAsCollection, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
 		this.actualAsCollection = actualAsCollection;
-		this.asCollection = new CollectionValidatorImpl<>(scope, name, actualAsCollection, Pluralizer.ELEMENT,
-			config, failures);
+		this.asCollection = new CollectionValidatorImpl<>(scope, config, name, actualAsCollection,
+			Pluralizer.ELEMENT, failures);
 	}
 
 	@Override
@@ -243,8 +242,8 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 	@Override
 	public SizeValidator length()
 	{
-		return new SizeValidatorImpl(scope, name, actual, name + ".length", actualAsCollection.size(),
-			Pluralizer.ELEMENT, config, failures);
+		return new SizeValidatorImpl(scope, config, name, actual, name + ".length", actualAsCollection.size(),
+			Pluralizer.ELEMENT, failures);
 	}
 
 	@Override

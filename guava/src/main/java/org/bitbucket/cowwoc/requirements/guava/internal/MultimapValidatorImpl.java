@@ -12,6 +12,7 @@ import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
@@ -35,29 +36,43 @@ public final class MultimapValidatorImpl<K, V>
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the parameter
 	 * @param actual   the actual value of the parameter
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public MultimapValidatorImpl(ApplicationScope scope, String name, Multimap<K, V> actual,
-	                             Configuration config, List<ValidationFailure> failures)
+	public MultimapValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                             Multimap<K, V> actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected MultimapValidator<K, V> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected MultimapValidator<K, V> getNoOp()
+	{
+		return new MultimapValidatorNoOp<>(scope, config, failures);
 	}
 
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		return new CollectionValidatorImpl<>(scope, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			config, failures);
+		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
+			failures);
 	}
 
 	@Override
 	public MultimapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(keySet());
 		return this;
 	}
@@ -65,13 +80,15 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		return new CollectionValidatorImpl<>(scope, name + ".values()", actual.values(), Pluralizer.VALUE,
-			config, failures);
+		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
+			failures);
 	}
 
 	@Override
 	public MultimapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(values());
 		return this;
 	}
@@ -79,14 +96,16 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new CollectionValidatorImpl<>(scope, name + ".entries()", actual.entries(), Pluralizer.ENTRY,
-			config, failures);
+		return new CollectionValidatorImpl<>(scope, config, name + ".entries()", actual.entries(),
+			Pluralizer.ENTRY, failures);
 	}
 
 	@Override
-	public MultimapValidator<K, V> entries(
-		Consumer<CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>>> consumer)
+	public MultimapValidator<K, V> entries(Consumer<CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>>>
+		                                       consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		consumer.accept(entries());
 		return this;
 	}
@@ -94,35 +113,44 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public MultimapValidator<K, V> isEmpty()
 	{
-		if (actual.isEmpty())
-			return this;
-		String actualAsString = config.toString(actual);
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be empty.").
-			addContext("Actual", actualAsString).
-			build();
+		if (!actual.isEmpty())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+				name + " must be empty.").
+				addContext("Actual", config.toString(actual));
+			failures.add(failure);
+		}
+		return this;
 	}
 
 	@Override
 	public MultimapValidator<K, V> isNotEmpty()
 	{
-		if (!actual.isEmpty())
-			return this;
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be empty").
-			build();
+		if (actual.isEmpty())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+				name + " may not be empty");
+			failures.add(failure);
+
+		}
+		return this;
 	}
 
 	@Override
 	public SizeValidator size()
 	{
-		return new SizeValidatorImpl(scope, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, config, failures);
+		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
+			Pluralizer.ENTRY, failures);
 	}
 
 	@Override
 	public MultimapValidator<K, V> size(Consumer<SizeValidator> consumer)
 	{
+		if (consumer == null)
+		{
+			throw new ExceptionBuilder<>(scope, getConfiguration(), NullPointerException.class).
+				build("consumer may not be null");
+		}
 		consumer.accept(size());
 		return this;
 	}

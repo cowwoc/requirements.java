@@ -4,13 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.ArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Default implementation of {@code ArrayVerifier}.
@@ -18,33 +14,21 @@ import java.util.List;
  * @param <E> the type of elements in the array
  */
 public final class ArrayVerifierImpl<E>
-	extends AbstractArrayVerifier<ArrayVerifier<E>, E, E[]>
+	extends AbstractArrayVerifier<ArrayVerifier<E>, ArrayValidator<E>, E, E[]>
 	implements ArrayVerifier<E>
 {
 	/**
-	 * @param <E>   the type of elements in the array
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	private static <E> List<E> asCollection(E[] array)
+	public ArrayVerifierImpl(ArrayValidator<E> validator)
 	{
-		if (array == null)
-			return null;
-		return Arrays.asList(array);
+		super(validator);
 	}
 
-	/**
-	 * Creates new ArrayVerifierImpl.
-	 *
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
-	 */
-	public ArrayVerifierImpl(ApplicationScope scope, String name, E[] actual, Configuration config)
+	@Override
+	protected ArrayVerifier<E> getThis()
 	{
-		super(scope, name, actual, asCollection(actual), config);
+		return this;
 	}
 }

@@ -22,7 +22,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	 * exists then there is no guarantee that a subsequence access will succeed. Care should be taken
 	 * when using this method in security sensitive applications.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value refers to a non-existent path
 	 */
 	PathVerifier exists();
@@ -30,7 +30,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	/**
 	 * Ensures that the actual value is absolute.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value refers to an absolute path
 	 */
 	PathVerifier isAbsolute();
@@ -39,7 +39,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	 * Ensures that the actual value refers to a directory.
 	 *
 	 * @param options options indicating how symbolic links are handled
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value refers to a non-existent or a non-directory
 	 *                                  path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
@@ -50,7 +50,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	 * Ensures that the actual value refers to a regular file.
 	 *
 	 * @param options options indicating how symbolic links are handled
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value refers to a non-existent or a non-file path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */
@@ -59,7 +59,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	/**
 	 * Ensures that the actual value is relative.
 	 *
-	 * @return this
+	 * @return the updated verifier
 	 * @throws IllegalArgumentException if actual value refers to an absolute path
 	 */
 	PathVerifier isRelative();

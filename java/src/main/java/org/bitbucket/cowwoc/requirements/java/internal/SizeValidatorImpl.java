@@ -28,21 +28,21 @@ public final class SizeValidatorImpl
 
 	/**
 	 * @param scope          the application configuration
+	 * @param config         the instance configuration
 	 * @param collectionName the name of the collection
 	 * @param collection     the collection
 	 * @param sizeName       the name of the collection's size
 	 * @param size           the size of the collection
 	 * @param pluralizer     returns the singular or plural form of the collection's element type
-	 * @param config         the instance configuration
 	 * @param failures       the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code collection}, {@code config} or
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code collection} or
 	 *                        {@code failures} are null. If {@code name} is empty.
 	 */
-	public SizeValidatorImpl(ApplicationScope scope, String collectionName, Object collection,
-	                         String sizeName, int size, Pluralizer pluralizer, Configuration config,
+	public SizeValidatorImpl(ApplicationScope scope, Configuration config, String collectionName,
+	                         Object collection, String sizeName, int size, Pluralizer pluralizer,
 	                         List<ValidationFailure> failures)
 	{
-		super(scope, sizeName, size, config, failures);
+		super(scope, config, sizeName, size, failures);
 		assert (collectionName != null) : "collectionName may not be null";
 		assert (!collectionName.isEmpty()) : "collectionName may not be empty";
 		assert (collection != null) : "collection may not be null";
@@ -53,13 +53,25 @@ public final class SizeValidatorImpl
 	}
 
 	@Override
+	protected SizeValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected SizeValidator getNoOp()
+	{
+		return new SizeValidatorNoOp(scope, config, failures);
+	}
+
+	@Override
 	public SizeValidator isGreaterThanOrEqualTo(Integer value)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual < value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain at least " + config.toString(value) + " " + pluralizer.nameOf(value) +
 					".").
 				addContext("Actual", actual);
@@ -78,7 +90,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual < value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain at least " + name + " " + pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual).
 				addContext("Minimum", value);
@@ -96,7 +108,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual <= value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain more than " + config.toString(value) + " " +
 					pluralizer.nameOf(value)).
 				addContext("Actual", actual);
@@ -115,7 +127,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual <= value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain more than " + name + " " + pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive minimum", value);
@@ -133,7 +145,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual > value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " may not contain more than " + config.toString(value) + " " +
 					pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
@@ -152,7 +164,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual > value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " may not contain more than " + name + " " + pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual).
 				addContext("Maximum", value);
@@ -170,7 +182,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual >= value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain less than " + config.toString(value) + " " +
 					pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
@@ -189,7 +201,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (actual >= value)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain less than " + name + " " + pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive maximum", value);
@@ -211,7 +223,7 @@ public final class SizeValidatorImpl
 	{
 		if (actual <= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain at least one " + pluralizer.nameOf(1) + ".").
 				addContext("Actual", actual);
 			failures.add(failure);
@@ -230,7 +242,7 @@ public final class SizeValidatorImpl
 	{
 		if (actual != 0)
 		{
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must be empty.").
 				addContext("Actual", actual);
 			if (actual > 0)
@@ -261,7 +273,7 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isNegative()
 	{
-		ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+		ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be negative");
 		failures.add(failure);
 		return this;
@@ -278,7 +290,7 @@ public final class SizeValidatorImpl
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endExclusive);
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain [" + startAsString + ", " + endAsString + ") " +
 					pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual);
@@ -300,7 +312,7 @@ public final class SizeValidatorImpl
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endInclusive);
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain [" + startAsString + ", " + endAsString + "] " +
 					pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual);
@@ -326,7 +338,7 @@ public final class SizeValidatorImpl
 			}
 			int expectedAsInt = (Integer) expected;
 			String expectedAsString = config.toString(expected);
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain " + expectedAsString + " " + pluralizer.nameOf(expectedAsInt) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
@@ -352,7 +364,7 @@ public final class SizeValidatorImpl
 			}
 			int expectedAsInt = (Integer) expected;
 			String expectedAsString = config.toString(expected);
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain " + name + " " + pluralizer.nameOf(expectedAsInt) + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expected);
@@ -364,14 +376,14 @@ public final class SizeValidatorImpl
 	}
 
 	@Override
-	public SizeValidator isNotEqualTo(Object value)
+	public SizeValidator isNotEqualTo(Object other)
 	{
-		if (Objects.equals(actual, value))
+		if (Objects.equals(actual, other))
 		{
 			JavaRequirements verifier = scope.getInternalVerifier();
-			int valueAsInt = (Integer) value;
-			String valueAsString = config.toString(value);
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			int valueAsInt = (Integer) other;
+			String valueAsString = config.toString(other);
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " may not contain " + valueAsString + " " + pluralizer.nameOf(valueAsInt) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
@@ -382,18 +394,18 @@ public final class SizeValidatorImpl
 	}
 
 	@Override
-	public SizeValidator isNotEqualTo(Object value, String name)
+	public SizeValidator isNotEqualTo(Object other, String name)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (Objects.equals(actual, value))
+		if (Objects.equals(actual, other))
 		{
-			int valueAsInt = (Integer) value;
-			String valueAsString = config.toString(value);
-			ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			int valueAsInt = (Integer) other;
+			String valueAsString = config.toString(other);
+			ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " may not contain " + name + " " + pluralizer.nameOf(valueAsInt) + ".").
 				addContext("Actual", actual).
-				addContext("Unwanted", value);
+				addContext("Unwanted", other);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
 			failures.add(failure);
@@ -405,7 +417,7 @@ public final class SizeValidatorImpl
 	@Deprecated
 	public SizeValidator isNull()
 	{
-		ValidationFailureImpl failure = new ValidationFailureImpl(IllegalArgumentException.class,
+		ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be null");
 		failures.add(failure);
 		return this;

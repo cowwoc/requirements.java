@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Default implementation of {@code PrimitiveBooleanArrayValidator}.
  */
-public class PrimitiveBooleanArrayValidatorImpl
+public final class PrimitiveBooleanArrayValidatorImpl
 	extends AbstractArrayValidator<PrimitiveBooleanArrayValidator, Boolean, boolean[]>
 	implements PrimitiveBooleanArrayValidator
 {
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @return null if the array is null; otherwise, a collection containing the array elements
 	 */
 	private static Collection<Boolean> asCollection(boolean[] array)
 	{
@@ -37,16 +37,28 @@ public class PrimitiveBooleanArrayValidatorImpl
 
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public PrimitiveBooleanArrayValidatorImpl(ApplicationScope scope, String name, boolean[] actual,
-	                                          Configuration config, List<ValidationFailure> failures)
+	public PrimitiveBooleanArrayValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                          boolean[] actual, List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, asCollection(actual), config, failures);
+		super(scope, config, name, actual, asCollection(actual), failures);
+	}
+
+	@Override
+	protected PrimitiveBooleanArrayValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected PrimitiveBooleanArrayValidator getNoOp()
+	{
+		return new PrimitiveBooleanArrayValidatorNoOp(scope, config, failures);
 	}
 }

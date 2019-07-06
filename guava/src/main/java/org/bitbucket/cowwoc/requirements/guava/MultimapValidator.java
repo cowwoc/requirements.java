@@ -34,7 +34,7 @@ public interface MultimapValidator<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer validates the {@link Multimap#keySet()}
-	 * @return this
+	 * @return the updated validator
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer);
@@ -50,7 +50,7 @@ public interface MultimapValidator<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer validates the {@link Multimap#values()}
-	 * @return this
+	 * @return the updated validator
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer);
@@ -66,7 +66,7 @@ public interface MultimapValidator<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer validates the {@link Multimap#entries()}
-	 * @return this
+	 * @return the updated validator
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapValidator<K, V> entries(
@@ -75,7 +75,7 @@ public interface MultimapValidator<K, V>
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if actual value is not empty
 	 */
 	MultimapValidator<K, V> isEmpty();
@@ -83,7 +83,7 @@ public interface MultimapValidator<K, V>
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 * @throws IllegalArgumentException if actual value is empty
 	 */
 	MultimapValidator<K, V> isNotEmpty();
@@ -99,7 +99,7 @@ public interface MultimapValidator<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer validates the multimap's size
-	 * @return this
+	 * @return the updated validator
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapValidator<K, V> size(Consumer<SizeValidator> consumer);

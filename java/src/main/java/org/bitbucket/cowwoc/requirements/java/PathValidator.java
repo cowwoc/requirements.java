@@ -21,14 +21,14 @@ public interface PathValidator extends ExtensibleObjectValidator<PathValidator, 
 	 * exists then there is no guarantee that a subsequence access will succeed. Care should be taken
 	 * when using this method in security sensitive applications.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	PathValidator exists();
 
 	/**
 	 * Ensures that the actual value is absolute.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	PathValidator isAbsolute();
 
@@ -36,7 +36,7 @@ public interface PathValidator extends ExtensibleObjectValidator<PathValidator, 
 	 * Ensures that the actual value refers to a directory.
 	 *
 	 * @param options options indicating how symbolic links are handled
-	 * @return this
+	 * @return the updated validator
 	 */
 	PathValidator isDirectory(LinkOption... options);
 
@@ -44,14 +44,14 @@ public interface PathValidator extends ExtensibleObjectValidator<PathValidator, 
 	 * Ensures that the actual value refers to a regular file.
 	 *
 	 * @param options options indicating how symbolic links are handled
-	 * @return this
+	 * @return the updated validator
 	 */
 	PathValidator isRegularFile(LinkOption... options);
 
 	/**
 	 * Ensures that the actual value is relative.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	PathValidator isRelative();
 }

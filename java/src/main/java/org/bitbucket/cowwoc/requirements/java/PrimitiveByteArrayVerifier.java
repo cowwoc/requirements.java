@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 /**
  * Verifies the requirements of a byte array.
  */
-public interface PrimitiveByteArrayVerifier extends
-	ExtensibleArrayVerifier<PrimitiveByteArrayVerifier, Byte, byte[]>
+public interface PrimitiveByteArrayVerifier
+	extends ExtensibleArrayVerifier<PrimitiveByteArrayVerifier, Byte, byte[]>
 {
 }

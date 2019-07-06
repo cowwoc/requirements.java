@@ -18,7 +18,7 @@ public abstract class AbstractNumberVerifierNoOp<S, T extends Number & Comparabl
 	implements ExtensibleNumberVerifier<S, T>
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public AbstractNumberVerifierNoOp(Configuration config)

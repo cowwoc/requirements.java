@@ -4,86 +4,76 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionValidator;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
-
-import java.math.BigDecimal;
 
 /**
  * Default implementation of {@code BigDecimalPrecisionVerifier}.
  */
 public final class BigDecimalPrecisionVerifierImpl
-	extends AbstractNumberVerifier<BigDecimalPrecisionVerifier, Integer>
+	extends AbstractNumberVerifier<BigDecimalPrecisionVerifier, BigDecimalPrecisionValidator, Integer>
 	implements BigDecimalPrecisionVerifier
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public BigDecimalPrecisionVerifierImpl(ApplicationScope scope, String name, BigDecimal actual,
-	                                       Configuration config)
+	public BigDecimalPrecisionVerifierImpl(BigDecimalPrecisionValidator validator)
 	{
-		super(scope, name + ".precision()", actual.precision(), config);
+		super(validator);
+	}
+
+	@Override
+	protected BigDecimalPrecisionVerifier getThis()
+	{
+		return this;
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isZero()
 	{
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " can never be zero").
-			build();
+		return super.isZero();
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNotZero()
 	{
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " can never be zero").
-			build();
+		// Suppress warning about extending class with deprecated methods
+		return super.isNotZero();
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNotPositive()
 	{
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " can never be zero or negative").
-			build();
+		// Suppress warning about extending class with deprecated methods
+		return super.isNotPositive();
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isPositive()
 	{
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " can never be zero or negative").
-			build();
+		// Suppress warning about extending class with deprecated methods
+		return super.isPositive();
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNotNegative()
 	{
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " can never be negative").
-			build();
+		// Suppress warning about extending class with deprecated methods
+		return super.isNotNegative();
 	}
 
 	@Deprecated
 	@Override
 	public BigDecimalPrecisionVerifier isNegative()
 	{
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " can never be negative").
-			build();
+		// Suppress warning about extending class with deprecated methods
+		return super.isNegative();
 	}
 }

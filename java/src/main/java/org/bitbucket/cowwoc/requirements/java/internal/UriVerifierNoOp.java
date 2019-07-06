@@ -20,7 +20,7 @@ public final class UriVerifierNoOp
 	implements UriVerifier
 {
 	/**
-	 * @param config the verifier's configuration
+	 * @param config the instance configuration
 	 * @throws AssertionError if {@code config} is null
 	 */
 	public UriVerifierNoOp(Configuration config)
@@ -49,6 +49,8 @@ public final class UriVerifierNoOp
 	@Override
 	public UriVerifier asUrl(Consumer<UrlVerifier> consumer)
 	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
 }

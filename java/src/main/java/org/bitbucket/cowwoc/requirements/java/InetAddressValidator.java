@@ -16,14 +16,14 @@ public interface InetAddressValidator extends ExtensibleObjectValidator<InetAddr
 	/**
 	 * Ensures that the actual value is an IP v4 address.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	InetAddressValidator isIpV4();
 
 	/**
 	 * Ensures that the actual value is an IP v6 address.
 	 *
-	 * @return this
+	 * @return the updated validator
 	 */
 	InetAddressValidator isIpV6();
 }

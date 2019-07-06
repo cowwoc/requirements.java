@@ -25,17 +25,29 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 {
 	/**
 	 * @param scope    the application configuration
+	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public UrlValidatorImpl(ApplicationScope scope, String name, URL actual, Configuration config,
+	public UrlValidatorImpl(ApplicationScope scope, Configuration config, String name, URL actual,
 	                        List<ValidationFailure> failures)
 	{
-		super(scope, name, actual, config, failures);
+		super(scope, config, name, actual, failures);
+	}
+
+	@Override
+	protected UrlValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
+	protected UrlValidator getNoOp()
+	{
+		return new UrlValidatorNoOp(scope, config, failures);
 	}
 
 	@Override
@@ -44,11 +56,11 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 		try
 		{
 			URI uri = actual.toURI();
-			return new UriValidatorImpl(scope, name, uri, config, failures);
+			return new UriValidatorImpl(scope, config, name, uri, failures);
 		}
 		catch (URISyntaxException e)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " is not a valid URI").
 				setCause(e).
 				addContext("Actual", actual);

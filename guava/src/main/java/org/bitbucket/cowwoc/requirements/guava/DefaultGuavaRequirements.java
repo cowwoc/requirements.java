@@ -7,7 +7,8 @@ package org.bitbucket.cowwoc.requirements.guava;
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.internal.MultimapValidatorImpl;
 import org.bitbucket.cowwoc.requirements.guava.internal.MultimapVerifierImpl;
-import org.bitbucket.cowwoc.requirements.guava.internal.NoOpMultimapVerifier;
+import org.bitbucket.cowwoc.requirements.guava.internal.MultimapVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
@@ -22,6 +23,11 @@ import java.util.function.Function;
  */
 public final class DefaultGuavaRequirements implements GuavaRequirements
 {
+	static
+	{
+		GuavaSecrets.INSTANCE.setSecretRequirements(DefaultGuavaRequirements::new);
+	}
+
 	/**
 	 * @param scope the application configuration
 	 * @return scope
@@ -49,7 +55,7 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	 * @param scope the application configuration
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	public DefaultGuavaRequirements(ApplicationScope scope)
+	private DefaultGuavaRequirements(ApplicationScope scope)
 	{
 		this(verifyScope(scope), scope.getDefaultConfiguration().get());
 	}
@@ -90,8 +96,7 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	@Override
 	public <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new MultimapVerifierImpl<>(scope, name, actual, config);
+		return new MultimapVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -99,14 +104,14 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new NoOpMultimapVerifier<>(config);
+		return new MultimapVerifierNoOp<>(config);
 	}
 
 	@Override
 	public <K, V> MultimapValidator<K, V> validateThat(Multimap<K, V> actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new MultimapValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new MultimapValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override

@@ -4,46 +4,29 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Default implementation of {@code PrimitiveDoubleArrayVerifier}.
  */
 public final class PrimitiveDoubleArrayVerifierImpl
-	extends AbstractArrayVerifier<PrimitiveDoubleArrayVerifier, Double, double[]>
+	extends AbstractArrayVerifier<PrimitiveDoubleArrayVerifier, PrimitiveDoubleArrayValidator, Double, double[]>
 	implements PrimitiveDoubleArrayVerifier
 {
-	/**
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
-	 */
-	private static Collection<Double> asCollection(double[] array)
+	@Override
+	protected PrimitiveDoubleArrayVerifier getThis()
 	{
-		if (array == null)
-			return null;
-		List<Double> result = new ArrayList<>(array.length);
-		for (double element : array)
-			result.add(element);
-		return result;
+		return this;
 	}
 
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveDoubleArrayVerifierImpl(ApplicationScope scope, String name, double[] actual,
-	                                        Configuration config)
+	public PrimitiveDoubleArrayVerifierImpl(PrimitiveDoubleArrayValidator validator)
 	{
-		super(scope, name, actual, asCollection(actual), config);
+		super(validator);
 	}
 }

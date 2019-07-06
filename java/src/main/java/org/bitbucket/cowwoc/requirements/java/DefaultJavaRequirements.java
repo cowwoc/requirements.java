@@ -6,101 +6,102 @@ package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.internal.ArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.BigDecimalValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.BigDecimalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.BigDecimalVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.BooleanValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.BooleanVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.BooleanVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.ClassValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ClassVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ClassVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.ComparableValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ComparableVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ComparableVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.DoubleValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.DoubleVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.FloatValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.FloatVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.FloatingPointVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.InetAddressValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.InetAddressVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.InetAddressVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.IntegerValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.IntegerVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.IntegerVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.LongValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.LongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.MapValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.MapVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.ArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.BigDecimalVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.BooleanVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.ClassVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.ComparableVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.FloatingPointVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.InetAddressVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.IntegerVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.MapVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.NumberVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.ObjectVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.OptionalVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatingPointVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.NumberValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.NumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.NumberVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.ObjectValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ObjectVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ObjectVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.OptionalValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.OptionalVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.OptionalVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PathValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatingPointVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.UriValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.secrets.JavaSecrets;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Verifiers;
 
@@ -119,10 +120,15 @@ import java.util.function.Function;
  */
 public final class DefaultJavaRequirements implements JavaRequirements
 {
+	static
+	{
+		JavaSecrets.INSTANCE.setSecretRequirements(DefaultJavaRequirements::new);
+	}
+
 	/**
 	 * The application configuration.
 	 */
-	protected final ApplicationScope scope;
+	private final ApplicationScope scope;
 	/**
 	 * The instance configuration.
 	 */
@@ -145,7 +151,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	 * @param scope the application configuration
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	public DefaultJavaRequirements(ApplicationScope scope)
+	private DefaultJavaRequirements(ApplicationScope scope)
 	{
 		assert (scope != null) : "scope may not be null";
 		this.scope = scope;
@@ -256,8 +262,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public <T> ObjectVerifier<T> requireThat(T actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new ObjectVerifierImpl<>(scope, name, actual, config);
+		return new ObjectVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -272,14 +277,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <T> ObjectValidator<T> validateThat(T actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ObjectValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new ObjectValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public <C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new CollectionVerifierImpl<>(scope, name, actual, Pluralizer.ELEMENT, config);
+		return new CollectionVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -294,14 +298,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <C extends Collection<E>, E> CollectionValidator<C, E> validateThat(C actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new CollectionValidatorImpl<>(scope, name, actual, Pluralizer.ELEMENT, config, new ArrayList<>());
+		return new CollectionValidatorImpl<>(scope, config, name, actual, Pluralizer.ELEMENT, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveByteArrayVerifier requireThat(byte[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveByteArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveByteArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -316,14 +319,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveByteArrayValidator validateThat(byte[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveByteArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveByteArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveShortArrayVerifier requireThat(short[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveShortArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveShortArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -338,14 +340,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveShortArrayValidator validateThat(short[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveShortArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveShortArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveIntegerArrayVerifier requireThat(int[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveIntegerArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveIntegerArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -360,14 +361,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveIntegerArrayValidator validateThat(int[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveIntegerArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveIntegerArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveLongArrayVerifier requireThat(long[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveLongArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveLongArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -382,14 +382,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveLongArrayValidator validateThat(long[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveLongArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveLongArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveFloatArrayVerifier requireThat(float[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveFloatArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveFloatArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -404,14 +403,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveFloatArrayValidator validateThat(float[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveFloatArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveFloatArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveDoubleArrayVerifier requireThat(double[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveDoubleArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveDoubleArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -426,14 +424,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveDoubleArrayValidator validateThat(double[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveDoubleArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveDoubleArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveBooleanArrayVerifier requireThat(boolean[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveBooleanArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveBooleanArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -448,14 +445,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveBooleanArrayValidator validateThat(boolean[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveBooleanArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveBooleanArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveCharacterArrayVerifier requireThat(char[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveCharacterArrayVerifierImpl(scope, name, actual, config);
+		return new PrimitiveCharacterArrayVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -470,14 +466,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveCharacterArrayValidator validateThat(char[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveCharacterArrayValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveCharacterArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new ArrayVerifierImpl<>(scope, name, actual, config);
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -492,14 +487,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <E> ArrayValidator<E> validateThat(E[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new ArrayValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public <T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new ComparableVerifierImpl<>(scope, name, actual, config);
+		return new ComparableVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -514,14 +508,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <T extends Comparable<? super T>> ComparableValidator<T> validateThat(T actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ComparableValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new ComparableValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveBooleanVerifier requireThat(boolean actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveBooleanVerifierImpl(scope, name, actual, config);
+		return new PrimitiveBooleanVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -536,14 +529,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveBooleanValidator validateThat(boolean actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveBooleanValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveBooleanValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public BooleanVerifier requireThat(Boolean actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new BooleanVerifierImpl(scope, name, actual, config);
+		return new BooleanVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -558,14 +550,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public BooleanValidator validateThat(Boolean actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new BooleanValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new BooleanValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
+		return new PrimitiveNumberVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -580,14 +571,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveNumberValidator<Byte> validateThat(byte actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveNumberValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveNumberValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveCharacterVerifier requireThat(char actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveCharacterVerifierImpl(scope, name, actual, config);
+		return new PrimitiveCharacterVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -602,14 +592,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveCharacterValidator validateThat(char actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveCharacterValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveCharacterValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveNumberVerifier<Short> requireThat(short actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveNumberVerifierImpl<>(scope, name, actual, config);
+		return new PrimitiveNumberVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -624,14 +613,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveNumberValidator<Short> validateThat(short actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveNumberValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveNumberValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveIntegerVerifierImpl(scope, name, actual, config);
+		return new PrimitiveIntegerVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -646,14 +634,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveIntegerValidator<Integer> validateThat(int actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveIntegerValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveIntegerValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public IntegerVerifier<Integer> requireThat(Integer actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new IntegerVerifierImpl(scope, name, actual, config);
+		return new IntegerVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -668,14 +655,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public IntegerValidator<Integer> validateThat(Integer actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new IntegerValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new IntegerValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveIntegerVerifier<Long> requireThat(long actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveLongVerifierImpl(scope, name, actual, config);
+		return new PrimitiveLongVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -690,14 +676,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveIntegerValidator<Long> validateThat(long actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveLongValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveLongValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public IntegerVerifier<Long> requireThat(Long actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new LongVerifierImpl(scope, name, actual, config);
+		return new LongVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -712,14 +697,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public IntegerValidator<Long> validateThat(Long actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new LongValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new LongValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveFloatVerifierImpl(scope, name, actual, config);
+		return new PrimitiveFloatVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -734,14 +718,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveFloatingPointValidator<Float> validateThat(float actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveFloatValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveFloatValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public FloatingPointVerifier<Float> requireThat(Float actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new FloatVerifierImpl(scope, name, actual, config);
+		return new FloatVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -756,14 +739,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public FloatingPointValidator<Float> validateThat(Float actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new FloatValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new FloatValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveDoubleVerifierImpl(scope, name, actual, config);
+		return new PrimitiveDoubleVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -778,14 +760,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveFloatingPointValidator<Double> validateThat(double actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveDoubleValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PrimitiveDoubleValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public FloatingPointVerifier<Double> requireThat(Double actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new DoubleVerifierImpl(scope, name, actual, config);
+		return new DoubleVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -800,14 +781,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public FloatingPointValidator<Double> validateThat(Double actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new DoubleValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new DoubleValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public <T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new NumberVerifierImpl<>(scope, name, actual, config);
+		return new NumberVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -822,14 +802,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <T extends Number & Comparable<? super T>> NumberValidator<T> validateThat(T actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new NumberValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new NumberValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public BigDecimalVerifier requireThat(BigDecimal actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new BigDecimalVerifierImpl(scope, name, actual, config);
+		return new BigDecimalVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -844,14 +823,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public BigDecimalValidator validateThat(BigDecimal actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new BigDecimalValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new BigDecimalValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public <K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new MapVerifierImpl<>(scope, name, actual, config);
+		return new MapVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -866,14 +844,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <K, V> MapValidator<K, V> validateThat(Map<K, V> actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new MapValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new MapValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public PathVerifier requireThat(Path actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new PathVerifierImpl(scope, name, actual, config);
+		return new PathVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -888,14 +865,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PathValidator validateThat(Path actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PathValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new PathValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public StringVerifier requireThat(String actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new StringVerifierImpl(scope, name, actual, config);
+		return new StringVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -910,14 +886,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public StringValidator validateThat(String actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new StringValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new StringValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public UriVerifier requireThat(URI actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new UriVerifierImpl(scope, name, actual, config);
+		return new UriVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -932,14 +907,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public UriValidator validateThat(URI actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new UriValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new UriValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public <T> ClassVerifier<T> requireThat(Class<T> actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new ClassVerifierImpl<>(scope, name, actual, config);
+		return new ClassVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -954,14 +928,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <T> ClassValidator<T> validateThat(Class<T> actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ClassValidatorImpl<>(scope, name, actual, config, new ArrayList<>());
+		return new ClassValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public OptionalVerifier requireThat(Optional<?> actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new OptionalVerifierImpl(scope, name, actual, config);
+		return new OptionalVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -976,14 +949,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public OptionalValidator validateThat(Optional<?> actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new OptionalValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new OptionalValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
 	public InetAddressVerifier requireThat(InetAddress actual, String name)
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new InetAddressVerifierImpl(scope, name, actual, config);
+		return new InetAddressVerifierImpl(validateThat(actual, name));
 	}
 
 	@Override
@@ -998,6 +970,6 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public InetAddressValidator validateThat(InetAddress actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new InetAddressValidatorImpl(scope, name, actual, config, new ArrayList<>());
+		return new InetAddressValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 }

@@ -17,7 +17,7 @@ public interface ClassVerifier<T> extends ExtensibleObjectVerifier<ClassVerifier
 	 * Ensures that the actual value is a superclass or super-interface of a class.
 	 *
 	 * @param type the class to compare to
-	 * @return this
+	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code type} is null
 	 * @throws IllegalArgumentException if actual value is not a supertype of {@code type}
 	 */

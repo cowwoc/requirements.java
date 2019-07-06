@@ -5,10 +5,18 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.PathVerifier;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
+import org.bitbucket.cowwoc.requirements.java.internal.PathValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -395,6 +403,21 @@ public final class ObjectTest
 			Object actual = null;
 			new Requirements(scope).withAssertionsEnabled().withAssertionsDisabled().
 				assertThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@Test(expectedExceptions = IOException.class)
+	public void failWithCheckedException() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			ArrayList<ValidationFailure> failures = new ArrayList<>();
+			PathValidatorImpl validator = new PathValidatorImpl(scope, scope.getDefaultConfiguration().get(),
+				"name", Path.of("/"), failures);
+
+			failures.add(new ValidationFailureImpl(validator, IOException.class, "This is a test"));
+			PathVerifier verifier = new PathVerifierImpl(validator);
+			verifier.isDirectory();
 		}
 	}
 }

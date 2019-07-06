@@ -26,7 +26,6 @@ public final class ExceptionBuilder<T extends Exception>
 	private final ApplicationScope scope;
 	private final Configuration config;
 	private final Class<T> type;
-	private final String message;
 	private Throwable cause;
 	private final Exceptions exceptions;
 	private final boolean cleanStackTrace;
@@ -39,19 +38,16 @@ public final class ExceptionBuilder<T extends Exception>
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
 	 * @param type          the type of the exception
-	 * @param message       the exception message
-	 * @throws NullPointerException if {@code scope}, {@code configuration}, {@code type} or message are null
+	 * @throws NullPointerException if {@code scope}, {@code configuration} or {@code type} are null
 	 */
-	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<T> type, String message)
+	public ExceptionBuilder(ApplicationScope scope, Configuration configuration, Class<T> type)
 	{
 		assert (scope != null) : "scope may not be null";
 		assert (configuration != null) : "configuration may not be null";
-		assert (message != null) : "message may not be null";
 		this.scope = scope;
 		this.config = configuration;
 		this.exceptions = scope.getExceptions();
 		this.type = type;
-		this.message = message;
 		this.cleanStackTrace = scope.getGlobalConfiguration().isCleanStackTrace();
 	}
 
@@ -100,10 +96,13 @@ public final class ExceptionBuilder<T extends Exception>
 	}
 
 	/**
-	 * @return a new exception
+	 * @param message the exception message
+	 * @return the exception corresponding to the validation failure
+	 * @throws AssertionError if {@code message} is null
 	 */
-	public T build()
+	public T build(String message)
 	{
+		assert (message != null);
 		StringJoiner messageWithContext = new StringJoiner("\n");
 		messageWithContext.add(message);
 

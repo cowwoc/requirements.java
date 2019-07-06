@@ -19,7 +19,7 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:-requires-automatic</arg>
+						<arg>-Xlint:all,-requires-automatic,-requires-transitive-automatic,-module</arg>
 						<!-- WORKAROUND: https://issues.apache.org/jira/browse/MCOMPILER-368 -->
 						<arg>-Xpkginfo:always</arg>
 					</compilerArgs>

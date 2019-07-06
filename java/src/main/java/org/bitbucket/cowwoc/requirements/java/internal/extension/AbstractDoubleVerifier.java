@@ -4,75 +4,53 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 /**
  * An implementation of {@code ExtensibleFloatingPointVerifier} for {@code double}s.
  *
  * @param <S> the type of verifier returned by the methods
+ * @param <V> the type of validator used by the verifier
  */
-public abstract class AbstractDoubleVerifier<S>
-	extends AbstractNumberVerifier<S, Double>
+public abstract class AbstractDoubleVerifier<S, V extends ExtensibleFloatingPointValidator<V, Double>>
+	extends AbstractNumberVerifier<S, V, Double>
 	implements ExtensibleFloatingPointVerifier<S, Double>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	protected AbstractDoubleVerifier(ApplicationScope scope, String name, Double actual,
-	                                 Configuration config)
+	protected AbstractDoubleVerifier(V validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
 	}
 
 	@Override
 	public S isNumber()
 	{
-		if (!actual.isNaN())
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be a number.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isNumber();
+		return validationResult();
 	}
 
 	@Override
 	public S isNotNumber()
 	{
-		if (actual.isNaN())
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " may not be a number.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isNotNumber();
+		return validationResult();
 	}
 
 	@Override
 	public S isFinite()
 	{
-		if (!actual.isInfinite())
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be finite.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isFinite();
+		return validationResult();
 	}
 
 	@Override
 	public S isNotFinite()
 	{
-		if (actual.isInfinite())
-			return getThis();
-		throw new ExceptionBuilder<>(scope, config, IllegalArgumentException.class,
-			name + " must be infinite.").
-			addContext("Actual", actual).
-			build();
+		validator = validator.isNotFinite();
+		return validationResult();
 	}
 }

@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.ComparableValidator;
 import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
  * Default implementation of {@code ComparableVerifier}.
@@ -15,19 +14,21 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
  * @param <T> the type of objects that the value may be compared to
  */
 public final class ComparableVerifierImpl<T extends Comparable<? super T>>
-	extends AbstractComparableVerifier<ComparableVerifier<T>, T>
+	extends AbstractComparableVerifier<ComparableVerifier<T>, ComparableValidator<T>, T>
 	implements ComparableVerifier<T>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	public ComparableVerifierImpl(ApplicationScope scope, String name, T actual, Configuration config)
+	public ComparableVerifierImpl(ComparableValidator<T> validator)
 	{
-		super(scope, name, actual, config);
+		super(validator);
+	}
+
+	@Override
+	protected ComparableVerifier<T> getThis()
+	{
+		return this;
 	}
 }

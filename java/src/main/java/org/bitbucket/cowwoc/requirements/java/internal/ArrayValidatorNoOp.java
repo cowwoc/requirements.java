@@ -36,37 +36,7 @@ public final class ArrayValidatorNoOp<E> extends AbstractObjectValidatorNoOp<Arr
 	}
 
 	@Override
-	public ArrayValidator<E> isEqualTo(Object expected)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayValidator<E> isEqualTo(Object expected, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayValidator<E> isNotEqualTo(Object value)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayValidator<E> isNotEqualTo(Object value, String name)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayValidator<E> isInstanceOf(Class<?> type)
-	{
-		return this;
-	}
-
-	@Override
-	public ArrayValidator<E> isNotInstanceOf(Class<?> type)
+	protected ArrayValidator<E> getThis()
 	{
 		return this;
 	}

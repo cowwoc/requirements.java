@@ -34,6 +34,12 @@ public final class UriValidatorNoOp extends AbstractObjectValidatorNoOp<UriValid
 	}
 
 	@Override
+	protected UriValidator getThis()
+	{
+		return this;
+	}
+
+	@Override
 	public UriValidator isAbsolute()
 	{
 		return this;

@@ -11,8 +11,11 @@
  */
 module org.bitbucket.cowwoc.requirements.guava
 {
-	requires com.google.common;
+	requires transitive com.google.common;
 	requires transitive org.bitbucket.cowwoc.requirements.java;
+	requires org.slf4j;
 
 	exports org.bitbucket.cowwoc.requirements.guava;
+
+	exports org.bitbucket.cowwoc.requirements.guava.internal.secrets to org.bitbucket.cowwoc.requirements.test;
 }

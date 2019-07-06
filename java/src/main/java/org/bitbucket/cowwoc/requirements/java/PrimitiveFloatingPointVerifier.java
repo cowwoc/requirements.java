@@ -12,8 +12,8 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumbe
  *
  * @param <T> the type of the floating-point number
  */
-public interface PrimitiveFloatingPointVerifier<T extends Number & Comparable<? super T>> extends
-	ExtensibleFloatingPointVerifier<PrimitiveFloatingPointVerifier<T>, T>,
+public interface PrimitiveFloatingPointVerifier<T extends Number & Comparable<? super T>>
+	extends ExtensibleFloatingPointVerifier<PrimitiveFloatingPointVerifier<T>, T>,
 	ExtensiblePrimitiveNumberVerifier<PrimitiveFloatingPointVerifier<T>, T>
 {
 }

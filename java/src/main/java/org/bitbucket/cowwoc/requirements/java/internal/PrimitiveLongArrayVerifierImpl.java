@@ -4,46 +4,29 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveLongArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Default implementation of {@code PrimitiveLongArrayVerifier}.
  */
 public final class PrimitiveLongArrayVerifierImpl
-	extends AbstractArrayVerifier<PrimitiveLongArrayVerifier, Long, long[]>
+	extends AbstractArrayVerifier<PrimitiveLongArrayVerifier, PrimitiveLongArrayValidator, Long, long[]>
 	implements PrimitiveLongArrayVerifier
 {
 	/**
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a view of the array as a collection
+	 * @param validator the validator to delegate to
+	 * @throws AssertionError if {@code validator} is null
 	 */
-	private static Collection<Long> asCollection(long[] array)
+	public PrimitiveLongArrayVerifierImpl(PrimitiveLongArrayValidator validator)
 	{
-		if (array == null)
-			return null;
-		List<Long> result = new ArrayList<>(array.length);
-		for (long element : array)
-			result.add(element);
-		return result;
+		super(validator);
 	}
 
-	/**
-	 * @param scope  the application configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code name} or {@code config} are null. If {@code name} is empty.
-	 */
-	public PrimitiveLongArrayVerifierImpl(ApplicationScope scope, String name, long[] actual,
-	                                      Configuration config)
+	@Override
+	protected PrimitiveLongArrayVerifier getThis()
 	{
-		super(scope, name, actual, asCollection(actual), config);
+		return this;
 	}
 }
