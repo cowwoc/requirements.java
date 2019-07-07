@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectV
 /**
  * Default implementation of {@code ObjectVerifier}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public final class ObjectVerifierImpl<T>
 	extends AbstractObjectVerifier<ObjectVerifier<T>, ObjectValidator<T>, T>

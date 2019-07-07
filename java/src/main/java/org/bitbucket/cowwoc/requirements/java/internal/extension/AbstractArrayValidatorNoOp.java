@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * An {@code ExtensibleArrayValidator} that does nothing.
+ * An {@code ExtensibleArrayValidator} that does nothing. A validator that ignores all subsequent
+ * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
+ * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of validator returned by the methods
  * @param <E> the type of elements in the array

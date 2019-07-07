@@ -58,6 +58,6 @@ public final class OptionalValidatorNoOp
 	@Override
 	public OptionalValidator contains(Object value, String name)
 	{
-		return null;
+		return this;
 	}
 }

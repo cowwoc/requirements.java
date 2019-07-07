@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
  * implementing verifier is not guaranteed to be a {@link PrimitiveNumberVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface ExtensiblePrimitiveIntegerVerifier<S, T extends Number & Comparable<? super T>>
 	extends ExtensibleIntegerVerifier<S, T>, ExtensiblePrimitiveNumberVerifier<S, T>

@@ -15,14 +15,15 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * An {@code ExtensibleObjectValidator} that does nothing.
+ * An {@code ExtensibleObjectValidator} that does nothing. A validator that ignores all subsequent
+ * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
+ * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObjectValidator<S, T>
 {
@@ -53,9 +54,15 @@ public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObj
 	protected abstract S getThis();
 
 	@Override
-	public Optional<T> getActual()
+	public boolean isActualAvailable()
 	{
-		return Optional.empty();
+		return false;
+	}
+
+	@Override
+	public T getActual()
+	{
+		return null;
 	}
 
 	@Override

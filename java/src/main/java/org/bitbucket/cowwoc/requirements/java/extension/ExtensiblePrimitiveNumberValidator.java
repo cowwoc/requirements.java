@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberValidator;
  * implementing validator is not guaranteed to be a {@link PrimitiveNumberValidator}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface ExtensiblePrimitiveNumberValidator<S, T extends Number & Comparable<? super T>>
 	extends ExtensibleNumberValidator<S, T>

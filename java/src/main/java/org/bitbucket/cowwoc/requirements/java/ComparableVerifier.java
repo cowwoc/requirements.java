@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVeri
 /**
  * Verifies the requirements of a {@link Comparable}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface ComparableVerifier<T extends Comparable<? super T>>
 	extends ExtensibleComparableVerifier<ComparableVerifier<T>, T>

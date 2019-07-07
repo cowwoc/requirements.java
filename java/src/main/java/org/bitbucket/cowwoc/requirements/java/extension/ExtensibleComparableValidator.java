@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.ComparableValidator;
  * not guaranteed to be a {@link ComparableValidator}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface ExtensibleComparableValidator<S, T extends Comparable<? super T>>
 	extends ExtensibleObjectValidator<S, T>

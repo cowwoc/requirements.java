@@ -9,7 +9,6 @@ import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -17,7 +16,7 @@ import java.util.function.Consumer;
  * guaranteed to be an {@link ObjectVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface ExtensibleObjectVerifier<S, T>
 {
@@ -166,11 +165,18 @@ public interface ExtensibleObjectVerifier<S, T>
 	S asString(Consumer<StringVerifier> consumer);
 
 	/**
-	 * Returns the actual value.
+	 * Indicates if the actual value is available.
 	 *
-	 * @return {@code Optional.empty()} if the actual value is not available (e.g. if
-	 * {@link JavaRequirements#assertThat(Object, String) assertThat()} is used when
-	 * assertions are disabled, the verifier does not retain a reference to the actual value)
+	 * @return false if {@link JavaRequirements#assertThat(Object, String) assertThat()} was invoked and
+	 * assertions are disabled (in which case the value is discarded)
 	 */
-	Optional<T> getActual();
+	boolean isActualAvailable();
+
+	/**
+	 * Returns the actual value. The return value is undefined if {@link #isActualAvailable()}
+	 * is {@code false}.
+	 *
+	 * @return the actual value
+	 */
+	T getActual();
 }

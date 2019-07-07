@@ -17,7 +17,7 @@ import java.util.List;
  * An implementation of {@code ExtensibleComparableValidator}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public abstract class AbstractComparableValidator<S, T extends Comparable<? super T>>
 	extends AbstractObjectValidator<S, T>

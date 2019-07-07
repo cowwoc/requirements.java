@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * A {@code NumberValidator} that does nothing.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public final class NumberValidatorNoOp<T extends Number & Comparable<? super T>>
 	extends AbstractNumberValidatorNoOp<NumberValidator<T>, T>

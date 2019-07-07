@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * An ObjectValidator that ignores subsequent validations due to an incompatible type conversion.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public final class ObjectValidatorNoOp<T> extends AbstractObjectValidatorNoOp<ObjectValidator<T>, T>
 	implements ObjectValidator<T>

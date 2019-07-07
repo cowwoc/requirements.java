@@ -12,7 +12,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVeri
  *
  * @param <S> the type of verifier returned by the methods
  * @param <V> the type of validator used by the verifier
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public abstract class AbstractComparableVerifier<S, V extends ExtensibleComparableValidator<V, T>,
 	T extends Comparable<? super T>>

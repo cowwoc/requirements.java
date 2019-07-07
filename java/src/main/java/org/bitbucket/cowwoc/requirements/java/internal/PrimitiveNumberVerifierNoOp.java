@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractPrimiti
 /**
  * A {@code PrimitiveNumberVerifier} that does nothing.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public final class PrimitiveNumberVerifierNoOp<T extends Number & Comparable<? super T>>
 	extends AbstractPrimitiveNumberVerifierNoOp<PrimitiveNumberVerifier<T>, T>

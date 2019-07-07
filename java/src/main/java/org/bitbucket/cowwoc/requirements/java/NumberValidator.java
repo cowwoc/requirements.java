@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberValidato
 /**
  * Validates the requirements of for a {@link Number}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface NumberValidator<T extends Number & Comparable<? super T>>
 	extends ExtensibleNumberValidator<NumberValidator<T>, T>

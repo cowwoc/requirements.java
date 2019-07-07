@@ -10,14 +10,15 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier
 import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * An {@code ExtensibleObjectVerifier} that does nothing.
+ * An {@code ExtensibleObjectVerifier} that does nothing. A validator that ignores all subsequent
+ * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
+ * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public abstract class AbstractObjectVerifierNoOp<S, T> implements ExtensibleObjectVerifier<S, T>
 {
@@ -125,8 +126,14 @@ public abstract class AbstractObjectVerifierNoOp<S, T> implements ExtensibleObje
 	}
 
 	@Override
-	public Optional<T> getActual()
+	public boolean isActualAvailable()
 	{
-		return Optional.empty();
+		return false;
+	}
+
+	@Override
+	public T getActual()
+	{
+		return null;
 	}
 }

@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.IntegerValidator;
  * {@link IntegerValidator}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface ExtensibleIntegerValidator<S, T extends Number & Comparable<? super T>>
 	extends ExtensibleNumberValidator<S, T>

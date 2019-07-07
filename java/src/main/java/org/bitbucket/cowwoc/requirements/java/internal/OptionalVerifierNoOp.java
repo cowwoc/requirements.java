@@ -53,6 +53,6 @@ public final class OptionalVerifierNoOp
 	@Override
 	public OptionalVerifier contains(Object value, String name)
 	{
-		return null;
+		return this;
 	}
 }

@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier
 /**
  * Verifies the requirements of for a {@link Number}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface NumberVerifier<T extends Number & Comparable<? super T>>
 	extends ExtensibleNumberVerifier<NumberVerifier<T>, T>

@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberV
 /**
  * Default implementation of {@code PrimitiveNumberVerifier}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? super T>>
 	extends AbstractNumberVerifier<PrimitiveNumberVerifier<T>, PrimitiveNumberValidator<T>, T>

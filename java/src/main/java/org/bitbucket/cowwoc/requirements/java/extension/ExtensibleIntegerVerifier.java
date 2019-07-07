@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
  * {@link IntegerVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface ExtensibleIntegerVerifier<S, T extends Number & Comparable<? super T>>
 	extends ExtensibleNumberVerifier<S, T>

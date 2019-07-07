@@ -8,10 +8,12 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier;
 
 /**
- * An {@code ExtensibleNumberVerifier} that does nothing.
+ * An {@code ExtensibleNumberVerifier} that does nothing. A validator that ignores all subsequent
+ * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
+ * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public abstract class AbstractNumberVerifierNoOp<S, T extends Number & Comparable<? super T>>
 	extends AbstractComparableVerifierNoOp<S, T>

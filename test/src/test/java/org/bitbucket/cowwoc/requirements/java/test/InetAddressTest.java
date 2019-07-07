@@ -103,7 +103,7 @@ public final class InetAddressTest
 		{
 			String actual = "1.2.3.4";
 			InetAddress actualAsInetAddress = new Requirements(scope).
-				requireThat(actual, "actual").asInetAddress().getActual().get();
+				requireThat(actual, "actual").asInetAddress().getActual();
 			assert (actualAsInetAddress.toString().equals("/" + actual)) :
 				"actualAsInetAddress: " + actualAsInetAddress + ", actual: /" + actual;
 		}

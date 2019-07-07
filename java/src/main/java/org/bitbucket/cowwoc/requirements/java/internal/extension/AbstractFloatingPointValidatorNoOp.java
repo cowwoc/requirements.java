@@ -12,10 +12,12 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.List;
 
 /**
- * An {@code ExtensibleFloatingPointValidator} that does nothing.
+ * An {@code ExtensibleFloatingPointValidator} that does nothing. A validator that ignores all subsequent
+ * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
+ * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public abstract class AbstractFloatingPointValidatorNoOp<S, T extends Number & Comparable<? super T>>
 	extends AbstractNumberValidatorNoOp<S, T>

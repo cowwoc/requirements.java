@@ -998,7 +998,7 @@ public final class ArrayTest
 				};
 			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
 			List<Integer> output = new ArrayList<>(requirements.requireThat(actual, "actual").
-				asCollection().getActual().get());
+				asCollection().getActual());
 			requirements.requireThat(input, "Input").isEqualTo(output, "Output");
 		}
 	}
@@ -1015,7 +1015,7 @@ public final class ArrayTest
 				};
 			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
 			List<Integer> actualOutput = new ArrayList<>(requirements.requireThat(actual, "actual").
-				asCollection().getActual().get());
+				asCollection().getActual());
 			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}

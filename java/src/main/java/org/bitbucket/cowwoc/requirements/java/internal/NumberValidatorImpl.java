@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Default implementation of {@code NumberValidator}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public final class NumberValidatorImpl<T extends Number & Comparable<? super T>>
 	extends AbstractNumberValidator<NumberValidator<T>, T>

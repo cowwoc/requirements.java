@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
  * not guaranteed to be a {@link ComparableVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>>
 	extends ExtensibleObjectVerifier<S, T>

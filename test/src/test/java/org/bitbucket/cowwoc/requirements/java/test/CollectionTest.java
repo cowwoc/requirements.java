@@ -759,7 +759,7 @@ public final class CollectionTest
 		{
 			Requirements requirements = new Requirements(scope);
 			List<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
-			List<Integer> expected = requirements.requireThat(actual, "actual").getActual().get();
+			List<Integer> expected = requirements.requireThat(actual, "actual").getActual();
 			requirements.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
@@ -771,7 +771,7 @@ public final class CollectionTest
 		{
 			Requirements requirements = new Requirements(scope);
 			Iterable<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
-			Iterable<Integer> expected = requirements.requireThat(actual, "actual").getActual().get();
+			Iterable<Integer> expected = requirements.requireThat(actual, "actual").getActual();
 			requirements.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
@@ -788,7 +788,7 @@ public final class CollectionTest
 				};
 			Collection<Integer> actual = Arrays.asList(array);
 			Integer[] output = requirements.requireThat(actual, "actual").
-				asArray(Integer.class).getActual().get();
+				asArray(Integer.class).getActual();
 			requirements.requireThat(array, "Input").isEqualTo(output, "Output");
 		}
 	}
@@ -805,7 +805,7 @@ public final class CollectionTest
 					5, 4, 3, 2, 1
 				};
 			Integer[] actualOutput = requirements.requireThat(actual, "actual").
-				asArray(Integer.class).getActual().get();
+				asArray(Integer.class).getActual();
 			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}

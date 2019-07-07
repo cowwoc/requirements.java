@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * An implementation of {@code ComparableValidator} that does nothing.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public final class ComparableValidatorNoOp<T extends Comparable<? super T>>
 	extends AbstractComparableValidatorNoOp<ComparableValidator<T>, T>

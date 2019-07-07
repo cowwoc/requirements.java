@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectV
 /**
  * An {@code ObjectVerifier} that does nothing.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public final class ObjectVerifierNoOp<T> extends AbstractObjectVerifierNoOp<ObjectVerifier<T>, T>
 	implements ObjectVerifier<T>

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Default implementation of {@code ObjectValidator}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<ObjectValidator<T>, T>
 	implements ObjectValidator<T>

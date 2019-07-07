@@ -8,10 +8,12 @@ import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVerifier;
 
 /**
- * A {@code ExtensibleComparableVerifier} that does nothing.
+ * A {@code ExtensibleComparableVerifier} that does nothing. A validator that ignores all subsequent
+ * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
+ * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public abstract class AbstractComparableVerifierNoOp<S, T extends Comparable<? super T>>
 	extends AbstractObjectVerifierNoOp<S, T>

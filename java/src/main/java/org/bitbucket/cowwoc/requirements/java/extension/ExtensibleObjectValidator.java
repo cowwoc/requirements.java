@@ -9,24 +9,30 @@ import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
  * Validates the requirements of an {@link Object}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface ExtensibleObjectValidator<S, T>
 {
 	/**
-	 * Returns the actual value.
+	 * Indicates if the actual value is available.
 	 *
-	 * @return {@code Optional.empty()} if the actual value is not available (e.g. the value was converted to
-	 * an incompatible type)
+	 * @return false if the value was converted to an incompatible type
 	 */
-	Optional<T> getActual();
+	boolean isActualAvailable();
+
+	/**
+	 * Returns the actual value. The return value is undefined if {@link #isActualAvailable()}
+	 * is {@code false}.
+	 *
+	 * @return the actual value
+	 */
+	T getActual();
 
 	/**
 	 * Returns the list of failed validations.

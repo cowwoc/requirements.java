@@ -19,14 +19,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
  * Default implementation of {@code ExtensibleObjectValidator}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectValidator<S, T>
 {
@@ -97,9 +96,15 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	}
 
 	@Override
-	public Optional<T> getActual()
+	public boolean isActualAvailable()
 	{
-		return Optional.ofNullable(actual);
+		return true;
+	}
+
+	@Override
+	public T getActual()
+	{
+		return actual;
 	}
 
 	@Override

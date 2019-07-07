@@ -12,7 +12,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierImpl;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -21,7 +20,7 @@ import java.util.function.Supplier;
  *
  * @param <S> the type of verifier returned by the methods
  * @param <V> the type of validator used by the verifier
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValidator<V, T>, T>
 	implements ExtensibleObjectVerifier<S, T>
@@ -101,8 +100,7 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	 * @return the value returned by {@code result}
 	 * @throws E if the validation failed
 	 */
-	protected <R, E extends Exception> R validationResult(Supplier<R> result, Class<E> exception)
-		throws E
+	protected <R, E extends Exception> R validationResult(Supplier<R> result, Class<E> exception) throws E
 	{
 		assert (result != null) : "result may not be null";
 		assert (exception != null) : "exception may not be null";
@@ -218,7 +216,13 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	}
 
 	@Override
-	public Optional<T> getActual()
+	public boolean isActualAvailable()
+	{
+		return true;
+	}
+
+	@Override
+	public T getActual()
 	{
 		return validator.getActual();
 	}

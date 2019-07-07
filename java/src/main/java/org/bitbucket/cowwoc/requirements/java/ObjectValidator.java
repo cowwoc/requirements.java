@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidato
 /**
  * Validates the requirements of an {@link Object}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface ObjectValidator<T> extends ExtensibleObjectValidator<ObjectValidator<T>, T>
 {

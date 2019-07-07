@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumbe
 /**
  * Validates the requirements of a primitive number (e.g. {@link int}).
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface PrimitiveNumberValidator<T extends Number & Comparable<? super T>>
 	extends ExtensiblePrimitiveNumberValidator<PrimitiveNumberValidator<T>, T>

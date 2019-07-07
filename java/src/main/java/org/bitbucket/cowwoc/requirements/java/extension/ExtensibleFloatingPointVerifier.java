@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;
  * {@link FloatingPointVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public interface ExtensibleFloatingPointVerifier<S, T extends Number & Comparable<? super T>>
 	extends ExtensibleNumberVerifier<S, T>

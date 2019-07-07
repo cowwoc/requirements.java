@@ -11,7 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractCompara
 /**
  * An implementation of {@code ComparableVerifier} that does nothing.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being verified
  */
 public final class ComparableVerifierNoOp<T extends Comparable<? super T>>
 	extends AbstractComparableVerifierNoOp<ComparableVerifier<T>, T>

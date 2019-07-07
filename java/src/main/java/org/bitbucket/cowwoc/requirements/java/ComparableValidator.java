@@ -9,7 +9,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVali
 /**
  * Validates the requirements of a {@link Comparable}.
  *
- * @param <T> the type of the value
+ * @param <T> the type of the value being validated
  */
 public interface ComparableValidator<T extends Comparable<? super T>>
 	extends ExtensibleComparableValidator<ComparableValidator<T>, T>
