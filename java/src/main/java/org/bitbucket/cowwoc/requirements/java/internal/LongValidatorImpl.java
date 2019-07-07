@@ -43,6 +43,6 @@ public final class LongValidatorImpl
 	@Override
 	protected IntegerValidator<Long> getNoOp()
 	{
-		return new IntegerValidatorNoOp<>(scope, config, failures);
+		return new IntegerValidatorNoOp<>(failures);
 	}
 }

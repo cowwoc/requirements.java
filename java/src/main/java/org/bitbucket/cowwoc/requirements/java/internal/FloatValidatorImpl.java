@@ -43,6 +43,6 @@ public final class FloatValidatorImpl
 	@Override
 	protected FloatingPointValidator<Float> getNoOp()
 	{
-		return new FloatingPointValidatorNoOp<>(scope, config, failures);
+		return new FloatingPointValidatorNoOp<>(failures);
 	}
 }

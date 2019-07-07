@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractPrimitiveNumberVerifierNoOp;
 
 /**
- * An implementation of {@code BigDecimalPrecisionVerifier} that does nothing.
+ * A {@code BigDecimalPrecisionVerifier} that does nothing.
  */
 public final class BigDecimalPrecisionVerifierNoOp
 	extends AbstractPrimitiveNumberVerifierNoOp<BigDecimalPrecisionVerifier, Integer>

@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@code MultimapVerifier} that does nothing.
+ * A {@code MultimapVerifier} that does nothing.
  *
  * @param <K> the type of keys in the multimap
  * @param <V> the type of values in the multimap

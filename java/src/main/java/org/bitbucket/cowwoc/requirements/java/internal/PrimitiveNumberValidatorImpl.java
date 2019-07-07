@@ -45,18 +45,18 @@ public final class PrimitiveNumberValidatorImpl<T extends Number & Comparable<? 
 	@Override
 	protected PrimitiveNumberValidator<T> getNoOp()
 	{
-		return new PrimitiveNumberValidatorNoOp<>(scope, config, failures);
+		return new PrimitiveNumberValidatorNoOp<>(failures);
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveNumberValidator<T> isNull()
 	{
 		return neverNull();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveNumberValidator<T> isNotNull()
 	{
 		return neverNull();

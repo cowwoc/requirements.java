@@ -4,12 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveVerifier;
 
 /**
  * Verifies the requirements of the size of a collection.
  */
-public interface SizeVerifier extends ExtensiblePrimitiveNumberVerifier<SizeVerifier, Integer>
+public interface SizeVerifier
+	extends ExtensiblePrimitiveVerifier<SizeVerifier, Integer>,
+	ExtensibleNumberVerifier<SizeVerifier, Integer>
 {
 	/**
 	 * {@inheritDoc}

@@ -4,10 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveVerifier;
 
 /**
- * An {@code ExtensiblePrimitiveNumberVerifier} that does nothing. A validator that ignores all subsequent
+ * An {@code ExtensiblePrimitiveVerifier} that does nothing. A validator that ignores all subsequent
  * failures because they are guaranteed to fail and would add any value to the end-user. For example, an
  * attempt was made to dereference null or cast the value to an incompatible type.
  *
@@ -16,50 +16,50 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumbe
  */
 public abstract class AbstractPrimitiveNumberVerifierNoOp<S, T extends Number & Comparable<? super T>>
 	extends AbstractNumberVerifierNoOp<S, T>
-	implements ExtensiblePrimitiveNumberVerifier<S, T>
+	implements ExtensiblePrimitiveVerifier<S, T>
 {
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isNegative()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNegative();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isNotNegative()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotNegative();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isZero()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isZero();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isNotZero()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotZero();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isPositive()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isPositive();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isNotPositive()
 	{
 		// Suppress warning about extending class with deprecated methods

@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleIntegerValidator;
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveValidator;
 
 /**
  * Validates the requirements of a primitive integer number.
@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumbe
  * @param <T> the type of the integer number
  */
 public interface PrimitiveIntegerValidator<T extends Number & Comparable<? super T>>
-	extends ExtensiblePrimitiveNumberValidator<PrimitiveIntegerValidator<T>, T>,
+	extends ExtensiblePrimitiveValidator<PrimitiveIntegerValidator<T>, T>,
 	ExtensibleIntegerValidator<PrimitiveIntegerValidator<T>, T>
 {
 }

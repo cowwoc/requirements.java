@@ -4,7 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveValidator;
 
 import java.math.BigDecimal;
 
@@ -12,7 +13,8 @@ import java.math.BigDecimal;
  * Validates the requirements of a {@link BigDecimal#precision()}.
  */
 public interface BigDecimalPrecisionValidator
-	extends ExtensiblePrimitiveNumberValidator<BigDecimalPrecisionValidator, Integer>
+	extends ExtensiblePrimitiveValidator<BigDecimalPrecisionValidator, Integer>,
+	ExtensibleNumberValidator<BigDecimalPrecisionValidator, Integer>
 {
 	/**
 	 * {@inheritDoc}

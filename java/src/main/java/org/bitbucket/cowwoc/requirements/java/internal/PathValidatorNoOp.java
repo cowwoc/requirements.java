@@ -4,11 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PathValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -22,14 +20,12 @@ public final class PathValidatorNoOp
 	implements PathValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public PathValidatorNoOp(ApplicationScope scope, Configuration config, List<ValidationFailure> failures)
+	public PathValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override

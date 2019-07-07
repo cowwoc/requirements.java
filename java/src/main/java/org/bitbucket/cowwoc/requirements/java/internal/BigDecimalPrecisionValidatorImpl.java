@@ -44,46 +44,46 @@ public final class BigDecimalPrecisionValidatorImpl
 	@Override
 	protected BigDecimalPrecisionValidator getNoOp()
 	{
-		return new BigDecimalPrecisionValidatorNoOp(scope, config, failures);
+		return new BigDecimalPrecisionValidatorNoOp(failures);
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionValidator isZero()
 	{
 		return neverZero();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionValidator isNotZero()
 	{
 		return neverZero();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionValidator isNotPositive()
 	{
 		return neverZeroOrNegative();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionValidator isPositive()
 	{
 		return neverZeroOrNegative();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionValidator isNotNegative()
 	{
 		return neverNegative();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionValidator isNegative()
 	{
 		return neverNegative();

@@ -43,6 +43,6 @@ public final class BooleanValidatorImpl
 	@Override
 	protected BooleanValidator getNoOp()
 	{
-		return new BooleanValidatorNoOp(scope, config, failures);
+		return new BooleanValidatorNoOp(failures);
 	}
 }

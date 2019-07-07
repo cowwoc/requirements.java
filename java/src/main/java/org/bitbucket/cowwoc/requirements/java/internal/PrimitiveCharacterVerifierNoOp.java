@@ -16,7 +16,6 @@ public final class PrimitiveCharacterVerifierNoOp
 {
 	private static final PrimitiveCharacterVerifierNoOp INSTANCE = new PrimitiveCharacterVerifierNoOp();
 
-
 	/**
 	 * @return the singleton instance
 	 */
@@ -38,16 +37,16 @@ public final class PrimitiveCharacterVerifierNoOp
 		return this;
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveCharacterVerifier isNotNull()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveCharacterVerifier isNull()
 	{
 		// Suppress warning about extending class with deprecated methods

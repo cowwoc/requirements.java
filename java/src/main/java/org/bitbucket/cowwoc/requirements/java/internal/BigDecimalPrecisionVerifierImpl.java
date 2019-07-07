@@ -30,47 +30,47 @@ public final class BigDecimalPrecisionVerifierImpl
 		return this;
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionVerifier isZero()
 	{
 		return super.isZero();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionVerifier isNotZero()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotZero();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionVerifier isNotPositive()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotPositive();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionVerifier isPositive()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isPositive();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionVerifier isNotNegative()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotNegative();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public BigDecimalPrecisionVerifier isNegative()
 	{
 		// Suppress warning about extending class with deprecated methods

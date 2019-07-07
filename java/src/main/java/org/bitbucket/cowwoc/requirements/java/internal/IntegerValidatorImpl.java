@@ -43,6 +43,6 @@ public final class IntegerValidatorImpl
 	@Override
 	protected IntegerValidator<Integer> getNoOp()
 	{
-		return new IntegerValidatorNoOp<>(scope, config, failures);
+		return new IntegerValidatorNoOp<>(failures);
 	}
 }

@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVali
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVerifier;
 
 /**
- * An implementation of {@code ExtensibleComparableVerifier}.
+ * Extensible implementation of {@code ExtensibleComparableVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
  * @param <V> the type of validator used by the verifier

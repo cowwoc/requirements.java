@@ -45,6 +45,6 @@ public final class ComparableValidatorImpl<T extends Comparable<? super T>>
 	@Override
 	protected ComparableValidator<T> getNoOp()
 	{
-		return new ComparableValidatorNoOp<>(scope, config, failures);
+		return new ComparableValidatorNoOp<>(failures);
 	}
 }

@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifierNoOp;
 
 /**
- * An implementation of {@code ArrayVerifier} that does nothing.
+ * An {@code ArrayVerifier} that does nothing.
  *
  * @param <E> the type of elements in the array
  */

@@ -114,16 +114,16 @@ public final class SizeVerifierImpl
 		return validationResult();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public SizeVerifier isNotNegative()
 	{
 		validator = validator.isNotNegative();
 		return validationResult();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public SizeVerifier isNegative()
 	{
 		validator = validator.isNegative();

@@ -5,12 +5,10 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.MapValidator;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,14 +28,12 @@ public final class MapValidatorNoOp<K, V>
 	implements MapValidator<K, V>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public MapValidatorNoOp(ApplicationScope scope, Configuration config, List<ValidationFailure> failures)
+	public MapValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override
@@ -49,7 +45,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override
@@ -63,7 +59,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override
@@ -103,7 +99,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public SizeValidator size()
 	{
-		return new SizeValidatorNoOp(scope, config, failures);
+		return new SizeValidatorNoOp(failures);
 	}
 
 	@Override

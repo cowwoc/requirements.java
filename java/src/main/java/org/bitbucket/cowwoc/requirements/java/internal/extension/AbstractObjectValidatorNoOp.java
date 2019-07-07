@@ -4,13 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.StringValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,24 +24,15 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObjectValidator<S, T>
 {
-	protected final ApplicationScope scope;
-	protected final Configuration config;
 	protected final List<ValidationFailure> failures;
 
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractObjectValidatorNoOp(ApplicationScope scope, Configuration config,
-	                                   List<ValidationFailure> failures)
+	public AbstractObjectValidatorNoOp(List<ValidationFailure> failures)
 	{
-		assert (scope != null) : "scope may not be null";
-		assert (config != null) : "config may not be null";
 		assert (failures != null) : "failures may not be null";
-		this.scope = scope;
-		this.config = config;
 		this.failures = failures;
 	}
 
@@ -146,17 +134,14 @@ public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObj
 	@Override
 	public StringValidator asString()
 	{
-		return new StringValidatorNoOp(scope, config, failures);
+		return new StringValidatorNoOp(failures);
 	}
 
 	@Override
 	public S asString(Consumer<StringValidator> consumer)
 	{
 		if (consumer == null)
-		{
-			throw new ExceptionBuilder<>(scope, config, NullPointerException.class).
-				build("consumer may not be null");
-		}
+			throw new NullPointerException("consumer may not be null");
 		return getThis();
 	}
 }

@@ -47,7 +47,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	@Override
 	protected UrlValidator getNoOp()
 	{
-		return new UrlValidatorNoOp(scope, config, failures);
+		return new UrlValidatorNoOp(failures);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 				setCause(e).
 				addContext("Actual", actual);
 			failures.add(failure);
-			return new UriValidatorNoOp(scope, config, failures);
+			return new UriValidatorNoOp(failures);
 		}
 	}
 

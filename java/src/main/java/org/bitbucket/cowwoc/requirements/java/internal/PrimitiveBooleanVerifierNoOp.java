@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.PrimitiveBooleanVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifierNoOp;
 
 /**
- * An implementation of {@code PrimitiveBooleanVerifier} that does nothing.
+ * A {@code PrimitiveBooleanVerifier} that does nothing.
  */
 public final class PrimitiveBooleanVerifierNoOp
 	extends AbstractComparableVerifierNoOp<PrimitiveBooleanVerifier, Boolean>
@@ -49,16 +49,16 @@ public final class PrimitiveBooleanVerifierNoOp
 		return this;
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveBooleanVerifier isNotNull()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveBooleanVerifier isNull()
 	{
 		// Suppress warning about extending class with deprecated methods

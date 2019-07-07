@@ -7,14 +7,12 @@ package org.bitbucket.cowwoc.requirements.guava.internal;
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.MultimapValidator;
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.StringValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,16 +31,12 @@ public final class MultimapValidatorNoOp<K, V>
 	implements MultimapValidator<K, V>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null. If {@code name}
-	 *                        is empty.
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public MultimapValidatorNoOp(ApplicationScope scope, Configuration config,
-	                             List<ValidationFailure> failures)
+	public MultimapValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override
@@ -54,7 +48,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override
@@ -68,7 +62,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override
@@ -82,7 +76,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override
@@ -109,7 +103,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public SizeValidator size()
 	{
-		return new SizeValidatorNoOp(scope, config, failures);
+		return new SizeValidatorNoOp(failures);
 	}
 
 	@Override

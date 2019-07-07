@@ -32,16 +32,16 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 		return this;
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveNumberVerifier<T> isNull()
 	{
 		validator.isNull();
 		return validationResult();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveNumberVerifier<T> isNotNull()
 	{
 		validator.isNotNull();

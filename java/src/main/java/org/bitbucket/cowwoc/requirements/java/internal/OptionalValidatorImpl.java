@@ -44,7 +44,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	protected OptionalValidator getNoOp()
 	{
-		return new OptionalValidatorNoOp(scope, config, failures);
+		return new OptionalValidatorNoOp(failures);
 	}
 
 	@Override

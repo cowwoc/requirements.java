@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@code CollectionVerifier} that does nothing.
+ * A {@code CollectionVerifier} that does nothing.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection

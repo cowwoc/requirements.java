@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveVerifier;
 
 /**
  * Verifies the requirements of a primitive floating-point number.
@@ -13,7 +13,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumbe
  * @param <T> the type of the floating-point number
  */
 public interface PrimitiveFloatingPointVerifier<T extends Number & Comparable<? super T>>
-	extends ExtensibleFloatingPointVerifier<PrimitiveFloatingPointVerifier<T>, T>,
-	ExtensiblePrimitiveNumberVerifier<PrimitiveFloatingPointVerifier<T>, T>
+	extends ExtensiblePrimitiveVerifier<PrimitiveFloatingPointVerifier<T>, T>,
+	ExtensibleFloatingPointVerifier<PrimitiveFloatingPointVerifier<T>, T>
 {
 }

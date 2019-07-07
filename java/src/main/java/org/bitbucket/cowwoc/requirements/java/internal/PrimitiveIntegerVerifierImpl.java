@@ -6,29 +6,28 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleIntegerVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 
 /**
- * Default implementation of {@code PrimitiveIntegerVerifier} for {@code int}s.
+ * Default implementation of {@code PrimitiveIntegerVerifier}.
+ *
+ * @param <T> the type of the value being verified
  */
-public final class PrimitiveIntegerVerifierImpl
-	extends AbstractNumberVerifier
-	<PrimitiveIntegerVerifier<Integer>, PrimitiveIntegerValidator<Integer>, Integer>
-	implements PrimitiveIntegerVerifier<Integer>,
-	ExtensibleIntegerVerifier<PrimitiveIntegerVerifier<Integer>, Integer>
+public final class PrimitiveIntegerVerifierImpl<T extends Number & Comparable<? super T>>
+	extends AbstractNumberVerifier<PrimitiveIntegerVerifier<T>, PrimitiveIntegerValidator<T>, T>
+	implements PrimitiveIntegerVerifier<T>
 {
 	/**
 	 * @param validator the validator to delegate to
 	 * @throws AssertionError if {@code validator} is null
 	 */
-	public PrimitiveIntegerVerifierImpl(PrimitiveIntegerValidator<Integer> validator)
+	public PrimitiveIntegerVerifierImpl(PrimitiveIntegerValidator<T> validator)
 	{
 		super(validator);
 	}
 
 	@Override
-	protected PrimitiveIntegerVerifier<Integer> getThis()
+	protected PrimitiveIntegerVerifier<T> getThis()
 	{
 		return this;
 	}

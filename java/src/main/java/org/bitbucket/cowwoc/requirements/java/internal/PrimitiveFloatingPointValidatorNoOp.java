@@ -4,11 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatingPointValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.List;
 
@@ -22,15 +20,12 @@ public final class PrimitiveFloatingPointValidatorNoOp<T extends Number & Compar
 	implements PrimitiveFloatingPointValidator<T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public PrimitiveFloatingPointValidatorNoOp(ApplicationScope scope, Configuration config,
-	                                           List<ValidationFailure> failures)
+	public PrimitiveFloatingPointValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override

@@ -4,17 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.java.extension;
 
-import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
-
 /**
- * Verifies the requirements of a value that extends a primitive number (e.g. {@code int}) but the
- * implementing verifier is not guaranteed to be a {@link PrimitiveNumberVerifier}.
+ * Verifies the requirements of a value that extends a primitive type (e.g. {@code int}) but the
+ * implementing verifier is not guaranteed to be a {@link ExtensibleObjectVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
  * @param <T> the type of the value being verified
  */
-public interface ExtensiblePrimitiveNumberVerifier<S, T extends Number & Comparable<? super T>>
-	extends ExtensibleNumberVerifier<S, T>
+public interface ExtensiblePrimitiveVerifier<S, T>
+	extends ExtensibleObjectVerifier<S, T>
 {
 	/**
 	 * {@inheritDoc}

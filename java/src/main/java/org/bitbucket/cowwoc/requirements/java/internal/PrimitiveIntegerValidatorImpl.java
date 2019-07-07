@@ -13,11 +13,13 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.List;
 
 /**
- * Default implementation of {@code ExtensibleIntegerValidator} for {@code int}s.
+ * Default implementation of {@code ExtensibleIntegerValidator}.
+ *
+ * @param <T> the type of the value being validated
  */
-public class PrimitiveIntegerValidatorImpl
-	extends AbstractIntegerValidator<PrimitiveIntegerValidator<Integer>, Integer>
-	implements PrimitiveIntegerValidator<Integer>
+public final class PrimitiveIntegerValidatorImpl<T extends Number & Comparable<? super T>>
+	extends AbstractIntegerValidator<PrimitiveIntegerValidator<T>, T>
+	implements PrimitiveIntegerValidator<T>
 {
 	/**
 	 * @param scope    the application configuration
@@ -29,21 +31,20 @@ public class PrimitiveIntegerValidatorImpl
 	 *                        {@code name} is empty.
 	 */
 	public PrimitiveIntegerValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                     Integer actual,
-	                                     List<ValidationFailure> failures)
+	                                     T actual, List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, failures);
 	}
 
 	@Override
-	protected PrimitiveIntegerValidator<Integer> getThis()
+	protected PrimitiveIntegerValidator<T> getThis()
 	{
 		return this;
 	}
 
 	@Override
-	protected PrimitiveIntegerValidator<Integer> getNoOp()
+	protected PrimitiveIntegerValidator<T> getNoOp()
 	{
-		return new PrimitiveIntegerValidatorNoOp<>(scope, config, failures);
+		return new PrimitiveIntegerValidatorNoOp<>(failures);
 	}
 }

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Default implementation of {@code PrimitiveCharacterValidator}.
  */
-public class PrimitiveCharacterValidatorImpl
+public final class PrimitiveCharacterValidatorImpl
 	extends AbstractComparableValidator<PrimitiveCharacterValidator, Character>
 	implements PrimitiveCharacterValidator
 {
@@ -43,7 +43,7 @@ public class PrimitiveCharacterValidatorImpl
 	@Override
 	protected PrimitiveCharacterValidator getNoOp()
 	{
-		return new PrimitiveCharacterValidatorNoOp(scope, config, failures);
+		return new PrimitiveCharacterValidatorNoOp(failures);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	protected MultimapValidator<K, V> getNoOp()
 	{
-		return new MultimapValidatorNoOp<>(scope, config, failures);
+		return new MultimapValidatorNoOp<>(failures);
 	}
 
 	@Override

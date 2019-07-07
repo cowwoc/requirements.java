@@ -43,6 +43,6 @@ public final class DoubleValidatorImpl
 	@Override
 	protected FloatingPointValidator<Double> getNoOp()
 	{
-		return new FloatingPointValidatorNoOp<>(scope, config, failures);
+		return new FloatingPointValidatorNoOp<>(failures);
 	}
 }

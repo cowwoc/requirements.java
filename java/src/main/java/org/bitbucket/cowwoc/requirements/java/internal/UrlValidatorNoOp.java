@@ -4,12 +4,10 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.UriValidator;
 import org.bitbucket.cowwoc.requirements.java.UrlValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.net.URL;
 import java.util.List;
@@ -23,14 +21,12 @@ public final class UrlValidatorNoOp extends AbstractObjectValidatorNoOp<UrlValid
 {
 
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public UrlValidatorNoOp(ApplicationScope scope, Configuration config, List<ValidationFailure> failures)
+	public UrlValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override
@@ -42,7 +38,7 @@ public final class UrlValidatorNoOp extends AbstractObjectValidatorNoOp<UrlValid
 	@Override
 	public UriValidator asUri()
 	{
-		return new UriValidatorNoOp(scope, config, failures);
+		return new UriValidatorNoOp(failures);
 	}
 
 	@Override

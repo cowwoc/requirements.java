@@ -43,6 +43,6 @@ public final class PrimitiveDoubleValidatorImpl
 	@Override
 	protected PrimitiveFloatingPointValidator<Double> getNoOp()
 	{
-		return new PrimitiveFloatingPointValidatorNoOp<>(scope, config, failures);
+		return new PrimitiveFloatingPointValidatorNoOp<>(failures);
 	}
 }

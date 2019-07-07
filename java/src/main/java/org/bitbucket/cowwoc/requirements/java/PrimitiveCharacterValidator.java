@@ -5,28 +5,13 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveValidator;
 
 /**
- * Verifies the requirements of a {@code char} value.
+ * Validates the requirements of a {@code Comparable} value.
  */
 public interface PrimitiveCharacterValidator
-	extends ExtensibleComparableValidator<PrimitiveCharacterValidator, Character>
+	extends ExtensiblePrimitiveValidator<PrimitiveCharacterValidator, Character>,
+	ExtensibleComparableValidator<PrimitiveCharacterValidator, Character>
 {
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @deprecated the actual value cannot be null
-	 */
-	@Override
-	@Deprecated
-	PrimitiveCharacterValidator isNull();
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @deprecated the actual value cannot be null
-	 */
-	@Override
-	@Deprecated
-	PrimitiveCharacterValidator isNotNull();
 }

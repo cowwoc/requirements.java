@@ -5,13 +5,11 @@
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,15 +29,12 @@ public abstract class AbstractArrayValidatorNoOp<S, E, A>
 	implements ExtensibleArrayValidator<S, E, A>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractArrayValidatorNoOp(ApplicationScope scope, Configuration config,
-	                                  List<ValidationFailure> failures)
+	public AbstractArrayValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override
@@ -160,7 +155,7 @@ public abstract class AbstractArrayValidatorNoOp<S, E, A>
 	@Override
 	public SizeValidator length()
 	{
-		return new SizeValidatorNoOp(scope, config, failures);
+		return new SizeValidatorNoOp(failures);
 	}
 
 	@Override
@@ -174,7 +169,7 @@ public abstract class AbstractArrayValidatorNoOp<S, E, A>
 	@Override
 	public CollectionValidator<Collection<E>, E> asCollection()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override

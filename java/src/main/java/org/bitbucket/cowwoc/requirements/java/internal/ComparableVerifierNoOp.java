@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifierNoOp;
 
 /**
- * An implementation of {@code ComparableVerifier} that does nothing.
+ * A {@code ComparableVerifier} that does nothing.
  *
  * @param <T> the type of the value being verified
  */

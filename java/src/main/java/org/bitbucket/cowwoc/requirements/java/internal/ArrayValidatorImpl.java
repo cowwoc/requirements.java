@@ -59,6 +59,6 @@ public final class ArrayValidatorImpl<E> extends AbstractArrayValidator<ArrayVal
 	@Override
 	protected ArrayValidator<E> getNoOp()
 	{
-		return new ArrayValidatorNoOp<>(scope, config, failures);
+		return new ArrayValidatorNoOp<>(failures);
 	}
 }

@@ -54,7 +54,7 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	protected MapValidator<K, V> getNoOp()
 	{
-		return new MapValidatorNoOp<>(scope, config, failures);
+		return new MapValidatorNoOp<>(failures);
 	}
 
 	@Override

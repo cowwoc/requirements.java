@@ -17,22 +17,19 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@code BigDecimalValidator} that does nothing.
+ * A {@code BigDecimalValidator} that does nothing.
  */
 public final class BigDecimalValidatorNoOp
 	extends AbstractNumberValidatorNoOp<BigDecimalValidator, BigDecimal>
 	implements BigDecimalValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public BigDecimalValidatorNoOp(ApplicationScope scope, Configuration config,
-	                               List<ValidationFailure> failures)
+	public BigDecimalValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override
@@ -44,7 +41,7 @@ public final class BigDecimalValidatorNoOp
 	@Override
 	public BigDecimalPrecisionValidator precision()
 	{
-		return new BigDecimalPrecisionValidatorNoOp(scope, config, failures);
+		return new BigDecimalPrecisionValidatorNoOp(failures);
 	}
 
 	@Override
@@ -58,7 +55,7 @@ public final class BigDecimalValidatorNoOp
 	@Override
 	public PrimitiveNumberValidator<Integer> scale()
 	{
-		return new PrimitiveNumberValidatorNoOp<>(scope, config, failures);
+		return new PrimitiveNumberValidatorNoOp<>(failures);
 	}
 
 	@Override

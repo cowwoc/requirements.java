@@ -61,7 +61,7 @@ public final class SizeValidatorImpl
 	@Override
 	protected SizeValidator getNoOp()
 	{
-		return new SizeValidatorNoOp(scope, config, failures);
+		return new SizeValidatorNoOp(failures);
 	}
 
 	@Override
@@ -257,8 +257,8 @@ public final class SizeValidatorImpl
 	 *
 	 * @deprecated collection size can never be negative
 	 */
-	@Deprecated
 	@Override
+	@Deprecated
 	public SizeValidator isNotNegative()
 	{
 		return this;
@@ -269,8 +269,8 @@ public final class SizeValidatorImpl
 	 *
 	 * @deprecated collection size can never be negative
 	 */
-	@Deprecated
 	@Override
+	@Deprecated
 	public SizeValidator isNegative()
 	{
 		ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,

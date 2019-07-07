@@ -62,7 +62,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	protected CollectionValidator<C, E> getNoOp()
 	{
-		return new CollectionValidatorNoOp<>(scope, config, failures);
+		return new CollectionValidatorNoOp<>(failures);
 	}
 
 	@Override

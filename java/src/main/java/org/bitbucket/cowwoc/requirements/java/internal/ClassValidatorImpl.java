@@ -45,7 +45,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	@Override
 	protected ClassValidator<T> getNoOp()
 	{
-		return new ClassValidatorNoOp<>(scope, config, failures);
+		return new ClassValidatorNoOp<>(failures);
 	}
 
 	@Override

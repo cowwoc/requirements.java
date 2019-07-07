@@ -47,7 +47,7 @@ public final class InetAddressValidatorImpl
 	@Override
 	protected InetAddressValidator getNoOp()
 	{
-		return new InetAddressValidatorNoOp(scope, config, failures);
+		return new InetAddressValidatorNoOp(failures);
 	}
 
 	@Override

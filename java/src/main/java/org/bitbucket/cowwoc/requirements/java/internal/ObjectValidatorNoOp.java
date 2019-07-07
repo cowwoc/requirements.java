@@ -21,14 +21,12 @@ public final class ObjectValidatorNoOp<T> extends AbstractObjectValidatorNoOp<Ob
 	implements ObjectValidator<T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ObjectValidatorNoOp(ApplicationScope scope, Configuration config, List<ValidationFailure> failures)
+	public ObjectValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override

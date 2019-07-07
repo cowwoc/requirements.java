@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.ClassVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
 /**
- * An implementation of {@code ClassVerifier} that does nothing.
+ * A {@code ClassVerifier} that does nothing.
  *
  * @param <T> the type of the class
  */

@@ -4,10 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberValidator;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveValidator;
 
 import java.util.List;
 
@@ -21,29 +20,26 @@ import java.util.List;
  */
 public abstract class AbstractPrimitiveNumberValidatorNoOp<S, T extends Number & Comparable<? super T>>
 	extends AbstractObjectValidatorNoOp<S, T>
-	implements ExtensiblePrimitiveNumberValidator<S, T>
+	implements ExtensiblePrimitiveValidator<S, T>, ExtensibleNumberValidator<S, T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractPrimitiveNumberValidatorNoOp(ApplicationScope scope, Configuration config,
-	                                            List<ValidationFailure> failures)
+	public AbstractPrimitiveNumberValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isNull()
 	{
 		return getThis();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public S isNotNull()
 	{
 		return getThis();

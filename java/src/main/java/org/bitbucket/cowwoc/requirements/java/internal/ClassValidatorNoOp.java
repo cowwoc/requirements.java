@@ -5,15 +5,13 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ClassValidator;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.List;
 
 /**
- * An implementation of {@code ClassValidator} that does nothing.
+ * A {@code ClassValidator} that does nothing.
  *
  * @param <T> the type of the class
  */
@@ -22,14 +20,12 @@ public final class ClassValidatorNoOp<T>
 	implements ClassValidator<T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code failures} are null
+	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ClassValidatorNoOp(ApplicationScope scope, Configuration config, List<ValidationFailure> failures)
+	public ClassValidatorNoOp(List<ValidationFailure> failures)
 	{
-		super(scope, config, failures);
+		super(failures);
 	}
 
 	@Override

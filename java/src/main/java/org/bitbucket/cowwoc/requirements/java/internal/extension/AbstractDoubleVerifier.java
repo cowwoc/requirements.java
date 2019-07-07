@@ -8,7 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointV
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointVerifier;
 
 /**
- * An implementation of {@code ExtensibleFloatingPointVerifier} for {@code double}s.
+ * An {@code ExtensibleFloatingPointVerifier} for {@code double}s.
  *
  * @param <S> the type of verifier returned by the methods
  * @param <V> the type of validator used by the verifier

@@ -48,7 +48,7 @@ public final class BigDecimalValidatorImpl
 	@Override
 	protected BigDecimalValidator getNoOp()
 	{
-		return new BigDecimalValidatorNoOp(scope, config, failures);
+		return new BigDecimalValidatorNoOp(failures);
 	}
 
 	@Override

@@ -43,6 +43,6 @@ public final class PrimitiveFloatValidatorImpl
 	@Override
 	protected PrimitiveFloatingPointValidator<Float> getNoOp()
 	{
-		return new PrimitiveFloatingPointValidatorNoOp<>(scope, config, failures);
+		return new PrimitiveFloatingPointValidatorNoOp<>(failures);
 	}
 }

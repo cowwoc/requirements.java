@@ -50,49 +50,26 @@ import org.bitbucket.cowwoc.requirements.java.internal.OptionalVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PathValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanArrayVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveArrayValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveArrayVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveByteArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveCharacterVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveDoubleVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveFloatingPointVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveIntegerVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongArrayVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveLongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveNumberVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveShortArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
@@ -102,6 +79,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.JavaSecrets;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Arrays;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Verifiers;
 
@@ -302,171 +280,179 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public PrimitiveByteArrayVerifier requireThat(byte[] actual, String name)
+	public PrimitiveArrayVerifier<Byte, byte[]> requireThat(byte[] actual, String name)
 	{
-		return new PrimitiveByteArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveByteArrayVerifier assertThat(byte[] actual, String name)
+	public PrimitiveArrayVerifier<Byte, byte[]> assertThat(byte[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveByteArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator validateThat(byte[] actual, String name)
+	public PrimitiveArrayValidator<Byte, byte[]> validateThat(byte[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveByteArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveShortArrayVerifier requireThat(short[] actual, String name)
+	public PrimitiveArrayVerifier<Short, short[]> requireThat(short[] actual, String name)
 	{
-		return new PrimitiveShortArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveShortArrayVerifier assertThat(short[] actual, String name)
+	public PrimitiveArrayVerifier<Short, short[]> assertThat(short[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveShortArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator validateThat(short[] actual, String name)
+	public PrimitiveArrayValidator<Short, short[]> validateThat(short[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveShortArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveIntegerArrayVerifier requireThat(int[] actual, String name)
+	public PrimitiveArrayVerifier<Integer, int[]> requireThat(int[] actual, String name)
 	{
-		return new PrimitiveIntegerArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveIntegerArrayVerifier assertThat(int[] actual, String name)
+	public PrimitiveArrayVerifier<Integer, int[]> assertThat(int[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveIntegerArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator validateThat(int[] actual, String name)
+	public PrimitiveArrayValidator<Integer, int[]> validateThat(int[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveIntegerArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveLongArrayVerifier requireThat(long[] actual, String name)
+	public PrimitiveArrayVerifier<Long, long[]> requireThat(long[] actual, String name)
 	{
-		return new PrimitiveLongArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveLongArrayVerifier assertThat(long[] actual, String name)
+	public PrimitiveArrayVerifier<Long, long[]> assertThat(long[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveLongArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator validateThat(long[] actual, String name)
+	public PrimitiveArrayValidator<Long, long[]> validateThat(long[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveLongArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveFloatArrayVerifier requireThat(float[] actual, String name)
+	public PrimitiveArrayVerifier<Float, float[]> requireThat(float[] actual, String name)
 	{
-		return new PrimitiveFloatArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveFloatArrayVerifier assertThat(float[] actual, String name)
+	public PrimitiveArrayVerifier<Float, float[]> assertThat(float[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveFloatArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator validateThat(float[] actual, String name)
+	public PrimitiveArrayValidator<Float, float[]> validateThat(float[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveFloatArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveDoubleArrayVerifier requireThat(double[] actual, String name)
+	public PrimitiveArrayVerifier<Double, double[]> requireThat(double[] actual, String name)
 	{
-		return new PrimitiveDoubleArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveDoubleArrayVerifier assertThat(double[] actual, String name)
+	public PrimitiveArrayVerifier<Double, double[]> assertThat(double[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveDoubleArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator validateThat(double[] actual, String name)
+	public PrimitiveArrayValidator<Double, double[]> validateThat(double[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveDoubleArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveBooleanArrayVerifier requireThat(boolean[] actual, String name)
+	public PrimitiveArrayVerifier<Boolean, boolean[]> requireThat(boolean[] actual, String name)
 	{
-		return new PrimitiveBooleanArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveBooleanArrayVerifier assertThat(boolean[] actual, String name)
+	public PrimitiveArrayVerifier<Boolean, boolean[]> assertThat(boolean[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveBooleanArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator validateThat(boolean[] actual, String name)
+	public PrimitiveArrayValidator<Boolean, boolean[]> validateThat(boolean[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveBooleanArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
-	public PrimitiveCharacterArrayVerifier requireThat(char[] actual, String name)
+	public PrimitiveArrayVerifier<Character, char[]> requireThat(char[] actual, String name)
 	{
-		return new PrimitiveCharacterArrayVerifierImpl(validateThat(actual, name));
+		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public PrimitiveCharacterArrayVerifier assertThat(char[] actual, String name)
+	public PrimitiveArrayVerifier<Character, char[]> assertThat(char[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return PrimitiveCharacterArrayVerifierNoOp.getInstance();
+		return PrimitiveArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator validateThat(char[] actual, String name)
+	public PrimitiveArrayValidator<Character, char[]> validateThat(char[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveCharacterArrayValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual),
+			new ArrayList<>());
 	}
 
 	@Override
@@ -619,7 +605,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name)
 	{
-		return new PrimitiveIntegerVerifierImpl(validateThat(actual, name));
+		return new PrimitiveIntegerVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -634,7 +620,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveIntegerValidator<Integer> validateThat(int actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveIntegerValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveIntegerValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override
@@ -661,7 +647,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public PrimitiveIntegerVerifier<Long> requireThat(long actual, String name)
 	{
-		return new PrimitiveLongVerifierImpl(validateThat(actual, name));
+		return new PrimitiveIntegerVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
@@ -676,7 +662,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public PrimitiveIntegerValidator<Long> validateThat(long actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveLongValidatorImpl(scope, config, name, actual, new ArrayList<>());
+		return new PrimitiveIntegerValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override

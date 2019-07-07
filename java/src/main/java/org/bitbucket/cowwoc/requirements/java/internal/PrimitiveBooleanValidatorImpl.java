@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Default implementation of {@code PrimitiveBooleanValidator}.
  */
-public class PrimitiveBooleanValidatorImpl
+public final class PrimitiveBooleanValidatorImpl
 	extends AbstractBooleanValidator<PrimitiveBooleanValidator>
 	implements PrimitiveBooleanValidator
 {
@@ -43,7 +43,7 @@ public class PrimitiveBooleanValidatorImpl
 	@Override
 	protected PrimitiveBooleanValidator getNoOp()
 	{
-		return new PrimitiveBooleanValidatorNoOp(scope, config, failures);
+		return new PrimitiveBooleanValidatorNoOp(failures);
 	}
 
 	@Override

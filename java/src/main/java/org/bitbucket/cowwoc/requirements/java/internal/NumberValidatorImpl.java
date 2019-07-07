@@ -45,6 +45,6 @@ public final class NumberValidatorImpl<T extends Number & Comparable<? super T>>
 	@Override
 	protected NumberValidator<T> getNoOp()
 	{
-		return new NumberValidatorNoOp<>(scope, config, failures);
+		return new NumberValidatorNoOp<>(failures);
 	}
 }

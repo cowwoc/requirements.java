@@ -30,16 +30,16 @@ public final class PrimitiveBooleanVerifierImpl
 		return this;
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveBooleanVerifier isNotNull()
 	{
 		// Suppress warning about extending class with deprecated methods
 		return super.isNotNull();
 	}
 
-	@Deprecated
 	@Override
+	@Deprecated
 	public PrimitiveBooleanVerifier isNull()
 	{
 		// Suppress warning about extending class with deprecated methods

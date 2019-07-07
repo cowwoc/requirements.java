@@ -53,7 +53,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	protected StringValidator getNoOp()
 	{
-		return new StringValidatorNoOp(scope, config, failures);
+		return new StringValidatorNoOp(failures);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
 			failures.add(failure);
-			return new InetAddressValidatorNoOp(scope, config, failures);
+			return new InetAddressValidatorNoOp(failures);
 		}
 
 		char firstCharacter = actual.charAt(0);
@@ -126,7 +126,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				name + " must contain a valid IP address or hostname format.").
 				addContext("Actual", actual);
 			failures.add(failure);
-			return new InetAddressValidatorNoOp(scope, config, failures);
+			return new InetAddressValidatorNoOp(failures);
 		}
 		InetAddress address;
 		try
@@ -140,7 +140,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				setCause(e).
 				addContext("Actual", actual);
 			failures.add(failure);
-			return new InetAddressValidatorNoOp(scope, config, failures);
+			return new InetAddressValidatorNoOp(failures);
 		}
 		return new InetAddressValidatorImpl(scope, config, name, address, failures);
 	}
@@ -169,7 +169,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				setCause(e).
 				addContext("Actual", actual);
 			failures.add(failure);
-			return new UriValidatorNoOp(scope, config, failures);
+			return new UriValidatorNoOp(failures);
 		}
 	}
 
@@ -197,7 +197,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				setCause(e).
 				addContext("Actual", actual);
 			failures.add(failure);
-			return new UrlValidatorNoOp(scope, config, failures);
+			return new UrlValidatorNoOp(failures);
 		}
 	}
 

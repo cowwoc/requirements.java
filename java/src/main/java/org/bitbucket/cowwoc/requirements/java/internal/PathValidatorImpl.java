@@ -48,7 +48,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	protected PathValidator getNoOp()
 	{
-		return new PathValidatorNoOp(scope, config, failures);
+		return new PathValidatorNoOp(failures);
 	}
 
 	@Override

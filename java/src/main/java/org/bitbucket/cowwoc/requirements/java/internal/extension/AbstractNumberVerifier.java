@@ -14,8 +14,8 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier
  * @param <V> the type of validator used by the verifier
  * @param <T> the type of the value being verified
  */
-public abstract class AbstractNumberVerifier<S, V extends ExtensibleNumberValidator<V, T>,
-	T extends Number & Comparable<? super T>>
+public abstract class AbstractNumberVerifier
+	<S, V extends ExtensibleNumberValidator<V, T>, T extends Number & Comparable<? super T>>
 	extends AbstractComparableVerifier<S, V, T>
 	implements ExtensibleNumberVerifier<S, T>
 {
