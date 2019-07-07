@@ -297,8 +297,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		if (actual != null)
 			return getThis();
 		ValidationFailure failure = new ValidationFailureImpl(this, NullPointerException.class,
-			name + " may not be null").
-			addContext(getContext(null));
+			name + " may not be null");
 		failures.add(failure);
 		return getNoOp();
 	}
