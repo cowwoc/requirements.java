@@ -43,7 +43,7 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : int[6 ]\n" +
-				"Diff    : " + Strings.repeat(DIFF_EQUAL, 4) + DIFF_DELETE + DIFF_INSERT +
+				"Diff    : " + DIFF_EQUAL.repeat(4) + DIFF_DELETE + DIFF_INSERT +
 				DIFF_EQUAL + "\n" +
 				"Expected: int[ 5]";
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
@@ -148,10 +148,10 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : actual" +
-				Strings.repeat(PADDING_MARKER, "expected".length()) + "\n" +
-				"Diff    : " + Strings.repeat(DIFF_DELETE, "actual".length()) +
-				Strings.repeat(DIFF_INSERT, "expected".length()) + "\n" +
-				"Expected: " + Strings.repeat(" ", "actual".length()) + "expected";
+				PADDING_MARKER.repeat("expected".length()) + "\n" +
+				"Diff    : " + DIFF_DELETE.repeat("actual".length()) +
+				DIFF_INSERT.repeat("expected".length()) + "\n" +
+				"Expected: " + " ".repeat("actual".length()) + "expected";
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}
@@ -173,7 +173,7 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : \"key\": \"value \"\n" +
-				"Diff    : " + Strings.repeat(DIFF_EQUAL, 13) + DIFF_DELETE + DIFF_EQUAL + "\n" +
+				"Diff    : " + DIFF_EQUAL.repeat(13) + DIFF_DELETE + DIFF_EQUAL + "\n" +
 				"Expected: \"key\": \"value \"";
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -196,15 +196,15 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : " + NEWLINE_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_DELETE, NEWLINE_MARKER.length()) + "\n" +
-				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
+				"Diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"Expected  : " + PADDING_MARKER.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
-				"Actual@2  : actual" + Strings.repeat(PADDING_MARKER, "expected".length()) +
+				"Actual@2  : actual" + PADDING_MARKER.repeat("expected".length()) +
 				EOS_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_DELETE, "actual".length()) +
-				Strings.repeat(DIFF_INSERT, "expected".length()) +
-				Strings.repeat(DIFF_EQUAL, EOS_MARKER.length()) + "\n" +
-				"Expected@1: " + Strings.repeat(PADDING_MARKER, "actual".length()) + "expected" +
+				"Diff      : " + DIFF_DELETE.repeat("actual".length()) +
+				DIFF_INSERT.repeat("expected".length()) +
+				DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
+				"Expected@1: " + PADDING_MARKER.repeat("actual".length()) + "expected" +
 				EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -227,15 +227,14 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : actual" + NEWLINE_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_DELETE, "actual".length() + NEWLINE_MARKER.length()) +
+				"Diff      : " + DIFF_DELETE.repeat("actual".length() + NEWLINE_MARKER.length()) +
 				"\n" +
-				"Expected  : " + Strings.repeat(PADDING_MARKER,
-				"actual".length() + NEWLINE_MARKER.length()) + "\n" +
+				"Expected  : " + PADDING_MARKER.repeat("actual".length() + NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
-				"Actual@2  : " + Strings.repeat(PADDING_MARKER, "expected".length()) + EOS_MARKER +
+				"Actual@2  : " + PADDING_MARKER.repeat("expected".length()) + EOS_MARKER +
 				"\n" +
-				"Diff      : " + Strings.repeat(DIFF_INSERT, "expected".length()) +
-				Strings.repeat(DIFF_EQUAL, EOS_MARKER.length()) + "\n" +
+				"Diff      : " + DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) +
+				"\n" +
 				"Expected@1: expected" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
@@ -258,12 +257,12 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@1  : " + NEWLINE_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_DELETE, NEWLINE_MARKER.length()) + "\n" +
-				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
+				"Diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"Expected  : " + PADDING_MARKER.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@2  : " + NEWLINE_MARKER + "\n" +
-				"Diff      : " + Strings.repeat(DIFF_DELETE, NEWLINE_MARKER.length()) + "\n" +
-				"Expected  : " + Strings.repeat(PADDING_MARKER, NEWLINE_MARKER.length()) + "\n" +
+				"Diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"Expected  : " + PADDING_MARKER.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@3  : value" + EOS_MARKER + "\n" +
 				"Expected@1: value" + EOS_MARKER;
@@ -294,7 +293,7 @@ public final class DiffTest
 				"\n" +
 				"Actual@3  : 3" + PADDING_MARKER + NEWLINE_MARKER + "\n" +
 				"Diff      : " + DIFF_DELETE + DIFF_INSERT +
-				Strings.repeat(DIFF_EQUAL, NEWLINE_MARKER.length()) + "\n" +
+				DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"Expected@3: " + PADDING_MARKER + "9" + NEWLINE_MARKER + "\n" +
 				"\n" +
 				"[...]\n" +
@@ -322,10 +321,10 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : The dog" +
-				Strings.repeat(PADDING_MARKER, "fox".length()) + " is br" + PADDING_MARKER + "own\n" +
+				PADDING_MARKER.repeat("fox".length()) + " is br" + PADDING_MARKER + "own\n" +
 				"Diff    : ====   ^^^====  ^===\n" +
-				"Expected: The " + Strings.repeat(PADDING_MARKER, "dog".length()) + "fox is " +
-				Strings.repeat(DIFF_DELETE, "br".length()) + "down";
+				"Expected: The " + PADDING_MARKER.repeat("dog".length()) + "fox is " +
+				DIFF_DELETE.repeat("br".length()) + "down";
 			assert (actualMessage.contains(expectedMessage)) : "expected:\n" + expectedMessage +
 				"\nactual:\n" + actualMessage;
 		}

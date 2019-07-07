@@ -44,6 +44,6 @@ public final class Writer16Colors extends AbstractColorWriter
 	public String decoratePadding(int length)
 	{
 		return PREFIX + WHITE_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX +
-			Strings.repeat(PADDING_MARKER, length);
+			PADDING_MARKER.repeat(length);
 	}
 }

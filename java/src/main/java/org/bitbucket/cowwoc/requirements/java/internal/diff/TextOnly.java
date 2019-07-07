@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
-import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -184,7 +182,7 @@ public final class TextOnly extends AbstractDiffWriter
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
 		actualLineBuilder.append(text);
-		middleLineBuilder.append(Strings.repeat(DIFF_EQUAL, text.length()));
+		middleLineBuilder.append(DIFF_EQUAL.repeat(text.length()));
 		expectedLineBuilder.append(text);
 	}
 
@@ -194,8 +192,8 @@ public final class TextOnly extends AbstractDiffWriter
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
 		int length = text.length();
-		actualLineBuilder.append(Strings.repeat(getPaddingMarker(), length));
-		middleLineBuilder.append(Strings.repeat(DIFF_INSERT, length));
+		actualLineBuilder.append(getPaddingMarker().repeat(length));
+		middleLineBuilder.append(DIFF_INSERT.repeat(length));
 		expectedLineBuilder.append(text);
 	}
 
@@ -206,8 +204,8 @@ public final class TextOnly extends AbstractDiffWriter
 			throw new IllegalStateException("Writer must be open");
 		actualLineBuilder.append(text);
 		int length = text.length();
-		middleLineBuilder.append(Strings.repeat(DIFF_DELETE, length));
-		expectedLineBuilder.append(Strings.repeat(getPaddingMarker(), length));
+		middleLineBuilder.append(DIFF_DELETE.repeat(length));
+		expectedLineBuilder.append(getPaddingMarker().repeat(length));
 	}
 
 	@Override

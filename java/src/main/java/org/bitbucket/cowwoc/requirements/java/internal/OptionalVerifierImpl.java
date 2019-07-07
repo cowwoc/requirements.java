@@ -13,7 +13,6 @@ import java.util.Optional;
 /**
  * Default implementation of {@code OptionalVerifier}.
  */
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class OptionalVerifierImpl
 	extends AbstractObjectVerifier<OptionalVerifier, OptionalValidator, Optional<?>>
 	implements OptionalVerifier

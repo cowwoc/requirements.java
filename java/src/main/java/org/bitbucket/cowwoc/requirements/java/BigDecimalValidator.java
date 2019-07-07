@@ -4,13 +4,51 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleBigDecimalValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberValidator;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 /**
  * Validates the requirements of a {@link BigDecimal} value.
  */
-public interface BigDecimalValidator extends ExtensibleBigDecimalValidator<BigDecimalValidator>
+public interface BigDecimalValidator extends ExtensibleNumberValidator<BigDecimalValidator, BigDecimal>
 {
+	/**
+	 * Returns a validator for {@code BigDecimal.precision()}.
+	 *
+	 * @return a validator for {@code BigDecimal.precision()}
+	 */
+	BigDecimalPrecisionValidator precision();
+
+	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
+	 *
+	 * @param consumer verifies the {@code BigDecimal.precision()}
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	@SuppressWarnings("LongLine")
+	BigDecimalValidator precision(Consumer<BigDecimalPrecisionValidator> consumer);
+
+	/**
+	 * Returns a validator for {@code BigDecimal.scale()}.
+	 *
+	 * @return a validator for {@code BigDecimal.scale()}
+	 */
+	PrimitiveNumberValidator<Integer> scale();
+
+	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
+	 * group related requirements</a>.
+	 *
+	 * @param consumer verifies the {@code BigDecimal.scale()}
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	@SuppressWarnings("LongLine")
+	BigDecimalValidator scale(Consumer<PrimitiveNumberValidator<Integer>> consumer);
 }

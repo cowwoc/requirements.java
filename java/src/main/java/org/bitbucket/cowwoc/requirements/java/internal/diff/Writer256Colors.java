@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.diff;
 
-import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
-
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
@@ -47,6 +45,6 @@ public final class Writer256Colors extends AbstractColorWriter
 	public String decoratePadding(int length)
 	{
 		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + GRAY_BACKGROUND + POSTFIX +
-			Strings.repeat(PADDING_MARKER, length);
+			PADDING_MARKER.repeat(length);
 	}
 }

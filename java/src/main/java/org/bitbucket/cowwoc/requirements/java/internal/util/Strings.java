@@ -22,27 +22,6 @@ public final class Strings
 	}
 
 	/**
-	 * @param str   a string
-	 * @param times the number of times to repeat the string
-	 * @return a string containing {@code str} repeated the specified number of times
-	 * @throws NullPointerException     if {@code str} is null
-	 * @throws IllegalArgumentException if {@code times} is negative
-	 */
-	public static String repeat(String str, int times)
-	{
-		if (str == null)
-			throw new IllegalArgumentException("str may not be null");
-		if (times < 0)
-			throw new IllegalArgumentException("times may not be negative: " + times);
-		if (times == 0)
-			return "";
-		StringBuilder result = new StringBuilder(str.length() * times);
-		for (int i = 0; i < times; ++i)
-			result.append(str);
-		return result.toString();
-	}
-
-	/**
 	 * Capitalizes the first letter of each word.
 	 *
 	 * @param str a string

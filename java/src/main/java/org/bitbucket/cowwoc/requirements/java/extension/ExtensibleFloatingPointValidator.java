@@ -7,8 +7,8 @@ package org.bitbucket.cowwoc.requirements.java.extension;
 import org.bitbucket.cowwoc.requirements.java.FloatingPointValidator;
 
 /**
- * Validates the requirements of a floating-point value but the implementing validator is not guaranteed to be a
- * {@link FloatingPointValidator}.
+ * Validates the requirements of a floating-point value but the implementing validator is not guaranteed to
+ * be a {@link FloatingPointValidator}.
  *
  * @param <S> the type of validator returned by the methods
  * @param <T> the type of the value being validated

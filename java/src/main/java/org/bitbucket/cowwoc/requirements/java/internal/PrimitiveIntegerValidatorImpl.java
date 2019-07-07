@@ -44,6 +44,6 @@ public class PrimitiveIntegerValidatorImpl
 	@Override
 	protected PrimitiveIntegerValidator<Integer> getNoOp()
 	{
-		return new PrimitiveIntegerValidatorNoOp<Integer>(scope, config, failures);
+		return new PrimitiveIntegerValidatorNoOp<>(scope, config, failures);
 	}
 }

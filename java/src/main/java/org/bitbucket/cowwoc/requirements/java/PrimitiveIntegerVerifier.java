@@ -5,7 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleIntegerVerifier;
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveIntegerVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberVerifier;
 
 /**
  * Verifies the requirements of a primitive integer number.
@@ -14,6 +14,6 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveInteg
  */
 public interface PrimitiveIntegerVerifier<T extends Number & Comparable<? super T>>
 	extends ExtensibleIntegerVerifier<PrimitiveIntegerVerifier<T>, T>,
-	ExtensiblePrimitiveIntegerVerifier<PrimitiveIntegerVerifier<T>, T>
+	ExtensiblePrimitiveNumberVerifier<PrimitiveIntegerVerifier<T>, T>
 {
 }
