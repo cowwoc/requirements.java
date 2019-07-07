@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
@@ -23,13 +22,25 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	extends AbstractObjectVerifierNoOp<CollectionVerifier<C, E>, C>
 	implements CollectionVerifier<C, E>
 {
+	private static final CollectionVerifierNoOp<?, ?> INSTANCE = new CollectionVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <C> the type of the collection
+	 * @param <E> the type of elements in the collection
+	 * @return the singleton instance
 	 */
-	public CollectionVerifierNoOp(Configuration config)
+	public static <C extends Collection<E>, E> CollectionVerifierNoOp<C, E> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		CollectionVerifierNoOp<C, E> result = (CollectionVerifierNoOp<C, E>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private CollectionVerifierNoOp()
+	{
 	}
 
 	@Override
@@ -155,7 +166,7 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	@Override
 	public SizeVerifier size()
 	{
-		return new SizeVerifierNoOp(config);
+		return SizeVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -169,7 +180,7 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	@Override
 	public ArrayVerifier<E> asArray(Class<E> type)
 	{
-		return new ArrayVerifierNoOp<>(config);
+		return ArrayVerifierNoOp.getInstance();
 	}
 
 	@Override

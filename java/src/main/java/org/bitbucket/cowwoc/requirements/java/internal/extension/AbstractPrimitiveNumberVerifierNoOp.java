@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensiblePrimitiveNumberVerifier;
 
 /**
@@ -19,15 +18,6 @@ public abstract class AbstractPrimitiveNumberVerifierNoOp<S, T extends Number & 
 	extends AbstractNumberVerifierNoOp<S, T>
 	implements ExtensiblePrimitiveNumberVerifier<S, T>
 {
-	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
-	 */
-	public AbstractPrimitiveNumberVerifierNoOp(Configuration config)
-	{
-		super(config);
-	}
-
 	@Deprecated
 	@Override
 	public S isNegative()

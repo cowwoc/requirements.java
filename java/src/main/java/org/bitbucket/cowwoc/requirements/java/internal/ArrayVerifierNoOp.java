@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifierNoOp;
 
 /**
@@ -17,13 +16,24 @@ public final class ArrayVerifierNoOp<E>
 	extends AbstractArrayVerifierNoOp<ArrayVerifier<E>, E, E[]>
 	implements ArrayVerifier<E>
 {
+	private static final ArrayVerifierNoOp<?> INSTANCE = new ArrayVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <E> the type of elements in the array
+	 * @return the singleton instance
 	 */
-	public ArrayVerifierNoOp(Configuration config)
+	public static <E> ArrayVerifierNoOp<E> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		ArrayVerifierNoOp<E> result = (ArrayVerifierNoOp<E>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private ArrayVerifierNoOp()
+	{
 	}
 
 	@Override

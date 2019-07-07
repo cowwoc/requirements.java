@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifierNoOp;
 
@@ -15,13 +14,21 @@ public final class PrimitiveFloatArrayVerifierNoOp
 	extends AbstractArrayVerifierNoOp<PrimitiveFloatArrayVerifier, Float, float[]>
 	implements PrimitiveFloatArrayVerifier
 {
+	private static final PrimitiveFloatArrayVerifierNoOp INSTANCE = new PrimitiveFloatArrayVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public PrimitiveFloatArrayVerifierNoOp(Configuration config)
+	public static PrimitiveFloatArrayVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private PrimitiveFloatArrayVerifierNoOp()
+	{
 	}
 
 	@Override

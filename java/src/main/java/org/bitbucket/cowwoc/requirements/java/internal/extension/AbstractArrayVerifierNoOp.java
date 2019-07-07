@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
@@ -25,15 +24,6 @@ public abstract class AbstractArrayVerifierNoOp<S, E, A>
 	extends AbstractObjectVerifierNoOp<S, A>
 	implements ExtensibleArrayVerifier<S, E, A>
 {
-	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
-	 */
-	public AbstractArrayVerifierNoOp(Configuration config)
-	{
-		super(config);
-	}
-
 	@Override
 	public S isEmpty()
 	{
@@ -152,7 +142,7 @@ public abstract class AbstractArrayVerifierNoOp<S, E, A>
 	@Override
 	public SizeVerifier length()
 	{
-		return new SizeVerifierNoOp(config);
+		return SizeVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -166,7 +156,7 @@ public abstract class AbstractArrayVerifierNoOp<S, E, A>
 	@Override
 	public CollectionVerifier<Collection<E>, E> asCollection()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override

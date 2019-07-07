@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.IntegerVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifierNoOp;
 
@@ -17,13 +16,24 @@ public final class IntegerVerifierNoOp<T extends Number & Comparable<? super T>>
 	extends AbstractNumberVerifierNoOp<IntegerVerifier<T>, T>
 	implements IntegerVerifier<T>
 {
+	private static final IntegerVerifierNoOp<?> INSTANCE = new IntegerVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <T> the type of the value being verified
+	 * @return the singleton instance
 	 */
-	public IntegerVerifierNoOp(Configuration config)
+	public static <T extends Number & Comparable<? super T>> IntegerVerifierNoOp<T> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		IntegerVerifierNoOp<T> result = (IntegerVerifierNoOp<T>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private IntegerVerifierNoOp()
+	{
 	}
 
 	@Override

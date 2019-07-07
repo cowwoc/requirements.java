@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ComparableVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifierNoOp;
 
 /**
@@ -17,13 +16,24 @@ public final class ComparableVerifierNoOp<T extends Comparable<? super T>>
 	extends AbstractComparableVerifierNoOp<ComparableVerifier<T>, T>
 	implements ComparableVerifier<T>
 {
+	private static final ComparableVerifierNoOp<?> INSTANCE = new ComparableVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <T> the type of the value being verified
+	 * @return the singleton instance
 	 */
-	public ComparableVerifierNoOp(Configuration config)
+	public static <T extends Comparable<? super T>> ComparableVerifierNoOp<T> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		ComparableVerifierNoOp<T> result = (ComparableVerifierNoOp<T>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private ComparableVerifierNoOp()
+	{
 	}
 
 	@Override

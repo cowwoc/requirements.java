@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatingPointVerifierNoOp;
 
@@ -17,13 +16,25 @@ public final class PrimitiveFloatingPointVerifierNoOp<T extends Number & Compara
 	extends AbstractFloatingPointVerifierNoOp<PrimitiveFloatingPointVerifier<T>, T>
 	implements PrimitiveFloatingPointVerifier<T>
 {
+	private static final PrimitiveFloatingPointVerifierNoOp<?> INSTANCE =
+		new PrimitiveFloatingPointVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <T> the type of the value being verified
+	 * @return the singleton instance
 	 */
-	public PrimitiveFloatingPointVerifierNoOp(Configuration config)
+	public static <T extends Number & Comparable<? super T>> PrimitiveFloatingPointVerifierNoOp<T> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		PrimitiveFloatingPointVerifierNoOp<T> result = (PrimitiveFloatingPointVerifierNoOp<T>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private PrimitiveFloatingPointVerifierNoOp()
+	{
 	}
 
 	@Override

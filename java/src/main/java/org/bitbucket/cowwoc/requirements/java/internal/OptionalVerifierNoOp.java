@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.OptionalVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
@@ -17,13 +16,21 @@ public final class OptionalVerifierNoOp
 	extends AbstractObjectVerifierNoOp<OptionalVerifier, Optional<?>>
 	implements OptionalVerifier
 {
+	private static final OptionalVerifierNoOp INSTANCE = new OptionalVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public OptionalVerifierNoOp(Configuration config)
+	public static OptionalVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private OptionalVerifierNoOp()
+	{
 	}
 
 	@Override

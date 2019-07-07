@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifierNoOp;
 
@@ -20,13 +19,21 @@ public final class BigDecimalVerifierNoOp
 	extends AbstractNumberVerifierNoOp<BigDecimalVerifier, BigDecimal>
 	implements BigDecimalVerifier
 {
+	private static final BigDecimalVerifierNoOp INSTANCE = new BigDecimalVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public BigDecimalVerifierNoOp(Configuration config)
+	public static BigDecimalVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private BigDecimalVerifierNoOp()
+	{
 	}
 
 	@Override
@@ -38,7 +45,7 @@ public final class BigDecimalVerifierNoOp
 	@Override
 	public BigDecimalPrecisionVerifier precision()
 	{
-		return new BigDecimalPrecisionVerifierNoOp(config);
+		return BigDecimalPrecisionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -52,7 +59,7 @@ public final class BigDecimalVerifierNoOp
 	@Override
 	public PrimitiveNumberVerifier<Integer> scale()
 	{
-		return new PrimitiveNumberVerifierNoOp<>(config);
+		return PrimitiveNumberVerifierNoOp.getInstance();
 	}
 
 	@Override

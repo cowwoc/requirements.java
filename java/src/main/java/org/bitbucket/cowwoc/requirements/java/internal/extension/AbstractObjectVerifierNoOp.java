@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
@@ -22,18 +21,6 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractObjectVerifierNoOp<S, T> implements ExtensibleObjectVerifier<S, T>
 {
-	protected final Configuration config;
-
-	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
-	 */
-	public AbstractObjectVerifierNoOp(Configuration config)
-	{
-		assert (config != null) : "config may not be null";
-		this.config = config;
-	}
-
 	/**
 	 * @return this
 	 */
@@ -114,7 +101,7 @@ public abstract class AbstractObjectVerifierNoOp<S, T> implements ExtensibleObje
 	@Override
 	public StringVerifier asString()
 	{
-		return new StringVerifierNoOp(config);
+		return StringVerifierNoOp.getInstance();
 	}
 
 	@Override

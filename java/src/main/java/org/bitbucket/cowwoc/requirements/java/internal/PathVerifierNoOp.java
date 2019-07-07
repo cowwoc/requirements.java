@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PathVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
@@ -18,13 +17,21 @@ public final class PathVerifierNoOp
 	extends AbstractObjectVerifierNoOp<PathVerifier, Path>
 	implements PathVerifier
 {
+	private static final PathVerifierNoOp INSTANCE = new PathVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public PathVerifierNoOp(Configuration config)
+	public static PathVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private PathVerifierNoOp()
+	{
 	}
 
 	@Override

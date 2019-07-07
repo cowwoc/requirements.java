@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractPrimitiveNumberVerifierNoOp;
 
@@ -15,13 +14,21 @@ public final class SizeVerifierNoOp
 	extends AbstractPrimitiveNumberVerifierNoOp<SizeVerifier, Integer>
 	implements SizeVerifier
 {
+	private static final SizeVerifierNoOp INSTANCE = new SizeVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public SizeVerifierNoOp(Configuration config)
+	public static SizeVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private SizeVerifierNoOp()
+	{
 	}
 
 	@Override

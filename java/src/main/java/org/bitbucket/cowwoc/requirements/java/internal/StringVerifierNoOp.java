@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.StringVerifier;
@@ -21,13 +20,21 @@ public final class StringVerifierNoOp
 	extends AbstractObjectVerifierNoOp<StringVerifier, String>
 	implements StringVerifier
 {
+	private static final StringVerifierNoOp INSTANCE = new StringVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public StringVerifierNoOp(Configuration config)
+	public static StringVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private StringVerifierNoOp()
+	{
 	}
 
 	@Override
@@ -69,7 +76,7 @@ public final class StringVerifierNoOp
 	@Override
 	public InetAddressVerifier asInetAddress()
 	{
-		return new InetAddressVerifierNoOp(config);
+		return InetAddressVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -83,7 +90,7 @@ public final class StringVerifierNoOp
 	@Override
 	public UriVerifier asUri()
 	{
-		return new UriVerifierNoOp(config);
+		return UriVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -97,7 +104,7 @@ public final class StringVerifierNoOp
 	@Override
 	public UrlVerifier asUrl()
 	{
-		return new UrlVerifierNoOp(config);
+		return UrlVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -141,7 +148,7 @@ public final class StringVerifierNoOp
 	@Override
 	public SizeVerifier length()
 	{
-		return new SizeVerifierNoOp(config);
+		return SizeVerifierNoOp.getInstance();
 	}
 
 	@Override

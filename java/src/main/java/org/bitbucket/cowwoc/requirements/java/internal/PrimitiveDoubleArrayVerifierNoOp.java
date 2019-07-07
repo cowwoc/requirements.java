@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveDoubleArrayVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVerifierNoOp;
 
@@ -15,13 +14,21 @@ public final class PrimitiveDoubleArrayVerifierNoOp
 	extends AbstractArrayVerifierNoOp<PrimitiveDoubleArrayVerifier, Double, double[]>
 	implements PrimitiveDoubleArrayVerifier
 {
+	private static final PrimitiveDoubleArrayVerifierNoOp INSTANCE = new PrimitiveDoubleArrayVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public PrimitiveDoubleArrayVerifierNoOp(Configuration config)
+	public static PrimitiveDoubleArrayVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private PrimitiveDoubleArrayVerifierNoOp()
+	{
 	}
 
 	@Override

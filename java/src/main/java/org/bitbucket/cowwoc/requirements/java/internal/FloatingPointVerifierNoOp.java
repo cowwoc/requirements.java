@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatingPointVerifierNoOp;
 
@@ -17,13 +16,24 @@ public final class FloatingPointVerifierNoOp<T extends Number & Comparable<? sup
 	extends AbstractFloatingPointVerifierNoOp<FloatingPointVerifier<T>, T>
 	implements FloatingPointVerifier<T>
 {
+	private static final FloatingPointVerifierNoOp<?> INSTANCE = new FloatingPointVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <T> the type of the floating-point number
+	 * @return the singleton instance
 	 */
-	public FloatingPointVerifierNoOp(Configuration config)
+	public static <T extends Number & Comparable<? super T>> FloatingPointVerifierNoOp<T> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		FloatingPointVerifierNoOp<T> result = (FloatingPointVerifierNoOp<T>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private FloatingPointVerifierNoOp()
+	{
 	}
 
 	@Override

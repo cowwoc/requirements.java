@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractPrimitiveNumberVerifierNoOp;
 
@@ -17,13 +16,24 @@ public final class PrimitiveNumberVerifierNoOp<T extends Number & Comparable<? s
 	extends AbstractPrimitiveNumberVerifierNoOp<PrimitiveNumberVerifier<T>, T>
 	implements PrimitiveNumberVerifier<T>
 {
+	private static final PrimitiveNumberVerifierNoOp<?> INSTANCE = new PrimitiveNumberVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <T> the type of the value being verified
+	 * @return the singleton instance
 	 */
-	public PrimitiveNumberVerifierNoOp(Configuration config)
+	public static <T extends Number & Comparable<? super T>> PrimitiveNumberVerifierNoOp<T> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		PrimitiveNumberVerifierNoOp<T> result = (PrimitiveNumberVerifierNoOp<T>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private PrimitiveNumberVerifierNoOp()
+	{
 	}
 
 	@Override

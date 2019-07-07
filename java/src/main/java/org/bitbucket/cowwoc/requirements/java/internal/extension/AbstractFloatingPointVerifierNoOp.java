@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointVerifier;
 
 /**
@@ -19,15 +18,6 @@ public abstract class AbstractFloatingPointVerifierNoOp<S, T extends Number & Co
 	extends AbstractNumberVerifierNoOp<S, T>
 	implements ExtensibleFloatingPointVerifier<S, T>
 {
-	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
-	 */
-	public AbstractFloatingPointVerifierNoOp(Configuration config)
-	{
-		super(config);
-	}
-
 	@Override
 	public S isNumber()
 	{

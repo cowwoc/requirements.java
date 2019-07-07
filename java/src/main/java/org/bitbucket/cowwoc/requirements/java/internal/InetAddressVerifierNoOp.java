@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.InetAddressVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
@@ -17,13 +16,21 @@ public final class InetAddressVerifierNoOp
 	extends AbstractObjectVerifierNoOp<InetAddressVerifier, InetAddress>
 	implements InetAddressVerifier
 {
+	private static final InetAddressVerifierNoOp INSTANCE = new InetAddressVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public InetAddressVerifierNoOp(Configuration config)
+	public static InetAddressVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private InetAddressVerifierNoOp()
+	{
 	}
 
 	@Override

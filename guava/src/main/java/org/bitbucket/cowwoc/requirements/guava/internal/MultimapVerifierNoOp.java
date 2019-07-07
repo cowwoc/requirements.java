@@ -7,7 +7,6 @@ package org.bitbucket.cowwoc.requirements.guava.internal;
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierNoOp;
@@ -28,12 +27,25 @@ public final class MultimapVerifierNoOp<K, V>
 	extends AbstractObjectVerifierNoOp<MultimapVerifier<K, V>, Multimap<K, V>>
 	implements MultimapVerifier<K, V>
 {
+	private static final MultimapVerifierNoOp<?, ?> INSTANCE = new MultimapVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
+	 * @param <K> the type of keys in the multimap
+	 * @param <V> the type of values in the multimap
+	 * @return the singleton instance
 	 */
-	public MultimapVerifierNoOp(Configuration config)
+	public static <K, V> MultimapVerifierNoOp<K, V> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		MultimapVerifierNoOp<K, V> result = (MultimapVerifierNoOp<K, V>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private MultimapVerifierNoOp()
+	{
 	}
 
 	@Override
@@ -45,7 +57,7 @@ public final class MultimapVerifierNoOp<K, V>
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -59,7 +71,7 @@ public final class MultimapVerifierNoOp<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -73,7 +85,7 @@ public final class MultimapVerifierNoOp<K, V>
 	@Override
 	public CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -100,7 +112,7 @@ public final class MultimapVerifierNoOp<K, V>
 	@Override
 	public SizeVerifier size()
 	{
-		return new SizeVerifierNoOp(config);
+		return SizeVerifierNoOp.getInstance();
 	}
 
 	@Override

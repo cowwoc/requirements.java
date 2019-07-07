@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleComparableVerifier;
 
 /**
@@ -19,15 +18,6 @@ public abstract class AbstractComparableVerifierNoOp<S, T extends Comparable<? s
 	extends AbstractObjectVerifierNoOp<S, T>
 	implements ExtensibleComparableVerifier<S, T>
 {
-	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
-	 */
-	public AbstractComparableVerifierNoOp(Configuration config)
-	{
-		super(config);
-	}
-
 	@Override
 	public S isGreaterThan(T value)
 	{

@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.BooleanVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractComparableVerifierNoOp;
 
 /**
@@ -15,13 +14,21 @@ public final class BooleanVerifierNoOp
 	extends AbstractComparableVerifierNoOp<BooleanVerifier, Boolean>
 	implements BooleanVerifier
 {
+	private static final BooleanVerifierNoOp INSTANCE = new BooleanVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public BooleanVerifierNoOp(Configuration config)
+	public static BooleanVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private BooleanVerifierNoOp()
+	{
 	}
 
 	@Override

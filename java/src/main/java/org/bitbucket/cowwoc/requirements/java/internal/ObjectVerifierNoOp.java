@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.ObjectVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
@@ -16,13 +15,24 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectV
 public final class ObjectVerifierNoOp<T> extends AbstractObjectVerifierNoOp<ObjectVerifier<T>, T>
 	implements ObjectVerifier<T>
 {
+	private static final ObjectVerifierNoOp<?> INSTANCE = new ObjectVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <T> the type of the value being verified
+	 * @return the singleton instance
 	 */
-	public ObjectVerifierNoOp(Configuration config)
+	public static <T> ObjectVerifierNoOp<T> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		ObjectVerifierNoOp<T> result = (ObjectVerifierNoOp<T>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private ObjectVerifierNoOp()
+	{
 	}
 
 	@Override

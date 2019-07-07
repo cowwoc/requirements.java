@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.MapVerifier;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
@@ -26,13 +25,25 @@ public final class MapVerifierNoOp<K, V>
 	extends AbstractObjectVerifierNoOp<MapVerifier<K, V>, Map<K, V>>
 	implements MapVerifier<K, V>
 {
+	private static final MapVerifierNoOp<?, ?> INSTANCE = new MapVerifierNoOp<>();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @param <K> the type of keys in the map
+	 * @param <V> the type of values in the map
+	 * @return the singleton instance
 	 */
-	public MapVerifierNoOp(Configuration config)
+	public static <K, V> MapVerifierNoOp<K, V> getInstance()
 	{
-		super(config);
+		@SuppressWarnings("unchecked")
+		MapVerifierNoOp<K, V> result = (MapVerifierNoOp<K, V>) INSTANCE;
+		return result;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private MapVerifierNoOp()
+	{
 	}
 
 	@Override
@@ -44,7 +55,7 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public CollectionVerifier<Set<K>, K> keySet()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -58,7 +69,7 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public CollectionVerifier<Collection<V>, V> values()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -72,7 +83,7 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public CollectionVerifier<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionVerifierNoOp<>(config);
+		return CollectionVerifierNoOp.getInstance();
 	}
 
 	@Override
@@ -98,7 +109,7 @@ public final class MapVerifierNoOp<K, V>
 	@Override
 	public SizeVerifier size()
 	{
-		return new SizeVerifierNoOp(config);
+		return SizeVerifierNoOp.getInstance();
 	}
 
 	@Override

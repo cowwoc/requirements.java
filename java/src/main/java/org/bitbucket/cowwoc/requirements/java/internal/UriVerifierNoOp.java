@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
-import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
 import org.bitbucket.cowwoc.requirements.java.UrlVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
@@ -19,13 +18,21 @@ public final class UriVerifierNoOp
 	extends AbstractObjectVerifierNoOp<UriVerifier, URI>
 	implements UriVerifier
 {
+	private static final UriVerifierNoOp INSTANCE = new UriVerifierNoOp();
+
 	/**
-	 * @param config the instance configuration
-	 * @throws AssertionError if {@code config} is null
+	 * @return the singleton instance
 	 */
-	public UriVerifierNoOp(Configuration config)
+	public static UriVerifierNoOp getInstance()
 	{
-		super(config);
+		return INSTANCE;
+	}
+
+	/**
+	 * Prevent construction.
+	 */
+	private UriVerifierNoOp()
+	{
 	}
 
 	@Override
@@ -43,7 +50,7 @@ public final class UriVerifierNoOp
 	@Override
 	public UrlVerifier asUrl()
 	{
-		return new UrlVerifierNoOp(config);
+		return UrlVerifierNoOp.getInstance();
 	}
 
 	@Override

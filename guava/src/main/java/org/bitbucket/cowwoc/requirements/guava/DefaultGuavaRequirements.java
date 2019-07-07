@@ -104,7 +104,7 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
-		return new MultimapVerifierNoOp<>(config);
+		return MultimapVerifierNoOp.getInstance();
 	}
 
 	@Override
