@@ -103,8 +103,6 @@ public final class ExceptionBuilder<T extends Exception>
 	public T build(String message)
 	{
 		assert (message != null);
-		StringJoiner messageWithContext = new StringJoiner("\n");
-		messageWithContext.add(message);
 
 		Map<String, Object> localContext = config.getContext();
 		assert (Maps.isUnmodifiable(localContext)) : "localContext may not be modifiable";
@@ -148,6 +146,8 @@ public final class ExceptionBuilder<T extends Exception>
 			if (length > maxKeyLength)
 				maxKeyLength = length;
 		}
+		StringJoiner messageWithContext = new StringJoiner("\n");
+		messageWithContext.add(message);
 		for (Entry<String, Object> entry : mergedContext)
 		{
 			if (entry == null)

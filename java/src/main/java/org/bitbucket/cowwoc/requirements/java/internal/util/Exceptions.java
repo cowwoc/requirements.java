@@ -131,7 +131,14 @@ public final class Exceptions
 			boolean withCause = !cleanStackTrace && cause != null;
 			MethodHandle constructor = getConstructor(type, withCause, cleanStackTrace);
 			boolean isOptimized = isOptimizedException(constructor.type().returnType());
-			// Convert the exception type to Exception
+
+			// invokeExact() fails unless we provide exact type specifications. Per
+			// https://stackoverflow.com/a/27279268/14731 invokeExact() assumes that the method return type
+			// is equal to the compile-time cast applied to it, unless we invoke changeReturnType() as seen below.
+			// If we were to skip changeReturnType() and cast the return value to "E" then invokeExact() would
+			// assume the return type is "Exception". This would fail because the real value
+			// of "E" is only known at runtime and is rarely equal to "Exception". Therefore, we are forced to
+			// cast the return type to "Exception" then back to "E" at runtime.
 			constructor = constructor.asType(constructor.type().changeReturnType(Exception.class));
 
 			E result;
