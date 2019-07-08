@@ -6,13 +6,13 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.FloatingPointValidator;
 import org.bitbucket.cowwoc.requirements.java.FloatingPointVerifier;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractDoubleVerifier;
+import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractFloatingPointVerifier;
 
 /**
  * Default implementation of {@code FloatingPointVerifier<Double>}.
  */
 public final class DoubleVerifierImpl
-	extends AbstractDoubleVerifier<FloatingPointVerifier<Double>, FloatingPointValidator<Double>>
+	extends AbstractFloatingPointVerifier<FloatingPointVerifier<Double>, FloatingPointValidator<Double>, Double>
 	implements FloatingPointVerifier<Double>
 {
 	/**

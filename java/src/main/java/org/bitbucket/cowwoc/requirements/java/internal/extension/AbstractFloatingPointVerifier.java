@@ -8,20 +8,22 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointV
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointVerifier;
 
 /**
- * Default implementation of {@code ExtensibleFloatingPointVerifier} for {@code float}s.
+ * Default implementation of {@code ExtensibleFloatingPointVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
  * @param <V> the type of validator used by the verifier
+ * @param <T> the type of the value being validated
  */
-public abstract class AbstractFloatVerifier<S, V extends ExtensibleFloatingPointValidator<V, Float>>
-	extends AbstractNumberVerifier<S, V, Float>
-	implements ExtensibleFloatingPointVerifier<S, Float>
+public abstract class AbstractFloatingPointVerifier
+	<S, V extends ExtensibleFloatingPointValidator<V, T>, T extends Number & Comparable<? super T>>
+	extends AbstractNumberVerifier<S, V, T>
+	implements ExtensibleFloatingPointVerifier<S, T>
 {
 	/**
 	 * @param validator the validator to delegate to
 	 * @throws AssertionError if {@code validator} is null
 	 */
-	protected AbstractFloatVerifier(V validator)
+	protected AbstractFloatingPointVerifier(V validator)
 	{
 		super(validator);
 	}
