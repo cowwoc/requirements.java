@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 
 /**
  * Verifies the requirements of a {@link Collection}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection

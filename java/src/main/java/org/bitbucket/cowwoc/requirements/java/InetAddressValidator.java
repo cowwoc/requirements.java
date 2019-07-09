@@ -10,6 +10,8 @@ import java.net.InetAddress;
 
 /**
  * Validates the requirements of an IP address or hostname.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  */
 public interface InetAddressValidator extends ExtensibleObjectValidator<InetAddressValidator, InetAddress>
 {

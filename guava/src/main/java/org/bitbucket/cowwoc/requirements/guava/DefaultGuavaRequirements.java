@@ -94,24 +94,23 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	}
 
 	@Override
-	public <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
+	public boolean isCleanStackTrace()
 	{
-		return new MultimapVerifierImpl<>(validateThat(actual, name));
+		return config.isCleanStackTrace();
 	}
 
 	@Override
-	public <K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name)
+	public Configuration withCleanStackTrace()
 	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return MultimapVerifierNoOp.getInstance();
+		config.withCleanStackTrace();
+		return this;
 	}
 
 	@Override
-	public <K, V> MultimapValidator<K, V> validateThat(Multimap<K, V> actual, String name)
+	public Configuration withoutCleanStackTrace()
 	{
-		Verifiers.verifyName(scope, config, name);
-		return new MultimapValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
+		config.withoutCleanStackTrace();
+		return this;
 	}
 
 	@Override
@@ -179,5 +178,26 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	{
 		this.config = configuration;
 		return this;
+	}
+
+	@Override
+	public <K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name)
+	{
+		return new MultimapVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public <K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return MultimapVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public <K, V> MultimapValidator<K, V> validateThat(Multimap<K, V> actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new MultimapValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
 	}
 }

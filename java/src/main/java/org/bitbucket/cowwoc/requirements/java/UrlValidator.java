@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 
 /**
  * Validates the requirements of a {@link URL}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  */
 public interface UrlValidator extends ExtensibleObjectValidator<UrlValidator, URL>
 {

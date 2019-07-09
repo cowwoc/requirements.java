@@ -5,9 +5,14 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -155,6 +160,16 @@ public final class StringTest
 		}
 	}
 
+	@Test(expectedExceptions = NullPointerException.class)
+	public void startsWith_Null()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "1234home";
+			new Requirements(scope).requireThat(actual, "actual").startsWith(null);
+		}
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void startsWith_False()
 	{
@@ -174,6 +189,16 @@ public final class StringTest
 			String prefix = "home";
 			String actual = "1234" + prefix;
 			new Requirements(scope).requireThat(actual, "actual").doesNotStartWith(prefix);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void doesNotStartWith_Null()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "home1234";
+			new Requirements(scope).requireThat(actual, "actual").doesNotStartWith(null);
 		}
 	}
 
@@ -199,6 +224,16 @@ public final class StringTest
 		}
 	}
 
+	@Test(expectedExceptions = NullPointerException.class)
+	public void endsWith_Null()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "home1234";
+			new Requirements(scope).requireThat(actual, "actual").endsWith(null);
+		}
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void endsWith_False()
 	{
@@ -218,6 +253,16 @@ public final class StringTest
 			String suffix = "home";
 			String actual = suffix + "1234";
 			new Requirements(scope).requireThat(actual, "actual").doesNotEndWith(suffix);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void doesNotEndWith_Null()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "home1234";
+			new Requirements(scope).requireThat(actual, "actual").doesNotEndWith(null);
 		}
 	}
 
@@ -328,6 +373,246 @@ public final class StringTest
 			// Ensure that no exception is thrown if assertions are disabled
 			String actual = null;
 			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsInetAddressNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asInetAddress(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsUriNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asUri(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsUrlNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asUrl(null);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsEmpty()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isEmpty().isNotEqualTo("someValue").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotEmpty()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotEmpty().isNotEqualTo("someValue").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullTrim()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				trim().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsTrimmed()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isTrimmed().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullLength()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				length().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullAsInetAddress()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				asInetAddress().isIpV4().getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullAsUri()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				asUri().isAbsolute().getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullAsUrl()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				asUrl().isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullStartsWith()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				startsWith("prefix").isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullDoesNotStartWith()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				doesNotStartWith("prefix").isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullEndsWith()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				endsWith("suffix").isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullDoesNotEndWith()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				doesNotEndWith("suffix").isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullContains()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				contains("value").isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullDoesNotContain()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				doesNotContain("value").isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

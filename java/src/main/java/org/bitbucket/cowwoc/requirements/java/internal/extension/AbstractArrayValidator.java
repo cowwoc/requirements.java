@@ -6,11 +6,14 @@ package org.bitbucket.cowwoc.requirements.java.internal.extension;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
@@ -242,6 +245,12 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 	@Override
 	public SizeValidator length()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new SizeValidatorNoOp(failures);
+		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".length", actualAsCollection.size(),
 			Pluralizer.ELEMENT, failures);
 	}
@@ -249,8 +258,9 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 	@Override
 	public S length(Consumer<SizeValidator> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(length());
 		return getThis();
 	}
@@ -264,8 +274,9 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 	@Override
 	public S asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(asCollection());
 		return getThis();
 	}

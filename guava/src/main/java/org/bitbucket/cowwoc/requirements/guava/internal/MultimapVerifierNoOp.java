@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.guava.internal;
 import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.MultimapVerifier;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeVerifierNoOp;

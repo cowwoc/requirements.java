@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -12,7 +13,9 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -1298,6 +1301,55 @@ public final class ArrayTest
 			// Ensure that no exception is thrown if assertions are disabled
 			Collection<?> actual = null;
 			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatLengthNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual = null;
+			new Requirements(scope).validateThat(actual, "actual").length(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsCollectionNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asCollection(null);
+		}
+	}
+
+	@Test
+	public void validateThatNullLength()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				length().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullAsCollection()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String[] actual = null;
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				asCollection().getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEmpty();
 		}
 	}
 }

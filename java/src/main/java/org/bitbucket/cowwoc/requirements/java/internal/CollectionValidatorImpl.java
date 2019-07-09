@@ -68,6 +68,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> isEmpty()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -81,6 +87,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> isNotEmpty()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -93,6 +105,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> contains(E element)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.contains(element))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -106,6 +124,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> contains(E element, String name)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!actual.contains(element))
@@ -124,11 +148,17 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
 		Set<E> unwanted = Sets.difference(actualAsSet, expectedAsSet);
-
 		if (!missing.isEmpty() || !unwanted.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -147,11 +177,17 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(expectedAsSet, actualAsSet);
 		Set<E> unwanted = Sets.difference(actualAsSet, expectedAsSet);
-
 		if (!missing.isEmpty() || !unwanted.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -171,6 +207,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actualContainsAny(expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -200,6 +242,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actualContainsAny(expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -216,6 +264,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 
 		if (!actual.containsAll(expected))
 		{
@@ -238,6 +292,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.containsAll(expected))
 		{
 			Set<E> expectedAsSet = Sets.fromCollection(expected);
@@ -256,6 +316,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> doesNotContain(E element)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.contains(element))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -272,6 +338,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.contains(element))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -287,12 +359,19 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	public CollectionValidator<C, E> doesNotContainExactly(Collection<E> other)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(other, "other").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		Set<E> otherAsSet = Sets.fromCollection(other);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(otherAsSet, actualAsSet);
 		Set<E> unwanted = Sets.difference(actualAsSet, otherAsSet);
-
 		if (missing.isEmpty() && unwanted.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -306,7 +385,15 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	public CollectionValidator<C, E> doesNotContainExactly(Collection<E> other, String name)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(other, "other").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		Set<E> otherAsSet = Sets.fromCollection(other);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
 		Set<E> missing = Sets.difference(otherAsSet, actualAsSet);
@@ -328,6 +415,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actualContainsAny(elements))
 		{
 			Set<E> elementsAsSet = Sets.fromCollection(elements);
@@ -349,6 +442,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actualContainsAny(elements))
 		{
 			Set<E> elementsAsSet = Sets.fromCollection(elements);
@@ -370,6 +469,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.containsAll(elements))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -387,6 +492,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.containsAll(elements))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -401,6 +512,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> doesNotContainDuplicates()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual instanceof Set)
 			return getThis();
 		int size = actual.size();
@@ -425,6 +542,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public SizeValidator size()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new SizeValidatorNoOp(failures);
+		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(), pluralizer,
 			failures);
 	}
@@ -432,8 +555,9 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> size(Consumer<SizeValidator> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(size());
 		return getThis();
 	}
@@ -441,8 +565,15 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public ArrayValidator<E> asArray(Class<E> type)
 	{
-		if (type == null)
-			throw new NullPointerException("type may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(type, "type").isNotNull();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new ArrayValidatorNoOp<>(failures);
+		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
 		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), failures);
@@ -451,10 +582,10 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E>> consumer)
 	{
-		if (type == null)
-			throw new NullPointerException("type may not be null");
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(type, "type").isNotNull();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(asArray(type));
 		return getThis();
 	}

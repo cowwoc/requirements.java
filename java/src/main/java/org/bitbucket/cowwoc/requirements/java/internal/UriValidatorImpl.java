@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.UriValidator;
 import org.bitbucket.cowwoc.requirements.java.UrlValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
@@ -53,6 +54,12 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	@Override
 	public UriValidator isAbsolute()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.isAbsolute())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -66,6 +73,12 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	@Override
 	public UrlValidator asUrl()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new UrlValidatorNoOp(failures);
+		}
 		try
 		{
 			URL url = actual.toURL();
@@ -85,8 +98,9 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	@Override
 	public UriValidator asUrl(Consumer<UrlValidator> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(asUrl());
 		return this;
 	}

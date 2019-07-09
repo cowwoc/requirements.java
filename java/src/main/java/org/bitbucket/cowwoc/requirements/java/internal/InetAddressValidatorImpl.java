@@ -53,6 +53,12 @@ public final class InetAddressValidatorImpl
 	@Override
 	public InetAddressValidator isIpV4()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!(actual instanceof Inet4Address))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -66,6 +72,12 @@ public final class InetAddressValidatorImpl
 	@Override
 	public InetAddressValidator isIpV6()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!(actual instanceof Inet6Address))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -79,6 +91,12 @@ public final class InetAddressValidatorImpl
 	@Override
 	public StringValidator asString()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new StringValidatorNoOp(failures);
+		}
 		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
 		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
 		// format.

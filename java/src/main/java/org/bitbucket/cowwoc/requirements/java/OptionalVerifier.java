@@ -4,12 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.Optional;
 
 /**
  * Verifies the requirements of an {@link Optional}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  */
 public interface OptionalVerifier extends ExtensibleObjectVerifier<OptionalVerifier, Optional<?>>
 {

@@ -76,6 +76,9 @@ import org.bitbucket.cowwoc.requirements.java.internal.StringVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.UriValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.UriVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.UrlValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.UrlVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.UrlVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.secrets.JavaSecrets;
@@ -86,6 +89,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.Verifiers;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -153,6 +157,26 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public boolean assertionsAreEnabled()
 	{
 		return config.assertionsAreEnabled();
+	}
+
+	@Override
+	public boolean isCleanStackTrace()
+	{
+		return config.isCleanStackTrace();
+	}
+
+	@Override
+	public JavaRequirements withCleanStackTrace()
+	{
+		config.withCleanStackTrace();
+		return this;
+	}
+
+	@Override
+	public JavaRequirements withoutCleanStackTrace()
+	{
+		config.withoutCleanStackTrace();
+		return this;
 	}
 
 	@Override
@@ -894,6 +918,27 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new UriValidatorImpl(scope, config, name, actual, new ArrayList<>());
+	}
+
+	@Override
+	public UrlVerifier requireThat(URL actual, String name)
+	{
+		return new UrlVerifierImpl(validateThat(actual, name));
+	}
+
+	@Override
+	public UrlVerifier assertThat(URL actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return UrlVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public UrlValidator validateThat(URL actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new UrlValidatorImpl(scope, config, name, actual, new ArrayList<>());
 	}
 
 	@Override

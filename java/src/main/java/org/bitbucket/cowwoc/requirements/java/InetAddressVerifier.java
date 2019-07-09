@@ -4,12 +4,15 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.net.InetAddress;
 
 /**
  * Verifies the requirements of an IP address or hostname.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  */
 public interface InetAddressVerifier extends ExtensibleObjectVerifier<InetAddressVerifier, InetAddress>
 {

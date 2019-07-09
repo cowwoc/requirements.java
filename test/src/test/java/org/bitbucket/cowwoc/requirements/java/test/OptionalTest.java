@@ -5,11 +5,15 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -144,6 +148,66 @@ public final class OptionalTest
 			// Ensure that no exception is thrown if assertions are disabled
 			Optional<?> actual = null;
 			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@Test
+	public void validateThatNullIsPresent()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Optional<?> actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isPresent().isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsEmpty()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Optional<?> actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isEmpty().isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullContains()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Optional<?> actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				contains(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullContainsWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Optional<?> actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				contains(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

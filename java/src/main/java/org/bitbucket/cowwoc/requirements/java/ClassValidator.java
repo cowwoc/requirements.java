@@ -8,6 +8,8 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidato
 
 /**
  * Validates the requirements of a {@link Class} value.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  *
  * @param <T> the type of the class
  */

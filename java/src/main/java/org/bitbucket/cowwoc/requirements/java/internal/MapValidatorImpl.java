@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.MapValidator;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
@@ -60,6 +61,12 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new CollectionValidatorNoOp<>(failures);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
 			failures);
 	}
@@ -67,8 +74,9 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(keySet());
 		return this;
 	}
@@ -76,6 +84,12 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new CollectionValidatorNoOp<>(failures);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
 			failures);
 	}
@@ -83,8 +97,9 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(values());
 		return this;
 	}
@@ -92,6 +107,12 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new CollectionValidatorNoOp<>(failures);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", actual.entrySet(),
 			Pluralizer.ENTRY, failures);
 	}
@@ -99,8 +120,9 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> entrySet(Consumer<CollectionValidator<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(entrySet());
 		return this;
 	}
@@ -108,6 +130,12 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> isEmpty()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -121,6 +149,12 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> isNotEmpty()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -133,6 +167,12 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public SizeValidator size()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new SizeValidatorNoOp(failures);
+		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
 			Pluralizer.ENTRY, failures);
 	}
@@ -140,8 +180,9 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> size(Consumer<SizeValidator> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(size());
 		return this;
 	}

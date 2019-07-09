@@ -41,6 +41,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNegative()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.doubleValue() >= 0L)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -54,6 +60,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotNegative()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.doubleValue() < 0L)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -67,6 +79,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isZero()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.doubleValue() != 0L)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -80,6 +98,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotZero()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.doubleValue() == 0L)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -92,6 +116,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isPositive()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.doubleValue() <= 0L)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -105,6 +135,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotPositive()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.doubleValue() > 0L)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -118,6 +154,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isWholeNumber()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!isWholeNumber(actual.doubleValue()))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -141,6 +183,12 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotWholeNumber()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual.doubleValue()))
 		{
@@ -157,6 +205,13 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
@@ -175,6 +230,13 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		double divisorAsDouble = divisor.doubleValue();
 		// TODO: Is zero really a multiple of all numbers?
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
@@ -193,6 +255,13 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
@@ -211,6 +280,13 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{

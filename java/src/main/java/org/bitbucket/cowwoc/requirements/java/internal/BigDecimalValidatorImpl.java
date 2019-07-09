@@ -54,6 +54,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isZero()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
 		// need to take into account.
 		if (actual.signum() != 0)
@@ -69,6 +75,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isNotZero()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
 		// need to take into account.
 		if (actual.signum() == 0)
@@ -83,14 +95,21 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalPrecisionValidator precision()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new BigDecimalPrecisionValidatorNoOp(failures);
+		}
 		return new BigDecimalPrecisionValidatorImpl(scope, config, name, actual, failures);
 	}
 
 	@Override
 	public BigDecimalValidator precision(Consumer<BigDecimalPrecisionValidator> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(precision());
 		return this;
 	}
@@ -98,14 +117,21 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public PrimitiveNumberValidator<Integer> scale()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new PrimitiveNumberValidatorNoOp<>(failures);
+		}
 		return new BigDecimalScaleValidatorImpl(scope, config, name, actual, failures);
 	}
 
 	@Override
 	public BigDecimalValidator scale(Consumer<PrimitiveNumberValidator<Integer>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(scale());
 		return this;
 	}
@@ -113,6 +139,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isWholeNumber()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!isWholeNumber(actual))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -136,6 +168,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isNotWholeNumber()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual))
 		{
@@ -161,6 +199,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isMultipleOf(BigDecimal divisor)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		if (!isMultipleOf(actual, divisor))
@@ -177,6 +221,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isMultipleOf(BigDecimal divisor, String name)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
@@ -194,6 +244,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isNotMultipleOf(BigDecimal divisor)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		if (isMultipleOf(actual, divisor))
@@ -210,6 +266,12 @@ public final class BigDecimalValidatorImpl
 	@Override
 	public BigDecimalValidator isNotMultipleOf(BigDecimal divisor, String name)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();

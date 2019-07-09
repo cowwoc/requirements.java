@@ -53,6 +53,13 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
+		
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.isAssignableFrom(type))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,

@@ -11,6 +11,7 @@ import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.ContextGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Objects;
@@ -213,6 +214,13 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(collection, "collection").isNotNull();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!collection.contains(actual))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -228,6 +236,13 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(collection, "collection").isNotNull();
+
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (collection.contains(actual))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -297,7 +312,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		if (actual != null)
 			return getThis();
 		ValidationFailure failure = new ValidationFailureImpl(this, NullPointerException.class,
-			name + " may not be null");
+			this.name + " may not be null");
 		failures.add(failure);
 		return getNoOp();
 	}
@@ -305,6 +320,12 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public StringValidator asString()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return new StringValidatorNoOp(failures);
+		}
 		String value = config.toString(actual);
 		return new StringValidatorImpl(scope, config, name, value, failures);
 	}
@@ -312,8 +333,9 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S asString(Consumer<StringValidator> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(asString());
 		return getThis();
 	}

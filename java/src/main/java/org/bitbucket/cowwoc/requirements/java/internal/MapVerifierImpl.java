@@ -6,6 +6,7 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.MapValidator;
 import org.bitbucket.cowwoc.requirements.java.MapVerifier;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;

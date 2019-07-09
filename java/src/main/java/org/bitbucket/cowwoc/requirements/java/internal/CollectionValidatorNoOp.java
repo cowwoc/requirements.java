@@ -178,6 +178,8 @@ public final class CollectionValidatorNoOp<C extends Collection<E>, E>
 	@Override
 	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E>> consumer)
 	{
+		if (type == null)
+			throw new NullPointerException("type may not be null");
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
 		return this;

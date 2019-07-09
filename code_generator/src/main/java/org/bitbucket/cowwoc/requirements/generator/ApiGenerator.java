@@ -417,6 +417,29 @@ public final class ApiGenerator
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\tpublic boolean isCleanStackTrace()\n" +
+			"\t{\n" +
+			"\t\treturn javaRequirements.isCleanStackTrace();\n" +
+			"\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\tpublic Configuration withCleanStackTrace()\n" +
+			"\t{\n" +
+			"\t\tjavaRequirements.withCleanStackTrace();\n");
+		if (guavaEnabled)
+			out.append("\t\tguavaRequirements.withCleanStackTrace();\n");
+		out.append("\t\treturn this;\n" +
+			"\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\tpublic Configuration withoutCleanStackTrace()\n" +
+			"\t{\n" +
+			"\t\tjavaRequirements.withoutCleanStackTrace();\n");
+		if (guavaEnabled)
+			out.append("\t\tguavaRequirements.withoutCleanStackTrace();\n");
+		out.append("\t\treturn this;\n" +
+			"\t}\n" +
+			"\t@Override\n" +
 			"\tpublic Requirements withAssertionsDisabled()\n" +
 			"\t{\n" +
 			"\t\tjavaRequirements.withAssertionsDisabled();\n");

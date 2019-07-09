@@ -5,9 +5,12 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 /**
  * Verifies the requirements of for a {@link Number}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  *
  * @param <T> the type of the value being verified
  */

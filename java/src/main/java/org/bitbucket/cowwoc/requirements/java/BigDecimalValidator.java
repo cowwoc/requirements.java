@@ -5,12 +5,15 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleNumberValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 /**
  * Validates the requirements of a {@link BigDecimal} value.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  */
 public interface BigDecimalValidator extends ExtensibleNumberValidator<BigDecimalValidator, BigDecimal>
 {

@@ -5,9 +5,12 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleBooleanVerifier;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 /**
  * Verifies the requirements of a {@code boolean} value.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  */
 public interface BooleanVerifier extends ExtensibleBooleanVerifier<BooleanVerifier>
 {

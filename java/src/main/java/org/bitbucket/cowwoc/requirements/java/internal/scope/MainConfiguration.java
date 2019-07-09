@@ -35,6 +35,7 @@ public final class MainConfiguration implements Configuration
 	private final Map<String, Object> context;
 	private final Optional<Class<? extends RuntimeException>> exception;
 	private boolean assertionsEnabled;
+	private boolean cleanStackTrace;
 	private boolean diffEnabled;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
 
@@ -46,6 +47,7 @@ public final class MainConfiguration implements Configuration
 	 * <li>Whose assertions are enabled if
 	 * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">
 	 * assertions are enabled on this class</a>.</li>
+	 * <li>That omits exception stack traces that reference this library.</li>
 	 * <li>That shows the difference between the actual and expected values.</li>
 	 * <li>That invokes {@code Arrays.toString()} for arrays and {@code Object.toString()} for all
 	 * other objects to convert them to a {@code String}.</li>
@@ -56,6 +58,7 @@ public final class MainConfiguration implements Configuration
 		this.context = new HashMap<>();
 		this.exception = Optional.empty();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
+		this.cleanStackTrace = true;
 		this.diffEnabled = true;
 		this.typeToStringConverter = new HashMap<>(13);
 		ThreadLocal<NumberFormat> decimalFormat = ThreadLocal.withInitial(NumberFormat::getInstance);
@@ -82,6 +85,7 @@ public final class MainConfiguration implements Configuration
 	 * @param exception             the type of exception to throw
 	 * @param assertionsEnabled     true if {@code assertThat()} should invoke {@code requireThat()};
 	 *                              false if {@code assertThat()} should do nothing
+	 * @param cleanStackTrace       true if exception stack traces should omit references to this library
 	 * @param diffEnabled           indicates whether exceptions should show the difference between the
 	 *                              actual and expected values
 	 * @param typeToStringConverter a map from an object type to a function that converts the object to
@@ -91,6 +95,7 @@ public final class MainConfiguration implements Configuration
 	private MainConfiguration(Map<String, Object> context,
 	                          Optional<Class<? extends RuntimeException>> exception,
 	                          boolean assertionsEnabled,
+	                          boolean cleanStackTrace,
 	                          boolean diffEnabled,
 	                          Map<Class<?>, Function<Object, String>> typeToStringConverter)
 	{
@@ -100,6 +105,7 @@ public final class MainConfiguration implements Configuration
 		this.context = Maps.unmodifiable(context);
 		this.exception = exception;
 		this.assertionsEnabled = assertionsEnabled;
+		this.cleanStackTrace = cleanStackTrace;
 		this.diffEnabled = diffEnabled;
 		this.typeToStringConverter = Maps.unmodifiable(typeToStringConverter);
 	}
@@ -121,6 +127,26 @@ public final class MainConfiguration implements Configuration
 	public Configuration withAssertionsDisabled()
 	{
 		this.assertionsEnabled = false;
+		return this;
+	}
+
+	@Override
+	public boolean isCleanStackTrace()
+	{
+		return cleanStackTrace;
+	}
+
+	@Override
+	public Configuration withCleanStackTrace()
+	{
+		this.cleanStackTrace = true;
+		return this;
+	}
+
+	@Override
+	public Configuration withoutCleanStackTrace()
+	{
+		this.cleanStackTrace = false;
 		return this;
 	}
 

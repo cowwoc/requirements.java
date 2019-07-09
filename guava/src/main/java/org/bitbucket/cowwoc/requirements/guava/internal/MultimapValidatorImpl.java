@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.MultimapValidator;
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorImpl;
@@ -15,7 +16,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.Collection;
@@ -71,8 +71,9 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public MultimapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(keySet());
 		return this;
 	}
@@ -87,8 +88,9 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public MultimapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(values());
 		return this;
 	}
@@ -104,8 +106,9 @@ public final class MultimapValidatorImpl<K, V>
 	public MultimapValidator<K, V> entries(Consumer<CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>>>
 		                                       consumer)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(entries());
 		return this;
 	}
@@ -131,7 +134,6 @@ public final class MultimapValidatorImpl<K, V>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
 			failures.add(failure);
-
 		}
 		return this;
 	}
@@ -146,11 +148,9 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public MultimapValidator<K, V> size(Consumer<SizeValidator> consumer)
 	{
-		if (consumer == null)
-		{
-			throw new ExceptionBuilder<>(scope, getConfiguration(), NullPointerException.class).
-				build("consumer may not be null");
-		}
+		JavaRequirements internalVerifier = scope.getInternalVerifier();
+		internalVerifier.requireThat(consumer, "consumer").isNotNull();
+
 		consumer.accept(size());
 		return this;
 	}

@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -418,6 +420,46 @@ public final class ObjectTest
 			failures.add(new ValidationFailureImpl(validator, IOException.class, "This is a test"));
 			PathVerifier verifier = new PathVerifierImpl(validator);
 			verifier.isDirectory();
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsStringNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asString(null);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsOneOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isOneOf(Collections.singleton(null)).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotOneOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotOneOf(Collections.singleton(null)).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

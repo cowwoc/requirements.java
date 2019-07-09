@@ -5,11 +5,15 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -786,7 +790,7 @@ public final class BigDecimalTest
 	}
 
 	/**
-	 * BUG: Implementation used to check that longValue() > 0; which fails for decimals.
+	 * BUG: Implementation used to check that {@code longValue() > 0}; ignoring the decimal component.
 	 */
 	@Test
 	public void decimalIsPositive()
@@ -795,6 +799,176 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = new BigDecimal("0.1");
 			new Requirements(scope).requireThat(actual, "actual").isPositive();
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatPrecisionNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			new Requirements(scope).validateThat(actual, "actual").precision(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatScaleNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			new Requirements(scope).validateThat(actual, "actual").scale(null);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isZero().isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotZero().isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullPrecision()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				precision().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullScale()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				scale().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isWholeNumber().isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotWholeNumber()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotWholeNumber().isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isMultipleOf(BigDecimal.TEN).isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsMultipleOfWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isMultipleOf(BigDecimal.TEN, "name").isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotMultipleOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotMultipleOf(BigDecimal.ONE).isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotMultipleOfWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotMultipleOf(BigDecimal.ONE, "name").isNotEqualTo(BigDecimal.ONE).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

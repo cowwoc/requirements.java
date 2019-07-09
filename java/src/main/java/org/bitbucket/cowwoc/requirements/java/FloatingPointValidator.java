@@ -5,9 +5,12 @@
 package org.bitbucket.cowwoc.requirements.java;
 
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleFloatingPointValidator;
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 
 /**
  * Validates the requirements of a floating-point number.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  *
  * @param <T> the type of the floating-point number
  */

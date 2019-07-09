@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.OptionalValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
@@ -50,6 +51,12 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator isPresent()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -62,6 +69,12 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator isEmpty()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.isPresent())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -75,6 +88,12 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator contains(Object value)
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (value == null)
 			return isEmpty();
 		Optional<?> expected = Optional.of(value);
@@ -91,6 +110,14 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator contains(Object expected, String name)
 	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull();
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
 		if (!actual.equals(expectedAsOptional))
 		{

@@ -16,8 +16,10 @@ import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
  */
 public abstract class AbstractApplicationScope implements ApplicationScope
 {
+	// withoutCleanStacktrace() because the error occurred in our API, not the user's API.
 	private final Reference<JavaRequirements> internalVerifier =
-		ConcurrentLazyReference.create(() -> JavaSecrets.INSTANCE.createRequirements(this));
+		ConcurrentLazyReference.create(() ->
+			JavaSecrets.INSTANCE.createRequirements(this).withoutCleanStackTrace());
 	private final Reference<DiffGenerator> diffGenerator =
 		ConcurrentLazyReference.create(() -> new DiffGenerator(this));
 	private final Exceptions exceptions = new Exceptions();

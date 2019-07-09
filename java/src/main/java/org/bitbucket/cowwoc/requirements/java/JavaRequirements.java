@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.java;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
@@ -29,6 +30,12 @@ public interface JavaRequirements extends Configuration
 
 	@Override
 	JavaRequirements withAssertionsEnabled();
+
+	@Override
+	JavaRequirements withCleanStackTrace();
+
+	@Override
+	JavaRequirements withoutCleanStackTrace();
 
 	@Override
 	JavaRequirements withDiff();
@@ -1071,7 +1078,7 @@ public interface JavaRequirements extends Configuration
 	StringValidator validateThat(String actual, String name);
 
 	/**
-	 * Verifies the requirements of a {@code Uri}.
+	 * Verifies the requirements of a {@code URI}.
 	 *
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -1093,7 +1100,7 @@ public interface JavaRequirements extends Configuration
 	UriVerifier assertThat(URI actual, String name);
 
 	/**
-	 * Validates the requirements of a {@code Uri}.
+	 * Validates the requirements of a {@code URI}.
 	 *
 	 * @param actual the actual value
 	 * @param name   the name of the value
@@ -1102,6 +1109,39 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	UriValidator validateThat(URI actual, String name);
+
+	/**
+	 * Verifies the requirements of a {@code URL}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	UrlVerifier requireThat(URL actual, String name);
+
+	/**
+	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a verifier for the value
+	 * @throws NullPointerException     if name is null
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	UrlVerifier assertThat(URL actual, String name);
+
+	/**
+	 * Validates the requirements of a {@code URL}.
+	 *
+	 * @param actual the actual value
+	 * @param name   the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is empty
+	 */
+	UrlValidator validateThat(URL actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Class}.

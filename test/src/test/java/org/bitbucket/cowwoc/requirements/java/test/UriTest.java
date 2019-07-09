@@ -5,12 +5,16 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -91,6 +95,46 @@ public final class UriTest
 			// Ensure that no exception is thrown if assertions are disabled
 			URI actual = null;
 			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsUrlNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			URI actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asUrl(null);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsAbsolute()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			URI actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isAbsolute().isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullAsUrl()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			URI actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				asUrl().isEqualTo("notEqual").getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

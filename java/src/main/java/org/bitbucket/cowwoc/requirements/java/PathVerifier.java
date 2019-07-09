@@ -12,6 +12,8 @@ import java.nio.file.Path;
 
 /**
  * Verifies the requirements of a {@link Path}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  */
 public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Path>
 {
@@ -40,6 +42,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code options} is null
 	 * @throws IllegalArgumentException if actual value refers to a non-existent or a non-directory
 	 *                                  path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
@@ -51,6 +54,7 @@ public interface PathVerifier extends ExtensibleObjectVerifier<PathVerifier, Pat
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code options} is null
 	 * @throws IllegalArgumentException if actual value refers to a non-existent or a non-file path
 	 * @throws IOException              if an I/O error occurs while reading the file attributes
 	 */

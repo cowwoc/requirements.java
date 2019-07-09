@@ -58,6 +58,31 @@ public interface Configuration
 	Configuration withoutDiff();
 
 	/**
+	 * Indicates if exception stack traces should omit references to this library.
+	 *
+	 * @return {@code true} by default
+	 * @see #withCleanStackTrace()
+	 * @see #withoutCleanStackTrace()
+	 */
+	boolean isCleanStackTrace();
+
+	/**
+	 * Indicates that exception stack traces should omit references to this library.
+	 *
+	 * @return this
+	 * @see #isCleanStackTrace()
+	 */
+	Configuration withCleanStackTrace();
+
+	/**
+	 * Indicates that exception stack traces should contain references to this library.
+	 *
+	 * @return this
+	 * @see #isCleanStackTrace()
+	 */
+	Configuration withoutCleanStackTrace();
+
+	/**
 	 * Returns an unmodifiable map to append to the exception message.
 	 *
 	 * @return an empty map by default

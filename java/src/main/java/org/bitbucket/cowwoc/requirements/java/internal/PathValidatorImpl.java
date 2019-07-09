@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.PathValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
@@ -54,6 +55,12 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator exists()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!Files.exists(actual))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -67,6 +74,14 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isRegularFile(LinkOption... options)
 	{
+		JavaRequirements internalVerifier = scope.getInternalVerifier();
+		internalVerifier.requireThat(options, "options").isNotNull();
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		try
 		{
 			BasicFileAttributes attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
@@ -113,6 +128,14 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isDirectory(LinkOption... options)
 	{
+		JavaRequirements internalVerifier = scope.getInternalVerifier();
+		internalVerifier.requireThat(options, "options").isNotNull();
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		try
 		{
 			BasicFileAttributes attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
@@ -134,6 +157,12 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isRelative()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual.isAbsolute())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -147,6 +176,12 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isAbsolute()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual.isAbsolute())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,

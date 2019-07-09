@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 
 /**
  * Validates the requirements of a {@link Collection}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  *
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
@@ -58,6 +60,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	CollectionValidator<C, E> containsExactly(Collection<E> expected);
 
@@ -69,7 +72,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
 	 * @return the updated validator
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionValidator<C, E> containsExactly(Collection<E> expected, String name);
@@ -79,6 +82,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	CollectionValidator<C, E> containsAny(Collection<E> expected);
 
@@ -88,7 +92,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
 	 * @return the updated validator
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionValidator<C, E> containsAny(Collection<E> expected, String name);
@@ -98,6 +102,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	CollectionValidator<C, E> containsAll(Collection<E> expected);
 
@@ -107,7 +112,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
 	 * @return the updated validator
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionValidator<C, E> containsAll(Collection<E> expected, String name);
@@ -136,6 +141,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 *
 	 * @param other the elements that must not exist
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	CollectionValidator<C, E> doesNotContainExactly(Collection<E> other);
 
@@ -145,7 +151,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @param other the elements that must not exist
 	 * @param name  the name of the collection
 	 * @return the updated validator
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionValidator<C, E> doesNotContainExactly(Collection<E> other, String name);
@@ -155,6 +161,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must not exist
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	CollectionValidator<C, E> doesNotContainAny(Collection<E> expected);
 
@@ -164,7 +171,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
 	 * @return the updated validator
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionValidator<C, E> doesNotContainAny(Collection<E> elements, String name);
@@ -174,6 +181,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 *
 	 * @param expected the elements that must not exist
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	CollectionValidator<C, E> doesNotContainAll(Collection<E> expected);
 
@@ -183,7 +191,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
 	 * @return the updated validator
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	CollectionValidator<C, E> doesNotContainAll(Collection<E> elements, String name);

@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 
 /**
  * Validates the requirements of a {@link String}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  */
 public interface StringValidator extends ExtensibleObjectValidator<StringValidator, String>
 {
@@ -18,6 +20,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @param prefix the value that the string must start with
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code prefix} is null
 	 */
 	StringValidator startsWith(String prefix);
 
@@ -26,6 +29,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @param prefix the value that the string may not start with
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code prefix} is null
 	 */
 	StringValidator doesNotStartWith(String prefix);
 
@@ -34,6 +38,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @param suffix the value that the string must end with
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code suffix} is null
 	 */
 	StringValidator endsWith(String suffix);
 
@@ -42,6 +47,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @param suffix the value that the string may not end with
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code suffix} is null
 	 */
 	StringValidator doesNotEndWith(String suffix);
 
@@ -50,6 +56,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @param expected the value that the string must contain
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code expected} is null
 	 */
 	StringValidator contains(String expected);
 
@@ -58,6 +65,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @param value the value that the string may not contain
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code value} is null
 	 */
 	StringValidator doesNotContain(String value);
 

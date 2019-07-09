@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Gili Tzabari
+ * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.java.test;
@@ -10,259 +10,187 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings("ConstantConditions")
-public final class PathTest
+public final class FloatingPointTest
 {
-	@Test(expectedExceptions = NullPointerException.class)
-	public void nameIsNull()
+	@Test
+	public void floatIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Paths.get("/");
-			new Requirements(scope).requireThat(actual, null);
+			Float actual = 1.0f;
+			new Requirements(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void nameIsEmpty()
+	public void floatIsNumber_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Paths.get("/");
-			new Requirements(scope).requireThat(actual, "");
+			Float actual = Float.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
 
 	@Test
-	public void existsTrue() throws IOException
+	public void doubleIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempFile(null, null);
-			try
-			{
-				new Requirements(scope).requireThat(actual, "actual").exists();
-			}
-			finally
-			{
-				Files.delete(actual);
-			}
+			Double actual = 1.0;
+			new Requirements(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void exists_False() throws IOException
+	public void doubleIsNumber_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempFile(null, null);
-			Files.delete(actual);
-			new Requirements(scope).requireThat(actual, "actual").exists();
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
 
 	@Test
-	public void isDirectory() throws IOException
+	public void floatIsNotNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempDirectory(null);
-			try
-			{
-				new Requirements(scope).requireThat(actual, "actual").isDirectory();
-			}
-			finally
-			{
-				Files.delete(actual);
-			}
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void isDirectory_nullOptions() throws IOException
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).requireThat(actual, "actual").isDirectory((LinkOption[]) null);
+			Float actual = Float.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isDirectory_actualIsMissing() throws IOException
+	public void floatIsNotNumber_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempDirectory(null);
-			Files.delete(actual);
-			new Requirements(scope).requireThat(actual, "actual").isDirectory();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isDirectory_actualIsFile() throws IOException
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Path actual = Files.createTempFile(null, null);
-			try
-			{
-				new Requirements(scope).requireThat(actual, "actual").isDirectory();
-			}
-			finally
-			{
-				Files.delete(actual);
-			}
+			Float actual = 1.0f;
+			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
 
 	@Test
-	public void isRegularFile() throws IOException
+	public void doubleIsNotNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempFile(null, null);
-			try
-			{
-				new Requirements(scope).requireThat(actual, "actual").isRegularFile();
-			}
-			finally
-			{
-				Files.delete(actual);
-			}
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void isRegularFile_nullOptions() throws IOException
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).requireThat(actual, "actual").isRegularFile((LinkOption[]) null);
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRegularFile_actualIsMissing() throws IOException
+	public void doubleIsNotNumber_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempFile(null, null);
-			Files.delete(actual);
-			new Requirements(scope).requireThat(actual, "actual").isRegularFile();
+			Double actual = 1.0;
+			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
+		}
+	}
+
+	@Test
+	public void floatIsFinite()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Float actual = 1.0f;
+			new Requirements(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRegularFile_actualIsDirectory() throws IOException
+	@SuppressWarnings({"divzero", "NumericOverflow"})
+	public void floatIsFinite_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempDirectory(null);
-			try
-			{
-				new Requirements(scope).requireThat(actual, "actual").isRegularFile();
-			}
-			finally
-			{
-				Files.delete(actual);
-			}
+			Float actual = 1.0f / 0.0f;
+			new Requirements(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
 
 	@Test
-	public void isRelative()
+	public void doubleIsFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Paths.get("path1/path2");
-			new Requirements(scope).requireThat(actual, "actual").isRelative();
+			Double actual = 1.0;
+			new Requirements(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isRelative_False()
+	@SuppressWarnings({"divzero", "NumericOverflow"})
+	public void doubleIsFinite_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new Requirements(scope).requireThat(actual, "actual").isRelative();
+			Double actual = 1.0 / 0.0;
+			new Requirements(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
 
 	@Test
-	public void isAbsolute()
+	@SuppressWarnings({"divzero", "NumericOverflow"})
+	public void floatIsNotFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new Requirements(scope).requireThat(actual, "actual").isAbsolute();
+			Float actual = 1.0f / 0.0f;
+			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isAbsolute_False()
+	public void floatIsNotFinite_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Paths.get("path1/path2");
-			new Requirements(scope).requireThat(actual, "actual").isAbsolute();
+			Float actual = 1.0f;
+			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
 		}
 	}
 
 	@Test
-	public void assertionsDisabled()
+	@SuppressWarnings({"divzero", "NumericOverflow"})
+	public void doubleIsNotFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Path actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			Double actual = 1.0 / 0.0;
+			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
 		}
 	}
 
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsDirectoryNullOptions() throws IOException
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsNotFinite_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).validateThat(actual, "actual").isDirectory((LinkOption[]) null);
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsRegularFileNullOptions() throws IOException
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).validateThat(actual, "actual").isRegularFile((LinkOption[]) null);
+			Double actual = 1.0;
+			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
 		}
 	}
 
 	@Test
-	public void validateThatNullExists()
+	public void validateThatFloat_nullIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = null;
+			Float actual = null;
 			List<String> expectedMessages = Collections.singletonList("actual may not be null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				exists().isEqualTo(5).getFailures();
+				isNumber().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -270,14 +198,14 @@ public final class PathTest
 	}
 
 	@Test
-	public void validateThatNullIsAbsolute()
+	public void validateThatDouble_nullIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = null;
+			Double actual = null;
 			List<String> expectedMessages = Collections.singletonList("actual may not be null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isAbsolute().isEqualTo(5).getFailures();
+				isNumber().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -285,14 +213,14 @@ public final class PathTest
 	}
 
 	@Test
-	public void validateThatNullIsDirectory()
+	public void validateThatFloat_nullIsNotNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = null;
+			Float actual = null;
 			List<String> expectedMessages = Collections.singletonList("actual may not be null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isDirectory().isEqualTo(5).getFailures();
+				isNotNumber().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -300,14 +228,14 @@ public final class PathTest
 	}
 
 	@Test
-	public void validateThatNullIsRegularFile()
+	public void validateThatDouble_nullIsNotNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = null;
+			Double actual = null;
 			List<String> expectedMessages = Collections.singletonList("actual may not be null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isRegularFile().isEqualTo(5).getFailures();
+				isNotNumber().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -315,14 +243,59 @@ public final class PathTest
 	}
 
 	@Test
-	public void validateThatNullIsRelative()
+	public void validateThatFloat_nullIsFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Path actual = null;
+			Float actual = null;
 			List<String> expectedMessages = Collections.singletonList("actual may not be null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isRelative().isEqualTo(5).getFailures();
+				isFinite().isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatDouble_nullIsFinite()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isFinite().isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatFloat_nullIsNotFinite()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Float actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotFinite().isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatDouble_nullIsNotFinite()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotFinite().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

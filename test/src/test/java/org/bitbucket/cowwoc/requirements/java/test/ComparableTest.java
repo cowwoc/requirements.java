@@ -5,12 +5,16 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.time.Year;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
@@ -419,6 +423,376 @@ public final class ComparableTest
 			// Ensure that no exception is thrown if assertions are disabled
 			Year actual = null;
 			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsGreaterThanNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isGreaterThan(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsGreaterThanWithNameNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isGreaterThan(null, "name");
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsGreaterThanOrEqualToNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isGreaterThanOrEqualTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsGreaterThanOrEqualToWithNameNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isGreaterThanOrEqualTo(null, "name");
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsLessThanNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isLessThan(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsLessThanWithNameNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isLessThan(null, "name");
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsLessThanOrEqualToNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isLessThanOrEqualTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsLessThanOrEqualToWithNameNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isLessThanOrEqualTo(null, "name");
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsComparableToNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isComparableTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsComparableToWithNameNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isComparableTo(null, "name");
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsNotComparableToNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isNotComparableTo(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsNotComparableToWithNameNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isNotComparableTo(null, "name");
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsBetweenFirstNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isBetween(null, 2);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsBetweenSecondNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isBetween(1, null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsBetweenClosedFirstNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isBetweenClosed(null, 2);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatIsBetweenClosedSecondNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			new Requirements(scope).validateThat(actual, "actual").isBetweenClosed(1, null);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsLessThan()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isLessThan(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsLessThanWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isLessThan(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsLessThanOrEqualTo()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isLessThanOrEqualTo(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsLessThanOrEqualToWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isLessThanOrEqualTo(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsGreaterThan()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isGreaterThan(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsGreaterThanWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isGreaterThan(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsGreaterThanOrEqualTo()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isGreaterThanOrEqualTo(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsGreaterThanOrEqualToWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isGreaterThanOrEqualTo(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsComparableTo()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isComparableTo(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsComparableToWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isComparableTo(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotComparableTo()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotComparableTo(5).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsNotComparableToWithName()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isNotComparableTo(5, "name").isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsBetween()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isBetween(1, 3).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void validateThatNullIsBetweenClosed()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				isBetweenClosed(1, 2).isEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

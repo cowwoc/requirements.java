@@ -11,6 +11,8 @@ import java.nio.file.Path;
 
 /**
  * Validates the requirements of a {@link Path}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  */
 public interface PathValidator extends ExtensibleObjectValidator<PathValidator, Path>
 {
@@ -37,6 +39,7 @@ public interface PathValidator extends ExtensibleObjectValidator<PathValidator, 
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code options} is null
 	 */
 	PathValidator isDirectory(LinkOption... options);
 
@@ -45,6 +48,7 @@ public interface PathValidator extends ExtensibleObjectValidator<PathValidator, 
 	 *
 	 * @param options options indicating how symbolic links are handled
 	 * @return the updated validator
+	 * @throws NullPointerException if {@code options} is null
 	 */
 	PathValidator isRegularFile(LinkOption... options);
 

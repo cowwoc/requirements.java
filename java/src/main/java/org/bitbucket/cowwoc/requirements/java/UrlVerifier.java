@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 
 /**
  * Verifies the requirements of a {@link URL}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  */
 public interface UrlVerifier extends ExtensibleObjectVerifier<UrlVerifier, URL>
 {

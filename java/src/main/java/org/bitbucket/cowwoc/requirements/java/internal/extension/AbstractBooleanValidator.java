@@ -38,6 +38,12 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 	@Override
 	public S isTrue()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (!actual)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
@@ -50,6 +56,12 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 	@Override
 	public S isFalse()
 	{
+		if (actual == null)
+		{
+			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+				this.name + " may not be null"));
+			return getNoOp();
+		}
 		if (actual)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,

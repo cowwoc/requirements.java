@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 
 /**
  * Validates the requirements of a {@link Map}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  *
  * @param <K> the type of keys in the map
  * @param <V> the type of values in the map

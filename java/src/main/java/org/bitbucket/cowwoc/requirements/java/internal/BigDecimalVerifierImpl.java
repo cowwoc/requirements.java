@@ -8,6 +8,7 @@ import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionValidator;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalPrecisionVerifier;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalValidator;
 import org.bitbucket.cowwoc.requirements.java.BigDecimalVerifier;
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberValidator;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveNumberVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;

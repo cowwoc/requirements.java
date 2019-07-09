@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
 import org.bitbucket.cowwoc.requirements.java.UriValidator;
 import org.bitbucket.cowwoc.requirements.java.UriVerifier;
 import org.bitbucket.cowwoc.requirements.java.UrlValidator;

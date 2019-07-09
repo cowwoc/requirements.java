@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 
 /**
  * Verifies the requirements of a {@link String}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  */
 public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier, String>
 {
@@ -18,6 +20,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 *
 	 * @param prefix the value that the string must start with
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code prefix} is null
 	 * @throws IllegalArgumentException if the actual value does not start with {@code prefix}
 	 */
 	StringVerifier startsWith(String prefix);
@@ -27,6 +30,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 *
 	 * @param prefix the value that the string may not start with
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code prefix} is null
 	 * @throws IllegalArgumentException if the actual value starts with {@code prefix}
 	 */
 	StringVerifier doesNotStartWith(String prefix);
@@ -36,6 +40,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 *
 	 * @param suffix the value that the string must end with
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code suffix} is null
 	 * @throws IllegalArgumentException if the actual value does not end with {@code suffix}
 	 */
 	StringVerifier endsWith(String suffix);
@@ -45,6 +50,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 *
 	 * @param suffix the value that the string may not end with
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code suffix} is null
 	 * @throws IllegalArgumentException if the actual value ends with {@code suffix}
 	 */
 	StringVerifier doesNotEndWith(String suffix);
@@ -54,6 +60,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 *
 	 * @param expected the value that the string must contain
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code expected} is null
 	 * @throws IllegalArgumentException if the actual value does not contain {@code expected}
 	 */
 	StringVerifier contains(String expected);
@@ -63,6 +70,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 *
 	 * @param value the value that the string may not contain
 	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code value} is null
 	 * @throws IllegalArgumentException if the actual value contains {@code value}
 	 */
 	StringVerifier doesNotContain(String value);

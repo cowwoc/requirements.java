@@ -10,6 +10,8 @@ import java.util.Optional;
 
 /**
  * Validates the requirements of an {@link Optional}.
+ * <p>
+ * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  */
 public interface OptionalValidator extends ExtensibleObjectValidator<OptionalValidator, Optional<?>>
 {
