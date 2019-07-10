@@ -35,8 +35,16 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
+							<show>public</show>
+							<doctitle>Requirements Guava Plugin ${project.version} API</doctitle>
+							<windowtitle>Requirements Guava Plugin ${project.version} API</windowtitle>
+							<additionalOptions>
+								<!-- https://stackoverflow.com/a/54468139/14731 -->
+								<option>--override-methods</option>
+								<option>summary</option>
+							</additionalOptions>
 							<links>
-								<link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
+								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
 							</links>
 							<offlineLinks>
 								<!--
@@ -48,15 +56,6 @@
 									<location>${project.basedir}/../java/target/apidocs</location>
 								</offlineLink>
 							</offlineLinks>
-
-							<show>public</show>
-							<doctitle>Requirements Guava Plugin ${project.version} API</doctitle>
-							<windowtitle>Requirements Guava Plugin ${project.version} API</windowtitle>
-							<additionalOptions>
-								<!-- https://stackoverflow.com/a/54468139/14731 -->
-								<option>--override-methods</option>
-								<option>summary</option>
-							</additionalOptions>
 						</configuration>
 					</execution>
 				</executions>

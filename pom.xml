@@ -207,6 +207,9 @@
 								<option>--override-methods</option>
 								<option>summary</option>
 							</additionalOptions>
+							<links>
+								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
+							</links>
 						</configuration>
 					</execution>
 				</executions>
