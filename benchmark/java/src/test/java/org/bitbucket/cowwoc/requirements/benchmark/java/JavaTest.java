@@ -6,7 +6,7 @@ package org.bitbucket.cowwoc.requirements.benchmark.java;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
-import org.bitbucket.cowwoc.requirements.java.StringVerifier;
+import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -62,17 +62,18 @@ public class JavaTest
 	}
 
 	@Benchmark
-	public StringVerifier requireThat()
+	public SizeVerifier requireThat()
 	{
-		return new Requirements().requireThat(name, value).isNotNull();
+		return new Requirements().requireThat(value, name).isNotNull().length().isGreaterThan(3);
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
 	// though it delegates to it
 	@Benchmark
-	public StringVerifier assertThatWithAssertionsEnabled()
+	public SizeVerifier assertThatWithAssertionsEnabled()
 	{
-		return new Requirements().withAssertionsEnabled().assertThat(name, value).isNotNull();
+		return new Requirements().withAssertionsEnabled().assertThat(value, name).isNotNull().length().
+			isGreaterThan(5);
 	}
 
 	@Benchmark
