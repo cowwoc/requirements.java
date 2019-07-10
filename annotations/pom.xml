@@ -25,6 +25,28 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<show>public</show>
+							<doctitle>Requirements Annotations Module ${project.version} API</doctitle>
+							<windowtitle>Requirements Annotations Module ${project.version} API</windowtitle>
+							<additionalOptions>
+								<!-- https://stackoverflow.com/a/54468139/14731 -->
+								<option>--override-methods</option>
+								<option>summary</option>
+							</additionalOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

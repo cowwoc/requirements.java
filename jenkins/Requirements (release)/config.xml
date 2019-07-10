@@ -23,14 +23,14 @@
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.4">
           <name>releaseVersion</name>
           <description>What version number should be released?</description>
-          <defaultValue>4.0.5-RC</defaultValue>
-          <regex>\d+\.\d+\.\d+(-RC)?</regex>
-          <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-RC]</failedValidationMessage>
+          <defaultValue>5.0.0</defaultValue>
+          <regex>\d+\.\d+\.\d+</regex>
+          <failedValidationMessage>releaseVersion number must have format: &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
         <hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition plugin="validating-string-parameter@2.4">
           <name>nextVersion</name>
           <description>What SNAPSHOT version should be used after the release?</description>
-          <defaultValue>4.0.6-SNAPSHOT</defaultValue>
+          <defaultValue>5.0.1-SNAPSHOT</defaultValue>
           <regex>.+-SNAPSHOT</regex>
           <failedValidationMessage>Version number must end with -SNAPSHOT</failedValidationMessage>
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
