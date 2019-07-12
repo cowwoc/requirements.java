@@ -73,7 +73,7 @@ public class JavaTest
 	public SizeVerifier assertThatWithAssertionsEnabled()
 	{
 		return new Requirements().withAssertionsEnabled().assertThat(value, name).isNotNull().length().
-			isGreaterThan(5);
+			isGreaterThan(3);
 	}
 
 	@Benchmark
