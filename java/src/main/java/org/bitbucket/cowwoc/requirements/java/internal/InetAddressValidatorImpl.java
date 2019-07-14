@@ -24,6 +24,22 @@ public final class InetAddressValidatorImpl
 	implements InetAddressValidator
 {
 	/**
+	 * Creates a InetAddressValidatorImpl with no validation failures.
+	 *
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
+	 */
+	public InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                InetAddress actual)
+	{
+		super(scope, config, name, actual, NO_FAILURES);
+	}
+
+	/**
 	 * @param scope    the application configuration
 	 * @param config   the instance configuration
 	 * @param name     the name of the value
@@ -32,8 +48,8 @@ public final class InetAddressValidatorImpl
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                InetAddress actual, List<ValidationFailure> failures)
+	InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                         InetAddress actual, List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, failures);
 	}
@@ -47,7 +63,7 @@ public final class InetAddressValidatorImpl
 	@Override
 	protected InetAddressValidator getNoOp()
 	{
-		return new InetAddressValidatorNoOp(failures);
+		return new InetAddressValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -55,7 +71,7 @@ public final class InetAddressValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -64,7 +80,7 @@ public final class InetAddressValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be an IP v4 address.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -74,7 +90,7 @@ public final class InetAddressValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -83,7 +99,7 @@ public final class InetAddressValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be an IP v6 address.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -93,14 +109,14 @@ public final class InetAddressValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new StringValidatorNoOp(failures);
+			return new StringValidatorNoOp(getFailures());
 		}
 		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
 		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
 		// format.
 		String hostName = actual.getHostName();
-		return new StringValidatorImpl(scope, config, hostName, name, failures);
+		return new StringValidatorImpl(scope, config, hostName, name, getFailures());
 	}
 }

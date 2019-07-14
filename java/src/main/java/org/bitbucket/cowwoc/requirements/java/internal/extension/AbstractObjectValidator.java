@@ -16,6 +16,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Objects;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -30,11 +31,12 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectValidator<S, T>
 {
+	protected static final List<ValidationFailure> NO_FAILURES = Collections.emptyList();
 	protected final ApplicationScope scope;
 	protected final Configuration config;
 	protected String name;
 	protected T actual;
-	protected final List<ValidationFailure> failures;
+	private List<ValidationFailure> failures;
 
 	/**
 	 * @param scope    the application configuration
@@ -69,6 +71,18 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @return a validator that does nothing
 	 */
 	protected abstract S getNoOp();
+
+	/**
+	 * Adds a validation failure.
+	 *
+	 * @param failure the failure to add
+	 */
+	protected void addFailure(ValidationFailure failure)
+	{
+		if (failures == NO_FAILURES)
+			failures = new ArrayList<>();
+		failures.add(failure);
+	}
 
 	/**
 	 * @return the application configuration
@@ -111,7 +125,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public List<ValidationFailure> getFailures()
 	{
-		return Collections.unmodifiableList(failures);
+		return failures;
 	}
 
 	@Override
@@ -122,7 +136,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " had an unexpected value.").
 				addContext(getContext(expected));
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -147,7 +161,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be equal to " + name + ".").
 				addContext(getContext(expected));
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -159,7 +173,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be equal to " + config.toString(other));
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -174,7 +188,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be equal to " + name + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -189,7 +203,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be the same object as " + name + ".").
 				addContext(getContext(expected));
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -204,7 +218,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be the same object as " + name + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -217,7 +231,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -226,7 +240,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be one of " + config.toString(collection) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -239,7 +253,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -248,7 +262,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not be one of " + config.toString(collection) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -270,7 +284,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 				name + " must be an instance of " + type.getName() + ".").
 				addContext("Actual.getClass()", actualClass).
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -287,7 +301,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 				name + " may not be an instance of " + type.getName() + ".").
 				addContext("Actual.getClass()", actualClass).
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -301,7 +315,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be null.").
 				addContext(getContext(null));
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -313,7 +327,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			return getThis();
 		ValidationFailure failure = new ValidationFailureImpl(this, NullPointerException.class,
 			this.name + " may not be null");
-		failures.add(failure);
+		addFailure(failure);
 		return getNoOp();
 	}
 
@@ -322,7 +336,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return new StringValidatorNoOp(failures);
 		}

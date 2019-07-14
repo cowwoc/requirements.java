@@ -6,12 +6,10 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveArrayValidator;
-import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Default implementation of {@code PrimitiveArrayValidator}.
@@ -29,15 +27,13 @@ public final class PrimitiveArrayValidatorImpl<E, A>
 	 * @param name               the name of the value
 	 * @param actual             the actual value
 	 * @param actualAsCollection the {@code Collection} representation of the array
-	 * @param failures           the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
 	 */
 	public PrimitiveArrayValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                   A actual, Collection<E> actualAsCollection,
-	                                   List<ValidationFailure> failures)
+	                                   A actual, Collection<E> actualAsCollection)
 	{
-		super(scope, config, name, actual, actualAsCollection, failures);
+		super(scope, config, name, actual, actualAsCollection, NO_FAILURES);
 	}
 
 	@Override
@@ -49,6 +45,6 @@ public final class PrimitiveArrayValidatorImpl<E, A>
 	@Override
 	protected PrimitiveArrayValidator<E, A> getNoOp()
 	{
-		return new PrimitiveArrayValidatorNoOp<>(failures);
+		return new PrimitiveArrayValidatorNoOp<>(getFailures());
 	}
 }

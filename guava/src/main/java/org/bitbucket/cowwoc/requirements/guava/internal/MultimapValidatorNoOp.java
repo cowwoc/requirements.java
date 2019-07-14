@@ -8,7 +8,6 @@ import com.google.common.collect.Multimap;
 import org.bitbucket.cowwoc.requirements.guava.MultimapValidator;
 import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
-import org.bitbucket.cowwoc.requirements.java.StringValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.CollectionValidatorNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.SizeValidatorNoOp;
@@ -48,7 +47,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -103,25 +102,11 @@ public final class MultimapValidatorNoOp<K, V>
 	@Override
 	public SizeValidator size()
 	{
-		return new SizeValidatorNoOp(failures);
+		return new SizeValidatorNoOp(getFailures());
 	}
 
 	@Override
 	public MultimapValidator<K, V> size(Consumer<SizeValidator> consumer)
-	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
-		return this;
-	}
-
-	@Override
-	public List<ValidationFailure> getFailures()
-	{
-		return failures;
-	}
-
-	@Override
-	public MultimapValidator<K, V> asString(Consumer<StringValidator> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

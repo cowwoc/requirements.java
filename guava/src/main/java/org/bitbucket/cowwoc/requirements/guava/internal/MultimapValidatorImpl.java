@@ -58,14 +58,14 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	protected MultimapValidator<K, V> getNoOp()
 	{
-		return new MultimapValidatorNoOp<>(failures);
+		return new MultimapValidatorNoOp<>(getFailures());
 	}
 
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			failures);
+			getFailures());
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public final class MultimapValidatorImpl<K, V>
 	public CollectionValidator<Collection<V>, V> values()
 	{
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
-			failures);
+			getFailures());
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public final class MultimapValidatorImpl<K, V>
 	public CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
 		return new CollectionValidatorImpl<>(scope, config, name + ".entries()", actual.entries(),
-			Pluralizer.ENTRY, failures);
+			Pluralizer.ENTRY, getFailures());
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public final class MultimapValidatorImpl<K, V>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", config.toString(actual));
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -133,7 +133,7 @@ public final class MultimapValidatorImpl<K, V>
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -142,7 +142,7 @@ public final class MultimapValidatorImpl<K, V>
 	public SizeValidator size()
 	{
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, failures);
+			Pluralizer.ENTRY, getFailures());
 	}
 
 	@Override

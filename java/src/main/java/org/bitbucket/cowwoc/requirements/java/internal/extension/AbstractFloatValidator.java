@@ -41,7 +41,7 @@ public abstract class AbstractFloatValidator<S>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -50,7 +50,7 @@ public abstract class AbstractFloatValidator<S>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a number.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -60,7 +60,7 @@ public abstract class AbstractFloatValidator<S>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -69,7 +69,7 @@ public abstract class AbstractFloatValidator<S>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a number.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -79,7 +79,7 @@ public abstract class AbstractFloatValidator<S>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -88,7 +88,7 @@ public abstract class AbstractFloatValidator<S>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be finite.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -98,7 +98,7 @@ public abstract class AbstractFloatValidator<S>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -107,7 +107,7 @@ public abstract class AbstractFloatValidator<S>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be infinite.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}

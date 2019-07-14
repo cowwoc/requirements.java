@@ -39,7 +39,7 @@ public final class BigDecimalValidatorNoOp
 	@Override
 	public BigDecimalPrecisionValidator precision()
 	{
-		return new BigDecimalPrecisionValidatorNoOp(failures);
+		return new BigDecimalPrecisionValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public final class BigDecimalValidatorNoOp
 	@Override
 	public PrimitiveNumberValidator<Integer> scale()
 	{
-		return new PrimitiveNumberValidatorNoOp<>(failures);
+		return new PrimitiveNumberValidatorNoOp<>(getFailures());
 	}
 
 	@Override

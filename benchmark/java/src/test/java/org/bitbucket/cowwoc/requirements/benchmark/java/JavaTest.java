@@ -4,8 +4,8 @@
  */
 package org.bitbucket.cowwoc.requirements.benchmark.java;
 
+import org.bitbucket.cowwoc.requirements.DefaultRequirements;
 import org.bitbucket.cowwoc.requirements.Requirements;
-import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
@@ -20,27 +20,18 @@ import org.testng.annotations.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-// Fields may not be final:
-// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 @State(Scope.Benchmark)
-@SuppressWarnings({"CanBeFinal", "LongLine"})
+@SuppressWarnings({"CanBeFinal", "LongLine", "FieldCanBeLocal"})
 public class JavaTest
 {
+	// Fields may not be final:
+	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 	private String name = "actual";
 	private String value = "value";
 	private Object nullObject = null;
-	private List<Integer> list;
-
-	public JavaTest()
-	{
-		list = new ArrayList<>(100);
-		for (int i = 0; i < 100; ++i)
-			list.add(i);
-	}
+	private Requirements requirementsWithAssertions = new Requirements().withAssertionsEnabled();
 
 	@Test
 	public void runBenchmarks() throws RunnerException
@@ -55,37 +46,13 @@ public class JavaTest
 		new Runner(opt).run();
 	}
 
-	@Benchmark
-	@SuppressWarnings("EmptyMethod")
-	public void emptyMethod()
-	{
-	}
-
-	@Benchmark
-	public SizeVerifier requireThat()
-	{
-		return new Requirements().requireThat(value, name).isNotNull().length().isGreaterThan(3);
-	}
-
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
 	// though it delegates to it
 	@Benchmark
 	public SizeVerifier assertThatWithAssertionsEnabled()
 	{
-		return new Requirements().withAssertionsEnabled().assertThat(value, name).isNotNull().length().
+		return requirementsWithAssertions.assertThat(value, name).isNotNull().length().
 			isGreaterThan(3);
-	}
-
-	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> requireThatDoesNotContainDuplicates()
-	{
-		return new Requirements().requireThat(list, name).doesNotContainDuplicates();
-	}
-
-	@Benchmark
-	public CollectionVerifier<List<Integer>, Integer> assertThatDoesNotContainDuplicates()
-	{
-		return new Requirements().withAssertionsDisabled().assertThat(list, name).doesNotContainDuplicates();
 	}
 
 	@Benchmark
@@ -106,7 +73,7 @@ public class JavaTest
 	{
 		try
 		{
-			new Requirements().requireThat(nullObject, name).isNotNull();
+			DefaultRequirements.requireThat(nullObject, name).isNotNull();
 		}
 		catch (NullPointerException e)
 		{
@@ -134,7 +101,7 @@ public class JavaTest
 	{
 		try
 		{
-			new Requirements().requireThat(nullObject, name).isNotNull();
+			DefaultRequirements.requireThat(nullObject, name).isNotNull();
 		}
 		catch (NullPointerException e)
 		{

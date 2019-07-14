@@ -61,7 +61,7 @@ public final class SizeValidatorImpl
 	@Override
 	protected SizeValidator getNoOp()
 	{
-		return new SizeValidatorNoOp(failures);
+		return new SizeValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -96,7 +96,7 @@ public final class SizeValidatorImpl
 				addContext("Minimum", value);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -114,7 +114,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -133,7 +133,7 @@ public final class SizeValidatorImpl
 				addContext("Exclusive minimum", value);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -151,7 +151,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -170,7 +170,7 @@ public final class SizeValidatorImpl
 				addContext("Maximum", value);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -188,7 +188,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -207,7 +207,7 @@ public final class SizeValidatorImpl
 				addContext("Exclusive maximum", value);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -226,7 +226,7 @@ public final class SizeValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				collectionName + " must contain at least one " + pluralizer.nameOf(1) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -247,7 +247,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -275,7 +275,7 @@ public final class SizeValidatorImpl
 	{
 		ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be negative");
-		failures.add(failure);
+		addFailure(failure);
 		return this;
 	}
 
@@ -296,7 +296,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -318,7 +318,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -333,7 +333,8 @@ public final class SizeValidatorImpl
 				isInstanceOf(Integer.class).getFailures();
 			if (!wrongType.isEmpty())
 			{
-				failures.addAll(wrongType);
+				for (ValidationFailure failure : wrongType)
+					addFailure(failure);
 				return this;
 			}
 			int expectedAsInt = (Integer) expected;
@@ -343,7 +344,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -359,7 +360,8 @@ public final class SizeValidatorImpl
 				isInstanceOf(Integer.class).getFailures();
 			if (!wrongType.isEmpty())
 			{
-				failures.addAll(wrongType);
+				for (ValidationFailure failure : wrongType)
+					addFailure(failure);
 				return this;
 			}
 			int expectedAsInt = (Integer) expected;
@@ -370,7 +372,7 @@ public final class SizeValidatorImpl
 				addContext("Expected", expected);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -388,7 +390,7 @@ public final class SizeValidatorImpl
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -408,7 +410,7 @@ public final class SizeValidatorImpl
 				addContext("Unwanted", other);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -419,7 +421,7 @@ public final class SizeValidatorImpl
 	{
 		ValidationFailureImpl failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be null");
-		failures.add(failure);
+		addFailure(failure);
 		return this;
 	}
 }

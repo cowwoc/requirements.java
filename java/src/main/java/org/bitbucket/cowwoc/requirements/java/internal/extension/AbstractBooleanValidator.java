@@ -40,7 +40,7 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -48,7 +48,7 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be true");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -58,7 +58,7 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -66,7 +66,7 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be false");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}

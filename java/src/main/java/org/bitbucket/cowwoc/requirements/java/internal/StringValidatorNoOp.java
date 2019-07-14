@@ -151,4 +151,10 @@ public final class StringValidatorNoOp extends AbstractObjectValidatorNoOp<Strin
 			throw new NullPointerException("consumer may not be null");
 		return this;
 	}
+
+	@Override
+	public StringValidator asString()
+	{
+		return this;
+	}
 }

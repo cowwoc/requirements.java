@@ -6,11 +6,8 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PrimitiveFloatingPointValidator;
-import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractDoubleValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.List;
 
 /**
  * Default implementation of {@code PrimitiveFloatingPointValidator} for {@code double}s.
@@ -20,18 +17,17 @@ public final class PrimitiveDoubleValidatorImpl
 	implements PrimitiveFloatingPointValidator<Double>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
 	 */
 	public PrimitiveDoubleValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                    Double actual, List<ValidationFailure> failures)
+	                                    Double actual)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, NO_FAILURES);
 	}
 
 	@Override
@@ -43,6 +39,6 @@ public final class PrimitiveDoubleValidatorImpl
 	@Override
 	protected PrimitiveFloatingPointValidator<Double> getNoOp()
 	{
-		return new PrimitiveFloatingPointValidatorNoOp<>(failures);
+		return new PrimitiveFloatingPointValidatorNoOp<>(getFailures());
 	}
 }

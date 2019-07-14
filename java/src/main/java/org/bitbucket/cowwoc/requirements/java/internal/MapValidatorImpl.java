@@ -15,7 +15,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -32,18 +31,16 @@ public final class MapValidatorImpl<K, V>
 	implements MapValidator<K, V>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
 	 */
-	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual,
-	                        List<ValidationFailure> failures)
+	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, NO_FAILURES);
 	}
 
 	@Override
@@ -55,7 +52,7 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	protected MapValidator<K, V> getNoOp()
 	{
-		return new MapValidatorNoOp<>(failures);
+		return new MapValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -63,12 +60,12 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new CollectionValidatorNoOp<>(failures);
+			return new CollectionValidatorNoOp<>(getFailures());
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			failures);
+			getFailures());
 	}
 
 	@Override
@@ -86,12 +83,12 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new CollectionValidatorNoOp<>(failures);
+			return new CollectionValidatorNoOp<>(getFailures());
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
-			failures);
+			getFailures());
 	}
 
 	@Override
@@ -109,12 +106,12 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new CollectionValidatorNoOp<>(failures);
+			return new CollectionValidatorNoOp<>(getFailures());
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", actual.entrySet(),
-			Pluralizer.ENTRY, failures);
+			Pluralizer.ENTRY, getFailures());
 	}
 
 	@Override
@@ -132,7 +129,7 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -141,7 +138,7 @@ public final class MapValidatorImpl<K, V>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -151,7 +148,7 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -159,7 +156,7 @@ public final class MapValidatorImpl<K, V>
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -169,12 +166,12 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new SizeValidatorNoOp(failures);
+			return new SizeValidatorNoOp(getFailures());
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, failures);
+			Pluralizer.ENTRY, getFailures());
 	}
 
 	@Override

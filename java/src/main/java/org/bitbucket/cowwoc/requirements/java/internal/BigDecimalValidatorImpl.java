@@ -14,7 +14,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractNumberV
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -25,18 +24,16 @@ public final class BigDecimalValidatorImpl
 	implements BigDecimalValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
 	 */
-	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration config, String name, BigDecimal actual,
-	                               List<ValidationFailure> failures)
+	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration config, String name, BigDecimal actual)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, NO_FAILURES);
 	}
 
 	@Override
@@ -48,7 +45,7 @@ public final class BigDecimalValidatorImpl
 	@Override
 	protected BigDecimalValidator getNoOp()
 	{
-		return new BigDecimalValidatorNoOp(failures);
+		return new BigDecimalValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -56,7 +53,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -67,7 +64,7 @@ public final class BigDecimalValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be zero").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -77,7 +74,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -87,7 +84,7 @@ public final class BigDecimalValidatorImpl
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be zero");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -97,11 +94,11 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new BigDecimalPrecisionValidatorNoOp(failures);
+			return new BigDecimalPrecisionValidatorNoOp(getFailures());
 		}
-		return new BigDecimalPrecisionValidatorImpl(scope, config, name, actual, failures);
+		return new BigDecimalPrecisionValidatorImpl(scope, config, name, actual, getFailures());
 	}
 
 	@Override
@@ -119,11 +116,11 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new PrimitiveNumberValidatorNoOp<>(failures);
+			return new PrimitiveNumberValidatorNoOp<>(getFailures());
 		}
-		return new BigDecimalScaleValidatorImpl(scope, config, name, actual, failures);
+		return new BigDecimalScaleValidatorImpl(scope, config, name, actual, getFailures());
 	}
 
 	@Override
@@ -141,7 +138,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -150,7 +147,7 @@ public final class BigDecimalValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a whole number.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -170,7 +167,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -180,7 +177,7 @@ public final class BigDecimalValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a whole number.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -201,7 +198,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -213,7 +210,7 @@ public final class BigDecimalValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -223,7 +220,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -236,7 +233,7 @@ public final class BigDecimalValidatorImpl
 				this.name + " must be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -246,7 +243,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -258,7 +255,7 @@ public final class BigDecimalValidatorImpl
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -268,7 +265,7 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -281,7 +278,7 @@ public final class BigDecimalValidatorImpl
 				this.name + " may not be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}

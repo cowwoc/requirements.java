@@ -44,7 +44,7 @@ public final class BigDecimalPrecisionValidatorImpl
 	@Override
 	protected BigDecimalPrecisionValidator getNoOp()
 	{
-		return new BigDecimalPrecisionValidatorNoOp(failures);
+		return new BigDecimalPrecisionValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public final class BigDecimalPrecisionValidatorImpl
 	{
 		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be zero");
-		failures.add(failure);
+		addFailure(failure);
 		return this;
 	}
 
@@ -101,7 +101,7 @@ public final class BigDecimalPrecisionValidatorImpl
 	{
 		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be zero or negative");
-		failures.add(failure);
+		addFailure(failure);
 		return this;
 	}
 
@@ -109,7 +109,7 @@ public final class BigDecimalPrecisionValidatorImpl
 	{
 		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " can never be negative");
-		failures.add(failure);
+		addFailure(failure);
 		return this;
 	}
 }

@@ -155,7 +155,7 @@ public abstract class AbstractArrayValidatorNoOp<S, E, A>
 	@Override
 	public SizeValidator length()
 	{
-		return new SizeValidatorNoOp(failures);
+		return new SizeValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public abstract class AbstractArrayValidatorNoOp<S, E, A>
 	@Override
 	public CollectionValidator<Collection<E>, E> asCollection()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override

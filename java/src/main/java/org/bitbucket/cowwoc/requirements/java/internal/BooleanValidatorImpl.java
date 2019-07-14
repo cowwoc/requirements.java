@@ -6,11 +6,8 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.BooleanValidator;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractBooleanValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-
-import java.util.List;
 
 /**
  * Default implementation of {@code BooleanValidator}.
@@ -20,18 +17,16 @@ public final class BooleanValidatorImpl
 	implements BooleanValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
 	 */
-	public BooleanValidatorImpl(ApplicationScope scope, Configuration config, String name, Boolean actual,
-	                            List<ValidationFailure> failures)
+	public BooleanValidatorImpl(ApplicationScope scope, Configuration config, String name, Boolean actual)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, NO_FAILURES);
 	}
 
 	@Override
@@ -43,6 +38,6 @@ public final class BooleanValidatorImpl
 	@Override
 	protected BooleanValidator getNoOp()
 	{
-		return new BooleanValidatorNoOp(failures);
+		return new BooleanValidatorNoOp(getFailures());
 	}
 }

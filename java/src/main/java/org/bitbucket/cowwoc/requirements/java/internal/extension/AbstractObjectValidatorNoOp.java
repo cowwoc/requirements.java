@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidato
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorNoOp;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -56,7 +55,7 @@ public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObj
 	@Override
 	public List<ValidationFailure> getFailures()
 	{
-		return Collections.unmodifiableList(failures);
+		return failures;
 	}
 
 	@Override

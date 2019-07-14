@@ -31,6 +31,23 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	implements StringValidator
 {
 	/**
+	 * Creates a StringValidatorImpl with no validation failures.
+	 *
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
+	 */
+	public StringValidatorImpl(ApplicationScope scope, Configuration config, String name, String actual)
+	{
+		this(scope, config, name, actual, NO_FAILURES);
+	}
+
+	/**
+	 * Creates a StringValidatorImpl with existing validation failures.
+	 *
 	 * @param scope    the application configuration
 	 * @param config   the instance configuration
 	 * @param name     the name of the value
@@ -54,7 +71,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	protected StringValidator getNoOp()
 	{
-		return new StringValidatorNoOp(failures);
+		return new StringValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -62,7 +79,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -71,7 +88,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -81,7 +98,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -89,7 +106,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -99,7 +116,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -116,7 +133,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -126,7 +143,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not contain leading or trailing whitespace").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -136,17 +153,17 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new InetAddressValidatorNoOp(failures);
+			return new InetAddressValidatorNoOp(getFailures());
 		}
 		// IPv4 must start with a digit. IPv6 must start with a colon.
 		if (actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
-			failures.add(failure);
-			return new InetAddressValidatorNoOp(failures);
+			addFailure(failure);
+			return new InetAddressValidatorNoOp(getFailures());
 		}
 
 		char firstCharacter = actual.charAt(0);
@@ -155,8 +172,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must contain a valid IP address or hostname format.").
 				addContext("Actual", actual);
-			failures.add(failure);
-			return new InetAddressValidatorNoOp(failures);
+			addFailure(failure);
+			return new InetAddressValidatorNoOp(getFailures());
 		}
 		InetAddress address;
 		try
@@ -169,10 +186,10 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				name + " must contain a valid IP address or hostname format.").
 				setCause(e).
 				addContext("Actual", actual);
-			failures.add(failure);
-			return new InetAddressValidatorNoOp(failures);
+			addFailure(failure);
+			return new InetAddressValidatorNoOp(getFailures());
 		}
-		return new InetAddressValidatorImpl(scope, config, name, address, failures);
+		return new InetAddressValidatorImpl(scope, config, name, address, getFailures());
 	}
 
 	@Override
@@ -190,14 +207,14 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new UriValidatorNoOp(failures);
+			return new UriValidatorNoOp(getFailures());
 		}
 		try
 		{
 			URI uri = URI.create(actual);
-			return new UriValidatorImpl(scope, config, name, uri, failures);
+			return new UriValidatorImpl(scope, config, name, uri, getFailures());
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -205,8 +222,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				name + " does not contain a valid URI format").
 				setCause(e).
 				addContext("Actual", actual);
-			failures.add(failure);
-			return new UriValidatorNoOp(failures);
+			addFailure(failure);
+			return new UriValidatorNoOp(getFailures());
 		}
 	}
 
@@ -225,14 +242,14 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new UrlValidatorNoOp(failures);
+			return new UrlValidatorNoOp(getFailures());
 		}
 		try
 		{
 			URL url = new URL(actual);
-			return new UrlValidatorImpl(scope, config, name, url, failures);
+			return new UrlValidatorImpl(scope, config, name, url, getFailures());
 		}
 		catch (MalformedURLException e)
 		{
@@ -240,8 +257,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				name + " is not a valid URL").
 				setCause(e).
 				addContext("Actual", actual);
-			failures.add(failure);
-			return new UrlValidatorNoOp(failures);
+			addFailure(failure);
+			return new UrlValidatorNoOp(getFailures());
 		}
 	}
 
@@ -263,7 +280,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -272,7 +289,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must start with \"" + prefix + "\".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -285,7 +302,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -294,7 +311,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not start with \"" + prefix + "\".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -307,7 +324,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -316,7 +333,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must end with \"" + suffix + "\".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -329,7 +346,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -338,7 +355,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not end with \"" + suffix + "\".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -351,7 +368,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -360,7 +377,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must contain \"" + expected + "\".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -373,7 +390,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -382,7 +399,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not contain \"" + value + "\".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -392,12 +409,12 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new SizeValidatorNoOp(failures);
+			return new SizeValidatorNoOp(getFailures());
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".length()", actual.length(),
-			Pluralizer.CHARACTER, failures);
+			Pluralizer.CHARACTER, getFailures());
 	}
 
 	@Override

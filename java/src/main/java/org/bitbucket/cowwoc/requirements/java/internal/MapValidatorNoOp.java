@@ -45,7 +45,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public final class MapValidatorNoOp<K, V>
 	@Override
 	public SizeValidator size()
 	{
-		return new SizeValidatorNoOp(failures);
+		return new SizeValidatorNoOp(getFailures());
 	}
 
 	@Override

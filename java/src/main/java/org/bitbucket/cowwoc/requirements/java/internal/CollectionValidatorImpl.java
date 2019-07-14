@@ -36,6 +36,25 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	private final Pluralizer pluralizer;
 
 	/**
+	 * Creates a CollectionValidatorImpl with no validation failures.
+	 *
+	 * @param scope      the application configuration
+	 * @param config     the instance configuration
+	 * @param name       the name of the value
+	 * @param actual     the actual value
+	 * @param pluralizer returns the singular or plural form of an element type
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code pluralizer} are null.
+	 *                        If {@code name} is empty.
+	 */
+	public CollectionValidatorImpl(ApplicationScope scope, Configuration config, String name, C actual,
+	                               Pluralizer pluralizer)
+	{
+		this(scope, config, name, actual, pluralizer, NO_FAILURES);
+	}
+
+	/**
+	 * Creates a CollectionValidatorImpl with existing validation failures.
+	 *
 	 * @param scope      the application configuration
 	 * @param config     the instance configuration
 	 * @param name       the name of the value
@@ -62,7 +81,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	@Override
 	protected CollectionValidator<C, E> getNoOp()
 	{
-		return new CollectionValidatorNoOp<>(failures);
+		return new CollectionValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -70,7 +89,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -79,7 +98,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -89,7 +108,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -97,7 +116,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be empty");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -107,7 +126,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -116,7 +135,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must contain " + element + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -126,7 +145,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -138,7 +157,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				this.name + " must contain " + name + ".").
 				addContext("Actual", actual).
 				addContext("Missing", element);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -151,7 +170,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -166,7 +185,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				addContext("Actual", actual).
 				addContext("Missing", missing).
 				addContext("Unwanted", unwanted);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -180,7 +199,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -196,7 +215,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				addContext("Expected", expected).
 				addContext("Missing", missing).
 				addContext("Unwanted", unwanted);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -209,7 +228,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -218,7 +237,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must contain any " + pluralizer.nameOf(1) + " in " + expected + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -244,7 +263,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -254,7 +273,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				this.name + " must contain any " + pluralizer.nameOf(1) + " in " + name + ".").
 				addContext("Actual", actual).
 				addContext("Missing", expected);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -266,7 +285,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		verifier.requireThat(expected, "expected").isNotNull();
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -280,7 +299,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				name + " must contain all " + pluralizer.nameOf(2) + " in " + expected + ".").
 				addContext("Actual", actual).
 				addContext("Missing", missing);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -294,7 +313,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -308,7 +327,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				addContext("Actual", actual).
 				addContext("Expected", expected).
 				addContext("Missing", missing);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -318,7 +337,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -327,7 +346,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not contain " + element + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -340,7 +359,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -350,7 +369,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				this.name + " may not contain " + name + ".").
 				addContext("Actual", actual).
 				addContext("Unwanted", element);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -364,7 +383,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -376,7 +395,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not contain exactly " + other);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -390,7 +409,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -404,7 +423,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " may not contain exactly the same " + pluralizer.nameOf(2) + " as " + name + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -417,7 +436,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -430,7 +449,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				name + " may not contain any " + pluralizer.nameOf(1) + " in " + elements + ".").
 				addContext("Actual", actual).
 				addContext("Unwanted", unwanted);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -444,7 +463,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -458,7 +477,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				addContext("Actual", actual).
 				addContext(Strings.capitalize(pluralizer.nameOf(2)), elements).
 				addContext("Unwanted", unwanted);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -471,7 +490,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -480,7 +499,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not contain all of " + elements + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -494,7 +513,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -504,7 +523,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				this.name + " may not contain all " + pluralizer.nameOf(2) + " in " + name + ".").
 				addContext("Actual", actual).
 				addContext("Unwanted", elements);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -514,7 +533,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -534,7 +553,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 				name + " may not contain duplicate " + pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual).
 				addContext("Duplicates", duplicates);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -544,12 +563,12 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new SizeValidatorNoOp(failures);
+			return new SizeValidatorNoOp(getFailures());
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(), pluralizer,
-			failures);
+			getFailures());
 	}
 
 	@Override
@@ -570,13 +589,13 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new ArrayValidatorNoOp<>(failures);
+			return new ArrayValidatorNoOp<>(getFailures());
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
-		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), failures);
+		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), getFailures());
 	}
 
 	@Override

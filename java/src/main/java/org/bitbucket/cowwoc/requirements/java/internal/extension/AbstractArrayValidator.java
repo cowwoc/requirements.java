@@ -17,6 +17,7 @@ import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Pluralizer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -247,12 +248,12 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new SizeValidatorNoOp(failures);
+			return new SizeValidatorNoOp(getFailures());
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".length", actualAsCollection.size(),
-			Pluralizer.ELEMENT, failures);
+			Pluralizer.ELEMENT, getFailures());
 	}
 
 	@Override
@@ -279,5 +280,18 @@ public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectVali
 
 		consumer.accept(asCollection());
 		return getThis();
+	}
+
+	@Override
+	public List<ValidationFailure> getFailures()
+	{
+		List<ValidationFailure> collectionFailures = asCollection.getFailures();
+		List<ValidationFailure> arrayFailures = super.getFailures();
+		if (collectionFailures.isEmpty() && arrayFailures.isEmpty())
+			return collectionFailures;
+		List<ValidationFailure> result = new ArrayList<>(collectionFailures.size() + arrayFailures.size());
+		result.addAll(collectionFailures);
+		result.addAll(arrayFailures);
+		return result;
 	}
 }

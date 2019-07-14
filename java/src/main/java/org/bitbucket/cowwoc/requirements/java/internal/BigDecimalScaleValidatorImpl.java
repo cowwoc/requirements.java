@@ -44,6 +44,6 @@ public final class BigDecimalScaleValidatorImpl
 	@Override
 	protected PrimitiveNumberValidator<Integer> getNoOp()
 	{
-		return new PrimitiveNumberValidatorNoOp<>(failures);
+		return new PrimitiveNumberValidatorNoOp<>(getFailures());
 	}
 }

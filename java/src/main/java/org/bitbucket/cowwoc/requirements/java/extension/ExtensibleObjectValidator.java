@@ -35,7 +35,7 @@ public interface ExtensibleObjectValidator<S, T>
 	T getActual();
 
 	/**
-	 * Returns the list of failed validations.
+	 * Returns the list of failed validations. Modifying the returned list results in undefined behavior.
 	 *
 	 * @return the list of failed validations
 	 */

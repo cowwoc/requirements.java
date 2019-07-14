@@ -46,7 +46,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -56,7 +56,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				this.name + " must be less than " + config.toString(value) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -70,7 +70,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -81,7 +81,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 				this.name + " must be less than " + name + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive maximum", value);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -94,7 +94,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -104,7 +104,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be less than or equal to " + config.toString(value) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -118,7 +118,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -129,7 +129,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 				this.name + " must be less than or equal to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Maximum", value);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -142,7 +142,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -152,7 +152,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be greater than " + config.toString(value) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -166,7 +166,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -177,7 +177,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 				this.name + " must be greater than " + name + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive minimum", value);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -190,7 +190,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -200,7 +200,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be greater than or equal to " + config.toString(value) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -214,7 +214,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -225,7 +225,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 				this.name + " must be greater than or equal to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Minimum", value);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -238,7 +238,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -247,7 +247,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be comparable to " + config.toString(expected) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -261,7 +261,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -271,7 +271,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 				this.name + " must be comparable to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expected);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -284,7 +284,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -293,7 +293,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be comparable to " + config.toString(value) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -307,7 +307,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -317,7 +317,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 				this.name + " may not be comparable to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Other", other);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -332,7 +332,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -343,7 +343,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be in range [" + startAsString + ", " + endAsString + ").").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -358,7 +358,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -369,7 +369,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be in range [" + startAsString + ", " + endAsString + "].").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}

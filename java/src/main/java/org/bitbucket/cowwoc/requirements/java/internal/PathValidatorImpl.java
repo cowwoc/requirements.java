@@ -26,12 +26,29 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	implements PathValidator
 {
 	/**
+	 * Creates a new PathValidatorImpl with no validation failures.
+	 *
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
+	 *                        empty.
+	 */
+	public PathValidatorImpl(ApplicationScope scope, Configuration config, String name, Path actual)
+	{
+		this(scope, config, name, actual, NO_FAILURES);
+	}
+
+	/**
+	 * Creates a new PathValidatorImpl with existing validation failures.
+	 *
 	 * @param scope    the application configuration
 	 * @param config   the instance configuration
 	 * @param name     the name of the value
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code name}, {@code config} or {@code failures} are null. If
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
 	public PathValidatorImpl(ApplicationScope scope, Configuration config, String name, Path actual,
@@ -49,7 +66,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	protected PathValidator getNoOp()
 	{
-		return new PathValidatorNoOp(failures);
+		return new PathValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -57,7 +74,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -66,7 +83,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " refers to a non-existent path.").
 				addContext("Actual", actual.toAbsolutePath());
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -78,7 +95,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		internalVerifier.requireThat(options, "options").isNotNull();
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -90,7 +107,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 				ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 					name + " must refer to a file.").
 					addContext("Actual", actual.toAbsolutePath());
-				failures.add(failure);
+				addFailure(failure);
 			}
 		}
 		catch (IOException e)
@@ -122,7 +139,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		ValidationFailure failure = new ValidationFailureImpl(this, type, message).
 			setCause(e).
 			addContext("Actual", actual.toAbsolutePath());
-		failures.add(failure);
+		addFailure(failure);
 	}
 
 	@Override
@@ -132,7 +149,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		internalVerifier.requireThat(options, "options").isNotNull();
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -144,7 +161,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 				ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 					name + " must refer to a directory.").
 					addContext("Actual", actual.toAbsolutePath());
-				failures.add(failure);
+				addFailure(failure);
 			}
 		}
 		catch (IOException e)
@@ -159,7 +176,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -168,7 +185,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must refer to a relative path.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -178,7 +195,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -187,7 +204,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must refer to an absolute path.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}

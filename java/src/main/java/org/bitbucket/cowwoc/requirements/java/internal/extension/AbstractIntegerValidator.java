@@ -49,7 +49,7 @@ public abstract class AbstractIntegerValidator<S, T extends Number & Comparable<
 		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 			name + " may not be a whole number.").
 			addContext("Actual", actual);
-		failures.add(failure);
+		addFailure(failure);
 		return getThis();
 	}
 }

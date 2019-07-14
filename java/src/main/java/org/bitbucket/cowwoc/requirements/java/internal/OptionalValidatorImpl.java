@@ -11,7 +11,6 @@ import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,18 +21,16 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	implements OptionalValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public OptionalValidatorImpl(ApplicationScope scope, Configuration config, String name, Optional<?> actual,
-	                             List<ValidationFailure> failures)
+	public OptionalValidatorImpl(ApplicationScope scope, Configuration config, String name, Optional<?> actual)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, NO_FAILURES);
 	}
 
 	@Override
@@ -45,7 +42,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	protected OptionalValidator getNoOp()
 	{
-		return new OptionalValidatorNoOp(failures);
+		return new OptionalValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -53,7 +50,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -61,7 +58,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be present");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -71,7 +68,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -80,7 +77,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -90,7 +87,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -102,7 +99,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must contain " + config.toString(value) + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}
@@ -114,7 +111,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 		verifier.requireThat(name, "name").isNotNull();
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -125,7 +122,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 				this.name + " must contain " + name + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expectedAsOptional);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return this;
 	}

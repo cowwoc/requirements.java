@@ -25,6 +25,21 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	implements UrlValidator
 {
 	/**
+	 * Creates a UrlValidatorImpl with no validation failures.
+	 *
+	 * @param scope  the application configuration
+	 * @param config the instance configuration
+	 * @param name   the name of the value
+	 * @param actual the actual value
+	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
+	 *                        empty.
+	 */
+	public UrlValidatorImpl(ApplicationScope scope, Configuration config, String name, URL actual)
+	{
+		this(scope, config, name, actual, NO_FAILURES);
+	}
+
+	/**
 	 * @param scope    the application configuration
 	 * @param config   the instance configuration
 	 * @param name     the name of the value
@@ -33,8 +48,8 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public UrlValidatorImpl(ApplicationScope scope, Configuration config, String name, URL actual,
-	                        List<ValidationFailure> failures)
+	UrlValidatorImpl(ApplicationScope scope, Configuration config, String name, URL actual,
+	                 List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, failures);
 	}
@@ -48,7 +63,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	@Override
 	protected UrlValidator getNoOp()
 	{
-		return new UrlValidatorNoOp(failures);
+		return new UrlValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -56,14 +71,14 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
-			return new UriValidatorNoOp(failures);
+			return new UriValidatorNoOp(getFailures());
 		}
 		try
 		{
 			URI uri = actual.toURI();
-			return new UriValidatorImpl(scope, config, name, uri, failures);
+			return new UriValidatorImpl(scope, config, name, uri, getFailures());
 		}
 		catch (URISyntaxException e)
 		{
@@ -71,8 +86,8 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 				name + " is not a valid URI").
 				setCause(e).
 				addContext("Actual", actual);
-			failures.add(failure);
-			return new UriValidatorNoOp(failures);
+			addFailure(failure);
+			return new UriValidatorNoOp(getFailures());
 		}
 	}
 
@@ -83,7 +98,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 			throw new NullPointerException("consumer may not be null");
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}

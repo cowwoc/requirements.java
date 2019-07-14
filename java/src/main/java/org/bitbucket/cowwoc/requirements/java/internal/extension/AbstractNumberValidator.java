@@ -43,7 +43,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -52,7 +52,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be negative.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -62,7 +62,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -71,7 +71,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be negative.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -81,7 +81,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -90,7 +90,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be zero.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -100,7 +100,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -108,7 +108,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be zero");
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -118,7 +118,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -127,7 +127,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be positive.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -137,7 +137,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -146,7 +146,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be positive.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -156,7 +156,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -165,7 +165,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a whole number.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -185,7 +185,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -195,7 +195,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a whole number.").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -208,7 +208,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -219,7 +219,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -233,7 +233,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -245,7 +245,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 				this.name + " must be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -258,7 +258,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -269,7 +269,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " may not be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
@@ -283,7 +283,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			failures.add(new ValidationFailureImpl(this, NullPointerException.class,
+			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
 				this.name + " may not be null"));
 			return getNoOp();
 		}
@@ -294,7 +294,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 				this.name + " may not be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
-			failures.add(failure);
+			addFailure(failure);
 		}
 		return getThis();
 	}
