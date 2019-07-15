@@ -24,14 +24,14 @@ public interface Configuration
 	/**
 	 * Indicates that {@code assertThat()} should invoke {@code requireThat()}.
 	 *
-	 * @return this
+	 * @return the updated configuration
 	 */
 	Configuration withAssertionsEnabled();
 
 	/**
 	 * Indicates that {@code assertThat()} shouldn't do anything.
 	 *
-	 * @return this
+	 * @return the updated configuration
 	 */
 	Configuration withAssertionsDisabled();
 
@@ -45,7 +45,7 @@ public interface Configuration
 	/**
 	 * Indicates that exceptions should show the difference between the actual and expected values.
 	 *
-	 * @return this
+	 * @return the updated configuration
 	 */
 	Configuration withDiff();
 
@@ -53,7 +53,7 @@ public interface Configuration
 	 * Indicates that exceptions should not show the difference between the actual and expected
 	 * values.
 	 *
-	 * @return this
+	 * @return the updated configuration
 	 */
 	Configuration withoutDiff();
 
@@ -69,7 +69,7 @@ public interface Configuration
 	/**
 	 * Indicates that exception stack traces should omit references to this library.
 	 *
-	 * @return this
+	 * @return the updated configuration
 	 * @see #isCleanStackTrace()
 	 */
 	Configuration withCleanStackTrace();
@@ -77,7 +77,7 @@ public interface Configuration
 	/**
 	 * Indicates that exception stack traces should contain references to this library.
 	 *
-	 * @return this
+	 * @return the updated configuration
 	 * @see #isCleanStackTrace()
 	 */
 	Configuration withoutCleanStackTrace();
@@ -96,7 +96,7 @@ public interface Configuration
 	 *
 	 * @param name  the name of the parameter
 	 * @param value the value of the parameter
-	 * @return this
+	 * @return the updated configuration
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	Configuration putContext(String name, Object value);
@@ -105,7 +105,7 @@ public interface Configuration
 	 * Removes contextual information associated with the exception message.
 	 *
 	 * @param name the name of the parameter
-	 * @return this
+	 * @return the updated configuration
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	Configuration removeContext(String name);
@@ -130,7 +130,7 @@ public interface Configuration
 	 * @param type      the type of object being converted (non-primitive arrays are mapped to
 	 *                  {@code Object[].class})
 	 * @param converter a function that converts an object of the specified type to a String
-	 * @return this
+	 * @return the updated configuration
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	<T> Configuration withStringConverter(Class<T> type, Function<T, String> converter);
@@ -140,7 +140,7 @@ public interface Configuration
 	 *
 	 * @param <T>  the type of object being converted
 	 * @param type the type of object being converted
-	 * @return this
+	 * @return the updated configuration
 	 * @throws NullPointerException if {@code type} is null
 	 */
 	<T> Configuration withoutStringConverter(Class<T> type);
@@ -149,7 +149,7 @@ public interface Configuration
 	 * Replaces a verifier's configuration.
 	 *
 	 * @param configuration a new configuration
-	 * @return this
+	 * @return the updated configuration
 	 * @throws NullPointerException if {@code configuration} is null
 	 */
 	Configuration withConfiguration(Configuration configuration);

@@ -33,6 +33,24 @@ public final class ConfigurationTest
 		assertThat(first, "first.config").isNotEqualTo(second, "second.config");
 	}
 
+	/**
+	 * Regression test. Ensure that modifying inherited configurations does not modify the default instance.
+	 */
+	@Test
+	public void inheritDefaultConfiguration()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		{
+			Configuration first = scope.getDefaultConfiguration().get();
+			first = first.withAssertionsDisabled();
+
+			Configuration second = scope.getDefaultConfiguration().get();
+			second = second.withAssertionsEnabled();
+
+			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+		}
+	}
+
 	@Test
 	public void threadConfiguration()
 	{

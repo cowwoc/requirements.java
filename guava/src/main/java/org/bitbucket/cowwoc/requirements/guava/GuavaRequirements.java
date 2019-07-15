@@ -27,6 +27,12 @@ public interface GuavaRequirements extends Configuration
 	GuavaRequirements withAssertionsEnabled();
 
 	@Override
+	GuavaRequirements withCleanStackTrace();
+
+	@Override
+	GuavaRequirements withoutCleanStackTrace();
+
+	@Override
 	GuavaRequirements withDiff();
 
 	@Override

@@ -82,15 +82,19 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	@Override
 	public GuavaRequirements withAssertionsEnabled()
 	{
-		config.withAssertionsEnabled();
-		return this;
+		Configuration newConfig = config.withAssertionsEnabled();
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
 	public GuavaRequirements withAssertionsDisabled()
 	{
-		config.withAssertionsDisabled();
-		return this;
+		Configuration newConfig = config.withAssertionsDisabled();
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
@@ -100,17 +104,21 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	}
 
 	@Override
-	public Configuration withCleanStackTrace()
+	public GuavaRequirements withCleanStackTrace()
 	{
-		config.withCleanStackTrace();
-		return this;
+		Configuration newConfig = config.withCleanStackTrace();
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
-	public Configuration withoutCleanStackTrace()
+	public GuavaRequirements withoutCleanStackTrace()
 	{
-		config.withoutCleanStackTrace();
-		return this;
+		Configuration newConfig = config.withoutCleanStackTrace();
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
@@ -122,15 +130,19 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	@Override
 	public GuavaRequirements withDiff()
 	{
-		config.withDiff();
-		return this;
+		Configuration newConfig = config.withDiff();
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
 	public GuavaRequirements withoutDiff()
 	{
-		config.withoutDiff();
-		return this;
+		Configuration newConfig = config.withoutDiff();
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
@@ -142,15 +154,19 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	@Override
 	public GuavaRequirements putContext(String name, Object value)
 	{
-		config.putContext(name, value);
-		return this;
+		Configuration newConfig = config.putContext(name, value);
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
 	public GuavaRequirements removeContext(String name)
 	{
-		config.removeContext(name);
-		return this;
+		Configuration newConfig = config.removeContext(name);
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
@@ -162,22 +178,27 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	@Override
 	public <T> GuavaRequirements withStringConverter(Class<T> type, Function<T, String> converter)
 	{
-		config.withStringConverter(type, converter);
-		return this;
+		Configuration newConfig = config.withStringConverter(type, converter);
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
 	public <T> GuavaRequirements withoutStringConverter(Class<T> type)
 	{
-		config.withoutStringConverter(type);
-		return this;
+		Configuration newConfig = config.withoutStringConverter(type);
+		if (newConfig.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
 	public GuavaRequirements withConfiguration(Configuration configuration)
 	{
-		this.config = configuration;
-		return this;
+		if (configuration.equals(config))
+			return this;
+		return new DefaultGuavaRequirements(scope, configuration);
 	}
 
 	@Override

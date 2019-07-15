@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -119,15 +120,19 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withAssertionsEnabled()
 	{
-		this.assertionsEnabled = true;
-		return this;
+		if (assertionsEnabled)
+			return this;
+		return new MainConfiguration(context, exception, true, cleanStackTrace, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
 	public Configuration withAssertionsDisabled()
 	{
-		this.assertionsEnabled = false;
-		return this;
+		if (!assertionsEnabled)
+			return this;
+		return new MainConfiguration(context, exception, false, cleanStackTrace, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
@@ -139,15 +144,19 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withCleanStackTrace()
 	{
-		this.cleanStackTrace = true;
-		return this;
+		if (cleanStackTrace)
+			return this;
+		return new MainConfiguration(context, exception, assertionsEnabled, true, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
 	public Configuration withoutCleanStackTrace()
 	{
-		this.cleanStackTrace = false;
-		return this;
+		if (!cleanStackTrace)
+			return this;
+		return new MainConfiguration(context, exception, assertionsEnabled, false, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
@@ -161,8 +170,12 @@ public final class MainConfiguration implements Configuration
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
-		context.put(name, value);
-		return this;
+		if (Objects.equals(context.get(name), value))
+			return this;
+		Map<String, Object> newContext = new HashMap<>(context);
+		newContext.put(name, value);
+		return new MainConfiguration(newContext, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
@@ -170,8 +183,12 @@ public final class MainConfiguration implements Configuration
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
-		context.remove(name);
-		return this;
+		if (!context.containsKey(name))
+			return this;
+		Map<String, Object> newContext = new HashMap<>(context);
+		newContext.remove(name);
+		return new MainConfiguration(newContext, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+			typeToStringConverter);
 	}
 
 	@Override
@@ -183,15 +200,19 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withDiff()
 	{
-		this.diffEnabled = true;
-		return this;
+		if (diffEnabled)
+			return this;
+		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, true,
+			typeToStringConverter);
 	}
 
 	@Override
 	public Configuration withoutDiff()
 	{
-		this.diffEnabled = false;
-		return this;
+		if (!diffEnabled)
+			return this;
+		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, false,
+			typeToStringConverter);
 	}
 
 	@Override
@@ -217,10 +238,15 @@ public final class MainConfiguration implements Configuration
 			throw new NullPointerException("type may not be null");
 		if (converter == null)
 			throw new NullPointerException("converter may not be null");
+		if (typeToStringConverter.get(type) == converter)
+			return this;
+		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
+			new HashMap<>(this.typeToStringConverter);
 		@SuppressWarnings("unchecked")
 		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
-		typeToStringConverter.put(type, unsafeConverter);
-		return this;
+		newTypeToStringConverter.put(type, unsafeConverter);
+		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+			newTypeToStringConverter);
 	}
 
 	@Override
@@ -228,8 +254,13 @@ public final class MainConfiguration implements Configuration
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");
-		typeToStringConverter.remove(type);
-		return this;
+		if (!typeToStringConverter.containsKey(type))
+			return this;
+		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
+			new HashMap<>(this.typeToStringConverter);
+		newTypeToStringConverter.remove(type);
+		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+			newTypeToStringConverter);
 	}
 
 	@Override
