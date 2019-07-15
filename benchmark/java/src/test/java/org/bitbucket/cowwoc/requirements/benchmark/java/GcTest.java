@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.benchmark.java;
 
 import org.bitbucket.cowwoc.requirements.DefaultRequirements;
+import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
@@ -29,6 +30,7 @@ public class GcTest
 	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 	private String name = "actual";
 	private Map<Integer, Integer> value;
+	private Requirements requirementsWithAssertions = new Requirements().withAssertionsEnabled();
 
 	public GcTest()
 	{
@@ -67,5 +69,14 @@ public class GcTest
 	public SizeVerifier assertThatWithAssertionsDisabled()
 	{
 		return DefaultRequirements.assertThat(value, name).isNotNull().size().isGreaterThan(3);
+	}
+
+	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
+	// though it delegates to it
+	@Benchmark
+	public SizeVerifier assertThatWithAssertionsEnabled()
+	{
+		return requirementsWithAssertions.assertThat(value, name).isNotNull().size().
+			isGreaterThan(3);
 	}
 }
