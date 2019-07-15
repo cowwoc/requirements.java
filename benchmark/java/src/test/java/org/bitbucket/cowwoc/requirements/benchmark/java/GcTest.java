@@ -17,6 +17,8 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
@@ -26,7 +28,14 @@ public class GcTest
 	// Fields may not be final:
 	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 	private String name = "actual";
-	private String value = "value";
+	private Map<Integer, Integer> value;
+
+	public GcTest()
+	{
+		value = new HashMap<>(5, 1f);
+		for (int i = 0; i < 5; ++i)
+			value.put(i, 5 - i);
+	}
 
 	@Test
 	public void runBenchmarks() throws RunnerException
@@ -51,12 +60,12 @@ public class GcTest
 	@Benchmark
 	public SizeVerifier requireThat()
 	{
-		return DefaultRequirements.requireThat(value, name).isNotNull().length().isGreaterThan(3);
+		return DefaultRequirements.requireThat(value, name).isNotNull().size().isGreaterThan(3);
 	}
 
 	@Benchmark
 	public SizeVerifier assertThatWithAssertionsDisabled()
 	{
-		return DefaultRequirements.assertThat(value, name).isNotNull().length().isGreaterThan(3);
+		return DefaultRequirements.assertThat(value, name).isNotNull().size().isGreaterThan(3);
 	}
 }

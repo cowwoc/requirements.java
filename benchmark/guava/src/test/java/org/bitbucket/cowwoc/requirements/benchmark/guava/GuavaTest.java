@@ -27,7 +27,14 @@ public class GuavaTest
 	// Fields may not be final:
 	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 	private String name = "multimap";
-	private Multimap<String, String> value = HashMultimap.create();
+	private Multimap<Integer, Integer> value;
+
+	public GuavaTest()
+	{
+		value = HashMultimap.create();
+		for (int i = 0; i < 5; ++i)
+			value.put(i, 5 - i);
+	}
 
 	@Test
 	public void runBenchmarks() throws RunnerException
