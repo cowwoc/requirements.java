@@ -174,7 +174,7 @@ try
                             export CXX=/usr/bin/g++-6
                             mvn --batch-mode -e -V -U -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
                             mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, natives/target/linux-x86_64-release/classes/librequirements.so&quot;
+                        archiveArtifacts &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;
                     }
                 }
             }
@@ -202,7 +202,7 @@ try
                     {
                         sh script: &quot;&quot;&quot;mvn --batch-mode -e -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
                             mvn --batch-mode -e -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, natives/target/mac-x86_64-release/classes/librequirements.dylib&quot;
+                        archiveArtifacts &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;
                     }
                 }
             }
@@ -228,7 +228,7 @@ try
                     {
                         bat script: &quot;&quot;&quot;call mvn --batch-mode -e -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
                             call mvn --batch-mode -e -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
-                        archiveArtifacts &quot;**/target/*.jar, natives/target/windows-x86_64-release/classes/*.dll, natives/target/windows-x86_64-release/classes/*.pdb&quot;
+                        archiveArtifacts &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;
                     }
                 }
             }
