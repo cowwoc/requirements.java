@@ -7,6 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -29,12 +30,21 @@ public final class MainApplicationScope extends AbstractApplicationScope
 			throw new NullPointerException("parent may not be null");
 		this.parent = parent;
 		this.globalConfiguration = parent.getGlobalConfiguration();
-		Configuration defaultConfiguration = new MainConfiguration();
+
+		// Try to reuse the previously-returned configuration object
+		AtomicReference<Configuration> defaultConfiguration = new AtomicReference<>(new MainConfiguration());
 		this.defaultConfigurationSupplier = () ->
 		{
-			Configuration result = defaultConfiguration;
-			if (!globalConfiguration.isDiffEnabled())
+			Configuration result = defaultConfiguration.get();
+			if (globalConfiguration.isCleanStackTrace())
+				result = result.withCleanStackTrace();
+			else
+				result = result.withoutCleanStackTrace();
+			if (globalConfiguration.isDiffEnabled())
+				result = result.withDiff();
+			else
 				result = result.withoutDiff();
+			defaultConfiguration.setOpaque(result);
 			return result;
 		};
 	}
