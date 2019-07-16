@@ -16,6 +16,8 @@ import java.util.function.Function;
 
 /**
  * Verifies the requirements of types from the Java core API.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public interface JavaRequirements extends Configuration
 {

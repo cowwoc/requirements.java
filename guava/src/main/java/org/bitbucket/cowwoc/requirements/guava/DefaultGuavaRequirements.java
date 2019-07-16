@@ -20,6 +20,8 @@ import java.util.function.Function;
 
 /**
  * Default implementation of GuavaRequirements.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public final class DefaultGuavaRequirements implements GuavaRequirements
 {
@@ -39,8 +41,14 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 		return scope;
 	}
 
+	/**
+	 * The application configuration.
+	 */
 	private final ApplicationScope scope;
-	private Configuration config;
+	/**
+	 * The instance configuration.
+	 */
+	private final Configuration config;
 
 	public DefaultGuavaRequirements()
 	{

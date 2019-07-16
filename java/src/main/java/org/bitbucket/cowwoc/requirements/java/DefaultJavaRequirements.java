@@ -98,6 +98,8 @@ import java.util.function.Function;
 
 /**
  * Default implementation of JavaRequirements.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public final class DefaultJavaRequirements implements JavaRequirements
 {
@@ -113,7 +115,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	/**
 	 * The instance configuration.
 	 */
-	protected Configuration config;
+	private final Configuration config;
 
 	/**
 	 * Equivalent to {@link #DefaultJavaRequirements(ApplicationScope)

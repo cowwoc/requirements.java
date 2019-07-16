@@ -11,6 +11,8 @@ import java.util.function.Function;
 
 /**
  * Verifies the requirements types from of the Guava library API.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public interface GuavaRequirements extends Configuration
 {

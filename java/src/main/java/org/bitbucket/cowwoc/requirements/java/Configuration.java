@@ -9,6 +9,8 @@ import java.util.function.Function;
 
 /**
  * Configures the behavior of a single verifier.
+ * <p>
+ * Implementations must be thread-safe.
  */
 public interface Configuration
 {
