@@ -28,9 +28,7 @@ public final class MainConfiguration implements Configuration
 
 	static
 	{
-		boolean assertionsEnabled = false;
-		assert (assertionsEnabled = true);
-		CLASS_ASSERTIONS_ENABLED = assertionsEnabled;
+		CLASS_ASSERTIONS_ENABLED = Configuration.class.desiredAssertionStatus();
 	}
 
 	private final Map<String, Object> context;

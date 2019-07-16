@@ -18,8 +18,7 @@ public interface Configuration
 	 * Indicates if if {@code assertThat()} should delegate to {@code requireThat()}; otherwise, it won't
 	 * do anything.
 	 *
-	 * @return true if assertions are enabled for
-	 * {@code org.bitbucket.cowwoc.requirements.java.internal.scope.MainConfiguration}
+	 * @return true if assertions are enabled for this class
 	 */
 	boolean assertionsAreEnabled();
 

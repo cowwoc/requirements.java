@@ -368,6 +368,8 @@ public final class ApiGenerator
 			" * <p>\n" +
 			" * The assertion status of the {@link Configuration} class determines whether\n" +
 			" * {@code assertThat()} carries out a verification or does nothing.\n" +
+			" * <p>\n" +
+			" * This class is thread-safe.\n" +
 			" *\n" +
 			" * @see DefaultRequirements\n" +
 			" * @see JavaRequirements\n");
