@@ -26,6 +26,7 @@
 							<exceptions>
 								<exception>java.lang.NullPointerException</exception>
 								<exception>java.lang.IllegalArgumentException</exception>
+								<exception>java.io.IOException</exception>
 							</exceptions>
 						</configuration>
 					</execution>

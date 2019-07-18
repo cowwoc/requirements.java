@@ -17,7 +17,7 @@ public interface ExtensibleNumberVerifier<S, T extends Number & Comparable<? sup
 	extends ExtensibleComparableVerifier<S, T>
 {
 	/**
-	 * Ensures that the actual value is negative.
+	 * Ensures that the actual value is negative. {@code -0.0} is considered to be equal to zero.
 	 *
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not negative
@@ -25,7 +25,7 @@ public interface ExtensibleNumberVerifier<S, T extends Number & Comparable<? sup
 	S isNegative();
 
 	/**
-	 * Ensures that the actual value is not negative.
+	 * Ensures that the actual value is not negative. {@code -0.0} is considered to be equal to zero.
 	 *
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is negative
@@ -33,7 +33,7 @@ public interface ExtensibleNumberVerifier<S, T extends Number & Comparable<? sup
 	S isNotNegative();
 
 	/**
-	 * Ensures that the actual value is zero.
+	 * Ensures that the actual value is zero. {@code -0.0} is considered to be equal to zero.
 	 *
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not zero
@@ -41,7 +41,7 @@ public interface ExtensibleNumberVerifier<S, T extends Number & Comparable<? sup
 	S isZero();
 
 	/**
-	 * Ensures that the actual value is not zero.
+	 * Ensures that the actual value is not zero. {@code -0.0} is considered to be equal to zero.
 	 *
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is zero

@@ -182,6 +182,116 @@ public final class FloatingPointTest
 		}
 	}
 
+	@Test//(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsNegative_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNegative();
+		}
+	}
+
+	@Test
+	public void doubleIsNotNegative_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNotNegative();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsZero_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isZero();
+		}
+	}
+
+	@Test
+	public void doubleIsNotZero_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNotZero();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsPositive_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isPositive();
+		}
+	}
+
+	@Test
+	public void doubleIsNotPositive_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = Double.NaN;
+			new Requirements(scope).requireThat(actual, "actual").isNotPositive();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsNegative_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = -0.0d;
+			new Requirements(scope).requireThat(actual, "actual").isNegative();
+		}
+	}
+
+	@Test
+	public void doubleIsNotNegative_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = -0.0d;
+			new Requirements(scope).requireThat(actual, "actual").isNotNegative();
+		}
+	}
+
+	@Test
+	public void doubleIsZero_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = -0.0d;
+			new Requirements(scope).requireThat(actual, "actual").isZero();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doubleIsNotZero_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = -0.0d;
+			new Requirements(scope).requireThat(actual, "actual").isNotZero();
+		}
+	}
+
+	@Test
+	public void doubleIsNotPositive_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Double actual = -0.0d;
+			new Requirements(scope).requireThat(actual, "actual").isNotPositive();
+		}
+	}
+
 	@Test
 	public void validateThatFloat_nullIsNumber()
 	{

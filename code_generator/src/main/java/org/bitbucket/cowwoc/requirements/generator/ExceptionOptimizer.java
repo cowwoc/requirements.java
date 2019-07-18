@@ -16,8 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Optimizes the exceptions thrown by the library, such as evaluating stack traces are lazily. See
- * {@code org.bitbucket.cowwoc.requirements.java.GlobalRequirements.isCleanStackTrace()}.
+ * Optimizes the exceptions thrown by the library.
+ * <p>
+ * See {@code org.bitbucket.cowwoc.requirements.java.GlobalRequirements.isCleanStackTrace()}.
  */
 public final class ExceptionOptimizer
 {
@@ -151,7 +152,7 @@ public final class ExceptionOptimizer
 			}
 			writer.write("\n" +
 				"/**\n" +
-				" * Generates exceptions that strip this library from their stack traces lazily.\n" +
+				" * Optimizes exceptions thrown by the library.\n" +
 				" *\n" +
 				" * @see GlobalRequirements#isCleanStackTrace()\n" +
 				" */\n" +

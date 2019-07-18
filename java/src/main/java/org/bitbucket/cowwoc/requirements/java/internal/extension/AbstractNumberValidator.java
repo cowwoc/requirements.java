@@ -122,7 +122,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 				this.name + " may not be null"));
 			return getNoOp();
 		}
-		if (actual.doubleValue() <= 0L)
+		double actualAsDouble = actual.doubleValue();
+		if (actualAsDouble <= 0L || Double.isNaN(actualAsDouble))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
 				name + " must be positive.").
