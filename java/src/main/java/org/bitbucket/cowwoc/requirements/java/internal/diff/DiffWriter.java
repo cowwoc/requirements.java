@@ -41,6 +41,12 @@ public interface DiffWriter extends AutoCloseable
 	void writeNewline();
 
 	/**
+	 * @param length the number of characters to pad
+	 * @return the (possibly decorated) text
+	 */
+	String decoratePadding(int length);
+
+	/**
 	 * @return the lines of the actual value
 	 * @throws IllegalStateException if the writer is open
 	 */

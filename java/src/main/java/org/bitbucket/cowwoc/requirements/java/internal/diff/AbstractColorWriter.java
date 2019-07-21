@@ -147,13 +147,13 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	protected static final String PADDING_MARKER = "/";
+	protected static final String DIFF_PADDING = "/";
 	private boolean needToResetActual;
 	private boolean needToResetExpected;
 
 	protected AbstractColorWriter()
 	{
-		super(PADDING_MARKER);
+		super(DIFF_PADDING);
 	}
 
 	@Override

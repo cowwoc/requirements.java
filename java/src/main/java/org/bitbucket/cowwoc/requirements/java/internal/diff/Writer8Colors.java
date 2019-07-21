@@ -52,6 +52,6 @@ public final class Writer8Colors extends AbstractColorWriter
 	public String decoratePadding(int length)
 	{
 		return PREFIX + BLACK_FOREGROUND + ";" + DEFAULT_BACKGROUND + POSTFIX +
-			PADDING_MARKER.repeat(length);
+			DIFF_PADDING.repeat(length);
 	}
 }

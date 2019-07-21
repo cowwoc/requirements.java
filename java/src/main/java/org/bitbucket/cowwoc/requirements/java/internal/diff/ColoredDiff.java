@@ -28,12 +28,6 @@ interface ColoredDiff
 	String decorateDeletedText(String text);
 
 	/**
-	 * @param length the number of characters to pad
-	 * @return the (possibly decorated) text
-	 */
-	String decoratePadding(int length);
-
-	/**
 	 * Ends any ongoing text decoration.
 	 *
 	 * @return the text to insert

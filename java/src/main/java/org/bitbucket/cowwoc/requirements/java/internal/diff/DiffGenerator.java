@@ -49,17 +49,10 @@ public final class DiffGenerator
 		DiffMatchPatch diffEngine = new DiffMatchPatch();
 		String actualWithEos;
 		String expectedWithEos;
-		if (NEWLINE_PATTERN.matcher(actual).find() || NEWLINE_PATTERN.matcher(expected).find())
-		{
-			// If the input contains multiple lines, add the end of string character
-			actualWithEos = actual + EOS_MARKER;
-			expectedWithEos = expected + EOS_MARKER;
-		}
-		else
-		{
-			actualWithEos = actual;
-			expectedWithEos = expected;
-		}
+
+		// Mark the end of the string to guard against cases that end with whitespace
+		actualWithEos = actual + EOS_MARKER;
+		expectedWithEos = expected + EOS_MARKER;
 
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);

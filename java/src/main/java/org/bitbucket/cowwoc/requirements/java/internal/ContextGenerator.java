@@ -17,12 +17,14 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
+
 /**
  * Returns the difference between two values as an exception context.
  */
 public final class ContextGenerator
 {
-	private static final Pattern LINES_NOT_EQUAL = Pattern.compile("[^=]+");
+	private static final Pattern LINES_NOT_EQUAL = Pattern.compile("[^" + DIFF_EQUAL + "]+");
 
 	/**
 	 * Updates the last context entry to indicate that duplicate lines were skipped.

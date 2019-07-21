@@ -4,12 +4,9 @@
  */
 package org.bitbucket.cowwoc.requirements.natives.internal.util;
 
-import org.bitbucket.cowwoc.requirements.annotations.Beta;
-
 /**
  * Outputs all 8-bit color combinations.
  */
-@Beta
 public final class ColorTest
 {
 	public static void main(String[] args)

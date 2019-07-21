@@ -28,17 +28,17 @@ public final class DiffConstants
 	 */
 	public static final String EOS_MARKER = "\\0";
 	/**
-	 * Indicates a character is equal in the actual and expected values.
+	 * Indicates that a character is equal in the actual and expected values.
 	 */
-	public static final String DIFF_EQUAL = "=";
+	public static final String DIFF_EQUAL = " ";
 	/**
-	 * Indicates a character to delete from the actual value.
+	 * Indicates that a character needs to be removed from the actual value.
 	 */
-	public static final String DIFF_DELETE = " ";
+	public static final String DIFF_DELETE = "-";
 	/**
-	 * Indicates a character to insert into the actual value.
+	 * Indicates that a character needs to be added to the actual value.
 	 */
-	public static final String DIFF_INSERT = "^";
+	public static final String DIFF_INSERT = "+";
 	/**
 	 * The prefix for all ANSI sequences.
 	 */

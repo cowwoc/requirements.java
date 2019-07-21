@@ -17,13 +17,19 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * A diff representation that does not use ANSI escape codes.
  * <h2>Basic Rules</h2>
  * <ul>
- * <li>Space (&nbsp;) indicates characters that needs to be deleted from Actual.</li>
- * <li>Equal sign ({@code =}) indicates characters that are equal in Actual and Expected.</li>
- * <li>Up arrowhead ({@code ^}) indicates characters that needs to be inserted into Actual.</li>
+ * <li>Minus ({@code -}) denotes a character that needs to be removed from {@code Actual}.</li>
+ * <li>Space ( ) denotes a character that is equal in {@code Actual} and {@code
+ * Expected}.</li>
+ * <li>Plus ({@code +}) denotes a character that needs to be added to {@code Actual}.</li>
  * <li>"Diff" is omitted for lines that are identical.</li>
- * <li>Characters in the opposite direction of '&nbsp;' or '{@code ^}' are padded to line up the
- * strings vertically. This padding does not contribute any characters to the string it is found in.
- * Read on for concrete examples.</li>
+ * <li>When '{@code -}' is present, {@code Actual} is padded to line up vertically with {@code Expected}.</li>
+ * <li>When '{@code +}' is present, {@code Expected} is padded to line up vertically with {@code Actual}.</li>
+ * <li>The padding is not part of {@code Actual} and {@code Expected}'s value, respectively. Read
+ * on for concrete examples.
+ * <li>Lines always end with {@code \n} or {@code \0}. The former denotes a newline. The latter denotes
+ * the end of the string.</li>
+ * <li>Lines ending with "\n\n" or "\0\0" represents the literal string "\n" followed by a newline
+ * character, or the literal string "\0" followed by the end of string, respectively.</li>
  * </ul>
  * <h3>Example 1: insert</h3>
  * <pre>{@code
@@ -32,9 +38,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * }</pre>results in the following diff:
  * <pre>{@code
  *
- * Actual  :
- * Diff    : ^^^^
- * Expected: text
+ * Actual  :     \0
+ * Diff    : ----
+ * Expected: text\0
  * }
  * </pre>
  * Meaning, to go from {@code Actual} to {@code Expected} we need to insert "text".
@@ -46,9 +52,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * results in the following diff:
  * <pre>{@code
  *
- * Actual  : text
- * Diff    :
- * Expected:
+ * Actual  : text\0
+ * Diff    : ++++
+ * Expected:     \0
  * }
  * </pre>
  * Meaning, to go from {@code Actual} to {@code Expected} we need to delete "text".
@@ -60,9 +66,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * results in the following diff:
  * <pre>{@code
  *
- * Actual  :    foo
- * Diff    : ^^^===
- * Expected:    foo
+ * Actual  :    foo\0
+ * Diff    : +++
+ * Expected:    foo\0
  * }
  * </pre>
  * Meaning:
@@ -80,9 +86,9 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * results in the following diff:
  * <pre>{@code
  *
- * Actual  : foosball
- * Diff    :     ====^^^^
- * Expected:     ballroom
+ * Actual  : foosball    \0
+ * Diff    : ----    ++++
+ * Expected:     ballroom\0
  * }
  * </pre>
  * Meaning, we need to:
@@ -93,7 +99,31 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <li>There is no whitespace before "ballroom" or after "foosball". This padding is used to line up
  * the strings vertically.</li>
  * </ul>
- * <h3>Multi-line Strings</h3>
+ * <h3>Example 5: Objects with the same toString() that are not equal</h3>
+ * <ul>
+ * <li>If objects are not equal, and their {@code toString()} values differ, we output their String
+ * representations.</li>
+ * <li>If the {@code toString()} values are equal, but their types differ, we output the string representation
+ * of {@code Actual} followed by the two types (i.e. {@code Actual.class} vs {@code Expected.class}).</li>
+ * <li>If their classes are equal, but their {@code hashCode()} values differ, we output the string
+ * representation of {@code Actual} followed by the two hashcodes (i.e. {@code Actual.hashCode()} vs
+ * {@code Expected.hashCode()}).</li>
+ * </ul>
+ * For example:
+ * <pre>{@code
+ * Actual   = "null"
+ * Expected = null
+ * }</pre>
+ * results in the following diff:
+ * <pre>{@code
+ *
+ * Actual        : null
+ * Actual.class  : java.lang.String    \0
+ * Diff          : ----------------++++
+ * Expected.class:                 null\0
+ * }
+ * </pre>
+ * <h3>Example 6: Multi-line Strings</h3>
  * When comparing multi-line strings:
  * <ul>
  * <li>We display the diff on a per-line basis.</li>
@@ -109,13 +139,13 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * results in the following diff:
  * <pre>{@code
  *
- * Actual@1  : first
- * Expected@1: first
+ * Actual@1  : first\n
+ * Expected@1: first\n
  *
  * [...]
  *
  * Actual@3  : foo   \n
- * Diff      :    ^^^==
+ * Diff      : ---+++
  * Expected@3:    bar\n
  *
  * [...]
@@ -130,12 +160,6 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <li>On line 3, we need to delete "foo" and insert "bar".</li>
  * <li>Lines 4-5 were equal.</li>
  * </ul>
- * <p>
- * Lines always end with {@code \n} or {@code \0}. The former denotes a newline. The latter denotes
- * the end of the string.
- * <p>
- * Lines ending with "\n\n" or "\0\0" represents the literal string "\n" followed by a newline
- * character, or the literal string "\0" followed by the end of string, respectively.
  * <h3>Example 5: Missing Line Numbers</h3>
  * When {@code Actual} or {@code Expected} contain a line that does not have a corresponding line on
  * the other side we omit the latter's line number.
@@ -147,7 +171,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <pre>{@code
  *
  * Actual@1  : Foo\n
- * Diff      :
+ * Diff      : -----
  * Expected  :
  *
  * Actual@2  : Bar\0
@@ -166,14 +190,14 @@ public final class TextOnly extends AbstractDiffWriter
 	/**
 	 * A padding character used to align values vertically.
 	 */
-	public static final String PADDING_MARKER = " ";
+	public static final String DIFF_PADDING = " ";
 	private final StringBuilder middleLineBuilder = new StringBuilder(LINE_LENGTH);
 	private final List<String> middleLinesBuilder = new ArrayList<>();
 	private List<String> middleLines;
 
 	public TextOnly()
 	{
-		super(PADDING_MARKER);
+		super(DIFF_PADDING);
 	}
 
 	@Override
@@ -219,6 +243,12 @@ public final class TextOnly extends AbstractDiffWriter
 		super.writeNewline();
 		middleLinesBuilder.add(middleLineBuilder.toString());
 		middleLineBuilder.delete(0, middleLineBuilder.length());
+	}
+
+	@Override
+	public String decoratePadding(int length)
+	{
+		return DIFF_PADDING.repeat(length);
 	}
 
 	@Override
