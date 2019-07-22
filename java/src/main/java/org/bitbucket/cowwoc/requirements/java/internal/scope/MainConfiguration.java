@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,7 +55,7 @@ public final class MainConfiguration implements Configuration
 	 */
 	public MainConfiguration()
 	{
-		this.context = new HashMap<>();
+		this.context = new LinkedHashMap<>();
 		this.exception = Optional.empty();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.cleanStackTrace = true;
@@ -170,7 +171,7 @@ public final class MainConfiguration implements Configuration
 			throw new NullPointerException("name may not be null");
 		if (Objects.equals(context.get(name), value))
 			return this;
-		Map<String, Object> newContext = new HashMap<>(context);
+		Map<String, Object> newContext = new LinkedHashMap<>(context);
 		newContext.put(name, value);
 		return new MainConfiguration(newContext, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
@@ -183,7 +184,7 @@ public final class MainConfiguration implements Configuration
 			throw new NullPointerException("name may not be null");
 		if (!context.containsKey(name))
 			return this;
-		Map<String, Object> newContext = new HashMap<>(context);
+		Map<String, Object> newContext = new LinkedHashMap<>(context);
 		newContext.remove(name);
 		return new MainConfiguration(newContext, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
 			typeToStringConverter);

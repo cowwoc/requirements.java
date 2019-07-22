@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +22,7 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	 */
 	public DefaultThreadConfiguration()
 	{
-		this.context = new HashMap<>();
+		this.context = new LinkedHashMap<>();
 	}
 
 	/**
