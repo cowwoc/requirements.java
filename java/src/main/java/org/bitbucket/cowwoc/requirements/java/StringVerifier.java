@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
+import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.function.Consumer;
@@ -11,7 +12,8 @@ import java.util.function.Consumer;
 /**
  * Verifies the requirements of a {@link String}.
  * <p>
- * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
+ * All methods (except for {@link #asString()} and those found in {@link ExtensibleObjectValidator}) imply
+ * {@link #isNotNull()}.
  */
 public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier, String>
 {
