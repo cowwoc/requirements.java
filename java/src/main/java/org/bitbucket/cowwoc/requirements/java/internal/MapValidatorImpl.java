@@ -60,8 +60,9 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return new CollectionValidatorNoOp<>(getFailures());
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
@@ -83,8 +84,9 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return new CollectionValidatorNoOp<>(getFailures());
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
@@ -106,8 +108,9 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return new CollectionValidatorNoOp<>(getFailures());
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", actual.entrySet(),
@@ -129,13 +132,14 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -148,13 +152,14 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be empty");
 			addFailure(failure);
 		}
@@ -166,8 +171,9 @@ public final class MapValidatorImpl<K, V>
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return new SizeValidatorNoOp(getFailures());
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),

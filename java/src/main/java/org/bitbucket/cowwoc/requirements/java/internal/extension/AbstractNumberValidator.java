@@ -43,13 +43,14 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.doubleValue() >= 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be negative.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -62,13 +63,14 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.doubleValue() < 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be negative.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -81,13 +83,14 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.doubleValue() != 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be zero.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -100,13 +103,14 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.doubleValue() == 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be zero");
 			addFailure(failure);
 		}
@@ -118,14 +122,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		double actualAsDouble = actual.doubleValue();
 		if (actualAsDouble <= 0L || Double.isNaN(actualAsDouble))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be positive.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -138,13 +143,14 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.doubleValue() > 0L)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be positive.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -157,13 +163,14 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!isWholeNumber(actual.doubleValue()))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be a whole number.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -186,14 +193,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual.doubleValue()))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be a whole number.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -209,15 +217,16 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -234,15 +243,16 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		// TODO: Is zero really a multiple of all numbers?
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
@@ -259,15 +269,16 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -284,14 +295,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && !isWholeNumber(actual.doubleValue() / divisorAsDouble))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " may not be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);

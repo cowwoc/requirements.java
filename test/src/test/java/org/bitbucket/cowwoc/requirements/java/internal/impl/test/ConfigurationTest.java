@@ -6,10 +6,11 @@ package org.bitbucket.cowwoc.requirements.java.internal.impl.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
+import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import org.testng.annotations.Test;
 
@@ -59,12 +60,12 @@ public final class ConfigurationTest
 			Requirements requirements = new Requirements(scope).
 				putContext("verifierName", "verifierValue");
 			scope.getThreadConfiguration().get().putContext("threadName", "threadValue");
-			RuntimeException actual = new ExceptionBuilder<>(scope, requirements, IllegalArgumentException.class).
-				addContext("exceptionName", "exceptionValue").
-				build("message");
-			assertThat(actual.getMessage(), "message").contains("exceptionName: exceptionValue");
-			assertThat(actual.getMessage(), "message").contains("verifierName : verifierValue");
-			assertThat(actual.getMessage(), "message").contains("threadName   : threadValue");
+			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
+				IllegalArgumentException.class, "message").
+				addContext("exceptionName", "exceptionValue");
+			assertThat(failure.getMessage(), "message").contains("exceptionName: exceptionValue");
+			assertThat(failure.getMessage(), "message").contains("verifierName : verifierValue");
+			assertThat(failure.getMessage(), "message").contains("threadName   : threadValue");
 		}
 	}
 
@@ -75,10 +76,11 @@ public final class ConfigurationTest
 		{
 			Requirements requirements = new Requirements(scope).putContext("name", "verifierValue");
 			scope.getThreadConfiguration().get().putContext("name", "threadValue");
-			RuntimeException actual = new ExceptionBuilder<>(scope, requirements, IllegalArgumentException.class).
-				addContext("exceptionName", "exceptionValue").build("message");
-			assertThat(actual.getMessage(), "message").contains("exceptionName: exceptionValue");
-			assertThat(actual.getMessage(), "message").contains("name         : verifierValue");
+			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
+				IllegalArgumentException.class, "message").
+				addContext("exceptionName", "exceptionValue");
+			assertThat(failure.getMessage(), "message").contains("exceptionName: exceptionValue");
+			assertThat(failure.getMessage(), "message").contains("name         : verifierValue");
 		}
 	}
 
@@ -89,9 +91,10 @@ public final class ConfigurationTest
 		{
 			Requirements requirements = new Requirements(scope).putContext("name", "verifierValue");
 			scope.getThreadConfiguration().get().putContext("name", "threadValue");
-			RuntimeException actual = new ExceptionBuilder<>(scope, requirements, IllegalArgumentException.class).
-				addContext("name", "exceptionValue").build("message");
-			assertThat(actual.getMessage(), "message").contains("name: exceptionValue");
+			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
+				IllegalArgumentException.class, "message").
+				addContext("name", "exceptionValue");
+			assertThat(failure.getMessage(), "message").contains("name: exceptionValue");
 		}
 	}
 }

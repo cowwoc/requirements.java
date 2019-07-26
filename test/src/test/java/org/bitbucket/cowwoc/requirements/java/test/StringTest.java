@@ -487,7 +487,8 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<String> expectedMessages = Collections.singletonList("actual must be an InetAddress.\n" +
+				"Actual: null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asInetAddress().isIpV4().getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
@@ -502,7 +503,8 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<String> expectedMessages = Collections.singletonList("actual must be a URI.\n" +
+				"Actual: null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asUri().isAbsolute().getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
@@ -517,7 +519,8 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<String> expectedMessages = Collections.singletonList("actual must be a URL.\n" +
+				"Actual: null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asUrl().isEqualTo("notEqual").getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).

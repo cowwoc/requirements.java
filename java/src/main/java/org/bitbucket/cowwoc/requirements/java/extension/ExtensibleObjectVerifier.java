@@ -168,7 +168,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * Indicates if the actual value is available.
 	 *
 	 * @return false if {@link JavaRequirements#assertThat(Object, String) assertThat()} was invoked and
-	 * assertions are disabled (in which case the value is discarded)
+	 * assertions are disabled (in which case the value was discarded)
 	 */
 	boolean isActualAvailable();
 

@@ -53,15 +53,16 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
 		// need to take into account.
 		if (actual.signum() != 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be zero").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -74,15 +75,16 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		// We cannot use Number.longValue() because it truncates the fractional component of the number, which we
 		// need to take into account.
 		if (actual.signum() == 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be zero");
 			addFailure(failure);
 		}
@@ -94,8 +96,9 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return new BigDecimalPrecisionValidatorNoOp(getFailures());
 		}
 		return new BigDecimalPrecisionValidatorImpl(scope, config, name, actual, getFailures());
@@ -116,8 +119,9 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return new PrimitiveNumberValidatorNoOp<>(getFailures());
 		}
 		return new BigDecimalScaleValidatorImpl(scope, config, name, actual, getFailures());
@@ -138,13 +142,14 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!isWholeNumber(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be a whole number.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -167,14 +172,15 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be a whole number.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -198,8 +204,9 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
@@ -207,7 +214,7 @@ public final class BigDecimalValidatorImpl
 		if (!isMultipleOf(actual, divisor))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -220,8 +227,9 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
@@ -229,7 +237,7 @@ public final class BigDecimalValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (!isMultipleOf(actual, divisor))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);
@@ -243,8 +251,9 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
@@ -252,7 +261,7 @@ public final class BigDecimalValidatorImpl
 		if (isMultipleOf(actual, divisor))
 		{
 			String divisorAsString = config.toString(divisor);
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be a multiple of " + divisorAsString + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -265,8 +274,9 @@ public final class BigDecimalValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
@@ -274,7 +284,7 @@ public final class BigDecimalValidatorImpl
 		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
 		if (isMultipleOf(actual, divisor))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " may not be a multiple of " + name + ".").
 				addContext("Actual", actual).
 				addContext("divisor", divisor);

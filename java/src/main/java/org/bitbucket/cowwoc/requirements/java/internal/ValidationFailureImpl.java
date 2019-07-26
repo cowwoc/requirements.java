@@ -4,12 +4,11 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
-import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
+import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -18,31 +17,29 @@ import java.util.Map.Entry;
  */
 public final class ValidationFailureImpl implements ValidationFailure
 {
-	private final AbstractObjectValidator<?, ?> validator;
 	private final Class<? extends Exception> exceptionType;
-	private Throwable cause;
-	private final String message;
-	private final List<Entry<String, Object>> context = new ArrayList<>();
+	private final ExceptionBuilder exceptionBuilder;
 
 	/**
-	 * @param validator     the enclosing validator
+	 * @param scope         the application configuration
+	 * @param config        the instance configuration
 	 * @param exceptionType the type of exception associated with the failure
 	 * @param message       the exception message associated with the failure
 	 * @throws NullPointerException     if {@code validator}, {@code exceptionType} or {@code message} are null
 	 * @throws IllegalArgumentException if {@code message} is empty
 	 */
-	public ValidationFailureImpl(AbstractObjectValidator<?, ?> validator,
+	public ValidationFailureImpl(ApplicationScope scope, Configuration config,
 	                             Class<? extends Exception> exceptionType,
 	                             String message)
 	{
-		assert (validator != null);
+		assert (scope != null);
+		assert (config != null);
 		assert (exceptionType != null);
 		assert (message != null);
 		assert (!message.trim().isEmpty()) : "message may not be empty";
 
-		this.validator = validator;
 		this.exceptionType = exceptionType;
-		this.message = message;
+		this.exceptionBuilder = new ExceptionBuilder(scope, config, message);
 	}
 
 	@Override
@@ -58,7 +55,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public Throwable getCause()
 	{
-		return cause;
+		return exceptionBuilder.getCause();
 	}
 
 	/**
@@ -69,14 +66,14 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public ValidationFailureImpl setCause(Throwable cause)
 	{
-		this.cause = cause;
+		exceptionBuilder.setCause(cause);
 		return this;
 	}
 
 	@Override
 	public String getMessage()
 	{
-		return message;
+		return exceptionBuilder.getMessage();
 	}
 
 	/**
@@ -86,7 +83,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public List<Entry<String, Object>> getContext()
 	{
-		return context;
+		return exceptionBuilder.getContext();
 	}
 
 	/**
@@ -95,12 +92,11 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 * @param name  the name of a variable
 	 * @param value the value of the variable
 	 * @return this
-	 * @throws NullPointerException if {@code name} is null
+	 * @throws AssertionError if {@code name} is null or empty
 	 */
 	public ValidationFailureImpl addContext(String name, Object value)
 	{
-		assert (name != null) : "name may not be null";
-		context.add(new SimpleImmutableEntry<>(name, value));
+		exceptionBuilder.addContext(name, value);
 		return this;
 	}
 
@@ -113,8 +109,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public ValidationFailureImpl addContext(List<Entry<String, Object>> context)
 	{
-		assert (context != null) : "context may not be null";
-		this.context.addAll(context);
+		exceptionBuilder.addContext(context);
 		return this;
 	}
 
@@ -127,15 +122,12 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public <T extends Exception> T createException(Class<T> type)
 	{
-		return new ExceptionBuilder<>(validator.getScope(), validator.getConfiguration(), type).
-			addContext(context).
-			setCause(cause).
-			build(message);
+		return exceptionBuilder.build(type);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "exceptionType: " + exceptionType + ", message: " + message + ", context: " + context;
+		return "exceptionType: " + exceptionType + ", exceptionBuilder: " + exceptionBuilder;
 	}
 }

@@ -118,7 +118,7 @@ public final class MultimapValidatorImpl<K, V>
 	{
 		if (!actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", config.toString(actual));
 			addFailure(failure);
@@ -131,7 +131,7 @@ public final class MultimapValidatorImpl<K, V>
 	{
 		if (actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be empty");
 			addFailure(failure);
 		}

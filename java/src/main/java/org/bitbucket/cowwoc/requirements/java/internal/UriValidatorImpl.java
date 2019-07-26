@@ -71,13 +71,14 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!actual.isAbsolute())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be absolute.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -90,8 +91,10 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a URL.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
 			return new UrlValidatorNoOp(getFailures());
 		}
 		try
@@ -101,7 +104,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 		}
 		catch (MalformedURLException | IllegalArgumentException e)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " is not a valid URL").
 				setCause(e).
 				addContext("Actual", actual);

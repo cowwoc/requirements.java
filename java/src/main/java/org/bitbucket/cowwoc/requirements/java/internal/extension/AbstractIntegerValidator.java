@@ -46,7 +46,7 @@ public abstract class AbstractIntegerValidator<S, T extends Number & Comparable<
 	@Override
 	public S isNotWholeNumber()
 	{
-		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " may not be a whole number.").
 			addContext("Actual", actual);
 		addFailure(failure);

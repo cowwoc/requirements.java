@@ -50,13 +50,14 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.isEmpty())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be present");
 			addFailure(failure);
 		}
@@ -68,13 +69,14 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.isPresent())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be empty.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -87,8 +89,9 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (value == null)
@@ -96,7 +99,7 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 		Optional<?> expected = Optional.of(value);
 		if (!actual.equals(expected))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must contain " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -111,14 +114,15 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 		verifier.requireThat(name, "name").isNotNull();
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
 		if (!actual.equals(expectedAsOptional))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must contain " + name + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expectedAsOptional);

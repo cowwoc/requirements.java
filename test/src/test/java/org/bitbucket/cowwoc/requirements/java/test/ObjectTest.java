@@ -5,6 +5,7 @@
 package org.bitbucket.cowwoc.requirements.java.test;
 
 import org.bitbucket.cowwoc.requirements.Requirements;
+import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.PathVerifier;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.PathValidatorImpl;
@@ -414,10 +415,10 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			ArrayList<ValidationFailure> failures = new ArrayList<>();
-			PathValidatorImpl validator = new PathValidatorImpl(scope, scope.getDefaultConfiguration().get(),
-				"name", Path.of("/"), failures);
+			Configuration config = scope.getDefaultConfiguration().get();
+			PathValidatorImpl validator = new PathValidatorImpl(scope, config, "name", Path.of("/"), failures);
 
-			failures.add(new ValidationFailureImpl(validator, IOException.class, "This is a test"));
+			failures.add(new ValidationFailureImpl(scope, config, IOException.class, "This is a test"));
 			PathVerifier verifier = new PathVerifierImpl(validator);
 			verifier.isDirectory();
 		}

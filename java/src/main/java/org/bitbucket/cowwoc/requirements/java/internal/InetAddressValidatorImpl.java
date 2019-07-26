@@ -71,13 +71,14 @@ public final class InetAddressValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!(actual instanceof Inet4Address))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be an IP v4 address.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -90,13 +91,14 @@ public final class InetAddressValidatorImpl
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!(actual instanceof Inet6Address))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be an IP v6 address.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -108,15 +110,11 @@ public final class InetAddressValidatorImpl
 	public StringValidator asString()
 	{
 		if (actual == null)
-		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
-			return new StringValidatorNoOp(getFailures());
-		}
+			return new StringValidatorImpl(scope, config, name, "null", getFailures());
 		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
 		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
 		// format.
 		String hostName = actual.getHostName();
-		return new StringValidatorImpl(scope, config, hostName, name, getFailures());
+		return new StringValidatorImpl(scope, config, name, hostName, getFailures());
 	}
 }

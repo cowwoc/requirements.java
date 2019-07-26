@@ -46,14 +46,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be less than " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -70,14 +71,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be less than " + name + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive maximum", value);
@@ -94,14 +96,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be less than or equal to " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -118,14 +121,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference > 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be less than or equal to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Maximum", value);
@@ -142,14 +146,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be greater than " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -166,14 +171,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be greater than " + name + ".").
 				addContext("Actual", actual).
 				addContext("Exclusive minimum", value);
@@ -190,14 +196,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be greater than or equal to " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -214,14 +221,15 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		int difference = actual.compareTo(value);
 		if (difference < 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be greater than or equal to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Minimum", value);
@@ -238,13 +246,14 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.compareTo(expected) != 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be comparable to " + config.toString(expected) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -261,13 +270,14 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.compareTo(expected) != 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be comparable to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Expected", expected);
@@ -284,13 +294,14 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.compareTo(value) == 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be comparable to " + config.toString(value) + ".").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -307,13 +318,14 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.compareTo(other) == 0)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " may not be comparable to " + name + ".").
 				addContext("Actual", actual).
 				addContext("Other", other);
@@ -332,15 +344,16 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.compareTo(startInclusive) < 0 || actual.compareTo(endExclusive) >= 0)
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endExclusive);
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be in range [" + startAsString + ", " + endAsString + ").").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -358,15 +371,16 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.compareTo(startInclusive) < 0 || actual.compareTo(endInclusive) > 0)
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endInclusive);
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be in range [" + startAsString + ", " + endAsString + "].").
 				addContext("Actual", actual);
 			addFailure(failure);

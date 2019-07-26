@@ -13,6 +13,8 @@ public interface ValidationFailure
 	 * Returns the message associated with the failure.
 	 *
 	 * @return the message associated with the failure
+	 * @see ThreadRequirements#getContext()
+	 * @see Configuration#getContext()
 	 */
 	String getMessage();
 

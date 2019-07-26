@@ -87,12 +87,13 @@ public final class UrlTest
 	}
 
 	@Test
-	public void validateThatNullAsUrl()
+	public void validateThatNullAsUri()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URL actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<String> expectedMessages = Collections.singletonList("actual must be a URI.\n" +
+				"Actual: null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asUri().isEqualTo("notEqual").getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).

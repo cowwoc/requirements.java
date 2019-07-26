@@ -60,7 +60,7 @@ public final class PrimitiveNumberValidatorImpl<T extends Number & Comparable<? 
 
 	private PrimitiveNumberValidator<T> neverNull()
 	{
-		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be null").
 			addContext("Actual", actual);
 		addFailure(failure);

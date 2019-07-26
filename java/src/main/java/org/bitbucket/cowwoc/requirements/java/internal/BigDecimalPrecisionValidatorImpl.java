@@ -91,7 +91,7 @@ public final class BigDecimalPrecisionValidatorImpl
 
 	private BigDecimalPrecisionValidator neverZero()
 	{
-		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be zero");
 		addFailure(failure);
 		return this;
@@ -99,7 +99,7 @@ public final class BigDecimalPrecisionValidatorImpl
 
 	private BigDecimalPrecisionValidator neverZeroOrNegative()
 	{
-		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be zero or negative");
 		addFailure(failure);
 		return this;
@@ -107,7 +107,7 @@ public final class BigDecimalPrecisionValidatorImpl
 
 	private BigDecimalPrecisionValidator neverNegative()
 	{
-		ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be negative");
 		addFailure(failure);
 		return this;

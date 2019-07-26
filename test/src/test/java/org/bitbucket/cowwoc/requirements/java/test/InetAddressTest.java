@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class InetAddressTest
@@ -149,7 +150,10 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<String> expectedMessages = Collections.singletonList("actual had an unexpected value.\n" +
+				"Actual  : null " + EOS_MARKER + "\n" +
+				"Diff    : ----+  \n" +
+				"Expected:     5" + EOS_MARKER);
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asString().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).

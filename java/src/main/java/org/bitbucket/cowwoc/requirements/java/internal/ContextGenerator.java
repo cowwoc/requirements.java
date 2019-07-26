@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.EOL_PATTERN;
 
 /**
  * Returns the difference between two values as an exception context.
@@ -177,13 +178,14 @@ public final class ContextGenerator
 				continue;
 			}
 			String actualNameForLine;
-			if (Strings.containsOnly(actualLine, diff.getPaddingMarker()))
-				actualNameForLine = actualName;
-			else
+			if (!Strings.containsOnly(actualLine, diff.getPaddingMarker()))
 			{
 				actualNameForLine = actualName + "@" + actualLineNumber;
-				++actualLineNumber;
+				if (EOL_PATTERN.matcher(actualLine).find())
+					++actualLineNumber;
 			}
+			else
+				actualNameForLine = actualName;
 			if (skippedDuplicates)
 			{
 				skippedDuplicates = false;
@@ -193,13 +195,14 @@ public final class ContextGenerator
 			if (!middleLines.isEmpty() && linesAreDifferent(middleLines.get(i)))
 				result.add(new SimpleImmutableEntry<>("Diff", middleLines.get(i)));
 			String expectedNameForLine;
-			if (Strings.containsOnly(expectedLine, diff.getPaddingMarker()))
-				expectedNameForLine = expectedName;
-			else
+			if (!Strings.containsOnly(expectedLine, diff.getPaddingMarker()))
 			{
 				expectedNameForLine = expectedName + "@" + expectedLineNumber;
-				++expectedLineNumber;
+				if (EOL_PATTERN.matcher(expectedLine).find())
+					++expectedLineNumber;
 			}
+			else
+				expectedNameForLine = expectedName;
 			if (i < lines - 1)
 				expectedLine += "\n";
 			result.add(new SimpleImmutableEntry<>(expectedNameForLine, expectedLine));

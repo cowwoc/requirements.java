@@ -78,7 +78,7 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	 * Throws an exception if the validation failed.
 	 *
 	 * @param <E>       the type of exception that may be thrown
-	 * @param exception the value to return on success
+	 * @param exception the exception that may be thrown
 	 * @return the updated verifier
 	 * @throws E if the validation failed
 	 * @see #validationResult(Supplier, Class)

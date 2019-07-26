@@ -74,13 +74,14 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!Files.exists(actual))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " refers to a non-existent path.").
 				addContext("Actual", actual.toAbsolutePath());
 			addFailure(failure);
@@ -95,8 +96,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		internalVerifier.requireThat(options, "options").isNotNull();
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		try
@@ -104,7 +106,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			BasicFileAttributes attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
 			if (!attrs.isRegularFile())
 			{
-				ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+				ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 					name + " must refer to a file.").
 					addContext("Actual", actual.toAbsolutePath());
 				addFailure(failure);
@@ -136,7 +138,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			type = e.getClass();
 			message = "Failed to read attributes of " + name + ".";
 		}
-		ValidationFailure failure = new ValidationFailureImpl(this, type, message).
+		ValidationFailure failure = new ValidationFailureImpl(scope, config, type, message).
 			setCause(e).
 			addContext("Actual", actual.toAbsolutePath());
 		addFailure(failure);
@@ -149,8 +151,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		internalVerifier.requireThat(options, "options").isNotNull();
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		try
@@ -158,7 +161,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			BasicFileAttributes attrs = Files.readAttributes(actual, BasicFileAttributes.class, options);
 			if (!attrs.isDirectory())
 			{
-				ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+				ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 					name + " must refer to a directory.").
 					addContext("Actual", actual.toAbsolutePath());
 				addFailure(failure);
@@ -176,13 +179,14 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (actual.isAbsolute())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must refer to a relative path.").
 				addContext("Actual", actual);
 			addFailure(failure);
@@ -195,13 +199,14 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		if (!actual.isAbsolute())
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must refer to an absolute path.").
 				addContext("Actual", actual);
 			addFailure(failure);

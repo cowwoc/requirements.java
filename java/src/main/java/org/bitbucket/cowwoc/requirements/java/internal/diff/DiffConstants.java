@@ -16,10 +16,6 @@ public final class DiffConstants
 	 */
 	public static final int LINE_LENGTH = 80;
 	/**
-	 * A pattern matching newline characters anywhere in a string.
-	 */
-	public static final Pattern NEWLINE_PATTERN = Pattern.compile("\r?\n");
-	/**
 	 * Character denoting a newline character.
 	 */
 	public static final String NEWLINE_MARKER = "\\n";
@@ -27,6 +23,14 @@ public final class DiffConstants
 	 * Character denoting the end of string.
 	 */
 	public static final String EOS_MARKER = "\\0";
+	/**
+	 * A pattern matching newline characters anywhere in a string.
+	 */
+	public static final Pattern NEWLINE_PATTERN = Pattern.compile("\r?\n");
+	/**
+	 * A pattern matching the end of a line or stream.
+	 */
+	public static final Pattern EOL_PATTERN = Pattern.compile("\\\\n|\\\\0$");
 	/**
 	 * Indicates that a character is equal in the actual and expected values.
 	 */

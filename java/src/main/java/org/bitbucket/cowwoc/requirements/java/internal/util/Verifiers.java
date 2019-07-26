@@ -23,20 +23,20 @@ public final class Verifiers
 	 * @param scope         the application configuration
 	 * @param configuration a verifier's configuration
 	 * @param name          the name of the actual value
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the arguments are null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
 	public static void verifyName(ApplicationScope scope, Configuration configuration, String name)
 	{
 		if (name == null)
 		{
-			throw new ExceptionBuilder<>(scope, configuration, NullPointerException.class).
-				build("name may not be null");
+			throw new ExceptionBuilder(scope, configuration, "name may not be null").
+				build(NullPointerException.class);
 		}
 		if (name.trim().isEmpty())
 		{
-			throw new ExceptionBuilder<>(scope, configuration, IllegalArgumentException.class).
-				build("name may not be empty");
+			throw new ExceptionBuilder(scope, configuration, "name may not be empty").
+				build(IllegalArgumentException.class);
 		}
 	}
 }

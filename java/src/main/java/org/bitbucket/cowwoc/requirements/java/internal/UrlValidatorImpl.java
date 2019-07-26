@@ -71,8 +71,10 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	{
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a URI.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
 			return new UriValidatorNoOp(getFailures());
 		}
 		try
@@ -82,7 +84,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 		}
 		catch (URISyntaxException e)
 		{
-			ValidationFailure failure = new ValidationFailureImpl(this, IllegalArgumentException.class,
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " is not a valid URI").
 				setCause(e).
 				addContext("Actual", actual);
@@ -98,8 +100,9 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 			throw new NullPointerException("consumer may not be null");
 		if (actual == null)
 		{
-			addFailure(new ValidationFailureImpl(this, NullPointerException.class,
-				this.name + " may not be null"));
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
 			return getNoOp();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
