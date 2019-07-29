@@ -7,30 +7,44 @@ package org.bitbucket.cowwoc.requirements.java.internal;
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.ExceptionBuilder;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * Default implementation of {@code ValidationFailure}.
  */
 public final class ValidationFailureImpl implements ValidationFailure
 {
+	private final ApplicationScope scope;
+	private final Configuration config;
 	private final Class<? extends Exception> exceptionType;
-	private final ExceptionBuilder exceptionBuilder;
+	private final String message;
+	private String messageWithContext;
+	private Throwable cause;
+	/**
+	 * The contextual information associated with the exception (name-value pairs).
+	 */
+	private final List<Entry<String, Object>> context = new ArrayList<>(2);
 
 	/**
 	 * @param scope         the application configuration
 	 * @param config        the instance configuration
 	 * @param exceptionType the type of exception associated with the failure
-	 * @param message       the exception message associated with the failure
+	 * @param message       the message associated with the failure
 	 * @throws NullPointerException     if {@code validator}, {@code exceptionType} or {@code message} are null
 	 * @throws IllegalArgumentException if {@code message} is empty
 	 */
 	public ValidationFailureImpl(ApplicationScope scope, Configuration config,
-	                             Class<? extends Exception> exceptionType,
-	                             String message)
+	                             Class<? extends Exception> exceptionType, String message)
 	{
 		assert (scope != null);
 		assert (config != null);
@@ -38,8 +52,10 @@ public final class ValidationFailureImpl implements ValidationFailure
 		assert (message != null);
 		assert (!message.trim().isEmpty()) : "message may not be empty";
 
+		this.scope = scope;
+		this.config = config;
 		this.exceptionType = exceptionType;
-		this.exceptionBuilder = new ExceptionBuilder(scope, config, message);
+		this.message = message;
 	}
 
 	@Override
@@ -55,7 +71,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public Throwable getCause()
 	{
-		return exceptionBuilder.getCause();
+		return cause;
 	}
 
 	/**
@@ -66,24 +82,94 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public ValidationFailureImpl setCause(Throwable cause)
 	{
-		exceptionBuilder.setCause(cause);
+		this.cause = cause;
 		return this;
 	}
 
 	@Override
 	public String getMessage()
 	{
-		return exceptionBuilder.getMessage();
+		if (messageWithContext == null)
+			this.messageWithContext = createMessageWithContext();
+		return messageWithContext;
 	}
 
 	/**
-	 * Returns the list of name-value pairs to append to the exception message.
+	 * Returns the failure message with contextual information.
 	 *
-	 * @return the list of name-value pairs to append to the exception message
+	 * @return the failure message with contextual information
 	 */
-	public List<Entry<String, Object>> getContext()
+	private String createMessageWithContext()
 	{
-		return exceptionBuilder.getContext();
+		Map<String, Object> configContext = config.getContext();
+		assert (Maps.isUnmodifiable(configContext)) : "configContext may not be modifiable";
+
+		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
+		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
+
+		List<Entry<String, Object>> mergedContext;
+		if (configContext.isEmpty() && threadContext.isEmpty())
+			mergedContext = context;
+		else
+		{
+			mergedContext = new ArrayList<>(context.size() + threadContext.size() + configContext.size());
+			Set<String> existingKeys = new HashSet<>();
+			for (Entry<String, Object> entry : context)
+			{
+				mergedContext.add(entry);
+				existingKeys.add(entry.getKey());
+			}
+
+			for (Entry<String, Object> entry : configContext.entrySet())
+			{
+				if (existingKeys.add(entry.getKey()))
+					mergedContext.add(entry);
+			}
+
+			for (Entry<String, Object> entry : threadContext.entrySet())
+			{
+				if (existingKeys.add(entry.getKey()))
+					mergedContext.add(entry);
+			}
+		}
+
+		// null entries denote a newline between DIFF sections
+		int maxKeyLength = 0;
+		for (Entry<String, Object> entry : mergedContext)
+		{
+			if (entry == null)
+				continue;
+			int length = entry.getKey().length();
+			if (length > maxKeyLength)
+				maxKeyLength = length;
+		}
+		StringJoiner messageWithContext = new StringJoiner("\n");
+		messageWithContext.add(message);
+		for (Entry<String, Object> entry : mergedContext)
+		{
+			if (entry == null)
+				messageWithContext.add("");
+			else
+			{
+				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " +
+					config.toString(entry.getValue()));
+			}
+		}
+		return messageWithContext.toString();
+	}
+
+	/**
+	 * @param text      the {@code String} to align
+	 * @param minLength the minimum length of {@code text}
+	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to
+	 * {@code minLength}
+	 */
+	private static String alignLeft(String text, int minLength)
+	{
+		int actualLength = text.length();
+		if (actualLength > minLength)
+			return text;
+		return text + " ".repeat(minLength - actualLength);
 	}
 
 	/**
@@ -96,12 +182,15 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public ValidationFailureImpl addContext(String name, Object value)
 	{
-		exceptionBuilder.addContext(name, value);
+		assert (name != null) : "name may not be null";
+		assert (!name.trim().isEmpty()) : "name may not be empty";
+		context.add(new SimpleImmutableEntry<>(name, value));
+		messageWithContext = null;
 		return this;
 	}
 
 	/**
-	 * Adds contextual information to append to the exception message.
+	 * Adds contextual information to append to the message.
 	 *
 	 * @param context the list of name-value pairs to append to the exception message
 	 * @return this
@@ -109,7 +198,9 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public ValidationFailureImpl addContext(List<Entry<String, Object>> context)
 	{
-		exceptionBuilder.addContext(context);
+		assert (context != null) : "context may not be null";
+		this.context.addAll(context);
+		messageWithContext = null;
 		return this;
 	}
 
@@ -122,12 +213,14 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public <T extends Exception> T createException(Class<T> type)
 	{
-		return exceptionBuilder.build(type);
+		Exceptions exceptions = scope.getExceptions();
+		boolean cleanStackTrace = scope.getGlobalConfiguration().isCleanStackTrace();
+		return exceptions.createException(type, getMessage(), cause, cleanStackTrace);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "exceptionType: " + exceptionType + ", exceptionBuilder: " + exceptionBuilder;
+		return "exceptionType: " + exceptionType + ", message: " + getMessage() + ", cause: " + cause;
 	}
 }

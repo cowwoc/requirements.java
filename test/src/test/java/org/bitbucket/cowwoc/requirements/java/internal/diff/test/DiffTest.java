@@ -9,9 +9,9 @@ import org.bitbucket.cowwoc.requirements.java.internal.diff.TextOnly;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer16Colors;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer16MillionColors;
 import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer256Colors;
+import org.bitbucket.cowwoc.requirements.java.internal.diff.Writer8Colors;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
-import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 import org.bitbucket.cowwoc.requirements.java.test.SameToStringDifferentHashCode;
 import org.testng.annotations.Test;
 
@@ -25,6 +25,7 @@ import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncodin
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888_COLORS;
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16_COLORS;
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256_COLORS;
+import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_8_COLORS;
 
 public final class DiffTest
 {
@@ -69,6 +70,34 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			Writer16Colors scheme = new Writer16Colors();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) +
+				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
+				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + EOS_MARKER +
+				scheme.stopDecoration();
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
+	 */
+	@Test
+	public void diffArraySize_8Colors()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_8_COLORS))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Writer8Colors scheme = new Writer8Colors();
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
@@ -339,33 +368,6 @@ public final class DiffTest
 		}
 	}
 
-	@Test
-	public void lastConsecutiveIndexOf()
-	{
-		int result = Strings.lastConsecutiveIndexOf("textex", " ");
-		assert (result == -1) : result;
-
-		result = Strings.lastConsecutiveIndexOf("  text", " ");
-		assert (result == -1) : result;
-
-		result = Strings.lastConsecutiveIndexOf("text  ", " ");
-		assert (result == 4) : result;
-
-		result = Strings.lastConsecutiveIndexOf("      ", " ");
-		assert (result == 0) : result;
-	}
-
-	/**
-	 * BUG: If the length of target is less than or equal to the return value, the method would
-	 * return zero (which is incorrect).
-	 */
-	@Test
-	public void lastConsecutiveIndexOf_resultLessThanOrEqualToLengthOfTarget()
-	{
-		int result = Strings.lastConsecutiveIndexOf("1 ", " ");
-		assert (result == 1) : result;
-	}
-
 	/**
 	 * BUG: If actual != expected but their string value is identical, then actual's string value
 	 * should be included in the output, but is not.
@@ -385,6 +387,40 @@ public final class DiffTest
 			assert (actualMessage.contains(actual.toString())) :
 				"Was expecting output to contain actual value, but did not.\n" +
 					"\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that DIFF notices that non-terminal lines are different when they only contain whitespace.
+	 */
+	@Test
+	public void diffMiddleWhitespace()
+	{
+		String actual = "one\n" +
+			"\n" +
+			"three";
+		String expected = "one\n" +
+			"   \n" +
+			"three";
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "actual must be equal to " + expected + ".\n" +
+				"Actual@1  : one" + NEWLINE_MARKER + "\n" +
+				"Expected@1: one" + NEWLINE_MARKER + "\n" +
+				"\n" +
+				"Actual@2  : " + DIFF_PADDING.repeat(3) + NEWLINE_MARKER + "\n" +
+				"Diff      : " + DIFF_INSERT.repeat(3) + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"Expected@2: " + DIFF_PADDING.repeat(3) + NEWLINE_MARKER + "\n" +
+				"\n" +
+				"Actual@3  : three" + EOS_MARKER + "\n" +
+				"Expected@3: three" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n\nActual:\n" + actualMessage;
 		}
 	}
 }

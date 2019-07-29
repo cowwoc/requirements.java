@@ -25,7 +25,7 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Class<Object> actual = Object.class;
+			Class<?> actual = Object.class;
 			new Requirements(scope).requireThat(actual, null);
 		}
 	}
@@ -35,7 +35,7 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Class<Object> actual = Object.class;
+			Class<?> actual = Object.class;
 			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
@@ -45,7 +45,7 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Class<Random> actual = Random.class;
+			Class<?> actual = Random.class;
 			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
 		}
 	}
@@ -55,7 +55,7 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Class<Random> actual = Random.class;
+			Class<?> actual = Random.class;
 			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(null);
 		}
 	}
@@ -65,8 +65,48 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Class<Random> actual = null;
+			Class<?> actual = null;
 			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+		}
+	}
+
+	@Test
+	public void isSubtypeOf()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = Random.class;
+			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(Object.class);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isSubtypeOf_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = Object.class;
+			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void isSubtypeOf_expectedIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = Object.class;
+			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void isSubtypeOf_actualIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = null;
+			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
 		}
 	}
 

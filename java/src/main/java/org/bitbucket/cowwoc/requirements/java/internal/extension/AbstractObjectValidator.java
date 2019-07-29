@@ -133,21 +133,23 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		if (!Objects.equals(actual, expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " had an unexpected value.").
-				addContext(getContext(expected));
+				name + " must be equal to " + config.toString(expected) + ".").
+				addContext(getContext(expected, true));
 			addFailure(failure);
 		}
 		return getThis();
 	}
 
 	/**
-	 * @param expected the expected value
+	 * @param expected          the expected value
+	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
 	 * @return the list of name-value pairs to append to the exception message
 	 */
-	private List<Entry<String, Object>> getContext(Object expected)
+	private List<Entry<String, Object>> getContext(Object expected, boolean expectedInMessage)
 	{
 		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
-		return contextGenerator.getContext("Actual", actual, "Expected", expected);
+		return contextGenerator.getContext("Actual", actual, "Expected", expected,
+			expectedInMessage);
 	}
 
 	@Override
@@ -159,7 +161,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be equal to " + name + ".").
-				addContext(getContext(expected));
+				addContext(getContext(expected, false));
 			addFailure(failure);
 		}
 		return getThis();
@@ -201,7 +203,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must be the same object as " + name + ".").
-				addContext(getContext(expected));
+				addContext(getContext(expected, false));
 			addFailure(failure);
 		}
 		return getThis();
@@ -315,7 +317,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			// Output a diff because actual.toString() may return "null" which is misleading
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be null.").
-				addContext(getContext(null));
+				addContext(getContext(null, true));
 			addFailure(failure);
 		}
 		return getThis();

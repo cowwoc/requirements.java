@@ -4,7 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java;
 
-import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 /**
@@ -17,12 +16,22 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier
 public interface ClassVerifier<T> extends ExtensibleObjectVerifier<ClassVerifier<T>, Class<T>>
 {
 	/**
-	 * Ensures that the actual value is a superclass or super-interface of a class.
+	 * Ensures that the actual value is a superclass or super-interface of a type.
 	 *
-	 * @param type the class to compare to
+	 * @param type the type to compare to
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code type} is null
 	 * @throws IllegalArgumentException if actual value is not a supertype of {@code type}
 	 */
 	ClassVerifier<T> isSupertypeOf(Class<?> type);
+
+	/**
+	 * Ensures that the actual value is a subclass or sub-interface of a type.
+	 *
+	 * @param type the type to compare to
+	 * @return the updated verifier
+	 * @throws NullPointerException     if {@code type} is null
+	 * @throws IllegalArgumentException if actual value is not a subtype of {@code type}
+	 */
+	ClassVerifier<T> isSubtypeOf(Class<?> type);
 }

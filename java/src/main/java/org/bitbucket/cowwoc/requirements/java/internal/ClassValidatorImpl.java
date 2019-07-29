@@ -66,4 +66,27 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		}
 		return this;
 	}
+
+	@Override
+	public ClassValidator<T> isSubtypeOf(Class<?> type)
+	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(type, "type").isNotNull();
+
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (!type.isAssignableFrom(actual))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must be a subtype of " + type + ".").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return this;
+	}
 }

@@ -5,6 +5,8 @@
 package org.bitbucket.cowwoc.requirements.java.internal.util;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
+import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
+import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 /**
@@ -30,13 +32,15 @@ public final class Verifiers
 	{
 		if (name == null)
 		{
-			throw new ExceptionBuilder(scope, configuration, "name may not be null").
-				build(NullPointerException.class);
+			ValidationFailure failure = new ValidationFailureImpl(scope, configuration, NullPointerException.class,
+				"name may not be null");
+			throw failure.createException(NullPointerException.class);
 		}
 		if (name.trim().isEmpty())
 		{
-			throw new ExceptionBuilder(scope, configuration, "name may not be empty").
-				build(IllegalArgumentException.class);
+			ValidationFailure failure = new ValidationFailureImpl(scope, configuration,
+				IllegalArgumentException.class, "name may not be empty");
+			throw failure.createException(IllegalArgumentException.class);
 		}
 	}
 }

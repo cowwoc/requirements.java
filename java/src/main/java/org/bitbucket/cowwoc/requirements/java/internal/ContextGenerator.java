@@ -40,12 +40,18 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * @param diff the textual diff of two lines
-	 * @return true if the lines being compared are different from each other
+	 * @param actualLines   the actual lines
+	 * @param middleLines   the middle lines
+	 * @param expectedLines the expected lines
+	 * @param line          the current line number (0-based)
+	 * @return true if the lines being compared are equal to each other
 	 */
-	private static boolean linesAreDifferent(String diff)
+	private static boolean linesAreEqual(List<String> actualLines, List<String> middleLines,
+	                                     List<String> expectedLines, int line)
 	{
-		return LINES_NOT_EQUAL.matcher(diff).find();
+		if (!middleLines.isEmpty())
+			return !LINES_NOT_EQUAL.matcher(middleLines.get(line)).find();
+		return actualLines.get(line).equals(expectedLines.get(line));
 	}
 
 	private final Configuration config;
@@ -65,14 +71,16 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * @param actualName    the name of the actual value
-	 * @param actualValue   the actual value
-	 * @param expectedName  the name of the expected value
-	 * @param expectedValue the expected value
+	 * @param actualName        the name of the actual value
+	 * @param actualValue       the actual value
+	 * @param expectedName      the name of the expected value
+	 * @param expectedValue     the expected value
+	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
 	 * @return the list of name-value pairs to append to the exception message
+	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
 	public List<Entry<String, Object>> getContext(String actualName, Object actualValue, String expectedName,
-	                                              Object expectedValue)
+	                                              Object expectedValue, boolean expectedInMessage)
 	{
 		// This class outputs the String representation of the values. If those are equal, it also
 		// outputs the first of getClass(), hashCode(), or System.identityHashCode()] that differs.
@@ -84,7 +92,8 @@ public final class ContextGenerator
 		else
 			actualType = actualValue.getClass();
 		List<Entry<String, Object>> result = new ArrayList<>(3);
-		result.addAll(getContext(actualName, actualAsString, actualType, expectedName, expectedAsString));
+		result.addAll(getContext(actualName, actualAsString, actualType, expectedName, expectedAsString,
+			expectedInMessage));
 		if (actualAsString.equals(expectedAsString))
 		{
 			result.add(null);
@@ -102,7 +111,7 @@ public final class ContextGenerator
 			if (!actualClassName.equals(expectedClassName))
 			{
 				result.addAll(getContext(actualName + ".class", actualClassName, actualType,
-					expectedName + ".class", expectedClassName));
+					expectedName + ".class", expectedClassName, false));
 				return result;
 			}
 			String actualHashCode = config.toString(Objects.hashCode(actualValue));
@@ -110,28 +119,30 @@ public final class ContextGenerator
 			if (!actualHashCode.equals(expectedHashCode))
 			{
 				result.addAll(getContext(actualName + ".hashCode", actualHashCode, actualType,
-					expectedName + ".hashCode", expectedHashCode));
+					expectedName + ".hashCode", expectedHashCode, false));
 				return result;
 			}
 			String actualIdentityHashCode = config.toString(System.identityHashCode(actualValue));
 			String expectedIdentityHashCode = config.toString(System.identityHashCode(expectedValue));
 			result.addAll(getContext(actualName + ".identityHashCode", actualIdentityHashCode,
-				actualType, expectedName + ".identityHashCode", expectedIdentityHashCode));
+				actualType, expectedName + ".identityHashCode", expectedIdentityHashCode, false));
 		}
 		return result;
 	}
 
 	/**
-	 * @param actualName    the name of the actual value
-	 * @param actualValue   the actual value
-	 * @param actualType    the type of the actual value
-	 * @param expectedName  the name of the expected value
-	 * @param expectedValue the expected value
+	 * @param actualName        the name of the actual value
+	 * @param actualValue       the actual value
+	 * @param actualType        the type of the actual value
+	 * @param expectedName      the name of the expected value
+	 * @param expectedValue     the expected value
+	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
 	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
 	private List<Entry<String, Object>> getContext(String actualName, String actualValue, Class<?> actualType,
-	                                               String expectedName, String expectedValue)
+	                                               String expectedName, String expectedValue,
+	                                               boolean expectedInMessage)
 	{
 		assert (actualName != null) : "actualName may not be null";
 		// actualType is null if actualValue is null
@@ -142,7 +153,8 @@ public final class ContextGenerator
 		{
 			List<Entry<String, Object>> result = new ArrayList<>(2);
 			result.add(new SimpleImmutableEntry<>(actualName, actualValue));
-			result.add(new SimpleImmutableEntry<>(expectedName, expectedValue));
+			if (!expectedInMessage)
+				result.add(new SimpleImmutableEntry<>(expectedName, expectedValue));
 			return result;
 		}
 		DiffResult diff = diffGenerator.diff(actualValue, expectedValue);
@@ -154,7 +166,7 @@ public final class ContextGenerator
 		if (lines == 1)
 		{
 			result.add(new SimpleImmutableEntry<>(actualName, actualLines.get(0)));
-			if (!middleLines.isEmpty() && linesAreDifferent(middleLines.get(0)))
+			if (!middleLines.isEmpty() && !linesAreEqual(actualLines, middleLines, expectedLines, 0))
 				result.add(new SimpleImmutableEntry<>("Diff", middleLines.get(0)));
 			result.add(new SimpleImmutableEntry<>(expectedName, expectedLines.get(0)));
 			return result;
@@ -169,7 +181,8 @@ public final class ContextGenerator
 		{
 			String actualLine = actualLines.get(i);
 			String expectedLine = expectedLines.get(i);
-			if (i != 0 && i != lines - 1 && actualLine.equals(expectedLine))
+			boolean linesAreEqual = linesAreEqual(actualLines, middleLines, expectedLines, i);
+			if (i != 0 && i != lines - 1 && linesAreEqual)
 			{
 				// Skip identical lines, unless they are the first or last line.
 				skippedDuplicates = true;
@@ -192,7 +205,7 @@ public final class ContextGenerator
 				skipDuplicateLines(result);
 			}
 			result.add(new SimpleImmutableEntry<>(actualNameForLine, actualLine));
-			if (!middleLines.isEmpty() && linesAreDifferent(middleLines.get(i)))
+			if (!middleLines.isEmpty() && !linesAreEqual)
 				result.add(new SimpleImmutableEntry<>("Diff", middleLines.get(i)));
 			String expectedNameForLine;
 			if (!Strings.containsOnly(expectedLine, diff.getPaddingMarker()))

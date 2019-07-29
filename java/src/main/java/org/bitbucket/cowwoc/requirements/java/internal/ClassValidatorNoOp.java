@@ -39,4 +39,10 @@ public final class ClassValidatorNoOp<T>
 	{
 		return this;
 	}
+
+	@Override
+	public ClassValidator<T> isSubtypeOf(Class<?> type)
+	{
+		return this;
+	}
 }

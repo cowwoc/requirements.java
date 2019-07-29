@@ -47,4 +47,10 @@ public final class ClassVerifierNoOp<T>
 	{
 		return this;
 	}
+
+	@Override
+	public ClassVerifier<T> isSubtypeOf(Class<?> type)
+	{
+		return this;
+	}
 }

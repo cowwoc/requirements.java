@@ -38,4 +38,11 @@ public final class ClassVerifierImpl<T>
 		validator = validator.isSupertypeOf(type);
 		return validationResult();
 	}
+
+	@Override
+	public ClassVerifier<T> isSubtypeOf(Class<?> type)
+	{
+		validator = validator.isSubtypeOf(type);
+		return validationResult();
+	}
 }

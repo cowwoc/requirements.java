@@ -150,14 +150,15 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual had an unexpected value.\n" +
+			List<String> expectedMessages = Collections.singletonList("actual must be equal to 5.\n" +
 				"Actual  : null " + EOS_MARKER + "\n" +
-				"Diff    : ----+  \n" +
+				"Diff    : ----+\n" +
 				"Expected:     5" + EOS_MARKER);
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asString().isEqualTo(5).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
+			System.out.println(actualMessages.get(0));
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

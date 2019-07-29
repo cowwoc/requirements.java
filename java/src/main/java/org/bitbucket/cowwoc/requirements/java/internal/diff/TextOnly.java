@@ -39,7 +39,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <pre>{@code
  *
  * Actual  :     \0
- * Diff    : ----
+ * Diff    : ++++
  * Expected: text\0
  * }
  * </pre>
@@ -53,7 +53,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <pre>{@code
  *
  * Actual  : text\0
- * Diff    : ++++
+ * Diff    : ----
  * Expected:     \0
  * }
  * </pre>
@@ -160,7 +160,7 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * <li>On line 3, we need to delete "foo" and insert "bar".</li>
  * <li>Lines 4-5 were equal.</li>
  * </ul>
- * <h3>Example 5: Missing Line Numbers</h3>
+ * <h3>Example 7: Missing Line Numbers</h3>
  * When {@code Actual} or {@code Expected} contain a line that does not have a corresponding line on
  * the other side we omit the latter's line number.
  * <pre>{@code
