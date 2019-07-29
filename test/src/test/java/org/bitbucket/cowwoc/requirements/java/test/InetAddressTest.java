@@ -16,7 +16,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
 import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
+import static org.bitbucket.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
 import static org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class InetAddressTest
@@ -150,15 +153,17 @@ public final class InetAddressTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			InetAddress actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual must be equal to 5.\n" +
-				"Actual  : null " + EOS_MARKER + "\n" +
-				"Diff    : ----+\n" +
-				"Expected:     5" + EOS_MARKER);
+			Integer expected = 5;
+			List<String> expectedMessages = Collections.singletonList(
+				"actual must be equal to " + expected + ".\n" +
+					"Actual  : null " + EOS_MARKER + "\n" +
+					"Diff    : " + DIFF_DELETE.repeat(4) + DIFF_INSERT + DIFF_PADDING.repeat(EOS_MARKER.length()) +
+					"\n" +
+					"Expected:     5" + EOS_MARKER);
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				asString().isEqualTo(5).getFailures();
+				asString().isEqualTo(expected).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
-			System.out.println(actualMessages.get(0));
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
