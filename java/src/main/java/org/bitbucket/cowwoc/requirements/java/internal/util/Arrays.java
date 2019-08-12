@@ -126,6 +126,18 @@ public final class Arrays
 	}
 
 	/**
+	 * @param <E>   the type of elements in the array
+	 * @param array an array
+	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 */
+	public static <E> Collection<E> asCollection(E[] array)
+	{
+		if (array == null)
+			return null;
+		return java.util.Arrays.asList(array);
+	}
+
+	/**
 	 * Prevent construction.
 	 */
 	private Arrays()

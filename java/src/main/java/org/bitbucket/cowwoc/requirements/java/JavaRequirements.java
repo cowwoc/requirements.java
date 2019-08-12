@@ -138,7 +138,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Byte, byte[]> requireThat(byte[] actual, String name);
+	ArrayVerifier<Byte, byte[]> requireThat(byte[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(byte[], String)} but does nothing if assertions are disabled.
@@ -149,7 +149,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Byte, byte[]> assertThat(byte[] actual, String name);
+	ArrayVerifier<Byte, byte[]> assertThat(byte[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code byte} array.
@@ -160,7 +160,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Byte, byte[]> validateThat(byte[] actual, String name);
+	ArrayValidator<Byte, byte[]> validateThat(byte[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code short} array.
@@ -171,7 +171,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Short, short[]> requireThat(short[] actual, String name);
+	ArrayVerifier<Short, short[]> requireThat(short[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(short[], String)} but does nothing if assertions are disabled.
@@ -182,7 +182,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Short, short[]> assertThat(short[] actual, String name);
+	ArrayVerifier<Short, short[]> assertThat(short[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code short} array.
@@ -193,7 +193,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Short, short[]> validateThat(short[] actual, String name);
+	ArrayValidator<Short, short[]> validateThat(short[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code int} array.
@@ -204,7 +204,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Integer, int[]> requireThat(int[] actual, String name);
+	ArrayVerifier<Integer, int[]> requireThat(int[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(int[], String)} but does nothing if assertions are disabled.
@@ -215,7 +215,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Integer, int[]> assertThat(int[] actual, String name);
+	ArrayVerifier<Integer, int[]> assertThat(int[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code int} array.
@@ -226,7 +226,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Integer, int[]> validateThat(int[] actual, String name);
+	ArrayValidator<Integer, int[]> validateThat(int[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code long} array.
@@ -237,7 +237,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Long, long[]> requireThat(long[] actual, String name);
+	ArrayVerifier<Long, long[]> requireThat(long[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(long[], String)} but does nothing if assertions are disabled.
@@ -248,7 +248,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Long, long[]> assertThat(long[] actual, String name);
+	ArrayVerifier<Long, long[]> assertThat(long[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code long} array.
@@ -259,7 +259,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Long, long[]> validateThat(long[] actual, String name);
+	ArrayValidator<Long, long[]> validateThat(long[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code float} array.
@@ -270,7 +270,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Float, float[]> requireThat(float[] actual, String name);
+	ArrayVerifier<Float, float[]> requireThat(float[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(float[], String)} but does nothing if assertions are disabled.
@@ -281,7 +281,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Float, float[]> assertThat(float[] actual, String name);
+	ArrayVerifier<Float, float[]> assertThat(float[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code float} array.
@@ -292,7 +292,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Float, float[]> validateThat(float[] actual, String name);
+	ArrayValidator<Float, float[]> validateThat(float[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code double} array.
@@ -303,7 +303,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Double, double[]> requireThat(double[] actual, String name);
+	ArrayVerifier<Double, double[]> requireThat(double[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(double[], String)} but does nothing if assertions are disabled.
@@ -314,7 +314,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Double, double[]> assertThat(double[] actual, String name);
+	ArrayVerifier<Double, double[]> assertThat(double[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code double} array.
@@ -325,7 +325,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Double, double[]> validateThat(double[] actual, String name);
+	ArrayValidator<Double, double[]> validateThat(double[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code boolean} array.
@@ -336,7 +336,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Boolean, boolean[]> requireThat(boolean[] actual, String name);
+	ArrayVerifier<Boolean, boolean[]> requireThat(boolean[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(boolean[], String)} but does nothing if assertions are disabled.
@@ -347,7 +347,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Boolean, boolean[]> assertThat(boolean[] actual, String name);
+	ArrayVerifier<Boolean, boolean[]> assertThat(boolean[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code boolean} array.
@@ -358,7 +358,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Boolean, boolean[]> validateThat(boolean[] actual, String name);
+	ArrayValidator<Boolean, boolean[]> validateThat(boolean[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a primitive {@code char} array.
@@ -369,7 +369,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Character, char[]> requireThat(char[] actual, String name);
+	ArrayVerifier<Character, char[]> requireThat(char[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(char[], String)} but does nothing if assertions are disabled.
@@ -380,7 +380,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayVerifier<Character, char[]> assertThat(char[] actual, String name);
+	ArrayVerifier<Character, char[]> assertThat(char[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code char} array.
@@ -391,7 +391,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	PrimitiveArrayValidator<Character, char[]> validateThat(char[] actual, String name);
+	ArrayValidator<Character, char[]> validateThat(char[] actual, String name);
 
 	/**
 	 * Verifies the requirements of an {@code Object} array.
@@ -403,7 +403,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<E> ArrayVerifier<E> requireThat(E[] actual, String name);
+	<E> ArrayVerifier<E, E[]> requireThat(E[] actual, String name);
 
 	/**
 	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
@@ -415,7 +415,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<E> ArrayVerifier<E> assertThat(E[] actual, String name);
+	<E> ArrayVerifier<E, E[]> assertThat(E[] actual, String name);
 
 	/**
 	 * Validates the requirements of an {@code Object} array.
@@ -427,7 +427,7 @@ public interface JavaRequirements extends Configuration
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
 	 */
-	<E> ArrayValidator<E> validateThat(E[] actual, String name);
+	<E> ArrayValidator<E, E[]> validateThat(E[] actual, String name);
 
 	/**
 	 * Verifies the requirements of a {@code Comparable}.

@@ -168,7 +168,7 @@ public final class CollectionValidatorNoOp<C extends Collection<E>, E>
 	}
 
 	@Override
-	public ArrayValidator<E> asArray(Class<E> type)
+	public ArrayValidator<E, E[]> asArray(Class<E> type)
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");
@@ -176,7 +176,7 @@ public final class CollectionValidatorNoOp<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E>> consumer)
+	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E, E[]>> consumer)
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");

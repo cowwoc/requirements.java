@@ -602,7 +602,7 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	}
 
 	@Override
-	public ArrayValidator<E> asArray(Class<E> type)
+	public ArrayValidator<E, E[]> asArray(Class<E> type)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
@@ -616,11 +616,11 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
-		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), getFailures());
+		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), actual, getFailures());
 	}
 
 	@Override
-	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E>> consumer)
+	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E, E[]>> consumer)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();

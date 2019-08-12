@@ -190,14 +190,14 @@ public final class CollectionVerifierImpl<C extends Collection<E>, E>
 	}
 
 	@Override
-	public ArrayVerifier<E> asArray(Class<E> type)
+	public ArrayVerifier<E, E[]> asArray(Class<E> type)
 	{
-		ArrayValidator<E> newValidator = validator.asArray(type);
+		ArrayValidator<E, E[]> newValidator = validator.asArray(type);
 		return validationResult(() -> new ArrayVerifierImpl<>(newValidator));
 	}
 
 	@Override
-	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E>> consumer)
+	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E, E[]>> consumer)
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");

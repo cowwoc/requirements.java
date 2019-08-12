@@ -50,9 +50,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.OptionalVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PathValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PathVerifierNoOp;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveArrayValidatorImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveArrayVerifierImpl;
-import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveArrayVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.PrimitiveBooleanVerifierNoOp;
@@ -325,181 +322,13 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public PrimitiveArrayVerifier<Byte, byte[]> requireThat(byte[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Byte, byte[]> assertThat(byte[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Byte, byte[]> validateThat(byte[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Short, short[]> requireThat(short[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Short, short[]> assertThat(short[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Short, short[]> validateThat(short[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Integer, int[]> requireThat(int[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Integer, int[]> assertThat(int[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Integer, int[]> validateThat(int[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Long, long[]> requireThat(long[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Long, long[]> assertThat(long[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Long, long[]> validateThat(long[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Float, float[]> requireThat(float[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Float, float[]> assertThat(float[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Float, float[]> validateThat(float[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Double, double[]> requireThat(double[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Double, double[]> assertThat(double[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Double, double[]> validateThat(double[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Boolean, boolean[]> requireThat(boolean[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Boolean, boolean[]> assertThat(boolean[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Boolean, boolean[]> validateThat(boolean[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Character, char[]> requireThat(char[] actual, String name)
-	{
-		return new PrimitiveArrayVerifierImpl<>(validateThat(actual, name));
-	}
-
-	@Override
-	public PrimitiveArrayVerifier<Character, char[]> assertThat(char[] actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return PrimitiveArrayVerifierNoOp.getInstance();
-	}
-
-	@Override
-	public PrimitiveArrayValidator<Character, char[]> validateThat(char[] actual, String name)
-	{
-		Verifiers.verifyName(scope, config, name);
-		return new PrimitiveArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
-	}
-
-	@Override
-	public <E> ArrayVerifier<E> requireThat(E[] actual, String name)
+	public ArrayVerifier<Byte, byte[]> requireThat(byte[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public <E> ArrayVerifier<E> assertThat(E[] actual, String name)
+	public ArrayVerifier<Byte, byte[]> assertThat(byte[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -507,10 +336,178 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public <E> ArrayValidator<E> validateThat(E[] actual, String name)
+	public ArrayValidator<Byte, byte[]> validateThat(byte[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Short, short[]> requireThat(short[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Short, short[]> assertThat(short[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Short, short[]> validateThat(short[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Integer, int[]> requireThat(int[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Integer, int[]> assertThat(int[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Integer, int[]> validateThat(int[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Long, long[]> requireThat(long[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Long, long[]> assertThat(long[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Long, long[]> validateThat(long[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Float, float[]> requireThat(float[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Float, float[]> assertThat(float[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Float, float[]> validateThat(float[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Double, double[]> requireThat(double[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Double, double[]> assertThat(double[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Double, double[]> validateThat(double[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Boolean, boolean[]> requireThat(boolean[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Boolean, boolean[]> assertThat(boolean[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Boolean, boolean[]> validateThat(boolean[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public ArrayVerifier<Character, char[]> requireThat(char[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public ArrayVerifier<Character, char[]> assertThat(char[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayValidator<Character, char[]> validateThat(char[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
+	}
+
+	@Override
+	public <E> ArrayVerifier<E, E[]> requireThat(E[] actual, String name)
+	{
+		return new ArrayVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public <E> ArrayVerifier<E, E[]> assertThat(E[] actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ArrayVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public <E> ArrayValidator<E, E[]> validateThat(E[] actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override

@@ -46,6 +46,24 @@ public final class ArrayTest
 		}
 	}
 
+	/**
+	 * Regression test: primitiveArray.isNotNull() used to be deprecated.
+	 */
+	@Test
+	public void isNotNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[] actual =
+				{
+					1,
+					2,
+					3
+				};
+			new Requirements(scope).requireThat(actual, "actual").isNotNull();
+		}
+	}
+
 	@Test
 	public void isEmpty()
 	{

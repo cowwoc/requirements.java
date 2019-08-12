@@ -229,7 +229,7 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @return a validator for the actual value as an array
 	 * @throws NullPointerException if {@code type} is null
 	 */
-	ArrayValidator<E> asArray(Class<E> type);
+	ArrayValidator<E, E[]> asArray(Class<E> type);
 
 	/**
 	 * Validates nested requirements. This mechanism can be used to
@@ -242,5 +242,5 @@ public interface CollectionValidator<C extends Collection<E>, E>
 	 * @throws NullPointerException if {@code type} or {@code consumer} are null
 	 */
 	@SuppressWarnings("LongLine")
-	CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E>> consumer);
+	CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E, E[]>> consumer);
 }
