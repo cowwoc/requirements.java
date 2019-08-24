@@ -117,7 +117,8 @@ public final class ValidationFailureImpl implements ValidationFailure
 			for (Entry<String, Object> entry : context)
 			{
 				mergedContext.add(entry);
-				existingKeys.add(entry.getKey());
+				if (entry != null)
+					existingKeys.add(entry.getKey());
 			}
 
 			for (Entry<String, Object> entry : configContext.entrySet())
