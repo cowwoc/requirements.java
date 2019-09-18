@@ -27,17 +27,12 @@ final class Processes
 		StringBuilder result = new StringBuilder(80);
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream())))
 		{
-			boolean first = true;
 			while (true)
 			{
 				String line = in.readLine();
 				if (line == null)
 					break;
-				if (first)
-					first = false;
-				else
-					result.append(NEWLINE);
-				result.append(line);
+				result.append(line).append(NEWLINE);
 			}
 		}
 		return result.toString();

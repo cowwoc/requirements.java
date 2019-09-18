@@ -144,7 +144,8 @@ public final class ExceptionOptimizer
 				"import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;\n" +
 				"import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;\n" +
 				"\n" +
-				"import java.io.PrintStream;\n");
+				"import java.io.PrintStream;\n" +
+				"import java.io.PrintWriter;\n");
 			if (!packageName.equals("java.lang"))
 			{
 				// No need to import classes in "java.lang"
@@ -210,6 +211,13 @@ public final class ExceptionOptimizer
 			}
 			writer.write("\t@Override\n" +
 				"\tpublic void printStackTrace(PrintStream s)\n" +
+				"\t{\n" +
+				"\t\tcleanStackTrace();\n" +
+				"\t\tsuper.printStackTrace(s);\n" +
+				"\t}\n" +
+				"\n" +
+				"\t@Override\n" +
+				"\tpublic void printStackTrace(PrintWriter s)\n" +
 				"\t{\n" +
 				"\t\tcleanStackTrace();\n" +
 				"\t\tsuper.printStackTrace(s);\n" +
