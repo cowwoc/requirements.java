@@ -139,19 +139,19 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * results in the following diff:
  * <pre>{@code
  *
- * Actual@1  : first\n
- * Expected@1: first\n
+ * Actual@0  : first\n
+ * Expected@0: first\n
  *
  * [...]
  *
- * Actual@3  : foo   \n
+ * Actual@2  : foo   \n
  * Diff      : ---+++
- * Expected@3:    bar\n
+ * Expected@2:    bar\n
  *
  * [...]
  *
- * Actual@5  : fifth\0
- * Expected@5: fifth\0
+ * Actual@4  : fifth\0
+ * Expected@4: fifth\0
  * }
  * </pre>
  * Meaning:
@@ -170,12 +170,12 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  * results in the following diff:
  * <pre>{@code
  *
- * Actual@1  : Foo\n
+ * Actual@0  : Foo\n
  * Diff      : -----
  * Expected  :
  *
- * Actual@2  : Bar\0
- * Expected@1: Bar\0
+ * Actual@1  : Bar\0
+ * Expected@0: Bar\0
  * }
  * </pre>
  * Meaning:

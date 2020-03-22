@@ -42,7 +42,7 @@ public final class TerminalTest
 	@Test
 	public void forceUnsupportedEncoding()
 	{
-		try (JvmScope jvm = DefaultJvmScope.INSTANCE)
+		try (DefaultJvmScope jvm = DefaultJvmScope.INSTANCE)
 		{
 			Terminal terminal = jvm.getTerminal();
 			terminal.setEncoding(RGB_888_COLORS);

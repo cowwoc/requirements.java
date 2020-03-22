@@ -16,11 +16,11 @@ import java.util.List;
 /**
  * Default implementation of {@code ArrayValidator}.
  *
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public final class ArrayValidatorImpl<E, A> extends AbstractArrayValidator<ArrayValidator<E, A>, E, A>
-	implements ArrayValidator<E, A>
+public final class ArrayValidatorImpl<A, E> extends AbstractArrayValidator<ArrayValidator<A, E>, A, E>
+	implements ArrayValidator<A, E>
 {
 	/**
 	 * Creates a new ArrayValidatorImpl with no validation failures.
@@ -49,20 +49,20 @@ public final class ArrayValidatorImpl<E, A> extends AbstractArrayValidator<Array
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	ArrayValidatorImpl(ApplicationScope scope, Configuration config, String name, A actual,
-	                   Collection<E> actualAsCollection, List<ValidationFailure> failures)
+	public ArrayValidatorImpl(ApplicationScope scope, Configuration config, String name, A actual,
+	                          Collection<E> actualAsCollection, List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, actualAsCollection, failures);
 	}
 
 	@Override
-	protected ArrayValidator<E, A> getThis()
+	protected ArrayValidator<A, E> getThis()
 	{
 		return this;
 	}
 
 	@Override
-	protected ArrayValidator<E, A> getNoOp()
+	protected ArrayValidator<A, E> getNoOp()
 	{
 		return new ArrayValidatorNoOp<>(getFailures());
 	}

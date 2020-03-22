@@ -178,13 +178,13 @@ public final class CollectionVerifierNoOp<C extends Collection<E>, E>
 	}
 
 	@Override
-	public ArrayVerifier<E, E[]> asArray(Class<E> type)
+	public ArrayVerifier<E[], E> asArray(Class<E> type)
 	{
 		return ArrayVerifierNoOp.getInstance();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E, E[]>> consumer)
+	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E[], E>> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

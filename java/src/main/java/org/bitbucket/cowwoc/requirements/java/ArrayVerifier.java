@@ -12,9 +12,9 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectVerifier
  * <p>
  * All methods (except those found in {@link ExtensibleObjectVerifier}) imply {@link #isNotNull()}.
  *
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public interface ArrayVerifier<E, A> extends ExtensibleArrayVerifier<ArrayVerifier<E, A>, E, A>
+public interface ArrayVerifier<A, E> extends ExtensibleArrayVerifier<ArrayVerifier<A, E>, A, E>
 {
 }

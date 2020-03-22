@@ -17,137 +17,137 @@ import java.util.function.Consumer;
 /**
  * An ArrayValidator that ignores subsequent validations due to an incompatible type conversion.
  *
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public final class ArrayValidatorNoOp<E, A> extends AbstractObjectValidatorNoOp<ArrayValidator<E, A>, A>
-	implements ArrayValidator<E, A>
+public final class ArrayValidatorNoOp<A, E> extends AbstractObjectValidatorNoOp<ArrayValidator<A, E>, A>
+	implements ArrayValidator<A, E>
 {
 	/**
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	protected ArrayValidatorNoOp(List<ValidationFailure> failures)
+	public ArrayValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}
 
 	@Override
-	protected ArrayValidator<E, A> getThis()
+	protected ArrayValidator<A, E> getThis()
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> isEmpty()
+	public ArrayValidator<A, E> isEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> isNotEmpty()
+	public ArrayValidator<A, E> isNotEmpty()
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> contains(E expected)
+	public ArrayValidator<A, E> contains(E expected)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> contains(E expected, String name)
+	public ArrayValidator<A, E> contains(E expected, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> containsExactly(Collection<E> expected)
+	public ArrayValidator<A, E> containsExactly(Collection<E> expected)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> containsExactly(Collection<E> expected, String name)
+	public ArrayValidator<A, E> containsExactly(Collection<E> expected, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> containsAny(Collection<E> expected)
+	public ArrayValidator<A, E> containsAny(Collection<E> expected)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> containsAny(Collection<E> elements, String name)
+	public ArrayValidator<A, E> containsAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> containsAll(Collection<E> expected)
+	public ArrayValidator<A, E> containsAll(Collection<E> expected)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> containsAll(Collection<E> expected, String name)
+	public ArrayValidator<A, E> containsAll(Collection<E> expected, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContain(E element)
+	public ArrayValidator<A, E> doesNotContain(E element)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContain(E element, String name)
+	public ArrayValidator<A, E> doesNotContain(E element, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainExactly(Collection<E> other)
+	public ArrayValidator<A, E> doesNotContainExactly(Collection<E> other)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainExactly(Collection<E> other, String name)
+	public ArrayValidator<A, E> doesNotContainExactly(Collection<E> other, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainAny(Collection<E> elements)
+	public ArrayValidator<A, E> doesNotContainAny(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainAny(Collection<E> elements, String name)
+	public ArrayValidator<A, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainAll(Collection<E> elements)
+	public ArrayValidator<A, E> doesNotContainAll(Collection<E> elements)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainAll(Collection<E> elements, String name)
+	public ArrayValidator<A, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		return this;
 	}
 
 	@Override
-	public ArrayValidator<E, A> doesNotContainDuplicates()
+	public ArrayValidator<A, E> doesNotContainDuplicates()
 	{
 		return this;
 	}
@@ -159,7 +159,7 @@ public final class ArrayValidatorNoOp<E, A> extends AbstractObjectValidatorNoOp<
 	}
 
 	@Override
-	public ArrayValidator<E, A> length(Consumer<SizeValidator> consumer)
+	public ArrayValidator<A, E> length(Consumer<SizeValidator> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
@@ -173,7 +173,7 @@ public final class ArrayValidatorNoOp<E, A> extends AbstractObjectValidatorNoOp<
 	}
 
 	@Override
-	public ArrayValidator<E, A> asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer)
+	public ArrayValidator<A, E> asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

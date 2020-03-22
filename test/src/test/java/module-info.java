@@ -5,7 +5,9 @@
 module org.bitbucket.cowwoc.requirements.test
 {
 	requires com.google.common;
-	requires testng;
+	requires org.testng;
 	requires org.bitbucket.cowwoc.requirements.natives;
 	requires org.bitbucket.cowwoc.requirements.guava;
+
+	exports org.bitbucket.cowwoc.requirements.java.internal.diff.test to org.testng;
 }

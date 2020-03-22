@@ -14,35 +14,26 @@ import java.util.List;
 public final class DiffResult
 {
 	private final List<String> actualLines;
-	private final List<String> middleLines;
+	private final List<String> diffLines;
 	private final List<String> expectedLines;
-	private final String paddingMarker;
 
 	/**
 	 * @param actualLines   the lines of the actual string
-	 * @param middleLines   the optional lines to display between "actual" and "expected"
+	 * @param diffLines     optional lines denoting the difference between "actual" and "expected"
 	 * @param expectedLines the lines of the expected string
-	 * @param paddingMarker a padding character used to align values vertically
-	 * @throws NullPointerException     if any of the arguments are null
-	 * @throws IllegalArgumentException if {@code paddingMarker} is empty
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public DiffResult(List<String> actualLines, List<String> middleLines, List<String> expectedLines,
-	                  String paddingMarker)
+	public DiffResult(List<String> actualLines, List<String> diffLines, List<String> expectedLines)
 	{
 		if (actualLines == null)
 			throw new NullPointerException("actualLines may not be null");
-		if (middleLines == null)
-			throw new NullPointerException("middleLines may not be null");
 		if (expectedLines == null)
 			throw new NullPointerException("expectedLines may not be null");
-		if (paddingMarker == null)
-			throw new NullPointerException("paddingMarker may not be null");
-		if (paddingMarker.isEmpty())
-			throw new IllegalArgumentException("paddingMarker may not be empty");
+		if (diffLines == null)
+			throw new NullPointerException("diffLines may not be null");
 		this.actualLines = Lists.unmodifiable(actualLines);
-		this.middleLines = Lists.unmodifiable(middleLines);
+		this.diffLines = Lists.unmodifiable(diffLines);
 		this.expectedLines = Lists.unmodifiable(expectedLines);
-		this.paddingMarker = paddingMarker;
 	}
 
 	/**
@@ -56,22 +47,14 @@ public final class DiffResult
 	}
 
 	/**
-	 * @return a padding character used to align values vertically
-	 */
-	public String getPaddingMarker()
-	{
-		return paddingMarker;
-	}
-
-	/**
-	 * Returns the lines to display between "actual" and "expected".
+	 * Returns the difference between "actual" and "expected".
 	 * If the list is empty, no lines should be displayed.
 	 *
 	 * @return an unmodifiable list
 	 */
-	public List<String> getMiddleLines()
+	public List<String> getDiffLines()
 	{
-		return middleLines;
+		return diffLines;
 	}
 
 	/**
@@ -87,8 +70,8 @@ public final class DiffResult
 	@Override
 	public String toString()
 	{
-		return "actual: " + actualLines + "\n" +
-			"middle: " + middleLines + "\n" +
+		return "actual  : " + actualLines + "\n" +
+			"diff    : " + diffLines + "\n" +
 			"expected: " + expectedLines;
 	}
 }

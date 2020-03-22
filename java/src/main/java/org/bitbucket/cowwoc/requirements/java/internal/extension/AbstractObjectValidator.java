@@ -10,6 +10,7 @@ import org.bitbucket.cowwoc.requirements.java.StringValidator;
 import org.bitbucket.cowwoc.requirements.java.ValidationFailure;
 import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import org.bitbucket.cowwoc.requirements.java.internal.ContextGenerator;
+import org.bitbucket.cowwoc.requirements.java.internal.ContextLine;
 import org.bitbucket.cowwoc.requirements.java.internal.StringValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
@@ -145,9 +146,9 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
 	 * @return the list of name-value pairs to append to the exception message
 	 */
-	private List<Entry<String, Object>> getContext(Object expected, boolean expectedInMessage)
+	private List<ContextLine> getContext(Object expected, boolean expectedInMessage)
 	{
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope.getDiffGenerator());
+		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
 		return contextGenerator.getContext("Actual", actual, "Expected", expected,
 			expectedInMessage);
 	}

@@ -33,6 +33,9 @@ import org.bitbucket.cowwoc.requirements.java.internal.InetAddressVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.IntegerValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.IntegerVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.IntegerVerifierNoOp;
+import org.bitbucket.cowwoc.requirements.java.internal.ListValidatorImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ListVerifierImpl;
+import org.bitbucket.cowwoc.requirements.java.internal.ListVerifierNoOp;
 import org.bitbucket.cowwoc.requirements.java.internal.LongValidatorImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.LongVerifierImpl;
 import org.bitbucket.cowwoc.requirements.java.internal.MapValidatorImpl;
@@ -89,6 +92,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -322,13 +326,34 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayVerifier<Byte, byte[]> requireThat(byte[] actual, String name)
+	public <L extends List<E>, E> ListVerifier<L, E> requireThat(L actual, String name)
+	{
+		return new ListVerifierImpl<>(validateThat(actual, name));
+	}
+
+	@Override
+	public <L extends List<E>, E> ListVerifier<L, E> assertThat(L actual, String name)
+	{
+		if (config.assertionsAreEnabled())
+			return requireThat(actual, name);
+		return ListVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public <L extends List<E>, E> ListValidator<L, E> validateThat(L actual, String name)
+	{
+		Verifiers.verifyName(scope, config, name);
+		return new ListValidatorImpl<>(scope, config, name, actual, Pluralizer.ELEMENT);
+	}
+
+	@Override
+	public ArrayVerifier<byte[], Byte> requireThat(byte[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Byte, byte[]> assertThat(byte[] actual, String name)
+	public ArrayVerifier<byte[], Byte> assertThat(byte[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -336,20 +361,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Byte, byte[]> validateThat(byte[] actual, String name)
+	public ArrayValidator<byte[], Byte> validateThat(byte[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Short, short[]> requireThat(short[] actual, String name)
+	public ArrayVerifier<short[], Short> requireThat(short[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Short, short[]> assertThat(short[] actual, String name)
+	public ArrayVerifier<short[], Short> assertThat(short[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -357,20 +382,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Short, short[]> validateThat(short[] actual, String name)
+	public ArrayValidator<short[], Short> validateThat(short[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Integer, int[]> requireThat(int[] actual, String name)
+	public ArrayVerifier<int[], Integer> requireThat(int[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Integer, int[]> assertThat(int[] actual, String name)
+	public ArrayVerifier<int[], Integer> assertThat(int[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -378,20 +403,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Integer, int[]> validateThat(int[] actual, String name)
+	public ArrayValidator<int[], Integer> validateThat(int[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Long, long[]> requireThat(long[] actual, String name)
+	public ArrayVerifier<long[], Long> requireThat(long[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Long, long[]> assertThat(long[] actual, String name)
+	public ArrayVerifier<long[], Long> assertThat(long[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -399,20 +424,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Long, long[]> validateThat(long[] actual, String name)
+	public ArrayValidator<long[], Long> validateThat(long[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Float, float[]> requireThat(float[] actual, String name)
+	public ArrayVerifier<float[], Float> requireThat(float[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Float, float[]> assertThat(float[] actual, String name)
+	public ArrayVerifier<float[], Float> assertThat(float[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -420,20 +445,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Float, float[]> validateThat(float[] actual, String name)
+	public ArrayValidator<float[], Float> validateThat(float[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Double, double[]> requireThat(double[] actual, String name)
+	public ArrayVerifier<double[], Double> requireThat(double[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Double, double[]> assertThat(double[] actual, String name)
+	public ArrayVerifier<double[], Double> assertThat(double[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -441,20 +466,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Double, double[]> validateThat(double[] actual, String name)
+	public ArrayValidator<double[], Double> validateThat(double[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Boolean, boolean[]> requireThat(boolean[] actual, String name)
+	public ArrayVerifier<boolean[], Boolean> requireThat(boolean[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Boolean, boolean[]> assertThat(boolean[] actual, String name)
+	public ArrayVerifier<boolean[], Boolean> assertThat(boolean[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -462,20 +487,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Boolean, boolean[]> validateThat(boolean[] actual, String name)
+	public ArrayValidator<boolean[], Boolean> validateThat(boolean[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public ArrayVerifier<Character, char[]> requireThat(char[] actual, String name)
+	public ArrayVerifier<char[], Character> requireThat(char[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public ArrayVerifier<Character, char[]> assertThat(char[] actual, String name)
+	public ArrayVerifier<char[], Character> assertThat(char[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -483,20 +508,20 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public ArrayValidator<Character, char[]> validateThat(char[] actual, String name)
+	public ArrayValidator<char[], Character> validateThat(char[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));
 	}
 
 	@Override
-	public <E> ArrayVerifier<E, E[]> requireThat(E[] actual, String name)
+	public <E> ArrayVerifier<E[], E> requireThat(E[] actual, String name)
 	{
 		return new ArrayVerifierImpl<>(validateThat(actual, name));
 	}
 
 	@Override
-	public <E> ArrayVerifier<E, E[]> assertThat(E[] actual, String name)
+	public <E> ArrayVerifier<E[], E> assertThat(E[] actual, String name)
 	{
 		if (config.assertionsAreEnabled())
 			return requireThat(actual, name);
@@ -504,7 +529,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public <E> ArrayValidator<E, E[]> validateThat(E[] actual, String name)
+	public <E> ArrayValidator<E[], E> validateThat(E[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
 		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual));

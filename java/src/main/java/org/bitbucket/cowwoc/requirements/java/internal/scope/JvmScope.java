@@ -4,8 +4,6 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
-
 import java.util.function.Supplier;
 
 /**
@@ -15,11 +13,6 @@ import java.util.function.Supplier;
  */
 public interface JvmScope extends AutoCloseable
 {
-	/**
-	 * @return the terminal attached to the process
-	 */
-	Terminal getTerminal();
-
 	/**
 	 * @return the global configuration inherited by all verifiers
 	 */

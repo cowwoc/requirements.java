@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.DefaultThreadConfig
 import org.bitbucket.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.MainConfiguration;
 import org.bitbucket.cowwoc.requirements.java.internal.scope.ThreadConfiguration;
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
@@ -44,13 +43,6 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	public Supplier<ThreadConfiguration> getThreadConfiguration()
 	{
 		return threadConfiguration::get;
-	}
-
-	@Override
-	public Terminal getTerminal()
-	{
-		throw new UnsupportedOperationException("Unit tests don't have access to JvmScope (and " +
-			"by extension Terminal) because they need to run in isolation of each other");
 	}
 
 	@Override

@@ -21,12 +21,12 @@ import java.util.function.Consumer;
  * attempt was made to dereference null or cast the value to an incompatible type.
  *
  * @param <S> the type of validator returned by the methods
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public abstract class AbstractArrayValidatorNoOp<S, E, A>
+public abstract class AbstractArrayValidatorNoOp<S, A, E>
 	extends AbstractObjectValidatorNoOp<S, A>
-	implements ExtensibleArrayValidator<S, E, A>
+	implements ExtensibleArrayValidator<S, A, E>
 {
 	/**
 	 * @param failures the list of validation failures

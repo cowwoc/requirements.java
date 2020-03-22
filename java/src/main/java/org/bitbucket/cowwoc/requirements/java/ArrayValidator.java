@@ -12,9 +12,9 @@ import org.bitbucket.cowwoc.requirements.java.extension.ExtensibleObjectValidato
  * <p>
  * All methods (except those found in {@link ExtensibleObjectValidator}) imply {@link #isNotNull()}.
  *
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public interface ArrayValidator<E, A> extends ExtensibleArrayValidator<ArrayValidator<E, A>, E, A>
+public interface ArrayValidator<A, E> extends ExtensibleArrayValidator<ArrayValidator<A, E>, A, E>
 {
 }

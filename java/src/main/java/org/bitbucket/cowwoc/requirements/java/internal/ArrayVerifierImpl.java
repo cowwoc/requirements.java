@@ -11,24 +11,24 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVe
 /**
  * Default implementation of {@code ArrayVerifier}.
  *
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public final class ArrayVerifierImpl<E, A>
-	extends AbstractArrayVerifier<ArrayVerifier<E, A>, ArrayValidator<E, A>, E, A>
-	implements ArrayVerifier<E, A>
+public final class ArrayVerifierImpl<A, E>
+	extends AbstractArrayVerifier<ArrayVerifier<A, E>, ArrayValidator<A, E>, A, E>
+	implements ArrayVerifier<A, E>
 {
 	/**
 	 * @param validator the validator to delegate to
 	 * @throws AssertionError if {@code validator} is null
 	 */
-	public ArrayVerifierImpl(ArrayValidator<E, A> validator)
+	public ArrayVerifierImpl(ArrayValidator<A, E> validator)
 	{
 		super(validator);
 	}
 
 	@Override
-	protected ArrayVerifier<E, A> getThis()
+	protected ArrayVerifier<A, E> getThis()
 	{
 		return this;
 	}

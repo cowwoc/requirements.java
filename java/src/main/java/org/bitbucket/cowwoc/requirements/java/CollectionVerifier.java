@@ -251,7 +251,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return a verifier for the actual value as an array
 	 * @throws NullPointerException if {@code type} is null
 	 */
-	ArrayVerifier<E, E[]> asArray(Class<E> type);
+	ArrayVerifier<E[], E> asArray(Class<E> type);
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
@@ -264,5 +264,5 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @throws NullPointerException if {@code type} or {@code consumer} are null
 	 */
 	@SuppressWarnings("LongLine")
-	CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E, E[]>> consumer);
+	CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E[], E>> consumer);
 }

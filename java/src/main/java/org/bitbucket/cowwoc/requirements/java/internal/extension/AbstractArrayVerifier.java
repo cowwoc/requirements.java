@@ -21,12 +21,12 @@ import java.util.function.Consumer;
  *
  * @param <S> the type of verifier returned by the methods
  * @param <V> the type of validator used by the verifier
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public abstract class AbstractArrayVerifier<S, V extends ExtensibleArrayValidator<V, E, A>, E, A>
+public abstract class AbstractArrayVerifier<S, V extends ExtensibleArrayValidator<V, A, E>, A, E>
 	extends AbstractObjectVerifier<S, V, A>
-	implements ExtensibleArrayVerifier<S, E, A>
+	implements ExtensibleArrayVerifier<S, A, E>
 {
 	/**
 	 * @param validator the validator to delegate to

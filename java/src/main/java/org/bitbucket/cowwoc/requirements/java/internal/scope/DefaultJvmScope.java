@@ -23,7 +23,7 @@ import java.util.function.Supplier;
  */
 public final class DefaultJvmScope implements JvmScope
 {
-	public static final JvmScope INSTANCE = new DefaultJvmScope();
+	public static final DefaultJvmScope INSTANCE = new DefaultJvmScope();
 	private final boolean nativeLibraryLoaded;
 	private final Factory<NativeTerminal> nativeTerminal = new ConcurrentLazyFactory<>()
 	{
@@ -67,7 +67,7 @@ public final class DefaultJvmScope implements JvmScope
 	private final Reference<Terminal> terminal =
 		ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
 	private final Reference<GlobalConfiguration> globalConfiguration =
-		ConcurrentLazyReference.create(() -> new MainGlobalConfiguration(this));
+		ConcurrentLazyReference.create(() -> new MainGlobalConfiguration(getTerminal()));
 	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
 		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
 	public final Thread shutdownHook;
@@ -108,7 +108,9 @@ public final class DefaultJvmScope implements JvmScope
 		Runtime.getRuntime().addShutdownHook(shutdownHook);
 	}
 
-	@Override
+	/**
+	 * @return the terminal attached to the process
+	 */
 	public Terminal getTerminal()
 	{
 		return terminal.getValue();

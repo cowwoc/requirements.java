@@ -23,14 +23,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Extensible implementation of ExtensibleCollectionValidator.
+ * Extensible implementation of ExtensibleArrayValidator.
  *
  * @param <S> the type of validator returned by the methods
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public abstract class AbstractArrayValidator<S, E, A> extends AbstractObjectValidator<S, A>
-	implements ExtensibleArrayValidator<S, E, A>
+public abstract class AbstractArrayValidator<S, A, E> extends AbstractObjectValidator<S, A>
+	implements ExtensibleArrayValidator<S, A, E>
 {
 	private final Collection<E> actualAsCollection;
 	private final CollectionValidator<Collection<E>, E> asCollection;

@@ -105,7 +105,7 @@ node(&quot;linux&quot;)
         }
         timeout(10)
         {
-            withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;HG_HOME=${ tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;,
+            withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;HG_HOME=${ tool &quot;mercurial&quot; }&quot;, &quot;PATH+MAVEN+HG=${tool &quot;Maven&quot;}/bin:${tool &quot;mercurial&quot;}:${env.JAVA_HOME}/bin&quot;,
                 &quot;HGUSER=Gili Tzabari &lt;gili.tzabari@gmail.com&gt;&quot;])
             {
                 stage(&quot;Create release branch&quot;)
@@ -163,7 +163,7 @@ try
             }
             timeout(25)
             {
-                withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
                     stage(&quot;Deploy (linux)&quot;)
                     {
@@ -196,12 +196,12 @@ try
             timeout(25)
             {
                 // gpg resides in /usr/local/bin
-                withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
                 {
                     stage(&quot;Deploy (mac)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;mvn --batch-mode -e -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
-                            mvn --batch-mode -e -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
+                        sh script: &quot;&quot;&quot;mvn --batch-mode -e -V -U -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
+                            mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                         archiveArtifacts &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;
                     }
                 }
@@ -222,12 +222,12 @@ try
             }
             timeout(25)
             {
-                withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;HG_HOME=${tool &quot;mercurial&quot; }&quot;, &quot;PATH+MAVEN+HG=${tool &quot;Maven&quot;}/bin;${tool &quot;mercurial&quot;};${env.JAVA_HOME}/bin&quot;])
                 {
                     stage(&quot;Deploy (windows)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;call mvn --batch-mode -e -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
-                            call mvn --batch-mode -e -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
+                        bat script: &quot;&quot;&quot;call mvn --batch-mode -e -V -U -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
+                            call mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                         archiveArtifacts &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;
                     }
                 }
@@ -255,9 +255,9 @@ catch (e)
             }
             timeout(5)
             {
-                withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
-                    sh script: &quot;mvn --batch-mode -e -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-drop&quot;
+                    sh script: &quot;mvn --batch-mode -e -V -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-drop&quot;
                 }
             }
         }
@@ -283,11 +283,11 @@ node(&quot;linux&quot;)
     }
     timeout(10)
     {
-        withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin:${tool &apos;mercurial&apos;}:${env.JAVA_HOME}/bin&quot;])
+        withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;HG_HOME=${tool &quot;mercurial&quot; }&quot;, &quot;PATH+MAVEN+HG=${tool &quot;Maven&quot;}/bin:${tool &quot;mercurial&quot;}:${env.JAVA_HOME}/bin&quot;])
         {
             stage(&quot;Close release&quot;)
             {
-                sh script: &quot;mvn --batch-mode -U -e -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-close&quot;
+                sh script: &quot;mvn --batch-mode -e -V -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-close&quot;
             }
         }
     }

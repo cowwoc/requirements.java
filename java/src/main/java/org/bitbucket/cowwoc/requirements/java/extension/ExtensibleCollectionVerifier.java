@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Gili Tzabari
+ * Copyright (c) 2020 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.java.extension;
@@ -12,20 +12,20 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * Verifies the requirements of an array of elements but the implementing verifier is not guaranteed to be a
- * {@link ArrayVerifier}.
+ * Verifies the requirements of a collection of elements but the implementing verifier is not guaranteed to
+ * be a {@link CollectionVerifier}.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <A> the type of the array
- * @param <E> the type of elements in the array
+ * @param <C> the type of the collection
+ * @param <E> the type of elements in the collection
  */
-public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifier<S, A>
+public interface ExtensibleCollectionVerifier<S, C, E> extends ExtensibleObjectVerifier<S, C>
 {
 	/**
 	 * Ensures that the actual value is empty.
 	 *
 	 * @return the updated verifier
-	 * @throws IllegalArgumentException if the array is not empty
+	 * @throws IllegalArgumentException if the collection is not empty
 	 */
 	S isEmpty();
 
@@ -33,7 +33,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * Ensures that the actual value is not empty.
 	 *
 	 * @return the updated verifier
-	 * @throws IllegalArgumentException if the array is empty
+	 * @throws IllegalArgumentException if the collection is empty
 	 */
 	S isNotEmpty();
 
@@ -42,7 +42,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 *
 	 * @param expected the element
 	 * @return the updated verifier
-	 * @throws IllegalArgumentException if the array does not contain {@code expected}
+	 * @throws IllegalArgumentException if the collection does not contain {@code expected}
 	 */
 	S contains(E expected);
 
@@ -53,7 +53,8 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name     the name of the element
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array does not contain {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection does not contain {@code expected}. If {@code name} is
+	 *                                  empty.
 	 */
 	S contains(E expected, String name);
 
@@ -63,8 +64,8 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param expected the elements that must exist
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected};
-	 *                                  if the array contains any element not found in {@code expected}
+	 * @throws IllegalArgumentException if the collection is missing any element found in {@code expected};
+	 *                                  if the collection contains any element not found in {@code expected}
 	 */
 	S containsExactly(Collection<E> expected);
 
@@ -75,8 +76,8 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the
-	 *                                  array contains any element not found in {@code expected}. If
+	 * @throws IllegalArgumentException if the collection is missing any element found in {@code expected}. If
+	 *                                  the collection contains any element not found in {@code expected}. If
 	 *                                  {@code name} is empty.
 	 */
 	S containsExactly(Collection<E> expected, String name);
@@ -87,7 +88,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param expected the elements that must exist
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}
+	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}
 	 */
 	S containsAny(Collection<E> expected);
 
@@ -98,7 +99,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}. If
+	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}. If
 	 *                                  {@code name} is empty.
 	 */
 	S containsAny(Collection<E> expected, String name);
@@ -109,7 +110,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param expected the elements that must exist
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} is null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}
+	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}
 	 */
 	S containsAll(Collection<E> expected);
 
@@ -120,7 +121,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If
+	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}. If
 	 *                                  {@code name} is empty.
 	 */
 	S containsAll(Collection<E> expected, String name);
@@ -130,7 +131,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 *
 	 * @param element the element that must not exist
 	 * @return the updated verifier
-	 * @throws IllegalArgumentException if the array contains {@code element}
+	 * @throws IllegalArgumentException if the collection contains {@code element}
 	 */
 	S doesNotContain(E element);
 
@@ -141,7 +142,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name    the name of the element
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array contains {@code element}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection contains {@code element}. If {@code name} is empty.
 	 */
 	S doesNotContain(E element, String name);
 
@@ -151,7 +152,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param other the elements that must not exist
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} is null
-	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
+	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
 	 *                                  nothing less, nothing more.
 	 */
 	S doesNotContainExactly(Collection<E> other);
@@ -163,7 +164,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name  the name of the collection
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
+	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
 	 *                                  nothing less, nothing more. If {@code name} is empty.
 	 */
 	S doesNotContainExactly(Collection<E> other, String name);
@@ -174,7 +175,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param elements the elements that must not exist
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} is null
-	 * @throws IllegalArgumentException if the array contains any of {@code elements}
+	 * @throws IllegalArgumentException if the collection contains any of {@code elements}
 	 */
 	S doesNotContainAny(Collection<E> elements);
 
@@ -185,7 +186,8 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains any of {@code elements}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection contains any of {@code elements}. If {@code name} is
+	 *                                  empty.
 	 */
 	S doesNotContainAny(Collection<E> elements, String name);
 
@@ -195,7 +197,7 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param elements the elements that must not exist
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} is null
-	 * @throws IllegalArgumentException if the array contains all of {@code elements}
+	 * @throws IllegalArgumentException if the collection contains all of {@code elements}
 	 */
 	S doesNotContainAll(Collection<E> elements);
 
@@ -206,7 +208,8 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains all of {@code elements}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection contains all of {@code elements}. If {@code name} is
+	 *                                  empty.
 	 */
 	S doesNotContainAll(Collection<E> elements, String name);
 
@@ -214,45 +217,48 @@ public interface ExtensibleArrayVerifier<S, A, E> extends ExtensibleObjectVerifi
 	 * Ensures that the actual value does not contain any duplicate elements.
 	 *
 	 * @return the updated verifier
-	 * @throws IllegalArgumentException if the array contains any duplicate elements
+	 * @throws IllegalArgumentException if the collection contains any duplicate elements
 	 */
 	S doesNotContainDuplicates();
 
 	/**
-	 * Returns a verifier over the array's length.
+	 * Returns a verifier over the collection's size.
 	 *
-	 * @return a verifier over the array's length
+	 * @return a verifier over the collection's size
 	 */
-	SizeVerifier length();
+	SizeVerifier size();
 
 	/**
 	 * Verifies nested requirements. This mechanism can be used to
 	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
-	 * @param consumer verifies the array's length
+	 * @param consumer verifies the collection's size
 	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
-	S length(Consumer<SizeVerifier> consumer);
+	S size(Consumer<SizeVerifier> consumer);
 
 	/**
-	 * Returns a verifier for the actual value as a collection.
+	 * Returns a verifier for the actual value as an array.
 	 *
-	 * @return a verifier for the actual value as a collection
+	 * @param type the array type
+	 * @return a verifier for the actual value as an array
+	 * @throws NullPointerException if {@code type} is null
 	 */
-	CollectionVerifier<Collection<E>, E> asCollection();
+	ArrayVerifier<E[], E> asArray(Class<E> type);
 
 	/**
-	 * Verifies nested requirements. This mechanism can be used to
+	 * Validates nested requirements. This mechanism can be used to
 	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
-	 * @param consumer verifies the actual value as a collection
+	 * @param type     the array type
+	 * @param consumer validates the actual value as an array
 	 * @return the updated verifier
-	 * @throws NullPointerException if {@code consumer} is null
+	 * @throws NullPointerException if {@code type} or {@code consumer} are null
 	 */
 	@SuppressWarnings("LongLine")
-	S asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer);
+	S asArray(Class<E> type, Consumer<ArrayVerifier<E[], E>> consumer);
 }

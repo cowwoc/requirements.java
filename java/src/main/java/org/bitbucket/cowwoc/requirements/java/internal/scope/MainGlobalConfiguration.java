@@ -4,6 +4,7 @@
  */
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
+import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;
@@ -13,34 +14,34 @@ import java.util.Set;
  */
 public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 {
-	private final JvmScope scope;
+	private final Terminal terminal;
 
 	/**
-	 * @param scope the system configuration
-	 * @throws AssertionError if {@code scope} is null
+	 * @param terminal the system configuration
+	 * @throws AssertionError if {@code terminal} is null
 	 */
-	public MainGlobalConfiguration(JvmScope scope)
+	public MainGlobalConfiguration(Terminal terminal)
 	{
-		assert (scope != null);
-		this.scope = scope;
+		assert (terminal != null);
+		this.terminal = terminal;
 	}
 
 	@Override
 	public Set<TerminalEncoding> listTerminalEncodings()
 	{
-		return scope.getTerminal().getSupportedTypes();
+		return terminal.getSupportedTypes();
 	}
 
 	@Override
 	public TerminalEncoding getTerminalEncoding()
 	{
-		return scope.getTerminal().getEncoding();
+		return terminal.getEncoding();
 	}
 
 	@Override
 	public GlobalConfiguration withDefaultTerminalEncoding()
 	{
-		scope.getTerminal().useBestEncoding();
+		terminal.useBestEncoding();
 		return this;
 	}
 
@@ -49,7 +50,7 @@ public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
-		scope.getTerminal().setEncoding(encoding);
+		terminal.setEncoding(encoding);
 		return this;
 	}
 

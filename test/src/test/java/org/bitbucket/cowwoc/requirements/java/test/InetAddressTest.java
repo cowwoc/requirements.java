@@ -156,6 +156,7 @@ public final class InetAddressTest
 			Integer expected = 5;
 			List<String> expectedMessages = Collections.singletonList(
 				"actual must be equal to " + expected + ".\n" +
+					"\n" +
 					"Actual  : null " + EOS_MARKER + "\n" +
 					"Diff    : " + DIFF_DELETE.repeat(4) + DIFF_INSERT + DIFF_PADDING.repeat(EOS_MARKER.length()) +
 					"\n" +

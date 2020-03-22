@@ -17,12 +17,12 @@ import java.util.function.Consumer;
  * An {@code ExtensibleArrayVerifier} that does nothing.
  *
  * @param <S> the type of verifier returned by the methods
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public abstract class AbstractArrayVerifierNoOp<S, E, A>
+public abstract class AbstractArrayVerifierNoOp<S, A, E>
 	extends AbstractObjectVerifierNoOp<S, A>
-	implements ExtensibleArrayVerifier<S, E, A>
+	implements ExtensibleArrayVerifier<S, A, E>
 {
 	@Override
 	public S isEmpty()

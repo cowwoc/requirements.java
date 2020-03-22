@@ -6,7 +6,6 @@ package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
 import org.bitbucket.cowwoc.requirements.java.JavaRequirements;
-import org.bitbucket.cowwoc.requirements.java.internal.diff.DiffGenerator;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 
 import java.util.function.Supplier;
@@ -22,8 +21,6 @@ public interface ApplicationScope extends JvmScope
 	 * @return the default configuration (value may change with every invocation)
 	 */
 	Supplier<Configuration> getDefaultConfiguration();
-
-	DiffGenerator getDiffGenerator();
 
 	Exceptions getExceptions();
 

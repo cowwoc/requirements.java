@@ -1,173 +1,174 @@
 /*
- * Copyright (c) 2019 Gili Tzabari
+ * Copyright (c) 2020 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.java.internal;
 
 import org.bitbucket.cowwoc.requirements.java.ArrayValidator;
 import org.bitbucket.cowwoc.requirements.java.ArrayVerifier;
-import org.bitbucket.cowwoc.requirements.java.CollectionValidator;
-import org.bitbucket.cowwoc.requirements.java.CollectionVerifier;
+import org.bitbucket.cowwoc.requirements.java.ListValidator;
+import org.bitbucket.cowwoc.requirements.java.ListVerifier;
 import org.bitbucket.cowwoc.requirements.java.SizeValidator;
 import org.bitbucket.cowwoc.requirements.java.SizeVerifier;
 import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * An implementation of {@code CollectionVerifier}.
+ * An implementation of {@code ListVerifier}.
  *
- * @param <C> the type of the collection
- * @param <E> the type of elements in the collection
+ * @param <L> the type of the list
+ * @param <E> the type of elements in the list
  */
-public final class CollectionVerifierImpl<C extends Collection<E>, E>
-	extends AbstractObjectVerifier<CollectionVerifier<C, E>, CollectionValidator<C, E>, C>
-	implements CollectionVerifier<C, E>
+public final class ListVerifierImpl<L extends List<E>, E>
+	extends AbstractObjectVerifier<ListVerifier<L, E>, ListValidator<L, E>, L>
+	implements ListVerifier<L, E>
 {
 	/**
 	 * @param validator the validator to delegate to
 	 * @throws AssertionError if {@code validator} is null
 	 */
-	public CollectionVerifierImpl(CollectionValidator<C, E> validator)
+	public ListVerifierImpl(ListValidator<L, E> validator)
 	{
 		super(validator);
 	}
 
 	@Override
-	protected CollectionVerifier<C, E> getThis()
+	protected ListVerifier<L, E> getThis()
 	{
 		return this;
 	}
 
 	@Override
-	public CollectionVerifier<C, E> isEmpty()
+	public ListVerifier<L, E> isEmpty()
 	{
 		validator.isEmpty();
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> isNotEmpty()
+	public ListVerifier<L, E> isNotEmpty()
 	{
 		validator.isNotEmpty();
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> contains(E element)
+	public ListVerifier<L, E> contains(E element)
 	{
 		validator.contains(element);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> contains(E element, String name)
+	public ListVerifier<L, E> contains(E element, String name)
 	{
 		validator.contains(element, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsExactly(Collection<E> expected)
+	public ListVerifier<L, E> containsExactly(Collection<E> expected)
 	{
 		validator.containsExactly(expected);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsExactly(Collection<E> expected, String name)
+	public ListVerifier<L, E> containsExactly(Collection<E> expected, String name)
 	{
 		validator.containsExactly(expected, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsAny(Collection<E> expected)
+	public ListVerifier<L, E> containsAny(Collection<E> expected)
 	{
 		validator.containsAny(expected);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsAny(Collection<E> expected, String name)
+	public ListVerifier<L, E> containsAny(Collection<E> expected, String name)
 	{
 		validator.containsAny(expected, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsAll(Collection<E> expected)
+	public ListVerifier<L, E> containsAll(Collection<E> expected)
 	{
 		validator.containsAll(expected);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> containsAll(Collection<E> expected, String name)
+	public ListVerifier<L, E> containsAll(Collection<E> expected, String name)
 	{
 		validator.containsAll(expected, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContain(E element)
+	public ListVerifier<L, E> doesNotContain(E element)
 	{
 		validator.doesNotContain(element);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContain(E element, String name)
+	public ListVerifier<L, E> doesNotContain(E element, String name)
 	{
 		validator.doesNotContain(element, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other)
+	public ListVerifier<L, E> doesNotContainExactly(Collection<E> other)
 	{
 		validator.doesNotContainExactly(other);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other, String name)
+	public ListVerifier<L, E> doesNotContainExactly(Collection<E> other, String name)
 	{
 		validator.doesNotContainExactly(other, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
+	public ListVerifier<L, E> doesNotContainAny(Collection<E> elements)
 	{
 		validator.doesNotContainAny(elements);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name)
+	public ListVerifier<L, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		validator.doesNotContainAny(elements, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements)
+	public ListVerifier<L, E> doesNotContainAll(Collection<E> elements)
 	{
 		validator.doesNotContainAll(elements);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name)
+	public ListVerifier<L, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		validator.doesNotContainAll(elements, name);
 		return validationResult();
 	}
 
 	@Override
-	public CollectionVerifier<C, E> doesNotContainDuplicates()
+	public ListVerifier<L, E> doesNotContainDuplicates()
 	{
 		validator.doesNotContainDuplicates();
 		return validationResult();
@@ -181,7 +182,7 @@ public final class CollectionVerifierImpl<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> size(Consumer<SizeVerifier> consumer)
+	public ListVerifier<L, E> size(Consumer<SizeVerifier> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
@@ -197,7 +198,7 @@ public final class CollectionVerifierImpl<C extends Collection<E>, E>
 	}
 
 	@Override
-	public CollectionVerifier<C, E> asArray(Class<E> type, Consumer<ArrayVerifier<E[], E>> consumer)
+	public ListVerifier<L, E> asArray(Class<E> type, Consumer<ArrayVerifier<E[], E>> consumer)
 	{
 		if (type == null)
 			throw new NullPointerException("type may not be null");

@@ -79,12 +79,10 @@
 						<configuration>
 							<sourcePath>${project.build.directory}/sources</sourcePath>
 							<targetPath>${project.build.directory}/${platform}-${build.type}/cmake</targetPath>
-							<classifier>${cmake.classifier}</classifier>
 							<options>${cmake.options}</options>
 							<environmentVariables>
 								<CMAKE_CLASSIFIER>${cmake.classifier}</CMAKE_CLASSIFIER>
 							</environmentVariables>
-							<downloadBinaries>${download.cmake}</downloadBinaries>
 						</configuration>
 					</execution>
 					<execution>
@@ -95,7 +93,6 @@
 						</goals>
 						<configuration>
 							<projectDirectory>${project.build.directory}/${platform}-${build.type}/cmake</projectDirectory>
-							<classifier>${cmake.classifier}</classifier>
 							<config>${cmake.config}</config>
 						</configuration>
 					</execution>
@@ -153,8 +150,7 @@
 	</build>
 	<properties>
 		<classifier>${platform}</classifier>
-		<download.cmake>true</download.cmake>
-		<cmake.version>3.14.5-b1</cmake.version>
+		<cmake.version>3.16.3-b2</cmake.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -170,7 +166,6 @@
 				<platform>windows-x86_64</platform>
 				<build.type>debug</build.type>
 				<cmake.classifier>windows-x86_64</cmake.classifier>
-				<cmake.options>-Ax64</cmake.options>
 				<cmake.config>${build.type}</cmake.config>
 			</properties>
 		</profile>
@@ -186,7 +181,6 @@
 				<platform>windows-x86_64</platform>
 				<build.type>release</build.type>
 				<cmake.classifier>windows-x86_64</cmake.classifier>
-				<cmake.options>-Ax64</cmake.options>
 				<cmake.config>${build.type}</cmake.config>
 			</properties>
 		</profile>

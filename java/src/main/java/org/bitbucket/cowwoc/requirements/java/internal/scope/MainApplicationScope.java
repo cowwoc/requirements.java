@@ -5,7 +5,6 @@
 package org.bitbucket.cowwoc.requirements.java.internal.scope;
 
 import org.bitbucket.cowwoc.requirements.java.Configuration;
-import org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -59,12 +58,6 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	public Supplier<ThreadConfiguration> getThreadConfiguration()
 	{
 		return parent.getThreadConfiguration();
-	}
-
-	@Override
-	public Terminal getTerminal()
-	{
-		return parent.getTerminal();
 	}
 
 	@Override

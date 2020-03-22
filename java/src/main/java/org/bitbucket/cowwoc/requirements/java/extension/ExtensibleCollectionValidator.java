@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Gili Tzabari
+ * Copyright (c) 2020 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package org.bitbucket.cowwoc.requirements.java.extension;
@@ -12,14 +12,15 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * Validates the requirements of an array of elements but the implementing validator is not guaranteed to be a
- * {@link ArrayValidator}.
+ * Validates the requirements of a collection of elements but the implementing validator is not guaranteed to
+ * be a {@link CollectionValidator}.
  *
  * @param <S> the type of validator returned by the methods
- * @param <A> the type of the array
- * @param <E> the type of elements in the array
+ * @param <C> the type of the collection
+ * @param <E> the type of elements in the collection
  */
-public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValidator<S, A>
+public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
+	extends ExtensibleObjectValidator<S, C>
 {
 	/**
 	 * Ensures that the actual value is empty.
@@ -38,16 +39,16 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	/**
 	 * Ensures that the actual value contains an element.
 	 *
-	 * @param expected the element
+	 * @param element the element that must exist
 	 * @return the updated validator
 	 */
-	S contains(E expected);
+	S contains(E element);
 
 	/**
 	 * Ensures that the actual value contains an element.
 	 *
-	 * @param expected the element
-	 * @param name     the name of the element
+	 * @param expected the element that must exist
+	 * @param name     the name of the expected element
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} is empty
@@ -55,7 +56,9 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	S contains(E expected, String name);
 
 	/**
-	 * Ensures that the actual value contains the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * This method is equivalent to an {@link #isEqualTo(Object) equality comparison} that ignores element
+	 * ordering.
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
@@ -64,10 +67,12 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	S containsExactly(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains the specified elements; nothing less, nothing more.
+	 * Ensures that the actual value contains exactly the specified elements; nothing less, nothing more.
+	 * This method is equivalent to an {@link #isEqualTo(Object) equality comparison} that ignores element
+	 * ordering.
 	 *
 	 * @param expected the elements that must exist
-	 * @param name     the name of the elements
+	 * @param name     the name of the expected elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
@@ -75,7 +80,7 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	S containsExactly(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the actual value contains any of the specified elements.
+	 * Ensures that the actual value contains any of specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
@@ -87,7 +92,7 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	 * Ensures that the actual value contains any of the specified elements.
 	 *
 	 * @param expected the elements that must exist
-	 * @param name     the name of the elements
+	 * @param name     the name of the expected elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
@@ -107,7 +112,7 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	 * Ensures that the actual value contains all of the specified elements.
 	 *
 	 * @param expected the elements that must exist
-	 * @param name     the name of the elements
+	 * @param name     the name of the expected elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if {@code name} is empty
@@ -156,11 +161,11 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.
 	 *
-	 * @param elements the elements that must not exist
+	 * @param expected the elements that must not exist
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code expected} is null
 	 */
-	S doesNotContainAny(Collection<E> elements);
+	S doesNotContainAny(Collection<E> expected);
 
 	/**
 	 * Ensures that the actual value does not contain any of the specified elements.
@@ -176,14 +181,14 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	/**
 	 * Ensures that the actual value does not contain all of the specified elements.
 	 *
-	 * @param elements the elements that must not exist
+	 * @param expected the elements that must not exist
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code expected} is null
 	 */
-	S doesNotContainAll(Collection<E> elements);
+	S doesNotContainAll(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value does not contain all of specified elements.
+	 * Ensures that the actual value does not contain all of the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements
@@ -201,40 +206,43 @@ public interface ExtensibleArrayValidator<S, A, E> extends ExtensibleObjectValid
 	S doesNotContainDuplicates();
 
 	/**
-	 * Returns a validator over the array's length.
+	 * Returns a validator for the collection's size.
 	 *
-	 * @return a validator over the array's length
+	 * @return a validator for the collection's size
 	 */
-	SizeValidator length();
+	SizeValidator size();
 
 	/**
 	 * Validates nested requirements. This mechanism can be used to
 	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
-	 * @param consumer validates the array's length
+	 * @param consumer validates the collection's size
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	@SuppressWarnings("LongLine")
-	S length(Consumer<SizeValidator> consumer);
+	S size(Consumer<SizeValidator> consumer);
 
 	/**
-	 * Returns a validator for the actual value as a collection.
+	 * Returns a validator for the actual value as an array.
 	 *
-	 * @return a validator for the actual value as a collection
+	 * @param type the array type
+	 * @return a validator for the actual value as an array
+	 * @throws NullPointerException if {@code type} is null
 	 */
-	CollectionValidator<Collection<E>, E> asCollection();
+	ArrayValidator<E[], E> asArray(Class<E> type);
 
 	/**
 	 * Validates nested requirements. This mechanism can be used to
 	 * <a href="https://bitbucket.org/cowwoc/requirements.java/wiki/Features#markdown-header-grouping-nested-requirements">
 	 * group related requirements</a>.
 	 *
-	 * @param consumer validates the actual value as a collection
+	 * @param type     the array type
+	 * @param consumer validates the actual value as an array
 	 * @return the updated validator
-	 * @throws NullPointerException if {@code consumer} is null
+	 * @throws NullPointerException if {@code type} or {@code consumer} are null
 	 */
 	@SuppressWarnings("LongLine")
-	S asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer);
+	S asArray(Class<E> type, Consumer<ArrayValidator<E[], E>> consumer);
 }

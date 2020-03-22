@@ -10,24 +10,24 @@ import org.bitbucket.cowwoc.requirements.java.internal.extension.AbstractArrayVe
 /**
  * An {@code ArrayVerifier} that does nothing.
  *
- * @param <E> the type of elements in the array
  * @param <A> the type of the array
+ * @param <E> the type of elements in the array
  */
-public final class ArrayVerifierNoOp<E, A>
-	extends AbstractArrayVerifierNoOp<ArrayVerifier<E, A>, E, A>
-	implements ArrayVerifier<E, A>
+public final class ArrayVerifierNoOp<A, E>
+	extends AbstractArrayVerifierNoOp<ArrayVerifier<A, E>, A, E>
+	implements ArrayVerifier<A, E>
 {
 	private static final ArrayVerifierNoOp<?, ?> INSTANCE = new ArrayVerifierNoOp<>();
 
 	/**
-	 * @param <E> the type of elements in the array
 	 * @param <A> the type of the array
+	 * @param <E> the type of elements in the array
 	 * @return the singleton instance
 	 */
-	public static <E, A> ArrayVerifierNoOp<E, A> getInstance()
+	public static <A, E> ArrayVerifierNoOp<A, E> getInstance()
 	{
 		@SuppressWarnings("unchecked")
-		ArrayVerifierNoOp<E, A> result = (ArrayVerifierNoOp<E, A>) INSTANCE;
+		ArrayVerifierNoOp<A, E> result = (ArrayVerifierNoOp<A, E>) INSTANCE;
 		return result;
 	}
 
@@ -39,7 +39,7 @@ public final class ArrayVerifierNoOp<E, A>
 	}
 
 	@Override
-	protected ArrayVerifier<E, A> getThis()
+	protected ArrayVerifier<A, E> getThis()
 	{
 		return this;
 	}

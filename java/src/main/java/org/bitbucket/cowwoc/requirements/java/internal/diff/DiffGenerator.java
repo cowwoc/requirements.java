@@ -7,7 +7,7 @@ package org.bitbucket.cowwoc.requirements.java.internal.diff;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 import org.bitbucket.cowwoc.requirements.java.GlobalRequirements;
-import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import org.bitbucket.cowwoc.requirements.java.internal.util.Strings;
 import org.bitbucket.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.LinkedList;
@@ -21,16 +21,40 @@ import static org.bitbucket.cowwoc.requirements.java.internal.diff.DiffConstants
  */
 public final class DiffGenerator
 {
-	private final ApplicationScope scope;
+	private final TerminalEncoding encoding;
+	private final String paddingMarker;
 
 	/**
-	 * @param scope the application configuration
-	 * @throws AssertionError if {@code scope} is null
+	 * @param encoding the terminal encoding
+	 * @throws AssertionError if {@code encoding} is null
 	 */
-	public DiffGenerator(ApplicationScope scope)
+	public DiffGenerator(TerminalEncoding encoding)
 	{
-		assert (scope != null) : "scope may not be null";
-		this.scope = scope;
+		assert (encoding != null) : "encoding may not be null";
+		this.encoding = encoding;
+		this.paddingMarker = getPaddingMarker();
+	}
+
+	/**
+	 * @return the padding character used to align values vertically
+	 */
+	private String getPaddingMarker()
+	{
+		switch (encoding)
+		{
+			case NONE:
+				return TextOnly.DIFF_PADDING;
+			case XTERM_8_COLORS:
+				return Writer8Colors.DIFF_PADDING;
+			case XTERM_16_COLORS:
+				return Writer16Colors.DIFF_PADDING;
+			case XTERM_256_COLORS:
+				return Writer256Colors.DIFF_PADDING;
+			case RGB_888_COLORS:
+				return Writer16MillionColors.DIFF_PADDING;
+			default:
+				throw new AssertionError(encoding.name());
+		}
 	}
 
 	/**
@@ -57,7 +81,7 @@ public final class DiffGenerator
 		LinkedList<Diff> components = diffEngine.diffMain(actualWithEos, expectedWithEos);
 		diffEngine.diffCleanupSemantic(components);
 
-		DiffWriter writer = createDiffWriter(scope.getGlobalConfiguration().getTerminalEncoding());
+		DiffWriter writer = createDiffWriter();
 		for (Diff component : components)
 		{
 			String[] lines = NEWLINE_PATTERN.split(component.text, -1);
@@ -98,15 +122,13 @@ public final class DiffGenerator
 			}
 		}
 		writer.close();
-		return new DiffResult(writer.getActualLines(), writer.getMiddleLines(), writer.getExpectedLines(),
-			writer.getPaddingMarker());
+		return new DiffResult(writer.getActualLines(), writer.getMiddleLines(), writer.getExpectedLines());
 	}
 
 	/**
-	 * @param encoding a terminal encoding
-	 * @return a writer for the specified encoding
+	 * @return a new writer
 	 */
-	private DiffWriter createDiffWriter(TerminalEncoding encoding)
+	private DiffWriter createDiffWriter()
 	{
 		switch (encoding)
 		{
@@ -123,5 +145,14 @@ public final class DiffGenerator
 			default:
 				throw new AssertionError(encoding.name());
 		}
+	}
+
+	/**
+	 * @param line a line
+	 * @return true if {@code line} only contains padding characters
+	 */
+	public boolean isEmpty(String line)
+	{
+		return Strings.containsOnly(line, paddingMarker);
 	}
 }

@@ -101,19 +101,7 @@
 			<artifactId>mojo-executor</artifactId>
 			<version>2.3.0</version>
 		</dependency>
-		<!-- Upgrade transitive dependency of mojo-executor -->
-		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-			<version>3.1.1</version>
-		</dependency>
 
-		<!-- Upgrade transitive dependency of maven-plugin-plugin to avoid parsing error for Java9+ classes -->
-		<dependency>
-			<groupId>org.sonatype.sisu</groupId>
-			<artifactId>sisu-inject-plexus</artifactId>
-			<version>2.6.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -136,33 +124,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<classifier>no_aop</classifier>
-			<version>4.2.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.sonatype.sisu</groupId>
-			<artifactId>sisu-guice</artifactId>
-			<classifier>no_aop</classifier>
-			<version>4.2.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-core</artifactId>
-			<version>3.6.1</version>
+			<version>3.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
@@ -172,12 +136,12 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
-			<version>3.6.1</version>
+			<version>3.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
-			<version>3.6.1</version>
+			<version>3.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

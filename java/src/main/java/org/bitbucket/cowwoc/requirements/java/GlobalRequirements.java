@@ -25,7 +25,8 @@ import java.util.Set;
  */
 public final class GlobalRequirements
 {
-	private static final GlobalConfiguration DELEGATE = new MainGlobalConfiguration(DefaultJvmScope.INSTANCE);
+	private static final GlobalConfiguration DELEGATE = new MainGlobalConfiguration(
+		DefaultJvmScope.INSTANCE.getTerminal());
 	private static final GlobalRequirements INSTANCE = new GlobalRequirements();
 
 	/**

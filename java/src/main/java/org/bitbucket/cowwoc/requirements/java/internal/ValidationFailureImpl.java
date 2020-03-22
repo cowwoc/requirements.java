@@ -10,7 +10,6 @@ import org.bitbucket.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions;
 import org.bitbucket.cowwoc.requirements.java.internal.util.Maps;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +32,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	/**
 	 * The contextual information associated with the exception (name-value pairs).
 	 */
-	private final List<Entry<String, Object>> context = new ArrayList<>(2);
+	private final List<ContextLine> context = new ArrayList<>(2);
 
 	/**
 	 * @param scope         the application configuration
@@ -107,54 +106,57 @@ public final class ValidationFailureImpl implements ValidationFailure
 		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
 		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
 
-		List<Entry<String, Object>> mergedContext;
+		List<ContextLine> mergedContext;
 		if (configContext.isEmpty() && threadContext.isEmpty())
 			mergedContext = context;
 		else
 		{
 			mergedContext = new ArrayList<>(context.size() + threadContext.size() + configContext.size());
 			Set<String> existingKeys = new HashSet<>();
-			for (Entry<String, Object> entry : context)
+			for (ContextLine entry : context)
 			{
 				mergedContext.add(entry);
-				if (entry != null)
-					existingKeys.add(entry.getKey());
+				String key = entry.getKey();
+				if (!key.isEmpty())
+					existingKeys.add(key);
 			}
 
 			for (Entry<String, Object> entry : configContext.entrySet())
 			{
 				if (existingKeys.add(entry.getKey()))
-					mergedContext.add(entry);
+					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
 			}
 
 			for (Entry<String, Object> entry : threadContext.entrySet())
 			{
 				if (existingKeys.add(entry.getKey()))
-					mergedContext.add(entry);
+					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
 			}
 		}
 
 		// null entries denote a newline between DIFF sections
 		int maxKeyLength = 0;
-		for (Entry<String, Object> entry : mergedContext)
+		for (ContextLine entry : mergedContext)
 		{
-			if (entry == null)
+			String key = entry.getKey();
+			if (key.isEmpty())
 				continue;
-			int length = entry.getKey().length();
+			int length = key.length();
 			if (length > maxKeyLength)
 				maxKeyLength = length;
 		}
+
 		StringJoiner messageWithContext = new StringJoiner("\n");
 		messageWithContext.add(message);
-		for (Entry<String, Object> entry : mergedContext)
+		StringBuilder line = new StringBuilder();
+		for (ContextLine entry : mergedContext)
 		{
-			if (entry == null)
-				messageWithContext.add("");
-			else
-			{
-				messageWithContext.add(alignLeft(entry.getKey(), maxKeyLength) + ": " +
-					config.toString(entry.getValue()));
-			}
+			line.delete(0, line.length());
+			String key = entry.getKey();
+			if (!key.isEmpty())
+				line.append(alignLeft(key, maxKeyLength) + ": ");
+			line.append(config.toString(entry.getValue()));
+			messageWithContext.add(line.toString());
 		}
 		return messageWithContext.toString();
 	}
@@ -185,7 +187,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	{
 		assert (name != null) : "name may not be null";
 		assert (!name.trim().isEmpty()) : "name may not be empty";
-		context.add(new SimpleImmutableEntry<>(name, value));
+		context.add(new ContextLine(name, value));
 		messageWithContext = null;
 		return this;
 	}
@@ -197,7 +199,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 * @return this
 	 * @throws NullPointerException if {@code context} is null
 	 */
-	public ValidationFailureImpl addContext(List<Entry<String, Object>> context)
+	public ValidationFailureImpl addContext(List<ContextLine> context)
 	{
 		assert (context != null) : "context may not be null";
 		this.context.addAll(context);
