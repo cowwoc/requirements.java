@@ -13,5 +13,4 @@ module org.bitbucket.cowwoc.requirements.generator
 	exports org.bitbucket.cowwoc.requirements.generator;
 	exports org.bitbucket.cowwoc.requirements.generator.internal.secrets to
 		org.bitbucket.cowwoc.requirements.maven_plugin;
-	opens delegates to org.bitbucket.cowwoc.requirements.maven_plugin;
 }
