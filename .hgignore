@@ -1,8 +1,0 @@
-syntax: glob
-target
-release.properties
-pom.xml.releaseBackup
-
-# IntelliJ IDEA files
-.idea/
-*.iml

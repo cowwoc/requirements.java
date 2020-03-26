@@ -2,7 +2,7 @@
 
 ![java](https://img.shields.io/badge/languages-java-black.svg) [![js](https://img.shields.io/badge/js-457FD5.svg)](../requirements.js)
 
-# ![checklist.png](images/2273371789-checklist.png) Requirements #
+# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Requirements #
 ---
 
 ## Fluent Design by Contract for Java APIs ##
