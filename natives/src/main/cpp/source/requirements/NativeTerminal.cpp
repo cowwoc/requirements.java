@@ -202,14 +202,14 @@ std::string toString(JNIEnv* env, jobject o)
 			// build 10586 added 16-bit color support:
 			// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
 			assert(IsWindowsVersionOrGreater(10, 0, 10586));
-			supportedEncodings.push_back("XTERM_8COLOR");
-			supportedEncodings.push_back("XTERM_16COLOR");
+			supportedEncodings.push_back("XTERM_8_COLORS");
+			supportedEncodings.push_back("XTERM_16_COLORS");
 
 			if (IsWindowsVersionOrGreater(10, 0, 14931))
 			{
 				// build 14931 added 24-bit color support:
 				// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
-				supportedEncodings.push_back("RGB_888COLOR");
+				supportedEncodings.push_back("RGB_888_COLORS");
 			}
 
 			bool matchFound;
