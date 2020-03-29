@@ -6,11 +6,11 @@
  * The {@code Requirements}, {@code DefaultRequirements} endpoints. The contents of these classes depend on
  * which plugins are enabled.
  */
-module org.bitbucket.cowwoc.requirements
+module com.github.cowwoc.requirements
 {
-	requires org.bitbucket.cowwoc.requirements.java;
-	requires org.bitbucket.cowwoc.requirements.guava;
+	requires com.github.cowwoc.requirements.java;
+	requires com.github.cowwoc.requirements.guava;
 	requires com.google.common;
 
-	exports org.bitbucket.cowwoc.requirements;
+	exports com.github.cowwoc.requirements;
 }

@@ -63,7 +63,7 @@ jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
  */
 jobject terminalEncoding(JNIEnv* env, const char* name)
 {
-	const char* enumName = "org/bitbucket/cowwoc/requirements/natives/terminal/TerminalEncoding";
+	const char* enumName = "com/github/cowwoc/requirements/natives/terminal/TerminalEncoding";
 	jclass enumClass = env->FindClass(enumName);
 	if (enumClass == 0)
 	{
@@ -104,11 +104,11 @@ std::string toString(JNIEnv* env, jobject o)
 
 #ifdef _WIN32
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.connect()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.connect()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_connect
+	void JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_connect
 	(JNIEnv* env, jobject jthis)
 	{
 		state.connected = true;
@@ -172,23 +172,23 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.isConnectedToStdout()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.isConnectedToStdout()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
 	jboolean JNICALL
-	Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
+	Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
 	(JNIEnv* env, jobject jthis)
 	{
 		return state.connectedToStdout;
 	}
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.setEncoding()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.setEncoding()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_setEncoding
+	void JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_setEncoding
 	(JNIEnv* env, jobject jthis, jobject encoding)
 	{
 		Exceptions exceptions(env);
@@ -254,11 +254,11 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.disconnect()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.disconnect()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_disconnect
+	void JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_disconnect
 	(JNIEnv* env, jobject jthis)
 	{
 		if (!state.connected)
@@ -275,33 +275,33 @@ std::string toString(JNIEnv* env, jobject o)
 	#include <unistd.h>
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.connect()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.connect()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_connect
+	void JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_connect
 	(JNIEnv* env, jobject jthis)
 	{
 	}
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.isConnectedToStdout()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.isConnectedToStdout()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
 	jboolean JNICALL
-	Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
+	Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_isConnectedToStdout
 	(JNIEnv* env, jobject jthis)
 	{
 		return isatty(STDOUT_FILENO);
 	}
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.setEncoding()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.setEncoding()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_setEncoding
+	void JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_setEncoding
 	(JNIEnv* env, jobject jthis, jobject encoding)
 	{
 		Exceptions exceptions(env);
@@ -314,11 +314,11 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 
 	/**
-	 * org.bitbucket.cowwoc.requirements.natives.internal.terminal.NativeTerminal.disconnect()
+	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.disconnect()
 	 *
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/mt638032(v=vs.85).aspx#Output_Sequences
 	 */
-	void JNICALL Java_org_bitbucket_cowwoc_requirements_natives_internal_terminal_NativeTerminal_disconnect
+	void JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_disconnect
 	(JNIEnv* env, jobject jthis)
 	{
 	}

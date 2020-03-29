@@ -1,5 +1,5 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@2.32">
+<flow-definition plugin="workflow-job@2.36">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -17,7 +17,7 @@
         <com.gem.persistentparameter.PersistentStringParameterDefinition plugin="persistent-parameter@1.1">
           <name>branch</name>
           <description>What branch should be built?</description>
-          <defaultValue>default</defaultValue>
+          <defaultValue>master</defaultValue>
           <successfulOnly>true</successfulOnly>
         </com.gem.persistentparameter.PersistentStringParameterDefinition>
       </parameterDefinitions>
@@ -35,7 +35,7 @@
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.63">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.78">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -65,9 +65,7 @@
 //
 // nexus-staging-maven-plugin does not allow us to run unit tests and deploy at the same time because skipNexusStagingDeployMojo cannot be set to true
 // in the last module. Therefore we build twice. The first time we run unit tests without deploying. The second time we deploy without running unit tests.
-// -Dmaven.javadoc.skip=true is a workaround for https://bugs.openjdk.java.net/browse/JDK-8216170
-def repository = &quot;https://bitbucket.org/cowwoc/requirements.java/&quot;
-def branch = &quot;default&quot;
+def repository = &quot;https://github.com/cowwoc/requirements.java/&quot;
 
 // Build and deploy from all platforms
 parallel linux:
@@ -76,18 +74,18 @@ parallel linux:
     // Remaining platforms only deploy platform-specific binaries.
     node(&quot;linux&quot;)
     {
-        timeout(2)
+        timeout(10)
         {
-            stage(&quot;Checkout&quot;)
+            stage(&quot;Checkout (linux)&quot;)
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: branch]
+                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;*/${branch}&apos;]], browser: [$class: &apos;GithubWeb&apos;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &apos;MessageExclusion&apos;, excludedMessage: &apos;^\\[jenkins\\]&apos;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &apos;github&apos;, url: &quot;https://${repository}&quot;]]])
             }
         }
-        timeout(25)
+        timeout(40)
         {
-            withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (linux)&quot;)
                 {
@@ -96,9 +94,9 @@ parallel linux:
                     sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-6 g++-6 -y
                         export CC=/usr/bin/gcc-6
                         export CXX=/usr/bin/g++-6
-                        mvn --batch-mode -V -e -U -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
+                        mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                         mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
-                    archiveArtifacts &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;
+                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &apos;**/target/test-classes/**&apos;
                 }
             }
         }
@@ -107,26 +105,25 @@ parallel linux:
 {
     node(&quot;mac&quot;)
     {
-        // Grant an additional 10 minutes to brew install Mercurial
-        timeout(20)
+        timeout(10)
         {
             stage(&quot;Checkout (mac)&quot;)
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: branch]
+                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;*/${branch}&apos;]], browser: [$class: &apos;GithubWeb&apos;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: &apos;jgit&apos;, submoduleCfg: [], userRemoteConfigs: [[credentialsId: &apos;github&apos;, url: &quot;https://${repository}&quot;]]])
             }
         }
-        timeout(25)
+        timeout(40)
         {
             // gpg resides in /usr/local/bin
-            withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
             {
-                stage(&quot;Deploy (mac)&quot;)
+			          stage(&quot;Deploy (mac)&quot;)
                 {
-                    sh script: &quot;&quot;&quot;mvn --batch-mode -V -e -U -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
+                    sh script: &quot;&quot;&quot;mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                         mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
-                    archiveArtifacts &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;
+                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;, excludes: &apos;**/target/test-classes/**&apos;
                 }
             }
         }
@@ -141,18 +138,18 @@ parallel linux:
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout changelog: true, poll: true, scm: [$class: &quot;MercurialSCM&quot;, browser: [$class: &quot;BitBucket&quot;, url: repository], clean: true, credentialsId: &quot;bitbucket&quot;,  installation: &quot;mercurial&quot;, source: repository, revision: branch]
+                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;*/${branch}&apos;]], browser: [$class: &apos;GithubWeb&apos;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &apos;MessageExclusion&apos;, excludedMessage: &apos;^\\[jenkins\\]&apos;]], gitTool: &apos;jgit&apos;, submoduleCfg: [], userRemoteConfigs: [[credentialsId: &apos;github&apos;, url: &quot;https://${repository}&quot;]]])
             }
         }
-        timeout(25)
+        timeout(40)
         {
-            withEnv([&quot;JAVA_HOME=${tool &apos;JAVA_HOME&apos;}&quot;, &quot;HG_HOME=${tool &apos;mercurial&apos; }&quot;, &quot;PATH+MAVEN+HG=${tool &apos;Maven&apos;}/bin;${tool &apos;mercurial&apos;};${env.JAVA_HOME}/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin;${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (windows)&quot;)
                 {
-                    bat script: &quot;&quot;&quot;call mvn --batch-mode -V -e -U -Dsurefire.useFile=false -Dmaven.javadoc.skip=true clean install
+                    bat script: &quot;&quot;&quot;call mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                         call mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
-                    archiveArtifacts &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;
+                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;, excludes: &apos;**/target/test-classes/**&apos;
                 }
             }
         }
@@ -162,4 +159,6 @@ failFast: true</script>
     <sandbox>true</sandbox>
   </definition>
   <triggers/>
+  <quietPeriod>60</quietPeriod>
+  <disabled>false</disabled>
 </flow-definition>

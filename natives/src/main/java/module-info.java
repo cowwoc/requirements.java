@@ -5,14 +5,14 @@
 /**
  * Optional features that require access to native libraries, such as the use of ANSI colors.
  */
-module org.bitbucket.cowwoc.requirements.natives
+module com.github.cowwoc.requirements.natives
 {
-	requires org.bitbucket.cowwoc.pouch;
+	requires com.github.cowwoc.pouch.core;
 
-	exports org.bitbucket.cowwoc.requirements.natives.internal.util to org.bitbucket.cowwoc.requirements.java,
-		org.bitbucket.cowwoc.requirements.maven_plugin, org.bitbucket.cowwoc.requirements.test;
-	exports org.bitbucket.cowwoc.requirements.natives.internal.terminal to
-		org.bitbucket.cowwoc.requirements.java, org.bitbucket.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.natives.internal.util to com.github.cowwoc.requirements.java,
+		com.github.cowwoc.requirements.maven_plugin, com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.natives.internal.terminal to
+		com.github.cowwoc.requirements.java, com.github.cowwoc.requirements.test;
 
-	exports org.bitbucket.cowwoc.requirements.natives.terminal;
+	exports com.github.cowwoc.requirements.natives.terminal;
 }

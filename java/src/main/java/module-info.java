@@ -9,29 +9,29 @@
  * <a href="https://en.wikipedia.org/wiki/Invariant_(mathematics)#Invariants_in_computer_science">
  * invariants</a> of core Java types.
  */
-module org.bitbucket.cowwoc.requirements.java
+module com.github.cowwoc.requirements.java
 {
-	requires transitive org.bitbucket.cowwoc.requirements.annotations;
-	requires transitive org.bitbucket.cowwoc.requirements.natives;
-	requires org.bitbucket.cowwoc.diffmatchpatch;
+	requires transitive com.github.cowwoc.requirements.annotations;
+	requires transitive com.github.cowwoc.requirements.natives;
+	requires io.github.javadiffutils;
 	requires org.slf4j;
-	requires org.bitbucket.cowwoc.pouch;
+	requires com.github.cowwoc.pouch.core;
 
-	exports org.bitbucket.cowwoc.requirements.java;
-	exports org.bitbucket.cowwoc.requirements.java.extension;
+	exports com.github.cowwoc.requirements.java;
+	exports com.github.cowwoc.requirements.java.extension;
 
-	exports org.bitbucket.cowwoc.requirements.java.internal to org.bitbucket.cowwoc.requirements.guava,
-		org.bitbucket.cowwoc.requirements.test, org.bitbucket.cowwoc.requirements.benchmark.java,
-		org.bitbucket.cowwoc.requirements.benchmark.guava;
-	exports org.bitbucket.cowwoc.requirements.java.internal.scope to org.bitbucket.cowwoc.requirements.guava,
-		org.bitbucket.cowwoc.requirements.test, org.bitbucket.cowwoc.requirements.benchmark.java,
-		org.bitbucket.cowwoc.requirements.benchmark.guava;
-	exports org.bitbucket.cowwoc.requirements.java.internal.terminal to org.bitbucket.cowwoc.requirements.test,
-		org.bitbucket.cowwoc.requirements.benchmark.java;
-	exports org.bitbucket.cowwoc.requirements.java.internal.diff to org.bitbucket.cowwoc.requirements.test;
-	exports org.bitbucket.cowwoc.requirements.java.internal.util to org.bitbucket.cowwoc.requirements.guava,
-		org.bitbucket.cowwoc.requirements.test;
-	exports org.bitbucket.cowwoc.requirements.java.internal.extension to
-		org.bitbucket.cowwoc.requirements.guava, org.bitbucket.cowwoc.requirements.test;
-	exports org.bitbucket.cowwoc.requirements.java.internal.secrets to org.bitbucket.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.java.internal to com.github.cowwoc.requirements.guava,
+		com.github.cowwoc.requirements.test, com.github.cowwoc.requirements.benchmark.java,
+		com.github.cowwoc.requirements.benchmark.guava;
+	exports com.github.cowwoc.requirements.java.internal.scope to com.github.cowwoc.requirements.guava,
+		com.github.cowwoc.requirements.test, com.github.cowwoc.requirements.benchmark.java,
+		com.github.cowwoc.requirements.benchmark.guava;
+	exports com.github.cowwoc.requirements.java.internal.terminal to com.github.cowwoc.requirements.test,
+		com.github.cowwoc.requirements.benchmark.java;
+	exports com.github.cowwoc.requirements.java.internal.diff to com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.java.internal.util to com.github.cowwoc.requirements.guava,
+		com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.java.internal.extension to
+		com.github.cowwoc.requirements.guava, com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.java.internal.secrets to com.github.cowwoc.requirements.test;
 }

@@ -1,0 +1,187 @@
+/*
+ * Copyright (c) 2019 Gili Tzabari
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package com.github.cowwoc.requirements.java.internal;
+
+import com.github.cowwoc.requirements.java.ArrayValidator;
+import com.github.cowwoc.requirements.java.CollectionValidator;
+import com.github.cowwoc.requirements.java.SizeValidator;
+import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+
+/**
+ * A CollectionValidator that ignores subsequent validations due to an incompatible type conversion.
+ *
+ * @param <C> the type of the collection
+ * @param <E> the type of elements in the collection
+ */
+public final class CollectionValidatorNoOp<C extends Collection<E>, E>
+	extends AbstractObjectValidatorNoOp<CollectionValidator<C, E>, C>
+	implements CollectionValidator<C, E>
+{
+	/**
+	 * @param failures the list of validation failures
+	 * @throws AssertionError if {@code failures} is null
+	 */
+	public CollectionValidatorNoOp(List<ValidationFailure> failures)
+	{
+		super(failures);
+	}
+
+	@Override
+	protected CollectionValidator<C, E> getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> isEmpty()
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> isNotEmpty()
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> contains(E element)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> contains(E element, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> containsExactly(Collection<E> expected)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> containsExactly(Collection<E> expected, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> containsAny(Collection<E> expected)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> containsAny(Collection<E> expected, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> containsAll(Collection<E> expected)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> containsAll(Collection<E> expected, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContain(E element)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContain(E element, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainExactly(Collection<E> other)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainExactly(Collection<E> other, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainAny(Collection<E> elements)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainAny(Collection<E> elements, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainAll(Collection<E> elements)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainAll(Collection<E> elements, String name)
+	{
+		return this;
+	}
+
+	@Override
+	public CollectionValidator<C, E> doesNotContainDuplicates()
+	{
+		return this;
+	}
+
+	@Override
+	public SizeValidator size()
+	{
+		return new SizeValidatorNoOp(failures);
+	}
+
+	@Override
+	public CollectionValidator<C, E> size(Consumer<SizeValidator> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return this;
+	}
+
+	@Override
+	public ArrayValidator<E[], E> asArray(Class<E> type)
+	{
+		if (type == null)
+			throw new NullPointerException("type may not be null");
+		return new ArrayValidatorNoOp<>(failures);
+	}
+
+	@Override
+	public CollectionValidator<C, E> asArray(Class<E> type, Consumer<ArrayValidator<E[], E>> consumer)
+	{
+		if (type == null)
+			throw new NullPointerException("type may not be null");
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return this;
+	}
+}

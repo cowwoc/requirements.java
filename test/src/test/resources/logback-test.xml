@@ -9,6 +9,6 @@
 	<root level="debug">
 		<appender-ref ref="stdout"/>
 	</root>
-	<logger name="org.bitbucket.cowwoc.requirements.java.internal.util.Exceptions" level="warn"/>
-	<logger name="org.bitbucket.cowwoc.requirements.java.internal.terminal.Terminal" level="warn"/>
+	<logger name="com.github.cowwoc.requirements.java.internal.util.Exceptions" level="warn"/>
+	<logger name="com.github.cowwoc.requirements.java.internal.terminal.Terminal" level="warn"/>
 </configuration>

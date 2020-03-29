@@ -5,12 +5,12 @@
 /**
  * Code generators.
  */
-module org.bitbucket.cowwoc.requirements.generator
+module com.github.cowwoc.requirements.generator
 {
 	requires org.slf4j;
 	requires com.github.javaparser.core;
 
-	exports org.bitbucket.cowwoc.requirements.generator;
-	exports org.bitbucket.cowwoc.requirements.generator.internal.secrets to
-		org.bitbucket.cowwoc.requirements.maven_plugin;
+	exports com.github.cowwoc.requirements.generator;
+	exports com.github.cowwoc.requirements.generator.internal.secrets to
+		com.github.cowwoc.requirements.maven_plugin;
 }

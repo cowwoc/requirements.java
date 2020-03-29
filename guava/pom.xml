@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.bitbucket.cowwoc.requirements</groupId>
-		<artifactId>root</artifactId>
+		<groupId>com.github.cowwoc</groupId>
+		<artifactId>requirements</artifactId>
 		<version>5.2.3-SNAPSHOT</version>
 	</parent>
-	<artifactId>guava</artifactId>
+	<artifactId>requirements.guava</artifactId>
 	<packaging>jar</packaging>
 
 	<build>
@@ -48,11 +48,11 @@
 							</links>
 							<offlineLinks>
 								<!--
-								The plugin looks for Javadoc at ${project.url}/apidocs but Bitbucket doesn't support
+								The plugin looks for Javadoc at ${project.url}/apidocs but Github doesn't support
 								this layout
 								-->
 								<offlineLink>
-									<url>https://cowwoc.bitbucket.io/requirements/javadoc/${project.version}/java/</url>
+									<url>https://cowwoc.github.io/requirements.java/${project.version}/docs/api/</url>
 									<location>${project.basedir}/../java/target/apidocs</location>
 								</offlineLink>
 							</offlineLinks>
@@ -81,10 +81,10 @@
 						<skipXmlReport>true</skipXmlReport>
 						<skipDiffReport>true</skipDiffReport>
 						<includes>
-							<include>org.bitbucket.cowwoc.requirements.guava</include>
+							<include>com.github.cowwoc.requirements.guava</include>
 						</includes>
 						<excludes>
-							<exclude>org.bitbucket.cowwoc.requirements.guava.impl</exclude>
+							<exclude>com.github.cowwoc.requirements.guava.impl</exclude>
 						</excludes>
 					</parameter>
 				</configuration>
@@ -103,7 +103,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>java</artifactId>
+			<artifactId>requirements.java</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

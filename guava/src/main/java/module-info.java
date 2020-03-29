@@ -9,13 +9,13 @@
  * <a href="https://en.wikipedia.org/wiki/Invariant_(mathematics)#Invariants_in_computer_science">
  * invariants</a> of <a href="https://github.com/google/guava">Guava</a> types.
  */
-module org.bitbucket.cowwoc.requirements.guava
+module com.github.cowwoc.requirements.guava
 {
 	requires transitive com.google.common;
-	requires transitive org.bitbucket.cowwoc.requirements.java;
+	requires transitive com.github.cowwoc.requirements.java;
 	requires org.slf4j;
 
-	exports org.bitbucket.cowwoc.requirements.guava;
+	exports com.github.cowwoc.requirements.guava;
 
-	exports org.bitbucket.cowwoc.requirements.guava.internal.secrets to org.bitbucket.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.guava.internal.secrets to com.github.cowwoc.requirements.test;
 }

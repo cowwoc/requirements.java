@@ -7,13 +7,13 @@
 		<artifactId>oss-parent</artifactId>
 		<version>9</version>
 	</parent>
-	<groupId>org.bitbucket.cowwoc.requirements</groupId>
-	<artifactId>root</artifactId>
+	<groupId>com.github.cowwoc</groupId>
+	<artifactId>requirements</artifactId>
 	<version>5.2.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
-	<url>https://bitbucket.org/cowwoc/requirements.java/cowwoc/requirements/</url>
+	<url>https://github.com/cowwoc/requirements.java/cowwoc/requirements/</url>
 
 	<licenses>
 		<license>
@@ -24,9 +24,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://bitbucket.org/cowwoc/requirements.java/</url>
-		<connection>scm:hg:https://bitbucket.org/cowwoc/requirements.java/</connection>
-		<developerConnection>scm:hg:https://bitbucket.org/cowwoc/requirements.java/</developerConnection>
+		<url>https://github.com/cowwoc/requirements.java/</url>
+		<connection>scm:git:https://github.com/cowwoc/requirements.java/</connection>
+		<developerConnection>scm:git:https://github.com/cowwoc/requirements.java/</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -240,7 +240,7 @@
 		<slf4j.version>1.8.0-beta4</slf4j.version>
 		<logback.version>1.3.0-alpha4</logback.version>
 		<testng.version>7.0.0</testng.version>
-		<pouch.version>1.14</pouch.version>
+		<pouch.version>2.0</pouch.version>
 		<jmh.version>1.21</jmh.version>
 		<java.parser.version>3.15.0</java.parser.version>
 	</properties>

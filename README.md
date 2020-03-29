@@ -7,7 +7,9 @@
 
 ## Fluent Design by Contract for Java APIs ##
 
-A [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for enforcing [design contracts](https://en.wikipedia.org/wiki/Design_by_contract) with [automatic message generation](../wiki/Features#markdown-header-automatic-message-generation).
+A [fluent API](https://en.wikipedia.org/wiki/Fluent_Interface.md) for enforcing 
+[design contracts](https://en.wikipedia.org/wiki/Design_by_contract) with 
+[automatic message generation](wiki/Features.md#automatic-message-generation).
 
 ```java
 import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
@@ -38,14 +40,14 @@ For the **Javadoc**, click **api docs** at the top of this page.
 ## Features ##
 ---
 
-* [Automatic message generation](../wiki/Features#markdown-header-automatic-message-generation)
-* [Diffs provided whenever possible](../wiki/Features#markdown-header-diffs-provided-whenever-possible)
-* [Clean stack-traces](../wiki/Features#markdown-header-clean-stack-traces)
-* [Assertion support](../wiki/Features#markdown-header-assertion-support)
-* [Multiple validation errors](../wiki/Features#markdown-header-multiple-validation-errors)
-* [Grouping nested requirements](../wiki/Features#markdown-header-grouping-nested-requirements)
-* [String diff](../wiki/Features#markdown-header-string-diff)
-* [Fast... very fast!](../wiki/Performance)
+* [Automatic message generation](wiki/Features.md#automatic-message-generation)
+* [Diffs provided whenever possible](wiki/Features.md#diffs-provided-whenever-possible)
+* [Clean stack-traces](wiki/Features.md#clean-stack-traces)
+* [Assertion support](wiki/Features.md#assertion-support)
+* [Multiple validation errors](wiki/Features.md#multiple-validation-errors)
+* [Grouping nested requirements](wiki/Features.md#grouping-nested-requirements)
+* [String diff](wiki/Features.md#string-diff)
+* [Fast... very fast!](wiki/Performance.md)
 
 ## Getting Started ##
 ---
@@ -69,8 +71,8 @@ Follow these 4 steps to get started:
   <build>
     <plugins>
       <plugin>
-        <groupId>com.github.cowwoc.requirements</groupId>
-        <artifactId>maven_plugin</artifactId>
+        <groupId>com.github.cowwoc</groupId>
+        <artifactId>requirements.maven_plugin</artifactId>
         <version>${requirements.version}</version>
         <executions>
           <execution>
@@ -88,8 +90,8 @@ Follow these 4 steps to get started:
   ...
   <dependencies>
     <dependency>
-      <groupId>com.github.cowwoc.requirements</groupId>
-      <artifactId>java</artifactId>
+      <groupId>com.github.cowwoc</groupId>
+      <artifactId>requirements.java</artifactId>
       <version>${requirements.version}</version>
     </dependency>
   <dependencies>
@@ -99,7 +101,9 @@ Follow these 4 steps to get started:
 
 ### Step 2: Rebuild your project ###
 
-The build process will generate `Requirements` and `DefaultRequirements` classes. These classes are dynamically generated at build-time because their functionality varies depending on which [modules](../wiki/Supported%20Libraries) you have enabled.
+The build process will generate `Requirements` and `DefaultRequirements` classes. These classes are
+ dynamically generated at build-time because their functionality varies depending on which
+ [modules](wiki/Supported_Libraries.md) you have enabled.
 
 ### Step 3: Statically import `DefaultRequirements.requireThat()` ###
 
@@ -146,8 +150,8 @@ The first three methods are designed to be statically imported from `DefaultRequ
 
 Enhanced support is available for the following 3rd-party libraries and tools:
 
-* [guava](../wiki/Supported%20Libraries)
-* [IntelliJ IDEA](../wiki/Supported%20Tools)
+* [guava](wiki/Supported_Libraries.md)
+* [IntelliJ IDEA](wiki/Supported_Tools.md)
 
 ## License ##
 ---
