@@ -1,6 +1,6 @@
 A colored diff looks like this:
 
-![xterm-example4.png](xterm-example4.png)
+![colored-diff-example4.png](colored-diff-example4.png)
 
 ## Basic Rules for Interpreting Diff ##
 
@@ -19,7 +19,7 @@ Expected = "text"
 
 results in the following diff:
 
-![xterm-example1.png](xterm-example1.png)
+![colored-diff-example1.png](colored-diff-example1.png)
 
 Meaning, to go from `Actual` to `Expected` we need to insert "text".
 
@@ -32,7 +32,7 @@ Expected = ""
 
 results in the following diff:
 
-![xterm-example2.png](xterm-example2.png)
+![colored-diff-example2.png](colored-diff-example2.png)
 
 Meaning, to go from `Actual` to `Expected` we need to delete "text".
 
@@ -45,7 +45,7 @@ Expected = "   foo"
 
 results in the following diff:
 
-![xterm-example3.png](xterm-example3.png)
+![colored-diff-example3.png](colored-diff-example3.png)
 
 Meaning:
 
@@ -61,7 +61,7 @@ Expected = "ballroom"
 
 results in the following diff:
 
-![xterm-example4.png](xterm-example4.png)
+![colored-diff-example4.png](colored-diff-example4.png)
 
 Meaning, we need to:
 
@@ -86,7 +86,7 @@ Expected = null
 
 results in the following diff:
 
-![xterm-example5.png](xterm-example5.png)
+![colored-diff-example5.png](colored-diff-example5.png)
 
 ## Multi-line Strings ##
 
@@ -105,7 +105,7 @@ Expected = "first\nsecond\nbar\nforth\nfifth"
 
 results in the following diff:
 
-![xterm-example6.png](xterm-example6.png)
+![colored-diff-example6.png](colored-diff-example6.png)
 
 Meaning:
 
@@ -128,7 +128,7 @@ Expected = "Bar"
 
 results in the following diff:
 
-![xterm-example7.png](xterm-example7.png)
+![colored-diff-example7.png](colored-diff-example7.png)
 
 Meaning:
 

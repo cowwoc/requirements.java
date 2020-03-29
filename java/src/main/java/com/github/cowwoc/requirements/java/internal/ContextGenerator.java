@@ -12,7 +12,6 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
@@ -23,32 +22,30 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EO
  */
 public final class ContextGenerator
 {
-	private static final Pattern ELEMENTS_NOT_EQUAL = Pattern.compile("[^" + DIFF_EQUAL + "]+");
+	private static final Pattern LINES_NOT_EQUAL = Pattern.compile("[^" + DIFF_EQUAL + "]+");
 
 	/**
-	 * Append context entries to indicate that duplicate elements were skipped.
+	 * Append context entries to indicate that duplicate lines were skipped.
 	 *
 	 * @param entries the exception context
 	 */
-	private static void skipDuplicateElements(List<ContextLine> entries)
+	private static void skipDuplicateLines(List<ContextLine> entries)
 	{
 		entries.add(new ContextLine(""));
 		entries.add(new ContextLine("[...]"));
 	}
 
 	/**
-	 * @param actualElements   the actual elements
-	 * @param expectedElements the expected elements
-	 * @param diffElements     the middle elements
-	 * @param index            the index of the current element (0-based)
-	 * @return true if the elements being compared are equal to each other
+	 * @param actualLine   the current line of the actual value
+	 * @param expectedLine the current line of the expected value
+	 * @param diffLine     the diff associated with the line
+	 * @return true if the lines being compared are equal to each other
 	 */
-	private static boolean elementsAreEqual(List<?> actualElements, List<?> expectedElements,
-	                                        List<String> diffElements, int index)
+	private static boolean linesAreEqual(String actualLine, String expectedLine, String diffLine)
 	{
-		if (!diffElements.isEmpty())
-			return !ELEMENTS_NOT_EQUAL.matcher(diffElements.get(index)).find();
-		return actualElements.get(index).equals(expectedElements.get(index));
+		if (!diffLine.isEmpty())
+			return !LINES_NOT_EQUAL.matcher(diffLine).find();
+		return actualLine.equals(expectedLine);
 	}
 
 	private final Configuration config;
@@ -68,57 +65,6 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * @param actualName        the name of the actual value
-	 * @param actualValue       the actual value
-	 * @param expectedName      the name of the expected value
-	 * @param expectedValue     the expected value
-	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
-	 * @return the list of name-value pairs to append to the exception message
-	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
-	 */
-	public List<ContextLine> getContext(String actualName, Object actualValue,
-	                                    String expectedName, Object expectedValue,
-	                                    boolean expectedInMessage)
-	{
-		assert (actualName != null) : "actualName may not be null";
-		// actualType is null if actualValue is null
-		assert (expectedName != null) : "expectedName may not be null";
-		Class<?> actualType = getClass(actualValue);
-		return getContext(actualName, actualValue, actualType, expectedName, expectedValue, expectedInMessage);
-	}
-
-	/**
-	 * @param actualName        the name of the actual value
-	 * @param actualType        the type of the actual value
-	 * @param actualValue       the actual value
-	 * @param expectedName      the name of the expected value
-	 * @param expectedValue     the expected value
-	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
-	 * @return the list of name-value pairs to append to the exception message
-	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
-	 */
-	private List<ContextLine> getContext(String actualName, Object actualValue, Class<?> actualType,
-	                                     String expectedName, Object expectedValue,
-	                                     boolean expectedInMessage)
-	{
-		// Don't diff booleans
-		boolean typeIsDiffable = (actualType != boolean.class) && (actualType != Boolean.class);
-		if (!typeIsDiffable || !config.isDiffEnabled())
-		{
-			List<ContextLine> result = new ArrayList<>(2);
-			result.add(new ContextLine(actualName, actualValue));
-			if (!expectedInMessage)
-				result.add(new ContextLine(expectedName, expectedValue));
-			return result;
-		}
-		String actualAsString = config.toString(actualValue);
-		String expectedAsString = config.toString(expectedValue);
-		DiffResult diff = diffGenerator.diff(actualAsString, expectedAsString);
-		return getContext(actualName, diff.getActualLines(), expectedName, diff.getExpectedLines(),
-			diff.getDiffLines(), diffGenerator::isEmpty);
-	}
-
-	/**
 	 * @param <T>               the type of elements in the list
 	 * @param actualName        the name of the actual value
 	 * @param actualValue       the actual value
@@ -135,7 +81,6 @@ public final class ContextGenerator
 		assert (actualName != null) : "actualName may not be null";
 		// actualType is null if actualValue is null
 		assert (expectedName != null) : "expectedName may not be null";
-		// Don't diff booleans
 		if (!config.isDiffEnabled())
 		{
 			List<ContextLine> result = new ArrayList<>(2);
@@ -151,8 +96,8 @@ public final class ContextGenerator
 		List<ContextLine> result = new ArrayList<>();
 		// Indicates if the previous index was equal
 		boolean skippedDuplicates = false;
-		int actualElementNumber = 0;
-		int expectedElementNumber = 0;
+		int actualIndex = 0;
+		int expectedIndex = 0;
 		for (int i = 0; i < maxSize; ++i)
 		{
 			boolean elementsAreEqual = true;
@@ -161,8 +106,8 @@ public final class ContextGenerator
 			if (i < actualSize)
 			{
 				actualValueAsString = config.toString(actualValue.get(i));
-				actualNameForElement = actualName + "[" + actualElementNumber + "]";
-				++actualElementNumber;
+				actualNameForElement = actualName + "[" + actualIndex + "]";
+				++actualIndex;
 			}
 			else
 			{
@@ -175,8 +120,8 @@ public final class ContextGenerator
 			if (i < expectedSize)
 			{
 				expectedValueAsString = config.toString(expectedValue.get(i));
-				expectedNameForElement = expectedName + "[" + expectedElementNumber + "]";
-				++expectedElementNumber;
+				expectedNameForElement = expectedName + "[" + expectedIndex + "]";
+				++expectedIndex;
 			}
 			else
 			{
@@ -194,101 +139,139 @@ public final class ContextGenerator
 			if (skippedDuplicates)
 			{
 				skippedDuplicates = false;
-				skipDuplicateElements(result);
+				skipDuplicateLines(result);
 			}
 			result.addAll(getContext(actualNameForElement, actualValueAsString, expectedNameForElement,
-				expectedValueAsString, false));
+				expectedValueAsString, false, false));
 		}
 		return result;
 	}
 
 	/**
-	 * @param actualName       the name of the actual value
-	 * @param actualElements   the elements in the actual value
-	 * @param expectedName     the name of the expected value
-	 * @param expectedElements the elements in the expected value
-	 * @param diffElements     the elements denoting the difference between the actual and expected elements
-	 * @param isEmpty          indicates if an element represents an empty value
+	 * @param actualName        the name of the actual value
+	 * @param actualValue       the actual value
+	 * @param expectedName      the name of the expected value
+	 * @param expectedValue     the expected value
+	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
 	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	private List<ContextLine> getContext(String actualName, List<?> actualElements,
-	                                     String expectedName, List<?> expectedElements,
-	                                     List<String> diffElements, Predicate<String> isEmpty)
+	public List<ContextLine> getContext(String actualName, Object actualValue,
+	                                    String expectedName, Object expectedValue,
+	                                    boolean expectedInMessage)
 	{
-		// Outputs the String representation of the values. If those are equal, it also outputs the first of
-		// getClass(), hashCode(), or System.identityHashCode()] that differs.
-		int numberOfElements = actualElements.size();
-		List<ContextLine> result = new ArrayList<>(2 * numberOfElements);
-		if (numberOfElements == 1)
+		return getContext(actualName, actualValue, expectedName, expectedValue, expectedInMessage, true);
+	}
+
+	/**
+	 * @param actualName        the name of the actual value
+	 * @param actualValue       the actual value
+	 * @param expectedName      the name of the expected value
+	 * @param expectedValue     the expected value
+	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
+	 * @param compareTypes      true if the actual and expected types should be compared if their values are
+	 *                          equal
+	 * @return the list of name-value pairs to append to the exception message
+	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
+	 */
+	private List<ContextLine> getContext(String actualName, Object actualValue,
+	                                     String expectedName, Object expectedValue,
+	                                     boolean expectedInMessage, boolean compareTypes)
+	{
+		// Don't diff booleans
+		Class<?> actualType = getClass(actualValue);
+		boolean typeIsDiffable = (actualType != boolean.class) && (actualType != Boolean.class);
+		if (!typeIsDiffable || !config.isDiffEnabled())
 		{
-			result.add(new ContextLine(""));
-			result.add(new ContextLine(actualName, actualElements.get(0)));
-			if (!diffElements.isEmpty() && !elementsAreEqual(actualElements, expectedElements, diffElements, 0))
-				result.add(new ContextLine("Diff", diffElements.get(0)));
-			result.add(new ContextLine(expectedName, expectedElements.get(0)));
+			List<ContextLine> result = new ArrayList<>(2);
+			result.add(new ContextLine(actualName, actualValue));
+			if (!expectedInMessage)
+				result.add(new ContextLine(expectedName, expectedValue));
 			return result;
 		}
-		assert (expectedElements.size() == numberOfElements) :
-			"elements: " + numberOfElements + ", expected.size(): " +
-				expectedElements.size();
-		int actualElementNumber = 0;
-		int expectedElementNumber = 0;
-		// Indicates if the previous index was equal
-		boolean skippedDuplicates = false;
-		for (int i = 0; i < numberOfElements; ++i)
+		String actualAsString = config.toString(actualValue);
+		String expectedAsString = config.toString(expectedValue);
+		DiffResult lines = diffGenerator.diff(actualAsString, expectedAsString);
+		int numberOfLines = lines.getActualLines().size();
+		List<ContextLine> result = new ArrayList<>(2 * numberOfLines);
+		if (numberOfLines == 1)
 		{
-			Object actualElement = actualElements.get(i);
-			Object expectedElement = expectedElements.get(i);
-			boolean elementsAreEqual = elementsAreEqual(actualElements, expectedElements, diffElements, i);
-			if (i != 0 && i != numberOfElements - 1 && elementsAreEqual)
+			String actualLine = lines.getActualLines().get(0);
+			String expectedLine = lines.getExpectedLines().get(0);
+			String diffLine;
+			if (lines.getDiffLines().isEmpty())
+				diffLine = "";
+			else
+				diffLine = lines.getDiffLines().get(0);
+			boolean stringsAreEqual = linesAreEqual(actualLine, expectedLine, diffLine);
+			result.add(new ContextLine(""));
+			result.add(new ContextLine(actualName, actualLine));
+			if (!diffLine.isEmpty() && !stringsAreEqual)
+				result.add(new ContextLine("Diff", diffLine));
+			result.add(new ContextLine(expectedName, expectedLine));
+
+			if (compareTypes && linesAreEqual(actualLine, expectedLine, diffLine))
 			{
-				// Skip identical elements, unless they are the first or last element.
+				// If the String representation of the values is equal, output getClass(), hashCode(),
+				// or System.identityHashCode()] that differ.
+				result.addAll(compareTypes(actualName, actualValue, actualAsString,
+					expectedName, expectedValue, expectedAsString));
+			}
+			return result;
+		}
+		assert (lines.getExpectedLines().size() == numberOfLines) :
+			"numberOfLines: " + numberOfLines + ", expected.size(): " + lines.getExpectedLines().size();
+		int actualLineNumber = 0;
+		int expectedLineNumber = 0;
+		// Indicates if the previous line was equal
+		boolean skippedDuplicates = false;
+		for (int i = 0; i < numberOfLines; ++i)
+		{
+			String actualLine = lines.getActualLines().get(i);
+			String expectedLine = lines.getExpectedLines().get(i);
+			String diffLine;
+			if (lines.getDiffLines().isEmpty())
+				diffLine = "";
+			else
+				diffLine = lines.getDiffLines().get(i);
+			boolean linesAreEqual = linesAreEqual(actualLine, expectedLine, diffLine);
+			if (i != 0 && i != numberOfLines - 1 && linesAreEqual)
+			{
+				// Skip identical lines, unless they are the first or last line.
 				skippedDuplicates = true;
-				++actualElementNumber;
-				++expectedElementNumber;
+				++actualLineNumber;
+				++expectedLineNumber;
 				continue;
 			}
-			Class<?> actualElementType = actualElement.getClass();
-			Class<?> expectedElementType = expectedElement.getClass();
-
-			String actualElementAsString = config.toString(actualElement);
-			String actualNameForElement;
-			if (!isEmpty.test(actualElementAsString))
+			String actualNameForLine;
+			if (!diffGenerator.isEmpty(actualLine))
 			{
-				actualNameForElement = actualName + "@" + actualElementNumber;
-				if (EOL_PATTERN.matcher(actualElementAsString).find())
-					++actualElementNumber;
+				actualNameForLine = actualName + "@" + actualLineNumber;
+				if (EOL_PATTERN.matcher(actualLine).find())
+					++actualLineNumber;
 			}
 			else
-				actualNameForElement = actualName;
+				actualNameForLine = actualName;
 			if (skippedDuplicates)
 			{
 				skippedDuplicates = false;
-				skipDuplicateElements(result);
+				skipDuplicateLines(result);
 			}
 			result.add(new ContextLine(""));
-			result.add(new ContextLine(actualNameForElement, actualElement));
-			if (!diffElements.isEmpty() && !elementsAreEqual)
-				result.add(new ContextLine("Diff", diffElements.get(i)));
+			result.add(new ContextLine(actualNameForLine, actualLine));
+			if (!diffLine.isEmpty() && !linesAreEqual)
+				result.add(new ContextLine("Diff", diffLine));
 
-			String expectedElementAsString = config.toString(expectedElement);
-			String expectedNameForElement;
-			if (!isEmpty.test(expectedElementAsString))
+			String expectedNameForLine;
+			if (!diffGenerator.isEmpty(expectedLine))
 			{
-				expectedNameForElement = expectedName + "@" + expectedElementNumber;
-				if (EOL_PATTERN.matcher(expectedElementAsString).find())
-					++expectedElementNumber;
+				expectedNameForLine = expectedName + "@" + expectedLineNumber;
+				if (EOL_PATTERN.matcher(expectedLine).find())
+					++expectedLineNumber;
 			}
 			else
-				expectedNameForElement = expectedName;
-			result.add(new ContextLine(expectedNameForElement, expectedElement));
-			if (elementsAreEqual && !actualElement.equals(expectedElement))
-			{
-				result.add(new ContextLine(""));
-				result.addAll(compareTypes(actualName, actualElement, config.toString(actualElement), expectedName,
-					expectedElement, config.toString(expectedElement)));
-			}
+				expectedNameForLine = expectedName;
+			result.add(new ContextLine(expectedNameForLine, expectedLine));
 		}
 		return result;
 	}
@@ -333,22 +316,23 @@ public final class ContextGenerator
 		String expectedClassName = getClassName(getClass(expectedValue));
 		if (!actualClassName.equals(expectedClassName))
 		{
-			result.addAll(getContext(actualName + ".class", actualClassName, actualType,
+			result.addAll(getContext(actualName + ".class", actualClassName,
 				expectedName + ".class", expectedClassName, false));
 			return result;
 		}
-		String actualHashCode = config.toString(Objects.hashCode(actualValue));
-		String expectedHashCode = config.toString(Objects.hashCode(expectedValue));
+		// Do not use config.toString() for hashCode values because they are not meant for human consumption
+		String actualHashCode = String.valueOf(Objects.hashCode(actualValue));
+		String expectedHashCode = String.valueOf(Objects.hashCode(expectedValue));
 		if (!actualHashCode.equals(expectedHashCode))
 		{
-			result.addAll(getContext(actualName + ".hashCode", actualHashCode, actualType,
+			result.addAll(getContext(actualName + ".hashCode", actualHashCode,
 				expectedName + ".hashCode", expectedHashCode, false));
 			return result;
 		}
-		String actualIdentityHashCode = config.toString(System.identityHashCode(actualValue));
-		String expectedIdentityHashCode = config.toString(System.identityHashCode(expectedValue));
+		String actualIdentityHashCode = String.valueOf(System.identityHashCode(actualValue));
+		String expectedIdentityHashCode = String.valueOf(System.identityHashCode(expectedValue));
 		result.addAll(getContext(actualName + ".identityHashCode", actualIdentityHashCode,
-			actualType, expectedName + ".identityHashCode", expectedIdentityHashCode, false));
+			expectedName + ".identityHashCode", expectedIdentityHashCode, false));
 		return result;
 	}
 }

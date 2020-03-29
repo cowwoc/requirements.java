@@ -28,7 +28,7 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NE
  */
 public final class DiffGenerator
 {
-	public static final Pattern WORDS = Pattern.compile("\\s+|[,.\\[\\](){}/\\\\*+\\-#]");
+	public static final Pattern WORDS = Pattern.compile("\\s+|[.\\[\\](){}/\\\\*+\\-#]");
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 

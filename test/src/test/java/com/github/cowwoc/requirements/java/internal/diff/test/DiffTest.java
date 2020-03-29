@@ -12,6 +12,7 @@ import com.github.cowwoc.requirements.java.internal.diff.Writer256Colors;
 import com.github.cowwoc.requirements.java.internal.diff.Writer8Colors;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
+import com.github.cowwoc.requirements.java.test.SameToStringAndHashCodeDifferentIdentity;
 import com.github.cowwoc.requirements.java.test.SameToStringDifferentHashCode;
 import org.testng.annotations.Test;
 
@@ -458,23 +459,59 @@ public final class DiffTest
 	}
 
 	/**
-	 * BUG: If actual != expected but their string value is identical, then actual's string value
-	 * should be included in the output, but is not.
+	 * If actual != expected but their string value is identical, make sure that the hashCode()
+	 * is returned.
 	 */
 	@Test
-	public void stringValueIsEqual()
+	public void stringValueIsEqualDifferentHashCode()
 	{
 		SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
+		SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			new Requirements(scope).requireThat(actual, "actual").
-				isEqualTo(new SameToStringDifferentHashCode());
+				isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
 			assert (actualMessage.contains(actual.toString())) :
 				"Was expecting output to contain actual value, but did not.\n" +
+					"\nActual:\n" + actualMessage;
+			assert (actualMessage.contains("Actual.hashCode")) :
+				"Was expecting output to contain Actual.hashCode, but did not.\n" +
+					"\nActual:\n" + actualMessage;
+			assert (actualMessage.contains("Expected.hashCode")) :
+				"Was expecting output to contain Expected.hashCode, but did not.\n" +
+					"\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * If actual != expected but their string value and hashCode() are identical, make sure
+	 * that the identity hashCode is returned.
+	 */
+	@Test
+	public void stringValueIsEqualDifferentIdentityHashCode()
+	{
+		SameToStringAndHashCodeDifferentIdentity actual = new SameToStringAndHashCodeDifferentIdentity();
+		SameToStringAndHashCodeDifferentIdentity expected = new SameToStringAndHashCodeDifferentIdentity();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			new Requirements(scope).requireThat(actual, "actual").
+				isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains(actual.toString())) :
+				"Was expecting output to contain actual value, but did not.\n" +
+					"\nActual:\n" + actualMessage;
+			assert (actualMessage.contains("Actual.identityHashCode")) :
+				"Was expecting output to contain Actual.identityHashCode, but did not.\n" +
+					"\nActual:\n" + actualMessage;
+			assert (actualMessage.contains("Expected.identityHashCode")) :
+				"Was expecting output to contain Expected.identityHashCode, but did not.\n" +
 					"\nActual:\n" + actualMessage;
 		}
 	}

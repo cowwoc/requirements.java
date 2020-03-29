@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.java.test;
 
 /**
- * A class whose instances have the same toString() and hashCode() but are never equal.
+ * A class whose instances have the same toString() and hashCode() values but are never equal.
  */
 public final class SameToStringAndHashCodeDifferentIdentity
 {

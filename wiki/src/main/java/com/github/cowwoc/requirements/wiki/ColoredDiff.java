@@ -8,7 +8,7 @@ public final class ColoredDiff
 	{
 		try
 		{
-			requireThat("actual", "actual").isEqualTo("ballroom");
+			requireThat("foosball", "actual").isEqualTo("ballroom");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -16,7 +16,7 @@ public final class ColoredDiff
 		}
 		try
 		{
-			requireThat("actual", "actual").isEqualTo("text");
+			requireThat("", "actual").isEqualTo("text");
 		}
 		catch (IllegalArgumentException e)
 		{
