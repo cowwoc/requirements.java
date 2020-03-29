@@ -88,7 +88,7 @@ results in the following diff:
 
 ![colored-diff-example5.png](colored-diff-example5.png)
 
-## Multi-line Strings ##
+## Example 6: Multi-line Strings ##
 
 When comparing multi-line strings:
 
@@ -117,7 +117,7 @@ Lines always end with `\n` or `\0`. The former denotes a newline. The latter den
 
 Lines ending with "\n\n" or "\0\0" represents the literal string "\n" followed by a newline character, or the literal string "\0" followed by the end of string, respectively.
 
-## Example 6: Missing Line Numbers ##
+## Example 7: Missing Line Numbers ##
 
 When `Actual` or `Expected` contain a line that does not have a corresponding line on the other side we omit the latter's line number.
 

@@ -26,7 +26,6 @@ public final class Writer8Colors extends AbstractColorWriter
 	private static final String BLACK_FOREGROUND = "30";
 	private static final String GREEN_BACKGROUND = "42";
 	private static final String RED_BACKGROUND = "41";
-	private static final String DEFAULT_BACKGROUND = "49";
 	private static final String BLACK_BACKGROUND = "40";
 
 	@Override

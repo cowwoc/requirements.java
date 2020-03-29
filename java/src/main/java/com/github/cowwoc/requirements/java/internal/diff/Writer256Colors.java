@@ -21,12 +21,11 @@ public final class Writer256Colors extends AbstractColorWriter
 	private static final String GREEN_BACKGROUND = "48;5;28";
 	private static final String RED_BACKGROUND = "48;5;124";
 	private static final String GRAY_BACKGROUND = "48;5;244";
-	private static final String BLACK_BACKGROUND = "48;5;16";
 
 	@Override
 	public String decorateUnchangedText(String text)
 	{
-		return PREFIX + GRAY_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX + text;
+		return PREFIX + GRAY_FOREGROUND + ";" + DEFAULT_BACKGROUND + POSTFIX + text;
 	}
 
 	@Override

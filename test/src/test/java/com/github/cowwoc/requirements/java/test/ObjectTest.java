@@ -97,10 +97,8 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			SameToStringAndHashCodeDifferentIdentity actual =
-				new SameToStringAndHashCodeDifferentIdentity();
-			SameToStringAndHashCodeDifferentIdentity expected =
-				new SameToStringAndHashCodeDifferentIdentity();
+			SameToStringAndHashCodeDifferentIdentity actual = new SameToStringAndHashCodeDifferentIdentity();
+			SameToStringAndHashCodeDifferentIdentity expected = new SameToStringAndHashCodeDifferentIdentity();
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}

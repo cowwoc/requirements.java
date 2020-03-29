@@ -8,20 +8,13 @@ public final class ColoredDiff
 	{
 		try
 		{
-			requireThat("foosball", "actual").isEqualTo("ballroom");
-		}
-		catch (IllegalArgumentException e)
-		{
-			System.out.println(e.getMessage());
-		}
-		try
-		{
 			requireThat("", "actual").isEqualTo("text");
 		}
 		catch (IllegalArgumentException e)
 		{
 			System.out.println(e.getMessage());
 		}
+		System.out.println();
 		try
 		{
 			requireThat("text", "actual").isEqualTo("");
@@ -30,6 +23,7 @@ public final class ColoredDiff
 		{
 			System.out.println(e.getMessage());
 		}
+		System.out.println();
 		try
 		{
 			requireThat("foo", "actual").isEqualTo("   foo");
@@ -38,6 +32,16 @@ public final class ColoredDiff
 		{
 			System.out.println(e.getMessage());
 		}
+		System.out.println();
+		try
+		{
+			requireThat("foosball", "actual").isEqualTo("ballroom");
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		System.out.println();
 		try
 		{
 			requireThat("null", "actual").isEqualTo(null);
@@ -46,6 +50,7 @@ public final class ColoredDiff
 		{
 			System.out.println(e.getMessage());
 		}
+		System.out.println();
 		try
 		{
 			requireThat("first\nsecond\nfoo\nforth\nfifth", "actual").
@@ -55,6 +60,7 @@ public final class ColoredDiff
 		{
 			System.out.println(e.getMessage());
 		}
+		System.out.println();
 		try
 		{
 			requireThat("Foo\nBar", "actual").isEqualTo("Bar");
