@@ -123,8 +123,21 @@ public final class Terminal
 				break;
 			}
 		}
-		// There is no reliable way to detect RGB_888_COLORS support:
+		// There is no reliable way to detect RGB_888_COLORS support but we our best:
 		// https://gist.github.com/XVilka/8346728#true-color-detection
+		String colorterm = System.getenv("COLORTERM");
+		if (colorterm != null)
+		{
+			switch (colorterm)
+			{
+				case "truecolor":
+				case "24bit":
+				{
+					result.add(RGB_888_COLORS);
+					break;
+				}
+			}
+		}
 		return result;
 	}
 
