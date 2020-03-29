@@ -35,7 +35,7 @@ public final class ConfigurationTest
 
 			new Requirements(scope).withStringConverter(LinkedHashSet.class, s ->
 			{
-				@SuppressWarnings("unchecked")
+				@SuppressWarnings({"unchecked", "rawtypes"})
 				List<Integer> result = new ArrayList<>(s);
 				result.sort(Comparator.reverseOrder());
 				return result.toString();

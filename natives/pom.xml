@@ -79,7 +79,6 @@
 						<configuration>
 							<sourcePath>${project.build.directory}/sources</sourcePath>
 							<targetPath>${project.build.directory}/${platform}-${build.type}/cmake</targetPath>
-							<options>${cmake.options}</options>
 							<environmentVariables>
 								<CMAKE_CLASSIFIER>${cmake.classifier}</CMAKE_CLASSIFIER>
 							</environmentVariables>

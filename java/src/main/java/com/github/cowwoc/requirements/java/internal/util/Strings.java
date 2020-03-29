@@ -42,13 +42,10 @@ public final class Strings
 				{
 					firstLetter = false;
 					result.appendCodePoint(Character.toTitleCase(cp));
-					continue;
 				}
 				else
-				{
 					result.appendCodePoint(Character.toLowerCase(cp));
-					continue;
-				}
+				continue;
 			}
 			if (Character.isWhitespace(cp))
 				firstLetter = true;

@@ -542,7 +542,6 @@ public final class DiffTest
 				"\n" +
 				"Actual[4]  : 5" + EOS_MARKER + "\n" +
 				"Expected[4]: 5" + EOS_MARKER;
-			;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n\n****************\nActual:\n" + actualMessage;
 		}
