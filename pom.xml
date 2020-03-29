@@ -412,6 +412,7 @@
 				<module>generated_api</module>
 				<module>test</module>
 				<module>benchmark</module>
+				<module>wiki</module>
 			</modules>
 		</profile>
 	</profiles>
