@@ -123,7 +123,7 @@ requireThat(nameToAge, "nameToAge").isNotNull().
 
 ## String diff
 
-When a [String comparison](https://cowwoc.github.io/requirements.java/6.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object)) fails, the library outputs a [diff](../wiki/String%20diff) of the values being compared.
+When a [String comparison](https://cowwoc.github.io/requirements.java/6.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object)) fails, the library outputs a [diff](String_Diff.md) of the values being compared.
 
 ![xterm-example4.png](xterm-example4.png)
 
