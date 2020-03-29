@@ -1,5 +1,4 @@
-## Automatic message generation ##
----
+## Automatic message generation
 
 Guava's API forces you to repeat yourself. This API generates concise messages on your behalf.
 
@@ -23,8 +22,8 @@ number: 1234567
 	at Main.requirements2(Main.java:57)
 	at Main.main(Main.java:72)
 ```
-## Diffs provided whenever possible ##
----
+
+## Diffs provided whenever possible
 
 Not only do we provide you with the actual and expected values, we also provide a diff whenever possible.
 
@@ -52,8 +51,7 @@ Missing: [1, 5]
 	at Main.main(Main.java:137)
 ```
 
-## Clean stack-traces ##
----
+## Clean stack-traces
 
 This API's classes do not show up in your stack-traces.
 
@@ -71,15 +69,13 @@ java.lang.NullPointerException: actual may not be null
 	at Main.main(Main.java:67)
 ```
 
-## Assertion support ##
----
+## Assertion support
 
 All verifiers allocate memory which is especially hard to justify given that most checks are never going to fail. If you need to run in a high-performance, zero allocation environment (to reduce latency and jitter) look no further than `DefaultRequirements.assertThat()`.
 
 `assertThat()` skips verification if assertions are disabled. `DefaultRequirements` might be less flexible than `Requirements` but it only allocates `Requirements` once per application. Together, they guarantee high performance and no allocations if assertions are disabled.
 
-## Multiple validation errors ##
----
+## Multiple validation errors
 
 ```java
 String name = "George";
@@ -101,8 +97,7 @@ name must contain [10, 30) characters.
 province must be one of [Ontario, Quebec, Nova Scotia, New Brunswick, Manitoba, British Columbia, Prince Edward Island, Saskatchewan, Alberta, Newfoundland and Labrador].
 ```
 
-## Grouping nested requirements ##
----
+## Grouping nested requirements
 
 Some classes provide a mechanism for grouping nested requirements. For example, `MapVerifier` has methods `keySet()` and `keySet(Consumer<CollectionVerifier>>)`, `values()` and `values(Consumer<CollectionVerifier>>`. This enables one to group requirements that share the same parent. For example:
 
@@ -125,8 +120,8 @@ requireThat(nameToAge, "nameToAge").isNotNull().
   keySet(k -> k.containsAll(Arrays.asList("Leah", "Nathaniel"))).
   values(v -> v.containsAll(Arrays.asList(3, 1)));
 ```
-## String diff ##
----
+
+## String diff
 
 When a [String comparison](https://cowwoc.github.io/requirements.java/5.2.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object)) fails, the library outputs a [diff](../wiki/String%20diff) of the values being compared.
 
@@ -134,9 +129,7 @@ When a [String comparison](https://cowwoc.github.io/requirements.java/5.2.0/docs
 
 On some platforms, this feature can only be unlocked by [deploying native libraries](Deploying_Native_Libraries.md).
 
-
-## Getting the actual value ##
----
+## Getting the actual value
 
 Sometimes it is convenient to retrieve the actual value after a verification/validation:
 
