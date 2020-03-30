@@ -77,13 +77,12 @@
 //
 // nexus-staging-maven-plugin does not allow us to run unit tests and deploy at the same time because skipNexusStagingDeployMojo cannot be set to true
 // in the last module. Therefore we build twice. The first time we run unit tests without deploying. The second time we deploy without running unit tests.
-// -Dmaven.javadoc.skip=true is a workaround for https://bugs.openjdk.java.net/browse/JDK-8216170
 
 // Create release candidate branch
 def unauthenticatedRepository = &quot;github.com/cowwoc/requirements.java.git/&quot;
 def repository = &quot;https://${unauthenticatedRepository}&quot;
 // One can look up a project&apos;s profileId by running: mvn nexus-staging:rc-list-profiles -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/
-def stagingProfileId = &quot;353562598afa&quot;
+def stagingProfileId = &quot;3799bb102c7f24&quot;
 def stagingRepositoryId
 def userEmail = &quot;cowwoc2020@gmail.com&quot;
 def userName = &quot;Gili Tzabari&quot;
