@@ -125,7 +125,7 @@ requireThat(nameToAge, "nameToAge").isNotNull().
 
 When a [String comparison](https://cowwoc.github.io/requirements.java/6.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object)) fails, the library outputs a [diff](String_Diff.md) of the values being compared.
 
-![xterm-example4.png](xterm-example4.png)
+![colored-diff-example4.png](colored-diff-example4.png)
 
 On some platforms, this feature can only be unlocked by [deploying native libraries](Deploying_Native_Libraries.md).
 
