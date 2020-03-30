@@ -153,7 +153,7 @@ Expected = List.of("first", "second", "bar\nfoo", "fifth");
 
 results in the following diff:
 
-![colored-diff-example7.png](colored-diff-example8.png)
+![colored-diff-example8.png](colored-diff-example8.png)
 
 Meaning:
 
