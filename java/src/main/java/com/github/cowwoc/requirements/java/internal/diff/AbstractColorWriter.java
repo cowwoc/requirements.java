@@ -43,6 +43,8 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
+		if (text.isEmpty())
+			return;
 		actualLineBuilder.append(decorateUnchangedText(text));
 		expectedLineBuilder.append(decorateUnchangedText(text));
 		needToResetActual = true;
@@ -56,7 +58,10 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		actualLineBuilder.append(decoratePadding(text.length()));
+		int length = text.length();
+		if (length == 0)
+			return;
+		actualLineBuilder.append(decoratePadding(length));
 		expectedLineBuilder.append(decorateInsertedText(text));
 		needToResetActual = true;
 		needToResetExpected = true;
@@ -69,8 +74,11 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
+		int length = text.length();
+		if (length == 0)
+			return;
 		actualLineBuilder.append(decorateDeletedText(text));
-		expectedLineBuilder.append(decoratePadding(text.length()));
+		expectedLineBuilder.append(decoratePadding(length));
 		needToResetActual = true;
 		needToResetExpected = true;
 		if (text.endsWith(NEWLINE_MARKER))

@@ -552,7 +552,7 @@ public final class DiffTest
 	}
 
 	/**
-	 * Diffing of {@code List<Integer>}.
+	 * Diffing {@code List<Integer>}.
 	 */
 	@Test
 	public void diffListOfInteger()
@@ -585,7 +585,7 @@ public final class DiffTest
 	}
 
 	/**
-	 * Diffing of {@code List<String>}.
+	 * Diffing {@code List<String>}.
 	 */
 	@Test
 	public void diffListOfString()
@@ -620,6 +620,36 @@ public final class DiffTest
 				"Expected[2]  : 3" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Make sure that we skip line numbers even when writing colors.
+	 */
+	@Test
+	public void emptyLineNumber_16Colors()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
+		{
+			String actual = "foo\nbar";
+			String expected = "bar";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Writer16Colors scheme = new Writer16Colors();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual@0  : " + scheme.decorateDeletedText("foo" + NEWLINE_MARKER) +
+				scheme.stopDecoration() + "\n" +
+				"Expected  : " + scheme.decoratePadding(("foo" + NEWLINE_MARKER).length()) +
+				scheme.stopDecoration() +
+				"\n" +
+				"\n" +
+				"Actual@1  : " + scheme.decorateUnchangedText("bar" + EOS_MARKER) + scheme.stopDecoration() + "\n" +
+				"Expected@0: " + scheme.decorateUnchangedText("bar" + EOS_MARKER) + scheme.stopDecoration();
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
 		}
 	}
 }

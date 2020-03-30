@@ -91,7 +91,6 @@ results in the following diff:
 
 When comparing multi-line strings:
 
-* We display the diff on a per-line basis.
 * `Actual` and `Expected` are followed by a line number.
 * Lines that are identical (with the exception of the first and last line) are omitted.
 
@@ -139,16 +138,14 @@ Meaning:
 
 When comparing lists or arrays:
 
-* We display the diff on a per-element basis.
-* `Actual` and `Expected` are followed by the element's index number.
+* `Actual` and `Expected` are followed by the element's index number, followed by a line number.
 * Indexes that are identical (with the exception of the first and last line) are omitted.
 
 For example:
 
 ```java
-
-Actual   = List.of("first", "second", "foo\nbar", "fifth");
-Expected = List.of("first", "second", "bar\nfoo", "fifth");
+Actual   = List.of("1", "foo\nbar", "3");
+Expected = List.of("1", "bar\nfoo", "3");
 ```
 
 results in the following diff:
@@ -157,7 +154,8 @@ results in the following diff:
 
 Meaning:
 
-* Indexes 1-2 were equal.
-* On index 3 line 1, we need to delete "foo" and insert "bar".
-* On index 3 line 2, we need to delete "bar" and insert "foo".
-* Line 4 was equal.
+* Index 0 was equal.
+* On index 1 line 0, we need to delete "foo\n".
+* On index 1 line 1, we need to insert "\n" after "bar".
+* On index 1 line 1, we need to insert "foo" before the end of string.
+* Index 2 was equal.

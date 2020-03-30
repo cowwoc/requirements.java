@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
 /**
  * Generates a diff of two Strings.
@@ -428,6 +430,21 @@ public final class DiffGenerator
 	 */
 	public boolean isEmpty(String line)
 	{
+		switch (encoding)
+		{
+			case NONE:
+				break;
+			case XTERM_8_COLORS:
+			case XTERM_16_COLORS:
+			case XTERM_256_COLORS:
+			case RGB_888_COLORS:
+			{
+				line = line.replaceAll(Pattern.quote(PREFIX) + ".+?" + Pattern.quote(POSTFIX), "");
+				break;
+			}
+			default:
+				throw new AssertionError(encoding.name());
+		}
 		return Strings.containsOnly(line, paddingMarker);
 	}
 }

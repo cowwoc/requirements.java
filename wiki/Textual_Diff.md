@@ -194,35 +194,36 @@ For example:
 
 ```java
 
-Actual   = List.of("first", "second", "foo\nbar", "fifth");
-Expected = List.of("first", "second", "bar\nfoo", "fifth");
+Actual   = List.of("1", "foo\nbar", "3");
+Expected = List.of("1", "bar\nfoo", "3");
 ```
 
 results in the following diff:
 
 ```text
-Actual[0]     : first\n
-Expected[0]   : first\n
+Actual[0]    : 1\0
+Expected[0]  : 1\0
 
-[...]
+Actual[1]@0  : foo\n
+Diff         : -----
+Expected[1]  :      
 
-Actual[2]@0  : foo   \n
-Diff         : ---+++
-Expected[2]@0:    bar\n
+Actual[1]@1  : bar  
+Diff         :    ++
+Expected[1]@0: bar\n
 
-Actual[2]@1  : bar   \n
-Diff         : ---+++
-Expected[2]@1:    foo\n
+Actual[1]@1  :    \0
+Diff         : +++  
+Expected[1]@1: foo\0
 
-[...]
-
-Actual@3     : fifth\0
-Expected@3   : fifth\0
+Actual[2]    : 3\0
+Expected[2]  : 3\0
 ```
 
 Meaning:
 
-* Indexes 1-2 were equal.
-* On index 3 line 1, we need to delete "foo" and insert "bar".
-* On index 3 line 2, we need to delete "bar" and insert "foo".
-* Line 4 was equal.
+* Index 0 was equal.
+* On index 1 line 0, we need to delete "foo\n".
+* On index 1 line 1, we need to insert "\n" after "bar".
+* On index 1 line 1, we need to insert "foo" before the end of string.
+* Index 2 was equal.

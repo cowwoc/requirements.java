@@ -37,8 +37,11 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
+		int length = text.length();
+		if (length == 0)
+			return;
 		actualLineBuilder.append(text);
-		middleLineBuilder.append(DIFF_EQUAL.repeat(text.length()));
+		middleLineBuilder.append(DIFF_EQUAL.repeat(length));
 		expectedLineBuilder.append(text);
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
@@ -50,6 +53,8 @@ public final class TextOnly extends AbstractDiffWriter
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
 		int length = text.length();
+		if (length == 0)
+			return;
 		actualLineBuilder.append(getPaddingMarker().repeat(length));
 		middleLineBuilder.append(DIFF_INSERT.repeat(length));
 		expectedLineBuilder.append(text);
@@ -62,8 +67,10 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		actualLineBuilder.append(text);
 		int length = text.length();
+		if (length == 0)
+			return;
+		actualLineBuilder.append(text);
 		middleLineBuilder.append(DIFF_DELETE.repeat(length));
 		expectedLineBuilder.append(getPaddingMarker().repeat(length));
 		if (text.endsWith(NEWLINE_MARKER))
