@@ -2,9 +2,7 @@
 
 ![java](https://img.shields.io/badge/languages-java-black.svg) [![js](https://img.shields.io/badge/js-457FD5.svg)](../requirements.js)
 
-# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Requirements
-
-## Fluent Design by Contract for Java APIs
+# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Requirements: Fluent Design by Contract for Java APIs
 
 A [fluent API](https://en.wikipedia.org/wiki/Fluent_Interface.md) for enforcing 
 [design contracts](https://en.wikipedia.org/wiki/Design_by_contract) with 
