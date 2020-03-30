@@ -4,6 +4,8 @@
  */
 package com.github.cowwoc.requirements.maven;
 
+import com.github.cowwoc.requirements.generator.ApiGenerator;
+import com.github.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -11,8 +13,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import com.github.cowwoc.requirements.generator.ApiGenerator;
-import com.github.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,14 +60,14 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 		{
 			if (!dependency.getGroupId().equals(plugin.getGroupId()))
 				continue;
-			if (dependency.getArtifactId().equals("requirements.guava"))
+			if (dependency.getArtifactId().equals("guava"))
 				guavaEnabled = true;
 		}
 		if (overrideGuavaEnabled != null)
 			guavaEnabled = overrideGuavaEnabled;
 		ApiGenerator generator = new ApiGenerator();
 		generator.setGuavaEnabled(guavaEnabled);
-		if (project.getGroupId().equals(pluginGroupId) && (project.getArtifactId().equals("requirements.test")))
+		if (project.getGroupId().equals(pluginGroupId) && (project.getArtifactId().equals("test")))
 			SharedSecrets.INSTANCE.secretApiGenerator.exportScope(generator);
 		try
 		{

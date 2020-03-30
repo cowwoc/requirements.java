@@ -4,8 +4,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 
 * Moved project to github.com
 * Breaking changes
-    * groupId changed from `org.bitbucket.cowwoc.requirements` to `com.github.cowwoc`.
-    * artifactId changed from `*` to `requirements.*`.
+    * Changed groupId from `org.bitbucket.cowwoc.requirements` to `com.github.cowwoc.requirements`.
 
 ## Version 5.2.2 - 2019/09/18 ##
 

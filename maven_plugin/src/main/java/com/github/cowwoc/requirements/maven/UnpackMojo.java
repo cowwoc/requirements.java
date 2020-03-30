@@ -59,7 +59,7 @@ public final class UnpackMojo extends AbstractMojo
 			get("pluginDescriptor");
 		String groupId = pluginDescriptor.getGroupId();
 		String version = pluginDescriptor.getVersion();
-		String binariesArtifact = "requirements.natives";
+		String binariesArtifact = "natives";
 		Element groupIdElement = new Element("groupId", groupId);
 		Element artifactIdElement = new Element("artifactId", binariesArtifact);
 		Element classifierElement = new Element("classifier", classifier);

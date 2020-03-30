@@ -2,13 +2,13 @@ Simply add a dependency for the module you are interested in, rebuild your proje
 
 | Library                                                       | Dependency |
 |---------------------------------------------------------------|------------|
-| [Guava API](https://guava.dev/releases/28.0-jre/api/docs/)    | [com.github.cowwoc:requirements.guava](https://search.maven.org/search?q=g:com.github.cowwoc%20AND%20a:requirements.guava) |
+| [Guava API](https://guava.dev/releases/28.0-jre/api/docs/)    | [com.github.cowwoc.requirements:guava](https://search.maven.org/search?q=g:com.github.cowwoc.requirements%20AND%20a:guava) |
 
 For example:
 ```
 <dependency>
-  <groupId>com.github.cowwoc</groupId>
-  <artifactId>requirements.guava</artifactId>
+  <groupId>com.github.cowwoc.requirements</groupId>
+  <artifactId>guava</artifactId>
   <version>${requirements.version}</version>
 </dependency>
 ```

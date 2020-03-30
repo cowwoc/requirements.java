@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.github.cowwoc</groupId>
-		<artifactId>requirements</artifactId>
+		<groupId>com.github.cowwoc.requirements</groupId>
+		<artifactId>root</artifactId>
 		<version>5.2.3-SNAPSHOT</version>
 	</parent>
-	<artifactId>requirements.generated_api</artifactId>
+	<artifactId>generated_api</artifactId>
 	<packaging>jar</packaging>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>requirements.maven_plugin</artifactId>
+				<artifactId>maven_plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>
@@ -63,12 +63,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements.java</artifactId>
+			<artifactId>java</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>requirements.guava</artifactId>
+			<artifactId>guava</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

@@ -66,8 +66,8 @@ Follow these 4 steps to get started:
   <build>
     <plugins>
       <plugin>
-        <groupId>com.github.cowwoc</groupId>
-        <artifactId>requirements.maven_plugin</artifactId>
+        <groupId>com.github.cowwoc.requirements</groupId>
+        <artifactId>maven_plugin</artifactId>
         <version>${requirements.version}</version>
         <executions>
           <execution>
@@ -85,8 +85,8 @@ Follow these 4 steps to get started:
   ...
   <dependencies>
     <dependency>
-      <groupId>com.github.cowwoc</groupId>
-      <artifactId>requirements.java</artifactId>
+      <groupId>com.github.cowwoc.requirements</groupId>
+      <artifactId>java</artifactId>
       <version>${requirements.version}</version>
     </dependency>
   <dependencies>
