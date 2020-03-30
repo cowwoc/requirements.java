@@ -7,20 +7,20 @@ The following code snippet unpacks the native libraries under Maven:
 
 ```xml
 <build>
-	<plugins>
-		<plugin>
-			<groupId>com.github.cowwoc</groupId>
-			<artifactId>requirements.maven_plugin</artifactId>
-			<version>${requirements.version}</version>
-			<executions>
-				<execution>
-					<goals>
-						<goal>unpack</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
+    <plugins>
+        <plugin>
+            <groupId>com.github.cowwoc</groupId>
+            <artifactId>requirements.maven_plugin</artifactId>
+            <version>${requirements.version}</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>unpack</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
 </build>
 ```
 
