@@ -592,8 +592,8 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			List<String> actual = List.of("1", "2", "3.1\n3.2", "4", "5");
-			List<String> expected = List.of("1", "2", "9.1\n9.2", "4", "5");
+			List<String> actual = List.of("1", "foo\nbar", "3");
+			List<String> expected = List.of("1", "bar\nfoo", "3");
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
@@ -602,22 +602,22 @@ public final class DiffTest
 			String expectedMessage = "Actual[0]    : 1" + EOS_MARKER + "\n" +
 				"Expected[0]  : 1" + EOS_MARKER + "\n" +
 				"\n" +
-				"[...]\n" +
+				"Actual[1]@0  : foo" + NEWLINE_MARKER + "\n" +
+				"Diff         : " + DIFF_DELETE.repeat(("foo" + NEWLINE_MARKER).length()) + "\n" +
+				"Expected[1]  : " + DIFF_PADDING.repeat(("foo" + NEWLINE_MARKER).length()) + "\n" +
 				"\n" +
-				"Actual[2]@0  : " + "3" + DIFF_PADDING.repeat(1) + ".1" + NEWLINE_MARKER + "\n" +
-				"Diff         : " + DIFF_DELETE + DIFF_INSERT + DIFF_EQUAL.repeat((".1" + NEWLINE_MARKER).length()) +
+				"Actual[1]@1  : bar" + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"Diff         : " + DIFF_EQUAL.repeat("bar".length()) + DIFF_INSERT.repeat(NEWLINE_MARKER.length()) +
 				"\n" +
-				"Expected[2]@0: " + DIFF_PADDING + "9.1" + NEWLINE_MARKER + "\n" +
+				"Expected[1]@0: bar" + NEWLINE_MARKER + "\n" +
 				"\n" +
-				"Actual[2]@1  : " + "3" + DIFF_PADDING.repeat(1) + ".2" + EOS_MARKER + "\n" +
-				"Diff         : " + DIFF_DELETE + DIFF_INSERT + DIFF_EQUAL.repeat((".2" + EOS_MARKER).length()) +
+				"Actual[1]@1  : " + DIFF_PADDING.repeat("foo".length()) + EOS_MARKER + "\n" +
+				"Diff         : " + DIFF_INSERT.repeat("foo".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) +
 				"\n" +
-				"Expected[2]@1: " + DIFF_PADDING + "9.2" + EOS_MARKER + "\n" +
+				"Expected[1]@1: foo" + EOS_MARKER + "\n" +
 				"\n" +
-				"[...]\n" +
-				"\n" +
-				"Actual[4]    : 5" + EOS_MARKER + "\n" +
-				"Expected[4]  : 5" + EOS_MARKER;
+				"Actual[2]    : 3" + EOS_MARKER + "\n" +
+				"Expected[2]  : 3" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n\n****************\nActual:\n" + actualMessage;
 		}

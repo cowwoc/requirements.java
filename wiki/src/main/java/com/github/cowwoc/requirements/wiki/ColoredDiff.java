@@ -1,5 +1,7 @@
 package com.github.cowwoc.requirements.wiki;
 
+import java.util.List;
+
 import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 
 public final class ColoredDiff
@@ -64,6 +66,16 @@ public final class ColoredDiff
 		try
 		{
 			requireThat("Foo\nBar", "actual").isEqualTo("Bar");
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		System.out.println();
+		try
+		{
+			requireThat(List.of("1", "foo\nbar", "3"), "actual").
+				isEqualTo(List.of("1", "bar\nfoo", "3"));
 		}
 		catch (IllegalArgumentException e)
 		{
