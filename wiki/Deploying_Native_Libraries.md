@@ -5,8 +5,7 @@ Some features (such as [colored diffs](Colored_Diff.md)) require the use of a na
 
 The following code snippet unpacks the native libraries under Maven:
 
-```
-#!java
+```xml
 <build>
 	<plugins>
 		<plugin>
@@ -27,7 +26,7 @@ The following code snippet unpacks the native libraries under Maven:
 
 If you are using [Surefire](http://maven.apache.org/surefire/maven-surefire-plugin/) then you will need to add `java.library.path` to your configuration:
 
-```
+```xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-surefire-plugin</artifactId>
@@ -40,8 +39,7 @@ If you are using [Surefire](http://maven.apache.org/surefire/maven-surefire-plug
 
 If you are using [exec:java](http://www.mojohaus.org/exec-maven-plugin/) or Surefire with [forkCount = 0](http://maven.apache.org/surefire/maven-surefire-plugin/examples/fork-options-and-parallel-execution.html) then you will need to set `java.library.path` using the [MAVEN_OPTS environment variable](https://maven.apache.org/configure.html).
 
-I don't want to use native libraries
----
+### I don't want to use native libraries
 
 If the library cannot be loaded, the API will log a DEBUG-level warning and continue operating without it. To suppress the warning, set the logger level of `com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal` to a level higher than `DEBUG`.
 
