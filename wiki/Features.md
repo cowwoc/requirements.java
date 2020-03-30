@@ -136,11 +136,11 @@ Sometimes it is convenient to retrieve the actual value after a verification/val
 ```java
 class Player
 {
-  private final String name;
+    private final String name;
 
-  public Player(String name)
-  {
-    this.name = requireThat(name, "name").isNotEmpty().getActual();
-  }
+    public Player(String name)
+    {
+        this.name = requireThat(name, "name").isNotEmpty().getActual();
+    }
 }
 ```
