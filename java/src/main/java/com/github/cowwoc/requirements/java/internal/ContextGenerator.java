@@ -129,7 +129,8 @@ public final class ContextGenerator
 				expectedNameForElement = expectedName;
 				elementsAreEqual = false;
 			}
-			elementsAreEqual &= actualValue.get(i).equals(expectedValue.get(i));
+			if (elementsAreEqual)
+				elementsAreEqual = actualValue.get(i).equals(expectedValue.get(i));
 			if (i != 0 && i != maxSize - 1 && elementsAreEqual)
 			{
 				// Skip identical elements, unless they are the first or last element.
