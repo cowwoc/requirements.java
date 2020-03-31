@@ -2,7 +2,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 
 ## Version 6.0.0 - 2020/03/30 ##
 
-* Moved project to github.com
+* Moved project from https://bitbucket.org/cowwoc/requirements.java/ to https://github.com/cowwoc/requirements.java/
 * Breaking changes
     * Changed groupId from `org.bitbucket.cowwoc.requirements` to `com.github.cowwoc.requirements`.
 
