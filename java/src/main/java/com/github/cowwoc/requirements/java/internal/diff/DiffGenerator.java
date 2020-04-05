@@ -11,13 +11,14 @@ import com.github.difflib.DiffUtils;
 import com.github.difflib.algorithm.DiffException;
 import com.github.difflib.patch.AbstractDelta;
 import com.github.difflib.patch.Chunk;
+import com.github.difflib.patch.DeleteDelta;
+import com.github.difflib.patch.InsertDelta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
@@ -30,7 +31,9 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PR
  */
 public final class DiffGenerator
 {
-	public static final Pattern WORDS = Pattern.compile("\\s+|[.\\[\\](){}/\\\\*+\\-#]");
+	// See https://www.regular-expressions.info/unicode.html for an explanation of \p{Zs}
+	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|[.\\[\\](){}/\\\\*+\\-#]");
+	private static final String QUOTED_NEWLINE_MARKER = Matcher.quoteReplacement(NEWLINE_MARKER);
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 
@@ -82,21 +85,181 @@ public final class DiffGenerator
 	public DiffResult diff(String actual, String expected)
 	{
 		// Mark the end of the string to guard against cases that end with whitespace
-		List<String> actualWithEos = List.of(actual + EOS_MARKER);
-		List<String> expectedWithEos = List.of(expected + EOS_MARKER);
+		List<Integer> actualCodepoints = Strings.toCodepoints(actual + EOS_MARKER);
+		List<Integer> expectedWords = Strings.toCodepoints(expected + EOS_MARKER);
 
 		try
 		{
 			DiffWriter writer = createDiffWriter();
-			List<AbstractDelta<String>> deltas = DiffUtils.diff(actualWithEos, expectedWithEos).getDeltas();
-			deltas = addEqualDeltas(deltas, actualWithEos, expectedWithEos);
-			writeDeltas(deltas, writer);
+			// DiffUtils.diff() returns a list of deltas, where each delta is associated with a list of characters.
+			List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedWords).getDeltas();
+			// DiffUtils.diff() does not return equal deltas, so we add them.
+			deltas = addEqualDeltas(deltas, actualCodepoints, expectedWords);
+			// Convert a list of deltas and their associated words to a list of words and their associated deltas,
+			// using "actual" to define word boundaries.
+			List<TokenWithDeltas<String, Integer>> wordToDeltas = new WordToDeltaMapper().apply(deltas);
+			writeWords(wordToDeltas, writer);
 			writer.close();
 			return new DiffResult(writer.getActualLines(), writer.getMiddleLines(), writer.getExpectedLines());
 		}
 		catch (DiffException e)
 		{
 			throw new AssertionError(e);
+		}
+	}
+
+	/**
+	 * Converts a mapping from deltas to words to a mapping from words to deltas.
+	 */
+	private static final class WordToDeltaMapper
+		implements Function<List<AbstractDelta<Integer>>, List<TokenWithDeltas<String, Integer>>>
+	{
+		public final StringBuilder currentWord = new StringBuilder();
+		public final List<AbstractDelta<Integer>> currentDeltas = new ArrayList<>();
+		public final List<TokenWithDeltas<String, Integer>> result = new ArrayList<>();
+
+		/**
+		 * @param deltas a list of deltas, each delta is associated with one or more words
+		 * @return a list of words, each word is associated with one or more deltas
+		 */
+		@Override
+		public List<TokenWithDeltas<String, Integer>> apply(List<AbstractDelta<Integer>> deltas)
+		{
+			for (AbstractDelta<Integer> delta : deltas)
+			{
+				switch (delta.getType())
+				{
+					case EQUAL:
+					{
+						int sourcePosition = delta.getSource().getPosition();
+						int targetPosition = delta.getTarget().getPosition();
+						for (String word : Strings.splitPreserveDelimiter(
+							Strings.fromCodepoints(delta.getSource().getLines()), WORDS))
+						{
+							boolean isDelimiter = WORDS.matcher(word).matches();
+							if (isDelimiter)
+								onDelimiter();
+							List<Integer> wordCodepoints = Strings.toCodepoints(word);
+							currentDeltas.add(new EqualDelta<>(
+								new Chunk<>(sourcePosition, wordCodepoints),
+								new Chunk<>(targetPosition, wordCodepoints)));
+							sourcePosition += wordCodepoints.size();
+							currentWord.append(word);
+							if (isDelimiter)
+								onDelimiter();
+						}
+						break;
+					}
+					case DELETE:
+					{
+						int sourcePosition = delta.getSource().getPosition();
+						int targetPosition = delta.getTarget().getPosition();
+						for (String word : Strings.splitPreserveDelimiter(
+							Strings.fromCodepoints(delta.getSource().getLines()), WORDS))
+						{
+							sourcePosition = onDelete(word, sourcePosition, targetPosition);
+						}
+						break;
+					}
+					case INSERT:
+					{
+						int sourcePosition = delta.getSource().getPosition();
+						int targetPosition = delta.getTarget().getPosition();
+						for (String word : Strings.splitPreserveDelimiter(
+							Strings.fromCodepoints(delta.getTarget().getLines()), WORDS))
+						{
+							targetPosition = onInsert(word, sourcePosition, targetPosition);
+						}
+						break;
+					}
+					case CHANGE:
+					{
+						// Add DELETE, INSERT deltas for each word found in "actual"
+						int sourcePosition = delta.getSource().getPosition();
+						int targetPosition = delta.getTarget().getPosition();
+						List<String> toDelete = Strings.splitPreserveDelimiter(Strings.fromCodepoints(
+							delta.getSource().getLines()), WORDS);
+						String toInsert = Strings.fromCodepoints(delta.getTarget().getLines());
+						int toInsertPosition = 0;
+						for (String word : toDelete)
+						{
+							int oldSourcePosition = sourcePosition;
+							sourcePosition = onDelete(word, sourcePosition, targetPosition);
+							int toInsertToWrite = Math.min(sourcePosition - oldSourcePosition,
+								toInsert.length() - toInsertPosition);
+							if (toInsertToWrite > 0)
+							{
+								targetPosition = onInsert(
+									toInsert.substring(toInsertPosition, toInsertPosition + toInsertToWrite),
+									sourcePosition, targetPosition);
+								toInsertPosition += toInsertToWrite;
+							}
+						}
+						// Insert any remaining characters
+						if (toInsertPosition < toInsert.length())
+							onInsert(toInsert.substring(toInsertPosition), sourcePosition, targetPosition);
+						break;
+					}
+				}
+			}
+			if (currentWord.length() > 0)
+				result.add(new TokenWithDeltas<>(currentWord.toString(), currentDeltas));
+			return result;
+		}
+
+		/**
+		 * Invoked when text should be deleted.
+		 *
+		 * @param word           the word to delete
+		 * @param sourcePosition the source position associated with the delta
+		 * @param targetPosition the target position associated with the delta
+		 * @return the updated sourcePosition
+		 */
+		private int onDelete(String word, int sourcePosition, int targetPosition)
+		{
+			boolean isDelimiter = WORDS.matcher(word).matches();
+			if (isDelimiter)
+				onDelimiter();
+			List<Integer> wordCodepoints = Strings.toCodepoints(word);
+			currentDeltas.add(new DeleteDelta<>(
+				new Chunk<>(sourcePosition, wordCodepoints),
+				new Chunk<>(targetPosition, List.of())));
+			sourcePosition += wordCodepoints.size();
+			currentWord.append(word);
+			if (isDelimiter)
+				onDelimiter();
+			return sourcePosition;
+		}
+
+		/**
+		 * Invoked when text should be inserted.
+		 *
+		 * @param word           the word to delete
+		 * @param sourcePosition the source position associated with the delta
+		 * @param targetPosition the target position associated with the delta
+		 * @return the updated targetPosition
+		 */
+		private int onInsert(String word, int sourcePosition, int targetPosition)
+		{
+			List<Integer> wordCodepoints = Strings.toCodepoints(word);
+			currentDeltas.add(new InsertDelta<>(
+				new Chunk<>(sourcePosition, List.of()),
+				new Chunk<>(targetPosition, wordCodepoints)));
+			targetPosition += wordCodepoints.size();
+			return targetPosition;
+		}
+
+		/**
+		 * Flushes tokens upon hitting a delimiter.
+		 */
+		private void onDelimiter()
+		{
+			// If the first token is a delimiter, there is nothing to flush.
+			if (currentDeltas.isEmpty())
+				return;
+			result.add(new TokenWithDeltas<>(currentWord.toString(), currentDeltas));
+			currentDeltas.clear();
+			currentWord.delete(0, currentWord.length());
 		}
 	}
 
@@ -143,143 +306,92 @@ public final class DiffGenerator
 	}
 
 	/**
-	 * Writes deltas that span multiple lines.
+	 * Writes words.
 	 *
-	 * @param deltas the deltas
+	 * @param words  a list of words associated with one or more deltas
 	 * @param writer the writer to write into
 	 */
-	private void writeDeltas(List<AbstractDelta<String>> deltas, DiffWriter writer) throws DiffException
+	private void writeWords(List<TokenWithDeltas<String, Integer>> words,
+	                        DiffWriter writer)
 	{
-		for (AbstractDelta<String> delta : deltas)
+		for (TokenWithDeltas<String, Integer> word : words)
 		{
-			switch (delta.getType())
+			if (numberOfUnequalDeltas(word.deltas) <= 2)
 			{
-				case EQUAL:
+				// If the word has 2 or less unequal deltas then provide a character-level granularity.
+
+				// Good:
+				// -----=====-----
+				// -----+++++=====
+				// =====-----+++++
+				//
+				// Bad:
+				// =====-----=====-----
+				// +++++=====+++++=====
+				// -----++++++----=====
+				writeWord(word, writer);
+			}
+			else
+			{
+				// Otherwise, provide a word-granularity.
+				StringBuilder actual = new StringBuilder();
+				StringBuilder expected = new StringBuilder();
+				for (AbstractDelta<Integer> delta : word.deltas)
 				{
-					writeComponents(writer::writeUnchanged, delta.getSource().getLines());
-					break;
+					actual.append(Strings.fromCodepoints(delta.getSource().getLines()));
+					expected.append(Strings.fromCodepoints(delta.getTarget().getLines()));
 				}
-				case INSERT:
-				{
-					writeComponents(writer::writeInserted, delta.getTarget().getLines());
-					break;
-				}
-				case DELETE:
-				{
-					writeComponents(writer::writeDeleted, delta.getSource().getLines());
-					break;
-				}
-				case CHANGE:
-				{
-					Chunk<String> source = delta.getSource();
-					List<String> actualWords = new ArrayList<>(source.size());
-					for (String line : source.getLines())
-						actualWords.addAll(splitWordsPreserveDelimiter(line));
-					Chunk<String> target = delta.getTarget();
-					List<String> expectedWords = new ArrayList<>(target.size());
-					for (String line : target.getLines())
-						expectedWords.addAll(splitWordsPreserveDelimiter(line));
-					List<AbstractDelta<String>> wordDeltas = DiffUtils.diff(actualWords, expectedWords,
-						Object::equals).getDeltas();
-					wordDeltas = addEqualDeltas(wordDeltas, actualWords, expectedWords);
-					writeWords(wordDeltas, writer);
-					break;
-				}
-				default:
-					throw new AssertionError(delta.getType().name());
+				writer.writeDeleted(replaceNewlineWithMarker(actual));
+				writer.writeInserted(replaceNewlineWithMarker(expected));
 			}
 		}
 	}
 
 	/**
-	 * Splits a string on word delimiters, preserving the delimiters in the result.
+	 * Write a single word.
 	 *
-	 * @param text a string
-	 * @return the words and delimiters in {@code text}
-	 */
-	protected static List<String> splitWordsPreserveDelimiter(String text)
-	{
-		List<String> list = new ArrayList<>();
-		Matcher matcher = DiffGenerator.WORDS.matcher(text);
-		int endOfLastMatch = 0;
-		while (matcher.find())
-		{
-			if (endOfLastMatch < matcher.start())
-			{
-				String word = text.substring(endOfLastMatch, matcher.start());
-				list.add(word);
-			}
-			String delimiter = matcher.group();
-			list.add(delimiter);
-			endOfLastMatch = matcher.end();
-		}
-		if (endOfLastMatch < text.length())
-		{
-			String word = text.substring(endOfLastMatch);
-			list.add(word);
-		}
-		return list;
-	}
-
-	/**
-	 * Writes deltas that span multiple lines.
-	 *
-	 * @param deltas one delta per word
+	 * @param word   a word
 	 * @param writer the writer to write into
 	 */
-	private void writeWords(List<AbstractDelta<String>> deltas, DiffWriter writer) throws DiffException
+	private void writeWord(TokenWithDeltas<String, Integer> word, DiffWriter writer)
 	{
-		for (AbstractDelta<String> delta : deltas)
+		for (AbstractDelta<Integer> delta : word.deltas)
 		{
 			switch (delta.getType())
 			{
 				case EQUAL:
 				{
-					writeComponents(writer::writeUnchanged, delta.getSource().getLines());
-					break;
-				}
-				case INSERT:
-				{
-					writeComponents(writer::writeInserted, delta.getTarget().getLines());
+					String text = Strings.fromCodepoints(delta.getSource().getLines());
+					writer.writeEqual(replaceNewlineWithMarker(text));
 					break;
 				}
 				case DELETE:
 				{
-					writeComponents(writer::writeDeleted, delta.getSource().getLines());
+					String text = Strings.fromCodepoints(delta.getSource().getLines());
+					writer.writeDeleted(replaceNewlineWithMarker(text));
 					break;
 				}
-				case CHANGE:
+				case INSERT:
 				{
-					List<Integer> actualCodepoints = toCodepoints(delta.getSource().getLines());
-					List<Integer> expectedCodepoints = toCodepoints(delta.getTarget().getLines());
-
-					List<AbstractDelta<Integer>> codepointDeltas = DiffUtils.diff(actualCodepoints, expectedCodepoints).
-						getDeltas();
-					codepointDeltas = addEqualDeltas(codepointDeltas, actualCodepoints, expectedCodepoints);
-					if (numberOfUnequalDeltas(codepointDeltas) > 2)
-					{
-						// Provide character-level deltas so long as there are only two INSERT, DELETE deltas
-
-						// Good:
-						// -----=====-----
-						// -----+++++=====
-						// =====-----+++++
-						//
-						// Bad:
-						// =====-----=====-----
-						// +++++=====+++++=====
-						// -----++++++----=====
-						writeComponents(writer::writeDeleted, delta.getSource().getLines());
-						writeComponents(writer::writeInserted, delta.getTarget().getLines());
-					}
-					else
-						writeCodepoints(codepointDeltas, writer);
+					String text = Strings.fromCodepoints(delta.getTarget().getLines());
+					writer.writeInserted(replaceNewlineWithMarker(text));
 					break;
 				}
 				default:
-					throw new AssertionError(delta.getType().name());
+					throw new AssertionError("Unexpected type: " + delta.getType());
 			}
 		}
+	}
+
+	/**
+	 * Replaces the newline character with a {@code NEWLINE_MARKER}.
+	 *
+	 * @param text some text
+	 * @return the updated text
+	 */
+	private static String replaceNewlineWithMarker(CharSequence text)
+	{
+		return NEWLINE_PATTERN.matcher(text).replaceAll(QUOTED_NEWLINE_MARKER);
 	}
 
 	/**
@@ -294,112 +406,25 @@ public final class DiffGenerator
 		{
 			switch (delta.getType())
 			{
-				case CHANGE:
-				{
-					// Equivalent to DELETE followed by INSERT
-					result += 2;
+				case EQUAL:
 					break;
-				}
 				case DELETE:
 				case INSERT:
 				{
 					++result;
 					break;
 				}
-				case EQUAL:
+				case CHANGE:
+				{
+					// Equivalent to DELETE followed by INSERT
+					result += 2;
 					break;
+				}
 				default:
 					throw new AssertionError(delta.getType().name());
 			}
 		}
 		return result;
-	}
-
-	/**
-	 * @param words a list of words
-	 * @return a list of codepoints making up the string
-	 */
-	private List<Integer> toCodepoints(List<String> words)
-	{
-		StringBuilder joiner = new StringBuilder();
-		for (String word : words)
-			joiner.append(word);
-		return joiner.toString().codePoints().boxed().collect(Collectors.toList());
-	}
-
-	/**
-	 * Writes deltas that span multiple lines.
-	 *
-	 * @param deltas one delta per codepoint
-	 * @param writer the writer to write into
-	 */
-	private void writeCodepoints(List<AbstractDelta<Integer>> deltas, DiffWriter writer)
-	{
-		for (AbstractDelta<Integer> delta : deltas)
-		{
-			switch (delta.getType())
-			{
-				case EQUAL:
-				{
-					String word = codepointsToString(delta.getSource().getLines());
-					writeComponents(writer::writeUnchanged, List.of(word));
-					break;
-				}
-				case INSERT:
-				{
-					String word = codepointsToString(delta.getTarget().getLines());
-					writeComponents(writer::writeInserted, List.of(word));
-					break;
-				}
-				case DELETE:
-				{
-					String word = codepointsToString(delta.getSource().getLines());
-					writeComponents(writer::writeDeleted, List.of(word));
-					break;
-				}
-				case CHANGE:
-				{
-					String deleted = codepointsToString(delta.getSource().getLines());
-					String inserted = codepointsToString(delta.getTarget().getLines());
-					writeComponents(writer::writeDeleted, List.of(deleted));
-					writeComponents(writer::writeInserted, List.of(inserted));
-					break;
-				}
-				default:
-					throw new AssertionError(delta.getType().name());
-			}
-		}
-	}
-
-	/**
-	 * @param codepoints String codepoints
-	 * @return the {@code String} representation of the codepoints
-	 */
-	private static String codepointsToString(List<Integer> codepoints)
-	{
-		int[] array = codepoints.stream().mapToInt(i -> i).toArray();
-		return new String(array, 0, array.length);
-	}
-
-	/**
-	 * Writes one or more components, appending a newline at the end of all lines except for the last one.
-	 *
-	 * @param operator   the operator to invoke for each line
-	 * @param components the components to process
-	 */
-	private static void writeComponents(Consumer<String> operator, List<String> components)
-	{
-		StringBuilder joiner = new StringBuilder();
-		for (String component : components)
-			joiner.append(component);
-		String[] lines = NEWLINE_PATTERN.split(joiner.toString(), -1);
-		for (int i = 0, size = lines.length; i < size; ++i)
-		{
-			String text = lines[i];
-			if (i != size - 1)
-				text += NEWLINE_MARKER;
-			operator.accept(text);
-		}
 	}
 
 	/**

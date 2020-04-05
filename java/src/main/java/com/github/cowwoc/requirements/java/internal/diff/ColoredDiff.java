@@ -16,16 +16,22 @@ interface ColoredDiff
 	String decorateUnchangedText(String text);
 
 	/**
+	 * @param text the text that was deleted
+	 * @return the (possibly decorated) text
+	 */
+	String decorateDeletedText(String text);
+
+	/**
 	 * @param text the text that was inserted
 	 * @return the (possibly decorated) text
 	 */
 	String decorateInsertedText(String text);
 
 	/**
-	 * @param text the text that was deleted
+	 * @param text the padding
 	 * @return the (possibly decorated) text
 	 */
-	String decorateDeletedText(String text);
+	String decoratePadding(String text);
 
 	/**
 	 * Ends any ongoing text decoration.

@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 import com.github.cowwoc.requirements.java.internal.util.Maps;
@@ -116,7 +117,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 			for (ContextLine entry : context)
 			{
 				mergedContext.add(entry);
-				String key = entry.getKey();
+				String key = entry.getName();
 				if (!key.isEmpty())
 					existingKeys.add(key);
 			}
@@ -138,7 +139,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 		int maxKeyLength = 0;
 		for (ContextLine entry : mergedContext)
 		{
-			String key = entry.getKey();
+			String key = entry.getName();
 			if (key.isEmpty())
 				continue;
 			int length = key.length();
@@ -152,7 +153,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 		for (ContextLine entry : mergedContext)
 		{
 			line.delete(0, line.length());
-			String key = entry.getKey();
+			String key = entry.getName();
 			if (!key.isEmpty())
 				line.append(alignLeft(key, maxKeyLength) + ": ");
 			line.append(config.toString(entry.getValue()));

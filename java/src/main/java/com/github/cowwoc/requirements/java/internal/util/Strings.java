@@ -4,6 +4,12 @@
  */
 package com.github.cowwoc.requirements.java.internal.util;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * String helper functions.
  */
@@ -94,6 +100,78 @@ public final class Strings
 	public static boolean containsOnly(String source, String target)
 	{
 		return lastConsecutiveIndexOf(source, target) == 0;
+	}
+
+	/**
+	 * @param source a string
+	 * @return a view of the string as a list of codepoints
+	 */
+	public static List<Integer> toCodepoints(String source)
+	{
+		return new AbstractList<>()
+		{
+			@Override
+			public Integer get(int index)
+			{
+				return source.codePointAt(index);
+			}
+
+			@Override
+			public int size()
+			{
+				return source.codePointCount(0, source.length());
+			}
+		};
+	}
+
+	/**
+	 * @param codepoints String codepoints
+	 * @return the {@code String} representation of the codepoints
+	 */
+	public static String fromCodepoints(List<Integer> codepoints)
+	{
+		int[] array = codepoints.stream().mapToInt(i -> i).toArray();
+		return new String(array, 0, array.length);
+	}
+
+	/**
+	 * Splits a string preserving the delimiters in the result.
+	 *
+	 * <pre>{@code
+	 *   splitPreserveDelimiter("a,b,c", Pattern.compile(","))
+	 * }</pre>
+	 * yields
+	 * <br>
+	 * <pre>{@code
+	 *   ["a", ",", "b", ",", "c"]
+	 * }</pre>
+	 *
+	 * @param text       a string
+	 * @param delimiters the pattern of delimiters
+	 * @return the tokens and delimiters in {@code text}
+	 */
+	public static List<String> splitPreserveDelimiter(String text, Pattern delimiters)
+	{
+		List<String> list = new ArrayList<>();
+		Matcher matcher = delimiters.matcher(text);
+		int endOfLastMatch = 0;
+		while (matcher.find())
+		{
+			if (endOfLastMatch < matcher.start())
+			{
+				String token = text.substring(endOfLastMatch, matcher.start());
+				list.add(token);
+			}
+			String delimiter = matcher.group();
+			list.add(delimiter);
+			endOfLastMatch = matcher.end();
+		}
+		if (endOfLastMatch < text.length())
+		{
+			String token = text.substring(endOfLastMatch);
+			list.add(token);
+		}
+		return list;
 	}
 
 	/**

@@ -26,21 +26,20 @@ public final class Writer16Colors extends AbstractColorWriter
 	}
 
 	@Override
-	public String decorateInsertedText(String text)
-	{
-		return PREFIX + WHITE_FOREGROUND + ";" + GREEN_BACKGROUND + POSTFIX + text;
-	}
-
-	@Override
 	public String decorateDeletedText(String text)
 	{
 		return PREFIX + WHITE_FOREGROUND + ";" + RED_BACKGROUND + POSTFIX + text;
 	}
 
 	@Override
-	public String decoratePadding(int length)
+	public String decorateInsertedText(String text)
 	{
-		return PREFIX + WHITE_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX +
-			DIFF_PADDING.repeat(length);
+		return PREFIX + WHITE_FOREGROUND + ";" + GREEN_BACKGROUND + POSTFIX + text;
+	}
+
+	@Override
+	public String decoratePadding(String text)
+	{
+		return PREFIX + WHITE_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX + text;
 	}
 }

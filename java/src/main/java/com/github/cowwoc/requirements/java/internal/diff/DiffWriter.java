@@ -12,21 +12,12 @@ import java.util.List;
 public interface DiffWriter extends AutoCloseable
 {
 	/**
-	 * Adds text that did not change. Only one line may be written at a time.
+	 * Adds text that is equal in {@code expected} and {@code actual}. Only one line may be written at a time.
 	 *
 	 * @param text the text to keep in {@code actual}
 	 * @throws IllegalStateException if the writer was closed
 	 */
-	void writeUnchanged(String text);
-
-	/**
-	 * Adds text that is present in {@code expected} but not {@code actual}.  Only one line may be written at a
-	 * time.
-	 *
-	 * @param text the text that needs to be inserted into {@code actual}
-	 * @throws IllegalStateException if the writer was closed
-	 */
-	void writeInserted(String text);
+	void writeEqual(String text);
 
 	/**
 	 * Deletes text that is present in {@code actual} but not {@code expected}.  Only one line may be written
@@ -38,10 +29,13 @@ public interface DiffWriter extends AutoCloseable
 	void writeDeleted(String text);
 
 	/**
-	 * @param length the number of characters to pad
-	 * @return the (possibly decorated) text
+	 * Adds text that is present in {@code expected} but not {@code actual}.  Only one line may be written at a
+	 * time.
+	 *
+	 * @param text the text that needs to be inserted into {@code actual}
+	 * @throws IllegalStateException if the writer was closed
 	 */
-	String decoratePadding(int length);
+	void writeInserted(String text);
 
 	/**
 	 * @return the lines of the actual value

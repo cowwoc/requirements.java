@@ -49,10 +49,10 @@ public final class DiffTest
 			TextOnly scheme = new TextOnly();
 
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : int[6" + scheme.decoratePadding(1) + "]" + EOS_MARKER + "\n" +
+			String expectedMessage = "Actual  : int[6" + scheme.getPaddingMarker() + "]" + EOS_MARKER + "\n" +
 				"Diff    : " + DIFF_EQUAL.repeat(4) + DIFF_DELETE + DIFF_INSERT +
 				DIFF_EQUAL.repeat(1 + EOS_MARKER.length()) + "\n" +
-				"Expected: int[" + scheme.decoratePadding(1) + "5]" + EOS_MARKER;
+				"Expected: int[" + scheme.getPaddingMarker() + "5]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -76,10 +76,11 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
 				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
-				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + EOS_MARKER +
+				"Expected: " + scheme.decorateUnchangedText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateUnchangedText("]") + EOS_MARKER +
 				scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
@@ -104,11 +105,11 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
 				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
-				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + EOS_MARKER +
-				scheme.stopDecoration();
+				"Expected: " + scheme.decorateUnchangedText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -132,11 +133,11 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) + scheme.decorateUnchangedText("]") +
-				EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
-				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + EOS_MARKER +
-				scheme.stopDecoration();
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
+				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateUnchangedText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -160,11 +161,11 @@ public final class DiffTest
 
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : " + scheme.decorateUnchangedText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(1) + scheme.decorateUnchangedText("]") +
-				EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateUnchangedText("int[") + scheme.decoratePadding(1) +
-				scheme.decorateInsertedText("5") + scheme.decorateUnchangedText("]") + EOS_MARKER +
-				scheme.stopDecoration();
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
+				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateUnchangedText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateUnchangedText("]") + EOS_MARKER + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -265,16 +266,15 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual@0  : actual" + NEWLINE_MARKER + "\n" +
-				"Diff      : " + DIFF_DELETE.repeat("actual".length() + NEWLINE_MARKER.length()) +
-				"\n" +
-				"Expected  : " + DIFF_PADDING.repeat("actual".length() + NEWLINE_MARKER.length()) + "\n" +
-				"\n" +
-				"Actual@1  : " + DIFF_PADDING.repeat("expected".length()) + EOS_MARKER +
-				"\n" +
-				"Diff      : " + DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) +
-				"\n" +
-				"Expected@0: expected" + EOS_MARKER;
+			String expectedMessage =
+				"Actual@0  : actual" + DIFF_PADDING.repeat("expected".length()) + NEWLINE_MARKER + "\n" +
+					"Diff      : " + DIFF_DELETE.repeat("actual".length()) + DIFF_INSERT.repeat("expected".length()) +
+					DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
+					"Expected@0: " + DIFF_PADDING.repeat("actual".length()) + "expected" +
+					DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
+					"\n" +
+					"Actual@1  : " + EOS_MARKER + "\n" +
+					"Expected@0: " + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -551,11 +551,8 @@ public final class DiffTest
 		}
 	}
 
-	/**
-	 * Diffing {@code List<Integer>}.
-	 */
 	@Test
-	public void diffListOfInteger()
+	public void listOfIntegers()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -571,7 +568,7 @@ public final class DiffTest
 				"\n" +
 				"[...]\n" +
 				"\n" +
-				"Actual[2]  : " + "3" + DIFF_PADDING.repeat(1) + EOS_MARKER + "\n" +
+				"Actual[2]  : 3" + DIFF_PADDING.repeat(1) + EOS_MARKER + "\n" +
 				"Diff       : " + DIFF_DELETE + DIFF_INSERT + DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"Expected[2]: " + DIFF_PADDING + "9" + EOS_MARKER + "\n" +
 				"\n" +
@@ -584,11 +581,8 @@ public final class DiffTest
 		}
 	}
 
-	/**
-	 * Diffing {@code List<String>}.
-	 */
 	@Test
-	public void diffListOfString()
+	public void listOfStrings()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -624,7 +618,7 @@ public final class DiffTest
 	}
 
 	/**
-	 * Make sure that we skip line numbers even when writing colors.
+	 * Make sure that we skip duplicate lines even when the diff contains colors.
 	 */
 	@Test
 	public void emptyLineNumber_16Colors()
@@ -642,8 +636,8 @@ public final class DiffTest
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual@0  : " + scheme.decorateDeletedText("foo" + NEWLINE_MARKER) +
 				scheme.stopDecoration() + "\n" +
-				"Expected  : " + scheme.decoratePadding(("foo" + NEWLINE_MARKER).length()) +
-				scheme.stopDecoration() +
+				"Expected  : " + scheme.decoratePadding(
+				scheme.getPaddingMarker().repeat(("foo" + NEWLINE_MARKER).length())) + scheme.stopDecoration() +
 				"\n" +
 				"\n" +
 				"Actual@1  : " + scheme.decorateUnchangedText("bar" + EOS_MARKER) + scheme.stopDecoration() + "\n" +

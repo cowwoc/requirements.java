@@ -24,8 +24,8 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	 */
 	protected static final String DIFF_PADDING = "/";
 	protected static final String DEFAULT_BACKGROUND = "49";
-	private boolean needToResetActual;
-	private boolean needToResetExpected;
+	private DecorationType actualDecoration = DecorationType.UNDECORATED;
+	private DecorationType expectedDecoration = DecorationType.UNDECORATED;
 
 	protected AbstractColorWriter()
 	{
@@ -39,32 +39,27 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	}
 
 	@Override
-	public void writeUnchanged(String text)
+	public void writeEqual(String text)
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
 		if (text.isEmpty())
 			return;
-		actualLineBuilder.append(decorateUnchangedText(text));
-		expectedLineBuilder.append(decorateUnchangedText(text));
-		needToResetActual = true;
-		needToResetExpected = true;
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
-	}
+		if (actualDecoration != DecorationType.EQUAL)
+		{
+			actualLineBuilder.append(decorateUnchangedText(text));
+			actualDecoration = DecorationType.EQUAL;
+		}
+		else
+			actualLineBuilder.append(text);
 
-	@Override
-	public void writeInserted(String text)
-	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
-			return;
-		actualLineBuilder.append(decoratePadding(length));
-		expectedLineBuilder.append(decorateInsertedText(text));
-		needToResetActual = true;
-		needToResetExpected = true;
+		if (expectedDecoration != DecorationType.EQUAL)
+		{
+			expectedLineBuilder.append(decorateUnchangedText(text));
+			expectedDecoration = DecorationType.EQUAL;
+		}
+		else
+			expectedLineBuilder.append(text);
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
 	}
@@ -77,10 +72,51 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 		int length = text.length();
 		if (length == 0)
 			return;
-		actualLineBuilder.append(decorateDeletedText(text));
-		expectedLineBuilder.append(decoratePadding(length));
-		needToResetActual = true;
-		needToResetExpected = true;
+		if (actualDecoration != DecorationType.DELETE)
+		{
+			actualLineBuilder.append(decorateDeletedText(text));
+			actualDecoration = DecorationType.DELETE;
+		}
+		else
+			actualLineBuilder.append(text);
+
+		String padding = getPaddingMarker().repeat(length);
+		if (expectedDecoration != DecorationType.DELETE)
+		{
+			expectedLineBuilder.append(decoratePadding(padding));
+			expectedDecoration = DecorationType.DELETE;
+		}
+		else
+			expectedLineBuilder.append(padding);
+		if (text.endsWith(NEWLINE_MARKER))
+			writeNewline();
+	}
+
+	@Override
+	public void writeInserted(String text)
+	{
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		int length = text.length();
+		if (length == 0)
+			return;
+
+		String padding = getPaddingMarker().repeat(length);
+		if (actualDecoration != DecorationType.INSERT)
+		{
+			actualLineBuilder.append(decoratePadding(padding));
+			actualDecoration = DecorationType.INSERT;
+		}
+		else
+			actualLineBuilder.append(decoratePadding(padding));
+
+		if (expectedDecoration != DecorationType.INSERT)
+		{
+			expectedLineBuilder.append(decorateInsertedText(text));
+			expectedDecoration = DecorationType.INSERT;
+		}
+		else
+			expectedLineBuilder.append(text);
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
 	}
@@ -88,15 +124,15 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	@Override
 	protected void beforeNewline()
 	{
-		if (needToResetActual)
+		if (actualDecoration != DecorationType.UNDECORATED)
 		{
 			actualLineBuilder.append(stopDecoration());
-			needToResetActual = false;
+			actualDecoration = DecorationType.UNDECORATED;
 		}
-		if (needToResetExpected)
+		if (expectedDecoration != DecorationType.UNDECORATED)
 		{
 			expectedLineBuilder.append(stopDecoration());
-			needToResetExpected = false;
+			expectedDecoration = DecorationType.UNDECORATED;
 		}
 	}
 
@@ -111,5 +147,16 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");
 		return Collections.emptyList();
+	}
+
+	/**
+	 * Possible types of decorations.
+	 */
+	public enum DecorationType
+	{
+		UNDECORATED,
+		DELETE,
+		INSERT,
+		EQUAL
 	}
 }

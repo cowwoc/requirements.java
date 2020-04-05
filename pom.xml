@@ -13,7 +13,7 @@
 	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
-	<url>https://github.com/cowwoc/requirements.java/cowwoc/requirements/</url>
+	<url>https://github.com/cowwoc/requirements.java/</url>
 
 	<licenses>
 		<license>

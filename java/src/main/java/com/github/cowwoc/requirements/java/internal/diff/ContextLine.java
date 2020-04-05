@@ -2,27 +2,27 @@
  * Copyright (c) 2020 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements.java.internal;
+package com.github.cowwoc.requirements.java.internal.diff;
 
 /**
  * A line item in an exception context.
  */
 public final class ContextLine
 {
-	private final String key;
+	private final String name;
 	private final Object value;
 
 	/**
 	 * Creates a new line.
 	 *
-	 * @param key   an optional value (empty string if absent)
+	 * @param name  the key associated with the value (empty string if absent)
 	 * @param value a value
 	 * @throws AssertionError if the key is null
 	 */
-	public ContextLine(String key, Object value)
+	public ContextLine(String name, Object value)
 	{
-		assert (key != null);
-		this.key = key;
+		assert (name != null);
+		this.name = name;
 		this.value = value;
 	}
 
@@ -33,16 +33,16 @@ public final class ContextLine
 	 */
 	public ContextLine(Object value)
 	{
-		this.key = "";
+		this.name = "";
 		this.value = value;
 	}
 
 	/**
 	 * @return the key associated with the value (empty string is absent)
 	 */
-	public String getKey()
+	public String getName()
 	{
-		return key;
+		return name;
 	}
 
 	/**
@@ -57,8 +57,8 @@ public final class ContextLine
 	public String toString()
 	{
 		StringBuilder result = new StringBuilder();
-		if (!key.isEmpty())
-			result.append(key + ":");
+		if (!name.isEmpty())
+			result.append(name + ":");
 		result.append(value);
 		return result.toString();
 	}

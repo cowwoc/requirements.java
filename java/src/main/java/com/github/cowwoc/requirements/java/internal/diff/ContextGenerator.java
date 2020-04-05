@@ -2,11 +2,9 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements.java.internal;
+package com.github.cowwoc.requirements.java.internal.diff;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.internal.diff.DiffGenerator;
-import com.github.cowwoc.requirements.java.internal.diff.DiffResult;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.ArrayList;
@@ -79,7 +77,6 @@ public final class ContextGenerator
 	                                        boolean expectedInMessage)
 	{
 		assert (actualName != null) : "actualName may not be null";
-		// actualType is null if actualValue is null
 		assert (expectedName != null) : "expectedName may not be null";
 		if (!config.isDiffEnabled())
 		{
@@ -215,8 +212,7 @@ public final class ContextGenerator
 			{
 				// If the String representation of the values is equal, output getClass(), hashCode(),
 				// or System.identityHashCode()] that differ.
-				result.addAll(compareTypes(actualName, actualValue, actualAsString,
-					expectedName, expectedValue, expectedAsString));
+				result.addAll(compareTypes(actualName, actualValue, expectedName, expectedValue));
 			}
 			return result;
 		}
@@ -307,9 +303,8 @@ public final class ContextGenerator
 	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	private List<ContextLine> compareTypes(String actualName, Object actualValue,
-	                                       String actualAsString, String expectedName,
-	                                       Object expectedValue, String expectedAsString)
+	private List<ContextLine> compareTypes(String actualName, Object actualValue, String expectedName,
+	                                       Object expectedValue)
 	{
 		List<ContextLine> result = new ArrayList<>();
 		Class<?> actualType = getClass(actualValue);

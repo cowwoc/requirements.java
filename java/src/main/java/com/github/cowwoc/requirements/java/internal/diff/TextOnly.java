@@ -33,7 +33,7 @@ public final class TextOnly extends AbstractDiffWriter
 	}
 
 	@Override
-	public void writeUnchanged(String text)
+	public void writeEqual(String text)
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
@@ -42,21 +42,6 @@ public final class TextOnly extends AbstractDiffWriter
 			return;
 		actualLineBuilder.append(text);
 		middleLineBuilder.append(DIFF_EQUAL.repeat(length));
-		expectedLineBuilder.append(text);
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
-	}
-
-	@Override
-	public void writeInserted(String text)
-	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
-			return;
-		actualLineBuilder.append(getPaddingMarker().repeat(length));
-		middleLineBuilder.append(DIFF_INSERT.repeat(length));
 		expectedLineBuilder.append(text);
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
@@ -78,6 +63,21 @@ public final class TextOnly extends AbstractDiffWriter
 	}
 
 	@Override
+	public void writeInserted(String text)
+	{
+		if (closed)
+			throw new IllegalStateException("Writer must be open");
+		int length = text.length();
+		if (length == 0)
+			return;
+		actualLineBuilder.append(getPaddingMarker().repeat(length));
+		middleLineBuilder.append(DIFF_INSERT.repeat(length));
+		expectedLineBuilder.append(text);
+		if (text.endsWith(NEWLINE_MARKER))
+			writeNewline();
+	}
+
+	@Override
 	protected void beforeNewline()
 	{
 	}
@@ -88,12 +88,6 @@ public final class TextOnly extends AbstractDiffWriter
 		super.writeNewline();
 		middleLinesBuilder.add(middleLineBuilder.toString());
 		middleLineBuilder.delete(0, middleLineBuilder.length());
-	}
-
-	@Override
-	public String decoratePadding(int length)
-	{
-		return DIFF_PADDING.repeat(length);
 	}
 
 	@Override

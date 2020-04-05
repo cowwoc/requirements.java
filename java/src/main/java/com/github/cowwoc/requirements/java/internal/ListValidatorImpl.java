@@ -8,6 +8,8 @@ import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ListValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.internal.diff.ContextGenerator;
+import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractCollectionValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Objects;
