@@ -86,15 +86,15 @@ public final class DiffGenerator
 	{
 		// Mark the end of the string to guard against cases that end with whitespace
 		List<Integer> actualCodepoints = Strings.toCodepoints(actual + EOS_MARKER);
-		List<Integer> expectedWords = Strings.toCodepoints(expected + EOS_MARKER);
+		List<Integer> expectedCodepoints = Strings.toCodepoints(expected + EOS_MARKER);
 
 		try
 		{
 			DiffWriter writer = createDiffWriter();
 			// DiffUtils.diff() returns a list of deltas, where each delta is associated with a list of characters.
-			List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedWords).getDeltas();
+			List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedCodepoints).getDeltas();
 			// DiffUtils.diff() does not return equal deltas, so we add them.
-			deltas = addEqualDeltas(deltas, actualCodepoints, expectedWords);
+			deltas = addEqualDeltas(deltas, actualCodepoints, expectedCodepoints);
 			// Convert a list of deltas and their associated words to a list of words and their associated deltas,
 			// using "actual" to define word boundaries.
 			List<TokenWithDeltas<String, Integer>> wordToDeltas = new WordToDeltaMapper().apply(deltas);
