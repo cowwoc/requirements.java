@@ -13,7 +13,7 @@ interface ColoredDiff
 	 * @param text the text that did not change
 	 * @return the (possibly decorated) text
 	 */
-	String decorateUnchangedText(String text);
+	String decorateEqualText(String text);
 
 	/**
 	 * @param text the text that was deleted

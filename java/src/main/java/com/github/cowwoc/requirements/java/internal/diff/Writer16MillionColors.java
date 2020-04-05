@@ -22,7 +22,7 @@ public final class Writer16MillionColors extends AbstractColorWriter
 	private static final String GRAY_BACKGROUND = "48;2;66;66;66";
 
 	@Override
-	public String decorateUnchangedText(String text)
+	public String decorateEqualText(String text)
 	{
 		return PREFIX + GRAY_FOREGROUND + POSTFIX + PREFIX + DEFAULT_BACKGROUND + POSTFIX + text;
 	}

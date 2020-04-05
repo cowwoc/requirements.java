@@ -47,7 +47,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			return;
 		if (actualDecoration != DecorationType.EQUAL)
 		{
-			actualLineBuilder.append(decorateUnchangedText(text));
+			actualLineBuilder.append(decorateEqualText(text));
 			actualDecoration = DecorationType.EQUAL;
 		}
 		else
@@ -55,7 +55,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 
 		if (expectedDecoration != DecorationType.EQUAL)
 		{
-			expectedLineBuilder.append(decorateUnchangedText(text));
+			expectedLineBuilder.append(decorateEqualText(text));
 			expectedDecoration = DecorationType.EQUAL;
 		}
 		else

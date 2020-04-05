@@ -97,7 +97,7 @@ public final class DiffGenerator
 			deltas = addEqualDeltas(deltas, actualCodepoints, expectedCodepoints);
 			// Convert a list of deltas and their associated words to a list of words and their associated deltas,
 			// using "actual" to define word boundaries.
-			List<TokenWithDeltas<String, Integer>> wordToDeltas = new WordToDeltaMapper().apply(deltas);
+			List<WordWithDeltas> wordToDeltas = new WordToDeltaMapper().apply(deltas);
 			writeWords(wordToDeltas, writer);
 			writer.close();
 			return new DiffResult(writer.getActualLines(), writer.getMiddleLines(), writer.getExpectedLines());
@@ -112,18 +112,18 @@ public final class DiffGenerator
 	 * Converts a mapping from deltas to words to a mapping from words to deltas.
 	 */
 	private static final class WordToDeltaMapper
-		implements Function<List<AbstractDelta<Integer>>, List<TokenWithDeltas<String, Integer>>>
+		implements Function<List<AbstractDelta<Integer>>, List<WordWithDeltas>>
 	{
 		public final StringBuilder currentWord = new StringBuilder();
 		public final List<AbstractDelta<Integer>> currentDeltas = new ArrayList<>();
-		public final List<TokenWithDeltas<String, Integer>> result = new ArrayList<>();
+		public final List<WordWithDeltas> result = new ArrayList<>();
 
 		/**
 		 * @param deltas a list of deltas, each delta is associated with one or more words
 		 * @return a list of words, each word is associated with one or more deltas
 		 */
 		@Override
-		public List<TokenWithDeltas<String, Integer>> apply(List<AbstractDelta<Integer>> deltas)
+		public List<WordWithDeltas> apply(List<AbstractDelta<Integer>> deltas)
 		{
 			for (AbstractDelta<Integer> delta : deltas)
 			{
@@ -183,16 +183,15 @@ public final class DiffGenerator
 						int toInsertPosition = 0;
 						for (String word : toDelete)
 						{
-							int oldSourcePosition = sourcePosition;
 							sourcePosition = onDelete(word, sourcePosition, targetPosition);
-							int toInsertToWrite = Math.min(sourcePosition - oldSourcePosition,
+							int charactersToInsert = Math.min(word.length(),
 								toInsert.length() - toInsertPosition);
-							if (toInsertToWrite > 0)
+							if (charactersToInsert > 0)
 							{
-								targetPosition = onInsert(
-									toInsert.substring(toInsertPosition, toInsertPosition + toInsertToWrite),
+								targetPosition = onInsert(toInsert.substring(toInsertPosition,
+									toInsertPosition + charactersToInsert),
 									sourcePosition, targetPosition);
-								toInsertPosition += toInsertToWrite;
+								toInsertPosition += charactersToInsert;
 							}
 						}
 						// Insert any remaining characters
@@ -203,7 +202,7 @@ public final class DiffGenerator
 				}
 			}
 			if (currentWord.length() > 0)
-				result.add(new TokenWithDeltas<>(currentWord.toString(), currentDeltas));
+				result.add(new WordWithDeltas(currentWord.toString(), currentDeltas));
 			return result;
 		}
 
@@ -250,14 +249,14 @@ public final class DiffGenerator
 		}
 
 		/**
-		 * Flushes tokens upon hitting a delimiter.
+		 * Flushes words upon hitting a delimiter.
 		 */
 		private void onDelimiter()
 		{
-			// If the first token is a delimiter, there is nothing to flush.
+			// If the first word is a delimiter, there is nothing to flush.
 			if (currentDeltas.isEmpty())
 				return;
-			result.add(new TokenWithDeltas<>(currentWord.toString(), currentDeltas));
+			result.add(new WordWithDeltas(currentWord.toString(), currentDeltas));
 			currentDeltas.clear();
 			currentWord.delete(0, currentWord.length());
 		}
@@ -311,10 +310,9 @@ public final class DiffGenerator
 	 * @param words  a list of words associated with one or more deltas
 	 * @param writer the writer to write into
 	 */
-	private void writeWords(List<TokenWithDeltas<String, Integer>> words,
-	                        DiffWriter writer)
+	private void writeWords(List<WordWithDeltas> words, DiffWriter writer)
 	{
-		for (TokenWithDeltas<String, Integer> word : words)
+		for (WordWithDeltas word : words)
 		{
 			if (numberOfUnequalDeltas(word.deltas) <= 2)
 			{
@@ -353,7 +351,7 @@ public final class DiffGenerator
 	 * @param word   a word
 	 * @param writer the writer to write into
 	 */
-	private void writeWord(TokenWithDeltas<String, Integer> word, DiffWriter writer)
+	private void writeWord(WordWithDeltas word, DiffWriter writer)
 	{
 		for (AbstractDelta<Integer> delta : word.deltas)
 		{

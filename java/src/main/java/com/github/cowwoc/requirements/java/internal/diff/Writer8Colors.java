@@ -29,7 +29,7 @@ public final class Writer8Colors extends AbstractColorWriter
 	private static final String BLACK_BACKGROUND = "40";
 
 	@Override
-	public String decorateUnchangedText(String text)
+	public String decorateEqualText(String text)
 	{
 		return PREFIX + WHITE_FOREGROUND + ";" + BLACK_BACKGROUND + POSTFIX + text;
 	}
