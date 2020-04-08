@@ -47,7 +47,7 @@ public interface DiffWriter extends AutoCloseable
 	 * @return the lines to display after "actual" and before "expected" (empty lines should not be displayed)
 	 * @throws IllegalStateException if the writer is open
 	 */
-	List<String> getMiddleLines();
+	List<String> getDiffLines();
 
 	/**
 	 * @return the lines of the expected value

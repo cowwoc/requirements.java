@@ -142,7 +142,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	}
 
 	@Override
-	public List<String> getMiddleLines()
+	public List<String> getDiffLines()
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");

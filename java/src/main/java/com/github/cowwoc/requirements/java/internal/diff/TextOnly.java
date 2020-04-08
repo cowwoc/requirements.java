@@ -23,9 +23,9 @@ public final class TextOnly extends AbstractDiffWriter
 	 * A padding character used to align values vertically.
 	 */
 	public static final String DIFF_PADDING = " ";
-	private final StringBuilder middleLineBuilder = new StringBuilder(LINE_LENGTH);
-	private final List<String> middleLinesBuilder = new ArrayList<>();
-	private List<String> middleLines;
+	private final StringBuilder diffLineBuilder = new StringBuilder(LINE_LENGTH);
+	private final List<String> diffLinesBuilder = new ArrayList<>();
+	private List<String> diffLines;
 
 	public TextOnly()
 	{
@@ -41,7 +41,7 @@ public final class TextOnly extends AbstractDiffWriter
 		if (length == 0)
 			return;
 		actualLineBuilder.append(text);
-		middleLineBuilder.append(DIFF_EQUAL.repeat(length));
+		diffLineBuilder.append(DIFF_EQUAL.repeat(length));
 		expectedLineBuilder.append(text);
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
@@ -56,7 +56,7 @@ public final class TextOnly extends AbstractDiffWriter
 		if (length == 0)
 			return;
 		actualLineBuilder.append(text);
-		middleLineBuilder.append(DIFF_DELETE.repeat(length));
+		diffLineBuilder.append(DIFF_DELETE.repeat(length));
 		expectedLineBuilder.append(getPaddingMarker().repeat(length));
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
@@ -71,7 +71,7 @@ public final class TextOnly extends AbstractDiffWriter
 		if (length == 0)
 			return;
 		actualLineBuilder.append(getPaddingMarker().repeat(length));
-		middleLineBuilder.append(DIFF_INSERT.repeat(length));
+		diffLineBuilder.append(DIFF_INSERT.repeat(length));
 		expectedLineBuilder.append(text);
 		if (text.endsWith(NEWLINE_MARKER))
 			writeNewline();
@@ -86,21 +86,21 @@ public final class TextOnly extends AbstractDiffWriter
 	public void writeNewline()
 	{
 		super.writeNewline();
-		middleLinesBuilder.add(middleLineBuilder.toString());
-		middleLineBuilder.delete(0, middleLineBuilder.length());
+		diffLinesBuilder.add(diffLineBuilder.toString());
+		diffLineBuilder.delete(0, diffLineBuilder.length());
 	}
 
 	@Override
 	protected void afterClose()
 	{
-		this.middleLines = Collections.unmodifiableList(middleLinesBuilder);
+		this.diffLines = Collections.unmodifiableList(diffLinesBuilder);
 	}
 
 	@Override
-	public List<String> getMiddleLines()
+	public List<String> getDiffLines()
 	{
 		if (!closed)
 			throw new IllegalStateException("Writer must be closed");
-		return middleLines;
+		return diffLines;
 	}
 }

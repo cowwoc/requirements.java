@@ -100,7 +100,7 @@ public final class DiffGenerator
 			List<WordWithDeltas> wordToDeltas = new WordToDeltaMapper().apply(deltas);
 			writeWords(wordToDeltas, writer);
 			writer.close();
-			return new DiffResult(writer.getActualLines(), writer.getMiddleLines(), writer.getExpectedLines());
+			return new DiffResult(writer.getActualLines(), writer.getDiffLines(), writer.getExpectedLines());
 		}
 		catch (DiffException e)
 		{
@@ -136,6 +136,11 @@ public final class DiffGenerator
 						for (String word : Strings.splitPreserveDelimiter(
 							Strings.fromCodepoints(delta.getSource().getLines()), WORDS))
 						{
+							if (word.isEmpty())
+							{
+								// Caused by consecutive delimiters
+								continue;
+							}
 							boolean isDelimiter = WORDS.matcher(word).matches();
 							if (isDelimiter)
 								onDelimiter();
@@ -216,6 +221,11 @@ public final class DiffGenerator
 		 */
 		private int onDelete(String word, int sourcePosition, int targetPosition)
 		{
+			if (word.isEmpty())
+			{
+				// Caused by consecutive delimiters
+				return sourcePosition;
+			}
 			boolean isDelimiter = WORDS.matcher(word).matches();
 			if (isDelimiter)
 				onDelimiter();
@@ -240,6 +250,11 @@ public final class DiffGenerator
 		 */
 		private int onInsert(String word, int sourcePosition, int targetPosition)
 		{
+			if (word.isEmpty())
+			{
+				// Caused by consecutive delimiters
+				return targetPosition;
+			}
 			List<Integer> wordCodepoints = Strings.toCodepoints(word);
 			currentDeltas.add(new InsertDelta<>(
 				new Chunk<>(sourcePosition, List.of()),
