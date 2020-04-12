@@ -7,6 +7,8 @@ package com.github.cowwoc.requirements.java.internal.util;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,15 +18,15 @@ import java.util.regex.Pattern;
 public final class Strings
 {
 	/**
-	 * @param str        a string
+	 * @param string     a string
 	 * @param prefix     a prefix
 	 * @param ignoreCase {@code true} if case should be ignored when comparing characters
 	 * @return true if {@code start} starts with {@code prefix}, disregarding case sensitivity
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public static boolean startsWith(String str, String prefix, boolean ignoreCase)
+	public static boolean startsWith(String string, String prefix, boolean ignoreCase)
 	{
-		return str.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
+		return string.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
 	}
 
 	/**
@@ -88,6 +90,24 @@ public final class Strings
 				return result;
 			result = i;
 		}
+		return result;
+	}
+
+	/**
+	 * Returns the last match returned by a regular expression.
+	 *
+	 * @param source the string to search within
+	 * @param target the regular expression to search for
+	 * @return the match result associated with the last occurrence of {@code target} in {@code source}
+	 */
+	public static Optional<MatchResult> lastIndexOf(String source, Pattern target)
+	{
+		assert (source != null) : "source may not be null";
+		assert (target != null) : "target may not be null";
+		Optional<MatchResult> result = Optional.empty();
+		Matcher matcher = target.matcher(source);
+		while (matcher.find())
+			result = Optional.of(matcher.toMatchResult());
 		return result;
 	}
 

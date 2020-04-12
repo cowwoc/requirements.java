@@ -33,139 +33,28 @@ import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.X
 public final class DiffTest
 {
 	/**
-	 * Ensure that text-mode diffs generate the expected value.
+	 * Ensure that diffs delete before inserting.
 	 */
 	@Test
-	public void diffArraySize()
+	public void consecutiveNonEqualDiffs()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "int[6]";
-			String expected = "int[5]";
+			String actual = "actual actual";
+			String expected = "expected expected";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
-			TextOnly scheme = new TextOnly();
-
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : int[6" + scheme.getPaddingMarker() + "]" + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_EQUAL.repeat(4) + DIFF_DELETE + DIFF_INSERT +
-				DIFF_EQUAL.repeat(1 + EOS_MARKER.length()) + "\n" +
-				"Expected: int[" + scheme.getPaddingMarker() + "5]" + EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n****************\nActual:\n" + actualMessage;
-		}
-	}
-
-	/**
-	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
-	 */
-	@Test
-	public void diffArraySize_16Colors()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
-		{
-			String actual = "int[6]";
-			String expected = "int[5]";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
-		}
-		catch (IllegalArgumentException e)
-		{
-			Writer16Colors scheme = new Writer16Colors();
-
-			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateEqualText("int[") +
-				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
-				scheme.decorateEqualText("]") + EOS_MARKER +
-				scheme.stopDecoration();
-			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n****************\nActual:\n" + actualMessage;
-		}
-	}
-
-	/**
-	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
-	 */
-	@Test
-	public void diffArraySize_8Colors()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(XTERM_8_COLORS))
-		{
-			String actual = "int[6]";
-			String expected = "int[5]";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
-		}
-		catch (IllegalArgumentException e)
-		{
-			Writer8Colors scheme = new Writer8Colors();
-
-			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateEqualText("int[") +
-				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration();
-			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n****************\nActual:\n" + actualMessage;
-		}
-	}
-
-	/**
-	 * Ensure that XTERM_256_COLORS diffs generate the expected value.
-	 */
-	@Test
-	public void diffArraySize_256Colors()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(XTERM_256_COLORS))
-		{
-			String actual = "int[6]";
-			String expected = "int[5]";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
-		}
-		catch (IllegalArgumentException e)
-		{
-			Writer256Colors scheme = new Writer256Colors();
-
-			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateEqualText("int[") +
-				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration();
-			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n****************\nActual:\n" + actualMessage;
-		}
-	}
-
-	/**
-	 * Ensure that RGB_888_COLORS diffs generate the expected value.
-	 */
-	@Test
-	public void diffArraySize_16MillionColors()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(RGB_888_COLORS))
-		{
-			String actual = "int[6]";
-			String expected = "int[5]";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
-		}
-		catch (IllegalArgumentException e)
-		{
-			Writer16MillionColors scheme = new Writer16MillionColors();
-
-			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
-				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
-				"Expected: " + scheme.decorateEqualText("int[") +
-				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
-				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration();
+			String expectedMessage = "Actual  : actual " +
+				DIFF_PADDING.repeat("expected".length()) + "actual" +
+				DIFF_PADDING.repeat("expected".length()) + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_DELETE.repeat("actual".length()) +
+				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("actual".length()) +
+				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
+				"Expected: " + DIFF_PADDING.repeat("actual".length()) + "expected" +
+				DIFF_PADDING.repeat(" actual".length()) + "expected" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -190,7 +79,7 @@ public final class DiffTest
 				DIFF_PADDING.repeat("expected".length()) + EOS_MARKER + "\n" +
 				"Diff    : " + DIFF_DELETE.repeat("actual".length()) +
 				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
-				"Expected: " + " ".repeat("actual".length()) + "expected" + EOS_MARKER;
+				"Expected: " + DIFF_PADDING.repeat("actual".length()) + "expected" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -614,6 +503,145 @@ public final class DiffTest
 				"Expected[2]  : 3" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that text-mode diffs generate the expected value.
+	 */
+	@Test
+	public void diffArraySize()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			TextOnly scheme = new TextOnly();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : int[6" + scheme.getPaddingMarker() + "]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_EQUAL.repeat(4) + DIFF_DELETE + DIFF_INSERT +
+				DIFF_EQUAL.repeat(1 + EOS_MARKER.length()) + "\n" +
+				"Expected: int[" + scheme.getPaddingMarker() + "5]" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
+	 */
+	@Test
+	public void diffArraySize_16Colors()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Writer16Colors scheme = new Writer16Colors();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateEqualText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateEqualText("]") + EOS_MARKER +
+				scheme.stopDecoration();
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
+	 */
+	@Test
+	public void diffArraySize_8Colors()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_8_COLORS))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Writer8Colors scheme = new Writer8Colors();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateEqualText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration();
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that XTERM_256_COLORS diffs generate the expected value.
+	 */
+	@Test
+	public void diffArraySize_256Colors()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(XTERM_256_COLORS))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Writer256Colors scheme = new Writer256Colors();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateEqualText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration();
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that RGB_888_COLORS diffs generate the expected value.
+	 */
+	@Test
+	public void diffArraySize_16MillionColors()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(RGB_888_COLORS))
+		{
+			String actual = "int[6]";
+			String expected = "int[5]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Writer16MillionColors scheme = new Writer16MillionColors();
+
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : " + scheme.decorateEqualText("int[") +
+				scheme.decorateDeletedText("6") + scheme.decoratePadding(scheme.getPaddingMarker()) +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration() + "\n" +
+				"Expected: " + scheme.decorateEqualText("int[") +
+				scheme.decoratePadding(scheme.getPaddingMarker()) + scheme.decorateInsertedText("5") +
+				scheme.decorateEqualText("]") + EOS_MARKER + scheme.stopDecoration();
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
 		}
 	}
 

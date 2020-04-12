@@ -10,15 +10,18 @@ import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import com.github.difflib.DiffUtils;
 import com.github.difflib.algorithm.DiffException;
 import com.github.difflib.patch.AbstractDelta;
+import com.github.difflib.patch.ChangeDelta;
 import com.github.difflib.patch.Chunk;
 import com.github.difflib.patch.DeleteDelta;
+import com.github.difflib.patch.DeltaType;
 import com.github.difflib.patch.InsertDelta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
@@ -97,8 +100,9 @@ public final class DiffGenerator
 			deltas = addEqualDeltas(deltas, actualCodepoints, expectedCodepoints);
 			// Convert a list of deltas and their associated words to a list of words and their associated deltas,
 			// using "actual" to define word boundaries.
-			List<WordWithDeltas> wordToDeltas = new WordToDeltaMapper().apply(deltas);
-			writeWords(wordToDeltas, writer);
+			new ReduceDeltasPerWord(deltas).run();
+			for (AbstractDelta<Integer> delta : deltas)
+				writeDelta(delta, writer);
 			writer.close();
 			return new DiffResult(writer.getActualLines(), writer.getDiffLines(), writer.getExpectedLines());
 		}
@@ -109,171 +113,316 @@ public final class DiffGenerator
 	}
 
 	/**
-	 * Converts a mapping from deltas to words to a mapping from words to deltas.
+	 * For every word associated with 2 or more unequal deltas, replace the deltas with a single
+	 * {@code [DELETE actual, INSERT expected]} pair.
 	 */
-	private static final class WordToDeltaMapper
-		implements Function<List<AbstractDelta<Integer>>, List<WordWithDeltas>>
+	private static class ReduceDeltasPerWord implements Runnable
 	{
-		public final StringBuilder currentWord = new StringBuilder();
-		public final List<AbstractDelta<Integer>> currentDeltas = new ArrayList<>();
-		public final List<WordWithDeltas> result = new ArrayList<>();
+		// Format: [optional] (mandatory)
+		//
+		// word: (start-delta) (end-delta)
+		// start-delta: [pre-word] [delimiter] (word-in-start-delta)
+		// end-delta: (word-in-end-delta) [delimiter] [post-word]
+		// delimiter: whitespace found in EQUAL deltas
+		private final List<AbstractDelta<Integer>> deltas;
+		private List<String> sources;
+		private List<String> targets;
+		private int numberOfDeltas;
 
 		/**
-		 * @param deltas a list of deltas, each delta is associated with one or more words
-		 * @return a list of words, each word is associated with one or more deltas
+		 * The index of the start delta.
 		 */
-		@Override
-		public List<WordWithDeltas> apply(List<AbstractDelta<Integer>> deltas)
+		private int indexOfStartDelta;
+		/**
+		 * The index of the word in the start delta.
+		 */
+		private int indexOfWordInStartDelta;
+		/**
+		 * The index of the end delta.
+		 */
+		private int indexOfEndDelta;
+		/**
+		 * The index of the delimiter in the end delta. If there is no delimiter, points to the end of the string.
+		 */
+		private int indexOfDelimiterInEndDelta;
+		/**
+		 * The index of the start of the next word in the end delta. If there are no followup words, points to the
+		 * end of the string.
+		 */
+		private int indexOfNextWordInEndDelta;
+
+		public ReduceDeltasPerWord(List<AbstractDelta<Integer>> deltas)
 		{
-			for (AbstractDelta<Integer> delta : deltas)
+			this.deltas = deltas;
+			numberOfDeltas = deltas.size();
+			sources = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getSource().getLines())).
+				collect(Collectors.toList());
+			targets = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getTarget().getLines())).
+				collect(Collectors.toList());
+		}
+
+		@Override
+		public void run()
+		{
+			// We are looking for words that span multiple deltas. If the current delta contains multiple
+			// words, we are interested in the latest one.
+			findFirstWord();
+			if (indexOfStartDelta == numberOfDeltas)
+				return;
+			while (true)
 			{
-				switch (delta.getType())
+				findEndOfWord();
+				updateDeltas();
+				if (!findNextWord())
+					return;
+			}
+		}
+
+		private void findFirstWord()
+		{
+			// Words start after a whitespace delimiter within an EQUAL delta. If none is found, the start
+			// of the first delta acts as a word boundary.
+			AbstractDelta<Integer> delta = deltas.get(0);
+			MatchResult result;
+			indexOfStartDelta = 0;
+			String actual = Strings.fromCodepoints(delta.getSource().getLines());
+			result = Strings.lastIndexOf(actual, WORDS).orElse(null);
+			if (result == null)
+				indexOfWordInStartDelta = 0;
+			else
+				indexOfWordInStartDelta = result.end();
+		}
+
+		/**
+		 * Finds the end of the word. Words end before a whitespace delimiter within an EQUAL delta.
+		 */
+		private void findEndOfWord()
+		{
+			// Words end at a whitespace delimiter found within an EQUAL delta. If none is found, the end of the
+			// last delta acts as a word boundary.
+			for (int i = indexOfStartDelta + 1; i < numberOfDeltas; ++i)
+			{
+				AbstractDelta<Integer> delta = deltas.get(i);
+				if (delta.getType() == DeltaType.EQUAL)
 				{
-					case EQUAL:
+					String actual = Strings.fromCodepoints(delta.getSource().getLines());
+					Matcher matcher = WORDS.matcher(actual);
+					if (matcher.find())
 					{
-						int sourcePosition = delta.getSource().getPosition();
-						int targetPosition = delta.getTarget().getPosition();
-						for (String word : Strings.splitPreserveDelimiter(
-							Strings.fromCodepoints(delta.getSource().getLines()), WORDS))
-						{
-							if (word.isEmpty())
-							{
-								// Caused by consecutive delimiters
-								continue;
-							}
-							boolean isDelimiter = WORDS.matcher(word).matches();
-							if (isDelimiter)
-								onDelimiter();
-							List<Integer> wordCodepoints = Strings.toCodepoints(word);
-							currentDeltas.add(new EqualDelta<>(
-								new Chunk<>(sourcePosition, wordCodepoints),
-								new Chunk<>(targetPosition, wordCodepoints)));
-							sourcePosition += wordCodepoints.size();
-							currentWord.append(word);
-							if (isDelimiter)
-								onDelimiter();
-						}
-						break;
-					}
-					case DELETE:
-					{
-						int sourcePosition = delta.getSource().getPosition();
-						int targetPosition = delta.getTarget().getPosition();
-						for (String word : Strings.splitPreserveDelimiter(
-							Strings.fromCodepoints(delta.getSource().getLines()), WORDS))
-						{
-							sourcePosition = onDelete(word, sourcePosition, targetPosition);
-						}
-						break;
-					}
-					case INSERT:
-					{
-						int sourcePosition = delta.getSource().getPosition();
-						int targetPosition = delta.getTarget().getPosition();
-						for (String word : Strings.splitPreserveDelimiter(
-							Strings.fromCodepoints(delta.getTarget().getLines()), WORDS))
-						{
-							targetPosition = onInsert(word, sourcePosition, targetPosition);
-						}
-						break;
-					}
-					case CHANGE:
-					{
-						// Add DELETE, INSERT deltas for each word found in "actual"
-						int sourcePosition = delta.getSource().getPosition();
-						int targetPosition = delta.getTarget().getPosition();
-						List<String> toDelete = Strings.splitPreserveDelimiter(Strings.fromCodepoints(
-							delta.getSource().getLines()), WORDS);
-						String toInsert = Strings.fromCodepoints(delta.getTarget().getLines());
-						int toInsertPosition = 0;
-						for (String word : toDelete)
-						{
-							sourcePosition = onDelete(word, sourcePosition, targetPosition);
-							int charactersToInsert = Math.min(word.length(),
-								toInsert.length() - toInsertPosition);
-							if (charactersToInsert > 0)
-							{
-								targetPosition = onInsert(toInsert.substring(toInsertPosition,
-									toInsertPosition + charactersToInsert),
-									sourcePosition, targetPosition);
-								toInsertPosition += charactersToInsert;
-							}
-						}
-						// Insert any remaining characters
-						if (toInsertPosition < toInsert.length())
-							onInsert(toInsert.substring(toInsertPosition), sourcePosition, targetPosition);
-						break;
+						indexOfDelimiterInEndDelta = matcher.start();
+						indexOfNextWordInEndDelta = matcher.end();
+						indexOfEndDelta = i;
+						return;
 					}
 				}
 			}
-			if (currentWord.length() > 0)
-				result.add(new WordWithDeltas(currentWord.toString(), currentDeltas));
-			return result;
+			indexOfEndDelta = numberOfDeltas - 1;
 		}
 
-		/**
-		 * Invoked when text should be deleted.
-		 *
-		 * @param word           the word to delete
-		 * @param sourcePosition the source position associated with the delta
-		 * @param targetPosition the target position associated with the delta
-		 * @return the updated sourcePosition
-		 */
-		private int onDelete(String word, int sourcePosition, int targetPosition)
+		private void updateDeltas()
 		{
-			if (word.isEmpty())
+			List<AbstractDelta<Integer>> deltasInWord = deltas.subList(indexOfStartDelta, indexOfEndDelta + 1);
+			if (numberOfUnequalDeltas(deltasInWord) <= 2)
 			{
-				// Caused by consecutive delimiters
-				return sourcePosition;
-			}
-			boolean isDelimiter = WORDS.matcher(word).matches();
-			if (isDelimiter)
-				onDelimiter();
-			List<Integer> wordCodepoints = Strings.toCodepoints(word);
-			currentDeltas.add(new DeleteDelta<>(
-				new Chunk<>(sourcePosition, wordCodepoints),
-				new Chunk<>(targetPosition, List.of())));
-			sourcePosition += wordCodepoints.size();
-			currentWord.append(word);
-			if (isDelimiter)
-				onDelimiter();
-			return sourcePosition;
-		}
-
-		/**
-		 * Invoked when text should be inserted.
-		 *
-		 * @param word           the word to delete
-		 * @param sourcePosition the source position associated with the delta
-		 * @param targetPosition the target position associated with the delta
-		 * @return the updated targetPosition
-		 */
-		private int onInsert(String word, int sourcePosition, int targetPosition)
-		{
-			if (word.isEmpty())
-			{
-				// Caused by consecutive delimiters
-				return targetPosition;
-			}
-			List<Integer> wordCodepoints = Strings.toCodepoints(word);
-			currentDeltas.add(new InsertDelta<>(
-				new Chunk<>(sourcePosition, List.of()),
-				new Chunk<>(targetPosition, wordCodepoints)));
-			targetPosition += wordCodepoints.size();
-			return targetPosition;
-		}
-
-		/**
-		 * Flushes words upon hitting a delimiter.
-		 */
-		private void onDelimiter()
-		{
-			// If the first word is a delimiter, there is nothing to flush.
-			if (currentDeltas.isEmpty())
+				// If the word contains 2 or less unequal deltas then provide character-level granularity.
+				//
+				// Good:
+				// -----=====-----
+				// -----+++++=====
+				// =====-----+++++
+				//
+				// Bad:
+				// =====-----=====-----
+				// +++++=====+++++=====
+				// -----++++++----=====
 				return;
-			result.add(new WordWithDeltas(currentWord.toString(), currentDeltas));
-			currentDeltas.clear();
-			currentWord.delete(0, currentWord.length());
+			}
+			// Otherwise, replace the deltas with a single [DELETE, INSERT] pair
+
+			StringBuilder actualBuilder = new StringBuilder();
+			StringBuilder expectedBuilder = new StringBuilder();
+			List<AbstractDelta<Integer>> updatedDeltas = new ArrayList<>();
+			processStartDelta(actualBuilder, expectedBuilder, updatedDeltas);
+			processMiddleDeltas(actualBuilder, expectedBuilder);
+			processEndDelta(actualBuilder, expectedBuilder, updatedDeltas);
+
+			int oldSize = deltasInWord.size();
+			deltasInWord.clear();
+			sources = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getSource().getLines())).
+				collect(Collectors.toList());
+			targets = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getTarget().getLines())).
+				collect(Collectors.toList());
+			deltasInWord.addAll(updatedDeltas);
+			sources = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getSource().getLines())).
+				collect(Collectors.toList());
+			targets = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getTarget().getLines())).
+				collect(Collectors.toList());
+			int newSize = deltasInWord.size();
+			int deltasRemoved = oldSize - newSize;
+			numberOfDeltas -= deltasRemoved;
+			indexOfEndDelta -= deltasRemoved;
+			indexOfNextWordInEndDelta -= indexOfDelimiterInEndDelta;
+		}
+
+		/**
+		 * Processes the start delta.
+		 *
+		 * @param actualBuilder   a buffer to insert the actual value of the word into
+		 * @param expectedBuilder a buffer to insert the expected value of the word into
+		 * @param updatedDeltas   a list to insert updated deltas into
+		 */
+		private void processStartDelta(StringBuilder actualBuilder, StringBuilder expectedBuilder,
+		                               List<AbstractDelta<Integer>> updatedDeltas)
+		{
+			AbstractDelta<Integer> delta = deltas.get(indexOfStartDelta);
+			String actual = Strings.fromCodepoints(delta.getSource().getLines());
+			String actualWord = actual.substring(indexOfWordInStartDelta);
+			List<Integer> codepointsBeforeActual = Strings.toCodepoints(
+				actual.substring(0, indexOfWordInStartDelta));
+
+			String expectedWord;
+			List<Integer> codepointsBeforeExpected;
+			if (delta.getType() == DeltaType.EQUAL)
+			{
+				expectedWord = actualWord;
+				codepointsBeforeExpected = codepointsBeforeActual;
+			}
+			else
+			{
+				String expected = Strings.fromCodepoints(delta.getTarget().getLines());
+				expectedWord = expected.substring(indexOfWordInStartDelta);
+				codepointsBeforeExpected = Strings.toCodepoints(expected.substring(0, indexOfWordInStartDelta));
+			}
+			actualBuilder.append(actualWord);
+			expectedBuilder.append(expectedWord);
+
+			updatedDeltas.add(deltaWithChunks(delta,
+				new Chunk<>(delta.getSource().getPosition(), codepointsBeforeActual),
+				new Chunk<>(delta.getTarget().getPosition(), codepointsBeforeExpected)));
+		}
+
+		/**
+		 * Processes the middle deltas.
+		 *
+		 * @param actualBuilder   a buffer to insert the actual value of the word into
+		 * @param expectedBuilder a buffer to insert the expected value of the word into
+		 */
+		private void processMiddleDeltas(StringBuilder actualBuilder, StringBuilder expectedBuilder)
+		{
+			for (int i = indexOfStartDelta + 1; i < indexOfEndDelta; ++i)
+			{
+				AbstractDelta<Integer> delta = deltas.get(i);
+				String actual = Strings.fromCodepoints(delta.getSource().getLines());
+
+				String expected;
+				if (delta.getType() == DeltaType.EQUAL)
+					expected = actual;
+				else
+					expected = Strings.fromCodepoints(delta.getTarget().getLines());
+				actualBuilder.append(actual);
+				expectedBuilder.append(expected);
+			}
+		}
+
+		/**
+		 * Processes the end delta.
+		 *
+		 * @param actualBuilder   a buffer to insert the actual value of the word into
+		 * @param expectedBuilder a buffer to insert the expected value of the word into
+		 * @param updatedDeltas   a list to insert updated deltas into
+		 */
+		private void processEndDelta(StringBuilder actualBuilder, StringBuilder expectedBuilder,
+		                             List<AbstractDelta<Integer>> updatedDeltas)
+		{
+			AbstractDelta<Integer> delta = deltas.get(indexOfEndDelta);
+			String actual = Strings.fromCodepoints(delta.getSource().getLines());
+			String actualWord = actual.substring(0, indexOfDelimiterInEndDelta);
+
+			// Word before delimiter
+			String expectedWord;
+			if (delta.getType() == DeltaType.EQUAL)
+				expectedWord = actualWord;
+			else
+			{
+				String expected = Strings.fromCodepoints(delta.getTarget().getLines());
+				expectedWord = expected.substring(indexOfNextWordInEndDelta);
+			}
+
+			actualBuilder.append(actualWord);
+			expectedBuilder.append(expectedWord);
+
+			// Word after delimiter
+			AbstractDelta<Integer> deltaAfterWord;
+			if (indexOfDelimiterInEndDelta < actual.length())
+			{
+				List<Integer> codepointsAfterActual = Strings.toCodepoints(
+					actual.substring(indexOfDelimiterInEndDelta));
+				List<Integer> codepointsAfterExpected;
+				if (delta.getType() == DeltaType.EQUAL)
+					codepointsAfterExpected = codepointsAfterActual;
+				else
+				{
+					String expected = Strings.fromCodepoints(delta.getTarget().getLines());
+					codepointsAfterExpected = Strings.toCodepoints(expected.substring(0, indexOfWordInStartDelta));
+				}
+
+				deltaAfterWord = deltaWithChunks(delta,
+					new Chunk<>(delta.getSource().getPosition(), codepointsAfterActual),
+					new Chunk<>(delta.getTarget().getPosition(), codepointsAfterExpected));
+			}
+			else
+				deltaAfterWord = null;
+
+			AbstractDelta<Integer> deleteActual = new DeleteDelta<>(
+				new Chunk<>(delta.getSource().getPosition(), Strings.toCodepoints(actualBuilder.toString())),
+				new Chunk<>(delta.getTarget().getPosition(), List.of()));
+
+			AbstractDelta<Integer> insertExpected = new InsertDelta<>(
+				new Chunk<>(delta.getSource().getPosition(), List.of()),
+				new Chunk<>(delta.getTarget().getPosition(),
+					Strings.toCodepoints(expectedBuilder.toString())));
+			updatedDeltas.add(deleteActual);
+			updatedDeltas.add(insertExpected);
+			if (deltaAfterWord != null)
+				updatedDeltas.add(deltaAfterWord);
+		}
+
+		/**
+		 * Finds the next word.
+		 *
+		 * @return false if there are no more words to be found
+		 */
+		private boolean findNextWord()
+		{
+			indexOfStartDelta = indexOfEndDelta;
+			indexOfWordInStartDelta = indexOfNextWordInEndDelta;
+			return indexOfStartDelta != numberOfDeltas - 1;
+		}
+	}
+
+	/**
+	 * Returns a new delta having the same type as {@code delta} with the specified chunks.
+	 *
+	 * @param delta  the reference delta
+	 * @param source the new source chunk
+	 * @param target the new target chunk
+	 * @return the new delta
+	 */
+	public static AbstractDelta<Integer> deltaWithChunks(AbstractDelta<Integer> delta,
+	                                                     Chunk<Integer> source, Chunk<Integer> target)
+	{
+		switch (delta.getType())
+		{
+			case EQUAL:
+				return new EqualDelta<>(source, target);
+			case DELETE:
+				return new DeleteDelta<>(source, target);
+			case INSERT:
+				return new InsertDelta<>(source, target);
+			case CHANGE:
+				return new ChangeDelta<>(source, target);
+			default:
+				throw new IllegalStateException("Unexpected value: " + delta.getType());
 		}
 	}
 
@@ -320,91 +469,71 @@ public final class DiffGenerator
 	}
 
 	/**
-	 * Writes words.
+	 * Write a single delta.
 	 *
-	 * @param words  a list of words associated with one or more deltas
+	 * @param delta  a delta
 	 * @param writer the writer to write into
 	 */
-	private void writeWords(List<WordWithDeltas> words, DiffWriter writer)
+	private void writeDelta(AbstractDelta<Integer> delta, DiffWriter writer)
 	{
-		for (WordWithDeltas word : words)
+		switch (delta.getType())
 		{
-			if (numberOfUnequalDeltas(word.deltas) <= 2)
+			case EQUAL:
 			{
-				// If the word has 2 or less unequal deltas then provide a character-level granularity.
-
-				// Good:
-				// -----=====-----
-				// -----+++++=====
-				// =====-----+++++
-				//
-				// Bad:
-				// =====-----=====-----
-				// +++++=====+++++=====
-				// -----++++++----=====
-				writeWord(word, writer);
+				String text = Strings.fromCodepoints(delta.getSource().getLines());
+				for (String line : splitLines(text))
+					writer.writeEqual(line);
+				break;
 			}
-			else
+			case DELETE:
 			{
-				// Otherwise, provide a word-granularity.
-				StringBuilder actual = new StringBuilder();
-				StringBuilder expected = new StringBuilder();
-				for (AbstractDelta<Integer> delta : word.deltas)
-				{
-					actual.append(Strings.fromCodepoints(delta.getSource().getLines()));
-					expected.append(Strings.fromCodepoints(delta.getTarget().getLines()));
-				}
-				writer.writeDeleted(replaceNewlineWithMarker(actual));
-				writer.writeInserted(replaceNewlineWithMarker(expected));
+				String text = Strings.fromCodepoints(delta.getSource().getLines());
+				for (String line : splitLines(text))
+					writer.writeDeleted(line);
+				break;
 			}
+			case INSERT:
+			{
+				String text = Strings.fromCodepoints(delta.getTarget().getLines());
+				for (String line : splitLines(text))
+					writer.writeInserted(line);
+				break;
+			}
+			case CHANGE:
+			{
+				String deleted = Strings.fromCodepoints(delta.getSource().getLines());
+				String inserted = Strings.fromCodepoints(delta.getTarget().getLines());
+				for (String line : splitLines(deleted))
+					writer.writeDeleted(line);
+				for (String line : splitLines(inserted))
+					writer.writeInserted(line);
+				break;
+			}
+			default:
+				throw new AssertionError("Unexpected type: " + delta.getType());
 		}
 	}
 
 	/**
-	 * Write a single word.
-	 *
-	 * @param word   a word
-	 * @param writer the writer to write into
-	 */
-	private void writeWord(WordWithDeltas word, DiffWriter writer)
-	{
-		for (AbstractDelta<Integer> delta : word.deltas)
-		{
-			switch (delta.getType())
-			{
-				case EQUAL:
-				{
-					String text = Strings.fromCodepoints(delta.getSource().getLines());
-					writer.writeEqual(replaceNewlineWithMarker(text));
-					break;
-				}
-				case DELETE:
-				{
-					String text = Strings.fromCodepoints(delta.getSource().getLines());
-					writer.writeDeleted(replaceNewlineWithMarker(text));
-					break;
-				}
-				case INSERT:
-				{
-					String text = Strings.fromCodepoints(delta.getTarget().getLines());
-					writer.writeInserted(replaceNewlineWithMarker(text));
-					break;
-				}
-				default:
-					throw new AssertionError("Unexpected type: " + delta.getType());
-			}
-		}
-	}
-
-	/**
-	 * Replaces the newline character with a {@code NEWLINE_MARKER}.
+	 * Splits text into one or more lines, replacing newline characters with a {@code NEWLINE_MARKER}.
 	 *
 	 * @param text some text
-	 * @return the updated text
+	 * @return a list of lines
 	 */
-	private static String replaceNewlineWithMarker(CharSequence text)
+	private static List<String> splitLines(CharSequence text)
 	{
-		return NEWLINE_PATTERN.matcher(text).replaceAll(QUOTED_NEWLINE_MARKER);
+		List<String> result = new ArrayList<>();
+		StringBuilder line = new StringBuilder();
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
+		for (int i = 0; i < lines.length; ++i)
+		{
+			line.delete(0, line.length());
+			line.append(lines[i]);
+			if (i < lines.length - 1)
+				line.append(NEWLINE_MARKER);
+			result.add(line.toString());
+		}
+		return result;
 	}
 
 	/**
