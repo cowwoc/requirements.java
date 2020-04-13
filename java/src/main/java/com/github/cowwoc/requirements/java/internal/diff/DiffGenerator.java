@@ -18,6 +18,7 @@ import com.github.difflib.patch.InsertDelta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +36,7 @@ public final class DiffGenerator
 	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|[.\\[\\](){}/\\\\*+\\-#]");
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
+	private final ReduceDeltasPerWord reduceDeltasPerWord = new ReduceDeltasPerWord();
 
 	/**
 	 * @param encoding the terminal encoding
@@ -94,7 +96,7 @@ public final class DiffGenerator
 			List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedCodepoints).getDeltas();
 			// DiffUtils.diff() does not return equal deltas, so we add them.
 			deltas = addEqualDeltas(deltas, actualCodepoints, expectedCodepoints);
-			new ReduceDeltasPerWord(deltas).run();
+			reduceDeltasPerWord.accept(deltas);
 			for (AbstractDelta<Integer> delta : deltas)
 				writeDelta(delta, writer);
 			writer.close();
@@ -110,7 +112,7 @@ public final class DiffGenerator
 	 * For every word associated with 2 or more unequal deltas, replace the deltas with a single
 	 * {@code [DELETE actual, INSERT expected]} pair.
 	 */
-	private static class ReduceDeltasPerWord implements Runnable
+	private static class ReduceDeltasPerWord implements Consumer<List<AbstractDelta<Integer>>>
 	{
 		// Format: [optional] (mandatory)
 		//
@@ -118,7 +120,7 @@ public final class DiffGenerator
 		// start-delta: [pre-word] [delimiter] (word-in-start-delta)
 		// end-delta: (word-in-end-delta) [delimiter] [post-word]
 		// delimiter: whitespace found in EQUAL deltas
-		private final List<AbstractDelta<Integer>> deltas;
+		private List<AbstractDelta<Integer>> deltas;
 		private int numberOfDeltas;
 
 		/**
@@ -143,15 +145,11 @@ public final class DiffGenerator
 		 */
 		private int indexOfNextWordInEndDelta;
 
-		public ReduceDeltasPerWord(List<AbstractDelta<Integer>> deltas)
+		@Override
+		public void accept(List<AbstractDelta<Integer>> deltas)
 		{
 			this.deltas = deltas;
 			numberOfDeltas = deltas.size();
-		}
-
-		@Override
-		public void run()
-		{
 			// We are looking for words that span multiple deltas. If the current delta contains multiple
 			// words, we are interested in the latest one.
 			findFirstWord();
