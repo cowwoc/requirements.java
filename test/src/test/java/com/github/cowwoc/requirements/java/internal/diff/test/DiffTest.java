@@ -36,34 +36,6 @@ public final class DiffTest
 	 * Ensure that diffs delete before inserting.
 	 */
 	@Test
-	public void consecutiveNonEqualDiffs()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "actual actual";
-			String expected = "expected expected";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
-		}
-		catch (IllegalArgumentException e)
-		{
-			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : actual " +
-				DIFF_PADDING.repeat("expected".length()) + "actual" +
-				DIFF_PADDING.repeat("expected".length()) + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_DELETE.repeat("actual".length()) +
-				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("actual".length()) +
-				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
-				"Expected: " + DIFF_PADDING.repeat("actual".length()) + "expected" +
-				DIFF_PADDING.repeat(" actual".length()) + "expected" + EOS_MARKER;
-			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n****************\nActual:\n" + actualMessage;
-		}
-	}
-
-	/**
-	 * Ensure that diffs delete before inserting.
-	 */
-	@Test
 	public void diffDeleteThenInsert()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -155,15 +127,15 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage =
-				"Actual@0  : actual" + DIFF_PADDING.repeat("expected".length()) + NEWLINE_MARKER + "\n" +
-					"Diff      : " + DIFF_DELETE.repeat("actual".length()) + DIFF_INSERT.repeat("expected".length()) +
-					DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"Expected@0: " + DIFF_PADDING.repeat("actual".length()) + "expected" +
-					DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"\n" +
-					"Actual@1  : " + EOS_MARKER + "\n" +
-					"Expected@0: " + EOS_MARKER;
+			String expectedMessage = "Actual@0  : actual" + NEWLINE_MARKER + "\n" +
+				"Diff      : " + DIFF_DELETE.repeat("actual".length()) + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) +
+				"\n" +
+				"Expected  : " + DIFF_PADDING.repeat(("actual" + NEWLINE_MARKER).length()) + "\n" +
+				"\n" +
+				"Actual@1  : " + DIFF_PADDING.repeat("expected".length()) + EOS_MARKER + "\n" +
+				"Diff      : " + DIFF_INSERT.repeat("expected".length()) + DIFF_PADDING.repeat(EOS_MARKER.length()) +
+				"\n" +
+				"Expected@0: expected" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}
@@ -527,6 +499,38 @@ public final class DiffTest
 				"Diff    : " + DIFF_EQUAL.repeat(4) + DIFF_DELETE + DIFF_INSERT +
 				DIFF_EQUAL.repeat(1 + EOS_MARKER.length()) + "\n" +
 				"Expected: int[" + scheme.getPaddingMarker() + "5]" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensure that DiffGenerator.ReduceDeltasPerWord works properly across newlines, expected and actual
+	 * having different length words.
+	 */
+	@Test
+	public void differentLengthWords()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "\nactual actual";
+			String expected = "e\nxpected expected";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual@0  : " + DIFF_PADDING + NEWLINE_MARKER + "\n" +
+				"Diff      : " + DIFF_INSERT + DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"Expected@0: e" + NEWLINE_MARKER + "\n" +
+				"\n" +
+				"Actual@1  : actual " + DIFF_PADDING.repeat("xpected".length()) + "actual" +
+				DIFF_PADDING.repeat("expected".length()) + EOS_MARKER + "\n" +
+				"Diff      : " + DIFF_DELETE.repeat("actual".length()) +
+				DIFF_INSERT.repeat("xpected".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("actual".length()) +
+				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
+				"Expected@1: " + DIFF_PADDING.repeat("actual".length()) + "xpected" +
+				DIFF_PADDING.repeat(" actual".length()) + "expected" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
@@ -125,8 +124,6 @@ public final class DiffGenerator
 		// end-delta: (word-in-end-delta) [delimiter] [post-word]
 		// delimiter: whitespace found in EQUAL deltas
 		private final List<AbstractDelta<Integer>> deltas;
-		private List<String> sources;
-		private List<String> targets;
 		private int numberOfDeltas;
 
 		/**
@@ -155,10 +152,6 @@ public final class DiffGenerator
 		{
 			this.deltas = deltas;
 			numberOfDeltas = deltas.size();
-			sources = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getSource().getLines())).
-				collect(Collectors.toList());
-			targets = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getTarget().getLines())).
-				collect(Collectors.toList());
 		}
 
 		@Override
@@ -238,7 +231,6 @@ public final class DiffGenerator
 				return;
 			}
 			// Otherwise, replace the deltas with a single [DELETE, INSERT] pair
-
 			StringBuilder actualBuilder = new StringBuilder();
 			StringBuilder expectedBuilder = new StringBuilder();
 			List<AbstractDelta<Integer>> updatedDeltas = new ArrayList<>();
@@ -248,15 +240,7 @@ public final class DiffGenerator
 
 			int oldSize = deltasInWord.size();
 			deltasInWord.clear();
-			sources = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getSource().getLines())).
-				collect(Collectors.toList());
-			targets = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getTarget().getLines())).
-				collect(Collectors.toList());
 			deltasInWord.addAll(updatedDeltas);
-			sources = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getSource().getLines())).
-				collect(Collectors.toList());
-			targets = deltas.stream().map(delta -> Strings.fromCodepoints(delta.getTarget().getLines())).
-				collect(Collectors.toList());
 			int newSize = deltasInWord.size();
 			int deltasRemoved = oldSize - newSize;
 			numberOfDeltas -= deltasRemoved;
@@ -289,9 +273,8 @@ public final class DiffGenerator
 			}
 			else
 			{
-				String expected = Strings.fromCodepoints(delta.getTarget().getLines());
-				expectedWord = expected.substring(indexOfWordInStartDelta);
-				codepointsBeforeExpected = Strings.toCodepoints(expected.substring(0, indexOfWordInStartDelta));
+				expectedWord = Strings.fromCodepoints(delta.getTarget().getLines());
+				codepointsBeforeExpected = List.of();
 			}
 			actualBuilder.append(actualWord);
 			expectedBuilder.append(expectedWord);
@@ -376,7 +359,6 @@ public final class DiffGenerator
 			AbstractDelta<Integer> deleteActual = new DeleteDelta<>(
 				new Chunk<>(delta.getSource().getPosition(), Strings.toCodepoints(actualBuilder.toString())),
 				new Chunk<>(delta.getTarget().getPosition(), List.of()));
-
 			AbstractDelta<Integer> insertExpected = new InsertDelta<>(
 				new Chunk<>(delta.getSource().getPosition(), List.of()),
 				new Chunk<>(delta.getTarget().getPosition(),
