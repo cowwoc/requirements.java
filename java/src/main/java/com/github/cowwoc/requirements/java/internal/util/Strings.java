@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
 import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.MatchResult;
@@ -17,18 +16,6 @@ import java.util.regex.Pattern;
  */
 public final class Strings
 {
-	/**
-	 * @param string     a string
-	 * @param prefix     a prefix
-	 * @param ignoreCase {@code true} if case should be ignored when comparing characters
-	 * @return true if {@code start} starts with {@code prefix}, disregarding case sensitivity
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	public static boolean startsWith(String string, String prefix, boolean ignoreCase)
-	{
-		return string.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
-	}
-
 	/**
 	 * Capitalizes the first letter of each word.
 	 *
@@ -104,8 +91,8 @@ public final class Strings
 	{
 		assert (source != null) : "source may not be null";
 		assert (target != null) : "target may not be null";
-		Optional<MatchResult> result = Optional.empty();
 		Matcher matcher = target.matcher(source);
+		Optional<MatchResult> result = Optional.empty();
 		while (matcher.find())
 			result = Optional.of(matcher.toMatchResult());
 		return result;
@@ -152,46 +139,6 @@ public final class Strings
 	{
 		int[] array = codepoints.stream().mapToInt(i -> i).toArray();
 		return new String(array, 0, array.length);
-	}
-
-	/**
-	 * Splits a string preserving the delimiters in the result.
-	 *
-	 * <pre>{@code
-	 *   splitPreserveDelimiter("a,b,c", Pattern.compile(","))
-	 * }</pre>
-	 * yields
-	 * <br>
-	 * <pre>{@code
-	 *   ["a", ",", "b", ",", "c"]
-	 * }</pre>
-	 *
-	 * @param text       a string
-	 * @param delimiters the pattern of delimiters
-	 * @return the tokens and delimiters in {@code text}
-	 */
-	public static List<String> splitPreserveDelimiter(String text, Pattern delimiters)
-	{
-		List<String> list = new ArrayList<>();
-		Matcher matcher = delimiters.matcher(text);
-		int endOfLastMatch = 0;
-		while (matcher.find())
-		{
-			if (endOfLastMatch < matcher.start())
-			{
-				String token = text.substring(endOfLastMatch, matcher.start());
-				list.add(token);
-			}
-			String delimiter = matcher.group();
-			list.add(delimiter);
-			endOfLastMatch = matcher.end();
-		}
-		if (endOfLastMatch < text.length())
-		{
-			String token = text.substring(endOfLastMatch);
-			list.add(token);
-		}
-		return list;
 	}
 
 	/**

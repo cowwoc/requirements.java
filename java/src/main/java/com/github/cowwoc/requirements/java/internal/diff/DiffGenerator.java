@@ -164,15 +164,17 @@ public final class DiffGenerator
 			}
 		}
 
+		/**
+		 * Finds the first word.
+		 */
 		private void findFirstWord()
 		{
 			// Words start after a whitespace delimiter within an EQUAL delta. If none is found, the start
 			// of the first delta acts as a word boundary.
 			AbstractDelta<Integer> delta = deltas.get(0);
-			MatchResult result;
 			indexOfStartDelta = 0;
 			String actual = Strings.fromCodepoints(delta.getSource().getLines());
-			result = Strings.lastIndexOf(actual, WORDS).orElse(null);
+			MatchResult result = Strings.lastIndexOf(actual, WORDS).orElse(null);
 			if (result == null)
 				indexOfWordInStartDelta = 0;
 			else
@@ -180,7 +182,7 @@ public final class DiffGenerator
 		}
 
 		/**
-		 * Finds the end of the word. Words end before a whitespace delimiter within an EQUAL delta.
+		 * Finds the end of the word.
 		 */
 		private void findEndOfWord()
 		{
