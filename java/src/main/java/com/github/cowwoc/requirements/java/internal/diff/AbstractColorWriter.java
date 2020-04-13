@@ -7,7 +7,6 @@ package com.github.cowwoc.requirements.java.internal.diff;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
@@ -45,23 +44,24 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			throw new IllegalStateException("Writer must be open");
 		if (text.isEmpty())
 			return;
-		if (actualDecoration != DecorationType.EQUAL)
+		splitLines(text, line ->
 		{
-			actualLineBuilder.append(decorateEqualText(text));
-			actualDecoration = DecorationType.EQUAL;
-		}
-		else
-			actualLineBuilder.append(text);
+			if (actualDecoration != DecorationType.EQUAL)
+			{
+				actualLineBuilder.append(decorateEqualText(line));
+				actualDecoration = DecorationType.EQUAL;
+			}
+			else
+				actualLineBuilder.append(line);
 
-		if (expectedDecoration != DecorationType.EQUAL)
-		{
-			expectedLineBuilder.append(decorateEqualText(text));
-			expectedDecoration = DecorationType.EQUAL;
-		}
-		else
-			expectedLineBuilder.append(text);
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
+			if (expectedDecoration != DecorationType.EQUAL)
+			{
+				expectedLineBuilder.append(decorateEqualText(line));
+				expectedDecoration = DecorationType.EQUAL;
+			}
+			else
+				expectedLineBuilder.append(line);
+		});
 	}
 
 	@Override
@@ -69,27 +69,27 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
+		if (text.isEmpty())
 			return;
-		if (actualDecoration != DecorationType.DELETE)
+		splitLines(text, line ->
 		{
-			actualLineBuilder.append(decorateDeletedText(text));
-			actualDecoration = DecorationType.DELETE;
-		}
-		else
-			actualLineBuilder.append(text);
+			if (actualDecoration != DecorationType.DELETE)
+			{
+				actualLineBuilder.append(decorateDeletedText(line));
+				actualDecoration = DecorationType.DELETE;
+			}
+			else
+				actualLineBuilder.append(line);
 
-		String padding = getPaddingMarker().repeat(length);
-		if (expectedDecoration != DecorationType.DELETE)
-		{
-			expectedLineBuilder.append(decoratePadding(padding));
-			expectedDecoration = DecorationType.DELETE;
-		}
-		else
-			expectedLineBuilder.append(padding);
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
+			String padding = getPaddingMarker().repeat(line.length());
+			if (expectedDecoration != DecorationType.DELETE)
+			{
+				expectedLineBuilder.append(decoratePadding(padding));
+				expectedDecoration = DecorationType.DELETE;
+			}
+			else
+				expectedLineBuilder.append(padding);
+		});
 	}
 
 	@Override
@@ -97,28 +97,27 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
+		if (text.isEmpty())
 			return;
-
-		String padding = getPaddingMarker().repeat(length);
-		if (actualDecoration != DecorationType.INSERT)
+		splitLines(text, line ->
 		{
-			actualLineBuilder.append(decoratePadding(padding));
-			actualDecoration = DecorationType.INSERT;
-		}
-		else
-			actualLineBuilder.append(decoratePadding(padding));
+			String padding = getPaddingMarker().repeat(line.length());
+			if (actualDecoration != DecorationType.INSERT)
+			{
+				actualLineBuilder.append(decoratePadding(padding));
+				actualDecoration = DecorationType.INSERT;
+			}
+			else
+				actualLineBuilder.append(decoratePadding(padding));
 
-		if (expectedDecoration != DecorationType.INSERT)
-		{
-			expectedLineBuilder.append(decorateInsertedText(text));
-			expectedDecoration = DecorationType.INSERT;
-		}
-		else
-			expectedLineBuilder.append(text);
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
+			if (expectedDecoration != DecorationType.INSERT)
+			{
+				expectedLineBuilder.append(decorateInsertedText(line));
+				expectedDecoration = DecorationType.INSERT;
+			}
+			else
+				expectedLineBuilder.append(line);
+		});
 	}
 
 	@Override

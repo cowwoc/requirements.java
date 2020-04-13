@@ -12,7 +12,6 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DI
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.LINE_LENGTH;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 
 /**
  * A diff writer that does not use ANSI escape codes.
@@ -37,14 +36,14 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
+		if (text.isEmpty())
 			return;
-		actualLineBuilder.append(text);
-		diffLineBuilder.append(DIFF_EQUAL.repeat(length));
-		expectedLineBuilder.append(text);
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
+		splitLines(text, line ->
+		{
+			actualLineBuilder.append(line);
+			diffLineBuilder.append(DIFF_EQUAL.repeat(line.length()));
+			expectedLineBuilder.append(line);
+		});
 	}
 
 	@Override
@@ -52,14 +51,15 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
+		if (text.isEmpty())
 			return;
-		actualLineBuilder.append(text);
-		diffLineBuilder.append(DIFF_DELETE.repeat(length));
-		expectedLineBuilder.append(getPaddingMarker().repeat(length));
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
+		splitLines(text, line ->
+		{
+			actualLineBuilder.append(line);
+			int length = line.length();
+			diffLineBuilder.append(DIFF_DELETE.repeat(length));
+			expectedLineBuilder.append(getPaddingMarker().repeat(length));
+		});
 	}
 
 	@Override
@@ -67,14 +67,15 @@ public final class TextOnly extends AbstractDiffWriter
 	{
 		if (closed)
 			throw new IllegalStateException("Writer must be open");
-		int length = text.length();
-		if (length == 0)
+		if (text.isEmpty())
 			return;
-		actualLineBuilder.append(getPaddingMarker().repeat(length));
-		diffLineBuilder.append(DIFF_INSERT.repeat(length));
-		expectedLineBuilder.append(text);
-		if (text.endsWith(NEWLINE_MARKER))
-			writeNewline();
+		splitLines(text, line ->
+		{
+			int length = line.length();
+			actualLineBuilder.append(getPaddingMarker().repeat(length));
+			diffLineBuilder.append(DIFF_INSERT.repeat(length));
+			expectedLineBuilder.append(line);
+		});
 	}
 
 	@Override

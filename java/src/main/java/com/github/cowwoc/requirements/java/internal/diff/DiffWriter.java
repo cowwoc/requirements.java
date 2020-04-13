@@ -12,7 +12,7 @@ import java.util.List;
 public interface DiffWriter extends AutoCloseable
 {
 	/**
-	 * Adds text that is equal in {@code expected} and {@code actual}. Only one line may be written at a time.
+	 * Adds text that is equal in {@code expected} and {@code actual}.
 	 *
 	 * @param text the text to keep in {@code actual}
 	 * @throws IllegalStateException if the writer was closed
@@ -20,8 +20,7 @@ public interface DiffWriter extends AutoCloseable
 	void writeEqual(String text);
 
 	/**
-	 * Deletes text that is present in {@code actual} but not {@code expected}.  Only one line may be written
-	 * at a time.
+	 * Deletes text that is present in {@code actual} but not {@code expected}.
 	 *
 	 * @param text the text that needs to be deleted from {@code actual}
 	 * @throws IllegalStateException if the writer was closed
@@ -29,8 +28,7 @@ public interface DiffWriter extends AutoCloseable
 	void writeDeleted(String text);
 
 	/**
-	 * Adds text that is present in {@code expected} but not {@code actual}.  Only one line may be written at a
-	 * time.
+	 * Adds text that is present in {@code expected} but not {@code actual}.
 	 *
 	 * @param text the text that needs to be inserted into {@code actual}
 	 * @throws IllegalStateException if the writer was closed

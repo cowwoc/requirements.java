@@ -7,8 +7,11 @@ package com.github.cowwoc.requirements.java.internal.diff;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.LINE_LENGTH;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
 
 /**
  * Base implementation for all diff writers.
@@ -73,6 +76,30 @@ abstract class AbstractDiffWriter implements DiffWriter
 	public String getPaddingMarker()
 	{
 		return paddingMarker;
+	}
+
+	/**
+	 * Splits text into one or more lines, invoking {@link #writeNewline()} in place of each newline character.
+	 *
+	 * @param text         some text
+	 * @param lineConsumer consumes one line at a time
+	 */
+	protected void splitLines(CharSequence text, Consumer<String> lineConsumer)
+	{
+		String[] lines = NEWLINE_PATTERN.split(text, -1);
+		StringBuilder line = new StringBuilder();
+		for (int i = 0; i < lines.length; ++i)
+		{
+			boolean isLastLine = i == lines.length - 1;
+			line.delete(0, line.length());
+			line.append(lines[i]);
+			if (!isLastLine)
+				line.append(NEWLINE_MARKER);
+			if (line.length() > 0)
+				lineConsumer.accept(line.toString());
+			if (!isLastLine)
+				writeNewline();
+		}
 	}
 
 	/**

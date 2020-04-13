@@ -23,8 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
@@ -35,7 +33,6 @@ public final class DiffGenerator
 {
 	// See https://www.regular-expressions.info/unicode.html for an explanation of \p{Zs}
 	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|[.\\[\\](){}/\\\\*+\\-#]");
-	private static final String QUOTED_NEWLINE_MARKER = Matcher.quoteReplacement(NEWLINE_MARKER);
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 
@@ -97,8 +94,6 @@ public final class DiffGenerator
 			List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedCodepoints).getDeltas();
 			// DiffUtils.diff() does not return equal deltas, so we add them.
 			deltas = addEqualDeltas(deltas, actualCodepoints, expectedCodepoints);
-			// Convert a list of deltas and their associated words to a list of words and their associated deltas,
-			// using "actual" to define word boundaries.
 			new ReduceDeltasPerWord(deltas).run();
 			for (AbstractDelta<Integer> delta : deltas)
 				writeDelta(delta, writer);
@@ -462,60 +457,28 @@ public final class DiffGenerator
 		{
 			case EQUAL:
 			{
-				String text = Strings.fromCodepoints(delta.getSource().getLines());
-				for (String line : splitLines(text))
-					writer.writeEqual(line);
+				writer.writeEqual(Strings.fromCodepoints(delta.getSource().getLines()));
 				break;
 			}
 			case DELETE:
 			{
-				String text = Strings.fromCodepoints(delta.getSource().getLines());
-				for (String line : splitLines(text))
-					writer.writeDeleted(line);
+				writer.writeDeleted(Strings.fromCodepoints(delta.getSource().getLines()));
 				break;
 			}
 			case INSERT:
 			{
-				String text = Strings.fromCodepoints(delta.getTarget().getLines());
-				for (String line : splitLines(text))
-					writer.writeInserted(line);
+				writer.writeInserted(Strings.fromCodepoints(delta.getTarget().getLines()));
 				break;
 			}
 			case CHANGE:
 			{
-				String deleted = Strings.fromCodepoints(delta.getSource().getLines());
-				String inserted = Strings.fromCodepoints(delta.getTarget().getLines());
-				for (String line : splitLines(deleted))
-					writer.writeDeleted(line);
-				for (String line : splitLines(inserted))
-					writer.writeInserted(line);
+				writer.writeDeleted(Strings.fromCodepoints(delta.getSource().getLines()));
+				writer.writeInserted(Strings.fromCodepoints(delta.getTarget().getLines()));
 				break;
 			}
 			default:
 				throw new AssertionError("Unexpected type: " + delta.getType());
 		}
-	}
-
-	/**
-	 * Splits text into one or more lines, replacing newline characters with a {@code NEWLINE_MARKER}.
-	 *
-	 * @param text some text
-	 * @return a list of lines
-	 */
-	private static List<String> splitLines(CharSequence text)
-	{
-		List<String> result = new ArrayList<>();
-		StringBuilder line = new StringBuilder();
-		String[] lines = NEWLINE_PATTERN.split(text, -1);
-		for (int i = 0; i < lines.length; ++i)
-		{
-			line.delete(0, line.length());
-			line.append(lines[i]);
-			if (i < lines.length - 1)
-				line.append(NEWLINE_MARKER);
-			result.add(line.toString());
-		}
-		return result;
 	}
 
 	/**
