@@ -207,6 +207,9 @@ public final class DiffGenerator
 			indexOfEndDelta = numberOfDeltas - 1;
 		}
 
+		/**
+		 * Update the deltas if necessary.
+		 */
 		private void updateDeltas()
 		{
 			List<AbstractDelta<Integer>> deltasInWord = deltas.subList(indexOfStartDelta, indexOfEndDelta + 1);
@@ -323,7 +326,7 @@ public final class DiffGenerator
 			else
 			{
 				String expected = Strings.fromCodepoints(delta.getTarget().getLines());
-				expectedWord = expected.substring(indexOfNextWordInEndDelta);
+				expectedWord = expected.substring(0, indexOfDelimiterInEndDelta);
 			}
 
 			actualBuilder.append(actualWord);
