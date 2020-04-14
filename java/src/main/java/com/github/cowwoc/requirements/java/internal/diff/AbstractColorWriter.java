@@ -5,7 +5,11 @@
 package com.github.cowwoc.requirements.java.internal.diff;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.BiFunction;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
@@ -23,12 +27,35 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	 */
 	protected static final String DIFF_PADDING = "/";
 	protected static final String DEFAULT_BACKGROUND = "49";
-	private DecorationType actualDecoration = DecorationType.UNDECORATED;
-	private DecorationType expectedDecoration = DecorationType.UNDECORATED;
+	private static final BiFunction<Integer, DecorationType, DecorationType> DEFAULT_DECORATION =
+		(key, value) ->
+		{
+			if (value == null)
+				value = DecorationType.UNDECORATED;
+			return value;
+		};
+	private final Map<Integer, DecorationType> lineToActualDecoration = new HashMap<>();
+	private final Map<Integer, DecorationType> lineToExpectedDecoration = new HashMap<>();
 
 	protected AbstractColorWriter()
 	{
 		super(DIFF_PADDING);
+		initActualLine(0);
+		initExpectedLine(0);
+	}
+
+	@Override
+	protected void initActualLine(int number)
+	{
+		super.initActualLine(number);
+		lineToActualDecoration.compute(number, DEFAULT_DECORATION);
+	}
+
+	@Override
+	protected void initExpectedLine(int number)
+	{
+		super.initExpectedLine(number);
+		lineToExpectedDecoration.compute(number, DEFAULT_DECORATION);
 	}
 
 	@Override
@@ -46,21 +73,38 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			return;
 		splitLines(text, line ->
 		{
+			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
 			if (actualDecoration != DecorationType.EQUAL)
 			{
-				actualLineBuilder.append(decorateEqualText(line));
-				actualDecoration = DecorationType.EQUAL;
+				lineToActualLine.get(actualLineNumber).append(decorateEqualText(line));
+				lineToActualDecoration.put(actualLineNumber, DecorationType.EQUAL);
 			}
 			else
-				actualLineBuilder.append(line);
+				lineToActualLine.get(actualLineNumber).append(line);
+
+			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
+			if (expectedLineNumber != actualLineNumber)
+			{
+				int length = line.length();
+				String paddingMarker = getPaddingMarker();
+				lineToExpectedLine.get(actualLineNumber).append(decoratePadding(paddingMarker.repeat(length)));
+				lineToExpectedDecoration.put(actualLineNumber, DecorationType.EQUAL);
+
+				lineToActualLine.get(expectedLineNumber).append(decoratePadding(paddingMarker.repeat(length)));
+				lineToActualDecoration.put(expectedLineNumber, DecorationType.EQUAL);
+			}
 
 			if (expectedDecoration != DecorationType.EQUAL)
 			{
-				expectedLineBuilder.append(decorateEqualText(line));
-				expectedDecoration = DecorationType.EQUAL;
+				lineToExpectedLine.get(expectedLineNumber).append(decorateEqualText(line));
+				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.EQUAL);
 			}
 			else
-				expectedLineBuilder.append(line);
+				lineToExpectedLine.get(expectedLineNumber).append(line);
+		}, () ->
+		{
+			writeActualNewline();
+			writeExpectedNewline();
 		});
 	}
 
@@ -73,23 +117,25 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			return;
 		splitLines(text, line ->
 		{
+			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
 			if (actualDecoration != DecorationType.DELETE)
 			{
-				actualLineBuilder.append(decorateDeletedText(line));
-				actualDecoration = DecorationType.DELETE;
+				lineToActualLine.get(actualLineNumber).append(decorateDeletedText(line));
+				lineToActualDecoration.put(actualLineNumber, DecorationType.DELETE);
 			}
 			else
-				actualLineBuilder.append(line);
+				lineToActualLine.get(actualLineNumber).append(line);
 
+			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
 			String padding = getPaddingMarker().repeat(line.length());
 			if (expectedDecoration != DecorationType.DELETE)
 			{
-				expectedLineBuilder.append(decoratePadding(padding));
-				expectedDecoration = DecorationType.DELETE;
+				lineToExpectedLine.get(expectedLineNumber).append(decoratePadding(padding));
+				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.DELETE);
 			}
 			else
-				expectedLineBuilder.append(padding);
-		});
+				lineToExpectedLine.get(expectedLineNumber).append(padding);
+		}, this::writeActualNewline);
 	}
 
 	@Override
@@ -101,37 +147,45 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			return;
 		splitLines(text, line ->
 		{
+			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
 			String padding = getPaddingMarker().repeat(line.length());
 			if (actualDecoration != DecorationType.INSERT)
 			{
-				actualLineBuilder.append(decoratePadding(padding));
-				actualDecoration = DecorationType.INSERT;
+				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
+				lineToActualDecoration.put(actualLineNumber, DecorationType.INSERT);
 			}
 			else
-				actualLineBuilder.append(decoratePadding(padding));
+				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
 
+			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
 			if (expectedDecoration != DecorationType.INSERT)
 			{
-				expectedLineBuilder.append(decorateInsertedText(line));
-				expectedDecoration = DecorationType.INSERT;
+				lineToExpectedLine.get(expectedLineNumber).append(decorateInsertedText(line));
+				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.INSERT);
 			}
 			else
-				expectedLineBuilder.append(line);
-		});
+				lineToExpectedLine.get(expectedLineNumber).append(line);
+		}, this::writeExpectedNewline);
 	}
 
 	@Override
-	protected void beforeNewline()
+	protected void beforeClose()
 	{
-		if (actualDecoration != DecorationType.UNDECORATED)
+		for (Entry<Integer, DecorationType> entry : lineToActualDecoration.entrySet())
 		{
-			actualLineBuilder.append(stopDecoration());
-			actualDecoration = DecorationType.UNDECORATED;
+			if (entry.getValue() != DecorationType.UNDECORATED)
+			{
+				lineToActualLine.get(entry.getKey()).append(stopDecoration());
+				lineToActualDecoration.put(entry.getKey(), DecorationType.UNDECORATED);
+			}
 		}
-		if (expectedDecoration != DecorationType.UNDECORATED)
+		for (Entry<Integer, DecorationType> entry : lineToExpectedDecoration.entrySet())
 		{
-			expectedLineBuilder.append(stopDecoration());
-			expectedDecoration = DecorationType.UNDECORATED;
+			if (entry.getValue() != DecorationType.UNDECORATED)
+			{
+				lineToExpectedLine.get(entry.getKey()).append(stopDecoration());
+				lineToExpectedDecoration.put(entry.getKey(), DecorationType.UNDECORATED);
+			}
 		}
 	}
 

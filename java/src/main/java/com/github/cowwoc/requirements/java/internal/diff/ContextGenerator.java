@@ -216,16 +216,20 @@ public final class ContextGenerator
 			}
 			return result;
 		}
-		assert (lines.getExpectedLines().size() == numberOfLines) :
-			"numberOfLines: " + numberOfLines + ", expected.size(): " + lines.getExpectedLines().size();
+		List<String> actualLines = lines.getActualLines();
 		int actualLineNumber = 0;
 		int expectedLineNumber = 0;
 		// Indicates if the previous line was equal
 		boolean skippedDuplicates = false;
 		for (int i = 0; i < numberOfLines; ++i)
 		{
-			String actualLine = lines.getActualLines().get(i);
-			String expectedLine = lines.getExpectedLines().get(i);
+			String expectedLine;
+			List<String> expectedLines = lines.getExpectedLines();
+			String actualLine = actualLines.get(i);
+			if (expectedLines.size() > i)
+				expectedLine = expectedLines.get(i);
+			else
+				expectedLine = "";
 			String diffLine;
 			if (lines.getDiffLines().isEmpty())
 				diffLine = "";

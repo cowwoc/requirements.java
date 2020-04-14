@@ -106,7 +106,7 @@ public final class Strings
 	 */
 	public static boolean containsOnly(String source, String target)
 	{
-		return lastConsecutiveIndexOf(source, target) == 0;
+		return source.isEmpty() || lastConsecutiveIndexOf(source, target) == 0;
 	}
 
 	/**

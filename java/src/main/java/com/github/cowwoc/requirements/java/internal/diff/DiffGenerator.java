@@ -277,9 +277,12 @@ public final class DiffGenerator
 			actualBuilder.append(actualWord);
 			expectedBuilder.append(expectedWord);
 
-			updatedDeltas.add(deltaWithChunks(delta,
-				new Chunk<>(delta.getSource().getPosition(), codepointsBeforeActual),
-				new Chunk<>(delta.getTarget().getPosition(), codepointsBeforeExpected)));
+			if (indexOfWordInStartDelta > 0)
+			{
+				updatedDeltas.add(deltaWithChunks(delta,
+					new Chunk<>(delta.getSource().getPosition(), codepointsBeforeActual),
+					new Chunk<>(delta.getTarget().getPosition(), codepointsBeforeExpected)));
+			}
 		}
 
 		/**
@@ -375,8 +378,20 @@ public final class DiffGenerator
 		private boolean findNextWord()
 		{
 			indexOfStartDelta = indexOfEndDelta;
-			indexOfWordInStartDelta = indexOfNextWordInEndDelta;
-			return indexOfStartDelta != numberOfDeltas - 1;
+			if (indexOfStartDelta == numberOfDeltas - 1)
+				return false;
+
+			// Similar logic as findFirstWord()
+			AbstractDelta<Integer> delta = deltas.get(indexOfStartDelta);
+			if (delta.getType() == DeltaType.EQUAL)
+			{
+				String actual = Strings.fromCodepoints(delta.getSource().getLines());
+				MatchResult result = Strings.lastIndexOf(actual, WORDS).orElseThrow(() ->
+					new AssertionError("Expecting result to be equal to " +
+						"indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later"));
+				indexOfWordInStartDelta = result.end();
+			}
+			return true;
 		}
 	}
 

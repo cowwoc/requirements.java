@@ -4,12 +4,15 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.LINE_LENGTH;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
 
@@ -18,26 +21,34 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NE
  */
 abstract class AbstractDiffWriter implements DiffWriter
 {
+	protected static final BiFunction<Integer, StringBuilder, StringBuilder> DEFAULT_LINE =
+		(key, value) ->
+		{
+			if (value == null)
+				value = new StringBuilder();
+			return value;
+		};
+
 	/**
 	 * Builds a line of the actual value.
 	 */
-	protected final StringBuilder actualLineBuilder = new StringBuilder(LINE_LENGTH);
+	protected final Map<Integer, StringBuilder> lineToActualLine = new HashMap<>();
 	/**
 	 * Builds a line of the expected value.
 	 */
-	protected final StringBuilder expectedLineBuilder = new StringBuilder(LINE_LENGTH);
+	protected final Map<Integer, StringBuilder> lineToExpectedLine = new HashMap<>();
+	/**
+	 * The current line number of the actual value.
+	 */
+	protected int actualLineNumber;
+	/**
+	 * The current line number of the expected value.
+	 */
+	protected int expectedLineNumber;
 	/**
 	 * A padding character used to align values vertically.
 	 */
 	private final String paddingMarker;
-	/**
-	 * Builds the list of lines in the actual value.
-	 */
-	private final List<String> actualLinesBuilder = new ArrayList<>();
-	/**
-	 * Builds the list of lines in the expected value.
-	 */
-	private final List<String> expectedLinesBuilder = new ArrayList<>();
 	/**
 	 * The final list of lines in the actual value.
 	 */
@@ -63,9 +74,9 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	/**
-	 * Invoked before ending each line.
+	 * Invoked before closing the writer.
 	 */
-	protected abstract void beforeNewline();
+	protected abstract void beforeClose();
 
 	/**
 	 * Invoked after closing the writer.
@@ -79,12 +90,34 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	/**
-	 * Splits text into one or more lines, invoking {@link #writeNewline()} in place of each newline character.
+	 * Populates the state of lineTo* variables for a new actual line.
+	 *
+	 * @param number the line number to initialize
+	 */
+	protected void initActualLine(int number)
+	{
+		lineToActualLine.compute(number, DEFAULT_LINE);
+	}
+
+	/**
+	 * Populates the state of lineTo* variables for a new expected line.
+	 *
+	 * @param number the line number to initialize
+	 */
+	protected void initExpectedLine(int number)
+	{
+		lineToExpectedLine.compute(number, DEFAULT_LINE);
+	}
+
+	/**
+	 * Splits text into one or more lines, invoking {@code writeNewline.run()} in place of each newline
+	 * character.
 	 *
 	 * @param text         some text
 	 * @param lineConsumer consumes one line at a time
+	 * @param writeNewLine ends the current line
 	 */
-	protected void splitLines(CharSequence text, Consumer<String> lineConsumer)
+	protected void splitLines(CharSequence text, Consumer<String> lineConsumer, Runnable writeNewLine)
 	{
 		String[] lines = NEWLINE_PATTERN.split(text, -1);
 		StringBuilder line = new StringBuilder();
@@ -98,21 +131,30 @@ abstract class AbstractDiffWriter implements DiffWriter
 			if (line.length() > 0)
 				lineConsumer.accept(line.toString());
 			if (!isLastLine)
-				writeNewline();
+				writeNewLine.run();
 		}
 	}
 
 	/**
 	 * Ends the current line.
 	 */
-	protected void writeNewline()
+	protected void writeActualNewline()
 	{
-		beforeNewline();
-		actualLinesBuilder.add(actualLineBuilder.toString());
-		actualLineBuilder.delete(0, actualLineBuilder.length());
+		++actualLineNumber;
+		initActualLine(actualLineNumber);
+		if (!lineToExpectedLine.containsKey(actualLineNumber))
+			initExpectedLine(actualLineNumber);
+	}
 
-		expectedLinesBuilder.add(expectedLineBuilder.toString());
-		expectedLineBuilder.delete(0, expectedLineBuilder.length());
+	/**
+	 * Ends the current line.
+	 */
+	protected void writeExpectedNewline()
+	{
+		++expectedLineNumber;
+		initExpectedLine(expectedLineNumber);
+		if (!lineToActualLine.containsKey(expectedLineNumber))
+			initActualLine(expectedLineNumber);
 	}
 
 	@Override
@@ -121,9 +163,13 @@ abstract class AbstractDiffWriter implements DiffWriter
 		if (closed)
 			return;
 		closed = true;
-		writeNewline();
-		this.actualLines = Collections.unmodifiableList(actualLinesBuilder);
-		this.expectedLines = Collections.unmodifiableList(expectedLinesBuilder);
+		beforeClose();
+		this.actualLines = Collections.synchronizedList(lineToActualLine.entrySet().stream().
+			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
+			collect(Collectors.toList()));
+		this.expectedLines = Collections.synchronizedList(lineToExpectedLine.entrySet().stream().
+			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
+			collect(Collectors.toList()));
 		afterClose();
 	}
 
