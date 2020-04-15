@@ -23,8 +23,10 @@ jobs:
           mvn --version
       # https://stackoverflow.com/a/27380328/14731
       - name: Install dependencies
-        run: mvn dependency:go-offline
-      - name: build
+        run: mvn -DexcludeGroupIds=com.github.cowwoc.requirements dependency:go-offline
+      - name: Build
         run: mvn install -e
-      - name: test
+      - name: Unit tests
         run: mvn test -e
+      - name: Prevent generated artifacts from getting cached
+        run: rm -rf ~/.m2/repository/com/github/cowwoc/requirements.java
