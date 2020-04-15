@@ -1,5 +1,10 @@
 Minor updates involving cosmetic changes have been omitted from this list. See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 6.0.1 - 2020/04/15 ##
+
+* Improvements
+    * Improved diff output for arrays, multiline strings.
+    
 ## Version 6.0.0 - 2020/03/30 ##
 
 * Moved project from https://bitbucket.org/cowwoc/requirements.java/ to https://github.com/cowwoc/requirements.java/
