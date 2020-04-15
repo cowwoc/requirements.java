@@ -74,13 +74,13 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 		splitLines(text, line ->
 		{
 			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
-			if (actualDecoration != DecorationType.EQUAL)
+			if (actualDecoration == DecorationType.EQUAL)
+				lineToActualLine.get(actualLineNumber).append(line);
+			else
 			{
 				lineToActualLine.get(actualLineNumber).append(decorateEqualText(line));
 				lineToActualDecoration.put(actualLineNumber, DecorationType.EQUAL);
 			}
-			else
-				lineToActualLine.get(actualLineNumber).append(line);
 
 			if (expectedLineNumber != actualLineNumber)
 			{
@@ -94,13 +94,13 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			}
 
 			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
-			if (expectedDecoration != DecorationType.EQUAL)
+			if (expectedDecoration == DecorationType.EQUAL)
+				lineToExpectedLine.get(expectedLineNumber).append(line);
+			else
 			{
 				lineToExpectedLine.get(expectedLineNumber).append(decorateEqualText(line));
 				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.EQUAL);
 			}
-			else
-				lineToExpectedLine.get(expectedLineNumber).append(line);
 		}, () ->
 		{
 			writeActualNewline();
@@ -118,23 +118,23 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 		splitLines(text, line ->
 		{
 			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
-			if (actualDecoration != DecorationType.DELETE)
+			if (actualDecoration == DecorationType.DELETE)
+				lineToActualLine.get(actualLineNumber).append(line);
+			else
 			{
 				lineToActualLine.get(actualLineNumber).append(decorateDeletedText(line));
 				lineToActualDecoration.put(actualLineNumber, DecorationType.DELETE);
 			}
-			else
-				lineToActualLine.get(actualLineNumber).append(line);
 
 			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
 			String padding = getPaddingMarker().repeat(line.length());
-			if (expectedDecoration != DecorationType.DELETE)
+			if (expectedDecoration == DecorationType.DELETE)
+				lineToExpectedLine.get(expectedLineNumber).append(padding);
+			else
 			{
 				lineToExpectedLine.get(expectedLineNumber).append(decoratePadding(padding));
 				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.DELETE);
 			}
-			else
-				lineToExpectedLine.get(expectedLineNumber).append(padding);
 		}, this::writeActualNewline);
 	}
 
@@ -149,22 +149,22 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 		{
 			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
 			String padding = getPaddingMarker().repeat(line.length());
-			if (actualDecoration != DecorationType.INSERT)
+			if (actualDecoration == DecorationType.INSERT)
+				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
+			else
 			{
 				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
 				lineToActualDecoration.put(actualLineNumber, DecorationType.INSERT);
 			}
-			else
-				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
 
 			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
-			if (expectedDecoration != DecorationType.INSERT)
+			if (expectedDecoration == DecorationType.INSERT)
+				lineToExpectedLine.get(expectedLineNumber).append(line);
+			else
 			{
 				lineToExpectedLine.get(expectedLineNumber).append(decorateInsertedText(line));
 				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.INSERT);
 			}
-			else
-				lineToExpectedLine.get(expectedLineNumber).append(line);
 		}, this::writeExpectedNewline);
 	}
 

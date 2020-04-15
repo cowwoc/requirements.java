@@ -245,14 +245,14 @@ public final class ContextGenerator
 				continue;
 			}
 			String actualNameForLine;
-			if (!diffGenerator.isEmpty(actualLine))
+			if (diffGenerator.isEmpty(actualLine))
+				actualNameForLine = actualName;
+			else
 			{
 				actualNameForLine = actualName + "@" + actualLineNumber;
 				if (EOL_PATTERN.matcher(actualLine).find())
 					++actualLineNumber;
 			}
-			else
-				actualNameForLine = actualName;
 			if (skippedDuplicates)
 			{
 				skippedDuplicates = false;
@@ -264,14 +264,14 @@ public final class ContextGenerator
 				result.add(new ContextLine("Diff", diffLine));
 
 			String expectedNameForLine;
-			if (!diffGenerator.isEmpty(expectedLine))
+			if (diffGenerator.isEmpty(expectedLine))
+				expectedNameForLine = expectedName;
+			else
 			{
 				expectedNameForLine = expectedName + "@" + expectedLineNumber;
 				if (EOL_PATTERN.matcher(expectedLine).find())
 					++expectedLineNumber;
 			}
-			else
-				expectedNameForLine = expectedName;
 			result.add(new ContextLine(expectedNameForLine, expectedLine));
 		}
 		return result;
