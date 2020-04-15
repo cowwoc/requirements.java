@@ -1,7 +1,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cowwoc.requirements/java/badge.svg)](https://search.maven.org/search?q=g:com.github.cowwoc.requirements) [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/6.0.0/docs/api/) [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](wiki/Changelog.md)
 
 ![java](https://img.shields.io/badge/languages-java-black.svg)
-[![js](https://img.shields.io/badge/js-457FD5.svg)](../../requirements.js)
+[![js](https://img.shields.io/badge/js-457FD5.svg)](../../../requirements.js)
 
 # <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Requirements: Fluent Design by Contract for Java APIs
 
