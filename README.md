@@ -2,6 +2,7 @@
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/6.0.0/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](wiki/Changelog.md)
+
 ![java](https://img.shields.io/badge/languages-java-black.svg)
 [![js](https://img.shields.io/badge/js-457FD5.svg)](../../../requirements.js)
 
