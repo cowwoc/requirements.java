@@ -103,11 +103,12 @@ public final class DiffTest
 			String expectedMessage = "Actual@0  : " + NEWLINE_MARKER +
 				DIFF_PADDING.repeat(("expected" + EOS_MARKER).length()) + "\n" +
 				"Diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) +
-				DIFF_INSERT.repeat(("expected" + EOS_MARKER).length()) + "\n" +
+				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
 				"Expected@0: " + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "expected" + EOS_MARKER + "\n" +
 				"\n" +
 				"Actual@1  : actual" + EOS_MARKER + "\n" +
-				"Diff      : " + DIFF_DELETE.repeat(("actual" + EOS_MARKER).length()) + "\n" +
+				"Diff      : " + DIFF_DELETE.repeat("actual".length()) + DIFF_EQUAL.repeat(EOS_MARKER.length()) +
+				"\n" +
 				"Expected  : " + DIFF_PADDING.repeat(("actual" + EOS_MARKER).length());
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
@@ -133,12 +134,11 @@ public final class DiffTest
 			String expectedMessage = "Actual@0  : actual" + NEWLINE_MARKER +
 				DIFF_PADDING.repeat(("expected" + EOS_MARKER).length()) + "\n" +
 				"Diff      : " + DIFF_DELETE.repeat(("actual" + NEWLINE_MARKER).length()) +
-				DIFF_INSERT.repeat(("expected" + NEWLINE_MARKER).length()) + "\n" +
+				DIFF_INSERT.repeat("expected".length()) + DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"Expected@0: " + DIFF_PADDING.repeat(("actual" + NEWLINE_MARKER).length()) + "expected" + EOS_MARKER +
 				"\n" +
 				"\n" +
 				"Actual@1  : " + EOS_MARKER + "\n" +
-				"Diff      : " + DIFF_DELETE.repeat(EOS_MARKER.length()) + "\n" +
 				"Expected  : " + DIFF_PADDING.repeat(EOS_MARKER.length());
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
@@ -164,7 +164,7 @@ public final class DiffTest
 			String expectedMessage = "Actual@0  : " + NEWLINE_MARKER +
 				DIFF_PADDING.repeat(("value" + EOS_MARKER).length()) + "\n" +
 				"Diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) +
-				DIFF_INSERT.repeat(("value" + EOS_MARKER).length()) + "\n" +
+				DIFF_EQUAL.repeat(("value" + EOS_MARKER).length()) + "\n" +
 				"Expected@0: " + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "value" + EOS_MARKER + "\n" +
 				"\n" +
 				"Actual@1  : " + NEWLINE_MARKER + "\n" +
@@ -172,7 +172,6 @@ public final class DiffTest
 				"Expected  : " + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"\n" +
 				"Actual@2  : value" + EOS_MARKER + "\n" +
-				"Diff      : " + DIFF_DELETE.repeat(("value" + EOS_MARKER).length()) + "\n" +
 				"Expected  : " + DIFF_PADDING.repeat(("value" + EOS_MARKER).length());
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
@@ -479,12 +478,12 @@ public final class DiffTest
 				"Actual[1]@0  : foo" + NEWLINE_MARKER + DIFF_PADDING.repeat(("bar" + NEWLINE_MARKER).length()) +
 				"\n" +
 				"Diff         : " + DIFF_DELETE.repeat(("foo" + NEWLINE_MARKER).length()) +
-				DIFF_INSERT.repeat(("bar" + NEWLINE_MARKER).length()) + "\n" +
+				DIFF_EQUAL.repeat("bar".length()) + DIFF_INSERT.repeat(NEWLINE_MARKER.length()) + "\n" +
 				"Expected[1]@0: " + DIFF_PADDING.repeat(("foo" + NEWLINE_MARKER).length()) + "bar" + NEWLINE_MARKER +
 				"\n" +
 				"\n" +
 				"Actual[1]@1  : bar" + DIFF_PADDING.repeat("foo".length()) + EOS_MARKER + "\n" +
-				"Diff         : " + DIFF_DELETE.repeat("bar".length()) + DIFF_INSERT.repeat("foo".length()) +
+				"Diff         : " + DIFF_EQUAL.repeat("bar".length()) + DIFF_INSERT.repeat("foo".length()) +
 				DIFF_EQUAL.repeat(EOS_MARKER.length()) +
 				"\n" +
 				"Expected[1]@1: " + DIFF_PADDING.repeat("bar".length()) + "foo" + EOS_MARKER + "\n" +

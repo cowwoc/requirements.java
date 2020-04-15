@@ -8,6 +8,8 @@ public final class ColoredDiff
 {
 	public static void main(String[] args)
 	{
+		System.out.println("Example 1");
+		System.out.println("---------");
 		try
 		{
 			requireThat("", "actual").isEqualTo("text");
@@ -17,6 +19,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 2");
+		System.out.println("---------");
 		try
 		{
 			requireThat("text", "actual").isEqualTo("");
@@ -26,6 +30,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 3");
+		System.out.println("---------");
 		try
 		{
 			requireThat("foo", "actual").isEqualTo("   foo");
@@ -35,6 +41,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 4");
+		System.out.println("---------");
 		try
 		{
 			requireThat("foosball", "actual").isEqualTo("ballroom");
@@ -44,6 +52,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 5");
+		System.out.println("---------");
 		try
 		{
 			requireThat("null", "actual").isEqualTo(null);
@@ -53,6 +63,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 6");
+		System.out.println("---------");
 		try
 		{
 			requireThat("first\nsecond\nfoo\nforth\nfifth", "actual").
@@ -63,6 +75,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 7");
+		System.out.println("---------");
 		try
 		{
 			requireThat("Foo\nBar", "actual").isEqualTo("Bar");
@@ -72,6 +86,8 @@ public final class ColoredDiff
 			System.out.println(e.getMessage());
 		}
 		System.out.println();
+		System.out.println("Example 8");
+		System.out.println("---------");
 		try
 		{
 			requireThat(List.of("1", "foo\nbar", "3"), "actual").

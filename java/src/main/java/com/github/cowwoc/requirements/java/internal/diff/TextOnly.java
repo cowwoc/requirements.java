@@ -75,10 +75,10 @@ public final class TextOnly extends AbstractDiffWriter
 				String paddingMarker = getPaddingMarker();
 				int length = line.length();
 				lineToExpectedLine.get(actualLineNumber).append(paddingMarker.repeat(length));
-				lineToDiffBuilder.get(actualLineNumber).append(DIFF_DELETE.repeat(length));
+				lineToDiffBuilder.get(actualLineNumber).append(DIFF_EQUAL.repeat(length));
 
 				lineToActualLine.get(expectedLineNumber).append(paddingMarker.repeat(length));
-				lineToDiffBuilder.get(expectedLineNumber).append(DIFF_INSERT.repeat(length));
+				lineToDiffBuilder.get(expectedLineNumber).append(DIFF_EQUAL.repeat(length));
 			}
 			lineToExpectedLine.get(expectedLineNumber).append(line);
 		}, () ->

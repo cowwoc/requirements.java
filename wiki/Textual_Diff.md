@@ -167,13 +167,13 @@ Expected = "Bar"
 results in the following diff:
 
 ```text
-Actual@0  : Foo\n
-Diff      : -----
-Expected  : 
+Actual@0  : Foo\n     
+Diff      : -----     
+Expected@0:      Bar\0
 
 
 Actual@1  : Bar\0
-Expected@0: Bar\0
+Expected  :       
 ```
 
 Meaning:
@@ -205,16 +205,12 @@ Actual[0]    : 1\0
 Expected[0]  : 1\0
 
 Actual[1]@0  : foo\n
-Diff         : -----
-Expected[1]  :      
+Diff         : -----   ++
+Expected[1]@0:      bar\n     
 
-Actual[1]@1  : bar  
-Diff         :    ++
-Expected[1]@0: bar\n
-
-Actual[1]@1  :    \0
-Diff         : +++  
-Expected[1]@1: foo\0
+Actual[1]@1  : bar   \0
+Diff         :    +++
+Expected[1]@1:    foo\0
 
 Actual[2]    : 3\0
 Expected[2]  : 3\0
