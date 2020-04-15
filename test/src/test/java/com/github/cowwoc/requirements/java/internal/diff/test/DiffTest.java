@@ -29,6 +29,7 @@ import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.R
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16_COLORS;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256_COLORS;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_8_COLORS;
+import static org.testng.Assert.fail;
 
 public final class DiffTest
 {
@@ -43,6 +44,7 @@ public final class DiffTest
 			String actual = "actual";
 			String expected = "expected";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -68,6 +70,7 @@ public final class DiffTest
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -92,6 +95,7 @@ public final class DiffTest
 			String actual = "\nactual";
 			String expected = "expected";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -121,6 +125,7 @@ public final class DiffTest
 			String actual = "actual\n";
 			String expected = "expected";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -151,6 +156,7 @@ public final class DiffTest
 			String actual = "\n\nvalue";
 			String expected = "value";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -184,6 +190,7 @@ public final class DiffTest
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -218,6 +225,7 @@ public final class DiffTest
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -242,6 +250,7 @@ public final class DiffTest
 			String actual = "you like me?";
 			String expected = "Don't you like me?";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -264,6 +273,7 @@ public final class DiffTest
 			String actual = "I lice dogs";
 			String expected = "I like dogs";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -282,9 +292,10 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "I like dogs";
+			String actual = "I like dog";
 			String expected = "I like dogs";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -306,6 +317,7 @@ public final class DiffTest
 			String actual = "I lices dogs";
 			String expected = "I like dogs";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -334,6 +346,7 @@ public final class DiffTest
 		{
 			new Requirements(scope).requireThat(actual, "actual").
 				isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -363,6 +376,7 @@ public final class DiffTest
 		{
 			new Requirements(scope).requireThat(actual, "actual").
 				isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -394,6 +408,7 @@ public final class DiffTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -422,6 +437,7 @@ public final class DiffTest
 			List<Integer> actual = List.of(1, 2, 3, 4, 5);
 			List<Integer> expected = List.of(1, 2, 9, 4, 5);
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -452,6 +468,7 @@ public final class DiffTest
 			List<String> actual = List.of("1", "foo\nbar", "3");
 			List<String> expected = List.of("1", "bar\nfoo", "3");
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -490,6 +507,7 @@ public final class DiffTest
 			String actual = "int[6]";
 			String expected = "int[5]";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -517,6 +535,7 @@ public final class DiffTest
 			String actual = "different-same-different";
 			String expected = "maybe-same-maybe";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -564,6 +583,7 @@ public final class DiffTest
 			String actual = "actual\nsame\nactual actual";
 			String expected = "expected\nsame\nexpected expected";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -599,6 +619,7 @@ public final class DiffTest
 			String actual = "int[6]";
 			String expected = "int[5]";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -628,6 +649,7 @@ public final class DiffTest
 			String actual = "int[6]";
 			String expected = "int[5]";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -656,6 +678,7 @@ public final class DiffTest
 			String actual = "int[6]";
 			String expected = "int[5]";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -684,6 +707,7 @@ public final class DiffTest
 			String actual = "int[6]";
 			String expected = "int[5]";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -712,6 +736,7 @@ public final class DiffTest
 			String actual = "foo\nbar";
 			String expected = "bar";
 			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
 		{

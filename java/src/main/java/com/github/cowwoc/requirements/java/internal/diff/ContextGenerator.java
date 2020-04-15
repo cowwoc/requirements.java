@@ -223,9 +223,9 @@ public final class ContextGenerator
 		boolean skippedDuplicates = false;
 		for (int i = 0; i < numberOfLines; ++i)
 		{
-			String expectedLine;
 			List<String> expectedLines = lines.getExpectedLines();
 			String actualLine = actualLines.get(i);
+			String expectedLine;
 			if (expectedLines.size() > i)
 				expectedLine = expectedLines.get(i);
 			else

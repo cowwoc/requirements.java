@@ -82,7 +82,6 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			else
 				lineToActualLine.get(actualLineNumber).append(line);
 
-			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
 			if (expectedLineNumber != actualLineNumber)
 			{
 				int length = line.length();
@@ -94,6 +93,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 				lineToActualDecoration.put(expectedLineNumber, DecorationType.EQUAL);
 			}
 
+			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
 			if (expectedDecoration != DecorationType.EQUAL)
 			{
 				lineToExpectedLine.get(expectedLineNumber).append(decorateEqualText(line));

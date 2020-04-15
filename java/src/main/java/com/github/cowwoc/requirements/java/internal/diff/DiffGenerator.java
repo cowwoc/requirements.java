@@ -236,11 +236,9 @@ public final class DiffGenerator
 			processMiddleDeltas(actualBuilder, expectedBuilder);
 			processEndDelta(actualBuilder, expectedBuilder, updatedDeltas);
 
-			int oldSize = deltasInWord.size();
+			int deltasRemoved = deltasInWord.size() - updatedDeltas.size();
 			deltasInWord.clear();
 			deltasInWord.addAll(updatedDeltas);
-			int newSize = deltasInWord.size();
-			int deltasRemoved = oldSize - newSize;
 			numberOfDeltas -= deltasRemoved;
 			indexOfEndDelta -= deltasRemoved;
 			indexOfNextWordInEndDelta -= indexOfDelimiterInEndDelta;
@@ -259,20 +257,20 @@ public final class DiffGenerator
 			AbstractDelta<Integer> delta = deltas.get(indexOfStartDelta);
 			String actual = Strings.fromCodepoints(delta.getSource().getLines());
 			String actualWord = actual.substring(indexOfWordInStartDelta);
-			List<Integer> codepointsBeforeActual = Strings.toCodepoints(
+			List<Integer> codepointsBeforeActualWord = Strings.toCodepoints(
 				actual.substring(0, indexOfWordInStartDelta));
 
 			String expectedWord;
-			List<Integer> codepointsBeforeExpected;
+			List<Integer> codepointsBeforeExpectedWord;
 			if (delta.getType() == DeltaType.EQUAL)
 			{
 				expectedWord = actualWord;
-				codepointsBeforeExpected = codepointsBeforeActual;
+				codepointsBeforeExpectedWord = codepointsBeforeActualWord;
 			}
 			else
 			{
 				expectedWord = Strings.fromCodepoints(delta.getTarget().getLines());
-				codepointsBeforeExpected = List.of();
+				codepointsBeforeExpectedWord = List.of();
 			}
 			actualBuilder.append(actualWord);
 			expectedBuilder.append(expectedWord);
@@ -280,8 +278,8 @@ public final class DiffGenerator
 			if (indexOfWordInStartDelta > 0)
 			{
 				updatedDeltas.add(deltaWithChunks(delta,
-					new Chunk<>(delta.getSource().getPosition(), codepointsBeforeActual),
-					new Chunk<>(delta.getTarget().getPosition(), codepointsBeforeExpected)));
+					new Chunk<>(delta.getSource().getPosition(), codepointsBeforeActualWord),
+					new Chunk<>(delta.getTarget().getPosition(), codepointsBeforeExpectedWord)));
 			}
 		}
 
@@ -331,31 +329,8 @@ public final class DiffGenerator
 				String expected = Strings.fromCodepoints(delta.getTarget().getLines());
 				expectedWord = expected.substring(0, indexOfDelimiterInEndDelta);
 			}
-
 			actualBuilder.append(actualWord);
 			expectedBuilder.append(expectedWord);
-
-			// Word after delimiter
-			AbstractDelta<Integer> deltaAfterWord;
-			if (indexOfDelimiterInEndDelta < actual.length())
-			{
-				List<Integer> codepointsAfterActual = Strings.toCodepoints(
-					actual.substring(indexOfDelimiterInEndDelta));
-				List<Integer> codepointsAfterExpected;
-				if (delta.getType() == DeltaType.EQUAL)
-					codepointsAfterExpected = codepointsAfterActual;
-				else
-				{
-					String expected = Strings.fromCodepoints(delta.getTarget().getLines());
-					codepointsAfterExpected = Strings.toCodepoints(expected.substring(0, indexOfWordInStartDelta));
-				}
-
-				deltaAfterWord = deltaWithChunks(delta,
-					new Chunk<>(delta.getSource().getPosition(), codepointsAfterActual),
-					new Chunk<>(delta.getTarget().getPosition(), codepointsAfterExpected));
-			}
-			else
-				deltaAfterWord = null;
 
 			AbstractDelta<Integer> deleteActual = new DeleteDelta<>(
 				new Chunk<>(delta.getSource().getPosition(), Strings.toCodepoints(actualBuilder.toString())),
@@ -366,8 +341,25 @@ public final class DiffGenerator
 					Strings.toCodepoints(expectedBuilder.toString())));
 			updatedDeltas.add(deleteActual);
 			updatedDeltas.add(insertExpected);
-			if (deltaAfterWord != null)
-				updatedDeltas.add(deltaAfterWord);
+
+			// Word after delimiter
+			if (indexOfDelimiterInEndDelta < actual.length())
+			{
+				List<Integer> codepointsAfterActual = Strings.toCodepoints(
+					actual.substring(indexOfDelimiterInEndDelta));
+				List<Integer> codepointsAfterExpected;
+				if (delta.getType() == DeltaType.EQUAL)
+					codepointsAfterExpected = codepointsAfterActual;
+				else
+				{
+					String expected = Strings.fromCodepoints(delta.getTarget().getLines());
+					codepointsAfterExpected = Strings.toCodepoints(expected.substring(indexOfDelimiterInEndDelta));
+				}
+
+				updatedDeltas.add(deltaWithChunks(delta,
+					new Chunk<>(delta.getSource().getPosition(), codepointsAfterActual),
+					new Chunk<>(delta.getTarget().getPosition(), codepointsAfterExpected)));
+			}
 		}
 
 		/**
@@ -388,7 +380,8 @@ public final class DiffGenerator
 				String actual = Strings.fromCodepoints(delta.getSource().getLines());
 				MatchResult result = Strings.lastIndexOf(actual, WORDS).orElseThrow(() ->
 					new AssertionError("Expecting result to be equal to " +
-						"indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later"));
+						"indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later.\n" +
+						"actual: '" + actual + "'"));
 				indexOfWordInStartDelta = result.end();
 			}
 			return true;
