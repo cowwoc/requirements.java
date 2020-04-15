@@ -21,9 +21,6 @@ jobs:
         run: |
           java --version
           mvn --version
-      # WORKAROUND: https://issues.apache.org/jira/browse/MDEP-568
-      - name: Install dependencies
-        run: mvn de.qaware.maven:go-offline-maven-plugin:1.2.5:resolve-dependencies
       - name: Build
         run: mvn install -e
       - name: Unit tests
