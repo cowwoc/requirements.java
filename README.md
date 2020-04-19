@@ -1,6 +1,6 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cowwoc.requirements/java/badge.svg)](https://search.maven.org/search?q=g:com.github.cowwoc.requirements)
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
-[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/)
+[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](wiki/Changelog.md)
 
 ![java](https://img.shields.io/badge/languages-java-black.svg)
@@ -65,7 +65,7 @@ Follow these 4 steps to get started:
 <project>
   ...
   <properties>
-    <requirements.version>6.0.2</requirements.version>
+    <requirements.version>6.0.3</requirements.version>
   </properties>
   <build>
     <plugins>
@@ -129,12 +129,12 @@ public final class Player
 
 The best way to learn about the API is using your IDE's auto-complete engine. There are six entry points you can navigate from:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#requireThat(T,java.lang.String))
-* [assertThat(value, name)](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#assertThat(T,java.lang.String))
-* [validateThat(value, name)](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#validateThat(T,java.lang.String))
-* [Requirements](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/Requirements.html)
-* [GlobalRequirements](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html)
-* [ThreadRequirements](https://cowwoc.github.io/requirements.java/6.0.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ThreadRequirements.html)
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#requireThat(T,java.lang.String))
+* [assertThat(value, name)](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#assertThat(T,java.lang.String))
+* [validateThat(value, name)](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#validateThat(T,java.lang.String))
+* [Requirements](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/Requirements.html)
+* [GlobalRequirements](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html)
+* [ThreadRequirements](https://cowwoc.github.io/requirements.java/6.0.3/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ThreadRequirements.html)
 
 The first three methods are designed to be statically imported from `DefaultRequirements`.
 

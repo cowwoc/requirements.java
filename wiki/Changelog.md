@@ -1,9 +1,10 @@
 Minor updates involving cosmetic changes have been omitted from this list. See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 6.0.2 - 2020/04/19
+## Version 6.0.3 - 2020/04/19
 
 * Improvements
-    * If a failure message is longer than the terminal width, push the expected value from the failure message to the exception context. This helps failure messages remain readable in the face of long values.
+    * If a failure message is longer than the terminal width, push the expected value from the failure message
+    to the exception context. This helps failure messages remain readable in the face of long values.
     * Added `GlobalConfiguration.getTerminalWidth()`, `withDefaultTerminalWidth()`, `withTerminalWidth()`.
     
 ## Version 6.0.1 - 2020/04/15
@@ -13,7 +14,8 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     
 ## Version 6.0.0 - 2020/03/30
 
-* Moved project from https://bitbucket.org/cowwoc/requirements.java/ to https://github.com/cowwoc/requirements.java/
+* Moved project from https://bitbucket.org/cowwoc/requirements.java/ to
+  https://github.com/cowwoc/requirements.java/
 * Breaking changes
     * Changed groupId from `org.bitbucket.cowwoc.requirements` to `com.github.cowwoc.requirements`.
 
