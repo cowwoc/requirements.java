@@ -1,32 +1,38 @@
 Minor updates involving cosmetic changes have been omitted from this list. See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 6.0.1 - 2020/04/15 ##
+## Version 6.0.2 - 2020/04/19
+
+* Improvements
+    * If a failure message is longer than the terminal width, push the expected value from the failure message to the exception context. This helps failure messages remain readable in the face of long values.
+    * Added `GlobalConfiguration.getTerminalWidth()`, `withDefaultTerminalWidth()`, `withTerminalWidth()`.
+    
+## Version 6.0.1 - 2020/04/15
 
 * Improvements
     * Improved diff output for lists, multiline strings.
     
-## Version 6.0.0 - 2020/03/30 ##
+## Version 6.0.0 - 2020/03/30
 
 * Moved project from https://bitbucket.org/cowwoc/requirements.java/ to https://github.com/cowwoc/requirements.java/
 * Breaking changes
     * Changed groupId from `org.bitbucket.cowwoc.requirements` to `com.github.cowwoc.requirements`.
 
-## Version 5.2.2 - 2019/09/18 ##
+## Version 5.2.2 - 2019/09/18
 
 * Bugfix: `cleanStackTrace()` was not being enforced if `Throwable.printStackTrace(PrintWriter)` was invoked.
 
-## Version 5.2.1 - 2019/08/31 ##
+## Version 5.2.1 - 2019/08/31
 
 * Bugfix: `ValidationFailureImpl.createMessageWithContext()` was throwing `NullPointerException` if the context contained an empty line.
 
-## Version 5.2.0 - 2019/08/11 ##
+## Version 5.2.0 - 2019/08/11
 
 * Breaking changes
     * Removed `PrimitiveArrayVerifier`.
 * Bugfixes
     * `PrimitiveArrayVerifier.isNull()`, `isNotNull()` was incorrectly showing up as deprecated.
 
-## Version 5.1.2 - 2019/07/29 ##
+## Version 5.1.2 - 2019/07/29
 
 * New features:
     * Added `ClassValidator.isSubtypeOf()`.
@@ -40,7 +46,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * `ValidationFailure.getMessage()` now includes the failure context.
     * `asUri()`, `asUrl()`, `asInetAddress()` now mention the actual value's expected type when it is null.
 
-## Version 5.1.1 - 2019/07/22 ##
+## Version 5.1.1 - 2019/07/22
 
 * Improvements:
     * Textual diffs now use `'+'` for characters that needs to be added, `'-'` for characters that needs to be removed, and `' '` for identical characters. End of stream is marked with \0 even for single-line diffs.
@@ -48,7 +54,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 * Bug fixes:
     * `isPositive()` was not failing for `NaN`.
 
-## Version 5.1.0 - 2019/07/16 ##
+## Version 5.1.0 - 2019/07/16
 
 * New Features:
     * `Configuration` (and all implementing `Requirements`) are thread-safe. Verifiers, Validators still assume single-threaded use.
@@ -58,7 +64,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * `assertThat()` was using the assertion status of `MainConfiguration` instead of `Configuration` by mistake.
     * `GlobalConfiguration.isCleanStackTrace()` was being ignored.
 
-## Version 5.0.0 - 2019/07/10 ##
+## Version 5.0.0 - 2019/07/10
 
 * New Features:
     * Added `Requirements.validateThat()`, an entry-point that aggregates multiple errors before returning feedback to the user.
@@ -79,12 +85,12 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * Don't diff `boolean`s.
     * `Terminal.setEncodingImpl()` wasn't actually setting the encoding unless the platform was Windows.
 
-## Version 4.0.6-RC - 2019/03/06 ##
+## Version 4.0.6-RC - 2019/03/06
 
 * Breaking changes:
     * Removed `Configuration.getConfiguration()`
 
-## Version 4.0.5-RC - 2019/03/06 ##
+## Version 4.0.5-RC - 2019/03/06
 
 * New Features:
     * Java 11 support.
@@ -108,7 +114,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 * Minor changes:
     * Log using `DEBUG` level if the native library is missing, instead of `WARN`.
 
-## Version 4.0.4-RC - 2018/02/08 ##
+## Version 4.0.4-RC - 2018/02/08
 
 * New Features
     * Added `ObjectVerifier.isSameObjectAs()`, `isNotSameObjectAs()`.
@@ -116,19 +122,19 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * Added verifiers for primitive arrays: `byte[]`, `short[]`, `int[]`, `long[]`, `double[]`, `float[]`, `boolean[]` and `char[]`.
 * Bugfix: `CollectionVerifier.doesNotContainAny()` was listing the wrong unwanted elements on failure.
 
-## Version 4.0.3-RC - 2018/02/07 ##
+## Version 4.0.3-RC - 2018/02/07
 
 * New Features: Added `Comparable.isComparableTo()`, `isNotComparableTo()`.
 
-## Version 4.0.2-RC - 2018/01/06 ##
+## Version 4.0.2-RC - 2018/01/06
 
 * Bugfix: NumberVerifier was handling fractional values incorrectly.
 
-## Version 4.0.1-RC - 2017/12/27 ##
+## Version 4.0.1-RC - 2017/12/27
 
 * Bugfix: Added support for Windows versions with four components (e.g. 10.0.16299.125). Previous versions only had three components.
 
-## Version 4.0.0-RC - 2017/07/30 ##
+## Version 4.0.0-RC - 2017/07/30
 
 * Breaking changes:
     * **Swapped order of the `name` and `value` parameters for all methods except `addContext()`.** All methods now take parameters in the same order: `(name, value)`
@@ -146,15 +152,15 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 * Bugfixes:
     *  If `actual != expected` but the String representations were equal, the output should have contained the actual value, but did not.
 
-## Version 3.0.13 - 2017/07/13 ##
+## Version 3.0.13 - 2017/07/13
 
 * Bugfix: Fixed warning when running under Linux: "java.lang.UnsatisfiedLinkError: librequirements.so: /usr/lib64/libstdc++.so.6: version 'GLIBCXX_3.4.21' not found (required by librequirements.so)".
 
-## Version 3.0.12 - 2017/06/07 ##
+## Version 3.0.12 - 2017/06/07
 
 * New feature: Added `String.isTrimmed()`.
 
-## Version 3.0.11 - 2017/05/10 ##
+## Version 3.0.11 - 2017/05/10
 
 * New features:
     * Added `Configurable.withDiff()`, `withoutDiff()`.
@@ -167,41 +173,41 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * We no longer strip the padding marker from the end of diff lines.
     * `XTERM_8COLOR` terminal encoding no longer uses "bold" attribute which it does not support.
 
-## Version 3.0.10 - 2017/05/02 ##
+## Version 3.0.10 - 2017/05/02
 
 * Bugfix: An `AssertionError` was thrown if a verifier threw an exception with a cause and `GlobalConfiguration.apiInStacktrace` was false.
 
-## Version 3.0.9 - 2017/05/02 ##
+## Version 3.0.9 - 2017/05/02
 
 * Bugfix: ANSI colors were being used on non-Windows platforms even when stdout was redirected.
 
-## Version 3.0.8 - 2017/05/02 ##
+## Version 3.0.8 - 2017/05/02
 
 * Bugfixes
     * `OperatingSystem.Version.detect()` was failing if the operating-system version did not contain a build number (e.g. MacOS 10.12).
     * Windows 10 terminal was never using colors, even if they were supported.
 * Change: Deprecated `TerminalEncoding.detect()`.
 
-## Version 3.0.7 - 2017/04/26 ##
+## Version 3.0.7 - 2017/04/26
 
 * New features: Added `BooleanVerifier`, `PrimitiveBooleanVerifier`
 * Improvements: `CollectionVerifier.getActual()` now returns subclasses of type `Collection` (e.g. `List`, `Iterable`).
 
-## Version 3.0.6-RC - 2017/04/05 ##
+## Version 3.0.6-RC - 2017/04/05
 
 * New features: Added `StringVerifier.contains()`, `doesNotContain()`
 
-## Version 3.0.5-RC - 2017/04/05 ##
+## Version 3.0.5-RC - 2017/04/05
 
 * Bugfix: Verifier's default constructor was reusing the same Configuration across all Verifiers; fixed.
 
-## Version 3.0.4-RC - 2017/04/04 ##
+## Version 3.0.4-RC - 2017/04/04
 
 * New features:
     * Added requirements-maven-plugin:unpack for unpacking native libraries.
     * Added `StringVerifier.asUrl()`, `UriVerifier.asUrl()` and `UrlVerifier`.
 
-## Version 3.0.1-RC - 2017/03/01 ##
+## Version 3.0.1-RC - 2017/03/01
 
 * New features:
     * Added `ObjectVerifier.isNotIn()`.
@@ -215,7 +221,7 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * `BigDecimal.scale().isZero()`, `isNotZero()`, `isPositive()`, `isNotPositive()`, `isNegative()`, `isNotNegative()` were not checking the actual value; fixed.
     * `Optional.isNotNull()` was not checking the actual value; fixed.
 
-## Version 3.0.0-RC - 2017/02/09 ##
+## Version 3.0.0-RC - 2017/02/09
 
 * Footprint/Performance
     * Size decreased by 10%
@@ -247,19 +253,19 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
     * `Array.length()` was invoking `Object.toString()` instead of `Arrays.toString()`
     * `ObjectVerifier.isInstanceOf()` was throwing `NullPointerException` if `actual == null`.
 
-## Version 2.0.6 - 2016/11/21 ##
+## Version 2.0.6 - 2016/11/21
 
 * Feature: Added ArrayRequirements.
 * Feature: Improved output for objects with the same toString() that are not equal.
 * Bugfix: `Object.isEqualTo()` now handles the parameter or value being null.
 
-## Version 2.0.5 - 2016/11/15 ##
+## Version 2.0.5 - 2016/11/15
 
 * Bugfix: ANSI colors outputted on Windows 10 versions that did not support it; fixed.
 * Bugfix: `Collection.size().isIn(Range)`, `Map.size().isIn(Range)` and `String.length().isIn(Range)` were outputting unicode characters; fixed.
 * Bugfix: `ComparableRequirementsImpl.isGreaterthanOrEqualTo()` was outputting the wrong parameter name.
 
-## Version 2.0.3 - 2016/10/13 ##
+## Version 2.0.3 - 2016/10/13
 
 * Feature: Added [String diffs](String_Diff.md).
 * Feature: Added `ObjectRequirements.isIn()`.
@@ -271,11 +277,11 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 * Change: Replaced `ObjectRequirements.withContext(Map<String, Object>)` with `addContext(String, Object)`.
 * Bugfix: `UriRequirements` was using the wrong parameter name in exception messages; fixed.
 
-## Version 2.0.2 - 2016/08/06 ##
+## Version 2.0.2 - 2016/08/06
 
 * Feature: Added Requirements.assertionsAreEnabled().
 
-## Version 2.0.0 - 2016/07/31 ##
+## Version 2.0.0 - 2016/07/31
 
 * Renamed library from `Preconditions` to `Requirements` to imply that it handles more than just preconditions.
 * Breaking change: Renamed `ObjectPreconditions.usingException()` to `withException()`.
@@ -283,119 +289,119 @@ Minor updates involving cosmetic changes have been omitted from this list. See h
 * Feature: The library no longer shows up in exception stack-traces. Set "org.bitbucket.cowwoc.requirements.Requirements.showFullStackTrace" to "true" to disable this feature.
 * Feature: Added convenience methods `Requirements.assertThat()`.
 
-## Version 1.29 - 2016/05/06 ##
+## Version 1.29 - 2016/05/06
 
 * Feature: Added `ComparablePreconditions`
 
-## Version 1.28 - 2016/01/20 ##
+## Version 1.28 - 2016/01/20
 
 * Feature: Added `ObjectPreconditions.isolate()` for combining nested elements into a single statement.
 * Feature: Added `CollectionPreconditions.doesNotContainDuplicates()`.
 * Feature: Added `CollectionPreconditions.containsExactly()`.
 * Feature: Added `Assertions.isEnabled()`.
 
-## Version 1.27 - 2015/12/09 ##
+## Version 1.27 - 2015/12/09
 
 * Feature: Added ability to name element(s) passed to `CollectionPreconditions.contains*()`.
 
-## Version 1.26 - 2015/12/09 ##
+## Version 1.26 - 2015/12/09
 
 * Feature: Added `CollectionPreconditions.containsAny()`, `containsAll()`, `doesNotContainAny()` and `doesNotContainAll()`.
 
-## Version 1.25 - 2015/07/06 ##
+## Version 1.25 - 2015/07/06
 
 * Feature: Added locale-specific grouping separator to most numbers.
 
-## Version 1.24 - 2015/07/06 ##
+## Version 1.24 - 2015/07/06
 
 * Bugfix: `Preconditions.usingException()` was throwing a `ClassCastException` if the precondition type was not Object.
 * Feature: Report actual value for `CollectionPreconditions.doesNotContain()`, `NumberPreconditionsImpl.isNotNegative()` and `isNotPositive()`.
 
-## Version 1.22 - 2015/06/29 ##
+## Version 1.22 - 2015/06/29
 
 * Feature: When objects are not equal, highlight the difference using a visual diff.
 
-## Version 1.21 - 2015/06/08 ##
+## Version 1.21 - 2015/06/08
 
 * Feature: Added `CollectionPreconditions.contains()`, `doesNotContain()`
 
-## Version 1.20 - 2015/06/01 ##
+## Version 1.20 - 2015/06/01
 
 * Feature: Added `Preconditions.isNotEqualTo()`
 
-## Version 1.19 - 2015/05/27 ##
+## Version 1.19 - 2015/05/27
 
 * Bugfix: Order of parameters was reversed for `Collection.size()`, `Map.size()`, `String.length()` error messages.
 
-## Version 1.18 - 2015/05/19 ##
+## Version 1.18 - 2015/05/19
 
 * Feature: Added `CollectionPreconditions.isEmpty()` and `MapPreconditions.isEmpty()`
 
-## Version 1.17 - 2015/05/19 ##
+## Version 1.17 - 2015/05/19
 
 * Bugfix: TestNG maven dependency was not test-scoped.
 
-## Version 1.16 - 2015/05/15 ##
+## Version 1.16 - 2015/05/15
 
 * Bugfix: `Assertions.requireThat()` was throwing a `StackOverflowError` if assertions were enabled.
 * Feature: Added `ObjectPreconditions.isEqualTo()`.
 
-## Version 1.15 - 2015/05/09 ##
+## Version 1.15 - 2015/05/09
 
 * Feature: Added `CollectionPreconditions.size()`
 
-## Version 1.14 - 2015/05/05 ##
+## Version 1.14 - 2015/05/05
 
 * Feature: Improved modularity by adding preconditions over properties.
     * Example: `Preconditions.requireThat(name, "name").length().isLessThanOrEqualTo(30)` instead of `Preconditions.requireThat(name, "name").hasMaximumLength(30)`.
 
-## Version 1.13 - 2015/05/04 ##
+## Version 1.13 - 2015/05/04
 
 * Feature: Added `AssertionPreconditions` (preconditions that get skipped if assertions are disabled)
 
-## Version 1.11 - 2014/11/09 ##
+## Version 1.11 - 2014/11/09
 
 * Feature: Added `YearPreconditions`
 * Feature: Added `OptionalPreconditions`
 
-## Version 1.10 - 2014/09/08 ##
+## Version 1.10 - 2014/09/08
 
 * Feature: Added `StringPreconditions.isEmpty()`, `trim()`.
 
-## Version 1.9 - 2014/08/27 ##
+## Version 1.9 - 2014/08/27
 
 * Feature: Added `BigDecimalPreconditions`
 
-## Version 1.8 - 2014/07/25 ##
+## Version 1.8 - 2014/07/25
 
 * Feature: `StringPreconditions.lengthIn()`, `hasMinimumLength()`, `hasLength()`, `hasMaximumLength()` now mention actual value on failure.
 
-## Version 1.7 - 2014/07/08 ##
+## Version 1.7 - 2014/07/08
 
 * Feature: Added `StringPreconditions.startsWith(String)`, `doesNotStartWith(String)`, `endsWith(String)`, `doesNotEndWith(String)`.
 
-## Version 1.6 - 2014/05/29 ##
+## Version 1.6 - 2014/05/29
 
 * Breaking change: Renamed `StringPreconditions.isShorterThan()` to `hasMaximumLength()`.
 * Breaking change: Renamed `StringPreconditions.isValidEmail()` to `isEmailFormat()`.
 * Feature: Added `PathPreconditions.isRelative()`, `isAbsolute()`.
 * Feature: Added `StringPreconditions.hasMinimumLength()`, `hasLength()`, `isIpAddressFormat()`.
 
-## Version 1.4 - 2014/02/02 ##
+## Version 1.4 - 2014/02/02
 
 * Feature: Added `NumberPreconditions`
 
-## Version 1.3 - 2014/01/19 ##
+## Version 1.3 - 2014/01/19
 
 * Breaking change: Swapped order of `Preconditions.requireThat()` parameters to facilitate migration from Guava.
 
-## Version 1.1 - 2014/01/08 ##
+## Version 1.1 - 2014/01/08
 
 * Breaking change: Renamed `Preconditions.valueOf()` to `Preconditions.checkThat()`.
 * Breaking change: `PathPreconditions.exists()` now throws `IllegalArgumentException` instead of `IllegalStateException`.
 * Feature: Added `Preconditions.isInstanceOf()`.
 * Feature: Added `ClassPreconditions`.
 
-## Version 1.0 - 2013/11/11 ##
+## Version 1.0 - 2013/11/11
 
 * Initial release
