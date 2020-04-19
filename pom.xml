@@ -11,6 +11,7 @@
 	<artifactId>root</artifactId>
 	<version>6.0.2</version>
 	<packaging>pom</packaging>
+	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
 	<url>https://github.com/cowwoc/requirements.java/</url>
 
