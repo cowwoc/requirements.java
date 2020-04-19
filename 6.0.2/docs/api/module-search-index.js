@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"com.github.cowwoc.requirements"},{"l":"com.github.cowwoc.requirements.annotations"},{"l":"com.github.cowwoc.requirements.generator"},{"l":"com.github.cowwoc.requirements.guava"},{"l":"com.github.cowwoc.requirements.java"},{"l":"com.github.cowwoc.requirements.maven_plugin"},{"l":"com.github.cowwoc.requirements.natives"}]
