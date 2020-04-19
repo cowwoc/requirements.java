@@ -328,15 +328,18 @@ public final class Terminal
 	{
 		return nativeTerminal.map(terminal ->
 		{
-			try
+			if (isConnectedToStdout())
 			{
-				return terminal.getWidth();
+				try
+				{
+					return terminal.getWidth();
+				}
+				catch (IOException e)
+				{
+					log.warn("", e);
+				}
 			}
-			catch (IOException e)
-			{
-				log.warn("", e);
-				return 0;
-			}
+			return 0;
 		}).orElse(0);
 	}
 

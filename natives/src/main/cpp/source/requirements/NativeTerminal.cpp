@@ -262,7 +262,7 @@ std::string toString(JNIEnv* env, jobject o)
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         if (GetConsoleScreenBufferInfo(state.stdoutHandle, &csbi))
             return csbi.srWindow.Right - csbi.srWindow.Left + 1;
-        exceptions.throwIOException("Failed to set get the console width", GetLastError());
+        exceptions.throwIOException("Failed to get the terminal width", GetLastError());
         return 0;
     }
 
