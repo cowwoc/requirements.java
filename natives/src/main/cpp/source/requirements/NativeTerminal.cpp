@@ -359,12 +359,7 @@ std::string toString(JNIEnv* env, jobject o)
             }
             case ENOTTY:
             {
-                message += "fd is not associated with a character special device\n";
-                break;
-            }
-            case ENOTTY:
-            {
-                message += "The specified request does not apply to the kind of object that the file " +
+                message += "The specified request does not apply to the kind of object that the file "
                 "descriptor fd references\n";
                 break;
             }
@@ -377,9 +372,9 @@ std::string toString(JNIEnv* env, jobject o)
             }
         }
         message += "fd: ";
-        message += STDOUT_FILENO;
+        message += std::to_string(STDOUT_FILENO);
         message += "\nrequest: ";
-        message += TIOCGWINSZ;
+        message += std::to_string(TIOCGWINSZ);
 		exceptions.throwIOException(message.c_str());
         return 0;
     }
