@@ -140,7 +140,7 @@ public final class ContextGenerator
 				skipDuplicateLines(result);
 			}
 			result.addAll(getContext(actualNameForElement, actualValueAsString, expectedNameForElement,
-				expectedValueAsString, false, false));
+				expectedValueAsString, false, !elementsAreEqual));
 		}
 		return result;
 	}
