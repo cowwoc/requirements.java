@@ -29,4 +29,9 @@ jobs:
       - name: Unit tests
         run: mvn test -e
       - name: Prevent generated artifacts from getting cached
-        run: rm -rf ~/.m2/repository/com/github/cowwoc/requirements
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            del /s /q %HOME%/.m2/repository/com/github/cowwoc/requirements
+          else
+            rm -rf ~/.m2/repository/com/github/cowwoc/requirements
+          fi
