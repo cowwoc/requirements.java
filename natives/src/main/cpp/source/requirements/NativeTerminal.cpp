@@ -328,7 +328,7 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 
 	jint JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_getWidth
-    (JNIEnv* env, jobject jthis);
+    (JNIEnv* env, jobject jthis)
     {
     	Exceptions exceptions(env);
 
