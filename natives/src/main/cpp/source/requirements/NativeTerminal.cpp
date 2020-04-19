@@ -286,6 +286,7 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 #elif defined (__linux__) || defined (__APPLE__)
 	#include <unistd.h>
+	#include <termios.h>
 	#include <cerrno>
 
 	/**
