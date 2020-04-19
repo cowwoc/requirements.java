@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.0.3-SNAPSHOT</version>
+		<version>6.0.3</version>
 	</parent>
 	<artifactId>wiki</artifactId>
 	<dependencies>
