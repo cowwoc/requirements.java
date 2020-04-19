@@ -55,6 +55,26 @@ public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 	}
 
 	@Override
+	public int getTerminalWidth()
+	{
+		return terminal.getWidth();
+	}
+
+	@Override
+	public GlobalConfiguration withDefaultTerminalWidth()
+	{
+		terminal.useBestWidth();
+		return this;
+	}
+
+	@Override
+	public GlobalConfiguration withTerminalWidth(int width)
+	{
+		terminal.setWidth(width);
+		return this;
+	}
+
+	@Override
 	public String toString()
 	{
 		return "MainGlobalConfiguration[terminalEncoding=" + getTerminalEncoding() +

@@ -608,6 +608,69 @@ public final class DiffTest
 	}
 
 	/**
+	 * Ensures that "expected" is included in the error message when it is shorter than the terminal width.
+	 */
+	@Test
+	public void expectedShorterThanTerminalWidth()
+	{
+		String expected = "expected";
+		try (ApplicationScope scope = new TestApplicationScope(NONE,
+			"actual must be equal to expected.".length() + 1))
+		{
+			String actual = "actual";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains("must be equal to " + expected)) : "Actual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensures that "expected" is excluded from the error message when it is equal to the terminal width.
+	 */
+	@Test
+	public void expectedEqualToTerminalWidth()
+	{
+		String expected = "expected";
+		try (ApplicationScope scope = new TestApplicationScope(NONE,
+			"actual must be equal to expected.".length()))
+		{
+			String actual = "actual";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("must be equal to " + expected)) : "Actual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Ensures that "expected" is excluded from the error message when it is equal to the terminal width.
+	 */
+	@Test
+	public void expectedLongerThanTerminalWidth()
+	{
+		String expected = "expected";
+		try (ApplicationScope scope = new TestApplicationScope(NONE,
+			"actual must be equal to expected.".length() - 1))
+		{
+			String actual = "actual";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("must be equal to " + expected)) : "Actual:\n" + actualMessage;
+		}
+	}
+
+	/**
 	 * Ensure that XTERM_16_COLORS diffs generate the expected value.
 	 */
 	@Test

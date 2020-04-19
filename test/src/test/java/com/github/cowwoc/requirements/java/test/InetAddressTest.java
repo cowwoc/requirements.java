@@ -157,10 +157,10 @@ public final class InetAddressTest
 			List<String> expectedMessages = Collections.singletonList(
 				"actual must be equal to " + expected + ".\n" +
 					"\n" +
-					"Actual  : null " + EOS_MARKER + "\n" +
-					"Diff    : " + DIFF_DELETE.repeat(4) + DIFF_INSERT + DIFF_PADDING.repeat(EOS_MARKER.length()) +
-					"\n" +
-					"Expected:     5" + EOS_MARKER);
+					"Actual  : null" + DIFF_PADDING + EOS_MARKER + "\n" +
+					"Diff    : " + DIFF_DELETE.repeat("null".length()) + DIFF_INSERT +
+					DIFF_PADDING.repeat(EOS_MARKER.length()) + "\n" +
+					"Expected: " + DIFF_PADDING.repeat("null".length()) + "5" + EOS_MARKER);
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asString().isEqualTo(expected).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).

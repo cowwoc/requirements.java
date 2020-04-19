@@ -39,6 +39,7 @@ public final class Terminal
 	private final Reference<Boolean> connectedToStdout =
 		ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
 	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
+	private final AtomicReference<Integer> width = new AtomicReference<>();
 	private final Optional<NativeTerminal> nativeTerminal;
 	private final Logger log = LoggerFactory.getLogger(Terminal.class);
 
@@ -300,5 +301,72 @@ public final class Terminal
 			log.debug("NativeTerminal is not available");
 			return false;
 		});
+	}
+
+	/**
+	 * Indicates the width that the terminal should use.
+	 * <p>
+	 * This feature can be used to override the default terminal width when it cannot be auto-detected.
+	 *
+	 * @param width the width that the terminal should use
+	 * @throws IllegalArgumentException if {@code width} is zero or negative
+	 * @see #useBestWidth()
+	 */
+	public void setWidth(int width)
+	{
+		if (width <= 0)
+			throw new IllegalArgumentException("width must be positive");
+		this.width.set(width);
+	}
+
+	/**
+	 * Returns the terminal width.
+	 *
+	 * @return the terminal width in characters
+	 */
+	private int nativeGetWidth()
+	{
+		return nativeTerminal.map(terminal ->
+		{
+			try
+			{
+				return terminal.getWidth();
+			}
+			catch (IOException e)
+			{
+				log.warn("", e);
+				return 0;
+			}
+		}).orElse(0);
+	}
+
+	/**
+	 * Indicates that verifiers should use the best width supported by the terminal. If the width cannot be
+	 * auto-detected, a value of {@code 80} is used.
+	 *
+	 * @see #setWidth(int)
+	 */
+	public void useBestWidth()
+	{
+		int detectedWidth = nativeGetWidth();
+		log.debug("detectedWidth: {}", detectedWidth);
+		if (detectedWidth == 0)
+			detectedWidth = 80;
+		setWidth(detectedWidth);
+	}
+
+	/**
+	 * @return the width of the terminal in characters (defaults to the auto-detected width)
+	 */
+	public int getWidth()
+	{
+		Integer result = width.get();
+		log.debug("encoding is {}", result);
+		if (result == null)
+		{
+			useBestWidth();
+			result = width.get();
+		}
+		return result;
 	}
 }

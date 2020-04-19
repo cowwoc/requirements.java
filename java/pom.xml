@@ -15,7 +15,6 @@
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>maven_plugin</artifactId>
-				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<id>optimize-exceptions</id>
@@ -79,27 +78,22 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>annotations</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>natives</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.github.java-diff-utils</groupId>
 			<artifactId>java-diff-utils</artifactId>
-			<version>4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.cowwoc.pouch</groupId>
 			<artifactId>core</artifactId>
-			<version>${pouch.version}</version>
 		</dependency>
 	</dependencies>
 </project>

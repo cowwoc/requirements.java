@@ -33,6 +33,17 @@ public final class TestApplicationScope extends AbstractApplicationScope
 		this.globalConfiguration = new TestGlobalConfiguration(terminalEncoding);
 	}
 
+	/**
+	 * @param terminalEncoding the type of encoding that verifiers should output
+	 * @param terminalWidth    the terminal width that the test should use
+	 * @throws NullPointerException     if {@code terminalEncoding} is null
+	 * @throws IllegalArgumentException if {@code terminalWidth} is zero or negative
+	 */
+	public TestApplicationScope(TerminalEncoding terminalEncoding, int terminalWidth)
+	{
+		this.globalConfiguration = new TestGlobalConfiguration(terminalEncoding, terminalWidth);
+	}
+
 	@Override
 	public GlobalConfiguration getGlobalConfiguration()
 	{

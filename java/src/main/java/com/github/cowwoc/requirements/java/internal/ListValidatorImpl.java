@@ -5,14 +5,12 @@
 package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ListValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.diff.ContextGenerator;
 import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractCollectionValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.internal.util.Objects;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.List;
@@ -75,48 +73,12 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	}
 
 	@Override
-	public ListValidator<L, E> isEqualTo(Object expected)
-	{
-		if (!(expected instanceof List))
-			return super.isEqualTo(expected);
-		if (!Objects.equals(actual, expected))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " must be equal to " + config.toString(expected) + ".").
-				addContext(getContext(expected, true));
-			addFailure(failure);
-		}
-		return getThis();
-	}
-
-	/**
-	 * @param expected          the expected value
-	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
-	 * @return the list of name-value pairs to append to the exception message
-	 */
-	private List<ContextLine> getContext(Object expected, boolean expectedInMessage)
+	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
 	{
 		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
 		@SuppressWarnings("unchecked")
 		L expectedAsList = (L) expected;
 		return contextGenerator.getContext("Actual", actual, "Expected",
 			expectedAsList, expectedInMessage);
-	}
-
-	@Override
-	public ListValidator<L, E> isEqualTo(Object expected, String name)
-	{
-		if (!(expected instanceof List))
-			return super.isEqualTo(expected, name);
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!Objects.equals(actual, expected))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				this.name + " must be equal to " + name + ".").
-				addContext(getContext(expected, false));
-			addFailure(failure);
-		}
-		return getThis();
 	}
 }

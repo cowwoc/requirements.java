@@ -40,6 +40,14 @@ public final class NativeTerminal
 	public native void setEncoding(TerminalEncoding encoding) throws IOException;
 
 	/**
+	 * Returns the width of the terminal.
+	 *
+	 * @return the width in characters
+	 * @throws IOException if the operation fails
+	 */
+	public native int getWidth() throws IOException;
+
+	/**
 	 * Disconnects from the terminal.
 	 * <p>
 	 * Does nothing if the terminal is already disconnected.

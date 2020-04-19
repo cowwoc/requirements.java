@@ -35,6 +35,15 @@ JNIEXPORT void JNICALL
 
 /*
  * Class:     com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal
+ * Method:    getWidth
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL
+  Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_getWidth
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal
  * Method:    disconnect
  * Signature: ()V
  */

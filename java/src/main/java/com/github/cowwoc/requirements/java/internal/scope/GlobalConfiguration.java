@@ -60,6 +60,34 @@ public interface GlobalConfiguration
 	GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding);
 
 	/**
+	 * Returns the width of the terminal.
+	 *
+	 * @return the width of the terminal in characters (defaults to the auto-detected width)
+	 */
+	int getTerminalWidth();
+
+	/**
+	 * Indicates that the terminal width should be auto-detected. If the width cannot be auto-detected, a value
+	 * of {@code 80} is used.
+	 *
+	 * @return this
+	 * @see #withTerminalWidth(int)
+	 */
+	GlobalConfiguration withDefaultTerminalWidth();
+
+	/**
+	 * Indicates the width of the terminal.
+	 * <p>
+	 * This feature can be used to override the default terminal width when it cannot be auto-detected.
+	 *
+	 * @param width the width of the terminal in characters
+	 * @return this
+	 * @throws IllegalArgumentException if {@code width} is zero or negative
+	 * @see #withDefaultTerminalWidth()
+	 */
+	GlobalConfiguration withTerminalWidth(int width);
+
+	/**
 	 * Indicates if exception stack traces should omit references to this library.
 	 *
 	 * @return {@code true} by default

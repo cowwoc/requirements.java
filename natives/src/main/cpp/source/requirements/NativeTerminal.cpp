@@ -253,6 +253,19 @@ std::string toString(JNIEnv* env, jobject o)
 		}
 	}
 
+	jint JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_getWidth
+    (JNIEnv* env, jobject jthis)
+    {
+    	Exceptions exceptions(env);
+
+        // https://stackoverflow.com/a/12642749/14731
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        if (GetConsoleScreenBufferInfo(state.stdoutHandle, &csbi))
+            return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+        exceptions.throwIOException("Failed to set get the console width", GetLastError());
+        return 0;
+    }
+
 	/**
 	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.disconnect()
 	 *
@@ -273,6 +286,7 @@ std::string toString(JNIEnv* env, jobject o)
 	}
 #elif defined (__linux__) || defined (__APPLE__)
 	#include <unistd.h>
+	#include <cerrno>
 
 	/**
 	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.connect()
@@ -312,6 +326,61 @@ std::string toString(JNIEnv* env, jobject o)
 		message += toString(env, encoding);
 		exceptions.throwIOException(message.c_str());
 	}
+
+	jint JNICALL Java_com_github_cowwoc_requirements_natives_internal_terminal_NativeTerminal_getWidth
+    (JNIEnv* env, jobject jthis);
+    {
+    	Exceptions exceptions(env);
+
+        // https://stackoverflow.com/a/1022961/14731
+        struct winsize w;
+        if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) != -1)
+            return w.ws_col;
+		std::string message("Failed to retrieve the terminal width.\n\n");
+		message += "reason: ";
+        switch (errno)
+        {
+            case EBADF:
+            {
+                message += "fd is not a valid file descriptor\n";
+                break;
+            }
+            case EFAULT:
+            {
+                message += "argp references an inaccessible memory area\n";
+                break;
+            }
+            case EINVAL:
+            {
+                message += "request or argp is not valid\n";
+                break;
+            }
+            case ENOTTY:
+            {
+                message += "fd is not associated with a character special device\n";
+                break;
+            }
+            case ENOTTY:
+            {
+                message += "The specified request does not apply to the kind of object that the file " +
+                "descriptor fd references\n";
+                break;
+            }
+            default:
+            {
+                message += "errno: ";
+                message += errno;
+                message += "\n";
+                break;
+            }
+        }
+        message += "fd: ";
+        message += STDOUT_FILENO;
+        message += "\nrequest: ";
+        message += TIOCGWINSZ;
+		exceptions.throwIOException(message.c_str());
+        return 0;
+    }
 
 	/**
 	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.disconnect()

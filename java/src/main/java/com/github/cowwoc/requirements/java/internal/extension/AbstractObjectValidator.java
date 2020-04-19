@@ -8,13 +8,13 @@ import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.StringValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.internal.diff.ContextGenerator;
-import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
+import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import com.github.cowwoc.requirements.java.internal.StringValidatorImpl;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
+import com.github.cowwoc.requirements.java.internal.diff.ContextGenerator;
+import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Objects;
-import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -132,9 +132,21 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	{
 		if (!Objects.equals(actual, expected))
 		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " must be equal to " + config.toString(expected) + ".").
-				addContext(getContext(expected, true));
+			String expectedAsString = config.toString(expected);
+			int terminalWidth = scope.getGlobalConfiguration().getTerminalWidth();
+			String message = name + " must be equal to " + expectedAsString + ".";
+			ValidationFailure failure;
+			if (message.length() < terminalWidth)
+			{
+				failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class, message).
+					addContext(getContext(expected, true));
+			}
+			else
+			{
+				failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+					name + " had an unexpected value.").
+					addContext(getContext(expected, false));
+			}
 			addFailure(failure);
 		}
 		return getThis();
@@ -145,7 +157,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
 	 * @return the list of name-value pairs to append to the exception message
 	 */
-	private List<ContextLine> getContext(Object expected, boolean expectedInMessage)
+	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
 	{
 		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
 		return contextGenerator.getContext("Actual", actual, "Expected", expected,
