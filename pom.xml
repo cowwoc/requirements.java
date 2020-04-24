@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.github.cowwoc.requirements</groupId>
 	<artifactId>root</artifactId>
-	<version>6.0.4</version>
+	<version>6.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
