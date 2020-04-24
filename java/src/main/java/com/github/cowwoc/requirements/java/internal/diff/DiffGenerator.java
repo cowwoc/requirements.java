@@ -8,9 +8,7 @@ import com.github.cowwoc.requirements.java.GlobalRequirements;
 import com.github.cowwoc.requirements.java.internal.util.Strings;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import com.github.difflib.DiffUtils;
-import com.github.difflib.algorithm.DiffException;
 import com.github.difflib.patch.AbstractDelta;
-import com.github.difflib.patch.ChangeDelta;
 import com.github.difflib.patch.Chunk;
 import com.github.difflib.patch.DeleteDelta;
 import com.github.difflib.patch.DeltaType;
@@ -89,23 +87,15 @@ public final class DiffGenerator
 		List<Integer> actualCodepoints = Strings.toCodepoints(actual + EOS_MARKER);
 		List<Integer> expectedCodepoints = Strings.toCodepoints(expected + EOS_MARKER);
 
-		try
-		{
-			DiffWriter writer = createDiffWriter();
-			// DiffUtils.diff() returns a list of deltas, where each delta is associated with a list of characters.
-			List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedCodepoints).getDeltas();
-			// DiffUtils.diff() does not return equal deltas, so we add them.
-			deltas = addEqualDeltas(deltas, actualCodepoints, expectedCodepoints);
-			reduceDeltasPerWord.accept(deltas);
-			for (AbstractDelta<Integer> delta : deltas)
-				writeDelta(delta, writer);
-			writer.close();
-			return new DiffResult(writer.getActualLines(), writer.getDiffLines(), writer.getExpectedLines());
-		}
-		catch (DiffException e)
-		{
-			throw new AssertionError(e);
-		}
+		DiffWriter writer = createDiffWriter();
+		// DiffUtils.diff() returns a list of deltas, where each delta is associated with a list of characters.
+		List<AbstractDelta<Integer>> deltas = DiffUtils.diff(actualCodepoints, expectedCodepoints, true).
+			getDeltas();
+		reduceDeltasPerWord.accept(deltas);
+		for (AbstractDelta<Integer> delta : deltas)
+			writeDelta(delta, writer);
+		writer.close();
+		return new DiffResult(writer.getActualLines(), writer.getDiffLines(), writer.getExpectedLines());
 	}
 
 	/**
@@ -277,7 +267,7 @@ public final class DiffGenerator
 
 			if (indexOfWordInStartDelta > 0)
 			{
-				updatedDeltas.add(deltaWithChunks(delta,
+				updatedDeltas.add(delta.withChunks(
 					new Chunk<>(delta.getSource().getPosition(), codepointsBeforeActualWord),
 					new Chunk<>(delta.getTarget().getPosition(), codepointsBeforeExpectedWord)));
 			}
@@ -356,7 +346,7 @@ public final class DiffGenerator
 					codepointsAfterExpected = Strings.toCodepoints(expected.substring(indexOfDelimiterInEndDelta));
 				}
 
-				updatedDeltas.add(deltaWithChunks(delta,
+				updatedDeltas.add(delta.withChunks(
 					new Chunk<>(delta.getSource().getPosition(), codepointsAfterActual),
 					new Chunk<>(delta.getTarget().getPosition(), codepointsAfterExpected)));
 			}
@@ -386,74 +376,6 @@ public final class DiffGenerator
 			}
 			return true;
 		}
-	}
-
-	/**
-	 * Returns a new delta having the same type as {@code delta} with the specified chunks.
-	 *
-	 * @param delta  the reference delta
-	 * @param source the new source chunk
-	 * @param target the new target chunk
-	 * @return the new delta
-	 */
-	public static AbstractDelta<Integer> deltaWithChunks(AbstractDelta<Integer> delta,
-	                                                     Chunk<Integer> source, Chunk<Integer> target)
-	{
-		switch (delta.getType())
-		{
-			case EQUAL:
-				return new EqualDelta<>(source, target);
-			case DELETE:
-				return new DeleteDelta<>(source, target);
-			case INSERT:
-				return new InsertDelta<>(source, target);
-			case CHANGE:
-				return new ChangeDelta<>(source, target);
-			default:
-				throw new IllegalStateException("Unexpected value: " + delta.getType());
-		}
-	}
-
-	/**
-	 * Adds EqualDelta entries (not added by DiffUtils.diff()).
-	 *
-	 * @param <T>    the type of elements in the lists
-	 * @param deltas the list of deltas
-	 * @param source the source list
-	 * @param target the target list
-	 * @return the updated list
-	 */
-	private <T> List<AbstractDelta<T>> addEqualDeltas(List<AbstractDelta<T>> deltas, List<T> source,
-	                                                  List<T> target)
-	{
-		// WORKAROUND: https://github.com/java-diff-utils/java-diff-utils/issues/42
-		List<AbstractDelta<T>> result = new ArrayList<>();
-		int sourceStartPosition = 0;
-		int targetStartPosition = 0;
-		for (AbstractDelta<T> delta : deltas)
-		{
-			int sourceEndPosition = delta.getSource().getPosition();
-			int targetEndPosition = delta.getTarget().getPosition();
-			if (sourceStartPosition < sourceEndPosition || targetStartPosition < targetEndPosition)
-			{
-				// The gaps between deltas denote equal chunks
-				result.add(new EqualDelta<>(
-					new Chunk<>(sourceStartPosition, source.subList(sourceStartPosition, sourceEndPosition)),
-					new Chunk<>(targetStartPosition, target.subList(targetStartPosition, targetEndPosition))));
-			}
-			sourceStartPosition = delta.getSource().last() + 1;
-			targetStartPosition = delta.getTarget().last() + 1;
-			result.add(delta);
-		}
-		// Add final chunk, if necessary.
-		if (sourceStartPosition < source.size() || targetStartPosition < target.size())
-		{
-			// Deltas do not contain equal chunks. We need to derive those ourselves.
-			result.add(new EqualDelta<>(
-				new Chunk<>(sourceStartPosition, source.subList(sourceStartPosition, source.size())),
-				new Chunk<>(targetStartPosition, target.subList(targetStartPosition, target.size()))));
-		}
-		return result;
 	}
 
 	/**

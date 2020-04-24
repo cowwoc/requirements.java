@@ -1,5 +1,10 @@
 Minor updates involving cosmetic changes have been omitted from this list. See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 6.0.4 - 20/04/23
+
+* Bugfixes
+    * When list elements were unequal, but had the same string value, their types were not being compared. 
+    
 ## Version 6.0.3 - 2020/04/19
 
 * Improvements
