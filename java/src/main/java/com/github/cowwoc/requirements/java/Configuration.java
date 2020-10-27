@@ -115,11 +115,11 @@ public interface Configuration
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for
 	 * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, and {@code Path}.
 	 *
-	 * @param o an object
-	 * @return the {@code String} representation of the object
+	 * @param value a value
+	 * @return the {@code String} representation of the value
 	 * @see #withStringConverter(Class, Function)
 	 */
-	String toString(Object o);
+	String toString(Object value);
 
 	/**
 	 * Indicates that a function should be used to convert an object to a String.

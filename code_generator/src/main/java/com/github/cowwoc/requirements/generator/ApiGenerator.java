@@ -398,7 +398,6 @@ public final class ApiGenerator
 			for (CompilationUnit plugin : plugins)
 			{
 				ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-				String delegateName = getDelegateName(topLevel, false);
 				out.append(createDelegate(topLevel));
 			}
 			out.append("\t}\n");
@@ -480,9 +479,9 @@ public final class ApiGenerator
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
-			"\tpublic String toString(Object o)\n" +
+			"\tpublic String toString(Object value)\n" +
 			"\t{\n" +
-			"\t\treturn javaRequirements.toString(o);\n" +
+			"\t\treturn javaRequirements.toString(value);\n" +
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
@@ -741,7 +740,6 @@ public final class ApiGenerator
 	 */
 	private String fullyQualifiedType(String type, String packageName)
 	{
-		String fullyQualifiedType;
 		if (type.contains("."))
 			return type;
 		return packageName + "." + type;

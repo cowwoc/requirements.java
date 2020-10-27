@@ -252,9 +252,9 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	public String toString(Object o)
+	public String toString(Object value)
 	{
-		return config.toString(o);
+		return config.toString(value);
 	}
 
 	@Override

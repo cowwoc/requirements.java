@@ -215,19 +215,19 @@ public final class MainConfiguration implements Configuration
 	}
 
 	@Override
-	public String toString(Object o)
+	public String toString(Object value)
 	{
-		if (o == null)
+		if (value == null)
 			return "null";
-		Class<?> type = o.getClass();
+		Class<?> type = value.getClass();
 		Function<Object, String> converter;
 		if (type.isArray() && !type.getComponentType().isPrimitive())
 			converter = typeToStringConverter.get(Object[].class);
 		else
 			converter = typeToStringConverter.get(type);
 		if (converter != null)
-			return converter.apply(o);
-		return o.toString();
+			return converter.apply(value);
+		return value.toString();
 	}
 
 	@Override
