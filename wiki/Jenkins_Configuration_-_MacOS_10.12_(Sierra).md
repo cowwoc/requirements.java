@@ -1,4 +1,5 @@
-1. Download MacOS Sierra from App Store and run:
+1. VMWare users must use VMWare Workstation 15.1 or lower: https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
+2. Download MacOS Sierra from App Store and run:
 
 		hdiutil attach /Applications/Install\ macOS\ Sierra.app/Contents/SharedSupport/InstallESD.dmg -noverify -nobrowse -mountpoint /Volumes/install_app
 		hdiutil create -o /tmp/Sierra.cdr -size 7316m -layout SPUD -fs HFS+J
@@ -13,8 +14,8 @@
 		hdiutil convert /tmp/Sierra.cdr.dmg -format UDTO -o /tmp/Sierra.iso
 		mv /tmp/Sierra.iso.cdr ~/Desktop/Sierra.iso
 
-2. Copy Sierra.iso to a location that is accessible by VMWare
-3. VMWare Workstation configuration
+3. Copy Sierra.iso to a location that is accessible by VMWare
+4. VMWare Workstation configuration
 	1. Create a new virtual machine.
 	2. Typical configuration.
 	3. Install from ISO
@@ -33,22 +34,22 @@
 	11. Add **isolation.tools.bug328986.disable = "TRUE"** to suppress a warning message about using multiple cores. Source: http://daveparsons.net/blog/2013/12/30/suppress-vmware-multiple-vcpu-message/
 	12. Add **bios.bootdelay = 5000** to introduce a delay every time the machine boots up.
 	13. Save and close the file.
-4. The following is based on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
-5. Boot the virtual machine
-6. Open Disk Utility
-7. Select "VMWare Virtual SATA Hard Drive Media"
-8. Select "Erase"
+5. The following is based on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
+6. Boot the virtual machine
+7. Open Disk Utility
+8. Select "VMWare Virtual SATA Hard Drive Media"
+9. Select "Erase"
 	1. Name = "MacOS"
 	2. Select "Erase"
-9. Quit Disk Utility
-10. Select "MacOS"
-11. Click "Continue"
-12. You can safely disable most features; however, you will need to provide an Apple ID in order to use the App Store.
-13. Set "Full name, Account name, Password, Verify" fields to "builds"
-14. Click "I finished installing".
-15. Install VMWare Tools and reboot.
-16. Log into the system.
-17. Run:
+10. Quit Disk Utility
+11. Select "MacOS"
+12. Click "Continue"
+13. You can safely disable most features; however, you will need to provide an Apple ID in order to use the App Store.
+14. Set "Full name, Account name, Password, Verify" fields to "builds"
+15. Click "I finished installing".
+16. Install VMWare Tools and reboot.
+17. Log into the system.
+18. Run:
 
 		# Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
 		sudo dscl . append /Groups/_developer GroupMembership builds
@@ -91,12 +92,12 @@
 		mkdir -p ~/.ssh
 		ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
-18. Copy GPG private key (used for signing releases) into guest, and run:
+19. Copy GPG private key (used for signing releases) into guest, and run:
 `gpg --import private.key`
-19. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
-20. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-21. Install JDK8 update 121 from http://www.oracle.com/technetwork/java/javase/downloads/index.html
-22. Add the following to any Maven project you wish to deploy/release to Maven Central:
+20. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
+21. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+22. Install JDK8 update 121 from http://www.oracle.com/technetwork/java/javase/downloads/index.html
+23. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
 		<parent>
 		    <groupId>org.sonatype.oss</groupId>
@@ -155,7 +156,7 @@
 		    </profile>
 		</profiles>
 
-12. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
+24. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
 
 		<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -180,11 +181,11 @@
 			</servers>
 		</settings>
 
-24. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-25. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-26. In VMWare settings, CDRom, uncheck "Connect at power on"
-27. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary files), then shut down and create a VM snapshot. This will shrink the snapshot size.
-28. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
+25. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+26. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+27. In VMWare settings, CDRom, uncheck "Connect at power on"
+28. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary files), then shut down and create a VM snapshot. This will shrink the snapshot size.
+29. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
 	1. label = "mac"
 	2. command:
 
@@ -194,7 +195,7 @@
 
 	3. Tool home = "/usr/bin/git"
 
-29. Create a new Node in Jenkins
+30. Create a new Node in Jenkins
 	1. Node should have the following Tool Locations:
 		1. JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home. If this changes, you can invoke "/usr/libexec/java_home" to get the current value.
 	2. Wait for user to login before allowing Jenkins to execute any jobs
