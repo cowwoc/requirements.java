@@ -1,7 +1,9 @@
 1. Following different guides depending on your version of VMWare:
 	1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
 	2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
-2. Download MacOS Catalina from App Store and run:
+2. Create a bootable USB or ISO
+	1. Bootable USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
+	2. ISO file: Download MacOS Catalina from App Store and run:
 
 		hdiutil attach /Applications/Install\ macOS\ Catalina.app/Contents/SharedSupport/InstallESD.dmg -noverify -nobrowse -mountpoint /Volumes/install_app
 		hdiutil create -o /tmp/Catalina.cdr -size 7316m -layout SPUD -fs HFS+J
@@ -16,7 +18,7 @@
 		hdiutil convert /tmp/Catalina.cdr.dmg -format UDTO -o /tmp/Catalina.iso
 		mv /tmp/Catalina.iso.cdr ~/Desktop/Catalina.iso
 
-3. Copy Catalina.iso to a location that is accessible by VMWare
+3. If you're using an ISO file, copy Catalina.iso to a location that is accessible by VMWare
 4. VMWare Workstation configuration
 	1. Create a new virtual machine.
 	2. Typical configuration.
