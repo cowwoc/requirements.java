@@ -78,8 +78,8 @@
 		# Disable hibernation
 		sudo pmset -a hibernatemode 0
 
-		# Enable ssh server: http://superuser.com/a/416099/57662
-		sudo systemsetup -setremotelogin on
+		# Enable ssh server: https://apple.stackexchange.com/a/302606/21181
+		sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
 		# Enable password authentication for ssh
 		sudo tee -a /etc/ssh/sshd_config <<EOF
