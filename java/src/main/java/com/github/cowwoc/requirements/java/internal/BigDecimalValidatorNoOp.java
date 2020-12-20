@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
-import com.github.cowwoc.requirements.java.BigDecimalValidator;
 import com.github.cowwoc.requirements.java.BigDecimalPrecisionValidator;
+import com.github.cowwoc.requirements.java.BigDecimalValidator;
 import com.github.cowwoc.requirements.java.PrimitiveNumberValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractNumberValidatorNoOp;
@@ -25,7 +25,7 @@ public final class BigDecimalValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public BigDecimalValidatorNoOp(List<ValidationFailure> failures)
+	BigDecimalValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

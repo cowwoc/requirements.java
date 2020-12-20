@@ -60,6 +60,19 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
 			<!--
 			<plugin>
 				<groupId>com.github.siom79.japicmp</groupId>
@@ -70,7 +83,7 @@
 						<dependency>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${project.artifactId}</artifactId>
-							<version>2.0.7</version>
+							<version>${project.version}</version>
 							<type>jar</type>
 						</dependency>
 					</oldVersion>
@@ -104,6 +117,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>java</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

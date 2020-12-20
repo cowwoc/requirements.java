@@ -50,6 +50,9 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	 */
 	private final Configuration config;
 
+	/**
+	 * Creates a default implementation of GuavaRequirements.
+	 */
 	public DefaultGuavaRequirements()
 	{
 		this(MainApplicationScope.INSTANCE);

@@ -15,6 +15,7 @@
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>maven_plugin</artifactId>
+				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<id>generate-api</id>
@@ -33,6 +34,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>java</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

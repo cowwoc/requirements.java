@@ -189,4 +189,26 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 */
 	@SuppressWarnings("LongLine")
 	StringValidator asUrl(Consumer<UrlValidator> consumer);
+
+	/**
+	 * Returns a validator for the Boolean representation of the value.
+	 *
+	 * @return a validator for the Boolean representation of the value
+	 * @see Boolean#parseBoolean(String)
+	 */
+	BooleanValidator asBoolean();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asBoolean()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Booleans
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	@SuppressWarnings("LongLine")
+	StringValidator asBoolean(Consumer<BooleanValidator> consumer);
 }

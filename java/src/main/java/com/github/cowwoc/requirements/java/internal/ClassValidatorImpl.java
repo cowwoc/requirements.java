@@ -11,6 +11,8 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
+import java.util.List;
+
 /**
  * Default implementation of {@code ClassValidator}.
  *
@@ -20,16 +22,18 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	implements ClassValidator<T>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
+	 * @param scope    the application configuration
+	 * @param config   the instance configuration
+	 * @param name     the name of the value
+	 * @param actual   the actual value
+	 * @param failures the list of validation failures
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
+	 *                        {@code name} is empty.
 	 */
-	public ClassValidatorImpl(ApplicationScope scope, Configuration config, String name, Class<T> actual)
+	public ClassValidatorImpl(ApplicationScope scope, Configuration config, String name, Class<T> actual,
+	                          List<ValidationFailure> failures)
 	{
-		super(scope, config, name, actual, NO_FAILURES);
+		super(scope, config, name, actual, failures);
 	}
 
 	@Override

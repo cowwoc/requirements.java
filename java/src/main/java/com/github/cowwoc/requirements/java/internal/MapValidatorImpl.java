@@ -15,6 +15,7 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -31,16 +32,18 @@ public final class MapValidatorImpl<K, V>
 	implements MapValidator<K, V>
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
+	 * @param scope    the application configuration
+	 * @param config   the instance configuration
+	 * @param name     the name of the value
+	 * @param actual   the actual value
+	 * @param failures the list of validation failures
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
+	 *                        {@code name} is empty.
 	 */
-	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual)
+	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual,
+	                        List<ValidationFailure> failures)
 	{
-		super(scope, config, name, actual, NO_FAILURES);
+		super(scope, config, name, actual, failures);
 	}
 
 	@Override

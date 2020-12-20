@@ -25,7 +25,7 @@ public abstract class AbstractComparableValidatorNoOp<S, T extends Comparable<? 
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractComparableValidatorNoOp(List<ValidationFailure> failures)
+	protected AbstractComparableValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

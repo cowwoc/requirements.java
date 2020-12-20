@@ -546,7 +546,10 @@ public final class ApiGenerator
 	 */
 	private void addDefaultConstructor(List<CompilationUnit> plugins, StringBuilder out)
 	{
-		out.append("\tpublic Requirements()\n" +
+		out.append("\t/**\n" +
+			"\t * Creates a new instance of Requirements.\n" +
+			"\t */\n" +
+			"\tpublic Requirements()\n" +
 			"\t{\n");
 		for (CompilationUnit plugin : plugins)
 		{

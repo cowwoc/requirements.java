@@ -17,8 +17,17 @@ import org.slf4j.LoggerFactory;
  */
 public final class GuavaSecrets
 {
+	/**
+	 * The singleton instance.
+	 */
 	public static final GuavaSecrets INSTANCE = new GuavaSecrets();
+	/**
+	 * An instance of {@code SecretRequirements}.
+	 */
 	private SecretRequirements secretRequirements;
+	/**
+	 * Indicates if lazy-initialization of the fields is complete.
+	 */
 	private boolean initialized;
 	private final Logger log = LoggerFactory.getLogger(GuavaSecrets.class);
 

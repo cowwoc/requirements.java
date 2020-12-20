@@ -5,9 +5,9 @@
 package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.InetAddressValidator;
 import com.github.cowwoc.requirements.java.StringValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.InetAddressValidator;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
@@ -24,22 +24,6 @@ public final class InetAddressValidatorImpl
 	implements InetAddressValidator
 {
 	/**
-	 * Creates a InetAddressValidatorImpl with no validation failures.
-	 *
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
-	 */
-	public InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
-                                    InetAddress actual)
-	{
-		super(scope, config, name, actual, NO_FAILURES);
-	}
-
-	/**
 	 * @param scope    the application configuration
 	 * @param config   the instance configuration
 	 * @param name     the name of the value
@@ -48,8 +32,8 @@ public final class InetAddressValidatorImpl
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                         InetAddress actual, List<ValidationFailure> failures)
+	public InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                InetAddress actual, List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, failures);
 	}

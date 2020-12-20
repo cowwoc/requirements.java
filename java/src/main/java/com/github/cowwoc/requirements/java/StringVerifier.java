@@ -203,4 +203,25 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 */
 	@SuppressWarnings("LongLine")
 	StringVerifier asUrl(Consumer<UrlVerifier> consumer);
+
+	/**
+	 * Returns a verifier for the Boolean representation of the value.
+	 *
+	 * @return a verifier for the Boolean representation of the value
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a Boolean
+	 */
+	BooleanVerifier asBoolean();
+
+	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asBoolean()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer verifies Booleans
+	 * @return the updated verifier
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringVerifier asBoolean(Consumer<BooleanVerifier> consumer);
 }

@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
+import com.github.cowwoc.requirements.java.BooleanVerifier;
 import com.github.cowwoc.requirements.java.InetAddressVerifier;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.StringVerifier;
@@ -109,6 +110,20 @@ public final class StringVerifierNoOp
 
 	@Override
 	public StringVerifier asUrl(Consumer<UrlVerifier> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return this;
+	}
+
+	@Override
+	public BooleanVerifier asBoolean()
+	{
+		return BooleanVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public StringVerifier asBoolean(Consumer<BooleanVerifier> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

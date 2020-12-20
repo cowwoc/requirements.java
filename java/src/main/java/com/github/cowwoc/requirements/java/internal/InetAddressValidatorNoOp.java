@@ -22,7 +22,7 @@ public final class InetAddressValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public InetAddressValidatorNoOp(List<ValidationFailure> failures)
+	InetAddressValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

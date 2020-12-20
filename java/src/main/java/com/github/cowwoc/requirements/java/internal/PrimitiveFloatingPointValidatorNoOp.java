@@ -23,7 +23,7 @@ public final class PrimitiveFloatingPointValidatorNoOp<T extends Number & Compar
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public PrimitiveFloatingPointValidatorNoOp(List<ValidationFailure> failures)
+	PrimitiveFloatingPointValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

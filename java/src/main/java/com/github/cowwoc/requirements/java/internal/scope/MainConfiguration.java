@@ -16,13 +16,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 /**
  * Configures the behavior of a single verifier.
  */
-@SuppressWarnings({"ConstantConditions", "AssertWithSideEffects"})
 public final class MainConfiguration implements Configuration
 {
 	private static final boolean CLASS_ASSERTIONS_ENABLED;
@@ -33,17 +31,15 @@ public final class MainConfiguration implements Configuration
 	}
 
 	private final Map<String, Object> context;
-	private final Optional<Class<? extends RuntimeException>> exception;
-	private boolean assertionsEnabled;
-	private boolean cleanStackTrace;
-	private boolean diffEnabled;
+	private final boolean assertionsEnabled;
+	private final boolean cleanStackTrace;
+	private final boolean diffEnabled;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
 
 	/**
 	 * Creates a new configuration:
 	 * <ul>
 	 * <li>With an empty context.</li>
-	 * <li>That throws the default exception type.</li>
 	 * <li>Whose assertions are enabled if
 	 * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html#enable-disable">
 	 * assertions are enabled on this class</a>.</li>
@@ -56,7 +52,6 @@ public final class MainConfiguration implements Configuration
 	public MainConfiguration()
 	{
 		this.context = new LinkedHashMap<>();
-		this.exception = Optional.empty();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.cleanStackTrace = true;
 		this.diffEnabled = true;
@@ -82,10 +77,9 @@ public final class MainConfiguration implements Configuration
 	 * Copies a configuration.
 	 *
 	 * @param context               the map to append to the exception message
-	 * @param exception             the type of exception to throw
 	 * @param assertionsEnabled     true if {@code assertThat()} should invoke {@code requireThat()};
 	 *                              false if {@code assertThat()} should do nothing
-	 * @param cleanStackTrace       true if exception stack traces should omit references to this library
+	 * @param cleanStackTrace       true if stack trace references to this library should be removed
 	 * @param diffEnabled           indicates whether exceptions should show the difference between the
 	 *                              actual and expected values
 	 * @param typeToStringConverter a map from an object type to a function that converts the object to
@@ -93,17 +87,14 @@ public final class MainConfiguration implements Configuration
 	 * @throws AssertionError if any of the arguments are null
 	 */
 	private MainConfiguration(Map<String, Object> context,
-	                          Optional<Class<? extends RuntimeException>> exception,
 	                          boolean assertionsEnabled,
 	                          boolean cleanStackTrace,
 	                          boolean diffEnabled,
 	                          Map<Class<?>, Function<Object, String>> typeToStringConverter)
 	{
 		assert (context != null) : "context may not be null";
-		assert (exception != null) : "exception may not be null";
 		assert (typeToStringConverter != null) : "typeToStringConverter may not be null";
 		this.context = Maps.unmodifiable(context);
-		this.exception = exception;
 		this.assertionsEnabled = assertionsEnabled;
 		this.cleanStackTrace = cleanStackTrace;
 		this.diffEnabled = diffEnabled;
@@ -121,7 +112,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (assertionsEnabled)
 			return this;
-		return new MainConfiguration(context, exception, true, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(context, true, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -130,7 +121,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (!assertionsEnabled)
 			return this;
-		return new MainConfiguration(context, exception, false, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(context, false, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -145,7 +136,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (cleanStackTrace)
 			return this;
-		return new MainConfiguration(context, exception, assertionsEnabled, true, diffEnabled,
+		return new MainConfiguration(context, assertionsEnabled, true, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -154,7 +145,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (!cleanStackTrace)
 			return this;
-		return new MainConfiguration(context, exception, assertionsEnabled, false, diffEnabled,
+		return new MainConfiguration(context, assertionsEnabled, false, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -173,7 +164,7 @@ public final class MainConfiguration implements Configuration
 			return this;
 		Map<String, Object> newContext = new LinkedHashMap<>(context);
 		newContext.put(name, value);
-		return new MainConfiguration(newContext, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -186,7 +177,7 @@ public final class MainConfiguration implements Configuration
 			return this;
 		Map<String, Object> newContext = new LinkedHashMap<>(context);
 		newContext.remove(name);
-		return new MainConfiguration(newContext, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -201,7 +192,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (diffEnabled)
 			return this;
-		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, true,
+		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, true,
 			typeToStringConverter);
 	}
 
@@ -210,7 +201,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (!diffEnabled)
 			return this;
-		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, false,
+		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, false,
 			typeToStringConverter);
 	}
 
@@ -244,7 +235,7 @@ public final class MainConfiguration implements Configuration
 		@SuppressWarnings("unchecked")
 		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
 		newTypeToStringConverter.put(type, unsafeConverter);
-		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, diffEnabled,
 			newTypeToStringConverter);
 	}
 
@@ -258,7 +249,7 @@ public final class MainConfiguration implements Configuration
 		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
 			new HashMap<>(this.typeToStringConverter);
 		newTypeToStringConverter.remove(type);
-		return new MainConfiguration(context, exception, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, diffEnabled,
 			newTypeToStringConverter);
 	}
 
@@ -274,7 +265,6 @@ public final class MainConfiguration implements Configuration
 	{
 		int hash = 3;
 		hash = 23 * hash + context.hashCode();
-		hash = 23 * hash + exception.hashCode();
 		hash = 23 * hash + Boolean.hashCode(assertionsEnabled);
 		hash = 23 * hash + Boolean.hashCode(diffEnabled);
 		return 23 * hash + typeToStringConverter.hashCode();
@@ -289,15 +279,13 @@ public final class MainConfiguration implements Configuration
 			return false;
 		MainConfiguration other = (MainConfiguration) o;
 		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
-			exception.equals(other.exception) && diffEnabled == other.diffEnabled &&
-			typeToStringConverter.equals(other.typeToStringConverter);
+			diffEnabled == other.diffEnabled && typeToStringConverter.equals(other.typeToStringConverter);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Configuration[context=" + context + ", exception=" + exception + ", assertionsEnabled=" +
-			assertionsEnabled + ", " + "diffEnabled=" + diffEnabled + ", typeToStringConverter=" +
-			typeToStringConverter + "]";
+		return "Configuration[context=" + context + ", assertionsEnabled=" + assertionsEnabled +
+			", diffEnabled=" + diffEnabled + ", typeToStringConverter=" + typeToStringConverter + "]";
 	}
 }

@@ -11,7 +11,13 @@ package com.github.cowwoc.requirements.generator.internal.secrets;
  */
 public final class SharedSecrets
 {
+	/**
+	 * The singleton instance.
+	 */
 	public static final SharedSecrets INSTANCE = new SharedSecrets();
+	/**
+	 * An instance of {@code SecretApiGenerator}.
+	 */
 	public SecretApiGenerator secretApiGenerator;
 
 	/**

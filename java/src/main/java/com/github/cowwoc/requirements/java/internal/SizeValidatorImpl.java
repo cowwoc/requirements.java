@@ -35,8 +35,8 @@ public final class SizeValidatorImpl
 	 * @param size           the size of the collection
 	 * @param pluralizer     returns the singular or plural form of the collection's element type
 	 * @param failures       the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code collection} or
-	 *                        {@code failures} are null. If {@code name} is empty.
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code collection},
+	 *                        {@code pluralizer} or {@code failures} are null. If {@code name} is empty.
 	 */
 	public SizeValidatorImpl(ApplicationScope scope, Configuration config, String collectionName,
 	                         Object collection, String sizeName, int size, Pluralizer pluralizer,

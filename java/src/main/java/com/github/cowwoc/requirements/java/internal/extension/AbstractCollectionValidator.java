@@ -41,24 +41,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	private final Pluralizer pluralizer;
 
 	/**
-	 * Creates a CollectionValidatorImpl with no validation failures.
-	 *
-	 * @param scope      the application configuration
-	 * @param config     the instance configuration
-	 * @param name       the name of the value
-	 * @param actual     the actual value
-	 * @param pluralizer returns the singular or plural form of an element type
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code pluralizer} are null.
-	 *                        If {@code name} is empty.
-	 */
-	protected AbstractCollectionValidator(ApplicationScope scope, Configuration config, String name,
-	                                      C actual, Pluralizer pluralizer)
-	{
-		this(scope, config, name, actual, pluralizer, NO_FAILURES);
-	}
-
-	/**
-	 * Creates a CollectionValidatorImpl with existing validation failures.
+	 * Creates a AbstractCollectionValidator with existing validation failures.
 	 *
 	 * @param scope      the application configuration
 	 * @param config     the instance configuration

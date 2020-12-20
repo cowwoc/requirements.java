@@ -23,6 +23,9 @@ import java.util.function.Supplier;
  */
 public final class DefaultJvmScope implements JvmScope
 {
+	/**
+	 * The singleton instance.
+	 */
 	public static final DefaultJvmScope INSTANCE = new DefaultJvmScope();
 	private final boolean nativeLibraryLoaded;
 	private final Factory<NativeTerminal> nativeTerminal = new ConcurrentLazyFactory<>()
@@ -70,11 +73,11 @@ public final class DefaultJvmScope implements JvmScope
 		ConcurrentLazyReference.create(() -> new MainGlobalConfiguration(getTerminal()));
 	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
 		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
-	public final Thread shutdownHook;
-	public final AtomicBoolean closed = new AtomicBoolean();
+	private final Thread shutdownHook;
+	private final AtomicBoolean closed = new AtomicBoolean();
 	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);
 
-	public DefaultJvmScope()
+	private DefaultJvmScope()
 	{
 		boolean nativeLibraryLoaded;
 		try

@@ -618,4 +618,42 @@ public final class StringTest
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
+
+	@Test
+	public void falseStringAsBoolean()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "false";
+			new Requirements(scope).requireThat(actual, "actual").asBoolean().isEqualTo(false);
+		}
+	}
+
+	@Test
+	public void stringAsBoolean_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "false";
+			new Requirements(scope).requireThat(actual, "actual").asBoolean().isEqualTo(true);
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting boolean equals() to return diff.\n" +
+					"\nActual:\n" + actualMessage;
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsBooleanNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asBoolean(null);
+		}
+	}
 }

@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.PathValidator;
+import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
 
 import java.nio.file.LinkOption;
@@ -23,7 +23,7 @@ public final class PathValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public PathValidatorNoOp(List<ValidationFailure> failures)
+	PathValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

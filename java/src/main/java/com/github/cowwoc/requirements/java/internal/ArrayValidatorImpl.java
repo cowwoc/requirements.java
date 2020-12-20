@@ -32,23 +32,6 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	private final CollectionValidator<Collection<E>, E> asCollection;
 
 	/**
-	 * Creates a new ArrayValidatorImpl with no validation failures.
-	 *
-	 * @param scope              the application configuration
-	 * @param config             the instance configuration
-	 * @param name               the name of the value
-	 * @param actual             the actual value
-	 * @param actualAsCollection the {@code Collection} representation of the array
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
-	 */
-	public ArrayValidatorImpl(ApplicationScope scope, Configuration config, String name, A actual,
-	                          Collection<E> actualAsCollection)
-	{
-		this(scope, config, name, actual, actualAsCollection, NO_FAILURES);
-	}
-
-	/**
 	 * @param scope              the application configuration
 	 * @param config             the instance configuration
 	 * @param name               the name of the value

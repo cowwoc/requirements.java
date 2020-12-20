@@ -27,6 +27,9 @@ public final class TextOnly extends AbstractDiffWriter
 	private final Map<Integer, StringBuilder> lineToDiffBuilder = new HashMap<>();
 	private List<String> diffLines;
 
+	/**
+	 * Creates a new text-only diff.
+	 */
 	public TextOnly()
 	{
 		super(DIFF_PADDING);

@@ -87,7 +87,7 @@ public final class GlobalRequirements
 	}
 
 	/**
-	 * Indicates if exception stack traces should omit references to this library.
+	 * Indicates if exception stack trace references to this library should be removed.
 	 *
 	 * @return {@code true} by default
 	 * @see #withCleanStackTrace()
@@ -99,7 +99,7 @@ public final class GlobalRequirements
 	}
 
 	/**
-	 * Indicates that exception stack traces should omit references to this library.
+	 * Indicates that exception stack trace references to this library should be removed.
 	 *
 	 * @return this
 	 * @see #isCleanStackTrace()
@@ -111,7 +111,7 @@ public final class GlobalRequirements
 	}
 
 	/**
-	 * Indicates that exception stack traces should contain references to this library.
+	 * Indicates that exception stack trace references to this library should be kept.
 	 *
 	 * @return this
 	 * @see #isCleanStackTrace()

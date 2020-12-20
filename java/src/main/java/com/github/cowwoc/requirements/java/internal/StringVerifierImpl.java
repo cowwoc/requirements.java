@@ -4,6 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
+import com.github.cowwoc.requirements.java.BooleanValidator;
+import com.github.cowwoc.requirements.java.BooleanVerifier;
 import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.StringVerifier;
 import com.github.cowwoc.requirements.java.UriValidator;
@@ -113,6 +115,22 @@ public final class StringVerifierImpl
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asUrl());
+		return this;
+	}
+
+	@Override
+	public BooleanVerifier asBoolean()
+	{
+		BooleanValidator newValidator = validator.asBoolean();
+		return validationResult(() -> new BooleanVerifierImpl(newValidator));
+	}
+
+	@Override
+	public StringVerifier asBoolean(Consumer<BooleanVerifier> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asBoolean());
 		return this;
 	}
 

@@ -9,6 +9,11 @@ package com.github.cowwoc.requirements.natives.internal.util;
  */
 public final class ColorTest
 {
+	/**
+	 * The main entry point.
+	 *
+	 * @param args the command-line arguments
+	 */
 	public static void main(String[] args)
 	{
 		System.out.println("\u001B[0mmode\tbackground\tforeground");

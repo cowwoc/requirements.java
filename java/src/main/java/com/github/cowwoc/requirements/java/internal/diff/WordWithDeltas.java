@@ -9,7 +9,13 @@ import java.util.List;
  */
 public final class WordWithDeltas
 {
+	/**
+	 * The word.
+	 */
 	public final String word;
+	/**
+	 * The deltas associated with the word.
+	 */
 	public final List<AbstractDelta<Integer>> deltas;
 
 	/**

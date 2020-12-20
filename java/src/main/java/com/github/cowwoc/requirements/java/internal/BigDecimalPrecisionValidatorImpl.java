@@ -29,8 +29,8 @@ public final class BigDecimalPrecisionValidatorImpl
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public BigDecimalPrecisionValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                        BigDecimal actual, List<ValidationFailure> failures)
+	BigDecimalPrecisionValidatorImpl(ApplicationScope scope, Configuration config, String name,
+	                                 BigDecimal actual, List<ValidationFailure> failures)
 	{
 		super(scope, config, name + ".precision()", actual.precision(), failures);
 	}

@@ -28,7 +28,7 @@ public final class ListValidatorNoOp<L extends List<E>, E>
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ListValidatorNoOp(List<ValidationFailure> failures)
+	ListValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

@@ -59,7 +59,7 @@ public interface Configuration
 	Configuration withoutDiff();
 
 	/**
-	 * Indicates if exception stack traces should omit references to this library.
+	 * Indicates if stack trace references to this library should be removed.
 	 *
 	 * @return {@code true} by default
 	 * @see #withCleanStackTrace()
@@ -68,7 +68,7 @@ public interface Configuration
 	boolean isCleanStackTrace();
 
 	/**
-	 * Indicates that exception stack traces should omit references to this library.
+	 * Indicates that stack trace references to this library should be removed.
 	 *
 	 * @return the updated configuration
 	 * @see #isCleanStackTrace()
@@ -76,7 +76,7 @@ public interface Configuration
 	Configuration withCleanStackTrace();
 
 	/**
-	 * Indicates that exception stack traces should contain references to this library.
+	 * Indicates that stack trace references to this library should be kept.
 	 *
 	 * @return the updated configuration
 	 * @see #isCleanStackTrace()

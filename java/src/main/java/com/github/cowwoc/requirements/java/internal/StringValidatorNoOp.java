@@ -4,8 +4,9 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
-import com.github.cowwoc.requirements.java.SizeValidator;
+import com.github.cowwoc.requirements.java.BooleanValidator;
 import com.github.cowwoc.requirements.java.InetAddressValidator;
+import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.StringValidator;
 import com.github.cowwoc.requirements.java.UriValidator;
 import com.github.cowwoc.requirements.java.UrlValidator;
@@ -146,6 +147,20 @@ public final class StringValidatorNoOp extends AbstractObjectValidatorNoOp<Strin
 
 	@Override
 	public StringValidator asUrl(Consumer<UrlValidator> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return this;
+	}
+
+	@Override
+	public BooleanValidator asBoolean()
+	{
+		return new BooleanValidatorNoOp(failures);
+	}
+
+	@Override
+	public StringValidator asBoolean(Consumer<BooleanValidator> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
