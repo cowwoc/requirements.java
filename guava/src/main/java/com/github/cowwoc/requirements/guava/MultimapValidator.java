@@ -69,8 +69,8 @@ public interface MultimapValidator<K, V>
 	 * @return the updated validator
 	 */
 	@SuppressWarnings("LongLine")
-	MultimapValidator<K, V> entries(
-		Consumer<CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>>> consumer);
+	MultimapValidator<K, V> entries(Consumer<CollectionValidator<Collection<Entry<K, V>>,
+		Entry<K, V>>> consumer);
 
 	/**
 	 * Ensures that the actual value is empty.
