@@ -253,9 +253,22 @@ public final class ApiGenerator
 				out.append("\n");
 				method.getJavadoc().ifPresent(javadoc ->
 				{
-					String text = method.getJavadoc().get().toComment().toString(defaultFormatter);
+					StringBuilder text = new StringBuilder(method.getJavadoc().get().toComment().
+						toString(defaultFormatter));
 					// Increase indentation
-					text = "\t" + text.replace("\n", "\n\t");
+					text.insert(0, "\t");
+					int index = 0;
+					while (true)
+					{
+						index = text.indexOf("\n", index);
+						if (index == -1)
+							break;
+						++index;
+						text.insert(index, '\t');
+						++index;
+					}
+					if (text.length() > 0 && text.charAt(text.length() - 1) == '\t')
+						text.delete(text.length() - 1, text.length());
 					out.append(text);
 				});
 				// Modifiers
