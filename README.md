@@ -133,8 +133,8 @@ The first three methods are designed to be statically imported from `DefaultRequ
 ## Best practices
 
 * Use `requireThat()` for public APIs to give users superior feedback when something goes wrong.
-* Use `assertThat()` for private APIs and to verify code assumptions. This will result in excellent performance when assertions are disabled. Have your cake and eat it too!
-* Favor `assertThat()` over `assert`. It has a slightly higher overhead, but most classes do not catch `AssertionError` so such failures do not get caught or logged.
+* Use `assertThat()` for private APIs and to verify code assumptions. This results in excellent performance when assertions are disabled. Have your cake and eat it too!
+* Prefer `assertThat()` to `assert`. It has a slightly higher overhead, but most applications fail to catch or log `AssertionError` (that is thrown by `assert`) leading to silent failures.
 
 ## 3rd-party libraries and tools
 
