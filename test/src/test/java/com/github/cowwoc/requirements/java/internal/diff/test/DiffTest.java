@@ -230,10 +230,12 @@ public final class DiffTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "Actual  : The dog" +
-				DIFF_PADDING.repeat("fox".length()) + " is br" + DIFF_PADDING + "own" + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_EQUAL.repeat(4) + DIFF_DELETE.repeat(3) + DIFF_INSERT.repeat(3) +
-				DIFF_EQUAL.repeat(4) + DIFF_DELETE.repeat(2) + DIFF_INSERT +
-				DIFF_EQUAL.repeat(3 + EOS_MARKER.length()) + "\n" +
+				DIFF_PADDING.repeat("fox".length()) + " is br" + DIFF_PADDING.repeat("d".length()) + "own" +
+				EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_EQUAL.repeat("The ".length()) + DIFF_DELETE.repeat("dog".length()) +
+				DIFF_INSERT.repeat("fox".length()) + DIFF_EQUAL.repeat(" is ".length()) +
+				DIFF_DELETE.repeat("br".length()) + DIFF_INSERT.repeat("d".length()) +
+				DIFF_EQUAL.repeat("own".length() + EOS_MARKER.length()) + "\n" +
 				"Expected: The " + DIFF_PADDING.repeat("dog".length()) + "fox is " +
 				DIFF_PADDING.repeat("br".length()) + "down" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
@@ -327,6 +329,35 @@ public final class DiffTest
 				DIFF_INSERT.repeat("like".length()) + DIFF_EQUAL.repeat(" dogs".length() + EOS_MARKER.length()) +
 				"\n" +
 				"Expected: I " + DIFF_PADDING.repeat("lices".length()) + "like dogs" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * Avoid short diffs in short words.
+	 */
+	@Test
+	public void combineShortDiffs()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "2017-05-13T17:55:01-04:00[America/Montreal]";
+			String expected = "2017-05-13T17:56:03-04:00[America/Montreal]";
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : 2017-05-13T17:55" + DIFF_PADDING.repeat("56".length()) +
+				":01" + DIFF_PADDING.repeat("03".length()) + "-04:00[America/Montreal]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_EQUAL.repeat("2017-05-13T17:".length()) + DIFF_DELETE.repeat("55".length()) +
+				DIFF_INSERT.repeat("56".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("01".length()) +
+				DIFF_INSERT.repeat("03".length()) + DIFF_EQUAL.repeat("-04:00[America/Montreal]".length() +
+				EOS_MARKER.length()) + "\n" +
+				"Expected: 2017-05-13T17:" + DIFF_PADDING.repeat("55".length()) +
+				"56:" + DIFF_PADDING.repeat("01".length()) + "03-04:00[America/Montreal]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n****************\nActual:\n" + actualMessage;
 		}

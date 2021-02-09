@@ -31,7 +31,7 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PR
 public final class DiffGenerator
 {
 	// See https://www.regular-expressions.info/unicode.html for an explanation of \p{Zs}
-	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|[.\\[\\](){}/\\\\*+\\-#]");
+	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|[.\\[\\](){}/\\\\*+\\-#:;]");
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 	private final ReduceDeltasPerWord reduceDeltasPerWord = new ReduceDeltasPerWord();
@@ -202,10 +202,15 @@ public final class DiffGenerator
 		 */
 		private void updateDeltas()
 		{
+			assert (!deltas.isEmpty());
 			List<AbstractDelta<Integer>> deltasInWord = deltas.subList(indexOfStartDelta, indexOfEndDelta + 1);
-			if (numberOfUnequalDeltas(deltasInWord) <= 2)
+			if (deltasInWord.size() < 2)
+				return;
+			// Improve readability by avoiding many diffs per word or short diffs in short words
+			if (numberOfUnequalDeltas(deltasInWord) <= 2 &&
+				(shortestDelta(deltasInWord) >= 3 || longestWord(deltasInWord) >= 5))
 			{
-				// If the word contains 2 or less unequal deltas then provide character-level granularity.
+				// Provide character-level granularity
 				//
 				// Good:
 				// -----=====-----
@@ -216,6 +221,16 @@ public final class DiffGenerator
 				// =====-----=====-----
 				// +++++=====+++++=====
 				// -----++++++----=====
+				//
+				// Good:
+				// football
+				// ----====++++
+				//     ballroom
+				//
+				// Bad:
+				// 123
+				// -+=
+				// 133
 				return;
 			}
 			// Otherwise, replace the deltas with a single [DELETE, INSERT] pair
@@ -376,6 +391,127 @@ public final class DiffGenerator
 			}
 			return true;
 		}
+
+		/**
+		 * @param <T>    the type of elements being compared
+		 * @param deltas a list of deltas
+		 * @return the number of deltas whose type is not EQUAL
+		 */
+		private static <T> int numberOfUnequalDeltas(List<AbstractDelta<T>> deltas)
+		{
+			int result = 0;
+			for (AbstractDelta<T> delta : deltas)
+			{
+				switch (delta.getType())
+				{
+					case EQUAL:
+						break;
+					case DELETE:
+					case INSERT:
+					{
+						++result;
+						break;
+					}
+					case CHANGE:
+					{
+						// Equivalent to DELETE followed by INSERT
+						result += 2;
+						break;
+					}
+					default:
+						throw new AssertionError(delta.getType().name());
+				}
+			}
+			return result;
+		}
+
+		/**
+		 * @param deltas a list of deltas
+		 * @return the length of the shortest delta
+		 */
+		private int shortestDelta(List<AbstractDelta<Integer>> deltas)
+		{
+			assert (!deltas.isEmpty());
+			int result = Integer.MAX_VALUE;
+			for (AbstractDelta<Integer> delta : deltas)
+			{
+				switch (delta.getType())
+				{
+					case EQUAL:
+						break;
+					case DELETE:
+					{
+						result = Math.min(result, Strings.fromCodepoints(delta.getSource().getLines()).length());
+						break;
+					}
+					case INSERT:
+					{
+						result = Math.min(result, Strings.fromCodepoints(delta.getTarget().getLines()).length());
+						break;
+					}
+					case CHANGE:
+					{
+						// Equivalent to DELETE followed by INSERT
+						result = Math.min(result, Strings.fromCodepoints(delta.getSource().getLines()).length());
+						result = Math.min(result, Strings.fromCodepoints(delta.getTarget().getLines()).length());
+						break;
+					}
+					default:
+						throw new AssertionError(delta.getType().name());
+				}
+			}
+			return result;
+		}
+
+		/**
+		 * @param deltas a list of deltas
+		 * @return the length of the longest word (source or target) spanned by the deltas
+		 */
+		private int longestWord(List<AbstractDelta<Integer>> deltas)
+		{
+			assert (!deltas.isEmpty());
+			int lengthOfSource = 0;
+			int lengthOfTarget = 0;
+			for (AbstractDelta<Integer> delta : deltas)
+			{
+				switch (delta.getType())
+				{
+					case EQUAL:
+					{
+						int length = delta.getSource().size();
+						lengthOfSource += length;
+						lengthOfTarget += length;
+						break;
+					}
+					case DELETE:
+					{
+						lengthOfSource += Strings.fromCodepoints(delta.getSource().getLines()).length();
+						break;
+					}
+					case INSERT:
+					{
+						lengthOfTarget += Strings.fromCodepoints(delta.getTarget().getLines()).length();
+						break;
+					}
+					case CHANGE:
+					{
+						// Equivalent to DELETE followed by INSERT
+						lengthOfSource += Strings.fromCodepoints(delta.getSource().getLines()).length();
+						lengthOfTarget += Strings.fromCodepoints(delta.getTarget().getLines()).length();
+						break;
+					}
+					default:
+						throw new AssertionError(delta.getType().name());
+				}
+			}
+			int result = Math.max(lengthOfSource, lengthOfTarget);
+			// Trim text before the first delta and after the last delta
+			result -= indexOfWordInStartDelta;
+			AbstractDelta<Integer> lastDelta = deltas.get(deltas.size() - 1);
+			String actual = Strings.fromCodepoints(lastDelta.getSource().getLines());
+			result -= actual.length() - indexOfNextWordInEndDelta;
+			return Math.max(0, result);
+		}
 	}
 
 	/**
@@ -412,39 +548,6 @@ public final class DiffGenerator
 			default:
 				throw new AssertionError("Unexpected type: " + delta.getType());
 		}
-	}
-
-	/**
-	 * @param <T>    the type of elements being compared
-	 * @param deltas a list of deltas
-	 * @return the number of deltas whose type is not EQUAL
-	 */
-	private static <T> int numberOfUnequalDeltas(List<AbstractDelta<T>> deltas)
-	{
-		int result = 0;
-		for (AbstractDelta<T> delta : deltas)
-		{
-			switch (delta.getType())
-			{
-				case EQUAL:
-					break;
-				case DELETE:
-				case INSERT:
-				{
-					++result;
-					break;
-				}
-				case CHANGE:
-				{
-					// Equivalent to DELETE followed by INSERT
-					result += 2;
-					break;
-				}
-				default:
-					throw new AssertionError(delta.getType().name());
-			}
-		}
-		return result;
 	}
 
 	/**
