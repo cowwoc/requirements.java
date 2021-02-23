@@ -175,6 +175,7 @@ public final class StringVerifierNoOp
 	}
 
 	@Override
+	@Deprecated
 	public StringVerifier asString()
 	{
 		return this;

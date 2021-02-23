@@ -224,4 +224,13 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	StringVerifier asBoolean(Consumer<BooleanVerifier> consumer);
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated returns this
+	 */
+	@Deprecated
+	@Override
+	StringVerifier asString();
 }

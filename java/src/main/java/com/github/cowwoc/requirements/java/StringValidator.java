@@ -211,4 +211,12 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 */
 	@SuppressWarnings("LongLine")
 	StringValidator asBoolean(Consumer<BooleanValidator> consumer);
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated returns this
+	 */
+	@Deprecated
+	StringValidator asString();
 }

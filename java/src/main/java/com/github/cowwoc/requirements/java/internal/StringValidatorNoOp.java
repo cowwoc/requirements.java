@@ -168,6 +168,7 @@ public final class StringValidatorNoOp extends AbstractObjectValidatorNoOp<Strin
 	}
 
 	@Override
+	@Deprecated
 	public StringValidator asString()
 	{
 		return this;

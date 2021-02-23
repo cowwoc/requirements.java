@@ -191,4 +191,11 @@ public final class StringVerifierImpl
 		consumer.accept(length());
 		return this;
 	}
+
+	@Override
+	@Deprecated
+	public StringVerifier asString()
+	{
+		return super.asString();
+	}
 }

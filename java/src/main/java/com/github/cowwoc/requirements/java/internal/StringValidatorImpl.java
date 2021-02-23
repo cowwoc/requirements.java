@@ -454,4 +454,11 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		consumer.accept(length());
 		return this;
 	}
+
+	@Override
+	@Deprecated
+	public StringValidator asString()
+	{
+		return super.asString();
+	}
 }
