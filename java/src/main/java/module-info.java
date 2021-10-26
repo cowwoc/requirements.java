@@ -11,7 +11,7 @@
  */
 module com.github.cowwoc.requirements.java
 {
-	requires transitive com.github.cowwoc.requirements.annotations;
+	requires transitive com.github.cowwoc.requirements.annotation;
 	requires transitive com.github.cowwoc.requirements.natives;
 	requires io.github.javadiffutils;
 	requires org.slf4j;

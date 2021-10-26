@@ -140,7 +140,7 @@ public final class ExceptionOptimizer
 				" */\n" +
 				"package " + wrapperPackageName + ";\n" +
 				"\n");
-			writer.write("import com.github.cowwoc.requirements.annotations.OptimizedException;\n" +
+			writer.write("import com.github.cowwoc.requirements.annotation.OptimizedException;\n" +
 				"import com.github.cowwoc.requirements.java.GlobalRequirements;\n" +
 				"import com.github.cowwoc.requirements.java.internal.util.Exceptions;\n" +
 				"\n" +

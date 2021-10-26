@@ -18,7 +18,10 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.TypeParameter;
-import com.github.javaparser.printer.PrettyPrinterConfiguration;
+import com.github.javaparser.printer.configuration.DefaultConfigurationOption;
+import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration;
+import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration.ConfigOption;
+import com.github.javaparser.printer.configuration.PrinterConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +42,9 @@ import java.util.StringJoiner;
  */
 public final class ApiGenerator
 {
-	private final PrettyPrinterConfiguration defaultFormatter =
-		new PrettyPrinterConfiguration().setEndOfLineCharacter("\n");
+	private final PrinterConfiguration defaultFormatter =
+		new DefaultPrinterConfiguration().addOption(
+			new DefaultConfigurationOption(ConfigOption.END_OF_LINE_CHARACTER, "\n"));
 
 	static
 	{
@@ -731,7 +735,7 @@ public final class ApiGenerator
 	{
 		Set<String> namesImported = new HashSet<>();
 		boolean addNewline = false;
-		out.append("import com.github.cowwoc.requirements.annotations.CheckReturnValue;\n");
+		out.append("import com.github.cowwoc.requirements.annotation.CheckReturnValue;\n");
 		for (CompilationUnit plugin : plugins)
 		{
 			if (addNewline)
