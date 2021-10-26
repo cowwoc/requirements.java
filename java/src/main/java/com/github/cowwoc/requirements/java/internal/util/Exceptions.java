@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal.util;
 
-import com.github.cowwoc.requirements.annotations.OptimizedException;
+import com.github.cowwoc.requirements.annotation.OptimizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

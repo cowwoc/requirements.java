@@ -215,7 +215,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @deprecated returns this
+	 * @deprecated {@code actual} is already a String
 	 */
 	@Deprecated
 	StringValidator asString();
