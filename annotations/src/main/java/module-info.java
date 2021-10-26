@@ -7,5 +7,5 @@
  */
 module com.github.cowwoc.requirements.annotations
 {
-	exports com.github.cowwoc.requirements.annotations;
+	exports com.github.cowwoc.requirements.annotation;
 }

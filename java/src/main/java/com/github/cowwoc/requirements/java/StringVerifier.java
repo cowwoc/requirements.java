@@ -228,7 +228,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @deprecated returns this
+	 * @deprecated {@code actual} is already a String
 	 */
 	@Deprecated
 	@Override

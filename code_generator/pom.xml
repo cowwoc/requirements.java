@@ -35,7 +35,8 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/classes/delegates</outputDirectory>
+							<outputDirectory>${project.build.directory}/classes/com/github/cowwoc/requirements/plugins
+							</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${project.basedir}/../java/src/main/java/com/github/cowwoc/requirements/java
