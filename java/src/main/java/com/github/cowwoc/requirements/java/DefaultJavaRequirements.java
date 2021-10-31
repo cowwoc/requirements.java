@@ -194,18 +194,32 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
+	@Deprecated
 	public JavaRequirements putContext(String name, Object value)
 	{
-		Configuration newConfig = config.putContext(name, value);
+		return withContext(name, value);
+	}
+
+	@Override
+	public JavaRequirements withContext(String name, Object value)
+	{
+		Configuration newConfig = config.withContext(name, value);
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultJavaRequirements(scope, newConfig);
 	}
 
 	@Override
+	@Deprecated
 	public JavaRequirements removeContext(String name)
 	{
-		Configuration newConfig = config.removeContext(name);
+		return withoutContext(name);
+	}
+
+	@Override
+	public JavaRequirements withoutContext(String name)
+	{
+		Configuration newConfig = config.withoutContext(name);
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultJavaRequirements(scope, newConfig);

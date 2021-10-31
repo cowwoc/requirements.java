@@ -26,10 +26,10 @@ public final class ConfigurationTest
 	public void separateConfigurations()
 	{
 		Configuration first = new MainConfiguration();
-		first = first.putContext("name1", "value1");
+		first = first.withContext("name1", "value1");
 
 		Configuration second = new MainConfiguration();
-		second = second.putContext("name2", "value2");
+		second = second.withContext("name2", "value2");
 
 		assertThat(first, "first.config").isNotEqualTo(second, "second.config");
 	}
@@ -58,8 +58,8 @@ public final class ConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
 			Requirements requirements = new Requirements(scope).
-				putContext("verifierName", "verifierValue");
-			scope.getThreadConfiguration().get().putContext("threadName", "threadValue");
+				withContext("verifierName", "verifierValue");
+			scope.getThreadConfiguration().get().withContext("threadName", "threadValue");
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue");
@@ -74,8 +74,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
-			Requirements requirements = new Requirements(scope).putContext("name", "verifierValue");
-			scope.getThreadConfiguration().get().putContext("name", "threadValue");
+			Requirements requirements = new Requirements(scope).withContext("name", "verifierValue");
+			scope.getThreadConfiguration().get().withContext("name", "threadValue");
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue");
@@ -89,8 +89,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
-			Requirements requirements = new Requirements(scope).putContext("name", "verifierValue");
-			scope.getThreadConfiguration().get().putContext("name", "threadValue");
+			Requirements requirements = new Requirements(scope).withContext("name", "verifierValue");
+			scope.getThreadConfiguration().get().withContext("name", "threadValue");
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("name", "exceptionValue");

@@ -8,6 +8,7 @@ import com.github.cowwoc.pouch.core.ConcurrentLazyFactory;
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Factory;
 import com.github.cowwoc.pouch.core.Reference;
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
 import com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.slf4j.Logger;

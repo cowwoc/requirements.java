@@ -156,7 +156,14 @@ public final class MainConfiguration implements Configuration
 	}
 
 	@Override
+	@Deprecated
 	public Configuration putContext(String name, Object value)
+	{
+		return withContext(name, value);
+	}
+
+	@Override
+	public Configuration withContext(String name, Object value)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
@@ -169,7 +176,14 @@ public final class MainConfiguration implements Configuration
 	}
 
 	@Override
+	@Deprecated
 	public Configuration removeContext(String name)
+	{
+		return withoutContext(name);
+	}
+
+	@Override
+	public Configuration withoutContext(String name)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");

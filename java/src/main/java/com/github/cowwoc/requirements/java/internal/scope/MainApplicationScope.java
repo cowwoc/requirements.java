@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;

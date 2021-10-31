@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements.java.internal.scope;
+package com.github.cowwoc.requirements.java;
 
 import java.util.Map;
 
@@ -29,8 +29,31 @@ public interface ThreadConfiguration
 	 * @param value the value of the parameter
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withContext(String, Object)}
 	 */
+	@Deprecated
 	ThreadConfiguration putContext(String name, Object value);
+
+	/**
+	 * Adds or updates contextual information associated with the exception message.
+	 *
+	 * @param name  the name of the parameter
+	 * @param value the value of the parameter
+	 * @return this
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	ThreadConfiguration withContext(String name, Object value);
+
+	/**
+	 * Removes contextual information associated with the exception message.
+	 *
+	 * @param name the name of the parameter
+	 * @return this
+	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withoutContext(String)}
+	 */
+	@Deprecated
+	ThreadConfiguration removeContext(String name);
 
 	/**
 	 * Removes contextual information associated with the exception message.
@@ -39,12 +62,21 @@ public interface ThreadConfiguration
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	ThreadConfiguration removeContext(String name);
+	ThreadConfiguration withoutContext(String name);
+
+	/**
+	 * Removes all contextual information associated with the exception message.
+	 *
+	 * @return this
+	 * @deprecated Use {@link #withoutAnyContext()}
+	 */
+	@Deprecated
+	ThreadConfiguration removeAllContext();
 
 	/**
 	 * Removes all contextual information associated with the exception message.
 	 *
 	 * @return this
 	 */
-	ThreadConfiguration removeAllContext();
+	ThreadConfiguration withoutAnyContext();
 }

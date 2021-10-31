@@ -497,16 +497,32 @@ public final class ApiGenerator
 			"\n" +
 			"\t@Override\n" +
 			"\t@CheckReturnValue\n" +
+			"\t@Deprecated\n" +
 			"\tpublic Requirements putContext(String name, Object value)\n" +
+			"\t{\n" +
+			"\t\treturn withContext(name, value);\n" +
+			"\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
+			"\tpublic Requirements withContext(String name, Object value)\n" +
 			"\t{\n");
-		appendConfigurationUpdate(plugins, "putContext(name, value)", out);
+		appendConfigurationUpdate(plugins, "withContext(name, value)", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
 			"\t@CheckReturnValue\n" +
+			"\t@Deprecated\n" +
 			"\tpublic Requirements removeContext(String name)\n" +
+			"\t{\n" +
+			"\t\treturn withoutContext(name);\n" +
+			"\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
+			"\tpublic Requirements withoutContext(String name)\n" +
 			"\t{\n");
-		appendConfigurationUpdate(plugins, "removeContext(name)", out);
+		appendConfigurationUpdate(plugins, "withoutContext(name)", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +

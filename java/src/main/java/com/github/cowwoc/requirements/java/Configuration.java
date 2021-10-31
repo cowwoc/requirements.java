@@ -99,8 +99,32 @@ public interface Configuration
 	 * @param value the value of the parameter
 	 * @return the updated configuration
 	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withContext(String, Object)}
 	 */
+	@Deprecated
 	Configuration putContext(String name, Object value);
+
+	/**
+	 * Adds or updates contextual information associated with the exception message. Overrides any values
+	 * associated with the {@code name} at the {@link ThreadRequirements} level.
+	 *
+	 * @param name  the name of the parameter
+	 * @param value the value of the parameter
+	 * @return the updated configuration
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	Configuration withContext(String name, Object value);
+
+	/**
+	 * Removes contextual information associated with the exception message.
+	 *
+	 * @param name the name of the parameter
+	 * @return the updated configuration
+	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withoutContext(String)}
+	 */
+	@Deprecated
+	Configuration removeContext(String name);
 
 	/**
 	 * Removes contextual information associated with the exception message.
@@ -109,7 +133,7 @@ public interface Configuration
 	 * @return the updated configuration
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	Configuration removeContext(String name);
+	Configuration withoutContext(String name);
 
 	/**
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for

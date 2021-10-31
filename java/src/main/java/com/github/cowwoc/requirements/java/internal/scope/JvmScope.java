@@ -4,6 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
+
 import java.util.function.Supplier;
 
 /**

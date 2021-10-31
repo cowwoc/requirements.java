@@ -5,11 +5,11 @@
 package com.github.cowwoc.requirements.java.internal.scope.test;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.AbstractApplicationScope;
 import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.MainConfiguration;
-import com.github.cowwoc.requirements.java.internal.scope.ThreadConfiguration;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;

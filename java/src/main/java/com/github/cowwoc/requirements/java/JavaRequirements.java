@@ -23,10 +23,18 @@ import java.util.function.Function;
 public interface JavaRequirements extends Configuration
 {
 	@Override
+	@Deprecated
 	JavaRequirements putContext(String name, Object value);
 
 	@Override
+	JavaRequirements withContext(String name, Object value);
+
+	@Override
+	@Deprecated
 	JavaRequirements removeContext(String name);
+
+	@Override
+	JavaRequirements withoutContext(String name);
 
 	@Override
 	JavaRequirements withAssertionsDisabled();
