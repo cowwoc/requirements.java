@@ -102,7 +102,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator length(Consumer<SizeValidator> consumer);
 
 	/**
@@ -138,7 +137,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asInetAddress(Consumer<InetAddressValidator> consumer);
 
 	/**
@@ -166,7 +164,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asUri(Consumer<UriValidator> consumer);
 
 	/**
@@ -187,7 +184,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asUrl(Consumer<UrlValidator> consumer);
 
 	/**
@@ -209,7 +205,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asBoolean(Consumer<BooleanValidator> consumer);
 
 	/**

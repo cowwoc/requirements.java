@@ -1,10 +1,32 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 6.0.5 - 2021/10/31
+## Version 6.1.0 - 2021/10/31
 
-* Changes
-    * Replaced Configuration.
+* New Features
+    * Added `StringValidator`/`Verifier.asBoolean()`.
+
+* Improvements:
+    * Diffs:
+        * Split words on colons and semicolons.
+        * Improved readability by reducing the number of diff components per word.
+        * Improved readability by avoiding short diff components in short words, even if the overall number of
+          components is low.
+    * Improved readability of Configuration:
+        * `putContext()` replaced by `withContext()`
+        * `removeContext()` replaced by `withoutContext()`
+    * Improved readability of ThreadConfiguration:
+        * `putContext()` replaced by `withContext()`
+        * `removeContext()` replaced by `withoutContext()`
+        * `removeAllContext()` replaced by `withoutAnyContext()`
+    * Annotated methods whose return value should not be ignored with
+      `com.github.cowwoc.requirements.annotation.CheckReturnValue`
+* Deprecations:
+    * Warn that `StringVerifier/Validator.asString()` are no-op operations.
+
+* Breaking changes:
+    * Renamed `com.github.cowwoc.requirements.annotations` to `com.github.cowwoc.requirements.annotation`. You
+      shouldn't need to change your source code, but the project will need to be built.
 
 ## Version 6.0.4 - 2020/04/23
 
