@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
 public final class ObjectTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -158,7 +158,7 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Integer actual = 1;
+			Object actual = new Object();
 			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(actual, "actual");
 		}
 	}
@@ -168,31 +168,29 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Integer actual = null;
+			Object actual = null;
 			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(actual, "actual");
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings({"deprecation", "UnnecessaryBoxing", "CachedNumberConstructorCall"})
 	public void isSameObject_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Integer actual = new Integer(1);
-			Integer expected = new Integer(1);
+			Object actual = new Object();
+			Object expected = new Object();
 			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(expected, "expected");
 		}
 	}
 
 	@Test
-	@SuppressWarnings({"deprecation", "UnnecessaryBoxing", "CachedNumberConstructorCall"})
 	public void isNotSameObject()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Integer actual = new Integer(1);
-			Integer expected = new Integer(1);
+			Object actual = new Object();
+			Object expected = new Object();
 			new Requirements(scope).requireThat(actual, "actual").isNotSameObjectAs(expected, "expected");
 		}
 	}
@@ -202,7 +200,7 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Integer actual = 1;
+			Object actual = new Object();
 			new Requirements(scope).requireThat(actual, "actual").isNotSameObjectAs(actual, "actual");
 		}
 	}
@@ -215,7 +213,7 @@ public final class ObjectTest
 			String actual = "value";
 
 			// Make sure that the collection uses equals()
-			@SuppressWarnings("RedundantStringConstructorCall")
+			@SuppressWarnings("StringOperationCanBeSimplified")
 			String equivalent = new String(actual);
 
 			new Requirements(scope).requireThat(actual, "actual").isOneOf(Arrays.asList("first",
@@ -372,7 +370,6 @@ public final class ObjectTest
 	}
 
 	@Test
-	@SuppressWarnings("ConstantConditions")
 	public void assertionsDisabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

@@ -8,8 +8,8 @@ import com.github.cowwoc.requirements.java.BooleanVerifier;
 import com.github.cowwoc.requirements.java.InetAddressVerifier;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.StringVerifier;
-import com.github.cowwoc.requirements.java.UrlVerifier;
 import com.github.cowwoc.requirements.java.UriVerifier;
+import com.github.cowwoc.requirements.java.UrlVerifier;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
 import java.util.function.Consumer;
@@ -138,6 +138,18 @@ public final class StringVerifierNoOp
 
 	@Override
 	public StringVerifier isNotEmpty()
+	{
+		return this;
+	}
+
+	@Override
+	public StringVerifier isBlank()
+	{
+		return this;
+	}
+
+	@Override
+	public StringVerifier isNotBlank()
 	{
 		return this;
 	}

@@ -6,13 +6,13 @@ package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.BooleanValidator;
 import com.github.cowwoc.requirements.java.BooleanVerifier;
-import com.github.cowwoc.requirements.java.SizeValidator;
-import com.github.cowwoc.requirements.java.StringVerifier;
-import com.github.cowwoc.requirements.java.UriValidator;
 import com.github.cowwoc.requirements.java.InetAddressValidator;
 import com.github.cowwoc.requirements.java.InetAddressVerifier;
+import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.StringValidator;
+import com.github.cowwoc.requirements.java.StringVerifier;
+import com.github.cowwoc.requirements.java.UriValidator;
 import com.github.cowwoc.requirements.java.UriVerifier;
 import com.github.cowwoc.requirements.java.UrlValidator;
 import com.github.cowwoc.requirements.java.UrlVerifier;
@@ -53,6 +53,20 @@ public final class StringVerifierImpl
 	public StringVerifier isNotEmpty()
 	{
 		validator = validator.isNotEmpty();
+		return validationResult();
+	}
+
+	@Override
+	public StringVerifier isBlank()
+	{
+		validator = validator.isBlank();
+		return validationResult();
+	}
+
+	@Override
+	public StringVerifier isNotBlank()
+	{
+		validator = validator.isNotBlank();
 		return validationResult();
 	}
 

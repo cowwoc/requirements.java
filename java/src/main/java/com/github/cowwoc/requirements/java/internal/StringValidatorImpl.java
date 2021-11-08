@@ -100,6 +100,45 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
+	public StringValidator isBlank()
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (!actual.isBlank())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must be empty or contain only white space codepoints.").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return this;
+	}
+
+	@Override
+	public StringValidator isNotBlank()
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (actual.isBlank())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " may not be empty or contain only white space codepoints.");
+			addFailure(failure);
+		}
+		return this;
+	}
+
+	@Override
 	public StringValidator trim()
 	{
 		if (actual == null)

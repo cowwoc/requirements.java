@@ -1,11 +1,12 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 6.1.0 - 2021/10/31
+## Version 6.1.0 - ?
 
 * New Features
     * Added `StringValidator`/`Verifier.asBoolean()`.
-
+    * Added `StringValidator/StringVerifier.isBlank()`, `isNotBlank()`.
+    * Added `ListValidator/ListVerifier.isSorted(Comparator)`.
 * Improvements:
     * Diffs:
         * Split words on colons and semicolons.
@@ -25,6 +26,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
     * Warn that `StringVerifier/Validator.asString()` are no-op operations.
 
 * Breaking changes:
+    * Increased minimum JDK version from 11 to 17.
     * Renamed `com.github.cowwoc.requirements.annotations` to `com.github.cowwoc.requirements.annotation`. You
       shouldn't need to change your source code, but the project will need to be built.
 

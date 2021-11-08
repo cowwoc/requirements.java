@@ -150,6 +150,46 @@ public final class StringTest
 	}
 
 	@Test
+	public void isBlank()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = " \t ";
+			new Requirements(scope).requireThat(actual, "actual").isBlank();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBlank_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = " a ";
+			new Requirements(scope).requireThat(actual, "actual").isBlank();
+		}
+	}
+
+	@Test
+	public void isNotBlank()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = " a ";
+			new Requirements(scope).requireThat(actual, "actual").isNotBlank();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotBlank_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = " \t ";
+			new Requirements(scope).requireThat(actual, "actual").isNotBlank();
+		}
+	}
+
+	@Test
 	public void startsWith()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

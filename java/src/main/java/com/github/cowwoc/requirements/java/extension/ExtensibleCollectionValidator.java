@@ -179,7 +179,7 @@ public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
 	S doesNotContainAny(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the actual value does not contain all of the specified elements.
+	 * Ensures that the actual value does not contain all the specified elements.
 	 *
 	 * @param expected the elements that must not exist
 	 * @return the updated validator
@@ -188,7 +188,7 @@ public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
 	S doesNotContainAll(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value does not contain all of the specified elements.
+	 * Ensures that the actual value does not contain all the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @param name     the name of the elements

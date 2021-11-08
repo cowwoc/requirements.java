@@ -87,6 +87,22 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	StringValidator isNotEmpty();
 
 	/**
+	 * Ensures that the actual value is empty or contains only {@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated validator
+	 */
+	StringValidator isBlank();
+
+	/**
+	 * Ensures that the actual value is not empty or contains non-{@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated validator
+	 */
+	StringValidator isNotBlank();
+
+	/**
 	 * Returns a validator for the length of the actual value.
 	 *
 	 * @return a validator for the length of the actual value

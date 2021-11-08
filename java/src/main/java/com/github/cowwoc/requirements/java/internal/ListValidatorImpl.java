@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ListValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.diff.ContextGenerator;
@@ -13,6 +14,7 @@ import com.github.cowwoc.requirements.java.internal.extension.AbstractCollection
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,6 +43,31 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	                         Pluralizer pluralizer, List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, pluralizer, failures);
+	}
+
+	@Override
+	public ListValidator<L, E> isSorted(Comparator<E> comparator)
+	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(comparator, "comparator").isNotNull();
+
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		List<E> sorted = actual.stream().sorted(comparator).toList();
+		if (!actual.equals(sorted))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must be sorted.").
+				addContext("Actual", actual).
+				addContext("Sorted", sorted);
+			addFailure(failure);
+		}
+		return getThis();
 	}
 
 	@Override

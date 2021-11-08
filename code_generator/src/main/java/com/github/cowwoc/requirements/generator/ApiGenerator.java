@@ -52,6 +52,13 @@ public final class ApiGenerator
 	}
 
 	/**
+	 * Creates a new ApiGenerator.
+	 */
+	public ApiGenerator()
+	{
+	}
+
+	/**
 	 * The command-line entry point for this class.
 	 *
 	 * @param args the command-line arguments

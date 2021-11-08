@@ -96,6 +96,25 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	StringVerifier isNotEmpty();
 
 	/**
+	 * Ensures that the actual value is empty or contains only {@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value is not empty or contains non-white space codepoints
+	 */
+	StringVerifier isBlank();
+
+	/**
+	 * Ensures that the actual value is not empty or contains non-{@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value is empty or contains only
+	 *                                  {@link Character#isWhitespace(int) white space} codepoints
+	 */
+	StringVerifier isNotBlank();
+
+	/**
 	 * Returns a verifier for the length of the actual value.
 	 *
 	 * @return a verifier for the length of the actual value

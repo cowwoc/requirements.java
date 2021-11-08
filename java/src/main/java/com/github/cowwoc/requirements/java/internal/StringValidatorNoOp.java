@@ -86,6 +86,18 @@ public final class StringValidatorNoOp extends AbstractObjectValidatorNoOp<Strin
 	}
 
 	@Override
+	public StringValidator isBlank()
+	{
+		return this;
+	}
+
+	@Override
+	public StringValidator isNotBlank()
+	{
+		return this;
+	}
+
+	@Override
 	public SizeValidator length()
 	{
 		return new SizeValidatorNoOp(failures);

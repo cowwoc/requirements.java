@@ -4,13 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.internal.extension;
 
-import com.github.cowwoc.requirements.java.internal.ArrayValidatorNoOp;
-import com.github.cowwoc.requirements.java.internal.SizeValidatorNoOp;
-import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
-import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
-import com.github.cowwoc.requirements.java.internal.util.Sets;
-import com.github.cowwoc.requirements.java.internal.util.Strings;
 import com.github.cowwoc.requirements.java.ArrayValidator;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
@@ -18,7 +11,14 @@ import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.extension.ExtensibleCollectionValidator;
 import com.github.cowwoc.requirements.java.internal.ArrayValidatorImpl;
+import com.github.cowwoc.requirements.java.internal.ArrayValidatorNoOp;
 import com.github.cowwoc.requirements.java.internal.SizeValidatorImpl;
+import com.github.cowwoc.requirements.java.internal.SizeValidatorNoOp;
+import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
+import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements.java.internal.util.Sets;
+import com.github.cowwoc.requirements.java.internal.util.Strings;
 
 import java.lang.reflect.Array;
 import java.util.Collection;

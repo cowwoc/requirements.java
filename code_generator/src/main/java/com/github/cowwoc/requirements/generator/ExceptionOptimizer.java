@@ -23,6 +23,13 @@ import java.nio.file.Paths;
 public final class ExceptionOptimizer
 {
 	/**
+	 * Creates a new ExceptionOptimizer.
+	 */
+	public ExceptionOptimizer()
+	{
+	}
+
+	/**
 	 * The command-line entry point for this class.
 	 *
 	 * @param args the command-line arguments
