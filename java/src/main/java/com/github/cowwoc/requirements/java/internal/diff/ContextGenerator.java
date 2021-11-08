@@ -63,6 +63,8 @@ public final class ContextGenerator
 	}
 
 	/**
+	 * Generates a List-specific exception context from the actual and expected values.
+	 *
 	 * @param <T>               the type of elements in the list
 	 * @param actualName        the name of the actual value
 	 * @param actualValue       the actual value
@@ -72,8 +74,8 @@ public final class ContextGenerator
 	 * @return the list of name-value pairs to append to the exception message
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	public <T> List<ContextLine> getContext(String actualName, List<T> actualValue,
-	                                        String expectedName, List<T> expectedValue,
+	public <T> List<ContextLine> getContext(String actualName, List<?> actualValue,
+	                                        String expectedName, List<?> expectedValue,
 	                                        boolean expectedInMessage)
 	{
 		assert (actualName != null) : "actualName may not be null";
@@ -146,6 +148,9 @@ public final class ContextGenerator
 	}
 
 	/**
+	 * Equivalent to {@link #getContext(String, Object, String, Object, boolean, boolean)
+	 * getContext(actualName, actualValue, expectedName, expectedValue, epectedInMessage, true)}.
+	 *
 	 * @param actualName        the name of the actual value
 	 * @param actualValue       the actual value
 	 * @param expectedName      the name of the expected value
@@ -162,6 +167,8 @@ public final class ContextGenerator
 	}
 
 	/**
+	 * Generates an exception context from the actual and expected values.
+	 *
 	 * @param actualName        the name of the actual value
 	 * @param actualValue       the actual value
 	 * @param expectedName      the name of the expected value

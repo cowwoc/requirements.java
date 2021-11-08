@@ -6,10 +6,13 @@ package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.ArrayVerifier;
 import com.github.cowwoc.requirements.java.CollectionVerifier;
+import com.github.cowwoc.requirements.java.ListVerifier;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVerifierNoOp;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -165,6 +168,12 @@ public final class ArrayVerifierNoOp<A, E>
 	}
 
 	@Override
+	public ArrayVerifier<A, E> isSorted(Comparator<E> comparator)
+	{
+		return this;
+	}
+
+	@Override
 	public SizeVerifier length()
 	{
 		return SizeVerifierNoOp.getInstance();
@@ -186,6 +195,20 @@ public final class ArrayVerifierNoOp<A, E>
 
 	@Override
 	public ArrayVerifier<A, E> asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return this;
+	}
+
+	@Override
+	public ListVerifier<List<E>, E> asList()
+	{
+		return ListVerifierNoOp.getInstance();
+	}
+
+	@Override
+	public ArrayVerifier<A, E> asList(Consumer<ListVerifier<List<E>, E>> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

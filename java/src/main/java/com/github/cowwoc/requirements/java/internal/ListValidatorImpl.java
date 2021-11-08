@@ -85,10 +85,14 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	@Override
 	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
 	{
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
-		@SuppressWarnings("unchecked")
-		L expectedAsList = (L) expected;
-		return contextGenerator.getContext("Actual", actual, "Expected",
-			expectedAsList, expectedInMessage);
+		if (expected instanceof List<?> expectedAsList)
+		{
+			// If both actual and expected value are Lists, use the List-specific implementation of
+			// contextGenerator.getContext().
+			ContextGenerator contextGenerator = new ContextGenerator(config, scope);
+			return contextGenerator.getContext("Actual", actual, "Expected",
+				expectedAsList, expectedInMessage);
+		}
+		return super.getContext(expected, expectedInMessage);
 	}
 }

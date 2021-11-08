@@ -289,9 +289,8 @@ public final class MainConfiguration implements Configuration
 	{
 		if (o == this)
 			return true;
-		if (!(o instanceof MainConfiguration))
+		if (!(o instanceof MainConfiguration other))
 			return false;
-		MainConfiguration other = (MainConfiguration) o;
 		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
 			diffEnabled == other.diffEnabled && typeToStringConverter.equals(other.typeToStringConverter);
 	}

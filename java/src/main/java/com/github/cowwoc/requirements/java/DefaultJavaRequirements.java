@@ -380,7 +380,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<byte[], Byte> validateThat(byte[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -401,7 +401,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<short[], Short> validateThat(short[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -422,7 +422,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<int[], Integer> validateThat(int[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -443,7 +443,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<long[], Long> validateThat(long[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -464,7 +464,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<float[], Float> validateThat(float[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -485,7 +485,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<double[], Double> validateThat(double[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -506,7 +506,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<boolean[], Boolean> validateThat(boolean[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -527,7 +527,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public ArrayValidator<char[], Character> validateThat(char[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override
@@ -548,7 +548,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	public <E> ArrayValidator<E[], E> validateThat(E[] actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asCollection(actual), NO_FAILURES);
+		return new ArrayValidatorImpl<>(scope, config, name, actual, Arrays.asList(actual), NO_FAILURES);
 	}
 
 	@Override

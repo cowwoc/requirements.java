@@ -6,6 +6,8 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 * New Features
     * Added `StringValidator`/`Verifier.asBoolean()`.
     * Added `StringValidator/StringVerifier.isBlank()`, `isNotBlank()`.
+    * Added `ArrayValidator/ArrayVerifier.asList()`.
+    * Added `ArrayValidator/ArrayVerifier.isSorted(Comparator)`.
     * Added `ListValidator/ListVerifier.isSorted(Comparator)`.
 * Improvements:
     * Diffs:
@@ -22,6 +24,8 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
         * `removeAllContext()` replaced by `withoutAnyContext()`
     * Annotated methods whose return value should not be ignored with
       `com.github.cowwoc.requirements.annotation.CheckReturnValue`
+* Bugfixes: `ListValidator.isEqualTo()` was throwing a `ClassCastExeception` when `actual` was being compared
+  to a non-`List`.
 * Deprecations:
     * Warn that `StringVerifier/Validator.asString()` are no-op operations.
 

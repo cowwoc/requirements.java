@@ -24,8 +24,8 @@ public final class Sets
 	public static <E> Set<E> fromCollection(Collection<E> collection)
 	{
 		assert (collection != null) : "collection may not be null";
-		if (collection instanceof Set)
-			return (Set<E>) collection;
+		if (collection instanceof Set<E> result)
+			return result;
 		return new HashSet<>(collection);
 	}
 

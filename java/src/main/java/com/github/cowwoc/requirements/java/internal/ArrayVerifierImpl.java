@@ -8,11 +8,15 @@ import com.github.cowwoc.requirements.java.ArrayValidator;
 import com.github.cowwoc.requirements.java.ArrayVerifier;
 import com.github.cowwoc.requirements.java.CollectionValidator;
 import com.github.cowwoc.requirements.java.CollectionVerifier;
+import com.github.cowwoc.requirements.java.ListValidator;
+import com.github.cowwoc.requirements.java.ListVerifier;
 import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -174,6 +178,13 @@ public final class ArrayVerifierImpl<A, E>
 	}
 
 	@Override
+	public ArrayVerifier<A, E> isSorted(Comparator<E> comparator)
+	{
+		validator = validator.isSorted(comparator);
+		return validationResult();
+	}
+
+	@Override
 	public SizeVerifier length()
 	{
 		SizeValidator newValidator = validator.length();
@@ -202,6 +213,22 @@ public final class ArrayVerifierImpl<A, E>
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asCollection());
+		return getThis();
+	}
+
+	@Override
+	public ListVerifier<List<E>, E> asList()
+	{
+		ListValidator<List<E>, E> newValidator = validator.asList();
+		return validationResult(() -> new ListVerifierImpl<>(newValidator));
+	}
+
+	@Override
+	public ArrayVerifier<A, E> asList(Consumer<ListVerifier<List<E>, E>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asList());
 		return getThis();
 	}
 }

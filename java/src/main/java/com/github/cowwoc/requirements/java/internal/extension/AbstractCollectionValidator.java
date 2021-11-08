@@ -592,7 +592,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
-		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), actual, getFailures());
+		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), List.copyOf(actual), getFailures());
 	}
 
 	@Override

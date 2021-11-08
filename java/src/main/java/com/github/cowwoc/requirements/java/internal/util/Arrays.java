@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,9 +14,9 @@ public final class Arrays
 {
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Boolean> asCollection(boolean[] array)
+	public static List<Boolean> asList(boolean[] array)
 	{
 		if (array == null)
 			return null;
@@ -29,9 +28,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Character> asCollection(char[] array)
+	public static List<Character> asList(char[] array)
 	{
 		if (array == null)
 			return null;
@@ -43,9 +42,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Byte> asCollection(byte[] array)
+	public static List<Byte> asList(byte[] array)
 	{
 		if (array == null)
 			return null;
@@ -57,9 +56,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Short> asCollection(short[] array)
+	public static List<Short> asList(short[] array)
 	{
 		if (array == null)
 			return null;
@@ -71,9 +70,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Long> asCollection(long[] array)
+	public static List<Long> asList(long[] array)
 	{
 		if (array == null)
 			return null;
@@ -85,9 +84,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Integer> asCollection(int[] array)
+	public static List<Integer> asList(int[] array)
 	{
 		if (array == null)
 			return null;
@@ -99,9 +98,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Float> asCollection(float[] array)
+	public static List<Float> asList(float[] array)
 	{
 		if (array == null)
 			return null;
@@ -113,9 +112,9 @@ public final class Arrays
 
 	/**
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static Collection<Double> asCollection(double[] array)
+	public static List<Double> asList(double[] array)
 	{
 		if (array == null)
 			return null;
@@ -128,9 +127,9 @@ public final class Arrays
 	/**
 	 * @param <E>   the type of elements in the array
 	 * @param array an array
-	 * @return null if the array is null; otherwise, a collection containing the array elements
+	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static <E> Collection<E> asCollection(E[] array)
+	public static <E> List<E> asList(E[] array)
 	{
 		if (array == null)
 			return null;

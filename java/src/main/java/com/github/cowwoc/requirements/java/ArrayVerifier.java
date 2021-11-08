@@ -7,6 +7,8 @@ package com.github.cowwoc.requirements.java;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -217,6 +219,16 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	ArrayVerifier<A, E> doesNotContainDuplicates();
 
 	/**
+	 * Ensures that the actual value is sorted.
+	 *
+	 * @param comparator the comparator that defines the order of the elements
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the collection is not sorted
+	 * @see Comparator#naturalOrder()
+	 */
+	ArrayVerifier<A, E> isSorted(Comparator<E> comparator);
+
+	/**
 	 * Returns a verifier over the array's length.
 	 *
 	 * @return a verifier over the array's length
@@ -232,7 +244,6 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	ArrayVerifier<A, E> length(Consumer<SizeVerifier> consumer);
 
 	/**
@@ -251,6 +262,23 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @return the updated verifier
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	ArrayVerifier<A, E> asCollection(Consumer<CollectionVerifier<Collection<E>, E>> consumer);
+
+	/**
+	 * Returns a verifier for the actual value as a list.
+	 *
+	 * @return a verifier for the actual value as a list
+	 */
+	ListVerifier<List<E>, E> asList();
+
+	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 *
+	 * @param consumer verifies the actual value as a list
+	 * @return the updated verifier
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	ArrayVerifier<A, E> asList(Consumer<ListVerifier<List<E>, E>> consumer);
 }

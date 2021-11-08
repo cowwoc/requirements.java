@@ -7,6 +7,8 @@ package com.github.cowwoc.requirements.java;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -93,7 +95,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	ArrayValidator<A, E> containsAny(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the actual value contains all of the specified elements.
+	 * Ensures that the actual value contains all the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
@@ -102,7 +104,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	ArrayValidator<A, E> containsAll(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains all of the specified elements.
+	 * Ensures that the actual value contains all the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the elements
@@ -172,7 +174,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	ArrayValidator<A, E> doesNotContainAny(Collection<E> elements, String name);
 
 	/**
-	 * Ensures that the actual value does not contain all of the specified elements.
+	 * Ensures that the actual value does not contain all the specified elements.
 	 *
 	 * @param elements the elements that must not exist
 	 * @return the updated validator
@@ -197,6 +199,15 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @return the updated validator
 	 */
 	ArrayValidator<A, E> doesNotContainDuplicates();
+
+	/**
+	 * Ensures that the actual value is sorted.
+	 *
+	 * @param comparator the comparator that defines the order of the elements
+	 * @return the updated validator
+	 * @see Comparator#naturalOrder()
+	 */
+	ArrayValidator<A, E> isSorted(Comparator<E> comparator);
 
 	/**
 	 * Returns a validator over the array's length.
@@ -233,6 +244,23 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	ArrayValidator<A, E> asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer);
+
+	/**
+	 * Returns a validator for the actual value as a list.
+	 *
+	 * @return a validator for the actual value as a list
+	 */
+	ListValidator<List<E>, E> asList();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 *
+	 * @param consumer validates the actual value as a list
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	ArrayValidator<A, E> asList(Consumer<ListValidator<List<E>, E>> consumer);
 }

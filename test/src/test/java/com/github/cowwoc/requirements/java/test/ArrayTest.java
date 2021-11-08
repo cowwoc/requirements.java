@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -795,6 +796,26 @@ public final class ArrayTest
 	}
 
 	@Test
+	public void isSorted()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer[] actual = {1, 2, 3};
+			new Requirements(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isSorted_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer[] actual = {3, 2, 1};
+			new Requirements(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+		}
+	}
+
+	@Test
 	public void lengthIsEqualTo()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -1037,6 +1058,38 @@ public final class ArrayTest
 			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
 			List<Integer> actualOutput = new ArrayList<>(requirements.requireThat(actual, "actual").
 				asCollection().getActual());
+			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
+		}
+	}
+
+	@Test
+	public void asList()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Requirements requirements = new Requirements(scope);
+			Integer[] actual =
+				{
+					1, 2, 3, 4, 5
+				};
+			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
+			List<Integer> output = requirements.requireThat(actual, "actual").asList().getActual();
+			requirements.requireThat(input, "Input").isEqualTo(output, "Output");
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void asList_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Requirements requirements = new Requirements(scope);
+			Integer[] actual =
+				{
+					1, 2, 3, 4, 5
+				};
+			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
+			List<Integer> actualOutput = requirements.requireThat(actual, "actual").asList().getActual();
 			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}

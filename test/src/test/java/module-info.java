@@ -10,4 +10,5 @@ module com.github.cowwoc.requirements.test
 	requires com.github.cowwoc.requirements.guava;
 
 	exports com.github.cowwoc.requirements.java.internal.diff.test to org.testng;
+	exports com.github.cowwoc.requirements.java.test to org.testng;
 }

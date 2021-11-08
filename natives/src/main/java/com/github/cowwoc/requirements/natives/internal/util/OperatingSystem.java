@@ -250,9 +250,8 @@ public final class OperatingSystem
 		@Override
 		public boolean equals(Object obj)
 		{
-			if (!(obj instanceof Version))
+			if (!(obj instanceof Version other))
 				return false;
-			Version other = (Version) obj;
 			return major == other.major && minor == other.minor &&
 				build == other.build && revision == other.revision;
 		}
