@@ -8,6 +8,7 @@ import com.github.cowwoc.requirements.java.extension.ExtensibleCollectionVerifie
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Verifies the requirements of a list.
@@ -17,7 +18,8 @@ import java.util.Comparator;
  * @param <L> the type of the list
  * @param <E> the type of elements in the list
  */
-public interface ListVerifier<L, E> extends ExtensibleCollectionVerifier<ListVerifier<L, E>, L, E>
+public interface ListVerifier<L extends List<E>, E>
+	extends ExtensibleCollectionVerifier<ListVerifier<L, E>, L, E>
 {
 	/**
 	 * Ensures that the actual value is sorted.

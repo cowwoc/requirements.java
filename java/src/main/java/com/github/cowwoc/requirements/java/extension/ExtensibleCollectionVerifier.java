@@ -19,7 +19,8 @@ import java.util.function.Consumer;
  * @param <C> the type of the collection
  * @param <E> the type of elements in the collection
  */
-public interface ExtensibleCollectionVerifier<S, C, E> extends ExtensibleObjectVerifier<S, C>
+public interface ExtensibleCollectionVerifier<S, C extends Collection<E>, E>
+	extends ExtensibleObjectVerifier<S, C>
 {
 	/**
 	 * Ensures that the actual value is empty.
