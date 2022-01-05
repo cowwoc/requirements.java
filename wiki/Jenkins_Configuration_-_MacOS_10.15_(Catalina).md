@@ -1,6 +1,14 @@
 1. Following different guides depending on your version of VMWare:
 	1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
 	2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
+		1. Go into VMware BIOS.
+		2. Enter setup
+		3. Configure boot options
+		4. Add boot option
+		5. and edit boot order.
+		6. Add new boot option.
+		7. Choose EFI, OC, Bootstrap, Bootstrap.efi and finally confirm.
+		8. You can cleanup by disabling the other entries.
 2. Create a bootable USB or ISO
 	1. Bootable USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
 	2. ISO file: Download MacOS Catalina from App Store and run:
