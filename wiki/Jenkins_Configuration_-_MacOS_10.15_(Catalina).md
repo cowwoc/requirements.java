@@ -38,10 +38,11 @@
 	6. Finish
 	7. Right click on the created VM, Settings
 		1. Processors = 1
-		2. Number of cores per processor = `<the number of cores your computer has, minus one>`
-		3. Network adapter = Bridged, replicate physical network connection state.
-		4. In the options tab, VMWare Tools, Check "Synchronize guest time with host" and "Update automatically"
-		5. Okay
+		2. Number of cores per processor = `<the number of cores your computer has>`
+			1. If using AMD, value must match `<core count>` referenced by https://dortania.github.io/OpenCore-Install-Guide/AMD/zen.html#kernel
+		4. Network adapter = Bridged, replicate physical network connection state.
+		5. In the options tab, VMWare Tools, Check "Synchronize guest time with host" and "Update automatically"
+		6. Okay
 	8. Locate the VMX file on disk by hovering the mouse over the machine name
 	9. Open the VMX file in a text editor.
 	10. Add **smc.version = "0"** to avoid a core dump. Source: http://www.insanelymac.com/forum/files/file/339-unlocker/"0000:0000:0000:0001:0000:0110:1010:0101"
@@ -54,16 +55,18 @@
 8. Select "VMWare Virtual SATA Hard Drive Media"
 9. Select "Erase"
 	1. Name = "MacOS"
-	2. Select "Erase"
+	2. Format = "APFS"
+	3. Select "Erase"
 10. Quit Disk Utility
-11. Select "MacOS"
-12. Click "Continue"
-13. You can safely disable most features; however, you will need to provide an Apple ID in order to use the App Store.
-14. Set "Full name, Account name, Password, Verify" fields to "builds"
-15. Click "I finished installing".
-16. Install VMWare Tools and reboot.
-17. Log into the system.
-18. Run:
+11. Select "Reinstall macOS"
+12. Select "MacOS"
+13. Click "Continue"
+14. You can safely disable most features; however, you will need to provide an Apple ID in order to use the App Store.
+15. Set "Full name, Account name, Password, Verify" fields to "builds"
+16. Click "I finished installing".
+17. Install VMWare Tools and reboot.
+18. Log into the system.
+19. Run:
 
 		# Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
 		sudo dscl . append /Groups/_developer GroupMembership builds
