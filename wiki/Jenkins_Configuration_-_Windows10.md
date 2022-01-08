@@ -61,8 +61,9 @@
 		ssh-keyscan -t rsa github.com >> %USERPROFILE%\.ssh\known_hosts
 
 12. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
-13. Install git from https://git-scm.com/downloads into the default location
-14. Open an Administrator Terminal (WindowsKey + X, A) and disable sleep mode by running:
+13. Add a "SSH Username with private key" global credential in Jenkins with id "jenkins".
+14. Install git from https://git-scm.com/downloads into the default location
+15. Open an Administrator Terminal (WindowsKey + X, A) and disable sleep mode by running:
 
 		REM *** http://superuser.com/a/90418/57662
 		powercfg -change -standby-timeout-ac 0
@@ -157,27 +158,24 @@
 20. Create a new Node in Jenkins
 	1. Type = Permanent Agent
 	2. Remote root directory = C:\jenkins
-	3. Leave "Labels" blank for now to prevent any jobs from running on it
-	4. Launch method = Launch Agent via Java Web Start
+	3. Labels = windows i386 amd64
+	4. Launch method = Launch agents via SSH
 	5. Host = `<The node's static ip>`
-	6. Tool Locations:
-		1. JAVA32_HOME=C:\Program Files (x86)\Java\jdk1.8.0_121
-		2. JAVA64_HOME=C:\Program Files\Java\jdk1.8.0_121
+	6. Credentials = "jenkins" (the SSH credential added above)
+	7. Host key verification strategy = Manually trusted key verification strategy
+	8. Tool Locations:
+		1. JAVA11_HOME=C:\Program Files\Java\jdk11.0.13
+		2. JAVA_HOME=C:\Program Files\Java\jdk11.0.13
 		3. GIT = C:\Program Files\Git\cmd\git.exe
 21. Install Jenkins slave
-	1. Open the Node page (e.g. http://master.com/jenkins/computer/windows-slave/) in the guest browser.
-	2. Click "Launch" and save the JNLP file to disk.
-	3. Open an Administrator Terminal (WindowsKey + X, A)
-	4. "cd C:\Users\Builds\Downloads"
-	5. "slave-agent.jnlp"
-	6. Wait for the dialog to read "Connected". A "File" pulldown menu will appear.
-		1. See https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service#InstallingJenkinsasaWindowsservice-InstallSlaveasaWindowsservice%28require.NET2.0framework%29 if you run into any problems.
-	7. Run "File" → "Install as a Service"
-	8. If the dialog box closes with an error, the installation was successful.
-	9, Open the properties dialog for the Jenkins service.
-	10. In the Log On tab, configure the service to run under user "builds" with password "builds".
-	11. Close the services dialog
+	1. Start -> Optional features -> Add a feature -> "OpenSSH Server"
+	2. Services -> OpenSSH SSH Server -> Automatic
+	3. Create c:\users\builds\.ssh\authorized_keys and paste the contents of id_rsa.pub (public key) into it
+	4. Grant local user full rights over C:\ProgramData\ssh\sshd_config
+	5. Comment out the following two lines in C:\ProgramData\ssh\sshd_config
+	```
+	# Match Group administrators
+	#       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+	```
 22. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
 23. Clean up any temporary files using Disk Cleanup application, delete any sub-directories under C:\jenkins, then shut down and create a VM snapshot. This will shrink the snapshot size.
-24. Go back into the Node configuration in Jenkins and set:
-	1. Labels = windows i386 amd64
