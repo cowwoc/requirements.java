@@ -1,4 +1,4 @@
-1. Following different guides depending on your version of VMWare:
+1. Follow different guides depending on your version of VMWare:
 	1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
 	2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
 		1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong entry will get selected on bootup and make it seem as if the installation had crashed when it had not.
