@@ -122,7 +122,9 @@
 `gpg --import private.key`
 20. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
 21. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
-22. Jenkins: Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
+22. Add Jenkins credentials
+	1. Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
+	2. Add a "SSH Username with private key" global credential id "jenkins".
 23. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
 24. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
@@ -183,7 +185,7 @@
 		    </profile>
 		</profiles>
 
-24. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
+25. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
 
 		<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -208,11 +210,11 @@
 			</servers>
 		</settings>
 
-25. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-26. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-27. In VMWare settings, CDRom, uncheck "Connect at power on"
-28. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary files), then shut down and create a VM snapshot. This will shrink the snapshot size.
-29. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
+26. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+27. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+28. In VMWare settings, CDRom, uncheck "Connect at power on"
+29. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary files), then shut down and create a VM snapshot. This will shrink the snapshot size.
+30. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
 	1. label = "mac"
 	2. command:
 
@@ -222,7 +224,7 @@
 
 	3. Tool home = "/usr/bin/git"
 
-30. Create a new Node in Jenkins
+31. Create a new Node in Jenkins
 	1. Node should have the following Tool Locations:
 		1. JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home. If this changes, you can invoke "/usr/libexec/java_home" to get the current value.
 	2. Wait for user to login before allowing Jenkins to execute any jobs
