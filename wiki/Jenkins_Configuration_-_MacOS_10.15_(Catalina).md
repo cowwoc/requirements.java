@@ -47,7 +47,7 @@
 	8. Locate the VMX file on disk by hovering the mouse over the machine name
 	9. Open the VMX file in a text editor.
 	10. Add **smc.version = "0"** to avoid a core dump. Source: http://www.insanelymac.com/forum/files/file/339-unlocker/"0000:0000:0000:0001:0000:0110:1010:0101"
-	11. Add **isolation.tools.bug328986.disable = "TRUE"** to suppress a warning message about using multiple cores. Source: http://daveparsons.net/blog/2013/12/30/suppress-vmware-multiple-vcpu-message/
+	11. If your virtual machine has multiple processors, add **isolation.tools.bug328986.disable = "TRUE"** to suppress a related warning message. Source: http://daveparsons.net/blog/2013/12/30/suppress-vmware-multiple-vcpu-message/
 	12. Add **bios.bootdelay = 5000** to introduce a delay every time the machine boots up.
 	13. Save and close the file.
 5. The following is based on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
@@ -120,10 +120,11 @@
 
 19. Copy GPG private key (used for signing releases) into guest, and run:
 `gpg --import private.key`
-20. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
-21. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-22. Install JDK8 update 121 from http://www.oracle.com/technetwork/java/javase/downloads/index.html
-23. Add the following to any Maven project you wish to deploy/release to Maven Central:
+20. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+21. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
+22. Jenkins: Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
+23. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk
+24. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
 		<parent>
 		    <groupId>org.sonatype.oss</groupId>
