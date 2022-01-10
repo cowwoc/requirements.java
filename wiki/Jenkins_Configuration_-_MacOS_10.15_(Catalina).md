@@ -108,7 +108,7 @@
 		<paste your RSA public key here>
 		EOF
 		sudo chmod 600 ~/.ssh/authorized_keys
-		sudo chown -R $(whoami):staff ~/.ssh
+		sudo chown -R "$(id -un):$(id -gn)" ~/.ssh
 
 		# Install all software updates
 		softwareupdate --install --all
