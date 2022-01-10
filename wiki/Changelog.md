@@ -24,6 +24,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
         * `removeAllContext()` replaced by `withoutAnyContext()`
     * Annotated methods whose return value should not be ignored with
       `com.github.cowwoc.requirements.annotation.CheckReturnValue`
+    * `MainConfiguration.toString()` now handles multidimensional arrays.
 * Bugfixes: `ListValidator.isEqualTo()` was throwing a `ClassCastExeception` when `actual` was being compared
   to a non-`List`.
 * Deprecations:
@@ -32,7 +33,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 * Breaking changes:
     * Increased minimum JDK version from 11 to 17.
     * Renamed `com.github.cowwoc.requirements.annotations` to `com.github.cowwoc.requirements.annotation`. You
-      shouldn't need to change your source code, but the project will need to be built.
+      shouldn't need to change your source code, but the project will need to be rebuilt.
 
 ## Version 6.0.4 - 2020/04/23
 

@@ -18,6 +18,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
+import static com.github.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
@@ -1338,6 +1343,48 @@ public final class ArrayTest
 	}
 
 	@Test
+	public void multiDimensionalToStringConverter()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[][] actual = new int[][]
+				{
+					{
+						1,
+						2,
+						3
+					},
+					{
+						4,
+						5,
+						6
+					}
+				};
+			int[][] expected = new int[][]
+				{
+					{
+						2,
+						1,
+						3
+					},
+					{
+						5,
+						4,
+						6
+					}
+				};
+			new Requirements(scope).withStringConverter(int[][].class, o -> "primitive[][]").
+				requireThat(actual, "actual").isEqualTo(expected);
+			assert (false) : "Exception was never thrown";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains("primitive[][]")) : "Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
 	public void objectToStringConverter()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -1361,6 +1408,134 @@ public final class ArrayTest
 		{
 			String actualMessage = e.getMessage();
 			assert (actualMessage.contains("object[]")) : "Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void objectArrayToString()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object[] actual = new Integer[]
+				{
+					1,
+					2,
+					3
+				};
+			Object[] expected = new Integer[]
+				{
+					2,
+					1,
+					3
+				};
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			assert (false) : "Exception was never thrown";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : [1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+				DIFF_PADDING.repeat("1,".length()) + " 3]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_PADDING.repeat("[".length()) + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3]" + EOS_MARKER).length()) + "\n" +
+				"Expected: [" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
+				"1, 3]" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void multiDimensionalObjectArrayToString()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object[][] actual = new Integer[][]
+				{
+					{
+						1,
+						2,
+						3
+					}
+				};
+			Object[] expected = new Integer[][]
+				{
+					{
+						2,
+						1,
+						3
+					}
+				};
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			assert (false) : "Exception was never thrown";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+				DIFF_PADDING.repeat("1,".length()) + " 3]]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_PADDING.repeat("[[".length()) + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3]]" + EOS_MARKER).length()) + "\n" +
+				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
+				"1, 3]]" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n\n****************\nActual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void multiDimensionalToString()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			int[][] actual = new int[][]
+				{
+					{
+						1,
+						2,
+						3
+					},
+					{
+						4,
+						5,
+						6
+					}
+				};
+			int[][] expected = new int[][]
+				{
+					{
+						2,
+						1,
+						3
+					},
+					{
+						5,
+						4,
+						6
+					}
+				};
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			assert (false) : "Exception was never thrown";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+				DIFF_PADDING.repeat("1,".length()) + " 3], [4," + DIFF_PADDING.repeat("5,".length()) + " 5," +
+				DIFF_PADDING.repeat("4,".length()) + " 6]]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_PADDING.repeat("[[".length()) + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3], [").length()) +
+				DIFF_DELETE.repeat("4,".length()) + DIFF_INSERT.repeat("5,".length()) + DIFF_EQUAL +
+				DIFF_DELETE.repeat("5,".length()) + DIFF_INSERT.repeat("4,".length()) +
+				DIFF_EQUAL.repeat((" 6]]" + EOS_MARKER).length()) + "\n" +
+				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2," + DIFF_PADDING.repeat(" 2,".length()) +
+				"1, 3], [" + DIFF_PADDING.repeat("4,".length()) + "5," + DIFF_PADDING.repeat(" 5,".length()) + "4," +
+				DIFF_PADDING + "6]]" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n\n****************\nActual:\n" + actualMessage;
 		}
 	}
 

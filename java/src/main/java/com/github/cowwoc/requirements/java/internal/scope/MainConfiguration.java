@@ -13,9 +13,12 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.function.Function;
 
 /**
@@ -66,7 +69,7 @@ public final class MainConfiguration implements Configuration
 		typeToStringConverter.put(long[].class, o -> Arrays.toString((long[]) o));
 		typeToStringConverter.put(float[].class, o -> Arrays.toString((float[]) o));
 		typeToStringConverter.put(double[].class, o -> Arrays.toString((double[]) o));
-		typeToStringConverter.put(Object[].class, o -> Arrays.toString((Object[]) o));
+		typeToStringConverter.put(Object[].class, o -> Arrays.deepToString((Object[]) o));
 		typeToStringConverter.put(Integer.class, o -> decimalFormat.get().format(o));
 		typeToStringConverter.put(Long.class, o -> decimalFormat.get().format(o));
 		typeToStringConverter.put(BigDecimal.class, o -> ((BigDecimal) o).toPlainString());
@@ -222,17 +225,60 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public String toString(Object value)
 	{
+		return getToStringConverter(value).apply(value);
+	}
+
+	/**
+	 * Returns a function that returns the {@code String} representation of an object.
+	 *
+	 * @param value a value
+	 * @return a function that returns the {@code String} representation of the value
+	 */
+	private Function<Object, String> getToStringConverter(Object value)
+	{
 		if (value == null)
-			return "null";
+			return Objects::toString;
 		Class<?> type = value.getClass();
-		Function<Object, String> converter;
-		if (type.isArray() && !type.getComponentType().isPrimitive())
-			converter = typeToStringConverter.get(Object[].class);
-		else
-			converter = typeToStringConverter.get(type);
-		if (converter != null)
-			return converter.apply(value);
-		return value.toString();
+		Function<Object, String> converter = typeToStringConverter.get(type);
+		if (converter == null)
+		{
+			// Converters that match based on inheritance
+			if (value instanceof List)
+				converter = this::listToString;
+			else if (type.isArray() && !type.getComponentType().isPrimitive())
+			{
+				converter = typeToStringConverter.get(Object[].class);
+				if (converter == null)
+					converter = Objects::toString;
+			}
+			else
+				converter = Objects::toString;
+		}
+		return converter;
+	}
+
+	/**
+	 * @param list a {@code List}
+	 * @return the String representation of {@code list}
+	 */
+	private String listToString(Object list)
+	{
+		// We cannot use Object.toString() because Arrays.asList(array) only converts the outermost array into a
+		// List. List.toString() does not invoke Arrays.deepToString(array) so any nested arrays do not display
+		// correctly.
+		assert (List.class.isAssignableFrom(list.getClass())) : list.getClass();
+		Iterable<?> iterable = (Iterable<?>) list;
+		Iterator<?> iterator = iterable.iterator();
+		StringJoiner joiner = new StringJoiner(", ", "[", "]");
+		if (iterator.hasNext())
+		{
+			Object element = iterator.next();
+			Function<Object, String> elementToString = getToStringConverter(element);
+			joiner.add(elementToString.apply(element));
+			while (iterator.hasNext())
+				joiner.add(elementToString.apply(iterator.next()));
+		}
+		return joiner.toString();
 	}
 
 	@Override

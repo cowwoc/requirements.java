@@ -4,11 +4,11 @@
  */
 package com.github.cowwoc.requirements.java.test;
 
-import com.google.common.collect.ImmutableList;
 import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.scope.test.TestApplicationScope;
+import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -17,6 +17,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
+import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
+import static com.github.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
@@ -1281,6 +1286,31 @@ public final class CollectionTest
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void collectionToString()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<Integer> actual = List.of(1, 2, 3);
+			Collection<Integer> expected = List.of(2, 1, 3);
+			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			assert (false) : "Exception was never thrown";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "Actual  : [1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+				DIFF_PADDING.repeat("1,".length()) + " 3]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_PADDING.repeat("[".length()) + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3]" + EOS_MARKER).length()) + "\n" +
+				"Expected: [" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
+				"1, 3]" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
+				"\n\n****************\nActual:\n" + actualMessage;
 		}
 	}
 }
