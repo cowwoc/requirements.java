@@ -1,6 +1,5 @@
-1. You will need to repeat these instructions twice: once for 32-bit, and once for 64-bit.
-2. Download the ISOs from http://releases.ubuntu.com/16.04/ubuntu-16.04.2-desktop-i386.iso.torrent and http://releases.ubuntu.com/16.04/ubuntu-16.04.2-desktop-amd64.iso.torrent
-3. VMWare Workstation configuration
+1. Download Ubuntu 20.04.3 LTS from https://ubuntu.com/download/desktop
+2. VMWare Workstation configuration
 	1. Create a new virtual machine.
 	2. Typical configuration.
 	3. Install from ISO
@@ -19,7 +18,7 @@
 	12. Add **bios.bootdelay = 5000** to introduce a delay every time the machine boots up.
 	13. Save and close the file.
 	14. Boot the virtual machine and let VMWare complete the installation.
-4. Log into the system and run:
+3. Log into the system and run:
 
 		sudo chmod u+w /etc/sudoers
 		sudo tee -a /etc/sudoers <<EOF
@@ -41,13 +40,14 @@
 		mkdir -p ~/.ssh
 		ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
-5. Export GPG private key (used for signing releases): `gpg --export-secret-key -a "User Name" > private.key`
-6. Copy key into the guest (e.g. using `scp`), and run: `gpg --import private.key`
-7. Delete the private key `rm private.key`
-8. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
-9. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-10. Download JDK 11 from https://www.azul.com/downloads/?version=java-11-lts&os=linux&package=jdk
-11. Install:
+4. Export GPG private key (used for signing releases): `gpg --export-secret-key -a "User Name" > private.key`
+5. Copy key into the guest (e.g. using `scp`), and run: `gpg --import private.key`
+6. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
+7. Add Jenkins credentials
+	1. Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
+	2. Add a "SSH Username with private key" global credential id "jenkins".
+8. Download JDK 11 from https://www.azul.com/downloads/?version=java-11-lts&os=linux&package=jdk
+9. Install:
 
 		# install the necessary dependencies
 		sudo apt-get -q update
@@ -69,7 +69,7 @@
 		sudo apt-get update
 		sudo apt-get install -y zulu11-jdk
 
-12. Add the following to any Maven project you wish to deploy/release to Maven Central:
+10. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
 		<parent>
 			<groupId>org.sonatype.oss</groupId>
@@ -123,7 +123,7 @@
 			</profile>
 		</profiles>
 
-13. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
+11. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
 
 		<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -148,18 +148,15 @@
 			</servers>
 		</settings>
 
-14. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-15. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-16. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash can), reboot the OS once (to clear the temporary directory), then shut down and create a VM snapshot. This will shrink the snapshot size.
-17. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command → label = "linux", command = "sudo apt-get install git -y", Tool home = "/usr/bin/git"
-18. Create a new Node in Jenkins
+12. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+13. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+14. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash can), reboot the OS once (to clear the temporary directory), then shut down and create a VM snapshot. This will shrink the snapshot size.
+15. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command → label = "linux", command = "sudo apt-get install git -y", Tool home = "/usr/bin/git"
+16. Create a new Node in Jenkins
 Type = Permanent Agent
 	1. Remote root directory = /home/builds/.jenkins
-	2. On 32-bit VM
-		1. Labels = linux i386
-	3. On 64-bit VM
-		1. Labels = linux amd64
-	4. Launch method = Launch slave agents on Unix machines via SSH
-	5. Host = `<The node's static ip>`
-	6. Tool Locations:
-		1. JAVA_HOME=/usr/lib/jvm/jdk1.8.0_131
+	2. Labels = linux amd64
+	3. Launch method = Launch slave agents on Unix machines via SSH
+	4. Host = `<The node's static ip>`
+	5. Tool Locations:
+		1. JAVA_HOME=/usr/lib/jvm/zulu-11
