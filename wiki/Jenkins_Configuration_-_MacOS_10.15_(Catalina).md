@@ -93,10 +93,18 @@
 		# Enable ssh server: https://apple.stackexchange.com/a/302606/21181
 		sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
-		# Enable password authentication for ssh
+		# Disable password authentication for ssh
 		sudo tee -a /etc/ssh/sshd_config <<EOF
-		PasswordAuthentication yes
+		PasswordAuthentication no
 		EOF
+		
+		# Enable private-key authentication for ssh: https://askubuntu.com/a/306832/23678
+		chmod 700 ~/.ssh
+		sudo -tee -a ~/.ssh/authorized_keys
+		<paste your RSA public key here>
+		EOF
+		chmod 600 ~/.ssh/authorized_keys
+		chown $USER:$USER ~/.ssh -R
 
 		# Install all software updates
 		softwareupdate --install --all
