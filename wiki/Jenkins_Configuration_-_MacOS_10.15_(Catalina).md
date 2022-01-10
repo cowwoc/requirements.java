@@ -98,6 +98,10 @@
 		PasswordAuthentication no
 		EOF
 		
+		# Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
+		mkdir -p ~/.ssh
+		ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
 		# Enable private-key authentication for ssh: https://askubuntu.com/a/306832/23678
 		sudo chmod 700 ~/.ssh
 		sudo tee -a ~/.ssh/authorized_keys <<EOF
@@ -113,10 +117,6 @@
 		brew tap xfreebird/utils
 		brew install kcpassword
 		enable_autologin "builds" "builds"
-
-		# Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
-		mkdir -p ~/.ssh
-		ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 19. Copy GPG private key (used for signing releases) into guest, and run:
 `gpg --import private.key`
