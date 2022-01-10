@@ -123,7 +123,7 @@
 20. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
 21. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
 22. Jenkins: Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
-23. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk
+23. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
 24. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
 		<parent>
