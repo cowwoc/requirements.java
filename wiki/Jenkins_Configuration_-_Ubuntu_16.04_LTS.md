@@ -46,28 +46,28 @@
 7. Delete the private key `rm private.key`
 8. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
 9. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-10. Download JDK 8, 32-bit and 64-bit tar.gz packages from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-11. Copy into guest and run:
+10. Download JDK 11 from https://www.azul.com/downloads/?version=java-11-lts&os=linux&package=jdk
+11. Install:
 
-		# On 32-bit platform
-		tar -xvf jdk-8u131-linux-i586.tar.gz
+		# install the necessary dependencies
+		sudo apt-get -q update
+		sudo apt-get -yq install gnupg curl 
 
-		# On 64-bit platform
-		tar -xvf jdk-8u131-linux-x64.tar.gz
+		# add Azul's public key
+		sudo apt-key adv \
+		  --keyserver hkp://keyserver.ubuntu.com:80 \
+		  --recv-keys 0xB1998361219BD9C9
 
-		# Source: http://askubuntu.com/questions/56104/how-can-i-install-sun-oracles-proprietary-java-jdk-6-7-8-or-jre/55960#55960
-		sudo mkdir -p /usr/lib/jvm
-		sudo mv ~/jdk1.8.0_131/ /usr/lib/jvm/jdk1.8.0_131
+		# download and install the package that adds 
+		# the Azul APT repository to the list of sources 
+		curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-3_all.deb
 
-		# Use a priority of 2000, otherwise OpenJDK installation will replace our symbolic links.
-		sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0_131/bin/java" 2000
-		sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0_131/bin/javac" 2000
-		sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/jdk1.8.0_131/bin/javaws" 2000
+		# install the package
+		sudo apt-get install ./zulu-repo_1.0.0-3_all.deb
 
-		sudo chmod a+x /usr/bin/java
-		sudo chmod a+x /usr/bin/javac
-		sudo chmod a+x /usr/bin/javaws
-		sudo chown -R root:root /usr/lib/jvm/jdk1.8.0_131
+		# update the package sources
+		sudo apt-get update
+		sudo apt-get install -y zulu11-jdk
 
 12. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
