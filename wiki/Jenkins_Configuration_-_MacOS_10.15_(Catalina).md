@@ -100,11 +100,11 @@
 		
 		# Enable private-key authentication for ssh: https://askubuntu.com/a/306832/23678
 		chmod 700 ~/.ssh
-		sudo -tee -a ~/.ssh/authorized_keys <<EOF
+		sudo tee -a ~/.ssh/authorized_keys <<EOF
 		<paste your RSA public key here>
 		EOF
-		chmod 600 ~/.ssh/authorized_keys
-		chown $USER:$USER ~/.ssh -R
+		sudo chmod 600 ~/.ssh/authorized_keys
+		sudo chown -R $(whoami):staff ~/.ssh
 
 		# Install all software updates
 		softwareupdate --install --all
