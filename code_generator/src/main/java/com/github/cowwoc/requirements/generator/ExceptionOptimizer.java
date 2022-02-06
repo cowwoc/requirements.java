@@ -60,6 +60,10 @@ public final class ExceptionOptimizer
 		optimizer.writeWrapper(directory, exception);
 	}
 
+	public ExceptionOptimizer()
+	{
+	}
+
 	private final Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
 
 	/**
