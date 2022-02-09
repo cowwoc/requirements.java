@@ -8,6 +8,8 @@
 module com.github.cowwoc.requirements.natives
 {
 	requires com.github.cowwoc.pouch.core;
+	requires org.slf4j;
+	requires ch.qos.logback.classic;
 
 	exports com.github.cowwoc.requirements.natives.internal.util to com.github.cowwoc.requirements.java,
 		com.github.cowwoc.requirements.maven_plugin, com.github.cowwoc.requirements.test;

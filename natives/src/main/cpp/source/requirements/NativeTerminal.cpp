@@ -102,6 +102,53 @@ std::string toString(JNIEnv* env, jobject o)
 	return std::string(charArray);
 }
 
+/**
+ * @param env the JNI environment
+ * @param jthis the Java object associated with the native code
+ * @param message the message to log
+ */
+void log(JNIEnv* env, jobject jthis, const char* message)
+{
+    jclass clazz = env->GetObjectClass(jthis);
+	if (clazz == 0)
+	{
+		assert(env->ExceptionCheck());
+		return;
+	}
+    jfieldID loggerField = env->GetFieldID(clazz, "log", "Lorg/slf4j/Logger;");
+	if (loggerField == 0)
+	{
+		assert(env->ExceptionCheck());
+		return;
+	}
+    jobject logger = env->GetObjectField(jthis, loggerField);
+	if (logger == 0)
+	{
+		assert(env->ExceptionCheck());
+		return;
+	}
+    jclass loggerClass = env->GetObjectClass(logger);
+	if (loggerClass == 0)
+	{
+		assert(env->ExceptionCheck());
+		return;
+	}
+    jmethodID debugMethod = env->GetMethodID(loggerClass, "info", "(Ljava/lang/String;)V");
+	if (debugMethod == 0)
+	{
+		assert(env->ExceptionCheck());
+		return;
+	}
+    jstring messageAsString = env->NewStringUTF(message);
+	if (messageAsString == 0)
+	{
+		assert(env->ExceptionCheck());
+		return;
+	}
+    env->CallObjectMethod(logger, debugMethod, messageAsString);
+    env->DeleteLocalRef(messageAsString);
+}
+
 #ifdef _WIN32
 	/**
 	 * com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal.connect()
@@ -145,30 +192,30 @@ std::string toString(JNIEnv* env, jobject o)
 	 */
 	bool isWindowsVersionOrGreater(WORD majorVersion, WORD minorVersion, WORD buildVersion)
 	{
-		// See http://stackoverflow.com/a/36545162/14731 and
-		// https://github.com/DarthTon/Blackbone/blob/master/contrib/VersionHelpers.h#L78
+        HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
+		if (ntdll == 0)
+            return false;
+		RtlGetVersionPtr RtlGetVersion = (RtlGetVersionPtr) GetProcAddress(ntdll, "RtlGetVersion");
+		if (RtlGetVersion == 0)
+            return false;
+
+        // See http://stackoverflow.com/a/36545162/14731
 		RTL_OSVERSIONINFOW verInfo = { 0 };
 		verInfo.dwOSVersionInfoSize = sizeof(verInfo);
+		if (RtlGetVersion(&verInfo) != 0)
+		    return false;
 
-		static auto RtlGetVersion = (RtlGetVersionPtr) GetProcAddress(
-		  GetModuleHandleW(L"ntdll.dll"), "RtlGetVersion");
+        if (verInfo.dwMajorVersion > majorVersion)
+            return true;
+        else if (verInfo.dwMajorVersion < majorVersion)
+            return false;
 
-		if (RtlGetVersion != 0 && RtlGetVersion(&verInfo) == 0)
-		{
-			if (verInfo.dwMajorVersion > majorVersion)
-				return true;
-			else if (verInfo.dwMajorVersion < majorVersion)
-				return false;
+        if (verInfo.dwMinorVersion > minorVersion)
+            return true;
+        else if (verInfo.dwMinorVersion < minorVersion)
+            return false;
 
-			if (verInfo.dwMinorVersion > minorVersion)
-				return true;
-			else if (verInfo.dwMinorVersion < minorVersion)
-				return false;
-
-			if (verInfo.dwBuildNumber >= buildVersion)
-				return true;
-		}
-		return false;
+        return verInfo.dwBuildNumber >= buildVersion;
 	}
 
 	/**
@@ -201,11 +248,11 @@ std::string toString(JNIEnv* env, jobject o)
 			std::deque<char*> supportedEncodings;
 			// build 10586 added 16-bit color support:
 			// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
-			assert(IsWindowsVersionOrGreater(10, 0, 10586));
+			assert(isWindowsVersionOrGreater(10, 0, 10586));
 			supportedEncodings.push_back("XTERM_8_COLORS");
 			supportedEncodings.push_back("XTERM_16_COLORS");
 
-			if (IsWindowsVersionOrGreater(10, 0, 14931))
+			if (isWindowsVersionOrGreater(10, 0, 14931))
 			{
 				// build 14931 added 24-bit color support:
 				// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/

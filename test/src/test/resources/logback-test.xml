@@ -10,5 +10,5 @@
 	</root>
 	<logger name="org.testng" level="warn"/>
 	<logger name="com.github.cowwoc.requirements.java.internal.util.Exceptions" level="warn"/>
-	<logger name="com.github.cowwoc.requirements.java.internal.terminal.Terminal" level="warn"/>
+	<logger name="com.github.cowwoc.requirements.java.internal.terminal.Terminal" level="debug"/>
 </configuration>

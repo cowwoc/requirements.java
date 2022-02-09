@@ -22,11 +22,19 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>${project.groupId}</groupId>
+					<artifactId>maven_plugin</artifactId>
+					<version>${project.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>maven_plugin</artifactId>
-				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<goals>

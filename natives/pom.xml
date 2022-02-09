@@ -11,6 +11,25 @@
 	<packaging>jar</packaging>
 	<description>Native component of the Requirements API.</description>
 
+	<properties>
+		<classifier>${platform}</classifier>
+		<cmake.version>3.16.3-b2</cmake.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.github.cowwoc.pouch</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -160,17 +179,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<classifier>${platform}</classifier>
-		<cmake.version>3.16.3-b2</cmake.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.github.cowwoc.pouch</groupId>
-			<artifactId>core</artifactId>
-			<version>${pouch.version}</version>
-		</dependency>
-	</dependencies>
+
 	<profiles>
 		<profile>
 			<id>windows-x86_64-debug</id>
