@@ -38,8 +38,32 @@
 	25. Install VMWare Tools and reboot.
 5. Place user configuration (e.g. Maven, Git) relative to C:\Users\Builds directory
 6. Install GPG from https://www.gpg4win.org/download.html
-7. Install JDK 1.8.0_121, both 32-bit and 64-bit versions, from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-8. Save the following text into jenkins.reg and run it:
+7. Copy GPG private key (used for signing releases) into guest, and run: `gpg --import private.key`
+8. Add SSH known hosts:
+
+		REM *** Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
+		mkdir %USERPROFILE%\.ssh
+		ssh-keyscan -t rsa github.com >> %USERPROFILE%\.ssh\known_hosts
+		
+9. Install SSH server
+	1. Start -> Optional features -> Add a feature -> "OpenSSH Server"
+	2. Services -> OpenSSH SSH Server -> Automatic
+	3. Create c:\users\builds\.ssh\authorized_keys and paste the contents of id_rsa.pub (public key) into it
+	4. Grant local user full rights over C:\ProgramData\ssh\sshd_config
+	5. Comment out the following two lines in C:\ProgramData\ssh\sshd_config
+	```
+	# Match Group administrators
+	#       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+	```
+
+10. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+11. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
+12. Add Jenkins credentials
+	1. Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc".
+	2. Add a "SSH Username with private key" global credential id "jenkins".
+13. Install git from https://git-scm.com/downloads into the default location
+14. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=windows&package=jdk#download-openjdk
+15. Save the following text into jenkins.reg and run it:
 
 		Windows Registry Editor Version 5.00
 
@@ -52,18 +76,7 @@
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa]
 		"LimitBlankPasswordUse"=dword:00000000
 
-9. Copy GPG private key (used for signing releases) into guest, and run: `gpg --import private.key`
-10. Download and install OpenSSH (client) from http://www.mls-software.com/opensshd.html
-11. Add SSH known hosts:
-
-		REM *** Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
-		mkdir %USERPROFILE%\.ssh
-		ssh-keyscan -t rsa github.com >> %USERPROFILE%\.ssh\known_hosts
-
-12. Add a "Username with password" global credential in Jenkins with id "github". You can generate a Jenkins-specific password in Github using the "Personal access tokens" feature.
-13. Add a "SSH Username with private key" global credential in Jenkins with id "jenkins".
-14. Install git from https://git-scm.com/downloads into the default location
-15. Open an Administrator Terminal (WindowsKey + X, A) and disable sleep mode by running:
+16. Open an Administrator Terminal (WindowsKey + X, A) and disable sleep mode by running:
 
 		REM *** http://superuser.com/a/90418/57662
 		powercfg -change -standby-timeout-ac 0
@@ -71,8 +84,8 @@
 		REM *** http://superuser.com/a/347928/57662
 		powercfg -h off
 
-15. Download and install Visual Studio Community from https://www.visualstudio.com/downloads/. Make sure to choose Custom install since the default is unlikely to be a good fit.
-16. Add the following to any Maven project you wish to deploy/release to Maven Central:
+17. Download and install Visual Studio Community from https://www.visualstudio.com/downloads/. Make sure to choose Custom install since the default is unlikely to be a good fit.
+18. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
 		<parent>
 		    <groupId>org.sonatype.oss</groupId>
@@ -126,7 +139,7 @@
 		    </profile>
 		</profiles>
 
-17. Windows has two home directories for the Local System account: C:\Windows\System\config\systemprofile and C:\Windows\SysWOW64\config\systemprofile. For each one of them, follow the the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create `~/.m2/settings-security.xml` and add server id "gpg.passphrase" to `~/.m2/settings.xml`
+19. Windows has two home directories for the Local System account: C:\Windows\System\config\systemprofile and C:\Windows\SysWOW64\config\systemprofile. For each one of them, follow the the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create `~/.m2/settings-security.xml` and add server id "gpg.passphrase" to `~/.m2/settings.xml`
 
 		<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -151,14 +164,14 @@
 			</servers>
 		</settings>
 
-18. Windows Updates
+20. Windows Updates
 	1. Advanced options → Give me updates for other Microsoft products when I update Windows
 	2. Check For Updates (and install any you find)
-19. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-20. Create a new Node in Jenkins
+21. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+22. Create a new Node in Jenkins
 	1. Type = Permanent Agent
 	2. Remote root directory = C:\jenkins
-	3. Labels = windows i386 amd64
+	3. Labels = windows amd64
 	4. Launch method = Launch agents via SSH
 	5. Host = `<The node's static ip>`
 	6. Credentials = "jenkins" (the SSH credential added above)
@@ -167,15 +180,5 @@
 		1. JAVA11_HOME=C:\Program Files\Java\jdk11.0.13
 		2. JAVA_HOME=C:\Program Files\Java\jdk11.0.13
 		3. GIT = C:\Program Files\Git\cmd\git.exe
-21. Install Jenkins slave
-	1. Start -> Optional features -> Add a feature -> "OpenSSH Server"
-	2. Services -> OpenSSH SSH Server -> Automatic
-	3. Create c:\users\builds\.ssh\authorized_keys and paste the contents of id_rsa.pub (public key) into it
-	4. Grant local user full rights over C:\ProgramData\ssh\sshd_config
-	5. Comment out the following two lines in C:\ProgramData\ssh\sshd_config
-	```
-	# Match Group administrators
-	#       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
-	```
-22. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-23. Clean up any temporary files using Disk Cleanup application, delete any sub-directories under C:\jenkins, then shut down and create a VM snapshot. This will shrink the snapshot size.
+23. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+24. Clean up any temporary files using Disk Cleanup application, delete any sub-directories under C:\jenkins, then shut down and create a VM snapshot. This will shrink the snapshot size.
