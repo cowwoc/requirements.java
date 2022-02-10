@@ -23,13 +23,6 @@ import java.nio.file.Paths;
 public final class ExceptionOptimizer
 {
 	/**
-	 * Creates a new ExceptionOptimizer.
-	 */
-	public ExceptionOptimizer()
-	{
-	}
-
-	/**
 	 * The command-line entry point for this class.
 	 *
 	 * @param args the command-line arguments
@@ -67,11 +60,14 @@ public final class ExceptionOptimizer
 		optimizer.writeWrapper(directory, exception);
 	}
 
+	private final Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
+
+	/**
+	 * Creates a new ExceptionOptimizer.
+	 */
 	public ExceptionOptimizer()
 	{
 	}
-
-	private final Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
 
 	/**
 	 * Writes an exception wrapper and logs the result.

@@ -51,17 +51,6 @@ public final class ApiGenerator
 		SharedSecrets.INSTANCE.secretApiGenerator = ApiGenerator::exportScope;
 	}
 
-	public ApiGenerator()
-	{
-	}
-
-	/**
-	 * Creates a new ApiGenerator.
-	 */
-	public ApiGenerator()
-	{
-	}
-
 	/**
 	 * The command-line entry point for this class.
 	 *
@@ -88,6 +77,13 @@ public final class ApiGenerator
 	private boolean guavaEnabled;
 	private boolean exportScope;
 	private final Logger log = LoggerFactory.getLogger(ApiGenerator.class);
+
+	/**
+	 * Creates a new ApiGenerator.
+	 */
+	public ApiGenerator()
+	{
+	}
 
 	/**
 	 * Writes all API endpoints and logs the result.
