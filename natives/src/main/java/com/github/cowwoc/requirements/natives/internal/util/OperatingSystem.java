@@ -250,9 +250,8 @@ public final class OperatingSystem
 		@Override
 		public boolean equals(Object obj)
 		{
-			if (!(obj instanceof Version))
+			if (!(obj instanceof Version other))
 				return false;
-			Version other = (Version) obj;
 			return major == other.major && minor == other.minor &&
 				build == other.build && revision == other.revision;
 		}
@@ -278,8 +277,17 @@ public final class OperatingSystem
 		}
 	}
 
+	/**
+	 * The type of the operating system.
+	 */
 	public final Type type;
+	/**
+	 * The version of the operating system.
+	 */
 	public final Version version;
+	/**
+	 * The architecture of the operating system.
+	 */
 	public final Architecture architecture;
 
 	/**
@@ -311,7 +319,13 @@ public final class OperatingSystem
 	 */
 	public enum Architecture
 	{
+		/**
+		 * x86 32-bit.
+		 */
 		X86_32,
+		/**
+		 * x86 64-bit.
+		 */
 		X86_64;
 
 		private static final Reference<Architecture> DETECTED = ConcurrentLazyReference.create(() ->
@@ -355,8 +369,17 @@ public final class OperatingSystem
 	 */
 	public enum Type
 	{
+		/**
+		 * Windows.
+		 */
 		WINDOWS,
+		/**
+		 * Linux.
+		 */
 		LINUX,
+		/**
+		 * macOS.
+		 */
 		MAC;
 
 		private static final Reference<Type> DETECTED = ConcurrentLazyReference.create(() ->

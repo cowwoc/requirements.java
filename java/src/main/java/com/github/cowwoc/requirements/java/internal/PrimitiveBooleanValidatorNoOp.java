@@ -21,7 +21,7 @@ public final class PrimitiveBooleanValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public PrimitiveBooleanValidatorNoOp(List<ValidationFailure> failures)
+	PrimitiveBooleanValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.0.5-SNAPSHOT</version>
+		<version>6.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>code_generator</artifactId>
 	<packaging>jar</packaging>
@@ -35,7 +35,8 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/classes/delegates</outputDirectory>
+							<outputDirectory>${project.build.directory}/classes/com/github/cowwoc/requirements/plugins
+							</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${project.basedir}/../java/src/main/java/com/github/cowwoc/requirements/java
@@ -75,6 +76,19 @@
 								<option>summary</option>
 							</additionalOptions>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
+						<phase>none</phase>
 					</execution>
 				</executions>
 			</plugin>

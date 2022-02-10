@@ -96,6 +96,25 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	StringVerifier isNotEmpty();
 
 	/**
+	 * Ensures that the actual value is empty or contains only {@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value is not empty or contains non-white space codepoints
+	 */
+	StringVerifier isBlank();
+
+	/**
+	 * Ensures that the actual value is not empty or contains non-{@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value is empty or contains only
+	 *                                  {@link Character#isWhitespace(int) white space} codepoints
+	 */
+	StringVerifier isNotBlank();
+
+	/**
 	 * Returns a verifier for the length of the actual value.
 	 *
 	 * @return a verifier for the length of the actual value
@@ -203,4 +222,34 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 */
 	@SuppressWarnings("LongLine")
 	StringVerifier asUrl(Consumer<UrlVerifier> consumer);
+
+	/**
+	 * Returns a verifier for the Boolean representation of the value.
+	 *
+	 * @return a verifier for the Boolean representation of the value
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a Boolean
+	 */
+	BooleanVerifier asBoolean();
+
+	/**
+	 * Verifies nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asBoolean()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer verifies Booleans
+	 * @return the updated verifier
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringVerifier asBoolean(Consumer<BooleanVerifier> consumer);
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated {@code actual} is already a String
+	 */
+	@Deprecated
+	@Override
+	StringVerifier asString();
 }

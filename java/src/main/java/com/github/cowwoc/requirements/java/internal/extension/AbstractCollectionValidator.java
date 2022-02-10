@@ -4,13 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.internal.extension;
 
-import com.github.cowwoc.requirements.java.internal.ArrayValidatorNoOp;
-import com.github.cowwoc.requirements.java.internal.SizeValidatorNoOp;
-import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
-import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
-import com.github.cowwoc.requirements.java.internal.util.Sets;
-import com.github.cowwoc.requirements.java.internal.util.Strings;
 import com.github.cowwoc.requirements.java.ArrayValidator;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
@@ -18,7 +11,14 @@ import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.extension.ExtensibleCollectionValidator;
 import com.github.cowwoc.requirements.java.internal.ArrayValidatorImpl;
+import com.github.cowwoc.requirements.java.internal.ArrayValidatorNoOp;
 import com.github.cowwoc.requirements.java.internal.SizeValidatorImpl;
+import com.github.cowwoc.requirements.java.internal.SizeValidatorNoOp;
+import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
+import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements.java.internal.util.Sets;
+import com.github.cowwoc.requirements.java.internal.util.Strings;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -41,24 +41,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	private final Pluralizer pluralizer;
 
 	/**
-	 * Creates a CollectionValidatorImpl with no validation failures.
-	 *
-	 * @param scope      the application configuration
-	 * @param config     the instance configuration
-	 * @param name       the name of the value
-	 * @param actual     the actual value
-	 * @param pluralizer returns the singular or plural form of an element type
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code pluralizer} are null.
-	 *                        If {@code name} is empty.
-	 */
-	protected AbstractCollectionValidator(ApplicationScope scope, Configuration config, String name,
-	                                      C actual, Pluralizer pluralizer)
-	{
-		this(scope, config, name, actual, pluralizer, NO_FAILURES);
-	}
-
-	/**
-	 * Creates a CollectionValidatorImpl with existing validation failures.
+	 * Creates a AbstractCollectionValidator with existing validation failures.
 	 *
 	 * @param scope      the application configuration
 	 * @param config     the instance configuration
@@ -609,7 +592,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
-		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), actual, getFailures());
+		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), List.copyOf(actual), getFailures());
 	}
 
 	@Override

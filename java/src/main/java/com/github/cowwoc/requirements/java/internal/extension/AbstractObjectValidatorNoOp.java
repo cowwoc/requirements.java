@@ -6,8 +6,8 @@ package com.github.cowwoc.requirements.java.internal.extension;
 
 import com.github.cowwoc.requirements.java.StringValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.internal.StringValidatorNoOp;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
+import com.github.cowwoc.requirements.java.internal.StringValidatorNoOp;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +29,7 @@ public abstract class AbstractObjectValidatorNoOp<S, T> implements ExtensibleObj
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractObjectValidatorNoOp(List<ValidationFailure> failures)
+	protected AbstractObjectValidatorNoOp(List<ValidationFailure> failures)
 	{
 		assert (failures != null) : "failures may not be null";
 		this.failures = failures;

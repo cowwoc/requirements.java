@@ -5,6 +5,8 @@
 package com.github.cowwoc.requirements.natives.internal.terminal;
 
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -15,6 +17,8 @@ import java.io.IOException;
 @SuppressWarnings("RedundantThrows")
 public final class NativeTerminal
 {
+	private final Logger log = LoggerFactory.getLogger(NativeTerminal.class);
+
 	/**
 	 * Connects to the terminal.
 	 *

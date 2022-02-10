@@ -87,6 +87,22 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	StringValidator isNotEmpty();
 
 	/**
+	 * Ensures that the actual value is empty or contains only {@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated validator
+	 */
+	StringValidator isBlank();
+
+	/**
+	 * Ensures that the actual value is not empty or contains non-{@link Character#isWhitespace(int) white space}
+	 * codepoints.
+	 *
+	 * @return the updated validator
+	 */
+	StringValidator isNotBlank();
+
+	/**
 	 * Returns a validator for the length of the actual value.
 	 *
 	 * @return a validator for the length of the actual value
@@ -102,7 +118,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator length(Consumer<SizeValidator> consumer);
 
 	/**
@@ -138,7 +153,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asInetAddress(Consumer<InetAddressValidator> consumer);
 
 	/**
@@ -166,7 +180,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asUri(Consumer<UriValidator> consumer);
 
 	/**
@@ -187,6 +200,34 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
-	@SuppressWarnings("LongLine")
 	StringValidator asUrl(Consumer<UrlValidator> consumer);
+
+	/**
+	 * Returns a validator for the Boolean representation of the value.
+	 *
+	 * @return a validator for the Boolean representation of the value
+	 * @see Boolean#parseBoolean(String)
+	 */
+	BooleanValidator asBoolean();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asBoolean()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Booleans
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringValidator asBoolean(Consumer<BooleanValidator> consumer);
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated {@code actual} is already a String
+	 */
+	@Deprecated
+	StringValidator asString();
 }

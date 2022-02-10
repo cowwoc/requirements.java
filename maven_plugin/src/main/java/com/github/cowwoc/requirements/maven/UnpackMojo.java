@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.maven;
 
+import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
@@ -15,7 +16,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.twdata.maven.mojoexecutor.MojoExecutor;
 import org.twdata.maven.mojoexecutor.MojoExecutor.Element;
@@ -75,7 +75,7 @@ public final class UnpackMojo extends AbstractMojo
 		ExecutionEnvironment environment = MojoExecutor.executionEnvironment(project, session,
 			pluginManager);
 		Plugin dependencyPlugin = MojoExecutor.plugin("org.apache.maven.plugins",
-			"maven-dependency-plugin", "3.0.0");
+			"maven-dependency-plugin", "3.2.0");
 		MojoExecutor.executeMojo(dependencyPlugin, "unpack", configuration, environment);
 	}
 }

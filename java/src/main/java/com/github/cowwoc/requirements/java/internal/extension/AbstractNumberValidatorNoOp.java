@@ -25,7 +25,7 @@ public abstract class AbstractNumberValidatorNoOp<S, T extends Number & Comparab
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractNumberValidatorNoOp(List<ValidationFailure> failures)
+	protected AbstractNumberValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.util.Maps;
 
 import java.util.Collections;
@@ -44,7 +45,14 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	}
 
 	@Override
+	@Deprecated
 	public ThreadConfiguration putContext(String name, Object value)
+	{
+		return withContext(name, value);
+	}
+
+	@Override
+	public ThreadConfiguration withContext(String name, Object value)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
@@ -53,7 +61,14 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	}
 
 	@Override
+	@Deprecated
 	public ThreadConfiguration removeContext(String name)
+	{
+		return withoutContext(name);
+	}
+
+	@Override
+	public ThreadConfiguration withoutContext(String name)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
@@ -62,7 +77,14 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	}
 
 	@Override
+	@Deprecated
 	public ThreadConfiguration removeAllContext()
+	{
+		return withoutAnyContext();
+	}
+
+	@Override
+	public ThreadConfiguration withoutAnyContext()
 	{
 		context.clear();
 		return this;

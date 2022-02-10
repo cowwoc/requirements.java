@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
+import com.github.cowwoc.requirements.java.BooleanValidator;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.InetAddressValidator;
 import com.github.cowwoc.requirements.java.JavaRequirements;
@@ -30,21 +31,6 @@ import java.util.function.Consumer;
 public final class StringValidatorImpl extends AbstractObjectValidator<StringValidator, String>
 	implements StringValidator
 {
-	/**
-	 * Creates a StringValidatorImpl with no validation failures.
-	 *
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
-	 */
-	public StringValidatorImpl(ApplicationScope scope, Configuration config, String name, String actual)
-	{
-		this(scope, config, name, actual, NO_FAILURES);
-	}
-
 	/**
 	 * Creates a StringValidatorImpl with existing validation failures.
 	 *
@@ -108,6 +94,45 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be empty");
+			addFailure(failure);
+		}
+		return this;
+	}
+
+	@Override
+	public StringValidator isBlank()
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (!actual.isBlank())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must be empty or contain only white space codepoints.").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return this;
+	}
+
+	@Override
+	public StringValidator isNotBlank()
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (actual.isBlank())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " may not be empty or contain only white space codepoints.");
 			addFailure(failure);
 		}
 		return this;
@@ -283,6 +308,31 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
+	public BooleanValidator asBoolean()
+	{
+		if (actual == null)
+		{
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a Boolean.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
+			return new BooleanValidatorNoOp(getFailures());
+		}
+		Boolean actualBoolean = Boolean.parseBoolean(actual);
+		return new BooleanValidatorImpl(scope, config, name, actualBoolean, getFailures());
+	}
+
+	@Override
+	public StringValidator asBoolean(Consumer<BooleanValidator> consumer)
+	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
+		consumer.accept(asBoolean());
+		return this;
+	}
+
+	@Override
 	public StringValidator startsWith(String prefix)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
@@ -442,5 +492,12 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 
 		consumer.accept(length());
 		return this;
+	}
+
+	@Override
+	@Deprecated
+	public StringValidator asString()
+	{
+		return super.asString();
 	}
 }

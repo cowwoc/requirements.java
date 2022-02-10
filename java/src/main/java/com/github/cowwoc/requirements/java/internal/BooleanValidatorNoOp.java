@@ -21,7 +21,7 @@ public final class BooleanValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public BooleanValidatorNoOp(List<ValidationFailure> failures)
+	BooleanValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

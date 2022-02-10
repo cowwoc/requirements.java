@@ -4,15 +4,15 @@
  */
 package com.github.cowwoc.requirements.guava;
 
-import com.github.cowwoc.requirements.guava.internal.MultimapVerifierNoOp;
-import com.github.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;
-import com.google.common.collect.Multimap;
 import com.github.cowwoc.requirements.guava.internal.MultimapValidatorImpl;
 import com.github.cowwoc.requirements.guava.internal.MultimapVerifierImpl;
+import com.github.cowwoc.requirements.guava.internal.MultimapVerifierNoOp;
+import com.github.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Verifiers;
+import com.google.common.collect.Multimap;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -50,6 +50,9 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	 */
 	private final Configuration config;
 
+	/**
+	 * Creates a default implementation of GuavaRequirements.
+	 */
 	public DefaultGuavaRequirements()
 	{
 		this(MainApplicationScope.INSTANCE);
@@ -160,27 +163,41 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	}
 
 	@Override
+	@Deprecated
 	public GuavaRequirements putContext(String name, Object value)
 	{
-		Configuration newConfig = config.putContext(name, value);
+		return withContext(name, value);
+	}
+
+	@Override
+	public GuavaRequirements withContext(String name, Object value)
+	{
+		Configuration newConfig = config.withContext(name, value);
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
+	@Deprecated
 	public GuavaRequirements removeContext(String name)
 	{
-		Configuration newConfig = config.removeContext(name);
+		return withoutContext(name);
+	}
+
+	@Override
+	public GuavaRequirements withoutContext(String name)
+	{
+		Configuration newConfig = config.withoutContext(name);
 		if (newConfig.equals(config))
 			return this;
 		return new DefaultGuavaRequirements(scope, newConfig);
 	}
 
 	@Override
-	public String toString(Object o)
+	public String toString(Object value)
 	{
-		return config.toString(o);
+		return config.toString(value);
 	}
 
 	@Override

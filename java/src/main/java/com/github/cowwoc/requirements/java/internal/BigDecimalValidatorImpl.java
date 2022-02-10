@@ -14,6 +14,7 @@ import com.github.cowwoc.requirements.java.internal.extension.AbstractNumberVali
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -24,16 +25,18 @@ public final class BigDecimalValidatorImpl
 	implements BigDecimalValidator
 {
 	/**
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
+	 * @param scope    the application configuration
+	 * @param config   the instance configuration
+	 * @param name     the name of the value
+	 * @param actual   the actual value
+	 * @param failures the list of validation failures
+	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
+	 *                        {@code name} is empty.
 	 */
-	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration config, String name, BigDecimal actual)
+	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration config, String name, BigDecimal actual,
+	                               List<ValidationFailure> failures)
 	{
-		super(scope, config, name, actual, NO_FAILURES);
+		super(scope, config, name, actual, failures);
 	}
 
 	@Override

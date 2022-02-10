@@ -5,10 +5,10 @@
 package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.UriValidator;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.JavaRequirements;
+import com.github.cowwoc.requirements.java.UriValidator;
 import com.github.cowwoc.requirements.java.UrlValidator;
+import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
@@ -25,21 +25,6 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	implements UriValidator
 {
 	/**
-	 * Creates a UriValidatorImpl with no validation failures.
-	 *
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code config} or {@code name} are null. If {@code name} is
-	 *                        empty.
-	 */
-	public UriValidatorImpl(ApplicationScope scope, Configuration config, String name, URI actual)
-	{
-		this(scope, config, name, actual, NO_FAILURES);
-	}
-
-	/**
 	 * @param scope    the application configuration
 	 * @param config   the instance configuration
 	 * @param name     the name of the value
@@ -48,8 +33,8 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	UriValidatorImpl(ApplicationScope scope, Configuration config, String name, URI actual,
-	                 List<ValidationFailure> failures)
+	public UriValidatorImpl(ApplicationScope scope, Configuration config, String name, URI actual,
+	                        List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, failures);
 	}

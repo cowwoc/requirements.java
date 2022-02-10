@@ -6,9 +6,9 @@ package com.github.cowwoc.requirements.java.internal.extension;
 
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.extension.ExtensibleFloatingPointValidator;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.extension.ExtensibleFloatingPointValidator;
 
 import java.util.List;
 

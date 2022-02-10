@@ -22,7 +22,7 @@ public final class ObjectValidatorNoOp<T> extends AbstractObjectValidatorNoOp<Ob
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ObjectValidatorNoOp(List<ValidationFailure> failures)
+	ObjectValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

@@ -59,7 +59,7 @@ public interface Configuration
 	Configuration withoutDiff();
 
 	/**
-	 * Indicates if exception stack traces should omit references to this library.
+	 * Indicates if stack trace references to this library should be removed.
 	 *
 	 * @return {@code true} by default
 	 * @see #withCleanStackTrace()
@@ -68,7 +68,7 @@ public interface Configuration
 	boolean isCleanStackTrace();
 
 	/**
-	 * Indicates that exception stack traces should omit references to this library.
+	 * Indicates that stack trace references to this library should be removed.
 	 *
 	 * @return the updated configuration
 	 * @see #isCleanStackTrace()
@@ -76,7 +76,7 @@ public interface Configuration
 	Configuration withCleanStackTrace();
 
 	/**
-	 * Indicates that exception stack traces should contain references to this library.
+	 * Indicates that stack trace references to this library should be kept.
 	 *
 	 * @return the updated configuration
 	 * @see #isCleanStackTrace()
@@ -99,8 +99,32 @@ public interface Configuration
 	 * @param value the value of the parameter
 	 * @return the updated configuration
 	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withContext(String, Object)}
 	 */
+	@Deprecated
 	Configuration putContext(String name, Object value);
+
+	/**
+	 * Adds or updates contextual information associated with the exception message. Overrides any values
+	 * associated with the {@code name} at the {@link ThreadRequirements} level.
+	 *
+	 * @param name  the name of the parameter
+	 * @param value the value of the parameter
+	 * @return the updated configuration
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	Configuration withContext(String name, Object value);
+
+	/**
+	 * Removes contextual information associated with the exception message.
+	 *
+	 * @param name the name of the parameter
+	 * @return the updated configuration
+	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withoutContext(String)}
+	 */
+	@Deprecated
+	Configuration removeContext(String name);
 
 	/**
 	 * Removes contextual information associated with the exception message.
@@ -109,17 +133,17 @@ public interface Configuration
 	 * @return the updated configuration
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	Configuration removeContext(String name);
+	Configuration withoutContext(String name);
 
 	/**
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for
 	 * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, and {@code Path}.
 	 *
-	 * @param o an object
-	 * @return the {@code String} representation of the object
+	 * @param value a value
+	 * @return the {@code String} representation of the value
 	 * @see #withStringConverter(Class, Function)
 	 */
-	String toString(Object o);
+	String toString(Object value);
 
 	/**
 	 * Indicates that a function should be used to convert an object to a String.

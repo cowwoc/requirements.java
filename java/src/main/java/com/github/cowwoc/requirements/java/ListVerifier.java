@@ -7,6 +7,9 @@ package com.github.cowwoc.requirements.java;
 import com.github.cowwoc.requirements.java.extension.ExtensibleCollectionVerifier;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Verifies the requirements of a list.
  * <p>
@@ -15,6 +18,16 @@ import com.github.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
  * @param <L> the type of the list
  * @param <E> the type of elements in the list
  */
-public interface ListVerifier<L, E> extends ExtensibleCollectionVerifier<ListVerifier<L, E>, L, E>
+public interface ListVerifier<L extends List<E>, E>
+	extends ExtensibleCollectionVerifier<ListVerifier<L, E>, L, E>
 {
+	/**
+	 * Ensures that the actual value is sorted.
+	 *
+	 * @param comparator the comparator that defines the order of the elements
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the collection is not sorted
+	 * @see Comparator#naturalOrder()
+	 */
+	ListVerifier<L, E> isSorted(Comparator<E> comparator);
 }

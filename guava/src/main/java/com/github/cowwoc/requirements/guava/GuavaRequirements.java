@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements.guava;
 
-import com.google.common.collect.Multimap;
 import com.github.cowwoc.requirements.java.Configuration;
+import com.google.common.collect.Multimap;
 
 import java.util.function.Function;
 
@@ -17,10 +17,18 @@ import java.util.function.Function;
 public interface GuavaRequirements extends Configuration
 {
 	@Override
+	@Deprecated
 	GuavaRequirements putContext(String name, Object value);
 
 	@Override
+	GuavaRequirements withContext(String name, Object value);
+
+	@Override
+	@Deprecated
 	GuavaRequirements removeContext(String name);
+
+	@Override
+	GuavaRequirements withoutContext(String name);
 
 	@Override
 	GuavaRequirements withAssertionsDisabled();

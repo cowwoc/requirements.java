@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class JavaSecrets
 {
+	/**
+	 * The singleton instance.
+	 */
 	public static final JavaSecrets INSTANCE = new JavaSecrets();
 	private SecretRequirements secretRequirements;
 	private boolean initialized;

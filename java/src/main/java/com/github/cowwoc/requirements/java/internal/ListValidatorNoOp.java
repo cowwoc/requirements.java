@@ -11,6 +11,7 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -28,7 +29,7 @@ public final class ListValidatorNoOp<L extends List<E>, E>
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ListValidatorNoOp(List<ValidationFailure> failures)
+	ListValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}
@@ -149,6 +150,12 @@ public final class ListValidatorNoOp<L extends List<E>, E>
 
 	@Override
 	public ListValidator<L, E> doesNotContainDuplicates()
+	{
+		return this;
+	}
+
+	@Override
+	public ListValidator<L, E> isSorted(Comparator<E> comparator)
 	{
 		return this;
 	}

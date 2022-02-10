@@ -7,6 +7,7 @@ package com.github.cowwoc.requirements.java;
 import com.github.cowwoc.requirements.java.extension.ExtensibleCollectionValidator;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -20,4 +21,12 @@ import java.util.List;
 public interface ListValidator<L extends List<E>, E>
 	extends ExtensibleCollectionValidator<ListValidator<L, E>, L, E>
 {
+	/**
+	 * Ensures that the actual value is sorted.
+	 *
+	 * @param comparator the comparator that defines the order of the elements
+	 * @return the updated validator
+	 * @see Comparator#naturalOrder()
+	 */
+	ListValidator<L, E> isSorted(Comparator<E> comparator);
 }

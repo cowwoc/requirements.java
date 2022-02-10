@@ -22,7 +22,7 @@ public final class OptionalValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public OptionalValidatorNoOp(List<ValidationFailure> failures)
+	OptionalValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

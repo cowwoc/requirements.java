@@ -1,13 +1,13 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cowwoc.requirements/java/badge.svg)](https://search.maven.org/search?q=g:com.github.cowwoc.requirements)
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
+
+# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Fluent Design by Contract for Java APIs
+
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/6.0.4/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](wiki/Changelog.md)
-
 [![js](https://img.shields.io/badge/other%20languages-js-457FD5.svg)](../../../requirements.js)
 
-# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Requirements: Fluent Design by Contract for Java APIs
-
-A [fluent API](https://en.wikipedia.org/wiki/Fluent_Interface.md) for enforcing 
+A [fluent API](https://en.m.wikipedia.org/wiki/Fluent_interface) for enforcing 
 [design contracts](https://en.wikipedia.org/wiki/Design_by_contract) with 
 [automatic message generation](wiki/Features.md#automatic-message-generation).
 
@@ -49,13 +49,6 @@ For the **Javadoc**, click **api docs** at the top of this page.
 * [Fast... very fast!](wiki/Performance.md)
 
 ## Getting Started
-
-Follow these 4 steps to get started:
-
-1. Update pom.xml.
-2. Rebuild your project.
-3. Statically import `DefaultRequirements.requireThat()`.
-4. Use `requireThat()` to verify design contracts.
 
 ### Step 1: Update pom.xml
 
@@ -101,7 +94,7 @@ Follow these 4 steps to get started:
 
 The build process will generate `Requirements` and `DefaultRequirements` classes. These classes are
  dynamically generated at build-time because their functionality varies depending on which
- [modules](wiki/Supported_Libraries.md) you have enabled.
+ [modules](wiki/Supported_Libraries.md) you enable.
 
 ### Step 3: Statically import `DefaultRequirements.requireThat()`
 
@@ -140,8 +133,8 @@ The first three methods are designed to be statically imported from `DefaultRequ
 ## Best practices
 
 * Use `requireThat()` for public APIs to give users superior feedback when something goes wrong.
-* Use `assertThat()` for private APIs and to verify code assumptions. This will result in excellent performance when assertions are disabled. Have your cake and eat it too!
-* Favor `assertThat()` over `assert`. It has a slightly higher overhead, but most classes do not catch `AssertionError` so such failures do not get caught or logged.
+* Use `assertThat()` for private APIs and to verify code assumptions. This results in excellent performance when assertions are disabled. Have your cake and eat it too!
+* Prefer `assertThat()` to `assert`. It has a slightly higher overhead, but most applications fail to catch or log `AssertionError` (that is thrown by `assert`) leading to silent failures.
 
 ## 3rd-party libraries and tools
 

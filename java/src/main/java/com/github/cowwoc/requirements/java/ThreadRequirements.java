@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java;
 
 import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
-import com.github.cowwoc.requirements.java.internal.scope.ThreadConfiguration;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -20,6 +19,7 @@ public final class ThreadRequirements
 {
 	private static final Supplier<ThreadConfiguration> DELEGATE =
 		DefaultJvmScope.INSTANCE.getThreadConfiguration();
+	// TODO: Remove alongside deprecated methods
 	private static final ThreadRequirements INSTANCE = new ThreadRequirements();
 
 	/**
@@ -47,10 +47,40 @@ public final class ThreadRequirements
 	 * @param value the value of the parameter
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withContext(String, Object)}
 	 */
+	@Deprecated
 	public static ThreadRequirements putContext(String name, Object value)
 	{
-		DELEGATE.get().putContext(name, value);
+		withContext(name, value);
+		return INSTANCE;
+	}
+
+	/**
+	 * Adds or updates contextual information associated with the exception message.
+	 *
+	 * @param name  the name of the parameter
+	 * @param value the value of the parameter
+	 * @return this
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	public static ThreadConfiguration withContext(String name, Object value)
+	{
+		return DELEGATE.get().withContext(name, value);
+	}
+
+	/**
+	 * Removes contextual information associated with the exception message.
+	 *
+	 * @param name the name of the parameter
+	 * @return this
+	 * @throws NullPointerException if {@code name} is null
+	 * @deprecated Use {@link #withoutContext(String)}
+	 */
+	@Deprecated
+	public static ThreadRequirements removeContext(String name)
+	{
+		withoutContext(name);
 		return INSTANCE;
 	}
 
@@ -61,9 +91,21 @@ public final class ThreadRequirements
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	public static ThreadRequirements removeContext(String name)
+	public static ThreadConfiguration withoutContext(String name)
 	{
-		DELEGATE.get().removeContext(name);
+		return DELEGATE.get().withoutContext(name);
+	}
+
+	/**
+	 * Removes all contextual information associated with the exception message.
+	 *
+	 * @return this
+	 * @deprecated Use {@link #withoutAnyContext()}
+	 */
+	@Deprecated
+	public static ThreadRequirements removeAllContext()
+	{
+		withoutAnyContext();
 		return INSTANCE;
 	}
 
@@ -72,9 +114,8 @@ public final class ThreadRequirements
 	 *
 	 * @return this
 	 */
-	public static ThreadRequirements removeAllContext()
+	public static ThreadConfiguration withoutAnyContext()
 	{
-		DELEGATE.get().removeAllContext();
-		return INSTANCE;
+		return DELEGATE.get().withoutAnyContext();
 	}
 }

@@ -4,13 +4,15 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
-import com.github.cowwoc.requirements.java.SizeValidator;
-import com.github.cowwoc.requirements.java.StringVerifier;
-import com.github.cowwoc.requirements.java.UriValidator;
+import com.github.cowwoc.requirements.java.BooleanValidator;
+import com.github.cowwoc.requirements.java.BooleanVerifier;
 import com.github.cowwoc.requirements.java.InetAddressValidator;
 import com.github.cowwoc.requirements.java.InetAddressVerifier;
+import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.StringValidator;
+import com.github.cowwoc.requirements.java.StringVerifier;
+import com.github.cowwoc.requirements.java.UriValidator;
 import com.github.cowwoc.requirements.java.UriVerifier;
 import com.github.cowwoc.requirements.java.UrlValidator;
 import com.github.cowwoc.requirements.java.UrlVerifier;
@@ -51,6 +53,20 @@ public final class StringVerifierImpl
 	public StringVerifier isNotEmpty()
 	{
 		validator = validator.isNotEmpty();
+		return validationResult();
+	}
+
+	@Override
+	public StringVerifier isBlank()
+	{
+		validator = validator.isBlank();
+		return validationResult();
+	}
+
+	@Override
+	public StringVerifier isNotBlank()
+	{
+		validator = validator.isNotBlank();
 		return validationResult();
 	}
 
@@ -117,6 +133,22 @@ public final class StringVerifierImpl
 	}
 
 	@Override
+	public BooleanVerifier asBoolean()
+	{
+		BooleanValidator newValidator = validator.asBoolean();
+		return validationResult(() -> new BooleanVerifierImpl(newValidator));
+	}
+
+	@Override
+	public StringVerifier asBoolean(Consumer<BooleanVerifier> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asBoolean());
+		return this;
+	}
+
+	@Override
 	public StringVerifier startsWith(String prefix)
 	{
 		validator = validator.startsWith(prefix);
@@ -172,5 +204,12 @@ public final class StringVerifierImpl
 			throw new NullPointerException("consumer may not be null");
 		consumer.accept(length());
 		return this;
+	}
+
+	@Override
+	@Deprecated
+	public StringVerifier asString()
+	{
+		return super.asString();
 	}
 }

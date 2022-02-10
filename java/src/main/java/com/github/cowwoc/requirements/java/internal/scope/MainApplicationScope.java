@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -14,9 +15,21 @@ import java.util.function.Supplier;
  */
 public final class MainApplicationScope extends AbstractApplicationScope
 {
+	/**
+	 * The singleton instance.
+	 */
 	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
+	/**
+	 * The parent scope.
+	 */
 	public final JvmScope parent;
+	/**
+	 * The global configuration.
+	 */
 	public final GlobalConfiguration globalConfiguration;
+	/**
+	 * The default configuration.
+	 */
 	public final Supplier<Configuration> defaultConfigurationSupplier;
 
 	/**

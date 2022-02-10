@@ -18,7 +18,10 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.TypeParameter;
-import com.github.javaparser.printer.PrettyPrinterConfiguration;
+import com.github.javaparser.printer.configuration.DefaultConfigurationOption;
+import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration;
+import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration.ConfigOption;
+import com.github.javaparser.printer.configuration.PrinterConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +42,9 @@ import java.util.StringJoiner;
  */
 public final class ApiGenerator
 {
-	private final PrettyPrinterConfiguration defaultFormatter =
-		new PrettyPrinterConfiguration().setEndOfLineCharacter("\n");
+	private final PrinterConfiguration defaultFormatter =
+		new DefaultPrinterConfiguration().addOption(
+			new DefaultConfigurationOption(ConfigOption.END_OF_LINE_CHARACTER, "\n"));
 
 	static
 	{
@@ -73,6 +77,13 @@ public final class ApiGenerator
 	private boolean guavaEnabled;
 	private boolean exportScope;
 	private final Logger log = LoggerFactory.getLogger(ApiGenerator.class);
+
+	/**
+	 * Creates a new ApiGenerator.
+	 */
+	public ApiGenerator()
+	{
+	}
 
 	/**
 	 * Writes all API endpoints and logs the result.
@@ -159,10 +170,10 @@ public final class ApiGenerator
 			"{\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, true);
-			out.append("\tprivate static final " + topLevel.getNameAsString() + " " + delegateName +
-				" = new Default" + topLevel.getNameAsString() + "();\n ");
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, true);
+			out.append("\tprivate static final " + pluginClass.getNameAsString() + " " + delegateName +
+				" = new Default" + pluginClass.getNameAsString() + "();\n ");
 		}
 		out.append("\n" +
 			"\t/**\n" +
@@ -174,7 +185,7 @@ public final class ApiGenerator
 			"\t{\n" +
 			"\t\treturn JAVA_REQUIREMENTS.assertionsAreEnabled();\n" +
 			"\t}\n");
-		addDelegateMethods(plugins, true, out);
+		appendPluginMethods(plugins, true, out);
 		out.append("\n" +
 			"\t/**\n" +
 			"\t * Prevent construction.\n" +
@@ -209,7 +220,7 @@ public final class ApiGenerator
 		List<CompilationUnit> result = new ArrayList<>();
 		for (String plugin : plugins)
 		{
-			String path = "/delegates/" + plugin + ".java";
+			String path = "/com/github/cowwoc/requirements/plugins/" + plugin + ".java";
 			try (InputStream in = getClass().getResourceAsStream(path))
 			{
 				if (in == null)
@@ -225,20 +236,20 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * Delegates calls from a static method to an instance method.
+	 * Delegates calls to a plugin method.
 	 *
 	 * @param plugins  the list of enabled plugins
-	 * @param isStatic true if the delegates are static
+	 * @param isStatic true if the delegate field is static
 	 * @param out      the buffer to write into
 	 */
-	private void addDelegateMethods(List<CompilationUnit> plugins, boolean isStatic, StringBuilder out)
+	private void appendPluginMethods(List<CompilationUnit> plugins, boolean isStatic, StringBuilder out)
 	{
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, isStatic);
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, isStatic);
 
-			for (MethodDeclaration method : topLevel.getMethods())
+			for (MethodDeclaration method : pluginClass.getMethods())
 			{
 				switch (method.getNameAsString())
 				{
@@ -253,11 +264,28 @@ public final class ApiGenerator
 				out.append("\n");
 				method.getJavadoc().ifPresent(javadoc ->
 				{
-					String text = method.getJavadoc().get().toComment().toString(defaultFormatter);
+					StringBuilder text = new StringBuilder(method.getJavadoc().get().toComment().
+						toString(defaultFormatter));
 					// Increase indentation
-					text = "\t" + text.replace("\n", "\n\t");
+					text.insert(0, "\t");
+					int index = 0;
+					while (true)
+					{
+						index = text.indexOf("\n", index);
+						if (index == -1)
+							break;
+						++index;
+						text.insert(index, '\t');
+						++index;
+					}
+					if (text.length() > 0 && text.charAt(text.length() - 1) == '\t')
+						text.delete(text.length() - 1, text.length());
 					out.append(text);
 				});
+				// Annotations
+				if (!isStatic)
+					out.append("\t@Override\n");
+				out.append("\t@CheckReturnValue\n");
 				// Modifiers
 				method.addModifier(Keyword.PUBLIC);
 				if (isStatic)
@@ -265,7 +293,7 @@ public final class ApiGenerator
 				StringJoiner joiner = new StringJoiner(" ", "", " ");
 				for (Modifier modifier : method.getModifiers())
 					joiner.add(modifier.getKeyword().asString());
-				out.append("\t" + joiner.toString());
+				out.append("\t" + joiner);
 
 				// Type parameters
 				joiner = new StringJoiner(", ", "<", "> ");
@@ -274,13 +302,13 @@ public final class ApiGenerator
 					joiner.add(parameter.asString());
 
 				// Return type and method name
-				out.append(joiner.toString()).append(method.getType() + " " + method.getNameAsString());
+				out.append(joiner).append(method.getType() + " " + method.getNameAsString());
 
 				// Arguments
 				joiner = new StringJoiner(", ", "(", ")");
 				for (Parameter parameter : method.getParameters())
 					joiner.add(parameter.getTypeAsString() + " " + parameter.getNameAsString());
-				out.append(joiner.toString() + "\n");
+				out.append(joiner + "\n");
 
 				out.append("\t{\n");
 				out.append("\t\treturn " + delegateName + "." + method.getNameAsString() + "(actual, name);\n");
@@ -290,30 +318,30 @@ public final class ApiGenerator
 	}
 
 	/**
-	 * @param delegate the type of the delegate
-	 * @param isStatic true if the delegate is static
-	 * @return the name of the variable to delegate to
+	 * @param plugin   the type of the plugin
+	 * @param isStatic true if the delegate field is static
+	 * @return the name of the delegate field
 	 */
-	private String getDelegateName(ClassOrInterfaceDeclaration delegate, boolean isStatic)
+	private String getDelegateName(ClassOrInterfaceDeclaration plugin, boolean isStatic)
 	{
-		String topLevelName = delegate.getNameAsString();
+		String pluginName = plugin.getNameAsString();
 		if (!isStatic)
-			return Character.toLowerCase(topLevelName.charAt(0)) + topLevelName.substring(1);
-		int requirementsIndex = topLevelName.indexOf("Requirements");
-		String delegateName = topLevelName.substring(0, requirementsIndex);
+			return Character.toLowerCase(pluginName.charAt(0)) + pluginName.substring(1);
+		int requirementsIndex = pluginName.indexOf("Requirements");
+		String delegateName = pluginName.substring(0, requirementsIndex);
 		return delegateName.toUpperCase(Locale.US) + "_REQUIREMENTS";
 	}
 
 	/**
-	 * @param delegate the type of the delegate
-	 * @return a function that returns a new instance of the delegate
+	 * @param plugin the type of the plugin
+	 * @return a function that returns a new instance of the plugin
 	 */
-	private String createDelegate(ClassOrInterfaceDeclaration delegate)
+	private String createDelegate(ClassOrInterfaceDeclaration plugin)
 	{
-		String topLevelName = delegate.getNameAsString();
-		int requirementsIndex = topLevelName.indexOf("Requirements");
-		String delegateType = topLevelName.substring(0, requirementsIndex);
-		return "this." + getDelegateName(delegate, false) + " = " + delegateType + "Secrets.INSTANCE" +
+		String pluginName = plugin.getNameAsString();
+		int requirementsIndex = pluginName.indexOf("Requirements");
+		String pluginType = pluginName.substring(0, requirementsIndex);
+		return "this." + getDelegateName(plugin, false) + " = " + pluginType + "Secrets.INSTANCE" +
 			".createRequirements(scope);\n";
 	}
 
@@ -376,13 +404,14 @@ public final class ApiGenerator
 		if (guavaEnabled)
 			out.append(" * @see GuavaRequirements\n");
 		out.append(" */\n" +
-			"public final class Requirements implements Configuration\n" +
+			"public final class Requirements implements " + getInterfaces(plugins) +
+			"\n" +
 			"{\n");
-		addDelegates(plugins, out);
+		appendDelegateFields(plugins, out);
 		out.append("\n");
-		addDefaultConstructor(plugins, out);
+		appendDefaultConstructor(plugins, out);
 		out.append("\n");
-		addDelegateConstructor(plugins, out);
+		appendDelegateConstructor(plugins, out);
 		if (exportScope)
 		{
 			out.append("\n" +
@@ -397,9 +426,8 @@ public final class ApiGenerator
 				"\t\tassert (scope != null) : \"scope may not be null\";\n");
 			for (CompilationUnit plugin : plugins)
 			{
-				ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-				String delegateName = getDelegateName(topLevel, false);
-				out.append(createDelegate(topLevel));
+				ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+				out.append(createDelegate(pluginClass));
 			}
 			out.append("\t}\n");
 		}
@@ -415,9 +443,10 @@ public final class ApiGenerator
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withAssertionsEnabled()\n" +
 			"\t{\n");
-		updateConfig(plugins, "withAssertionsEnabled()", out);
+		appendConfigurationUpdate(plugins, "withAssertionsEnabled()", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
@@ -427,20 +456,24 @@ public final class ApiGenerator
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withCleanStackTrace()\n" +
 			"\t{\n");
-		updateConfig(plugins, "withCleanStackTrace()", out);
+		appendConfigurationUpdate(plugins, "withCleanStackTrace()", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withoutCleanStackTrace()\n" +
 			"\t{\n");
-		updateConfig(plugins, "withoutCleanStackTrace()", out);
+		appendConfigurationUpdate(plugins, "withoutCleanStackTrace()", out);
 		out.append("\t}\n" +
 			"\n" +
+			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withAssertionsDisabled()\n" +
 			"\t{\n");
-		updateConfig(plugins, "withAssertionsDisabled()", out);
+		appendConfigurationUpdate(plugins, "withAssertionsDisabled()", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
@@ -450,15 +483,17 @@ public final class ApiGenerator
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withDiff()\n" +
 			"\t{\n");
-		updateConfig(plugins, "withDiff()", out);
+		appendConfigurationUpdate(plugins, "withDiff()", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withoutDiff()\n" +
 			"\t{\n");
-		updateConfig(plugins, "withoutDiff()", out);
+		appendConfigurationUpdate(plugins, "withoutDiff()", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
@@ -468,74 +503,111 @@ public final class ApiGenerator
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
+			"\t@Deprecated\n" +
 			"\tpublic Requirements putContext(String name, Object value)\n" +
-			"\t{\n");
-		updateConfig(plugins, "putContext(name, value)", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\tpublic Requirements removeContext(String name)\n" +
-			"\t{\n");
-		updateConfig(plugins, "removeContext(name)", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\tpublic String toString(Object o)\n" +
 			"\t{\n" +
-			"\t\treturn javaRequirements.toString(o);\n" +
+			"\t\treturn withContext(name, value);\n" +
 			"\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
+			"\tpublic Requirements withContext(String name, Object value)\n" +
+			"\t{\n");
+		appendConfigurationUpdate(plugins, "withContext(name, value)", out);
+		out.append("\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
+			"\t@Deprecated\n" +
+			"\tpublic Requirements removeContext(String name)\n" +
+			"\t{\n" +
+			"\t\treturn withoutContext(name);\n" +
+			"\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
+			"\tpublic Requirements withoutContext(String name)\n" +
+			"\t{\n");
+		appendConfigurationUpdate(plugins, "withoutContext(name)", out);
+		out.append("\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\tpublic String toString(Object value)\n" +
+			"\t{\n" +
+			"\t\treturn javaRequirements.toString(value);\n" +
+			"\t}\n" +
+			"\n" +
+			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic <T> Requirements withStringConverter(Class<T> type, Function<T, String> converter)\n" +
 			"\t{\n");
-		updateConfig(plugins, "withStringConverter(type, converter)", out);
+		appendConfigurationUpdate(plugins, "withStringConverter(type, converter)", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic <T> Requirements withoutStringConverter(Class<T> type)\n" +
 			"\t{\n");
-		updateConfig(plugins, "withoutStringConverter(type)", out);
+		appendConfigurationUpdate(plugins, "withoutStringConverter(type)", out);
 		out.append("\t}\n" +
 			"\n" +
 			"\t@Override\n" +
+			"\t@CheckReturnValue\n" +
 			"\tpublic Requirements withConfiguration(Configuration newConfig)\n" +
 			"\t{\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
-			String newDelegateName = "new" + Character.toUpperCase(delegateName.charAt(0)) +
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
+			String newPluginInstance = "new" + Character.toUpperCase(delegateName.charAt(0)) +
 				delegateName.substring(1);
-			out.append("\t\t" + topLevel.getNameAsString() + " " + newDelegateName + " = " + delegateName +
+			out.append("\t\t" + pluginClass.getNameAsString() + " " + newPluginInstance + " = " + delegateName +
 				".withConfiguration(newConfig);\n");
 		}
 		out.append("\t\treturn new Requirements");
 		StringJoiner joiner = new StringJoiner(", ", "(", ");\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			joiner.add("new" + topLevel.getNameAsString());
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			joiner.add("new" + pluginClass.getNameAsString());
 		}
-		out.append(joiner.toString() +
+		out.append(joiner +
 			"\t}\n");
-		addDelegateMethods(plugins, false, out);
+		appendPluginMethods(plugins, false, out);
 		out.append("}\n");
 		return Generators.writeIfChanged(path, out.toString());
 	}
 
 	/**
-	 * Declares the delegate class fields.
+	 * @param plugins the list of enabled plugins
+	 * @return the interfaces to implement
+	 */
+	private String getInterfaces(List<CompilationUnit> plugins)
+	{
+		StringJoiner joiner = new StringJoiner(", ");
+		joiner.add("Configuration");
+		for (CompilationUnit plugin : plugins)
+		{
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			joiner.add(pluginClass.getNameAsString());
+		}
+		return joiner.toString();
+	}
+
+	/**
+	 * Declares instances of each plugin to delegate to.
 	 *
 	 * @param plugins the list of enabled plugins
 	 * @param out     the buffer to write into
 	 */
-	private void addDelegates(List<CompilationUnit> plugins, StringBuilder out)
+	private void appendDelegateFields(List<CompilationUnit> plugins, StringBuilder out)
 	{
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
-			out.append("\tprivate final " + topLevel.getNameAsString() + " " + delegateName + ";\n ");
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
+			out.append("\tprivate final " + pluginClass.getNameAsString() + " " + delegateName + ";\n ");
 		}
 	}
 
@@ -545,52 +617,55 @@ public final class ApiGenerator
 	 * @param plugins the list of enabled plugins
 	 * @param out     the buffer to write into
 	 */
-	private void addDefaultConstructor(List<CompilationUnit> plugins, StringBuilder out)
+	private void appendDefaultConstructor(List<CompilationUnit> plugins, StringBuilder out)
 	{
-		out.append("\tpublic Requirements()\n" +
+		out.append("\t/**\n" +
+			"\t * Creates a new instance of Requirements.\n" +
+			"\t */\n" +
+			"\tpublic Requirements()\n" +
 			"\t{\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
-			out.append("\t\tthis." + delegateName + " = new Default" + topLevel.getNameAsString() + "();\n");
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
+			out.append("\t\tthis." + delegateName + " = new Default" + pluginClass.getNameAsString() + "();\n");
 		}
 		out.append("\t}\n");
 	}
 
 	/**
-	 * Adds a constructor that accepts delegates to delegate to.
+	 * Adds a constructor that accepts instances of each plugin to delegate to.
 	 *
 	 * @param plugins the list of enabled plugins
 	 * @param out     the buffer to write into
 	 */
-	private void addDelegateConstructor(List<CompilationUnit> plugins, StringBuilder out)
+	private void appendDelegateConstructor(List<CompilationUnit> plugins, StringBuilder out)
 	{
 		out.append("\t/**\n");
-		documentDelegates(plugins, out);
+		documentDelegateConstructorParameters(plugins, out);
 		out.append("\t * @throws AssertionError if any of the arguments are null\n" +
 			"\t */\n" +
 			"\tprivate Requirements");
 		StringJoiner joiner = new StringJoiner(", ", "(", ")");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
-			joiner.add(topLevel.getNameAsString() + " " + delegateName);
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
+			joiner.add(pluginClass.getNameAsString() + " " + delegateName);
 		}
-		out.append(joiner.toString() + "\n" +
+		out.append(joiner + "\n" +
 			"\t{\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
 			out.append("\t\tassert (" + delegateName + " != null) : \"" + delegateName + " may not be null\";\n");
 		}
 		out.append("\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
 			out.append("\t\tthis." + delegateName + " = " + delegateName + ";\n");
 		}
 		out.append("\t}\n");
@@ -602,13 +677,13 @@ public final class ApiGenerator
 	 * @param plugins the list of enabled plugins
 	 * @param out     the buffer to write into
 	 */
-	private void documentDelegates(List<CompilationUnit> plugins, StringBuilder out)
+	private void documentDelegateConstructorParameters(List<CompilationUnit> plugins, StringBuilder out)
 	{
 		for (CompilationUnit plugin : plugins)
 		{
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(topLevel, false);
-			out.append("\t * @param " + delegateName + "  the " + topLevel.getNameAsString() + " instance to " +
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String parameterName = getDelegateName(pluginClass, false);
+			out.append("\t * @param " + parameterName + "  the " + pluginClass.getNameAsString() + " instance to " +
 				"delegate to\n");
 		}
 	}
@@ -620,33 +695,33 @@ public final class ApiGenerator
 	 * @param change  the method to invoke on the configuration
 	 * @param out     the buffer to write into
 	 */
-	private void updateConfig(List<CompilationUnit> plugins, String change, StringBuilder out)
+	private void appendConfigurationUpdate(List<CompilationUnit> plugins, String change, StringBuilder out)
 	{
 		CompilationUnit firstPlugin = plugins.get(0);
-		ClassOrInterfaceDeclaration topLevel = firstPlugin.getType(0).asClassOrInterfaceDeclaration();
-		String delegateName = getDelegateName(topLevel, false);
-		String newDelegateName = "new" + Character.toUpperCase(delegateName.charAt(0)) +
+		ClassOrInterfaceDeclaration pluginClass = firstPlugin.getType(0).asClassOrInterfaceDeclaration();
+		String delegateName = getDelegateName(pluginClass, false);
+		String newPluginInstance = "new" + Character.toUpperCase(delegateName.charAt(0)) +
 			delegateName.substring(1);
-		out.append("\t\t" + topLevel.getNameAsString() + " " + newDelegateName + " = " + delegateName +
+		out.append("\t\t" + pluginClass.getNameAsString() + " " + newPluginInstance + " = " + delegateName +
 			"." + change + ";\n" +
-			"\t\tif (" + newDelegateName + ".equals(" + delegateName + "))\n" +
+			"\t\tif (" + newPluginInstance + ".equals(" + delegateName + "))\n" +
 			"\t\t\treturn this;\n");
 		for (CompilationUnit plugin : plugins.subList(1, plugins.size()))
 		{
-			topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			delegateName = getDelegateName(topLevel, false);
-			newDelegateName = "new" + Character.toUpperCase(delegateName.charAt(0)) + delegateName.substring(1);
-			out.append("\t\t" + topLevel.getNameAsString() + " " + newDelegateName + " = " + delegateName +
+			pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			delegateName = getDelegateName(pluginClass, false);
+			newPluginInstance = "new" + Character.toUpperCase(delegateName.charAt(0)) + delegateName.substring(1);
+			out.append("\t\t" + pluginClass.getNameAsString() + " " + newPluginInstance + " = " + delegateName +
 				"." + change + ";\n");
 		}
 		out.append("\t\treturn new Requirements");
 		StringJoiner joiner = new StringJoiner(", ", "(", ");\n");
 		for (CompilationUnit plugin : plugins)
 		{
-			topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
-			joiner.add("new" + topLevel.getNameAsString());
+			pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			joiner.add("new" + pluginClass.getNameAsString());
 		}
-		out.append(joiner.toString());
+		out.append(joiner);
 	}
 
 	/**
@@ -683,6 +758,7 @@ public final class ApiGenerator
 	{
 		Set<String> namesImported = new HashSet<>();
 		boolean addNewline = false;
+		out.append("import com.github.cowwoc.requirements.annotation.CheckReturnValue;\n");
 		for (CompilationUnit plugin : plugins)
 		{
 			if (addNewline)
@@ -698,11 +774,11 @@ public final class ApiGenerator
 					addNewline = true;
 				}
 			}
-			ClassOrInterfaceDeclaration topLevel = plugin.getType(0).asClassOrInterfaceDeclaration();
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
 			String packageName = plugin.getPackageDeclaration().map(PackageDeclaration::getNameAsString).
 				orElse("");
 
-			for (MethodDeclaration method : topLevel.getMethods())
+			for (MethodDeclaration method : pluginClass.getMethods())
 			{
 				String type = method.getType().asClassOrInterfaceType().getName().asString();
 				if (!namesImported.add(type))
@@ -712,14 +788,14 @@ public final class ApiGenerator
 			}
 
 			// e.g. DefaultJavaRequirements, DefaultGuavaRequirements
-			String defaultImplementationOfDelegate = "Default" + topLevel.getNameAsString();
-			if (namesImported.add(defaultImplementationOfDelegate))
+			String defaultImplementationOfPlugin = "Default" + pluginClass.getNameAsString();
+			if (namesImported.add(defaultImplementationOfPlugin))
 			{
-				out.append("import " + packageName + "." + defaultImplementationOfDelegate + ";\n");
+				out.append("import " + packageName + "." + defaultImplementationOfPlugin + ";\n");
 				addNewline = true;
 			}
 
-			for (ClassOrInterfaceType extendedType : topLevel.getExtendedTypes())
+			for (ClassOrInterfaceType extendedType : pluginClass.getExtendedTypes())
 			{
 				String type = extendedType.getNameAsString();
 				if (namesImported.add(type))
@@ -741,7 +817,6 @@ public final class ApiGenerator
 	 */
 	private String fullyQualifiedType(String type, String packageName)
 	{
-		String fullyQualifiedType;
 		if (type.contains("."))
 			return type;
 		return packageName + "." + type;

@@ -2,13 +2,13 @@
 <configuration debug="false">
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<!-- %ex is a workaround for https://bz.apache.org/netbeans/show_bug.cgi?id=183938 -->
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %class{}.%method\(\) - %msg%n%ex</pattern>
 		</encoder>
 	</appender>
 	<root level="debug">
 		<appender-ref ref="stdout"/>
 	</root>
+	<logger name="org.testng" level="warn"/>
 	<logger name="com.github.cowwoc.requirements.java.internal.util.Exceptions" level="warn"/>
-	<logger name="com.github.cowwoc.requirements.java.internal.terminal.Terminal" level="warn"/>
+	<logger name="com.github.cowwoc.requirements.java.internal.terminal.Terminal" level="debug"/>
 </configuration>

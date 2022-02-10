@@ -33,7 +33,7 @@ public final class MultimapValidatorNoOp<K, V>
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public MultimapValidatorNoOp(List<ValidationFailure> failures)
+	MultimapValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

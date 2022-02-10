@@ -24,7 +24,7 @@ public final class UrlValidatorNoOp extends AbstractObjectValidatorNoOp<UrlValid
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public UrlValidatorNoOp(List<ValidationFailure> failures)
+	UrlValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

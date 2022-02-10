@@ -25,7 +25,7 @@ public abstract class AbstractFloatingPointValidatorNoOp<S, T extends Number & C
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public AbstractFloatingPointValidatorNoOp(List<ValidationFailure> failures)
+	protected AbstractFloatingPointValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

@@ -63,6 +63,13 @@ public final class ExceptionOptimizer
 	private final Logger log = LoggerFactory.getLogger(ExceptionOptimizer.class);
 
 	/**
+	 * Creates a new ExceptionOptimizer.
+	 */
+	public ExceptionOptimizer()
+	{
+	}
+
+	/**
 	 * Writes an exception wrapper and logs the result.
 	 *
 	 * @param directory the directory to generate files into
@@ -140,7 +147,7 @@ public final class ExceptionOptimizer
 				" */\n" +
 				"package " + wrapperPackageName + ";\n" +
 				"\n");
-			writer.write("import com.github.cowwoc.requirements.annotations.OptimizedException;\n" +
+			writer.write("import com.github.cowwoc.requirements.annotation.OptimizedException;\n" +
 				"import com.github.cowwoc.requirements.java.GlobalRequirements;\n" +
 				"import com.github.cowwoc.requirements.java.internal.util.Exceptions;\n" +
 				"\n" +
@@ -161,8 +168,14 @@ public final class ExceptionOptimizer
 				"public final class " + wrapperSimpleName + " extends " + exceptionSimpleName + "\n" +
 				"{\n" +
 				"\tprivate static final long serialVersionUID = 0L;\n" +
+				"\t/**\n" +
+				"\t * An instance of {@code Exceptions}.\n" +
+				"\t */\n" +
 				"\tprivate final Exceptions exceptions;\n" +
-				"\tprivate boolean filtered;\n" +
+				"\t/**\n" +
+				"\t * Indicates if stack trace references to this library have already been removed.\n" +
+				"\t */\n" +
+				"\tprivate boolean cleanedStackTrace;\n" +
 				"\n" +
 				"\t/**\n" +
 				"\t * @param exceptions an instance of {@link Exceptions}\n" +
@@ -231,17 +244,17 @@ public final class ExceptionOptimizer
 				"\t}\n" +
 				"\n" +
 				"\t/**\n" +
-				"\t * Removes references to this library from the exception stack trace.\n" +
+				"\t * Removes stack trace references to this library.\n" +
 				"\t */\n" +
 				"\tprivate synchronized void cleanStackTrace()\n" +
 				"\t{\n" +
-				"\t\tif (filtered)\n" +
+				"\t\tif (cleanedStackTrace)\n" +
 				"\t\t\treturn;\n" +
 				"\t\tStackTraceElement[] stackTrace = super.getStackTrace();\n" +
 				"\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);\n" +
 				"\t\tif (newStackTrace != stackTrace)\n" +
 				"\t\t\tsetStackTrace(newStackTrace);\n" +
-				"\t\tfiltered = true;\n" +
+				"\t\tcleanedStackTrace = true;\n" +
 				"\t}\n" +
 				"}\n");
 			// There is no easy way to override writeObject(ObjectOutputStream) so we don't try to

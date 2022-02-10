@@ -13,6 +13,7 @@ import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -171,6 +172,13 @@ public final class ListVerifierImpl<L extends List<E>, E>
 	public ListVerifier<L, E> doesNotContainDuplicates()
 	{
 		validator.doesNotContainDuplicates();
+		return validationResult();
+	}
+
+	@Override
+	public ListVerifier<L, E> isSorted(Comparator<E> comparator)
+	{
+		validator.isSorted(comparator);
 		return validationResult();
 	}
 

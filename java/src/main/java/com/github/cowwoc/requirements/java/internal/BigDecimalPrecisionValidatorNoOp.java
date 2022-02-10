@@ -21,7 +21,7 @@ public final class BigDecimalPrecisionValidatorNoOp
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public BigDecimalPrecisionValidatorNoOp(List<ValidationFailure> failures)
+	BigDecimalPrecisionValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

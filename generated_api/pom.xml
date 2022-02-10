@@ -5,12 +5,30 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.0.5-SNAPSHOT</version>
+		<version>6.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>generated_api</artifactId>
 	<packaging>jar</packaging>
 
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+	</dependencies>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>${project.groupId}</groupId>
+					<artifactId>maven_plugin</artifactId>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>${project.groupId}</groupId>
@@ -57,16 +75,19 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-	</dependencies>
 </project>

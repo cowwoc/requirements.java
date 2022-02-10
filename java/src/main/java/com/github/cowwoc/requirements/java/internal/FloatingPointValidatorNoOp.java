@@ -23,7 +23,7 @@ public final class FloatingPointValidatorNoOp<T extends Number & Comparable<? su
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public FloatingPointValidatorNoOp(List<ValidationFailure> failures)
+	FloatingPointValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

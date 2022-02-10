@@ -31,7 +31,7 @@ public final class MapValidatorNoOp<K, V>
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public MapValidatorNoOp(List<ValidationFailure> failures)
+	MapValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

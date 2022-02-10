@@ -9,6 +9,9 @@ package com.github.cowwoc.requirements.java.internal.util;
  */
 public enum Pluralizer
 {
+	/**
+	 * The names of one or more characters.
+	 */
 	CHARACTER
 	{
 		@Override
@@ -19,6 +22,9 @@ public enum Pluralizer
 			return "characters";
 		}
 	},
+	/**
+	 * The names of one or more keys.
+	 */
 	KEY
 	{
 		@Override
@@ -29,6 +35,9 @@ public enum Pluralizer
 			return "keys";
 		}
 	},
+	/**
+	 * The names of one or more values.
+	 */
 	VALUE
 	{
 		@Override
@@ -39,6 +48,9 @@ public enum Pluralizer
 			return "values";
 		}
 	},
+	/**
+	 * The names of one or more entries.
+	 */
 	ENTRY
 	{
 		@Override
@@ -49,6 +61,9 @@ public enum Pluralizer
 			return "entries";
 		}
 	},
+	/**
+	 * The names of one or more elements.
+	 */
 	ELEMENT
 	{
 		@Override

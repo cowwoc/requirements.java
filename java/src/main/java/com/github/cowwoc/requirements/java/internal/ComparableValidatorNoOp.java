@@ -23,7 +23,7 @@ public final class ComparableValidatorNoOp<T extends Comparable<? super T>>
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ComparableValidatorNoOp(List<ValidationFailure> failures)
+	ComparableValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

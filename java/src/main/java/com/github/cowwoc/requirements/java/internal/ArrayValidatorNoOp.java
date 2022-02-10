@@ -6,11 +6,13 @@ package com.github.cowwoc.requirements.java.internal;
 
 import com.github.cowwoc.requirements.java.ArrayValidator;
 import com.github.cowwoc.requirements.java.CollectionValidator;
+import com.github.cowwoc.requirements.java.ListValidator;
 import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidatorNoOp;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -153,6 +155,12 @@ public final class ArrayValidatorNoOp<A, E> extends AbstractObjectValidatorNoOp<
 	}
 
 	@Override
+	public ArrayValidator<A, E> isSorted(Comparator<E> comparator)
+	{
+		return this;
+	}
+
+	@Override
 	public SizeValidator length()
 	{
 		return new SizeValidatorNoOp(failures);
@@ -174,6 +182,20 @@ public final class ArrayValidatorNoOp<A, E> extends AbstractObjectValidatorNoOp<
 
 	@Override
 	public ArrayValidator<A, E> asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		return this;
+	}
+
+	@Override
+	public ListValidator<List<E>, E> asList()
+	{
+		return new ListValidatorNoOp<>(failures);
+	}
+
+	@Override
+	public ArrayValidator<A, E> asList(Consumer<ListValidator<List<E>, E>> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

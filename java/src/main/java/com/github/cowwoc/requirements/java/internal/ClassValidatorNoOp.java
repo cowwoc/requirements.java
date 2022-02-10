@@ -23,7 +23,7 @@ public final class ClassValidatorNoOp<T>
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public ClassValidatorNoOp(List<ValidationFailure> failures)
+	ClassValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

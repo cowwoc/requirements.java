@@ -29,8 +29,8 @@ public final class BigDecimalScaleValidatorImpl
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is empty.
 	 */
-	public BigDecimalScaleValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                    BigDecimal actual, List<ValidationFailure> failures)
+	BigDecimalScaleValidatorImpl(ApplicationScope scope, Configuration config, String name, BigDecimal actual,
+	                             List<ValidationFailure> failures)
 	{
 		super(scope, config, name + ".scale()", actual.scale(), failures);
 	}

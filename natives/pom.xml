@@ -5,11 +5,30 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.0.5-SNAPSHOT</version>
+		<version>6.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>natives</artifactId>
 	<packaging>jar</packaging>
 	<description>Native component of the Requirements API.</description>
+
+	<properties>
+		<classifier>${platform}</classifier>
+		<cmake.version>3.16.3-b2</cmake.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.github.cowwoc.pouch</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -145,19 +164,22 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<classifier>${platform}</classifier>
-		<cmake.version>3.16.3-b2</cmake.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.github.cowwoc.pouch</groupId>
-			<artifactId>core</artifactId>
-			<version>${pouch.version}</version>
-		</dependency>
-	</dependencies>
+
 	<profiles>
 		<profile>
 			<id>windows-x86_64-debug</id>

@@ -26,21 +26,6 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	implements PathValidator
 {
 	/**
-	 * Creates a new PathValidatorImpl with no validation failures.
-	 *
-	 * @param scope  the application configuration
-	 * @param config the instance configuration
-	 * @param name   the name of the value
-	 * @param actual the actual value
-	 * @throws AssertionError if {@code scope}, {@code name} or {@code config} are null. If {@code name} is
-	 *                        empty.
-	 */
-	public PathValidatorImpl(ApplicationScope scope, Configuration config, String name, Path actual)
-	{
-		this(scope, config, name, actual, NO_FAILURES);
-	}
-
-	/**
 	 * Creates a new PathValidatorImpl with existing validation failures.
 	 *
 	 * @param scope    the application configuration

@@ -22,6 +22,9 @@ public interface ApplicationScope extends JvmScope
 	 */
 	Supplier<Configuration> getDefaultConfiguration();
 
+	/**
+	 * @return an instance of {@code Exceptions}
+	 */
 	Exceptions getExceptions();
 
 	/**

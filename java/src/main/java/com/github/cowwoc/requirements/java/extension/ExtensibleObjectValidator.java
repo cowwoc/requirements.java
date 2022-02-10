@@ -22,7 +22,7 @@ public interface ExtensibleObjectValidator<S, T>
 	/**
 	 * Indicates if the actual value is available.
 	 *
-	 * @return false if the value was converted to an incompatible type
+	 * @return true unless the actual value was converted to an incompatible type
 	 */
 	boolean isActualAvailable();
 

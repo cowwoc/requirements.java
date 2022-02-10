@@ -23,7 +23,7 @@ public final class PrimitiveIntegerValidatorNoOp<T extends Number & Comparable<?
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code failures} is null
 	 */
-	public PrimitiveIntegerValidatorNoOp(List<ValidationFailure> failures)
+	PrimitiveIntegerValidatorNoOp(List<ValidationFailure> failures)
 	{
 		super(failures);
 	}

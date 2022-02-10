@@ -30,7 +30,10 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectValidator<S, T>
 {
-	protected static final List<ValidationFailure> NO_FAILURES = Collections.emptyList();
+	/**
+	 * An empty list of failures.
+	 */
+	public static final List<ValidationFailure> NO_FAILURES = Collections.emptyList();
 	protected final ApplicationScope scope;
 	protected final Configuration config;
 	protected String name;

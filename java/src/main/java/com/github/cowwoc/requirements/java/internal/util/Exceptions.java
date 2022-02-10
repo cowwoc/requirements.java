@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal.util;
 
-import com.github.cowwoc.requirements.annotations.OptimizedException;
+import com.github.cowwoc.requirements.annotation.OptimizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,7 +105,7 @@ public final class Exceptions
 	 * @param type            the type of the exception
 	 * @param message         an explanation of what went wrong
 	 * @param cause           the cause of the exception ({@code null} if absent)
-	 * @param cleanStackTrace true if stack traces should omit references to this library
+	 * @param cleanStackTrace true if stack trace references to this library should be removed
 	 * @return the exception
 	 * @throws AssertionError if {@code type} is null
 	 */
@@ -209,7 +209,7 @@ public final class Exceptions
 	/**
 	 * @param type            the type of the exception
 	 * @param withCause       true if the constructor takes an exception cause
-	 * @param cleanStackTrace true if stack traces should omit references to this library
+	 * @param cleanStackTrace true if stack trace references to this library should be removed
 	 * @return the constructor of the exception
 	 * @throws Throwable if an error occurs
 	 */
