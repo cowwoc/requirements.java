@@ -51,6 +51,10 @@ public final class ApiGenerator
 		SharedSecrets.INSTANCE.secretApiGenerator = ApiGenerator::exportScope;
 	}
 
+	public ApiGenerator()
+	{
+	}
+
 	/**
 	 * Creates a new ApiGenerator.
 	 */

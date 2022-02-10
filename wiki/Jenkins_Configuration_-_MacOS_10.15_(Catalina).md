@@ -3,6 +3,17 @@
        see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
     2. If you are using VMWare Workstation 15.5 or higher
        see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
+        1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong
+           entry will get selected on bootup and make it seem as if the installation had crashed when it had
+           not.
+        2. Go into VMware BIOS.
+        3. Enter setup
+        4. Configure boot options
+        5. Add boot option
+        6. and edit boot order.
+        7. Add new boot option.
+        8. Choose EFI, OC, Bootstrap, Bootstrap.efi and finally confirm.
+        9. Remove all other entries.
 2. Create a bootable USB or ISO
     1. Bootable
        USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
@@ -33,11 +44,13 @@
     6. Finish
     7. Right click on the created VM, Settings
         1. Processors = 1
-        2. Number of cores per processor = `<the number of cores your computer has, minus one>`
-        3. Network adapter = Bridged, replicate physical network connection state.
-        4. In the options tab, VMWare Tools, Check "Synchronize guest time with host" and "Update
+        2. Number of cores per processor = `<the number of cores your computer has>`
+            1. If using AMD, value must match `<core count>` referenced
+               by https://dortania.github.io/OpenCore-Install-Guide/AMD/zen.html#kernel
+        4. Network adapter = Bridged, replicate physical network connection state.
+        5. In the options tab, VMWare Tools, Check "Synchronize guest time with host" and "Update
            automatically"
-        5. Okay
+        6. Okay
     8. Locate the VMX file on disk by hovering the mouse over the machine name
     9. Open the VMX file in a text editor.
     10. Add **smc.version = "0"** to avoid a core dump.
@@ -53,17 +66,19 @@
 8. Select "VMWare Virtual SATA Hard Drive Media"
 9. Select "Erase"
     1. Name = "MacOS"
-    2. Select "Erase"
+    2. Format = "APFS"
+    3. Select "Erase"
 10. Quit Disk Utility
-11. Select "MacOS"
-12. Click "Continue"
-13. You can safely disable most features; however, you will need to provide an Apple ID in order to use the
+11. Select "Reinstall macOS"
+12. Select "MacOS"
+13. Click "Continue"
+14. You can safely disable most features; however, you will need to provide an Apple ID in order to use the
     App Store.
-14. Set "Full name, Account name, Password, Verify" fields to "builds"
-15. Click "I finished installing".
-16. Install VMWare Tools and reboot.
-17. Log into the system.
-18. Run:
+15. Set "Full name, Account name, Password, Verify" fields to "builds"
+16. Click "I finished installing".
+17. Install VMWare Tools and reboot.
+18. Log into the system.
+19. Run:
 
     	# Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
     	sudo dscl . append /Groups/_developer GroupMembership builds
@@ -89,10 +104,22 @@
     	# Enable ssh server: https://apple.stackexchange.com/a/302606/21181
     	sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
-    	# Enable password authentication for ssh
+    	# Disable password authentication for ssh
     	sudo tee -a /etc/ssh/sshd_config <<EOF
-    	PasswordAuthentication yes
+    	PasswordAuthentication no
     	EOF
+    	
+    	# Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
+    	mkdir -p ~/.ssh
+    	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+    	# Enable private-key authentication for ssh: https://askubuntu.com/a/306832/23678
+    	sudo chmod 700 ~/.ssh
+    	sudo tee -a ~/.ssh/authorized_keys <<EOF
+    	<paste your RSA public key here>
+    	EOF
+    	sudo chmod 600 ~/.ssh/authorized_keys
+    	sudo chown -R "$(id -un):$(id -gn)" ~/.ssh
 
     	# Install all software updates
     	softwareupdate --install --all
@@ -101,10 +128,6 @@
     	brew tap xfreebird/utils
     	brew install kcpassword
     	enable_autologin "builds" "builds"
-
-    	# Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
-    	mkdir -p ~/.ssh
-    	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 19. Copy GPG private key (used for signing releases) into guest, and run:
     `gpg --import private.key`
