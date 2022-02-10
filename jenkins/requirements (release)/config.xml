@@ -1,5 +1,5 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@1145.v7f2433caa07f">
+<flow-definition plugin="workflow-job@1167.v8fe861b_09ef9">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -98,7 +98,7 @@ node(&quot;linux&quot;)
         {
             // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
-            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;${branch}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
+            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;${branch}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
         }
     }
     timeout(10)
@@ -116,7 +116,7 @@ node(&quot;linux&quot;)
                 {
                     echo &quot;Tagging release as release-&quot; + releaseVersion
                     // SSH authentication: https://www.jenkins.io/blog/2020/04/16/github-app-authentication/
-                    withCredentials([usernamePassword(credentialsId: &quot;github-cmake-maven-project&quot;, usernameVariable: &quot;GITHUB_APP&quot;, passwordVariable: &quot;GITHUB_ACCESS_TOKEN&quot;)])
+                    withCredentials([usernamePassword(credentialsId: &quot;jenkins&quot;, usernameVariable: &quot;GITHUB_APP&quot;, passwordVariable: &quot;GITHUB_ACCESS_TOKEN&quot;)])
                     {
                         def authenticatedRepository = &apos;https://${GITHUB_APP}:${GITHUB_ACCESS_TOKEN}@&apos; + unauthenticatedRepository
                         sh script: &quot;&quot;&quot;git config user.email ${userEmail}
@@ -159,7 +159,7 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
                 }
             }
             timeout(40)
@@ -191,7 +191,7 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
                 }
             }
             timeout(40)
@@ -218,7 +218,7 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
                 }
             }
             timeout(40)
@@ -252,7 +252,7 @@ catch (e)
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
                 }
             }
             timeout(5)
@@ -280,7 +280,7 @@ node(&quot;linux&quot;)
         {
             // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
-            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
+            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
         }
     }
     timeout(10)
