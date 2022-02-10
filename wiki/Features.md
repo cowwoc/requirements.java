@@ -28,24 +28,24 @@ number: 1234567
 Not only do we provide you with the actual and expected values, we also provide a diff whenever possible.
 
 ```java
-List<Integer> actual = Arrays.asList(2, 3, 4, 6);
-List<Integer> expected = Arrays.asList(1, 3, 5);
+List<Integer> actual=Arrays.asList(2,3,4,6);
+	List<Integer> expected=Arrays.asList(1,3,5);
 
 // Guava
-Preconditions.checkArgument(actual.containsAll(expected), "actual must contain %s", expected);
+	Preconditions.checkArgument(actual.containsAll(expected),"actual must contain %s",expected);
 
-java.lang.IllegalArgumentException: actual must contain [1, 3, 5]
+	java.lang.IllegalArgumentException:actual must contain[1,3,5]
 	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
 	at Main.guava3(Main.java:95)
 	at Main.run(Main.java:129)
 	at Main.main(Main.java:137)
 
 // This API
-requireThat(actual, "actual").containsAll(expected);
+	requireThat(actual,"actual").containsAll(expected);
 
-java.lang.IllegalArgumentException: actual must contain all elements in: [1, 3, 5]
-Actual : [2, 3, 4, 6]
-Missing: [1, 5]
+	java.lang.IllegalArgumentException:actual must contain all elements in:[1,3,5]
+	Actual:[2,3,4,6]
+	Missing:[1,5]
 	at Main.requirements3(Main.java:106)
 	at Main.run(Main.java:131)
 	at Main.main(Main.java:137)
@@ -71,9 +71,13 @@ java.lang.NullPointerException: actual may not be null
 
 ## Assertion support
 
-All verifiers allocate memory which is especially hard to justify given that most checks are never going to fail. If you need to run in a high-performance, zero allocation environment (to reduce latency and jitter) look no further than `DefaultRequirements.assertThat()`.
+All verifiers allocate memory which is especially hard to justify given that most checks are never going to
+fail. If you need to run in a high-performance, zero allocation environment (to reduce latency and jitter)
+look no further than `DefaultRequirements.assertThat()`.
 
-`assertThat()` skips verification if assertions are disabled. `DefaultRequirements` might be less flexible than `Requirements` but it only allocates `Requirements` once per application. Together, they guarantee high performance and no allocations if assertions are disabled.
+`assertThat()` skips verification if assertions are disabled. `DefaultRequirements` might be less flexible
+than `Requirements` but it only allocates `Requirements` once per application. Together, they guarantee high
+performance and no allocations if assertions are disabled.
 
 ## Multiple validation errors
 
@@ -99,7 +103,10 @@ province must be one of [Ontario, Quebec, Nova Scotia, New Brunswick, Manitoba, 
 
 ## Grouping nested requirements
 
-Some classes provide a mechanism for grouping nested requirements. For example, `MapVerifier` has methods `keySet()` and `keySet(Consumer<CollectionVerifier>>)`, `values()` and `values(Consumer<CollectionVerifier>>`. This enables one to group requirements that share the same parent. For example:
+Some classes provide a mechanism for grouping nested requirements. For example, `MapVerifier` has
+methods `keySet()` and `keySet(Consumer<CollectionVerifier>>)`, `values()`
+and `values(Consumer<CollectionVerifier>>`. This enables one to group requirements that share the same parent.
+For example:
 
 ```java
 
@@ -123,11 +130,14 @@ requireThat(nameToAge, "nameToAge").isNotNull().
 
 ## String diff
 
-When a [String comparison](https://cowwoc.github.io/requirements.java/6.0.4/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object)) fails, the library outputs a [diff](String_Diff.md) of the values being compared.
+When
+a [String comparison](https://cowwoc.github.io/requirements.java/6.1.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
+fails, the library outputs a [diff](String_Diff.md) of the values being compared.
 
 ![colored-diff-example4.png](colored-diff-example4.png)
 
-On some platforms, this feature can only be unlocked by [deploying native libraries](Deploying_Native_Libraries.md).
+On some platforms, this feature can only be unlocked
+by [deploying native libraries](Deploying_Native_Libraries.md).
 
 ## Getting the actual value
 
