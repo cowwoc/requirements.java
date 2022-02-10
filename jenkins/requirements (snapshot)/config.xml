@@ -81,12 +81,12 @@ parallel linux:
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;*/${branch}&apos;]], browser: [$class: &apos;GithubWeb&apos;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &apos;MessageExclusion&apos;, excludedMessage: &apos;^\\[jenkins\\]&apos;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &apos;jenkins&apos;, url: repository]]])
+                checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
             }
         }
         timeout(40)
         {
-            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (linux)&quot;)
                 {
@@ -98,7 +98,7 @@ parallel linux:
                     // export CXX=/usr/bin/g++-6
                     sh script: &quot;&quot;&quot;mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                         mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
-                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &apos;**/target/test-classes/**&apos;
+                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                 }
             }
         }
@@ -113,19 +113,19 @@ parallel linux:
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;*/${branch}&apos;]], browser: [$class: &apos;GithubWeb&apos;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: &apos;jgit&apos;, submoduleCfg: [], userRemoteConfigs: [[credentialsId: &apos;jenkins&apos;, url: repository]]])
+                checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: &quot;jgit&quot;, submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
             }
         }
         timeout(40)
         {
             // gpg resides in /usr/local/bin
-            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
             {
 			          stage(&quot;Deploy (mac)&quot;)
                 {
                     sh script: &quot;&quot;&quot;mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                         mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
-                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;, excludes: &apos;**/target/test-classes/**&apos;
+                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                 }
             }
         }
@@ -140,18 +140,18 @@ parallel linux:
             {
                 // Wipe out local repository in case it contains extra commits from a previous (broken) build
                 deleteDir()
-                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;*/${branch}&apos;]], browser: [$class: &apos;GithubWeb&apos;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &apos;MessageExclusion&apos;, excludedMessage: &apos;^\\[jenkins\\]&apos;]], gitTool: &apos;jgit&apos;, submoduleCfg: [], userRemoteConfigs: [[credentialsId: &apos;jenkins&apos;, url: repository]]])
+                checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], gitTool: &quot;jgit&quot;, submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
             }
         }
         timeout(40)
         {
-            withEnv([&quot;JAVA_HOME=${ tool &apos;JAVA_HOME&apos; }&quot;, &quot;PATH+MAVEN=${tool &apos;Maven&apos;}/bin;${env.JAVA_HOME}/bin&quot;])
+            withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin;${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (windows)&quot;)
                 {
                     bat script: &quot;&quot;&quot;call mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                         call mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
-                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;, excludes: &apos;**/target/test-classes/**&apos;
+                    archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                 }
             }
         }

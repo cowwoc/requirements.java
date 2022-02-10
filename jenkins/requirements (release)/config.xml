@@ -67,7 +67,7 @@
 //
 // GCC outputs dynamically-linked libraries that depend on specific versions of the glibc library.
 // https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html lists which GLIBCXX version ships with each version of GCC.
-// As of 2017-03-09, AWS linux images ship with GCC 6.4: https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/
+// As of 2022-02-07, AWS linux images ship with GCC 11.2.1: https://docs.aws.amazon.com/linux/al2022/release-notes/all-packages-al2022.html
 // Therefore, we must use this version of GCC or older.
 //
 // Using a newer version of GCC results in the following kind of error:
@@ -98,12 +98,12 @@ node(&quot;linux&quot;)
         {
             // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
-            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;${branch}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
+            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;*/${branch}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;${branch}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
         }
     }
     timeout(10)
     {
-        withEnv([&quot;JAVA_HOME=${tool &quot;JAVA_HOME&quot;}&quot;, &quot;GIT_HOME=${tool &quot;git&quot;}&quot;, &quot;PATH+MAVEN+GIT=${tool &quot;Maven&quot;}/bin:${tool &quot;git&quot;}:${env.JAVA_HOME}/bin&quot;])
+        withEnv([&quot;JAVA_HOME=${tool &quot;JDK17_HOME&quot;}&quot;, &quot;GIT_HOME=${tool &quot;git&quot;}&quot;, &quot;PATH+MAVEN+GIT=${tool &quot;Maven&quot;}/bin:${tool &quot;git&quot;}:${env.JAVA_HOME}/bin&quot;])
         {
             stage(&quot;Tag release&quot;)
             {
@@ -116,7 +116,7 @@ node(&quot;linux&quot;)
                 {
                     echo &quot;Tagging release as release-&quot; + releaseVersion
                     // SSH authentication: https://www.jenkins.io/blog/2020/04/16/github-app-authentication/
-                    withCredentials([usernamePassword(credentialsId: &quot;jenkins&quot;, usernameVariable: &quot;GITHUB_APP&quot;, passwordVariable: &quot;GITHUB_ACCESS_TOKEN&quot;)])
+                    withCredentials([usernamePassword(credentialsId: &quot;github-cowwoc&quot;, usernameVariable: &quot;GITHUB_APP&quot;, passwordVariable: &quot;GITHUB_ACCESS_TOKEN&quot;)])
                     {
                         def authenticatedRepository = &apos;https://${GITHUB_APP}:${GITHUB_ACCESS_TOKEN}@&apos; + unauthenticatedRepository
                         sh script: &quot;&quot;&quot;git config user.email ${userEmail}
@@ -159,13 +159,13 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
                 }
             }
             timeout(40)
             {
                 // gpg resides in /usr/local/bin
-                withEnv([&quot;JAVA_HOME=${ tool &quot;JAVA_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
                 {
                     stage(&quot;Deploy (linux)&quot;)
                     {
@@ -191,13 +191,13 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
                 }
             }
             timeout(40)
             {
                 // gpg resides in /usr/local/bin
-                withEnv([&quot;JAVA_HOME=${ tool &quot;JAVA_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin:/usr/local/bin&quot;])
                 {
                     stage(&quot;Deploy (mac)&quot;)
                     {
@@ -218,13 +218,13 @@ try
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
                 }
             }
             timeout(40)
             {
                 // Windows needs a longer timeout due to Windows Defender (antivirus) slowing things down
-                withEnv([&quot;JAVA_HOME=${ tool &quot;JAVA_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin;${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin;${env.JAVA_HOME}/bin&quot;])
                 {
                     stage(&quot;Deploy (windows)&quot;)
                     {
@@ -252,12 +252,12 @@ catch (e)
                 {
                     // Wipe out local repository in case it contains extra commits from a previous (broken) build
                     deleteDir()
-                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
+                    checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
                 }
             }
             timeout(5)
             {
-                withEnv([&quot;JAVA_HOME=${ tool &quot;JAVA_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
+                withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
                     sh script: &quot;mvn --batch-mode -e -V -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-drop&quot;
                 }
@@ -280,12 +280,12 @@ node(&quot;linux&quot;)
         {
             // Wipe out local repository in case it contains extra commits from a previous (broken) build
             deleteDir()
-            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;jenkins&quot;, url: repository]]])
+            checkout([$class: &quot;GitSCM&quot;, branches: [[name: &quot;refs/tags/release-${releaseVersion}&quot;]], browser: [$class: &quot;GithubWeb&quot;, repoUrl: repository], doGenerateSubmoduleConfigurations: false, extensions: [[$class: &quot;LocalBranch&quot;, localBranch: &quot;release-${releaseVersion}&quot;], [$class: &quot;CleanCheckout&quot;], [$class: &quot;WipeWorkspace&quot;], [$class: &quot;MessageExclusion&quot;, excludedMessage: &quot;^\\[jenkins\\]&quot;]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: &quot;github-cowwoc&quot;, url: repository]]])
         }
     }
     timeout(10)
     {
-        withEnv([&quot;JAVA_HOME=${ tool &quot;JAVA_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
+        withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
         {
             stage(&quot;Close release&quot;)
             {
