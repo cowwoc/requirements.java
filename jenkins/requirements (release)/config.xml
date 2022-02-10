@@ -171,9 +171,11 @@ try
                     {
                         // Deploy platform-specific JAR
                         // Use the same GCC version as AWS. See top of this script for more information.
-                        sh script: &quot;&quot;&quot;sudo apt-get install cmake gcc-6 g++-6 -y
-                            export CC=/usr/bin/gcc-6
-                            export CXX=/usr/bin/g++-6
+                        
+                        // sudo apt-get install gcc-6 g++-6
+                        // export CC=/usr/bin/gcc-6
+	                    // export CXX=/usr/bin/g++-6
+                        sh script: &quot;&quot;&quot;sudo apt-get install cmake -y
                             mvn --batch-mode -e -V -U -Dsurefire.useFile=false install
                             mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                         archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
