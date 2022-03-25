@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements.generator.internal.secrets;
+package com.github.cowwoc.requirements.generator.internal.secret;
 
 /**
  * A mechanism for calling package-private methods in another package without using reflection.

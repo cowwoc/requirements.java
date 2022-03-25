@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.maven;
 
 import com.github.cowwoc.requirements.generator.ApiGenerator;
-import com.github.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
+import com.github.cowwoc.requirements.generator.internal.secret.SharedSecrets;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;

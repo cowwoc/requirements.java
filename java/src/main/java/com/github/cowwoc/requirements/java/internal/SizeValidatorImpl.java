@@ -36,7 +36,8 @@ public final class SizeValidatorImpl
 	 * @param pluralizer     returns the singular or plural form of the collection's element type
 	 * @param failures       the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code collection},
-	 *                        {@code pluralizer} or {@code failures} are null. If {@code name} is empty.
+	 *                        {@code pluralizer} or {@code failures} are null. If {@code name} or
+	 *                        {@code collectionName} are blank.
 	 */
 	public SizeValidatorImpl(ApplicationScope scope, Configuration config, String collectionName,
 	                         Object collection, String sizeName, int size, Pluralizer pluralizer,
@@ -44,7 +45,7 @@ public final class SizeValidatorImpl
 	{
 		super(scope, config, sizeName, size, failures);
 		assert (collectionName != null) : "collectionName may not be null";
-		assert (!collectionName.isEmpty()) : "collectionName may not be empty";
+		assert (!collectionName.isBlank()) : "collectionName may not be blank";
 		assert (collection != null) : "collection may not be null";
 		assert (pluralizer != null) : "pluralizer may not be null";
 		this.collectionName = collectionName;

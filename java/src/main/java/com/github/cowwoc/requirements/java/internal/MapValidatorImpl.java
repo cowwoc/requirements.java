@@ -38,7 +38,7 @@ public final class MapValidatorImpl<K, V>
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual,
 	                        List<ValidationFailure> failures)

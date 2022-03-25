@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.generator;
 
-import com.github.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
+import com.github.cowwoc.requirements.generator.internal.secret.SharedSecrets;
 import com.github.cowwoc.requirements.generator.internal.util.Generators;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;

@@ -37,7 +37,7 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	 * @param pluralizer returns the singular or plural form of an element type
 	 * @param failures   the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code pluralizer} or
-	 *                        {@code failures} are null. If {@code name} is empty.
+	 *                        {@code failures} are null. If {@code name} is blank.
 	 */
 	public ListValidatorImpl(ApplicationScope scope, Configuration config, String name, L actual,
 	                         Pluralizer pluralizer, List<ValidationFailure> failures)

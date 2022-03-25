@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.guava.internal;
 
 import com.github.cowwoc.requirements.guava.MultimapValidator;
-import com.google.common.collect.Multimap;
 import com.github.cowwoc.requirements.java.CollectionValidator;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
@@ -17,6 +16,7 @@ import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
+import com.google.common.collect.Multimap;
 
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +41,7 @@ public final class MultimapValidatorImpl<K, V>
 	 * @param actual   the actual value of the parameter
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	public MultimapValidatorImpl(ApplicationScope scope, Configuration config, String name,
 	                             Multimap<K, V> actual, List<ValidationFailure> failures)

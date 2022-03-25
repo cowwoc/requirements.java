@@ -21,7 +21,7 @@ import java.util.function.Function;
 /**
  * Default implementation of GuavaRequirements.
  * <p>
- * Implementations must be thread-safe.
+ * This class is thread-safe.
  */
 public final class DefaultGuavaRequirements implements GuavaRequirements
 {

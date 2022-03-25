@@ -66,7 +66,7 @@ public interface GuavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name);
 
@@ -78,8 +78,8 @@ public interface GuavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name);
 
@@ -92,7 +92,7 @@ public interface GuavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<K, V> MultimapValidator<K, V> validateThat(Multimap<K, V> actual, String name);
 }

@@ -32,7 +32,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * @param name  the name of the lower bound
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isGreaterThan(T value, String name);
 
@@ -52,7 +52,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * @param name  the name of the minimum value
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} or {@code value} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isGreaterThanOrEqualTo(T value, String name);
 
@@ -72,7 +72,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * @param name  the name of the upper bound
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isLessThan(T value, String name);
 
@@ -92,7 +92,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * @param name  the name of the maximum value
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isLessThanOrEqualTo(T value, String name);
 
@@ -112,7 +112,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * @param name     the name of the expected value
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isComparableTo(T expected, String name);
 
@@ -132,7 +132,7 @@ public interface ExtensibleComparableValidator<S, T extends Comparable<? super T
 	 * @param name  the name of the other value
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isNotComparableTo(T other, String name);
 

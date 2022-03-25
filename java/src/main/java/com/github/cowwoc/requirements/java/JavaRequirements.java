@@ -71,7 +71,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ObjectVerifier<T> requireThat(T actual, String name);
 
@@ -83,7 +83,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ObjectVerifier<T> assertThat(T actual, String name);
 
@@ -95,7 +95,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ObjectValidator<T> validateThat(T actual, String name);
 
@@ -108,7 +108,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name);
 
@@ -121,7 +121,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(C actual, String name);
 
@@ -134,7 +134,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<C extends Collection<E>, E> CollectionValidator<C, E> validateThat(C actual, String name);
 
@@ -147,7 +147,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<L extends List<E>, E> ListVerifier<L, E> requireThat(L actual, String name);
 
@@ -160,7 +160,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<L extends List<E>, E> ListVerifier<L, E> assertThat(L actual, String name);
 
@@ -173,7 +173,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<L extends List<E>, E> ListValidator<L, E> validateThat(L actual, String name);
 
@@ -184,7 +184,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<byte[], Byte> requireThat(byte[] actual, String name);
 
@@ -195,7 +195,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<byte[], Byte> assertThat(byte[] actual, String name);
 
@@ -206,7 +206,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<byte[], Byte> validateThat(byte[] actual, String name);
 
@@ -217,7 +217,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<short[], Short> requireThat(short[] actual, String name);
 
@@ -228,7 +228,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<short[], Short> assertThat(short[] actual, String name);
 
@@ -239,7 +239,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<short[], Short> validateThat(short[] actual, String name);
 
@@ -250,7 +250,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<int[], Integer> requireThat(int[] actual, String name);
 
@@ -261,7 +261,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<int[], Integer> assertThat(int[] actual, String name);
 
@@ -272,7 +272,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<int[], Integer> validateThat(int[] actual, String name);
 
@@ -283,7 +283,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<long[], Long> requireThat(long[] actual, String name);
 
@@ -294,7 +294,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<long[], Long> assertThat(long[] actual, String name);
 
@@ -305,7 +305,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<long[], Long> validateThat(long[] actual, String name);
 
@@ -316,7 +316,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<float[], Float> requireThat(float[] actual, String name);
 
@@ -327,7 +327,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<float[], Float> assertThat(float[] actual, String name);
 
@@ -338,7 +338,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<float[], Float> validateThat(float[] actual, String name);
 
@@ -349,7 +349,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<double[], Double> requireThat(double[] actual, String name);
 
@@ -360,7 +360,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<double[], Double> assertThat(double[] actual, String name);
 
@@ -371,7 +371,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<double[], Double> validateThat(double[] actual, String name);
 
@@ -382,7 +382,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<boolean[], Boolean> requireThat(boolean[] actual, String name);
 
@@ -393,7 +393,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<boolean[], Boolean> assertThat(boolean[] actual, String name);
 
@@ -404,7 +404,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<boolean[], Boolean> validateThat(boolean[] actual, String name);
 
@@ -415,7 +415,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<char[], Character> requireThat(char[] actual, String name);
 
@@ -426,7 +426,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<char[], Character> assertThat(char[] actual, String name);
 
@@ -437,7 +437,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<char[], Character> validateThat(char[] actual, String name);
 
@@ -449,7 +449,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<E> ArrayVerifier<E[], E> requireThat(E[] actual, String name);
 
@@ -461,7 +461,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<E> ArrayVerifier<E[], E> assertThat(E[] actual, String name);
 
@@ -473,7 +473,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<E> ArrayValidator<E[], E> validateThat(E[] actual, String name);
 
@@ -485,7 +485,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name);
 
@@ -497,7 +497,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual, String name);
 
@@ -509,7 +509,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T extends Comparable<? super T>> ComparableValidator<T> validateThat(T actual, String name);
 
@@ -520,7 +520,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name);
 
@@ -532,7 +532,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberVerifier<Byte> assertThat(byte actual, String name);
 
@@ -543,7 +543,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberValidator<Byte> validateThat(byte actual, String name);
 
@@ -554,7 +554,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberVerifier<Short> requireThat(short actual, String name);
 
@@ -566,7 +566,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberVerifier<Short> assertThat(short actual, String name);
 
@@ -577,7 +577,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberValidator<Short> validateThat(short actual, String name);
 
@@ -588,7 +588,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name);
 
@@ -600,7 +600,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerVerifier<Integer> assertThat(int actual, String name);
 
@@ -611,7 +611,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerValidator<Integer> validateThat(int actual, String name);
 
@@ -622,7 +622,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	IntegerVerifier<Integer> requireThat(Integer actual, String name);
 
@@ -634,7 +634,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	IntegerVerifier<Integer> assertThat(Integer actual, String name);
 
@@ -645,7 +645,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	IntegerValidator<Integer> validateThat(Integer actual, String name);
 
@@ -656,7 +656,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerVerifier<Long> requireThat(long actual, String name);
 
@@ -668,7 +668,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerVerifier<Long> assertThat(long actual, String name);
 
@@ -679,7 +679,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerValidator<Long> validateThat(long actual, String name);
 
@@ -690,7 +690,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	IntegerVerifier<Long> requireThat(Long actual, String name);
 
@@ -702,7 +702,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	IntegerVerifier<Long> assertThat(Long actual, String name);
 
@@ -713,7 +713,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	IntegerValidator<Long> validateThat(Long actual, String name);
 
@@ -724,7 +724,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name);
 
@@ -736,7 +736,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointVerifier<Float> assertThat(float actual, String name);
 
@@ -747,7 +747,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointValidator<Float> validateThat(float actual, String name);
 
@@ -758,7 +758,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name);
 
@@ -770,7 +770,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointVerifier<Double> assertThat(double actual, String name);
 
@@ -781,7 +781,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointValidator<Double> validateThat(double actual, String name);
 
@@ -792,7 +792,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveBooleanVerifier requireThat(boolean actual, String name);
 
@@ -804,7 +804,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveBooleanVerifier assertThat(boolean actual, String name);
 
@@ -815,7 +815,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveBooleanValidator validateThat(boolean actual, String name);
 
@@ -826,7 +826,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveCharacterVerifier requireThat(char actual, String name);
 
@@ -838,7 +838,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveCharacterVerifier assertThat(char actual, String name);
 
@@ -849,7 +849,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveCharacterValidator validateThat(char actual, String name);
 
@@ -861,7 +861,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual, String name);
 
@@ -872,8 +872,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual, String name);
 
@@ -885,7 +885,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T extends Number & Comparable<? super T>> NumberValidator<T> validateThat(T actual, String name);
 
@@ -896,7 +896,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BooleanVerifier requireThat(Boolean actual, String name);
 
@@ -908,7 +908,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BooleanVerifier assertThat(Boolean actual, String name);
 
@@ -919,7 +919,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BooleanValidator validateThat(Boolean actual, String name);
 
@@ -930,7 +930,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	FloatingPointVerifier<Float> requireThat(Float actual, String name);
 
@@ -941,7 +941,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	FloatingPointVerifier<Float> assertThat(Float actual, String name);
 
@@ -952,7 +952,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	FloatingPointValidator<Float> validateThat(Float actual, String name);
 
@@ -963,7 +963,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	FloatingPointVerifier<Double> requireThat(Double actual, String name);
 
@@ -974,7 +974,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	FloatingPointVerifier<Double> assertThat(Double actual, String name);
 
@@ -985,7 +985,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	FloatingPointValidator<Double> validateThat(Double actual, String name);
 
@@ -996,7 +996,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BigDecimalVerifier requireThat(BigDecimal actual, String name);
 
@@ -1006,8 +1006,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BigDecimalVerifier assertThat(BigDecimal actual, String name);
 
@@ -1018,7 +1018,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BigDecimalValidator validateThat(BigDecimal actual, String name);
 
@@ -1031,7 +1031,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name);
 
@@ -1043,8 +1043,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name);
 
@@ -1057,7 +1057,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<K, V> MapValidator<K, V> validateThat(Map<K, V> actual, String name);
 
@@ -1068,7 +1068,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PathVerifier requireThat(Path actual, String name);
 
@@ -1078,8 +1078,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PathVerifier assertThat(Path actual, String name);
 
@@ -1090,7 +1090,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PathValidator validateThat(Path actual, String name);
 
@@ -1101,7 +1101,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	StringVerifier requireThat(String actual, String name);
 
@@ -1111,8 +1111,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	StringVerifier assertThat(String actual, String name);
 
@@ -1123,7 +1123,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	StringValidator validateThat(String actual, String name);
 
@@ -1134,7 +1134,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UriVerifier requireThat(URI actual, String name);
 
@@ -1144,8 +1144,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UriVerifier assertThat(URI actual, String name);
 
@@ -1156,7 +1156,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UriValidator validateThat(URI actual, String name);
 
@@ -1167,7 +1167,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UrlVerifier requireThat(URL actual, String name);
 
@@ -1177,8 +1177,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UrlVerifier assertThat(URL actual, String name);
 
@@ -1189,7 +1189,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UrlValidator validateThat(URL actual, String name);
 
@@ -1201,7 +1201,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ClassVerifier<T> requireThat(Class<T> actual, String name);
 
@@ -1212,8 +1212,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ClassVerifier<T> assertThat(Class<T> actual, String name);
 
@@ -1225,7 +1225,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ClassValidator<T> validateThat(Class<T> actual, String name);
 
@@ -1236,8 +1236,9 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	OptionalVerifier requireThat(Optional<?> actual, String name);
 
 	/**
@@ -1246,9 +1247,10 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	OptionalVerifier assertThat(Optional<?> actual, String name);
 
 	/**
@@ -1258,8 +1260,9 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	OptionalValidator validateThat(Optional<?> actual, String name);
 
 	/**
@@ -1269,7 +1272,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a verifier for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	InetAddressVerifier requireThat(InetAddress actual, String name);
 
@@ -1279,8 +1282,8 @@ public interface JavaRequirements extends Configuration
 	 * @param actual the actual value
 	 * @param name   the name of the value
 	 * @return a verifier for the value
-	 * @throws NullPointerException     if name is null
-	 * @throws IllegalArgumentException if name is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	InetAddressVerifier assertThat(InetAddress actual, String name);
 
@@ -1291,7 +1294,7 @@ public interface JavaRequirements extends Configuration
 	 * @param name   the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	InetAddressValidator validateThat(InetAddress actual, String name);
 }

@@ -16,11 +16,12 @@ import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Objects;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Default implementation of {@code ExtensibleObjectValidator}.
@@ -30,10 +31,6 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectValidator<S, T>
 {
-	/**
-	 * An empty list of failures.
-	 */
-	public static final List<ValidationFailure> NO_FAILURES = Collections.emptyList();
 	protected final ApplicationScope scope;
 	protected final Configuration config;
 	protected String name;
@@ -47,7 +44,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	protected AbstractObjectValidator(ApplicationScope scope, Configuration config, String name, T actual,
 	                                  List<ValidationFailure> failures)
@@ -55,12 +52,15 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		assert (scope != null) : "scope may not be null";
 		assert (config != null) : "config may not be null";
 		assert (name != null) : "name may not be null";
-		assert (!name.isEmpty()) : "name may not be empty";
+		assert (!name.isBlank()) : "name may not be blank";
 		assert (failures != null) : "failures may not be null";
 		this.scope = scope;
 		this.config = config;
 		this.name = name;
 		this.actual = actual;
+		// Intentionally avoid making a defensive copy of the list because some validators delegate some
+		// (but not all) methods to a secondary validator. For example: ArrayValidatorImpl delegates some
+		// methods to ListValidatorImpl.
 		this.failures = failures;
 	}
 
@@ -81,8 +81,6 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected void addFailure(ValidationFailure failure)
 	{
-		if (failures == NO_FAILURES)
-			failures = new ArrayList<>();
 		failures.add(failure);
 	}
 
@@ -133,80 +131,25 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isEqualTo(Object expected)
 	{
-		if (!Objects.equals(actual, expected))
-		{
-			String expectedAsString = config.toString(expected);
-			int terminalWidth = scope.getGlobalConfiguration().getTerminalWidth();
-			String message = name + " must be equal to " + expectedAsString + ".";
-			ValidationFailure failure;
-			if (message.length() < terminalWidth)
-			{
-				failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class, message).
-					addContext(getContext(expected, true));
-			}
-			else
-			{
-				failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-					name + " had an unexpected value.").
-					addContext(getContext(expected, false));
-			}
-			addFailure(failure);
-		}
-		return getThis();
-	}
-
-	/**
-	 * @param expected          the expected value
-	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
-	 * @return the list of name-value pairs to append to the exception message
-	 */
-	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
-	{
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
-		return contextGenerator.getContext("Actual", actual, "Expected", expected,
-			expectedInMessage);
+		return isEqualTo(expected, Objects::equals);
 	}
 
 	@Override
 	public S isEqualTo(Object expected, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!Objects.equals(actual, expected))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				this.name + " must be equal to " + name + ".").
-				addContext(getContext(expected, false));
-			addFailure(failure);
-		}
-		return getThis();
+		return isEqualTo(expected, name, Objects::equals);
 	}
 
 	@Override
 	public S isNotEqualTo(Object other)
 	{
-		if (Objects.equals(actual, other))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " may not be equal to " + config.toString(other));
-			addFailure(failure);
-		}
-		return getThis();
+		return isNotEqualTo(other, Objects::equals);
 	}
 
 	@Override
 	public S isNotEqualTo(Object other, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (Objects.equals(actual, other))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				this.name + " may not be equal to " + name + ".").
-				addContext("Actual", actual);
-			addFailure(failure);
-		}
-		return getThis();
+		return isNotEqualTo(other, name, Objects::equals);
 	}
 
 	@Override
@@ -222,6 +165,18 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			addFailure(failure);
 		}
 		return getThis();
+	}
+
+	/**
+	 * @param expected          the expected value
+	 * @param expectedInMessage true if the expected value is already mentioned in the failure message
+	 * @return the list of name-value pairs to append to the exception message
+	 */
+	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
+	{
+		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
+		return contextGenerator.getContext("Actual", actual, "Expected", expected,
+			expectedInMessage);
 	}
 
 	@Override
@@ -363,6 +318,279 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
 		consumer.accept(asString());
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value is equal to an expected value.
+	 *
+	 * @param expected the expected value
+	 * @param equals   returns true if {@code actual} is equal to {@code expected}
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code equals} is null
+	 */
+	protected S isEqualTo(Object expected, BiFunction<Object, Object, Boolean> equals)
+	{
+		if (!equals.apply(actual, expected))
+		{
+			String expectedAsString = config.toString(expected);
+			int terminalWidth = scope.getGlobalConfiguration().getTerminalWidth();
+			String message = name + " must be equal to " + expectedAsString + ".";
+			ValidationFailure failure;
+			if (message.length() < terminalWidth)
+			{
+				failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class, message).
+					addContext(getContext(expected, true));
+			}
+			else
+			{
+				failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+					name + " had an unexpected value.").
+					addContext(getContext(expected, false));
+			}
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value is equal to the expected value.
+	 *
+	 * @param expected the expected value
+	 * @param name     the name of the expected value
+	 * @param equals   returns true if {@code actual} is equal to {@code expected}
+	 * @return the updated validator
+	 * @throws NullPointerException     if {@code name} or {@code equals} are null
+	 * @throws IllegalArgumentException if {@code name} is blank
+	 */
+	protected S isEqualTo(Object expected, String name, BiFunction<Object, Object, Boolean> equals)
+	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (!equals.apply(actual, expected))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				this.name + " must be equal to " + name + ".").
+				addContext(getContext(expected, false));
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value is not equal to another value.
+	 *
+	 * @param other  the value to compare to
+	 * @param equals returns true if {@code actual} is equal to {@code expected}
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code equals} is null
+	 */
+	protected S isNotEqualTo(Object other, BiFunction<Object, Object, Boolean> equals)
+	{
+		if (equals.apply(actual, other))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " may not be equal to " + config.toString(other));
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value is not equal to another variable.
+	 *
+	 * @param other  the value to compare to
+	 * @param name   the name of {@code other}'s variable
+	 * @param equals returns true if {@code actual} is equal to {@code expected}
+	 * @return the updated validator
+	 * @throws NullPointerException     if {@code name} or {@code equals} are null
+	 * @throws IllegalArgumentException if {@code name} is blank
+	 */
+	protected S isNotEqualTo(Object other, String name, BiFunction<Object, Object, Boolean> equals)
+	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (equals.apply(actual, other))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				this.name + " may not be equal to " + name + ".").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value is empty.
+	 *
+	 * @param length the length of the array or collection
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code length} is null
+	 */
+	protected S isEmpty(Supplier<Integer> length)
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (length.get() != 0)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must be empty.").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value is not empty.
+	 *
+	 * @param length the length of the array or collection
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code length} is null
+	 */
+	protected S isNotEmpty(Supplier<Integer> length)
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (length.get() == 0)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " may not be empty");
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value contains an element.
+	 *
+	 * @param <E>      the type of elements in the collection
+	 * @param element  the element that must exist
+	 * @param contains returns true if the array or collection contains {@code element}
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code contains} is null
+	 */
+	protected <E> S contains(E element, Function<Object, Boolean> contains)
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (!contains.apply(element))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must contain " + element + ".").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value contains an element.
+	 *
+	 * @param <E>      the type of elements in the collection
+	 * @param element  the element that must exist
+	 * @param name     the name of the expected element
+	 * @param contains returns true if the array or collection contains {@code element}
+	 * @return the updated validator
+	 * @throws NullPointerException     if {@code name} or {@code contains} are null
+	 * @throws IllegalArgumentException if {@code name} is blank
+	 */
+	protected <E> S contains(E element, String name, Function<Object, Boolean> contains)
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		if (!contains.apply(element))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				this.name + " must contain " + name + ".").
+				addContext("Actual", actual).
+				addContext("Missing", element);
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value does not contain an element.
+	 *
+	 * @param <E>      the type of elements in the collection
+	 * @param element  the element that must not exist
+	 * @param contains returns true if the array or collection contains {@code element}
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code contains} is null
+	 */
+	protected <E> S doesNotContain(E element, Function<Object, Boolean> contains)
+	{
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (contains.apply(element))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " may not contain " + element + ".").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	/**
+	 * Ensures that the actual value does not contain an element.
+	 *
+	 * @param <E>      the type of elements in the collection
+	 * @param element  the element that must not exist
+	 * @param name     the name of the element
+	 * @param contains returns true if the array or collection contains {@code element}
+	 * @return the updated validator
+	 * @throws NullPointerException     if {@code name} or {@code contains} are null
+	 * @throws IllegalArgumentException if {@code name} is blank
+	 */
+	public <E> S doesNotContain(E element, String name, Function<Object, Boolean> contains)
+	{
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			return getNoOp();
+		}
+		if (contains.apply(element))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				this.name + " may not contain " + name + ".").
+				addContext("Actual", actual).
+				addContext("Unwanted", element);
+			addFailure(failure);
+		}
 		return getThis();
 	}
 }

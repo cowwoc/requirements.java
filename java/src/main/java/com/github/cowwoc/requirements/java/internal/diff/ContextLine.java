@@ -57,7 +57,7 @@ public final class ContextLine
 	public String toString()
 	{
 		StringBuilder result = new StringBuilder();
-		if (!name.isEmpty())
+		if (!name.isBlank())
 			result.append(name + ":");
 		result.append(value);
 		return result.toString();

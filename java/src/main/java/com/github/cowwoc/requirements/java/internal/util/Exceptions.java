@@ -88,7 +88,7 @@ public final class Exceptions
 	{
 		assert (name != null) : "name may not be null";
 		assert (count > 0) : "count may not be negative or zero";
-		assert (!name.trim().isEmpty()) : "name may not be empty";
+		assert (!name.isBlank()) : "name may not be blank";
 		int index = name.lastIndexOf('.');
 		if (index == -1)
 			throw new AssertionError("pkg may not be the root package");

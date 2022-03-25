@@ -10,8 +10,8 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.scope.MainConfiguration;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import static com.github.cowwoc.requirements.DefaultRequirements.assertThat;
@@ -70,7 +70,7 @@ public final class ConfigurationTest
 	}
 
 	@Test
-	public void verifierContextShadows()
+	public void verifierOverridesThreadContext()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
@@ -85,7 +85,7 @@ public final class ConfigurationTest
 	}
 
 	@Test
-	public void exceptionContextShadows()
+	public void exceptionOverridesVerifierContext()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{

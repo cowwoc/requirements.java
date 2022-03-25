@@ -98,7 +98,7 @@ public interface ExtensibleNumberVerifier<S, T extends Number & Comparable<? sup
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code divisor} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is not a multiple of {@code divisor}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S isMultipleOf(T divisor, String name);
 
@@ -120,7 +120,7 @@ public interface ExtensibleNumberVerifier<S, T extends Number & Comparable<? sup
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code divisor} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is a multiple of {@code divisor}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S isNotMultipleOf(T divisor, String name);
 }

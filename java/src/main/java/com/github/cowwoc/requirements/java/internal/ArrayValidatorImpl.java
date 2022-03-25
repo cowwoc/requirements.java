@@ -4,6 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
+import com.github.cowwoc.pouch.core.LazyReference;
+import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements.java.ArrayValidator;
 import com.github.cowwoc.requirements.java.CollectionValidator;
 import com.github.cowwoc.requirements.java.Configuration;
@@ -15,11 +17,13 @@ import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVali
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Default implementation of {@code ArrayValidator}.
@@ -30,25 +34,47 @@ import java.util.function.Consumer;
 public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<ArrayValidator<A, E>, A>
 	implements ArrayValidator<A, E>
 {
-	private final List<E> actualAsList;
-	private final ListValidator<List<E>, E> asList;
+	private final Reference<List<E>> actualAsList;
+	private final Reference<ListValidator<List<E>, E>> asList;
+	private final BiFunction<Object, Object, Boolean> equals;
+	private final Function<Object, Boolean> contains;
+	private final Supplier<Integer> length;
 
 	/**
-	 * @param scope        the application configuration
-	 * @param config       the instance configuration
-	 * @param name         the name of the value
-	 * @param actual       the actual value
-	 * @param actualAsList the {@code List} representation of the array
-	 * @param failures     the list of validation failures
-	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 * @param scope                the application configuration
+	 * @param config               the instance configuration
+	 * @param name                 the name of the value
+	 * @param actual               the actual value
+	 * @param actualAsListSupplier returns a {@code List} representation of the array
+	 * @param equals               returns true if the array is equal to an object
+	 * @param contains             returns true if the array contains a value
+	 * @param length               returns the length of the array
+	 * @param failures             the list of validation failures
+	 * @throws AssertionError if any of the parameters except for {@code actual} are null. If {@code name} is
+	 *                        empty.
 	 */
 	public ArrayValidatorImpl(ApplicationScope scope, Configuration config, String name, A actual,
-	                          List<E> actualAsList, List<ValidationFailure> failures)
+	                          Supplier<List<E>> actualAsListSupplier,
+	                          BiFunction<Object, Object, Boolean> equals, Function<Object, Boolean> contains,
+	                          Supplier<Integer> length, List<ValidationFailure> failures)
 	{
+		// DESIGN NOTES:
+		// * "A" is not always equal to E[]. Example: for primitive arrays we construct
+		//   ArrayValidator<byte[], Byte>. The second type parameter is a wrapper type because Java
+		//   type-parameters cannot be primitives.
+		// * We use lazy-loading to defer converting the array into a list until absolutely
+		// necessary. This conversion is expensive for large arrays.
 		super(scope, config, name, actual, failures);
-		this.actualAsList = actualAsList;
-		this.asList = new ListValidatorImpl<>(scope, config, name, actualAsList, Pluralizer.ELEMENT, failures);
+		assert actualAsListSupplier != null;
+		assert equals != null;
+		assert contains != null;
+		this.actualAsList = LazyReference.create(actualAsListSupplier);
+		this.asList = LazyReference.create(() ->
+			new ListValidatorImpl<>(scope, config, name, actualAsListSupplier.get(), Pluralizer.ELEMENT,
+				failures));
+		this.equals = equals;
+		this.contains = contains;
+		this.length = length;
 	}
 
 	@Override
@@ -64,198 +90,162 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isEqualTo(Object expected)
+	public ArrayValidator<A, E> isEqualTo(Object expected)
 	{
-		asList.isEqualTo(expected);
-		return this;
+		return isEqualTo(expected, equals);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isEqualTo(Object expected, String name)
+	public ArrayValidator<A, E> isEqualTo(Object expected, String name)
 	{
-		asList.isEqualTo(expected, name);
-		return this;
+		return isEqualTo(expected, name, equals);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isNotEqualTo(Object value)
+	public ArrayValidator<A, E> isNotEqualTo(Object value)
 	{
-		asList.isNotEqualTo(value);
-		return this;
+		return isNotEqualTo(value, equals);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isNotEqualTo(Object value, String name)
+	public ArrayValidator<A, E> isNotEqualTo(Object value, String name)
 	{
-		asList.isNotEqualTo(value, name);
-		return this;
+		return isNotEqualTo(value, name, equals);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isInstanceOf(Class<?> type)
+	public ArrayValidator<A, E> isEmpty()
 	{
-		asList.isInstanceOf(type);
-		return this;
+		return isEmpty(length);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isNotInstanceOf(Class<?> type)
+	public ArrayValidator<A, E> isNotEmpty()
 	{
-		asList.isNotInstanceOf(type);
-		return this;
+		return isNotEmpty(length);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isNull()
+	public ArrayValidator<A, E> contains(E expected)
 	{
-		asList.isNull();
-		return this;
+		return contains(expected, contains);
 	}
 
 	@Override
-	public ArrayValidatorImpl<A, E> isNotNull()
+	public ArrayValidator<A, E> contains(E expected, String name)
 	{
-		asList.isNotNull();
-		return this;
-	}
-
-	@Override
-	public ArrayValidatorImpl<A, E> isEmpty()
-	{
-		asList.isEmpty();
-		return this;
-	}
-
-	@Override
-	public ArrayValidatorImpl<A, E> isNotEmpty()
-	{
-		asList.isNotEmpty();
-		return this;
-	}
-
-	@Override
-	public ArrayValidatorImpl<A, E> contains(E expected)
-	{
-		asList.contains(expected);
-		return this;
-	}
-
-	@Override
-	public ArrayValidatorImpl<A, E> contains(E expected, String name)
-	{
-		asList.contains(expected, name);
-		return this;
+		return super.contains(expected, name, contains);
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> containsExactly(Collection<E> expected)
 	{
-		asList.containsExactly(expected);
+		asList.getValue().containsExactly(expected);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> containsExactly(Collection<E> expected, String name)
 	{
-		asList.containsExactly(expected, name);
+		asList.getValue().containsExactly(expected, name);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> containsAny(Collection<E> expected)
 	{
-		asList.containsAny(expected);
+		asList.getValue().containsAny(expected);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> containsAny(Collection<E> elements, String name)
 	{
-		asList.containsAny(elements, name);
+		asList.getValue().containsAny(elements, name);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> containsAll(Collection<E> expected)
 	{
-		asList.containsAll(expected);
+		asList.getValue().containsAll(expected);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> containsAll(Collection<E> expected, String name)
 	{
-		asList.containsAll(expected, name);
+		asList.getValue().containsAll(expected, name);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContain(E element)
 	{
-		asList.doesNotContain(element);
+		super.doesNotContain(element, contains);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContain(E element, String name)
 	{
-		asList.doesNotContain(element, name);
+		super.doesNotContain(element, name, contains);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainExactly(Collection<E> other)
 	{
-		asList.doesNotContainExactly(other);
+		asList.getValue().doesNotContainExactly(other);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainExactly(Collection<E> other, String name)
 	{
-		asList.doesNotContainExactly(other, name);
+		asList.getValue().doesNotContainExactly(other, name);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAny(Collection<E> elements)
 	{
-		asList.doesNotContainAny(elements);
+		asList.getValue().doesNotContainAny(elements);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAny(Collection<E> elements, String name)
 	{
-		asList.doesNotContainAny(elements, name);
+		asList.getValue().doesNotContainAny(elements, name);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAll(Collection<E> elements)
 	{
-		asList.doesNotContainAll(elements);
+		asList.getValue().doesNotContainAll(elements);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAll(Collection<E> elements, String name)
 	{
-		asList.doesNotContainAll(elements, name);
+		asList.getValue().doesNotContainAll(elements, name);
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainDuplicates()
 	{
-		asList.doesNotContainDuplicates();
+		asList.getValue().doesNotContainDuplicates();
 		return this;
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> isSorted(Comparator<E> comparator)
 	{
-		asList.isSorted(comparator);
+		asList.getValue().isSorted(comparator);
 		return this;
 	}
 
@@ -269,7 +259,7 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 			addFailure(failure);
 			return new SizeValidatorNoOp(getFailures());
 		}
-		return new SizeValidatorImpl(scope, config, name, actual, name + ".length", actualAsList.size(),
+		return new SizeValidatorImpl(scope, config, name, actual, name + ".length", length.get(),
 			Pluralizer.ELEMENT, getFailures());
 	}
 
@@ -286,7 +276,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public CollectionValidator<Collection<E>, E> asCollection()
 	{
-		return new CollectionValidatorImpl<>(scope, config, name, actualAsList, Pluralizer.ELEMENT, getFailures());
+		return new CollectionValidatorImpl<>(scope, config, name, actualAsList.getValue(), Pluralizer.ELEMENT,
+			getFailures());
 	}
 
 	@Override
@@ -302,7 +293,7 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ListValidator<List<E>, E> asList()
 	{
-		return asList;
+		return asList.getValue();
 	}
 
 	@Override
@@ -313,18 +304,5 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 
 		consumer.accept(asList());
 		return this;
-	}
-
-	@Override
-	public List<ValidationFailure> getFailures()
-	{
-		List<ValidationFailure> collectionFailures = asList.getFailures();
-		List<ValidationFailure> arrayFailures = super.getFailures();
-		if (collectionFailures.isEmpty() && arrayFailures.isEmpty())
-			return collectionFailures;
-		List<ValidationFailure> result = new ArrayList<>(collectionFailures.size() + arrayFailures.size());
-		result.addAll(collectionFailures);
-		result.addAll(arrayFailures);
-		return result;
 	}
 }

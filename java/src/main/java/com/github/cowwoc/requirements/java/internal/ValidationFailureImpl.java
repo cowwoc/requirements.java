@@ -41,7 +41,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 * @param exceptionType the type of exception associated with the failure
 	 * @param message       the message associated with the failure
 	 * @throws NullPointerException     if {@code validator}, {@code exceptionType} or {@code message} are null
-	 * @throws IllegalArgumentException if {@code message} is empty
+	 * @throws IllegalArgumentException if {@code message} is blank
 	 */
 	public ValidationFailureImpl(ApplicationScope scope, Configuration config,
 	                             Class<? extends Exception> exceptionType, String message)
@@ -50,7 +50,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 		assert (config != null);
 		assert (exceptionType != null);
 		assert (message != null);
-		assert (!message.trim().isEmpty()) : "message may not be empty";
+		assert (!message.isBlank()) : "message may not be blank";
 
 		this.scope = scope;
 		this.config = config;
@@ -118,7 +118,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 			{
 				mergedContext.add(entry);
 				String key = entry.getName();
-				if (!key.isEmpty())
+				if (!key.isBlank())
 					existingKeys.add(key);
 			}
 
@@ -140,7 +140,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 		for (ContextLine entry : mergedContext)
 		{
 			String key = entry.getName();
-			if (key.isEmpty())
+			if (key.isBlank())
 				continue;
 			int length = key.length();
 			if (length > maxKeyLength)
@@ -154,7 +154,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 		{
 			line.delete(0, line.length());
 			String key = entry.getName();
-			if (!key.isEmpty())
+			if (!key.isBlank())
 				line.append(alignLeft(key, maxKeyLength) + ": ");
 			line.append(config.toString(entry.getValue()));
 			messageWithContext.add(line.toString());
@@ -187,7 +187,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	public ValidationFailureImpl addContext(String name, Object value)
 	{
 		assert (name != null) : "name may not be null";
-		assert (!name.trim().isEmpty()) : "name may not be empty";
+		assert (!name.isBlank()) : "name may not be blank";
 		context.add(new ContextLine(name, value));
 		messageWithContext = null;
 		return this;

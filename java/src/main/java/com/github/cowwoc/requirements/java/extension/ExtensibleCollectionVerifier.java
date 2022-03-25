@@ -79,7 +79,7 @@ public interface ExtensibleCollectionVerifier<S, C extends Collection<E>, E>
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection is missing any element found in {@code expected}. If
 	 *                                  the collection contains any element not found in {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S containsExactly(Collection<E> expected, String name);
 
@@ -101,7 +101,7 @@ public interface ExtensibleCollectionVerifier<S, C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S containsAny(Collection<E> expected, String name);
 
@@ -123,7 +123,7 @@ public interface ExtensibleCollectionVerifier<S, C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S containsAll(Collection<E> expected, String name);
 
@@ -143,7 +143,7 @@ public interface ExtensibleCollectionVerifier<S, C extends Collection<E>, E>
 	 * @param name    the name of the element
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the collection contains {@code element}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection contains {@code element}. If {@code name} is blank.
 	 */
 	S doesNotContain(E element, String name);
 
@@ -166,7 +166,7 @@ public interface ExtensibleCollectionVerifier<S, C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
-	 *                                  nothing less, nothing more. If {@code name} is empty.
+	 *                                  nothing less, nothing more. If {@code name} is blank.
 	 */
 	S doesNotContainExactly(Collection<E> other, String name);
 

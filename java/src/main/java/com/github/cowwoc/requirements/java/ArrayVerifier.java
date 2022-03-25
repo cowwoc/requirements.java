@@ -53,7 +53,8 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @param name     the name of the element
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array does not contain {@code expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array does not contain {@code expected}. If {@code name} is
+	 *                                  blank.
 	 */
 	ArrayVerifier<A, E> contains(E expected, String name);
 
@@ -77,7 +78,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the array is missing any element found in {@code expected}. If the
 	 *                                  array contains any element not found in {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> containsExactly(Collection<E> expected, String name);
 
@@ -99,7 +100,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the array does not contain any of {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> containsAny(Collection<E> expected, String name);
 
@@ -121,7 +122,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the array does not contain all of {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> containsAll(Collection<E> expected, String name);
 
@@ -141,7 +142,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @param name    the name of the element
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the array contains {@code element}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array contains {@code element}. If {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> doesNotContain(E element, String name);
 
@@ -164,7 +165,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
 	 * @throws IllegalArgumentException if the array contains all of the elements in {@code other};
-	 *                                  nothing less, nothing more. If {@code name} is empty.
+	 *                                  nothing less, nothing more. If {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> doesNotContainExactly(Collection<E> other, String name);
 
@@ -185,7 +186,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains any of {@code elements}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array contains any of {@code elements}. If {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> doesNotContainAny(Collection<E> elements, String name);
 
@@ -206,7 +207,7 @@ public interface ArrayVerifier<A, E> extends ExtensibleObjectVerifier<ArrayVerif
 	 * @param name     the name of the elements
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
-	 * @throws IllegalArgumentException if the array contains all of {@code elements}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the array contains all of {@code elements}. If {@code name} is blank.
 	 */
 	ArrayVerifier<A, E> doesNotContainAll(Collection<E> elements, String name);
 
