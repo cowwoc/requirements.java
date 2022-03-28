@@ -76,12 +76,12 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>guava</artifactId>
+				<artifactId>java</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>java</artifactId>
+				<artifactId>guava</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

@@ -6,6 +6,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 * Improvements
     * Added default string converter for `Set`, `Map` and `Throwable`.
     * `ArrayValidator`: avoid converting array into a list until absolutely necessary.
+    * Added `Requirements.createMessageWithContext(String message)`.
 
 ## Version 6.1.0 - 2020/02/10
 

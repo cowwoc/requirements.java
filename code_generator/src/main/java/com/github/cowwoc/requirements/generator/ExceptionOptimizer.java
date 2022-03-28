@@ -147,12 +147,14 @@ public final class ExceptionOptimizer
 				" */\n" +
 				"package " + wrapperPackageName + ";\n" +
 				"\n");
-			writer.write("import com.github.cowwoc.requirements.annotation.OptimizedException;\n" +
-				"import com.github.cowwoc.requirements.java.GlobalRequirements;\n" +
-				"import com.github.cowwoc.requirements.java.internal.util.Exceptions;\n" +
-				"\n" +
-				"import java.io.PrintStream;\n" +
-				"import java.io.PrintWriter;\n");
+			writer.write("""
+				import com.github.cowwoc.requirements.annotation.OptimizedException;
+				import com.github.cowwoc.requirements.java.GlobalRequirements;
+				import com.github.cowwoc.requirements.java.internal.util.Exceptions;
+
+				import java.io.PrintStream;
+				import java.io.PrintWriter;
+				""");
 			if (!packageName.equals("java.lang"))
 			{
 				// No need to import classes in "java.lang"
@@ -222,41 +224,43 @@ public final class ExceptionOptimizer
 					"\t}\n" +
 					"\n");
 			}
-			writer.write("\t@Override\n" +
-				"\tpublic void printStackTrace(PrintStream s)\n" +
-				"\t{\n" +
-				"\t\tcleanStackTrace();\n" +
-				"\t\tsuper.printStackTrace(s);\n" +
-				"\t}\n" +
-				"\n" +
-				"\t@Override\n" +
-				"\tpublic void printStackTrace(PrintWriter s)\n" +
-				"\t{\n" +
-				"\t\tcleanStackTrace();\n" +
-				"\t\tsuper.printStackTrace(s);\n" +
-				"\t}\n" +
-				"\n" +
-				"\t@Override\n" +
-				"\tpublic StackTraceElement[] getStackTrace()\n" +
-				"\t{\n" +
-				"\t\tcleanStackTrace();\n" +
-				"\t\treturn super.getStackTrace();\n" +
-				"\t}\n" +
-				"\n" +
-				"\t/**\n" +
-				"\t * Removes stack trace references to this library.\n" +
-				"\t */\n" +
-				"\tprivate synchronized void cleanStackTrace()\n" +
-				"\t{\n" +
-				"\t\tif (cleanedStackTrace)\n" +
-				"\t\t\treturn;\n" +
-				"\t\tStackTraceElement[] stackTrace = super.getStackTrace();\n" +
-				"\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);\n" +
-				"\t\tif (newStackTrace != stackTrace)\n" +
-				"\t\t\tsetStackTrace(newStackTrace);\n" +
-				"\t\tcleanedStackTrace = true;\n" +
-				"\t}\n" +
-				"}\n");
+			writer.write("""
+				\t@Override
+				\tpublic void printStackTrace(PrintStream s)
+				\t{
+				\t\tcleanStackTrace();
+				\t\tsuper.printStackTrace(s);
+				\t}
+
+				\t@Override
+				\tpublic void printStackTrace(PrintWriter s)
+				\t{
+				\t\tcleanStackTrace();
+				\t\tsuper.printStackTrace(s);
+				\t}
+
+				\t@Override
+				\tpublic StackTraceElement[] getStackTrace()
+				\t{
+				\t\tcleanStackTrace();
+				\t\treturn super.getStackTrace();
+				\t}
+
+				\t/**
+				\t * Removes stack trace references to this library.
+				\t */
+				\tprivate synchronized void cleanStackTrace()
+				\t{
+				\t\tif (cleanedStackTrace)
+				\t\t\treturn;
+				\t\tStackTraceElement[] stackTrace = super.getStackTrace();
+				\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);
+				\t\tif (newStackTrace != stackTrace)
+				\t\t\tsetStackTrace(newStackTrace);
+				\t\tcleanedStackTrace = true;
+				\t}
+				}
+				""");
 			// There is no easy way to override writeObject(ObjectOutputStream) so we don't try to
 		}
 		return Generators.writeIfChanged(path, sw.toString());

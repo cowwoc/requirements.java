@@ -25,13 +25,16 @@ public final class ConfigurationTest
 	@Test
 	public void separateConfigurations()
 	{
-		Configuration first = new MainConfiguration();
-		first = first.withContext("name1", "value1");
+		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		{
+			Configuration first = new MainConfiguration(scope);
+			first = first.withContext("name1", "value1");
 
-		Configuration second = new MainConfiguration();
-		second = second.withContext("name2", "value2");
+			Configuration second = new MainConfiguration(scope);
+			second = second.withContext("name2", "value2");
 
-		assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+		}
 	}
 
 	/**

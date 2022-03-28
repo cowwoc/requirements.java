@@ -136,6 +136,14 @@ public interface Configuration
 	Configuration withoutContext(String name);
 
 	/**
+	 * Returns an exception message with contextual information.
+	 *
+	 * @param message the exception message ({@code null} if absent)
+	 * @return the exception message with contextual information
+	 */
+	String createMessageWithContext(String message);
+
+	/**
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for
 	 * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, and {@code Path}.
 	 *

@@ -9,15 +9,9 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Exceptions;
-import com.github.cowwoc.requirements.java.internal.util.Maps;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.StringJoiner;
 
 /**
  * Default implementation of {@code ValidationFailure}.
@@ -90,90 +84,8 @@ public final class ValidationFailureImpl implements ValidationFailure
 	public String getMessage()
 	{
 		if (messageWithContext == null)
-			this.messageWithContext = createMessageWithContext();
+			this.messageWithContext = scope.getExceptions().createMessageWithContext(config, context, message);
 		return messageWithContext;
-	}
-
-	/**
-	 * Returns the failure message with contextual information.
-	 *
-	 * @return the failure message with contextual information
-	 */
-	private String createMessageWithContext()
-	{
-		Map<String, Object> configContext = config.getContext();
-		assert (Maps.isUnmodifiable(configContext)) : "configContext may not be modifiable";
-
-		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
-		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
-
-		List<ContextLine> mergedContext;
-		if (configContext.isEmpty() && threadContext.isEmpty())
-			mergedContext = context;
-		else
-		{
-			mergedContext = new ArrayList<>(context.size() + threadContext.size() + configContext.size());
-			Set<String> existingKeys = new HashSet<>();
-			for (ContextLine entry : context)
-			{
-				mergedContext.add(entry);
-				String key = entry.getName();
-				if (!key.isBlank())
-					existingKeys.add(key);
-			}
-
-			for (Entry<String, Object> entry : configContext.entrySet())
-			{
-				if (existingKeys.add(entry.getKey()))
-					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
-			}
-
-			for (Entry<String, Object> entry : threadContext.entrySet())
-			{
-				if (existingKeys.add(entry.getKey()))
-					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
-			}
-		}
-
-		// null entries denote a newline between DIFF sections
-		int maxKeyLength = 0;
-		for (ContextLine entry : mergedContext)
-		{
-			String key = entry.getName();
-			if (key.isBlank())
-				continue;
-			int length = key.length();
-			if (length > maxKeyLength)
-				maxKeyLength = length;
-		}
-
-		StringJoiner messageWithContext = new StringJoiner("\n");
-		messageWithContext.add(message);
-		StringBuilder line = new StringBuilder();
-		for (ContextLine entry : mergedContext)
-		{
-			line.delete(0, line.length());
-			String key = entry.getName();
-			if (!key.isBlank())
-				line.append(alignLeft(key, maxKeyLength) + ": ");
-			line.append(config.toString(entry.getValue()));
-			messageWithContext.add(line.toString());
-		}
-		return messageWithContext.toString();
-	}
-
-	/**
-	 * @param text      the {@code String} to align
-	 * @param minLength the minimum length of {@code text}
-	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to
-	 * {@code minLength}
-	 */
-	private static String alignLeft(String text, int minLength)
-	{
-		int actualLength = text.length();
-		if (actualLength > minLength)
-			return text;
-		return text + " ".repeat(minLength - actualLength);
 	}
 
 	/**

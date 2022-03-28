@@ -17,6 +17,13 @@ import java.util.regex.Pattern;
 public final class Strings
 {
 	/**
+	 * Prevent construction.
+	 */
+	private Strings()
+	{
+	}
+
+	/**
 	 * Capitalizes the first letter of each word.
 	 *
 	 * @param str a string
@@ -142,9 +149,16 @@ public final class Strings
 	}
 
 	/**
-	 * Prevent construction.
+	 * @param text      the {@code String} to align
+	 * @param minLength the minimum length of {@code text}
+	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to
+	 * {@code minLength}
 	 */
-	private Strings()
+	public static String alignLeft(String text, int minLength)
 	{
+		int actualLength = text.length();
+		if (actualLength > minLength)
+			return text;
+		return text + " ".repeat(minLength - actualLength);
 	}
 }

@@ -44,7 +44,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 		this.globalConfiguration = parent.getGlobalConfiguration();
 
 		// Try to reuse the previously-returned configuration object
-		AtomicReference<Configuration> defaultConfiguration = new AtomicReference<>(new MainConfiguration());
+		AtomicReference<Configuration> defaultConfiguration = new AtomicReference<>(new MainConfiguration(this));
 		this.defaultConfigurationSupplier = () ->
 		{
 			Configuration result = defaultConfiguration.get();

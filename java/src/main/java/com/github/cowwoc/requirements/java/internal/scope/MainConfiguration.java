@@ -48,6 +48,7 @@ public final class MainConfiguration implements Configuration
 	private final boolean cleanStackTrace;
 	private final boolean diffEnabled;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
+	private final ApplicationScope scope;
 
 	/**
 	 * Creates a new configuration:
@@ -61,9 +62,14 @@ public final class MainConfiguration implements Configuration
 	 * <li>That invokes {@code Arrays.toString()} for arrays and {@code Object.toString()} for all
 	 * other objects to convert them to a {@code String}.</li>
 	 * </ul>
+	 *
+	 * @param scope the application configuration
+	 * @throws AssertionError if {@code scope} is null
 	 */
-	public MainConfiguration()
+	public MainConfiguration(ApplicationScope scope)
 	{
+		assert (scope != null) : "scope may not be null";
+		this.scope = scope;
 		this.context = new LinkedHashMap<>();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.cleanStackTrace = true;
@@ -89,6 +95,7 @@ public final class MainConfiguration implements Configuration
 	/**
 	 * Copies a configuration.
 	 *
+	 * @param scope                 the application configuration
 	 * @param context               the map to append to the exception message
 	 * @param assertionsEnabled     true if {@code assertThat()} should invoke {@code requireThat()};
 	 *                              false if {@code assertThat()} should do nothing
@@ -99,14 +106,17 @@ public final class MainConfiguration implements Configuration
 	 *                              a String
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	private MainConfiguration(Map<String, Object> context,
+	private MainConfiguration(ApplicationScope scope,
+	                          Map<String, Object> context,
 	                          boolean assertionsEnabled,
 	                          boolean cleanStackTrace,
 	                          boolean diffEnabled,
 	                          Map<Class<?>, Function<Object, String>> typeToStringConverter)
 	{
+		assert (scope != null) : "scope may not be null";
 		assert (context != null) : "context may not be null";
 		assert (typeToStringConverter != null) : "typeToStringConverter may not be null";
+		this.scope = scope;
 		this.context = Maps.unmodifiable(context);
 		this.assertionsEnabled = assertionsEnabled;
 		this.cleanStackTrace = cleanStackTrace;
@@ -125,7 +135,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (assertionsEnabled)
 			return this;
-		return new MainConfiguration(context, true, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(scope, context, true, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -134,7 +144,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (!assertionsEnabled)
 			return this;
-		return new MainConfiguration(context, false, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(scope, context, false, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -149,7 +159,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (cleanStackTrace)
 			return this;
-		return new MainConfiguration(context, assertionsEnabled, true, diffEnabled,
+		return new MainConfiguration(scope, context, assertionsEnabled, true, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -158,7 +168,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (!cleanStackTrace)
 			return this;
-		return new MainConfiguration(context, assertionsEnabled, false, diffEnabled,
+		return new MainConfiguration(scope, context, assertionsEnabled, false, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -184,7 +194,7 @@ public final class MainConfiguration implements Configuration
 			return this;
 		Map<String, Object> newContext = new LinkedHashMap<>(context);
 		newContext.put(name, value);
-		return new MainConfiguration(newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(scope, newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
 	}
 
@@ -204,8 +214,14 @@ public final class MainConfiguration implements Configuration
 			return this;
 		Map<String, Object> newContext = new LinkedHashMap<>(context);
 		newContext.remove(name);
-		return new MainConfiguration(newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(scope, newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
 			typeToStringConverter);
+	}
+
+	@Override
+	public String createMessageWithContext(String message)
+	{
+		return scope.getExceptions().createMessageWithContext(this, List.of(), message);
 	}
 
 	@Override
@@ -219,7 +235,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (diffEnabled)
 			return this;
-		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, true,
+		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, true,
 			typeToStringConverter);
 	}
 
@@ -228,7 +244,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (!diffEnabled)
 			return this;
-		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, false,
+		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, false,
 			typeToStringConverter);
 	}
 
@@ -418,7 +434,7 @@ public final class MainConfiguration implements Configuration
 		@SuppressWarnings("unchecked")
 		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
 		newTypeToStringConverter.put(type, unsafeConverter);
-		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, diffEnabled,
 			newTypeToStringConverter);
 	}
 
@@ -432,7 +448,7 @@ public final class MainConfiguration implements Configuration
 		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
 			new HashMap<>(this.typeToStringConverter);
 		newTypeToStringConverter.remove(type);
-		return new MainConfiguration(context, assertionsEnabled, cleanStackTrace, diffEnabled,
+		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, diffEnabled,
 			newTypeToStringConverter);
 	}
 

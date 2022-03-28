@@ -19,7 +19,7 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	private final Reference<JavaRequirements> internalVerifier =
 		ConcurrentLazyReference.create(() ->
 			JavaSecrets.INSTANCE.createRequirements(this).withoutCleanStackTrace());
-	private final Exceptions exceptions = new Exceptions();
+	private final Exceptions exceptions = new Exceptions(this);
 
 	@Override
 	public Exceptions getExceptions()

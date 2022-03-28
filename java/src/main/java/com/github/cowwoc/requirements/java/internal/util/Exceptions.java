@@ -5,6 +5,9 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
 import com.github.cowwoc.requirements.annotation.OptimizedException;
+import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
+import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +15,15 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
+import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
@@ -76,7 +86,19 @@ public final class Exceptions
 		new ConcurrentHashMap<>(3);
 	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithCause =
 		new ConcurrentHashMap<>(3);
+	private final ApplicationScope scope;
 	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
+
+	/**
+	 * @param scope the application configuration'
+	 * @throws NullPointerException if {@code scope is null}
+	 */
+	public Exceptions(ApplicationScope scope)
+	{
+		if (scope == null)
+			throw new NullPointerException("scope may not be null");
+		this.scope = scope;
+	}
 
 	/**
 	 * @param name  the name of a Java package
@@ -285,5 +307,78 @@ public final class Exceptions
 	public boolean isOptimizedException(Class<?> type)
 	{
 		return type.getDeclaredAnnotation(OptimizedException.class) != null;
+	}
+
+	/**
+	 * Returns the String representation of the contextual information.
+	 *
+	 * @param config  the instance configuration
+	 * @param context the exception-specific context
+	 * @param message the exception message ({@code null} if absent)
+	 * @return the String representation of the contextual information
+	 * @throws NullPointerException if {@code config} or {@code context} are null
+	 */
+	public String createMessageWithContext(Configuration config, List<ContextLine> context, String message)
+	{
+		Map<String, Object> configContext = config.getContext();
+		assert (Maps.isUnmodifiable(configContext)) : "configContext may not be modifiable";
+
+		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
+		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
+
+		List<ContextLine> mergedContext;
+		if (configContext.isEmpty() && threadContext.isEmpty())
+			mergedContext = context;
+		else
+		{
+			mergedContext = new ArrayList<>(context.size() + threadContext.size() + configContext.size());
+			Set<String> existingKeys = new HashSet<>();
+			for (ContextLine entry : context)
+			{
+				mergedContext.add(entry);
+				String key = entry.getName();
+				if (!key.isBlank())
+					existingKeys.add(key);
+			}
+
+			for (Entry<String, Object> entry : configContext.entrySet())
+			{
+				if (existingKeys.add(entry.getKey()))
+					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
+			}
+
+			for (Entry<String, Object> entry : threadContext.entrySet())
+			{
+				if (existingKeys.add(entry.getKey()))
+					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
+			}
+		}
+
+		// null entries denote a newline between DIFF sections
+		int maxKeyLength = 0;
+		for (ContextLine entry : mergedContext)
+		{
+			String key = entry.getName();
+			if (key.isBlank())
+				continue;
+			int length = key.length();
+			if (length > maxKeyLength)
+				maxKeyLength = length;
+		}
+
+		StringJoiner messageWithContext = new StringJoiner("\n");
+		if (message != null)
+			messageWithContext.add(message);
+		StringBuilder line = new StringBuilder();
+		for (ContextLine entry : mergedContext)
+		{
+			line.delete(0, line.length());
+			String key = entry.getName();
+			if (!key.isBlank())
+				line.append(Strings.alignLeft(key, maxKeyLength) + ": ");
+			line.append(config.toString(entry.getValue()));
+			messageWithContext.add(line.toString());
+		}
+		return messageWithContext.toString();
 	}
 }

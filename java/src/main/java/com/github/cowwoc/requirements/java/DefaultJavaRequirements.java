@@ -226,6 +226,12 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
+	public String createMessageWithContext(String message)
+	{
+		return config.createMessageWithContext(message);
+	}
+
+	@Override
 	public JavaRequirements withAssertionsDisabled()
 	{
 		Configuration newConfig = config.withAssertionsDisabled();

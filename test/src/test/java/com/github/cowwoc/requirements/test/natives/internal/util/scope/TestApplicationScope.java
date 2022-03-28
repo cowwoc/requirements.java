@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  */
 public final class TestApplicationScope extends AbstractApplicationScope
 {
-	private final Configuration defaultConfiguration = new MainConfiguration();
+	private final Configuration defaultConfiguration = new MainConfiguration(this);
 	private final GlobalConfiguration globalConfiguration;
 	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
 		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
