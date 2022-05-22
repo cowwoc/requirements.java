@@ -139,7 +139,7 @@
 		    </profile>
 		</profiles>
 
-19. Windows has two home directories for the Local System account: C:\Windows\System\config\systemprofile and C:\Windows\SysWOW64\config\systemprofile. For each one of them, follow the the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create `~/.m2/settings-security.xml` and add server id "gpg.passphrase" to `~/.m2/settings.xml`
+19. Windows has two home directories for the Local System account: C:\Windows\System32\config\systemprofile and C:\Windows\SysWOW64\config\systemprofile. For each one of them, follow the the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create `~/.m2/settings-security.xml` and add server id "gpg.passphrase" to `~/.m2/settings.xml`
 
 		<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
