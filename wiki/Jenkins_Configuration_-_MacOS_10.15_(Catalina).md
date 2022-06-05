@@ -8,7 +8,7 @@
         5. Add boot option
         6. and edit boot order.
         7. Add new boot option.
-        8. Choose EFI, OC, Bootstrap, Bootstrap.efi and finally confirm.
+        8. Choose EFI, Boot, Bootstrap.efi and finally confirm.
         9. Remove all other entries.
 2. Create a bootable USB or ISO
     1. Bootable USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
