@@ -1,36 +1,4 @@
-1. Following different guides depending on your version of VMWare:
-    1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
-    2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
-        1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong entry will get selected on bootup and make it seem as if the installation had crashed when it had not.
-        2. Go into VMware BIOS.
-        3. Enter setup
-        4. Configure boot options
-        5. Add boot option
-        6. and edit boot order.
-        7. Add new boot option.
-        8. Choose EFI, Boot, Bootstrap.efi and finally confirm.
-        9. Remove all other entries.
-2. Create a bootable USB or ISO
-    1. Bootable USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
-    2. ISO file: Download MacOS Catalina from App Store and run:
-
-        ```
-        hdiutil attach /Applications/Install\ macOS\ Catalina.app/Contents/SharedSupport/InstallESD.dmg -noverify -nobrowse -mountpoint /Volumes/install_app
-        hdiutil create -o /tmp/Catalina.cdr -size 7316m -layout SPUD -fs HFS+J
-        hdiutil attach /tmp/Catalina.cdr.dmg -noverify -nobrowse -mountpoint /Volumes/install_build
-        asr restore -source /Volumes/install_app/BaseSystem.dmg -target /Volumes/install_build -noprompt -noverify -erase
-        rm /Volumes/OS\ X\ Base\ System/System/Installation/Packages
-        cp -rp /Volumes/install_app/Packages /Volumes/OS\ X\ Base\ System/System/Installation/
-        cp -rp /Volumes/install_app/BaseSystem.chunklist /Volumes/OS\ X\ Base\ System/BaseSystem.chunklist
-        cp -rp /Volumes/install_app/BaseSystem.dmg /Volumes/OS\ X\ Base\ System/BaseSystem.dmg
-        hdiutil detach /Volumes/install_app
-        hdiutil detach /Volumes/OS\ X\ Base\ System/
-        hdiutil convert /tmp/Catalina.cdr.dmg -format UDTO -o /tmp/Catalina.iso
-        mv /tmp/Catalina.iso.cdr ~/Desktop/Catalina.iso
-        ```
-
-3. If you're using an ISO file, copy Catalina.iso to a location that is accessible by VMWare
-4. VMWare Workstation configuration
+1. VMWare Workstation configuration
     1. Create a new virtual machine.
     2. Typical configuration.
     3. Install from ISO
@@ -54,26 +22,38 @@
         cores. Source: http://daveparsons.net/blog/2013/12/30/suppress-vmware-multiple-vcpu-message/
     12. Add **bios.bootdelay = 5000** to introduce a delay every time the machine boots up.
     13. Save and close the file.
-5. The following is based 
+2. Follow different guides depending on your version of VMWare:
+    1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
+    2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
+        1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong entry will get selected on bootup and make it seem as if the installation had crashed when it had not.
+        2. Go into VMware BIOS.
+        3. Enter setup
+        4. Configure boot options
+        5. Add boot option
+        6. and edit boot order.
+        7. Add new boot option.
+        8. Choose EFI, Boot, Bootstrap.efi and finally confirm.
+        9. Remove all other entries.
+3. The following is based 
    on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
-6. Boot the virtual machine
-7. Open Disk Utility
-8. Select "VMWare Virtual SATA Hard Drive Media"
-9. Select "Erase"
+4. Boot the virtual machine
+5. Open Disk Utility
+6. Select "VMWare Virtual SATA Hard Drive Media"
+7. Select "Erase"
     1. Name = "MacOS"
     2. Format = "APFS"
     3. Select "Erase"
-10. Quit Disk Utility
-11. Select "Reinstall macOS"
-12. Select "MacOS"
-13. Click "Continue"
-14. You can safely disable most features; however, you will need to provide an Apple ID in order to use the
+8. Quit Disk Utility
+9. Select "Reinstall macOS"
+10. Select "MacOS"
+11. Click "Continue"
+12. You can safely disable most features; however, you will need to provide an Apple ID in order to use the
     App Store.
-15. Set "Full name, Account name, Password, Verify" fields to "builds"
-16. Click "I finished installing".
-17. Install VMWare Tools and reboot.
-18. Log into the system.
-19. Run:
+13. Set "Full name, Account name, Password, Verify" fields to "builds"
+14. Click "I finished installing".
+15. Install VMWare Tools and reboot.
+16. Log into the system.
+17. Run:
 	
         # Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
         sudo dscl . append /Groups/_developer GroupMembership builds
@@ -124,15 +104,15 @@
         brew install kcpassword
         enable_autologin "builds" "builds"
 
-20. Copy GPG private key (used for signing releases) into guest, and run:
+18. Copy GPG private key (used for signing releases) into guest, and run:
 `gpg --import private.key`
-21. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-22. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
-23. Add Jenkins credentials
+19. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+20. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
+21. Add Jenkins credentials
     1. Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
     2. Add a "SSH Username with private key" global credential id "jenkins".
-24. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
-25. Add the following to any Maven project you wish to deploy/release to Maven Central:
+22. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
+23. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
         <parent>
             <groupId>org.sonatype.oss</groupId>
@@ -191,7 +171,7 @@
             </profile>
         </profiles>
 
-26. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create
+24. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create
     ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
 
         <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -217,12 +197,12 @@
             </servers>
         </settings>
 
-27. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-28. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-29. In VMWare settings, CDRom, uncheck "Connect at power on"
-30. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary
+25. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+26. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+27. In VMWare settings, CDRom, uncheck "Connect at power on"
+28. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary
     files), then shut down and create a VM snapshot. This will shrink the snapshot size.
-31. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
+29. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
     1. label = "mac"
     2. command:
 
@@ -232,7 +212,7 @@
 
     3. Tool home = "/usr/bin/git"
 
-31. Create a new Node in Jenkins
+30. Create a new Node in Jenkins
 	1. Node should have the following Tool Locations:
         1. JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home. If this changes, you
            can invoke "/usr/libexec/java_home" to get the current value.
