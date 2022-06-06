@@ -22,18 +22,14 @@
         cores. Source: http://daveparsons.net/blog/2013/12/30/suppress-vmware-multiple-vcpu-message/
     12. Add **bios.bootdelay = 5000** to introduce a delay every time the machine boots up.
     13. Save and close the file.
-2. Follow different guides depending on your version of VMWare:
-    1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
-    2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
-        1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong entry will get selected on bootup and make it seem as if the installation had crashed when it had not.
-        2. Go into VMware BIOS.
-        3. Enter setup
-        4. Configure boot options
-        5. Add boot option
-        6. and edit boot order.
-        7. Add new boot option.
-        8. Choose EFI, OC, OpenCore.efi and finally confirm.
-        9. Remove all other entries.
+2. Using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
+    1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong entry will get selected on bootup and make it seem as if the installation had crashed when it had not.
+    2. Go into VMware BIOS.
+    3. Enter setup.
+    4. Configure boot options.
+    5. Add boot option.
+    6. Choose EFI, OC, OpenCore.efi and finally confirm.
+    7. Remove all other entries.
 3. The following is based 
    on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
 4. Boot the virtual machine
@@ -50,10 +46,19 @@
 12. You can safely disable most features; however, you will need to provide an Apple ID in order to use the
     App Store.
 13. Set "Full name, Account name, Password, Verify" fields to "builds"
-14. Click "I finished installing".
-15. Install VMWare Tools and reboot.
-16. Log into the system.
-17. Run:
+14. Do not reboot yet!
+15. Download MountEFI from https://github.com/corpnewt/MountEFI and extract it into the installation USB.
+16. Run `MountEFI.py`.
+17. Mount the EFI of the boot drive
+18. Copy the contents of the EFI folder on the USB into the EFI drive mounted by MountEFI
+19. Install VMWare Tools and reboot.
+20. Go into VMWare BIOS.
+21. Enter setup.
+22. Configure boot options.
+23. Add boot option.
+24. Choose EFI, OC, OpenCore.efi off the hard drive and confirm.
+25. Reboot and log into the system.
+26. Run:
 	
         # Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
         sudo dscl . append /Groups/_developer GroupMembership builds
@@ -104,15 +109,15 @@
         brew install kcpassword
         enable_autologin "builds" "builds"
 
-18. Copy GPG private key (used for signing releases) into guest, and run:
+27. Copy GPG private key (used for signing releases) into guest, and run:
 `gpg --import private.key`
-19. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-20. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
-21. Add Jenkins credentials
+28. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+29. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
+30. Add Jenkins credentials
     1. Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
     2. Add a "SSH Username with private key" global credential id "jenkins".
-22. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
-23. Add the following to any Maven project you wish to deploy/release to Maven Central:
+31. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
+32. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
         <parent>
             <groupId>org.sonatype.oss</groupId>
@@ -171,7 +176,7 @@
             </profile>
         </profiles>
 
-24. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create
+33. Follow the instructions found at https://maven.apache.org/guides/mini/guide-encryption.html to create
     ~/.m2/settings-security.xml and add server id "gpg.passphrase" to ~/.m2/settings.xml
 
         <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -197,12 +202,12 @@
             </servers>
         </settings>
 
-25. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-26. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-27. In VMWare settings, CDRom, uncheck "Connect at power on"
-28. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary
+34. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+35. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+36. In VMWare settings, CDRom, uncheck "Connect at power on"
+37. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash), reboot the OS once (to clear temporary
     files), then shut down and create a VM snapshot. This will shrink the snapshot size.
-29. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
+38. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command
     1. label = "mac"
     2. command:
 
@@ -212,7 +217,7 @@
 
     3. Tool home = "/usr/bin/git"
 
-30. Create a new Node in Jenkins
+39. Create a new Node in Jenkins
 	1. Node should have the following Tool Locations:
         1. JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home. If this changes, you
            can invoke "/usr/libexec/java_home" to get the current value.
