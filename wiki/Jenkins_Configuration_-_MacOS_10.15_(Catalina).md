@@ -32,7 +32,7 @@
         5. Add boot option
         6. and edit boot order.
         7. Add new boot option.
-        8. Choose EFI, Boot, Bootstrap.efi and finally confirm.
+        8. Choose EFI, OC, OpenCore.efi and finally confirm.
         9. Remove all other entries.
 3. The following is based 
    on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
