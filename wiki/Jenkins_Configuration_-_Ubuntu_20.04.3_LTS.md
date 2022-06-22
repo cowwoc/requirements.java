@@ -148,11 +148,12 @@
 			</servers>
 		</settings>
 
-12. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
-13. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
-14. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash can), reboot the OS once (to clear the temporary directory), then shut down and create a VM snapshot. This will shrink the snapshot size.
-15. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command → label = "linux", command = "sudo apt-get install git -y", Tool home = "/usr/bin/git"
-16. Create a new Node in Jenkins
+12. Update vmware tools per https://github.com/vmware/open-vm-tools/issues/303#issuecomment-435916846
+13. Assign the VM a static IP (e.g. configure the router to assign its mac address to a static DHCP address)
+14. Mark this node temporarily offline in Jenkins to prevent it from creating new files.
+15. Clean up any temporary files (e.g. ~/Downloads, ~/.jenkins, Trash can), reboot the OS once (to clear the temporary directory), then shut down and create a VM snapshot. This will shrink the snapshot size.
+16. In Jenkins, Maven configuration → Global Tool Configuration → Git → Install automatically → shell command → label = "linux", command = "sudo apt-get install git -y", Tool home = "/usr/bin/git"
+17. Create a new Node in Jenkins
 Type = Permanent Agent
 	1. Remote root directory = /home/builds/.jenkins
 	2. Labels = linux amd64
