@@ -9,13 +9,18 @@ import java.util.function.Function;
 
 /**
  * Configures the behavior of a single verifier.
- * <p>
- * Implementations must be thread-safe.
  */
 public interface Configuration
 {
 	/**
-	 * Indicates if if {@code assertThat()} should delegate to {@code requireThat()}; otherwise, it won't
+	 * Returns a copy of this configuration.
+	 *
+	 * @return a copy of this configuration
+	 */
+	Configuration copy();
+
+	/**
+	 * Indicates if {@code assertThat()} should delegate to {@code requireThat()}; otherwise, it won't
 	 * do anything.
 	 *
 	 * @return true if assertions are enabled for this class
@@ -25,14 +30,14 @@ public interface Configuration
 	/**
 	 * Indicates that {@code assertThat()} should invoke {@code requireThat()}.
 	 *
-	 * @return the updated configuration
+	 * @return this
 	 */
 	Configuration withAssertionsEnabled();
 
 	/**
 	 * Indicates that {@code assertThat()} shouldn't do anything.
 	 *
-	 * @return the updated configuration
+	 * @return this
 	 */
 	Configuration withAssertionsDisabled();
 
@@ -46,7 +51,7 @@ public interface Configuration
 	/**
 	 * Indicates that exceptions should show the difference between the actual and expected values.
 	 *
-	 * @return the updated configuration
+	 * @return this
 	 */
 	Configuration withDiff();
 
@@ -54,7 +59,7 @@ public interface Configuration
 	 * Indicates that exceptions should not show the difference between the actual and expected
 	 * values.
 	 *
-	 * @return the updated configuration
+	 * @return this
 	 */
 	Configuration withoutDiff();
 
@@ -70,7 +75,7 @@ public interface Configuration
 	/**
 	 * Indicates that stack trace references to this library should be removed.
 	 *
-	 * @return the updated configuration
+	 * @return this
 	 * @see #isCleanStackTrace()
 	 */
 	Configuration withCleanStackTrace();
@@ -78,7 +83,7 @@ public interface Configuration
 	/**
 	 * Indicates that stack trace references to this library should be kept.
 	 *
-	 * @return the updated configuration
+	 * @return this
 	 * @see #isCleanStackTrace()
 	 */
 	Configuration withoutCleanStackTrace();
@@ -87,7 +92,7 @@ public interface Configuration
 	 * Returns an unmodifiable map to append to the exception message.
 	 *
 	 * @return an empty map by default
-	 * @see #putContext(String, Object)
+	 * @see #withContext(String, Object)
 	 */
 	Map<String, Object> getContext();
 
@@ -97,20 +102,7 @@ public interface Configuration
 	 *
 	 * @param name  the name of the parameter
 	 * @param value the value of the parameter
-	 * @return the updated configuration
-	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withContext(String, Object)}
-	 */
-	@Deprecated
-	Configuration putContext(String name, Object value);
-
-	/**
-	 * Adds or updates contextual information associated with the exception message. Overrides any values
-	 * associated with the {@code name} at the {@link ThreadRequirements} level.
-	 *
-	 * @param name  the name of the parameter
-	 * @param value the value of the parameter
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	Configuration withContext(String name, Object value);
@@ -119,29 +111,25 @@ public interface Configuration
 	 * Removes contextual information associated with the exception message.
 	 *
 	 * @param name the name of the parameter
-	 * @return the updated configuration
-	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withoutContext(String)}
-	 */
-	@Deprecated
-	Configuration removeContext(String name);
-
-	/**
-	 * Removes contextual information associated with the exception message.
-	 *
-	 * @param name the name of the parameter
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
 	Configuration withoutContext(String name);
 
 	/**
-	 * Returns an exception message with contextual information.
+	 * Removes all contextual information associated with the exception message.
+	 *
+	 * @return this
+	 */
+	Configuration withoutAnyContext();
+
+	/**
+	 * Returns the contextual information associated with this configuration.
 	 *
 	 * @param message the exception message ({@code null} if absent)
-	 * @return the exception message with contextual information
+	 * @return the contextual information associated with this configuration
 	 */
-	String createMessageWithContext(String message);
+	String getContextMessage(String message);
 
 	/**
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for
@@ -163,7 +151,7 @@ public interface Configuration
 	 * @param type      the type of object being converted (non-primitive arrays are mapped to
 	 *                  {@code Object[].class})
 	 * @param converter a function that converts an object of the specified type to a String
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	<T> Configuration withStringConverter(Class<T> type, Function<T, String> converter);
@@ -173,7 +161,7 @@ public interface Configuration
 	 *
 	 * @param <T>  the type of object being converted
 	 * @param type the type of object being converted
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code type} is null
 	 */
 	<T> Configuration withoutStringConverter(Class<T> type);
@@ -182,7 +170,7 @@ public interface Configuration
 	 * Replaces a verifier's configuration.
 	 *
 	 * @param configuration a new configuration
-	 * @return the updated configuration
+	 * @return this
 	 * @throws NullPointerException if {@code configuration} is null
 	 */
 	Configuration withConfiguration(Configuration configuration);

@@ -85,7 +85,7 @@ public final class BooleanTest
 			String actualMessage = e.getMessage();
 			assert (!actualMessage.contains("Diff")) :
 				"Wasn't expecting boolean equals() to return diff.\n" +
-					"\nActual:\n" + actualMessage;
+					" Actual:\n" + actualMessage;
 		}
 	}
 

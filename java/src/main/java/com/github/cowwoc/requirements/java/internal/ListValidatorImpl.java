@@ -8,8 +8,6 @@ import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ListValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.internal.diff.ContextGenerator;
-import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractCollectionValidator;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
@@ -40,7 +38,7 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	 *                        {@code failures} are null. If {@code name} is blank.
 	 */
 	public ListValidatorImpl(ApplicationScope scope, Configuration config, String name, L actual,
-	                         Pluralizer pluralizer, List<ValidationFailure> failures)
+		Pluralizer pluralizer, List<ValidationFailure> failures)
 	{
 		super(scope, config, name, actual, pluralizer, failures);
 	}
@@ -80,19 +78,5 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	protected ListValidator<L, E> getNoOp()
 	{
 		return new ListValidatorNoOp<>(getFailures());
-	}
-
-	@Override
-	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
-	{
-		if (expected instanceof List<?> expectedAsList)
-		{
-			// If both actual and expected value are Lists, use the List-specific implementation of
-			// contextGenerator.getContext().
-			ContextGenerator contextGenerator = new ContextGenerator(config, scope);
-			return contextGenerator.getContext("Actual", actual, "Expected",
-				expectedAsList, expectedInMessage);
-		}
-		return super.getContext(expected, expectedInMessage);
 	}
 }

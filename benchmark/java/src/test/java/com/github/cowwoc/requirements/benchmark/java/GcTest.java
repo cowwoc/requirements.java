@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
-@SuppressWarnings({"CanBeFinal", "LongLine"})
+@SuppressWarnings({"CanBeFinal", "LongLine", "FieldMayBeFinal"})
 public class GcTest
 {
 	// Fields may not be final:

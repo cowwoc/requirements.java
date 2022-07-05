@@ -4,8 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import com.github.cowwoc.requirements.java.internal.util.Lists;
-
 import java.util.List;
 
 /**
@@ -16,14 +14,17 @@ public final class DiffResult
 	private final List<String> actualLines;
 	private final List<String> diffLines;
 	private final List<String> expectedLines;
+	private final List<Boolean> equalLines;
 
 	/**
 	 * @param actualLines   the lines of the actual string
 	 * @param diffLines     optional lines denoting the difference between "actual" and "expected"
 	 * @param expectedLines the lines of the expected string
+	 * @param equalLines    indicates which lines are equal
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public DiffResult(List<String> actualLines, List<String> diffLines, List<String> expectedLines)
+	public DiffResult(List<String> actualLines, List<String> diffLines, List<String> expectedLines,
+		List<Boolean> equalLines)
 	{
 		if (actualLines == null)
 			throw new NullPointerException("actualLines may not be null");
@@ -31,9 +32,10 @@ public final class DiffResult
 			throw new NullPointerException("expectedLines may not be null");
 		if (diffLines == null)
 			throw new NullPointerException("diffLines may not be null");
-		this.actualLines = Lists.unmodifiable(actualLines);
-		this.diffLines = Lists.unmodifiable(diffLines);
-		this.expectedLines = Lists.unmodifiable(expectedLines);
+		this.actualLines = List.copyOf(actualLines);
+		this.diffLines = List.copyOf(diffLines);
+		this.expectedLines = List.copyOf(expectedLines);
+		this.equalLines = List.copyOf(equalLines);
 	}
 
 	/**
@@ -67,11 +69,22 @@ public final class DiffResult
 		return expectedLines;
 	}
 
+	/**
+	 * Returns a list that indicates whether the actual and expected values are equal on each line.
+	 *
+	 * @return an unmodifiable list
+	 */
+	public List<Boolean> getEqualLines()
+	{
+		return equalLines;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "actual  : " + actualLines + "\n" +
 			"diff    : " + diffLines + "\n" +
-			"expected: " + expectedLines;
+			"expected: " + expectedLines + "\n" +
+			"equal   : " + equalLines;
 	}
 }

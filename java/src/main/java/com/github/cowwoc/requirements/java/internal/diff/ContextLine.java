@@ -4,36 +4,29 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
+import com.github.cowwoc.requirements.java.internal.util.Strings;
+
 /**
  * A line item in an exception context.
  */
 public final class ContextLine
 {
 	private final String name;
-	private final Object value;
+	private final String value;
 
 	/**
 	 * Creates a new line.
 	 *
 	 * @param name  the key associated with the value (empty string if absent)
 	 * @param value a value
-	 * @throws AssertionError if the key is null
+	 * @throws AssertionError if the key is null, blank or contains a colon
 	 */
-	public ContextLine(String name, Object value)
+	public ContextLine(String name, String value)
 	{
 		assert (name != null);
+		assert (!name.contains(":")) : "name may not contain a colon.\n" +
+			"Actual: " + Strings.asJavaString(name);
 		this.name = name;
-		this.value = value;
-	}
-
-	/**
-	 * Creates a new line.
-	 *
-	 * @param value the value of the line
-	 */
-	public ContextLine(Object value)
-	{
-		this.name = "";
 		this.value = value;
 	}
 
@@ -58,7 +51,7 @@ public final class ContextLine
 	{
 		StringBuilder result = new StringBuilder();
 		if (!name.isBlank())
-			result.append(name + ":");
+			result.append(name + ": ");
 		result.append(value);
 		return result.toString();
 	}

@@ -22,6 +22,7 @@ import com.github.cowwoc.requirements.java.internal.util.Strings;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -160,7 +161,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (!actualContainsAny(expected))
+		if (Collections.disjoint(actual, expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must contain any " + pluralizer.nameOf(1) + " in " + expected + ".").
@@ -168,18 +169,6 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 		}
 		return getThis();
-	}
-
-	/**
-	 * @param elements a collection of elements
-	 * @return true if actual value contains any of {@code elements}
-	 */
-	private boolean actualContainsAny(Collection<E> elements)
-	{
-		for (E element : elements)
-			if (actual.contains(element))
-				return true;
-		return false;
 	}
 
 	@Override
@@ -196,7 +185,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (!actualContainsAny(expected))
+		if (Collections.disjoint(actual, expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must contain any " + pluralizer.nameOf(1) + " in " + name + ".").
@@ -346,7 +335,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (actualContainsAny(elements))
+		if (!Collections.disjoint(actual, elements))
 		{
 			Set<E> elementsAsSet = Sets.fromCollection(elements);
 			Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -374,7 +363,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (actualContainsAny(elements))
+		if (!Collections.disjoint(actual, elements))
 		{
 			Set<E> elementsAsSet = Sets.fromCollection(elements);
 			Set<E> actualAsSet = Sets.fromCollection(actual);

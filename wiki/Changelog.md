@@ -1,12 +1,22 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 6.1.1 - ?
+## Version 7.0.0 - ?
 
+* Breaking changes:
+    * Removed thread-safety from most classes for performance-reasons. It seems like single-threaded usage is
+      far more common.
+    * Removed deprecated methods `Configuration.putContext()`, `Configuration.removeContext()` that were
+      replaced by `Configuration.withContext()` and `Configuration.withoutContext()`, respectively.
+    * Removed deprecated methods `ThreadRequirements.putContext()`, `ThreadRequirements.removeContext()`,
+      `ThreadRequirements.removeAllContext()` that were replaced by `ThreadRequirements.withContext()`,
+      `ThreadRequirements.withoutContext()` and `ThreadRequirements.withoutAnyContext()`, respectively.
 * Improvements
     * Added default string converter for `Set`, `Map` and `Throwable`.
     * `ArrayValidator`: avoid converting array into a list until absolutely necessary.
-    * Added `Requirements.createMessageWithContext(String message)`.
+    * Added `Configuration.getContextMessage()` and `ThreadRequirements.getContextMessage()`.
+    * Added `Configuration.copy()`.
+    * Added `Configuration.withoutAnyContext()`.
 
 ## Version 6.1.0 - 2020/02/10
 

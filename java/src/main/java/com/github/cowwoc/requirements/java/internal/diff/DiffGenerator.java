@@ -31,7 +31,8 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PR
 public final class DiffGenerator
 {
 	// See https://www.regular-expressions.info/unicode.html for an explanation of \p{Zs}
-	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|[.\\[\\](){}/\\\\*+\\-#:;]");
+	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|(?:\\\\r)?\\\\n|[.\\[\\]()" +
+		"{}/\\\\*+\\-#:;]");
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 	private final ReduceDeltasPerWord reduceDeltasPerWord = new ReduceDeltasPerWord();
@@ -94,8 +95,9 @@ public final class DiffGenerator
 		reduceDeltasPerWord.accept(deltas);
 		for (AbstractDelta<Integer> delta : deltas)
 			writeDelta(delta, writer);
-		writer.close();
-		return new DiffResult(writer.getActualLines(), writer.getDiffLines(), writer.getExpectedLines());
+		writer.flush();
+		return new DiffResult(writer.getActualLines(), writer.getDiffLines(), writer.getExpectedLines(),
+			writer.getEqualLines());
 	}
 
 	/**
@@ -257,7 +259,7 @@ public final class DiffGenerator
 		 * @param updatedDeltas   a list to insert updated deltas into
 		 */
 		private void processStartDelta(StringBuilder actualBuilder, StringBuilder expectedBuilder,
-		                               List<AbstractDelta<Integer>> updatedDeltas)
+			List<AbstractDelta<Integer>> updatedDeltas)
 		{
 			AbstractDelta<Integer> delta = deltas.get(indexOfStartDelta);
 			String actual = Strings.fromCodepoints(delta.getSource().getLines());
@@ -319,7 +321,7 @@ public final class DiffGenerator
 		 * @param updatedDeltas   a list to insert updated deltas into
 		 */
 		private void processEndDelta(StringBuilder actualBuilder, StringBuilder expectedBuilder,
-		                             List<AbstractDelta<Integer>> updatedDeltas)
+			List<AbstractDelta<Integer>> updatedDeltas)
 		{
 			AbstractDelta<Integer> delta = deltas.get(indexOfEndDelta);
 			String actual = Strings.fromCodepoints(delta.getSource().getLines());

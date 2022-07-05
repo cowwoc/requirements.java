@@ -19,10 +19,9 @@ import java.util.function.Supplier;
  */
 public final class TestApplicationScope extends AbstractApplicationScope
 {
-	private final Configuration defaultConfiguration = new MainConfiguration(this);
 	private final GlobalConfiguration globalConfiguration;
 	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
-		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
+		ThreadLocal.withInitial(() -> new DefaultThreadConfiguration(this));
 
 	/**
 	 * @param terminalEncoding the type of encoding that verifiers should output
@@ -59,7 +58,7 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	@Override
 	public Supplier<Configuration> getDefaultConfiguration()
 	{
-		return () -> defaultConfiguration;
+		return () -> new MainConfiguration(this);
 	}
 
 	@Override

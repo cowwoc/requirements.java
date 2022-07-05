@@ -47,7 +47,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 *                        {@code name} is blank.
 	 */
 	protected AbstractObjectValidator(ApplicationScope scope, Configuration config, String name, T actual,
-	                                  List<ValidationFailure> failures)
+		List<ValidationFailure> failures)
 	{
 		assert (scope != null) : "scope may not be null";
 		assert (config != null) : "config may not be null";
@@ -174,9 +174,14 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected List<ContextLine> getContext(Object expected, boolean expectedInMessage)
 	{
-		ContextGenerator contextGenerator = new ContextGenerator(config, scope);
-		return contextGenerator.getContext("Actual", actual, "Expected", expected,
-			expectedInMessage);
+		ContextGenerator contextGenerator = new ContextGenerator(config, scope).
+			actualName("Actual").
+			actualValue(actual).
+			expectedName("Expected").
+			expectedValue(expected);
+		if (expectedInMessage)
+			contextGenerator.expectedInMessage();
+		return contextGenerator.build();
 	}
 
 	@Override

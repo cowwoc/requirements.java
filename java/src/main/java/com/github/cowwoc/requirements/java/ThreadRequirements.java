@@ -19,8 +19,6 @@ public final class ThreadRequirements
 {
 	private static final Supplier<ThreadConfiguration> DELEGATE =
 		DefaultJvmScope.INSTANCE.getThreadConfiguration();
-	// TODO: Remove alongside deprecated methods
-	private static final ThreadRequirements INSTANCE = new ThreadRequirements();
 
 	/**
 	 * Prevent construction.
@@ -33,27 +31,11 @@ public final class ThreadRequirements
 	 * Returns a map to append to the exception message.
 	 *
 	 * @return an unmodifiable map to append to the exception message
-	 * @see #putContext(String, Object)
+	 * @see #withContext(String, Object)
 	 */
 	public static Map<String, Object> getContext()
 	{
 		return DELEGATE.get().getContext();
-	}
-
-	/**
-	 * Adds or updates contextual information associated with the exception message.
-	 *
-	 * @param name  the name of the parameter
-	 * @param value the value of the parameter
-	 * @return this
-	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withContext(String, Object)}
-	 */
-	@Deprecated
-	public static ThreadRequirements putContext(String name, Object value)
-	{
-		withContext(name, value);
-		return INSTANCE;
 	}
 
 	/**
@@ -75,21 +57,6 @@ public final class ThreadRequirements
 	 * @param name the name of the parameter
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withoutContext(String)}
-	 */
-	@Deprecated
-	public static ThreadRequirements removeContext(String name)
-	{
-		withoutContext(name);
-		return INSTANCE;
-	}
-
-	/**
-	 * Removes contextual information associated with the exception message.
-	 *
-	 * @param name the name of the parameter
-	 * @return this
-	 * @throws NullPointerException if {@code name} is null
 	 */
 	public static ThreadConfiguration withoutContext(String name)
 	{
@@ -100,22 +67,20 @@ public final class ThreadRequirements
 	 * Removes all contextual information associated with the exception message.
 	 *
 	 * @return this
-	 * @deprecated Use {@link #withoutAnyContext()}
-	 */
-	@Deprecated
-	public static ThreadRequirements removeAllContext()
-	{
-		withoutAnyContext();
-		return INSTANCE;
-	}
-
-	/**
-	 * Removes all contextual information associated with the exception message.
-	 *
-	 * @return this
 	 */
 	public static ThreadConfiguration withoutAnyContext()
 	{
 		return DELEGATE.get().withoutAnyContext();
+	}
+
+	/**
+	 * Returns the contextual information associated with this configuration.
+	 *
+	 * @param message the exception message ({@code null} if absent)
+	 * @return the contextual information associated with this configuration
+	 */
+	public static String getContextMessage(String message)
+	{
+		return DELEGATE.get().getContextMessage(message);
 	}
 }

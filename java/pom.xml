@@ -5,24 +5,17 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.1.1-SNAPSHOT</version>
+		<version>7.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>java</artifactId>
 	<packaging>jar</packaging>
 
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>${project.groupId}</groupId>
-					<artifactId>maven_plugin</artifactId>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>maven_plugin</artifactId>
+				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<id>optimize-exceptions</id>

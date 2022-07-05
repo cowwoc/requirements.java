@@ -18,7 +18,7 @@ public interface OptionalVerifier extends ExtensibleObjectVerifier<OptionalVerif
 	/**
 	 * Ensures that the actual value is present.
 	 *
-	 * @return the updated verifier
+	 * @return this
 	 * @throws IllegalArgumentException if the optional is empty
 	 */
 	OptionalVerifier isPresent();
@@ -26,7 +26,7 @@ public interface OptionalVerifier extends ExtensibleObjectVerifier<OptionalVerif
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return the updated verifier
+	 * @return this
 	 * @throws IllegalArgumentException if the optional is present
 	 */
 	OptionalVerifier isEmpty();
@@ -35,7 +35,7 @@ public interface OptionalVerifier extends ExtensibleObjectVerifier<OptionalVerif
 	 * Ensures that the optional contains a value.
 	 *
 	 * @param value the expected value; {@code null} matches an empty optional
-	 * @return the updated verifier
+	 * @return this
 	 * @throws IllegalArgumentException if the optional does not contain the specified value
 	 */
 	OptionalVerifier contains(Object value);

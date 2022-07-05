@@ -18,26 +18,16 @@ import org.testng.annotations.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
-@SuppressWarnings({"CanBeFinal", "LongLine", "FieldCanBeLocal"})
+@SuppressWarnings({"CanBeFinal", "LongLine", "FieldCanBeLocal", "FieldMayBeFinal"})
 public class ExceptionTest
 {
 	// Fields may not be final:
 	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
 	private String name = "actual";
-	private Map<Integer, Integer> value;
 	private Object nullObject = null;
-
-	public ExceptionTest()
-	{
-		value = new HashMap<>(5, 1f);
-		for (int i = 0; i < 5; ++i)
-			value.put(i, 5 - i);
-	}
 
 	@Test
 	public void runBenchmarks() throws RunnerException

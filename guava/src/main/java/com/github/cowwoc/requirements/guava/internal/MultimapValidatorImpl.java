@@ -120,7 +120,7 @@ public final class MultimapValidatorImpl<K, V>
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be empty.").
-				addContext("Actual", config.toString(actual));
+				addContext("Actual", actual);
 			addFailure(failure);
 		}
 		return this;

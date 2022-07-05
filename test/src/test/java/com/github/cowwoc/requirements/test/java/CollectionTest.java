@@ -1302,15 +1302,20 @@ public final class CollectionTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : [1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
-				DIFF_PADDING.repeat("1,".length()) + " 3]" + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_PADDING.repeat("[".length()) + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3]" + EOS_MARKER).length()) + "\n" +
-				"Expected: [" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
-				"1, 3]" + EOS_MARKER;
+			String expectedMessage = "Actual[0]  : 1" + DIFF_PADDING.repeat("2".length()) + EOS_MARKER + "\n" +
+				"Diff       : " + DIFF_DELETE.repeat("1".length()) + DIFF_INSERT.repeat("2".length()) +
+				DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
+				"Expected[0]: " + DIFF_PADDING.repeat("1".length()) + "2" + EOS_MARKER + "\n" +
+				"\n" +
+				"Actual[1]  : " + "2" + DIFF_PADDING.repeat("1".length()) + EOS_MARKER + "\n" +
+				"Diff       : " + DIFF_DELETE.repeat("1".length()) + DIFF_INSERT.repeat("2".length()) +
+				DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
+				"Expected[1]: " + DIFF_PADDING.repeat("2".length()) + "1" + EOS_MARKER + "\n" +
+				"\n" +
+				"Actual[2]  : " + "3" + EOS_MARKER + "\n" +
+				"Expected[2]: " + "3" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n****************\nActual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 }

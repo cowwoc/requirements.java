@@ -38,7 +38,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 * @throws IllegalArgumentException if {@code message} is blank
 	 */
 	public ValidationFailureImpl(ApplicationScope scope, Configuration config,
-	                             Class<? extends Exception> exceptionType, String message)
+		Class<? extends Exception> exceptionType, String message)
 	{
 		assert (scope != null);
 		assert (config != null);
@@ -80,27 +80,17 @@ public final class ValidationFailureImpl implements ValidationFailure
 		return this;
 	}
 
-	@Override
-	public String getMessage()
-	{
-		if (messageWithContext == null)
-			this.messageWithContext = scope.getExceptions().createMessageWithContext(config, context, message);
-		return messageWithContext;
-	}
-
 	/**
 	 * Adds contextual information associated with the failure.
 	 *
 	 * @param name  the name of a variable
 	 * @param value the value of the variable
 	 * @return this
-	 * @throws AssertionError if {@code name} is null or empty
+	 * @throws AssertionError if the key is null, blank or contains a colon
 	 */
 	public ValidationFailureImpl addContext(String name, Object value)
 	{
-		assert (name != null) : "name may not be null";
-		assert (!name.isBlank()) : "name may not be blank";
-		context.add(new ContextLine(name, value));
+		context.add(new ContextLine(name, config.toString(value)));
 		messageWithContext = null;
 		return this;
 	}
@@ -118,6 +108,14 @@ public final class ValidationFailureImpl implements ValidationFailure
 		this.context.addAll(context);
 		messageWithContext = null;
 		return this;
+	}
+
+	@Override
+	public String getMessage()
+	{
+		if (messageWithContext == null)
+			this.messageWithContext = scope.getExceptions().getContextMessage(config, message, context);
+		return messageWithContext;
 	}
 
 	/**

@@ -12,8 +12,6 @@ import java.util.function.Supplier;
 
 /**
  * The configuration of an application. A JVM may contain multiple applications.
- * <p>
- * Implementations must be thread-safe.
  */
 public interface ApplicationScope extends JvmScope
 {

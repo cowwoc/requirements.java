@@ -101,8 +101,6 @@ import java.util.function.Function;
 
 /**
  * Default implementation of JavaRequirements.
- * <p>
- * This class is thread-safe.
  */
 public final class DefaultJavaRequirements implements JavaRequirements
 {
@@ -118,7 +116,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	/**
 	 * The instance configuration.
 	 */
-	private final Configuration config;
+	private Configuration config;
 
 	/**
 	 * Equivalent to {@link #DefaultJavaRequirements(ApplicationScope)
@@ -130,8 +128,6 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	/**
-	 * Equivalent to {@link #DefaultJavaRequirements(ApplicationScope, Configuration)
-	 * DefaultJavaRequirements(scope, scope.getGlobalConfiguration())}.
 	 * This constructor is meant to be used by secrets classes, not by users.
 	 *
 	 * @param scope the application configuration
@@ -139,9 +135,7 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	 */
 	private DefaultJavaRequirements(ApplicationScope scope)
 	{
-		assert (scope != null) : "scope may not be null";
-		this.scope = scope;
-		this.config = scope.getDefaultConfiguration().get();
+		this(scope, scope.getDefaultConfiguration().get());
 	}
 
 	/**
@@ -155,6 +149,12 @@ public final class DefaultJavaRequirements implements JavaRequirements
 		assert (config != null) : "config may not be null";
 		this.scope = scope;
 		this.config = config;
+	}
+
+	@Override
+	public JavaRequirements copy()
+	{
+		return new DefaultJavaRequirements(scope, config.copy());
 	}
 
 	@Override
@@ -172,19 +172,15 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public JavaRequirements withCleanStackTrace()
 	{
-		Configuration newConfig = config.withCleanStackTrace();
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withCleanStackTrace();
+		return this;
 	}
 
 	@Override
 	public JavaRequirements withoutCleanStackTrace()
 	{
-		Configuration newConfig = config.withoutCleanStackTrace();
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withoutCleanStackTrace();
+		return this;
 	}
 
 	@Override
@@ -194,59 +190,44 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	}
 
 	@Override
-	@Deprecated
-	public JavaRequirements putContext(String name, Object value)
-	{
-		return withContext(name, value);
-	}
-
-	@Override
 	public JavaRequirements withContext(String name, Object value)
 	{
-		Configuration newConfig = config.withContext(name, value);
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
-	}
-
-	@Override
-	@Deprecated
-	public JavaRequirements removeContext(String name)
-	{
-		return withoutContext(name);
+		config.withContext(name, value);
+		return this;
 	}
 
 	@Override
 	public JavaRequirements withoutContext(String name)
 	{
-		Configuration newConfig = config.withoutContext(name);
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withoutContext(name);
+		return this;
 	}
 
 	@Override
-	public String createMessageWithContext(String message)
+	public JavaRequirements withoutAnyContext()
 	{
-		return config.createMessageWithContext(message);
+		config.withoutAnyContext();
+		return this;
+	}
+
+	@Override
+	public String getContextMessage(String message)
+	{
+		return config.getContextMessage(message);
 	}
 
 	@Override
 	public JavaRequirements withAssertionsDisabled()
 	{
-		Configuration newConfig = config.withAssertionsDisabled();
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withAssertionsDisabled();
+		return this;
 	}
 
 	@Override
 	public JavaRequirements withAssertionsEnabled()
 	{
-		Configuration newConfig = config.withAssertionsEnabled();
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withAssertionsEnabled();
+		return this;
 	}
 
 	@Override
@@ -258,19 +239,15 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public JavaRequirements withDiff()
 	{
-		Configuration newConfig = config.withDiff();
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withDiff();
+		return this;
 	}
 
 	@Override
 	public JavaRequirements withoutDiff()
 	{
-		Configuration newConfig = config.withoutDiff();
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withoutDiff();
+		return this;
 	}
 
 	@Override
@@ -282,27 +259,22 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public <T> JavaRequirements withStringConverter(Class<T> type, Function<T, String> converter)
 	{
-		Configuration newConfig = config.withStringConverter(type, converter);
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withStringConverter(type, converter);
+		return this;
 	}
 
 	@Override
 	public <T> JavaRequirements withoutStringConverter(Class<T> type)
 	{
-		Configuration newConfig = config.withoutStringConverter(type);
-		if (newConfig.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, newConfig);
+		config.withoutStringConverter(type);
+		return this;
 	}
 
 	@Override
 	public JavaRequirements withConfiguration(Configuration configuration)
 	{
-		if (configuration.equals(config))
-			return this;
-		return new DefaultJavaRequirements(scope, configuration);
+		this.config = configuration;
+		return this;
 	}
 
 	@Override

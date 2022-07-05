@@ -74,7 +74,7 @@ public final class SizeValidatorImpl
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain at least " + config.toString(value) + " " + pluralizer.nameOf(value) +
-					".").
+				".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -111,7 +111,7 @@ public final class SizeValidatorImpl
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain more than " + config.toString(value) + " " +
-					pluralizer.nameOf(value)).
+				pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -148,7 +148,7 @@ public final class SizeValidatorImpl
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " may not contain more than " + config.toString(value) + " " +
-					pluralizer.nameOf(value) + ".").
+				pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -185,7 +185,7 @@ public final class SizeValidatorImpl
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain less than " + config.toString(value) + " " +
-					pluralizer.nameOf(value) + ".").
+				pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -293,7 +293,7 @@ public final class SizeValidatorImpl
 			String endAsString = config.toString(endExclusive);
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain [" + startAsString + ", " + endAsString + ") " +
-					pluralizer.nameOf(2) + ".").
+				pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -315,7 +315,7 @@ public final class SizeValidatorImpl
 			String endAsString = config.toString(endInclusive);
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain [" + startAsString + ", " + endAsString + "] " +
-					pluralizer.nameOf(2) + ".").
+				pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);

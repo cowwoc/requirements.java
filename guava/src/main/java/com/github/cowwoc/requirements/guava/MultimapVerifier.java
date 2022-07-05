@@ -34,7 +34,7 @@ public interface MultimapVerifier<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Multimap#keySet()}
-	 * @return the updated verifier
+	 * @return this
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer);
@@ -50,7 +50,7 @@ public interface MultimapVerifier<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Multimap#values()}
-	 * @return the updated verifier
+	 * @return this
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer);
@@ -66,7 +66,7 @@ public interface MultimapVerifier<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the {@link Multimap#entries()}
-	 * @return the updated verifier
+	 * @return this
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>> consumer);
@@ -74,7 +74,7 @@ public interface MultimapVerifier<K, V>
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @return the updated verifier
+	 * @return this
 	 * @throws IllegalArgumentException if actual value is not empty
 	 */
 	MultimapVerifier<K, V> isEmpty();
@@ -82,7 +82,7 @@ public interface MultimapVerifier<K, V>
 	/**
 	 * Ensures that the actual value is not empty.
 	 *
-	 * @return the updated verifier
+	 * @return this
 	 * @throws IllegalArgumentException if actual value is empty
 	 */
 	MultimapVerifier<K, V> isNotEmpty();
@@ -98,7 +98,7 @@ public interface MultimapVerifier<K, V>
 	 * group related requirements</a>.
 	 *
 	 * @param consumer verifies the multimap's size
-	 * @return the updated verifier
+	 * @return this
 	 */
 	@SuppressWarnings("LongLine")
 	MultimapVerifier<K, V> size(Consumer<SizeVerifier> consumer);

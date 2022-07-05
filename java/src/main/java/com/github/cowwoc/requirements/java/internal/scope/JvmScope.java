@@ -21,7 +21,7 @@ public interface JvmScope extends AutoCloseable
 	GlobalConfiguration getGlobalConfiguration();
 
 	/**
-	 * @return the configuration of all verifiers invoked by the current thread
+	 * @return the configuration shared by all verifiers invoked by the current thread
 	 */
 	Supplier<ThreadConfiguration> getThreadConfiguration();
 

@@ -17,6 +17,11 @@ import java.util.regex.Pattern;
 public final class Strings
 {
 	/**
+	 * A delimiter that denotes the beginning or end of a Java text block.
+	 */
+	public static final String TEXT_BLOCK_DELIMITER = ("\"").repeat(3);
+
+	/**
 	 * Prevent construction.
 	 */
 	private Strings()
@@ -160,5 +165,86 @@ public final class Strings
 		if (actualLength > minLength)
 			return text;
 		return text + " ".repeat(minLength - actualLength);
+	}
+
+	/**
+	 * @param text a {@code String}
+	 * @return the Java String representation of {@code text}
+	 */
+	public static String asJavaString(String text)
+	{
+		if (needsEscaping(text))
+		{
+			if (text.contains("\n"))
+				return asTextBlock(text);
+			return escapeSingleLine(text);
+		}
+		return "\"" + text + "\"";
+	}
+
+	/**
+	 * @param text a {@code String}
+	 * @return true if {@code text} contains any characters that require escaping
+	 */
+	private static boolean needsEscaping(String text)
+	{
+		for (int codepoint : (Iterable<Integer>) text.codePoints()::iterator)
+		{
+			switch (codepoint)
+			{
+				case '\t':
+				case '\b':
+				case '\n':
+				case '\r':
+				case '\f':
+				case '\"':
+				case '\\':
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param text a {@code String}
+	 * @return an escaped representation of {@code text}
+	 */
+	private static String escapeSingleLine(String text)
+	{
+		StringBuilder result = new StringBuilder(text.length() + 16);
+
+		for (int codepoint : (Iterable<Integer>) text.codePoints()::iterator)
+		{
+			switch (codepoint)
+			{
+				case '\t' -> result.append("\\t");
+				case '\b' -> result.append("\\b");
+				case '\n' -> result.append("\\n");
+				case '\r' -> result.append("\\r");
+				case '\f' -> result.append("\\f");
+				// No need to escape the ' character in a String: https://stackoverflow.com/a/16664166/14731
+				case '\"' -> result.append("\\\"");
+				case '\\' -> result.append("\\\\");
+				default -> result.appendCodePoint(codepoint);
+			}
+		}
+		result.insert(0, '"');
+		result.insert(result.length(), '"');
+		return result.toString();
+	}
+
+	/**
+	 * @param text a {@code String}
+	 * @return {@code text}'s representation as a text block
+	 */
+	private static String asTextBlock(String text)
+	{
+		// Escape textBlockDelimiter with a slash
+		text = text.replaceAll("(?<!\\\\)\"\"\"", Matcher.quoteReplacement("\\" + TEXT_BLOCK_DELIMITER));
+		// Lines that end with whitespace must replace the last whitespace character with \s
+		text = text.replaceAll("\\p{Zs}$", Matcher.quoteReplacement("\\s"));
+
+		return TEXT_BLOCK_DELIMITER + "\n" +
+			text + TEXT_BLOCK_DELIMITER;
 	}
 }

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.1.1-SNAPSHOT</version>
+		<version>7.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>benchmark</artifactId>
 	<packaging>pom</packaging>
@@ -41,6 +41,13 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<skipTests>${skipBenchmarks}</skipTests>
+					<properties>
+						<property>
+							<!-- WORKAROUND: https://github.com/cbeust/testng/issues/2727 -->
+							<name>usedefaultlisteners</name>
+							<key>false</key>
+						</property>
+					</properties>
 				</configuration>
 			</plugin>
 			<!-- Tests don't publish artifacts -->

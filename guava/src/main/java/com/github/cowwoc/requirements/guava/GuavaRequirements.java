@@ -11,24 +11,20 @@ import java.util.function.Function;
 
 /**
  * Verifies the requirements types from of the Guava library API.
- * <p>
- * Implementations must be thread-safe.
  */
 public interface GuavaRequirements extends Configuration
 {
 	@Override
-	@Deprecated
-	GuavaRequirements putContext(String name, Object value);
+	GuavaRequirements copy();
 
 	@Override
 	GuavaRequirements withContext(String name, Object value);
 
 	@Override
-	@Deprecated
-	GuavaRequirements removeContext(String name);
+	GuavaRequirements withoutContext(String name);
 
 	@Override
-	GuavaRequirements withoutContext(String name);
+	GuavaRequirements withoutAnyContext();
 
 	@Override
 	GuavaRequirements withAssertionsDisabled();

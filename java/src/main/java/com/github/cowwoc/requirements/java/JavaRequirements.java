@@ -17,24 +17,20 @@ import java.util.function.Function;
 
 /**
  * Verifies the requirements of types from the Java core API.
- * <p>
- * Implementations must be thread-safe.
  */
 public interface JavaRequirements extends Configuration
 {
 	@Override
-	@Deprecated
-	JavaRequirements putContext(String name, Object value);
+	JavaRequirements copy();
 
 	@Override
 	JavaRequirements withContext(String name, Object value);
 
 	@Override
-	@Deprecated
-	JavaRequirements removeContext(String name);
+	JavaRequirements withoutContext(String name);
 
 	@Override
-	JavaRequirements withoutContext(String name);
+	JavaRequirements withoutAnyContext();
 
 	@Override
 	JavaRequirements withAssertionsDisabled();

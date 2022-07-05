@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.internal.util.Maps;
+import com.github.cowwoc.requirements.java.internal.util.Strings;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -44,11 +44,11 @@ public final class MainConfiguration implements Configuration
 	}
 
 	private final Map<String, Object> context;
-	private final boolean assertionsEnabled;
-	private final boolean cleanStackTrace;
-	private final boolean diffEnabled;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
 	private final ApplicationScope scope;
+	private boolean assertionsEnabled;
+	private boolean cleanStackTrace;
+	private boolean diffEnabled;
 
 	/**
 	 * Creates a new configuration:
@@ -93,35 +93,26 @@ public final class MainConfiguration implements Configuration
 	}
 
 	/**
-	 * Copies a configuration.
+	 * Copies an existing configuration.
 	 *
-	 * @param scope                 the application configuration
-	 * @param context               the map to append to the exception message
-	 * @param assertionsEnabled     true if {@code assertThat()} should invoke {@code requireThat()};
-	 *                              false if {@code assertThat()} should do nothing
-	 * @param cleanStackTrace       true if stack trace references to this library should be removed
-	 * @param diffEnabled           indicates whether exceptions should show the difference between the
-	 *                              actual and expected values
-	 * @param typeToStringConverter a map from an object type to a function that converts the object to
-	 *                              a String
-	 * @throws AssertionError if any of the arguments are null
+	 * @param other the configuration to copy
+	 * @throws AssertionError if {@code other} is null
 	 */
-	private MainConfiguration(ApplicationScope scope,
-	                          Map<String, Object> context,
-	                          boolean assertionsEnabled,
-	                          boolean cleanStackTrace,
-	                          boolean diffEnabled,
-	                          Map<Class<?>, Function<Object, String>> typeToStringConverter)
+	private MainConfiguration(MainConfiguration other)
 	{
-		assert (scope != null) : "scope may not be null";
-		assert (context != null) : "context may not be null";
-		assert (typeToStringConverter != null) : "typeToStringConverter may not be null";
-		this.scope = scope;
-		this.context = Maps.unmodifiable(context);
-		this.assertionsEnabled = assertionsEnabled;
-		this.cleanStackTrace = cleanStackTrace;
-		this.diffEnabled = diffEnabled;
-		this.typeToStringConverter = Maps.unmodifiable(typeToStringConverter);
+		assert (other != null) : "other may not be null";
+		this.scope = other.scope;
+		this.context = new LinkedHashMap<>(other.context);
+		this.assertionsEnabled = other.assertionsEnabled;
+		this.cleanStackTrace = other.cleanStackTrace;
+		this.diffEnabled = other.diffEnabled;
+		this.typeToStringConverter = new HashMap<>(other.typeToStringConverter);
+	}
+
+	@Override
+	public Configuration copy()
+	{
+		return new MainConfiguration(this);
 	}
 
 	@Override
@@ -133,19 +124,15 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withAssertionsEnabled()
 	{
-		if (assertionsEnabled)
-			return this;
-		return new MainConfiguration(scope, context, true, cleanStackTrace, diffEnabled,
-			typeToStringConverter);
+		this.assertionsEnabled = true;
+		return this;
 	}
 
 	@Override
 	public Configuration withAssertionsDisabled()
 	{
-		if (!assertionsEnabled)
-			return this;
-		return new MainConfiguration(scope, context, false, cleanStackTrace, diffEnabled,
-			typeToStringConverter);
+		this.assertionsEnabled = false;
+		return this;
 	}
 
 	@Override
@@ -157,19 +144,15 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withCleanStackTrace()
 	{
-		if (cleanStackTrace)
-			return this;
-		return new MainConfiguration(scope, context, assertionsEnabled, true, diffEnabled,
-			typeToStringConverter);
+		this.cleanStackTrace = true;
+		return this;
 	}
 
 	@Override
 	public Configuration withoutCleanStackTrace()
 	{
-		if (!cleanStackTrace)
-			return this;
-		return new MainConfiguration(scope, context, assertionsEnabled, false, diffEnabled,
-			typeToStringConverter);
+		this.cleanStackTrace = false;
+		return this;
 	}
 
 	@Override
@@ -179,30 +162,12 @@ public final class MainConfiguration implements Configuration
 	}
 
 	@Override
-	@Deprecated
-	public Configuration putContext(String name, Object value)
-	{
-		return withContext(name, value);
-	}
-
-	@Override
 	public Configuration withContext(String name, Object value)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
-		if (Objects.equals(context.get(name), value))
-			return this;
-		Map<String, Object> newContext = new LinkedHashMap<>(context);
-		newContext.put(name, value);
-		return new MainConfiguration(scope, newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
-			typeToStringConverter);
-	}
-
-	@Override
-	@Deprecated
-	public Configuration removeContext(String name)
-	{
-		return withoutContext(name);
+		context.put(name, value);
+		return this;
 	}
 
 	@Override
@@ -210,18 +175,21 @@ public final class MainConfiguration implements Configuration
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");
-		if (!context.containsKey(name))
-			return this;
-		Map<String, Object> newContext = new LinkedHashMap<>(context);
-		newContext.remove(name);
-		return new MainConfiguration(scope, newContext, assertionsEnabled, cleanStackTrace, diffEnabled,
-			typeToStringConverter);
+		context.remove(name);
+		return this;
 	}
 
 	@Override
-	public String createMessageWithContext(String message)
+	public Configuration withoutAnyContext()
 	{
-		return scope.getExceptions().createMessageWithContext(this, List.of(), message);
+		context.clear();
+		return this;
+	}
+
+	@Override
+	public String getContextMessage(String message)
+	{
+		return scope.getExceptions().getContextMessage(this, message, List.of());
 	}
 
 	@Override
@@ -233,19 +201,15 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration withDiff()
 	{
-		if (diffEnabled)
-			return this;
-		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, true,
-			typeToStringConverter);
+		this.diffEnabled = true;
+		return this;
 	}
 
 	@Override
 	public Configuration withoutDiff()
 	{
-		if (!diffEnabled)
-			return this;
-		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, false,
-			typeToStringConverter);
+		this.diffEnabled = false;
+		return this;
 	}
 
 	@Override
@@ -268,8 +232,10 @@ public final class MainConfiguration implements Configuration
 		Function<Object, String> converter = typeToStringConverter.get(type);
 		if (converter == null)
 		{
-			// Converters that use instanceof to match types
-			if (value instanceof List)
+			// Special converters that use instanceof to match types
+			if (value instanceof String valueAsString)
+				converter = text -> Strings.asJavaString(valueAsString);
+			else if (value instanceof List)
 				converter = this::listToString;
 			else if (value instanceof Set)
 				converter = this::setToString;
@@ -295,7 +261,6 @@ public final class MainConfiguration implements Configuration
 	 */
 	private String listToString(Object object)
 	{
-		assert (List.class.isAssignableFrom(object.getClass())) : object.getClass();
 		return orderedToString((Collection<?>) object);
 	}
 
@@ -330,7 +295,6 @@ public final class MainConfiguration implements Configuration
 	 */
 	private String setToString(Object object)
 	{
-		assert (Set.class.isAssignableFrom(object.getClass())) : object.getClass();
 		Collection<?> collection;
 		if (object instanceof SortedSet<?> sorted)
 			collection = sorted;
@@ -357,7 +321,6 @@ public final class MainConfiguration implements Configuration
 	 */
 	private String mapToString(Object object)
 	{
-		assert (Map.class.isAssignableFrom(object.getClass())) : object.getClass();
 		if (object instanceof SortedMap<?, ?> sorted)
 			return orderedMapToString(sorted);
 		Map<?, ?> map = (Map<?, ?>) object;
@@ -412,7 +375,6 @@ public final class MainConfiguration implements Configuration
 	 */
 	private String throwableToString(Object object)
 	{
-		assert (Throwable.class.isAssignableFrom(object.getClass())) : object.getClass();
 		Throwable throwable = (Throwable) object;
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
@@ -429,13 +391,10 @@ public final class MainConfiguration implements Configuration
 			throw new NullPointerException("converter may not be null");
 		if (typeToStringConverter.get(type) == converter)
 			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
-			new HashMap<>(this.typeToStringConverter);
 		@SuppressWarnings("unchecked")
 		Function<Object, String> unsafeConverter = (Function<Object, String>) converter;
-		newTypeToStringConverter.put(type, unsafeConverter);
-		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, diffEnabled,
-			newTypeToStringConverter);
+		typeToStringConverter.put(type, unsafeConverter);
+		return this;
 	}
 
 	@Override
@@ -445,11 +404,8 @@ public final class MainConfiguration implements Configuration
 			throw new NullPointerException("type may not be null");
 		if (!typeToStringConverter.containsKey(type))
 			return this;
-		Map<Class<?>, Function<Object, String>> newTypeToStringConverter =
-			new HashMap<>(this.typeToStringConverter);
-		newTypeToStringConverter.remove(type);
-		return new MainConfiguration(scope, context, assertionsEnabled, cleanStackTrace, diffEnabled,
-			newTypeToStringConverter);
+		typeToStringConverter.remove(type);
+		return this;
 	}
 
 	@Override

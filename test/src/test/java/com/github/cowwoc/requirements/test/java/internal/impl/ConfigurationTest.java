@@ -66,9 +66,9 @@ public final class ConfigurationTest
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("exceptionName: exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("verifierName : verifierValue");
-			assertThat(failure.getMessage(), "message").contains("threadName   : threadValue");
+			assertThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
+			assertThat(failure.getMessage(), "message").contains("verifierName : \"verifierValue\"");
+			assertThat(failure.getMessage(), "message").contains("threadName   : \"threadValue\"");
 		}
 	}
 
@@ -82,8 +82,8 @@ public final class ConfigurationTest
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("exceptionName: exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("name         : verifierValue");
+			assertThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
+			assertThat(failure.getMessage(), "message").contains("name         : \"verifierValue\"");
 		}
 	}
 
@@ -97,7 +97,7 @@ public final class ConfigurationTest
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("name", "exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("name: exceptionValue");
+			assertThat(failure.getMessage(), "message").contains("name: \"exceptionValue\"");
 		}
 	}
 }

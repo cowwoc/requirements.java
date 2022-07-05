@@ -133,7 +133,7 @@ public final class Exceptions
 	 */
 	@SuppressWarnings("LongLine")
 	public <E extends Exception> E createException(Class<E> type, String message, Throwable cause,
-	                                               boolean cleanStackTrace)
+		boolean cleanStackTrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
 		//
@@ -285,7 +285,7 @@ public final class Exceptions
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	private StackTraceElement[] filterStackTrace(StackTraceElement[] elements,
-	                                             Predicate<StackTraceElement> elementFilter)
+		Predicate<StackTraceElement> elementFilter)
 	{
 		int i = elements.length - 1;
 		while (true)
@@ -310,51 +310,43 @@ public final class Exceptions
 	}
 
 	/**
-	 * Returns the String representation of the contextual information.
+	 * Returns the requirements contextual information.
 	 *
-	 * @param config  the instance configuration
-	 * @param context the exception-specific context
-	 * @param message the exception message ({@code null} if absent)
-	 * @return the String representation of the contextual information
-	 * @throws NullPointerException if {@code config} or {@code context} are null
+	 * @param config           the instance configuration
+	 * @param message          the exception message ({@code null} if absent)
+	 * @param exceptionContext the exception-specific context
+	 * @return the requirements contextual information
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public String createMessageWithContext(Configuration config, List<ContextLine> context, String message)
+	public String getContextMessage(Configuration config, String message, List<ContextLine> exceptionContext)
 	{
+		// TODO: Convert exceptionContext to a Map<String, Object> as well in order to lazy-load
 		Map<String, Object> configContext = config.getContext();
-		assert (Maps.isUnmodifiable(configContext)) : "configContext may not be modifiable";
-
 		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
-		assert (Maps.isUnmodifiable(threadContext)) : "threadContext may not be modifiable";
 
-		List<ContextLine> mergedContext;
-		if (configContext.isEmpty() && threadContext.isEmpty())
-			mergedContext = context;
-		else
+		List<ContextLine> mergedContext = new ArrayList<>(exceptionContext.size() +
+			threadContext.size() + configContext.size());
+		Set<String> existingKeys = new HashSet<>();
+		for (ContextLine entry : exceptionContext)
 		{
-			mergedContext = new ArrayList<>(context.size() + threadContext.size() + configContext.size());
-			Set<String> existingKeys = new HashSet<>();
-			for (ContextLine entry : context)
-			{
-				mergedContext.add(entry);
-				String key = entry.getName();
-				if (!key.isBlank())
-					existingKeys.add(key);
-			}
-
-			for (Entry<String, Object> entry : configContext.entrySet())
-			{
-				if (existingKeys.add(entry.getKey()))
-					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
-			}
-
-			for (Entry<String, Object> entry : threadContext.entrySet())
-			{
-				if (existingKeys.add(entry.getKey()))
-					mergedContext.add(new ContextLine(entry.getKey(), entry.getValue()));
-			}
+			mergedContext.add(entry);
+			String key = entry.getName();
+			if (!key.isBlank())
+				existingKeys.add(key);
 		}
 
-		// null entries denote a newline between DIFF sections
+		for (Entry<String, Object> entry : configContext.entrySet())
+		{
+			if (existingKeys.add(entry.getKey()))
+				mergedContext.add(new ContextLine(entry.getKey(), config.toString(entry.getValue())));
+		}
+
+		for (Entry<String, Object> entry : threadContext.entrySet())
+		{
+			if (existingKeys.add(entry.getKey()))
+				mergedContext.add(new ContextLine(entry.getKey(), config.toString(entry.getValue())));
+		}
+
 		int maxKeyLength = 0;
 		for (ContextLine entry : mergedContext)
 		{
@@ -376,7 +368,7 @@ public final class Exceptions
 			String key = entry.getName();
 			if (!key.isBlank())
 				line.append(Strings.alignLeft(key, maxKeyLength) + ": ");
-			line.append(config.toString(entry.getValue()));
+			line.append(entry.getValue());
 			messageWithContext.add(line.toString());
 		}
 		return messageWithContext.toString();
