@@ -9,7 +9,6 @@ import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.internal.scope.MainConfiguration;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -19,18 +18,17 @@ import static com.github.cowwoc.requirements.DefaultRequirements.assertThat;
 public final class ConfigurationTest
 {
 	/**
-	 * Regression test. Ensure that invoking addContext() on one verifier does not impact the context
-	 * of a second verifier.
+	 * Ensure that modifying one instance of DefaultConfiguration does not modify the other.
 	 */
 	@Test
 	public void separateConfigurations()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
-			Configuration first = new MainConfiguration(scope);
+			Configuration first = scope.getDefaultConfiguration().get();
 			first = first.withContext("name1", "value1");
 
-			Configuration second = new MainConfiguration(scope);
+			Configuration second = scope.getDefaultConfiguration().get();
 			second = second.withContext("name2", "value2");
 
 			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
@@ -38,7 +36,7 @@ public final class ConfigurationTest
 	}
 
 	/**
-	 * Regression test. Ensure that modifying inherited configurations does not modify the default instance.
+	 * Ensure that modifying state inherited from GlobalConfiguration does not modify other instances.
 	 */
 	@Test
 	public void inheritDefaultConfiguration()
@@ -46,10 +44,28 @@ public final class ConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
 			Configuration first = scope.getDefaultConfiguration().get();
-			first = first.withAssertionsDisabled();
+			first = first.withDiff();
 
 			Configuration second = scope.getDefaultConfiguration().get();
-			second = second.withAssertionsEnabled();
+			second = second.withoutDiff();
+
+			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+		}
+	}
+
+	/**
+	 * Ensure that modifying a copied configuration does not modify the original instance.
+	 */
+	@Test
+	public void copyConfiguration()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		{
+			Configuration first = scope.getDefaultConfiguration().get();
+			first = first.withDiff();
+
+			Configuration second = first.copy();
+			second = second.withoutDiff();
 
 			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
 		}

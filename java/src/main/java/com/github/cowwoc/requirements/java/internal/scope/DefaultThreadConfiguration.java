@@ -20,7 +20,7 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 {
 	private final Map<String, Object> context;
 	private final Exceptions exceptions;
-	private final Configuration config;
+	private final Configuration validatorConfiguration;
 
 	/**
 	 * Creates a new configuration.
@@ -32,7 +32,7 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	{
 		this.context = new LinkedHashMap<>();
 		this.exceptions = scope.getExceptions();
-		this.config = scope.getDefaultConfiguration().get();
+		this.validatorConfiguration = scope.getDefaultConfiguration().get();
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	@Override
 	public String getContextMessage(String message)
 	{
-		return exceptions.getContextMessage(config, message, List.of());
+		return exceptions.getContextMessage(context, validatorConfiguration, message, List.of());
 	}
 
 	@Override

@@ -188,6 +188,17 @@ public final class ApiGenerator
 		}
 		out.append("""
 
+			/**
+			 * Returns the contextual information associated with this configuration.
+			 *
+			 * @param message the exception message ({@code null} if absent)
+			 * @return the contextual information associated with this configuration
+			 */
+			\tpublic static String getContextMessage(String message)
+			\t{
+			\t\treturn JAVA_REQUIREMENTS.getContextMessage(message);
+			\t}
+
 			\t/**
 			\t * Returns true if assertions are enabled for this class.
 			\t *
@@ -458,7 +469,7 @@ public final class ApiGenerator
 			for (CompilationUnit plugin : plugins)
 			{
 				ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-				out.append(createDelegate(pluginClass));
+				out.append("\t\t").append(createDelegate(pluginClass));
 			}
 			out.append("\t}\n");
 		}

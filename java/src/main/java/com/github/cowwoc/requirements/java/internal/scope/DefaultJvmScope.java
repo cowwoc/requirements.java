@@ -8,8 +8,8 @@ import com.github.cowwoc.pouch.core.ConcurrentLazyFactory;
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Factory;
 import com.github.cowwoc.pouch.core.Reference;
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
+import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 import com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 /**
  * The default implementation of JvmScope.
@@ -70,13 +69,10 @@ public final class DefaultJvmScope implements JvmScope
 	};
 	private final Reference<Terminal> terminal =
 		ConcurrentLazyReference.create(() -> new Terminal(nativeTerminal.getValue()));
-	private final Reference<GlobalConfiguration> globalConfiguration =
-		ConcurrentLazyReference.create(() -> new MainGlobalConfiguration(getTerminal()));
-	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
-		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
 	private final Thread shutdownHook;
 	private final AtomicBoolean closed = new AtomicBoolean();
 	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);
+	private final Exceptions exceptions = new Exceptions();
 
 	private DefaultJvmScope()
 	{
@@ -121,15 +117,9 @@ public final class DefaultJvmScope implements JvmScope
 	}
 
 	@Override
-	public GlobalConfiguration getGlobalConfiguration()
+	public Exceptions getExceptions()
 	{
-		return globalConfiguration.getValue();
-	}
-
-	@Override
-	public Supplier<ThreadConfiguration> getThreadConfiguration()
-	{
-		return threadConfiguration::get;
+		return exceptions;
 	}
 
 	@Override

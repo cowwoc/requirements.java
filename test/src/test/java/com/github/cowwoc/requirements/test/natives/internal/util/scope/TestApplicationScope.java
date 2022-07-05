@@ -4,12 +4,10 @@
  */
 package com.github.cowwoc.requirements.test.natives.internal.util.scope;
 
-import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.AbstractApplicationScope;
 import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.internal.scope.MainConfiguration;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.function.Supplier;
@@ -53,12 +51,6 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	public Supplier<ThreadConfiguration> getThreadConfiguration()
 	{
 		return threadConfiguration::get;
-	}
-
-	@Override
-	public Supplier<Configuration> getDefaultConfiguration()
-	{
-		return () -> new MainConfiguration(this);
 	}
 
 	@Override

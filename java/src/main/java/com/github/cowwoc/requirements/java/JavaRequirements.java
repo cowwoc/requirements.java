@@ -32,6 +32,14 @@ public interface JavaRequirements extends Configuration
 	@Override
 	JavaRequirements withoutAnyContext();
 
+	/**
+	 * Returns the contextual information associated with this configuration.
+	 *
+	 * @param message the exception message ({@code null} if absent)
+	 * @return the contextual information associated with this configuration
+	 */
+	String getContextMessage(String message);
+
 	@Override
 	JavaRequirements withAssertionsDisabled();
 

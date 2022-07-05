@@ -7,7 +7,6 @@ package com.github.cowwoc.requirements.java.internal.util;
 import com.github.cowwoc.requirements.annotation.OptimizedException;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
-import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,18 +85,13 @@ public final class Exceptions
 		new ConcurrentHashMap<>(3);
 	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithCause =
 		new ConcurrentHashMap<>(3);
-	private final ApplicationScope scope;
 	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
 
 	/**
-	 * @param scope the application configuration'
-	 * @throws NullPointerException if {@code scope is null}
+	 * Creates a new instance.
 	 */
-	public Exceptions(ApplicationScope scope)
+	public Exceptions()
 	{
-		if (scope == null)
-			throw new NullPointerException("scope may not be null");
-		this.scope = scope;
 	}
 
 	/**
@@ -312,39 +306,51 @@ public final class Exceptions
 	/**
 	 * Returns the requirements contextual information.
 	 *
-	 * @param config           the instance configuration
-	 * @param message          the exception message ({@code null} if absent)
-	 * @param exceptionContext the exception-specific context
+	 * @param threadContext          the thread context
+	 * @param validatorConfiguration the validator configuration
+	 * @param message                the exception message ({@code null} if absent)
+	 * @param exceptionContext       the failure-specific context
 	 * @return the requirements contextual information
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public String getContextMessage(Configuration config, String message, List<ContextLine> exceptionContext)
+	public String getContextMessage(Map<String, Object> threadContext, Configuration validatorConfiguration,
+		String message, List<ContextLine> exceptionContext)
 	{
-		// TODO: Convert exceptionContext to a Map<String, Object> as well in order to lazy-load
-		Map<String, Object> configContext = config.getContext();
-		Map<String, Object> threadContext = scope.getThreadConfiguration().get().getContext();
+		Map<String, Object> validatorContext = validatorConfiguration.getContext();
 
 		List<ContextLine> mergedContext = new ArrayList<>(exceptionContext.size() +
-			threadContext.size() + configContext.size());
+			threadContext.size() + validatorContext.size());
 		Set<String> existingKeys = new HashSet<>();
 		for (ContextLine entry : exceptionContext)
 		{
-			mergedContext.add(entry);
+			if (entry.wasConvertedToString())
+				mergedContext.add(entry);
+			else
+			{
+				mergedContext.add(new ContextLine(entry.getName(), validatorConfiguration.toString(entry.getValue()),
+					true));
+			}
 			String key = entry.getName();
 			if (!key.isBlank())
 				existingKeys.add(key);
 		}
 
-		for (Entry<String, Object> entry : configContext.entrySet())
+		for (Entry<String, Object> entry : validatorContext.entrySet())
 		{
 			if (existingKeys.add(entry.getKey()))
-				mergedContext.add(new ContextLine(entry.getKey(), config.toString(entry.getValue())));
+			{
+				mergedContext.add(new ContextLine(entry.getKey(), validatorConfiguration.toString(entry.getValue()),
+					true));
+			}
 		}
 
 		for (Entry<String, Object> entry : threadContext.entrySet())
 		{
 			if (existingKeys.add(entry.getKey()))
-				mergedContext.add(new ContextLine(entry.getKey(), config.toString(entry.getValue())));
+			{
+				mergedContext.add(new ContextLine(entry.getKey(), validatorConfiguration.toString(entry.getValue()),
+					true));
+			}
 		}
 
 		int maxKeyLength = 0;

@@ -19,37 +19,39 @@ import java.util.List;
 public final class ValidationFailureImpl implements ValidationFailure
 {
 	private final ApplicationScope scope;
-	private final Configuration config;
+	private final Configuration validatorConfiguration;
 	private final Class<? extends Exception> exceptionType;
 	private final String message;
+	private final Exceptions exceptions;
 	private String messageWithContext;
 	private Throwable cause;
 	/**
 	 * The contextual information associated with the exception (name-value pairs).
 	 */
-	private final List<ContextLine> context = new ArrayList<>(2);
+	private final List<ContextLine> failureContext = new ArrayList<>(2);
 
 	/**
-	 * @param scope         the application configuration
-	 * @param config        the instance configuration
-	 * @param exceptionType the type of exception associated with the failure
-	 * @param message       the message associated with the failure
+	 * @param scope                  the application configuration
+	 * @param validatorConfiguration the instance configuration
+	 * @param exceptionType          the type of exception associated with the failure
+	 * @param message                the message associated with the failure
 	 * @throws NullPointerException     if {@code validator}, {@code exceptionType} or {@code message} are null
 	 * @throws IllegalArgumentException if {@code message} is blank
 	 */
-	public ValidationFailureImpl(ApplicationScope scope, Configuration config,
+	public ValidationFailureImpl(ApplicationScope scope, Configuration validatorConfiguration,
 		Class<? extends Exception> exceptionType, String message)
 	{
 		assert (scope != null);
-		assert (config != null);
+		assert (validatorConfiguration != null);
 		assert (exceptionType != null);
 		assert (message != null);
 		assert (!message.isBlank()) : "message may not be blank";
 
 		this.scope = scope;
-		this.config = config;
+		this.validatorConfiguration = validatorConfiguration;
 		this.exceptionType = exceptionType;
 		this.message = message;
+		this.exceptions = scope.getExceptions();
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 */
 	public ValidationFailureImpl addContext(String name, Object value)
 	{
-		context.add(new ContextLine(name, config.toString(value)));
+		failureContext.add(new ContextLine(name, value, false));
 		messageWithContext = null;
 		return this;
 	}
@@ -105,7 +107,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 	public ValidationFailureImpl addContext(List<ContextLine> context)
 	{
 		assert (context != null) : "context may not be null";
-		this.context.addAll(context);
+		this.failureContext.addAll(context);
 		messageWithContext = null;
 		return this;
 	}
@@ -114,7 +116,10 @@ public final class ValidationFailureImpl implements ValidationFailure
 	public String getMessage()
 	{
 		if (messageWithContext == null)
-			this.messageWithContext = scope.getExceptions().getContextMessage(config, message, context);
+		{
+			this.messageWithContext = exceptions.getContextMessage(
+				scope.getThreadConfiguration().get().getContext(), validatorConfiguration, message, failureContext);
+		}
 		return messageWithContext;
 	}
 

@@ -4,10 +4,10 @@
  */
 package com.github.cowwoc.requirements.java;
 
-import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
+import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
+import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
@@ -17,8 +17,8 @@ import java.util.function.Supplier;
  */
 public final class ThreadRequirements
 {
-	private static final Supplier<ThreadConfiguration> DELEGATE =
-		DefaultJvmScope.INSTANCE.getThreadConfiguration();
+	private static final ThreadConfiguration DELEGATE =
+		new DefaultThreadConfiguration(MainApplicationScope.INSTANCE);
 
 	/**
 	 * Prevent construction.
@@ -35,7 +35,7 @@ public final class ThreadRequirements
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return DELEGATE.get().getContext();
+		return DELEGATE.getContext();
 	}
 
 	/**
@@ -48,7 +48,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withContext(String name, Object value)
 	{
-		return DELEGATE.get().withContext(name, value);
+		return DELEGATE.withContext(name, value);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withoutContext(String name)
 	{
-		return DELEGATE.get().withoutContext(name);
+		return DELEGATE.withoutContext(name);
 	}
 
 	/**
@@ -70,17 +70,17 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withoutAnyContext()
 	{
-		return DELEGATE.get().withoutAnyContext();
+		return DELEGATE.withoutAnyContext();
 	}
 
 	/**
-	 * Returns the contextual information associated with this configuration.
+	 * Returns the contextual information associated with this thread.
 	 *
 	 * @param message the exception message ({@code null} if absent)
-	 * @return the contextual information associated with this configuration
+	 * @return the contextual information associated with this thread
 	 */
 	public static String getContextMessage(String message)
 	{
-		return DELEGATE.get().getContextMessage(message);
+		return DELEGATE.getContextMessage(message);
 	}
 }

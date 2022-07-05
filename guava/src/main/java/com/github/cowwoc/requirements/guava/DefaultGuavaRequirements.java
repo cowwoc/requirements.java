@@ -163,12 +163,6 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	}
 
 	@Override
-	public String getContextMessage(String message)
-	{
-		return config.getContextMessage(message);
-	}
-
-	@Override
 	public String toString(Object value)
 	{
 		return config.toString(value);

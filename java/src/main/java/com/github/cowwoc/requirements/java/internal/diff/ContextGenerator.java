@@ -139,12 +139,12 @@ public final class ContextGenerator
 
 		if (!config.isDiffEnabled() || !compareValues)
 		{
-			List<ContextLine> result = new ArrayList<>(2);
-			result.add(new ContextLine("", ""));
-			result.add(new ContextLine(actualName, config.toString(actualValue)));
+			List<ContextLine> context = new ArrayList<>(2);
+			context.add(new ContextLine("", "", true));
+			context.add(new ContextLine(actualName, actualValue, false));
 			if (!expectedInMessage)
-				result.add(new ContextLine(expectedName, config.toString(expectedValue)));
-			return result;
+				context.add(new ContextLine(expectedName, expectedValue, false));
+			return context;
 		}
 
 		if (actualValue instanceof List && expectedValue instanceof List)
@@ -159,14 +159,14 @@ public final class ContextGenerator
 	 */
 	private static void skipEqualLines(List<ContextLine> entries)
 	{
-		entries.add(new ContextLine("", ""));
-		entries.add(new ContextLine("", "[...]"));
+		entries.add(new ContextLine("", "", true));
+		entries.add(new ContextLine("", "[...]", true));
 	}
 
 	/**
 	 * Generates a List-specific exception context from the actual and expected values.
 	 *
-	 * @return the list of name-value pairs to append to the exception message
+	 * @return the name-value pairs to append to the exception message
 	 * @throws AssertionError if the actual or expected values do not exist.
 	 */
 	private List<ContextLine> getContextOfList()
@@ -181,7 +181,7 @@ public final class ContextGenerator
 		int expectedSize = expectedList.size();
 		int maxSize = Math.max(actualSize, expectedSize);
 
-		List<ContextLine> result = new ArrayList<>();
+		List<ContextLine> context = new ArrayList<>();
 		// Indicates if the previous index was equal
 		boolean skippedEqualElements = false;
 		int actualIndex = 0;
@@ -234,11 +234,11 @@ public final class ContextGenerator
 			if (skippedEqualElements)
 			{
 				skippedEqualElements = false;
-				skipEqualLines(result);
+				skipEqualLines(context);
 			}
-			result.addAll(elementGenerator.build());
+			context.addAll(elementGenerator.build());
 		}
-		return result;
+		return context;
 	}
 
 	/**
@@ -263,9 +263,9 @@ public final class ContextGenerator
 		if (!compareValues)
 		{
 			List<ContextLine> result = new ArrayList<>(2);
-			result.add(new ContextLine(actualName, actualAsString));
+			result.add(new ContextLine(actualName, actualAsString, true));
 			if (!expectedInMessage)
-				result.add(new ContextLine(expectedName, expectedAsString));
+				result.add(new ContextLine(expectedName, expectedAsString, true));
 			return result;
 		}
 		DiffResult lines = diffGenerator.diff(actualAsString, expectedAsString);
@@ -278,14 +278,14 @@ public final class ContextGenerator
 			String actualLine = lines.getActualLines().get(0);
 			String expectedLine = lines.getExpectedLines().get(0);
 			boolean linesAreEqual = lines.getEqualLines().get(0);
-			result.add(new ContextLine("", ""));
-			result.add(new ContextLine(actualName, actualLine));
+			result.add(new ContextLine("", "", true));
+			result.add(new ContextLine(actualName, actualLine, true));
 			if (diffLinesExist && !linesAreEqual)
 			{
 				String diffLine = lines.getDiffLines().get(0);
-				result.add(new ContextLine("Diff", diffLine));
+				result.add(new ContextLine("Diff", diffLine, true));
 			}
-			result.add(new ContextLine(expectedName, expectedLine));
+			result.add(new ContextLine(expectedName, expectedLine, true));
 
 			if (compareValues && linesAreEqual)
 			{
@@ -333,12 +333,12 @@ public final class ContextGenerator
 				skippedEqualLines = false;
 				skipEqualLines(result);
 			}
-			result.add(new ContextLine("", ""));
-			result.add(new ContextLine(actualNameForLine, actualLine));
+			result.add(new ContextLine("", "", true));
+			result.add(new ContextLine(actualNameForLine, actualLine, true));
 			if (diffLinesExist && !valuesAreEqual)
 			{
 				String diffLine = lines.getDiffLines().get(i);
-				result.add(new ContextLine("Diff", diffLine));
+				result.add(new ContextLine("Diff", diffLine, true));
 			}
 
 			String expectedNameForLine;
@@ -350,7 +350,7 @@ public final class ContextGenerator
 				if (EOL_PATTERN.matcher(expectedLine).find())
 					++expectedLineNumber;
 			}
-			result.add(new ContextLine(expectedNameForLine, expectedLine));
+			result.add(new ContextLine(expectedNameForLine, expectedLine, true));
 		}
 		return result;
 	}

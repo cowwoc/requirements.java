@@ -213,7 +213,8 @@ public final class DefaultJavaRequirements implements JavaRequirements
 	@Override
 	public String getContextMessage(String message)
 	{
-		return config.getContextMessage(message);
+		return scope.getExceptions().getContextMessage(scope.getThreadConfiguration().get().getContext(),
+			this, message, List.of());
 	}
 
 	@Override

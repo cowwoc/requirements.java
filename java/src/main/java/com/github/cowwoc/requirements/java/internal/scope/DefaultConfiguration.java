@@ -34,7 +34,7 @@ import java.util.function.Function;
 /**
  * Configures the behavior of a single verifier.
  */
-public final class MainConfiguration implements Configuration
+public final class DefaultConfiguration implements Configuration
 {
 	private static final boolean CLASS_ASSERTIONS_ENABLED;
 
@@ -45,7 +45,6 @@ public final class MainConfiguration implements Configuration
 
 	private final Map<String, Object> context;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
-	private final ApplicationScope scope;
 	private boolean assertionsEnabled;
 	private boolean cleanStackTrace;
 	private boolean diffEnabled;
@@ -62,14 +61,9 @@ public final class MainConfiguration implements Configuration
 	 * <li>That invokes {@code Arrays.toString()} for arrays and {@code Object.toString()} for all
 	 * other objects to convert them to a {@code String}.</li>
 	 * </ul>
-	 *
-	 * @param scope the application configuration
-	 * @throws AssertionError if {@code scope} is null
 	 */
-	public MainConfiguration(ApplicationScope scope)
+	DefaultConfiguration()
 	{
-		assert (scope != null) : "scope may not be null";
-		this.scope = scope;
 		this.context = new LinkedHashMap<>();
 		this.assertionsEnabled = CLASS_ASSERTIONS_ENABLED;
 		this.cleanStackTrace = true;
@@ -98,10 +92,9 @@ public final class MainConfiguration implements Configuration
 	 * @param other the configuration to copy
 	 * @throws AssertionError if {@code other} is null
 	 */
-	private MainConfiguration(MainConfiguration other)
+	private DefaultConfiguration(DefaultConfiguration other)
 	{
 		assert (other != null) : "other may not be null";
-		this.scope = other.scope;
 		this.context = new LinkedHashMap<>(other.context);
 		this.assertionsEnabled = other.assertionsEnabled;
 		this.cleanStackTrace = other.cleanStackTrace;
@@ -112,7 +105,7 @@ public final class MainConfiguration implements Configuration
 	@Override
 	public Configuration copy()
 	{
-		return new MainConfiguration(this);
+		return new DefaultConfiguration(this);
 	}
 
 	@Override
@@ -184,12 +177,6 @@ public final class MainConfiguration implements Configuration
 	{
 		context.clear();
 		return this;
-	}
-
-	@Override
-	public String getContextMessage(String message)
-	{
-		return scope.getExceptions().getContextMessage(this, message, List.of());
 	}
 
 	@Override
@@ -430,7 +417,7 @@ public final class MainConfiguration implements Configuration
 	{
 		if (o == this)
 			return true;
-		if (!(o instanceof MainConfiguration other))
+		if (!(o instanceof DefaultConfiguration other))
 			return false;
 		return assertionsEnabled == other.assertionsEnabled && context.equals(other.context) &&
 			diffEnabled == other.diffEnabled && typeToStringConverter.equals(other.typeToStringConverter);

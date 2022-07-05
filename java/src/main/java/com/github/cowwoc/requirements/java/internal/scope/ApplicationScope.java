@@ -6,7 +6,7 @@ package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
+import com.github.cowwoc.requirements.java.ThreadConfiguration;
 
 import java.util.function.Supplier;
 
@@ -16,14 +16,19 @@ import java.util.function.Supplier;
 public interface ApplicationScope extends JvmScope
 {
 	/**
+	 * @return the global configuration inherited by all verifiers
+	 */
+	GlobalConfiguration getGlobalConfiguration();
+
+	/**
 	 * @return the default configuration (value may change with every invocation)
 	 */
 	Supplier<Configuration> getDefaultConfiguration();
 
 	/**
-	 * @return an instance of {@code Exceptions}
+	 * @return the configuration shared by all verifiers invoked by the current thread
 	 */
-	Exceptions getExceptions();
+	Supplier<ThreadConfiguration> getThreadConfiguration();
 
 	/**
 	 * @return a verifier that can be used to check a verifier's own parameters

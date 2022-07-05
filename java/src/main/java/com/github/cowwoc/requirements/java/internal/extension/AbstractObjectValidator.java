@@ -35,7 +35,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	protected final Configuration config;
 	protected String name;
 	protected T actual;
-	private List<ValidationFailure> failures;
+	private final List<ValidationFailure> failures;
 
 	/**
 	 * @param scope    the application configuration
