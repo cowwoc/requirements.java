@@ -1,7 +1,11 @@
 1. Following different guides depending on your version of VMWare:
-    1. If you are using VMWare Workstation 15.1 or lower see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
-    2. If you are using VMWare Workstation 15.5 or higher see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
-        1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong entry will get selected on bootup and make it seem as if the installation had crashed when it had not.
+    1. If you are using VMWare Workstation 15.1 or lower
+       see https://www.insanelymac.com/forum/topic/340876-macos-unlocker-3-vmware-workstation-155-amd-ryzen-5-3xxx/
+    2. If you are using VMWare Workstation 15.5 or higher
+       see https://dortania.github.io/OpenCore-Install-Guide/ and https://www.youtube.com/watch?v=jvb-BIMV1Mw
+        1. Make sure to remove all booting entries prior to installation from USB because otherwise the wrong
+           entry will get selected on bootup and make it seem as if the installation had crashed when it had
+           not.
         2. Go into VMware BIOS.
         3. Enter setup
         4. Configure boot options
@@ -11,7 +15,8 @@
         8. Choose EFI, OC, Bootstrap, Bootstrap.efi and finally confirm.
         9. Remove all other entries.
 2. Create a bootable USB or ISO
-    1. Bootable USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
+    1. Bootable
+       USB: https://www.insanelymac.com/forum/topic/329828-making-a-bootable-high-sierra-usb-installer-entirely-from-scratch-in-windows-or-linux-mint-without-access-to-mac-or-app-store-installerapp/
     2. ISO file: Download MacOS Catalina from App Store and run:
 
         ```
@@ -54,7 +59,7 @@
         cores. Source: http://daveparsons.net/blog/2013/12/30/suppress-vmware-multiple-vcpu-message/
     12. Add **bios.bootdelay = 5000** to introduce a delay every time the machine boots up.
     13. Save and close the file.
-5. The following is based 
+5. The following is based
    on http://www.insanelymac.com/forum/topic/290949-how-to-install-os-x-10x-snow-leopard-to-el-capitan-in-vmware-workstation-1011-workstation-proplayer-12-player-67-esxi-56/
 6. Boot the virtual machine
 7. Open Disk Utility
@@ -74,7 +79,7 @@
 17. Install VMWare Tools and reboot.
 18. Log into the system.
 19. Run:
-	
+
         # Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
         sudo dscl . append /Groups/_developer GroupMembership builds
 
@@ -103,7 +108,7 @@
         sudo tee -a /etc/ssh/sshd_config <<EOF
         PasswordAuthentication no
         EOF
-		
+    	
         # Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
         mkdir -p ~/.ssh
         ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
@@ -125,13 +130,16 @@
         enable_autologin "builds" "builds"
 
 20. Copy GPG private key (used for signing releases) into guest, and run:
-`gpg --import private.key`
-21. Add the public key to Github, if you haven't already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-22. Create and add a GitHub App to the Github project, if necessary: https://stackoverflow.com/a/70630952/14731
+    `gpg --import private.key`
+21. Add the public key to Github, if you haven't
+    already: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+22. Create and add a GitHub App to the Github project, if
+    necessary: https://stackoverflow.com/a/70630952/14731
 23. Add Jenkins credentials
     1. Add a "GitHub App" global credential with id "github-cowwoc". Set the owner to "cowwoc"
     2. Add a "SSH Username with private key" global credential id "jenkins".
-24. Install JDK11 from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
+24. Install JDK11
+    from https://www.azul.com/downloads/?version=java-11-lts&os=macos&package=jdk#download-openjdk
 25. Add the following to any Maven project you wish to deploy/release to Maven Central:
 
         <parent>
@@ -144,10 +152,10 @@
             <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.7</version>
+            <version>1.6.13</version>
             <extensions>true</extensions>
             <configuration>
-                <serverId>sonatype-nexus-staging</serverId>
+                <serverId>maven-central-releases</serverId>
                 <nexusUrl>https://oss.sonatype.org/</nexusUrl>
             </configuration>
             </plugin>
@@ -210,7 +218,7 @@
                     <password>{encryptedPasswordForSonatype}</password>
                 </server>
                 <server>
-                    <id>sonatype-nexus-staging</id>
+                    <id>maven-central-releases</id>
                     <username>sonatypeUsername</username>
                     <password>{encryptedPasswordForSonatype}</password>
                 </server>
@@ -233,15 +241,15 @@
     3. Tool home = "/usr/bin/git"
 
 31. Create a new Node in Jenkins
-	1. Node should have the following Tool Locations:
+    1. Node should have the following Tool Locations:
         1. JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home. If this changes, you
            can invoke "/usr/libexec/java_home" to get the current value.
-	2. Wait for user to login before allowing Jenkins to execute any jobs
+    2. Wait for user to login before allowing Jenkins to execute any jobs
         1. Install the [Slave Setup plugin](https://wiki.jenkins-ci.org/display/JENKINS/Slave+Setup+Plugin)
         2. Under "Configure System" subsection "Slave Setups" add a new entry
         3. Set "setup files directory" to "C:\Program Files (x86)\Jenkins\scripts\osx\scripts" (or whatever
            directory corresponds to ${JENKINS_HOME}/scripts/osx for you)
-        4. Set "setup script after copy" to: 
+        4. Set "setup script after copy" to:
 
                 chmod u+x prepare-slave.sh
                 ./prepare-slave.sh

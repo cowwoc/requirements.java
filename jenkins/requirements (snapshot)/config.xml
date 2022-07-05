@@ -1,5 +1,5 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@1167.v8fe861b_09ef9">
+<flow-definition plugin="workflow-job@1189.va_d37a_e9e4eda_">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -23,20 +23,11 @@
         </com.gem.persistentparameter.PersistentStringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.6">
-      <maxConcurrentPerNode>0</maxConcurrentPerNode>
-      <maxConcurrentTotal>0</maxConcurrentTotal>
-      <categories class="java.util.concurrent.CopyOnWriteArrayList"/>
-      <throttleEnabled>false</throttleEnabled>
-      <throttleOption>project</throttleOption>
-      <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
-      <paramsToUseForLimit></paramsToUseForLimit>
-    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2648.va9433432b33c">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2725.v7b_c717eb_12ce">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -86,6 +77,7 @@ parallel linux:
         }
         timeout(40)
         {
+            // gpg resides in /usr/local/bin
             withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (linux)&quot;)
@@ -93,12 +85,9 @@ parallel linux:
                     // Deploy platform-specific JAR
                     // Use the same GCC version as AWS. See top of this script for more information.
                     
-                    // sudo apt-get install gcc-6 g++-6 -y
-                    // export CC=/usr/bin/gcc-6
-                    // export CXX=/usr/bin/g++-6
-                    sh script: &quot;&quot;&quot;sudo apt-get install cmake -y
+                    sh script: &quot;&quot;&quot;sudo apt-get install build-essential -y
                     	mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
-                        mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
+                    	mvn --batch-mode -e -U -Dsurefire.useFile=false -Ddeploy deploy&quot;&quot;&quot;
                     archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                 }
             }
@@ -146,6 +135,7 @@ parallel linux:
         }
         timeout(40)
         {
+            // Windows needs a longer timeout due to Windows Defender (antivirus) slowing things down
             withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin;${env.JAVA_HOME}/bin&quot;])
             {
                 stage(&quot;Deploy (windows)&quot;)

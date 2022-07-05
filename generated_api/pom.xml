@@ -21,17 +21,9 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>${project.groupId}</groupId>
-					<artifactId>maven_plugin</artifactId>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+				<groupId>com.github.cowwoc.requirements</groupId>
 				<artifactId>maven_plugin</artifactId>
 				<executions>
 					<execution>

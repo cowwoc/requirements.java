@@ -13,9 +13,8 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+				<groupId>com.github.cowwoc.requirements</groupId>
 				<artifactId>maven_plugin</artifactId>
-				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<id>optimize-exceptions</id>

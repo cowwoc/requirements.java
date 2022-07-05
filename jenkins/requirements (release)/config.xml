@@ -1,5 +1,5 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@1167.v8fe861b_09ef9">
+<flow-definition plugin="workflow-job@1189.va_d37a_e9e4eda_">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -37,20 +37,11 @@
         </hudson.plugins.validating__string__parameter.ValidatingStringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.6">
-      <maxConcurrentPerNode>0</maxConcurrentPerNode>
-      <maxConcurrentTotal>0</maxConcurrentTotal>
-      <categories class="java.util.concurrent.CopyOnWriteArrayList"/>
-      <throttleEnabled>false</throttleEnabled>
-      <throttleOption>project</throttleOption>
-      <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
-      <paramsToUseForLimit></paramsToUseForLimit>
-    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers/>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2648.va9433432b33c">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2725.v7b_c717eb_12ce">
     <script>// Command-line options (taken from https://jenkins.io/doc/pipeline/examples/):
 // --batch-mode : recommended in CI to inform maven to not run in interactive mode (less logs)
 // -V : strongly recommended in CI, will display the JDK and Maven versions in use.
@@ -82,7 +73,7 @@
 // Create release candidate branch
 def unauthenticatedRepository = &quot;github.com/cowwoc/requirements.java.git&quot;
 def repository = &quot;https://${unauthenticatedRepository}&quot;
-// One can look up a project&apos;s profileId by running: mvn nexus-staging:rc-list-profiles -DserverId=sonatype-nexus-staging -DnexusUrl=https://oss.sonatype.org/
+// One can look up a project&apos;s profileId by running: mvn nexus-staging:rc-list-profiles -DserverId=maven-central-releases -DnexusUrl=https://oss.sonatype.org/
 def stagingProfileId = &quot;3799bb102c7f24&quot;
 def stagingRepositoryId
 def userEmail = &quot;cowwoc2020@gmail.com&quot;
@@ -172,12 +163,9 @@ try
                         // Deploy platform-specific JAR
                         // Use the same GCC version as AWS. See top of this script for more information.
                         
-                        // sudo apt-get install gcc-6 g++-6
-                        // export CC=/usr/bin/gcc-6
-	                    // export CXX=/usr/bin/g++-6
-                        sh script: &quot;&quot;&quot;sudo apt-get install cmake -y
-                            mvn --batch-mode -e -V -U -Dsurefire.useFile=false install
-                            mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
+                        sh script: &quot;&quot;&quot;sudo apt-get install build-essential -y
+                            mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
+                            mvn --batch-mode -V -e -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                         archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                     }
                 }
@@ -203,8 +191,8 @@ try
                 {
                     stage(&quot;Deploy (mac)&quot;)
                     {
-                        sh script: &quot;&quot;&quot;mvn --batch-mode -e -V -U -Dsurefire.useFile=false install
-                            mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
+                        sh script: &quot;&quot;&quot;mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
+                            mvn --batch-mode -V -e -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                             archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/mac-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                     }
                 }
@@ -230,7 +218,7 @@ try
                 {
                     stage(&quot;Deploy (windows)&quot;)
                     {
-                        bat script: &quot;&quot;&quot;call mvn --batch-mode -e -V -U -Dsurefire.useFile=false install
+                        bat script: &quot;&quot;&quot;call mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                             call mvn --batch-mode -e -V -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                         archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/windows-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
                     }
@@ -261,7 +249,7 @@ catch (e)
             {
                 withEnv([&quot;JAVA_HOME=${ tool &quot;JDK17_HOME&quot; }&quot;, &quot;PATH+MAVEN=${tool &quot;Maven&quot;}/bin:${env.JAVA_HOME}/bin&quot;])
                 {
-                    sh script: &quot;mvn --batch-mode -e -V -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-drop&quot;
+                    sh script: &quot;mvn --batch-mode -V -e -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-drop&quot;
                 }
             }
         }
@@ -291,7 +279,7 @@ node(&quot;linux&quot;)
         {
             stage(&quot;Close release&quot;)
             {
-                sh script: &quot;mvn --batch-mode -e -V -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-close&quot;
+                sh script: &quot;mvn --batch-mode -V -e -U -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} nexus-staging:rc-close&quot;
             }
         }
     }
