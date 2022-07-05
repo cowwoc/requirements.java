@@ -27,7 +27,7 @@ public final class BigDecimalPrecisionValidatorImpl
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	BigDecimalPrecisionValidatorImpl(ApplicationScope scope, Configuration config, String name,
 	                                 BigDecimal actual, List<ValidationFailure> failures)

@@ -18,21 +18,9 @@ public interface ThreadConfiguration
 	 * Returns a map to append to the exception message.
 	 *
 	 * @return an unmodifiable map to append to the exception message
-	 * @see #putContext(String, Object)
+	 * @see #withContext(String, Object)
 	 */
 	Map<String, Object> getContext();
-
-	/**
-	 * Adds or updates contextual information associated with the exception message.
-	 *
-	 * @param name  the name of the parameter
-	 * @param value the value of the parameter
-	 * @return this
-	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withContext(String, Object)}
-	 */
-	@Deprecated
-	ThreadConfiguration putContext(String name, Object value);
 
 	/**
 	 * Adds or updates contextual information associated with the exception message.
@@ -50,17 +38,6 @@ public interface ThreadConfiguration
 	 * @param name the name of the parameter
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withoutContext(String)}
-	 */
-	@Deprecated
-	ThreadConfiguration removeContext(String name);
-
-	/**
-	 * Removes contextual information associated with the exception message.
-	 *
-	 * @param name the name of the parameter
-	 * @return this
-	 * @throws NullPointerException if {@code name} is null
 	 */
 	ThreadConfiguration withoutContext(String name);
 
@@ -68,15 +45,14 @@ public interface ThreadConfiguration
 	 * Removes all contextual information associated with the exception message.
 	 *
 	 * @return this
-	 * @deprecated Use {@link #withoutAnyContext()}
-	 */
-	@Deprecated
-	ThreadConfiguration removeAllContext();
-
-	/**
-	 * Removes all contextual information associated with the exception message.
-	 *
-	 * @return this
 	 */
 	ThreadConfiguration withoutAnyContext();
+
+	/**
+	 * Returns the contextual information associated with this configuration.
+	 *
+	 * @param message the exception message ({@code null} if absent)
+	 * @return the contextual information associated with this configuration
+	 */
+	String getContextMessage(String message);
 }

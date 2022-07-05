@@ -4,10 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ThreadConfiguration;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -18,65 +16,32 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	/**
 	 * The singleton instance.
 	 */
-	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
-	/**
-	 * The parent scope.
-	 */
-	public final JvmScope parent;
+	public static final MainApplicationScope INSTANCE = new MainApplicationScope();
 	/**
 	 * The global configuration.
 	 */
-	public final GlobalConfiguration globalConfiguration;
-	/**
-	 * The default configuration.
-	 */
-	public final Supplier<Configuration> defaultConfigurationSupplier;
+	private final GlobalConfiguration globalConfiguration;
+	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
+		ThreadLocal.withInitial(() -> new DefaultThreadConfiguration(this));
 
 	/**
-	 * @param parent the parent scope
-	 * @throws NullPointerException if {@code parent} is null
+	 * Creates a new application scope.
 	 */
-	public MainApplicationScope(JvmScope parent)
+	public MainApplicationScope()
 	{
-		if (parent == null)
-			throw new NullPointerException("parent may not be null");
-		this.parent = parent;
-		this.globalConfiguration = parent.getGlobalConfiguration();
-
-		// Try to reuse the previously-returned configuration object
-		AtomicReference<Configuration> defaultConfiguration = new AtomicReference<>(new MainConfiguration());
-		this.defaultConfigurationSupplier = () ->
-		{
-			Configuration result = defaultConfiguration.get();
-			if (globalConfiguration.isCleanStackTrace())
-				result = result.withCleanStackTrace();
-			else
-				result = result.withoutCleanStackTrace();
-			if (globalConfiguration.isDiffEnabled())
-				result = result.withDiff();
-			else
-				result = result.withoutDiff();
-			defaultConfiguration.setOpaque(result);
-			return result;
-		};
-	}
-
-	@Override
-	public GlobalConfiguration getGlobalConfiguration()
-	{
-		return parent.getGlobalConfiguration();
+		this.globalConfiguration = new MainGlobalConfiguration(parent.getTerminal());
 	}
 
 	@Override
 	public Supplier<ThreadConfiguration> getThreadConfiguration()
 	{
-		return parent.getThreadConfiguration();
+		return threadConfiguration::get;
 	}
 
 	@Override
-	public Supplier<Configuration> getDefaultConfiguration()
+	public GlobalConfiguration getGlobalConfiguration()
 	{
-		return defaultConfigurationSupplier;
+		return globalConfiguration;
 	}
 
 	@Override

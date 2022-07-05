@@ -56,7 +56,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * @param name     the name of the expected value
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	S isEqualTo(Object expected, String name);
 
@@ -72,7 +72,7 @@ public interface ExtensibleObjectValidator<S, T>
 	 * Ensures that the actual value is not equal to another variable.
 	 *
 	 * @param other the value to compare to
-	 * @param name  the name of the variable
+	 * @param name  the name of {@code other}'s variable
 	 * @return the updated validator
 	 */
 	S isNotEqualTo(Object other, String name);

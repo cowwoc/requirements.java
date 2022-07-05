@@ -34,7 +34,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is less than or equal to {@code value}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S isGreaterThan(T value, String name);
 
@@ -56,7 +56,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is less than to {@code value}. If {@code name}
-	 *                                  is empty.
+	 *                                  is blank.
 	 */
 	S isGreaterThanOrEqualTo(T value, String name);
 
@@ -78,7 +78,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is greater than or equal to {@code value}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	S isLessThan(T value, String name);
 
@@ -100,7 +100,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code value} or {@code name} are null
 	 * @throws IllegalArgumentException if the actual value is greater than {@code value}. If {@code name}
-	 *                                  is empty.
+	 *                                  is blank.
 	 */
 	S isLessThanOrEqualTo(T value, String name);
 
@@ -121,7 +121,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * @param name     the name of the expected value
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if {@code actual.compareTo(expected) != 0}. If {@code name} is blank.
 	 */
 	S isComparableTo(T expected, String name);
 
@@ -142,7 +142,7 @@ public interface ExtensibleComparableVerifier<S, T extends Comparable<? super T>
 	 * @param name  the name of the other value
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if {@code actual.compareTo(other) == 0}. If {@code name} is blank.
 	 */
 	S isNotComparableTo(T other, String name);
 

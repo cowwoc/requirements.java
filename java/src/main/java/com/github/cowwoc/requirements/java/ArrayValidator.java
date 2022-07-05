@@ -50,7 +50,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name     the name of the element
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> contains(E expected, String name);
 
@@ -70,7 +70,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name     the name of the elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> containsExactly(Collection<E> expected, String name);
 
@@ -90,7 +90,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name     the name of the elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> containsAny(Collection<E> expected, String name);
 
@@ -110,7 +110,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name     the name of the elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> containsAll(Collection<E> expected, String name);
 
@@ -129,7 +129,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name    the name of the element
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> doesNotContain(E element, String name);
 
@@ -149,7 +149,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name  the name of the collection
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> doesNotContainExactly(Collection<E> other, String name);
 
@@ -169,7 +169,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name     the name of the elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> doesNotContainAny(Collection<E> elements, String name);
 
@@ -189,7 +189,7 @@ public interface ArrayValidator<A, E> extends ExtensibleObjectValidator<ArrayVal
 	 * @param name     the name of the elements
 	 * @return the updated validator
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayValidator<A, E> doesNotContainAll(Collection<E> elements, String name);
 

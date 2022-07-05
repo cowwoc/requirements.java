@@ -28,7 +28,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	public ClassValidatorImpl(ApplicationScope scope, Configuration config, String name, Class<T> actual,
 	                          List<ValidationFailure> failures)

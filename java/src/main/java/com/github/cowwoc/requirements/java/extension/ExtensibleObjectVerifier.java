@@ -39,7 +39,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the actual value is not equal to {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 * @see <a href="https://github.com/cowwoc/requirements/wiki/Textual_Diff.md">An explanation of the output
 	 * format</a>
 	 */
@@ -61,7 +61,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * @param name  the name of the variable
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the actual value is equal to {@code other}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the actual value is equal to {@code other}. If {@code name} is blank.
 	 */
 	S isNotEqualTo(Object other, String name);
 
@@ -72,7 +72,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * @param name     the name of the expected object
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code actual != expected}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if {@code actual != expected}. If {@code name} is blank.
 	 */
 	S isSameObjectAs(Object expected, String name);
 
@@ -83,7 +83,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	 * @param name  the name of the other object
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code actual == other}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if {@code actual == other}. If {@code name} is blank.
 	 */
 	S isNotSameObjectAs(Object other, String name);
 

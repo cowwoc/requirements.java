@@ -6,8 +6,8 @@ package com.github.cowwoc.requirements.test.java.internal.util;
 
 import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Exceptions;
+import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
@@ -15,8 +15,6 @@ import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.N
 
 public final class ExceptionsTest
 {
-	private final Exceptions exceptions = new Exceptions();
-
 	/**
 	 * Regression test. Exceptions.createException() was throwing:
 	 * <p>
@@ -24,10 +22,13 @@ public final class ExceptionsTest
 	 * found (String)RuntimeException}
 	 */
 	@Test
-	@SuppressWarnings("ThrowableNotThrown")
 	public void createExceptionWithCauseButNotInApi()
 	{
-		exceptions.createException(RuntimeException.class, "message", new Exception(), false);
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Exceptions exceptions = scope.getExceptions();
+			exceptions.createException(RuntimeException.class, "message", new Exception(), false);
+		}
 	}
 
 	/**
@@ -36,10 +37,11 @@ public final class ExceptionsTest
 	@Test
 	public void nullPointerExceptionIsOptimized()
 	{
-		RuntimeException result = exceptions.createException(NullPointerException.class, "message", null, true);
-		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			Exceptions exceptions = scope.getExceptions();
+			RuntimeException result = exceptions.createException(NullPointerException.class, "message", null, true);
+			boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 			new Requirements(scope).withContext("exception", exceptions.getClass()).
 				requireThat(optimizedException, "optimizedException").isTrue();
 		}
@@ -51,10 +53,11 @@ public final class ExceptionsTest
 	@Test
 	public void illegalArgumentExceptionIsOptimized()
 	{
-		RuntimeException result = exceptions.createException(IllegalArgumentException.class, "message", null, true);
-		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			Exceptions exceptions = scope.getExceptions();
+			RuntimeException result = exceptions.createException(IllegalArgumentException.class, "message", null, true);
+			boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 			new Requirements(scope).withContext("exception", exceptions.getClass()).
 				requireThat(optimizedException, "optimizedException").isTrue();
 		}
@@ -66,10 +69,11 @@ public final class ExceptionsTest
 	@Test
 	public void illegalStateExceptionIsOptimized()
 	{
-		RuntimeException result = exceptions.createException(IllegalStateException.class, "message", null, true);
-		boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			Exceptions exceptions = scope.getExceptions();
+			RuntimeException result = exceptions.createException(IllegalStateException.class, "message", null, true);
+			boolean optimizedException = exceptions.isOptimizedException(result.getClass());
 			new Requirements(scope).withContext("exception", exceptions.getClass()).
 				requireThat(optimizedException, "optimizedException").isFalse();
 		}

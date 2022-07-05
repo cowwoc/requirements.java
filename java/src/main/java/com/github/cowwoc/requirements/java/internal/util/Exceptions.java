@@ -5,6 +5,8 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
 import com.github.cowwoc.requirements.annotation.OptimizedException;
+import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +14,15 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
+import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
@@ -79,6 +88,13 @@ public final class Exceptions
 	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
 
 	/**
+	 * Creates a new instance.
+	 */
+	public Exceptions()
+	{
+	}
+
+	/**
 	 * @param name  the name of a Java package
 	 * @param count the number of times to walk up the hierarchy
 	 * @return the name of the parent of the package
@@ -88,7 +104,7 @@ public final class Exceptions
 	{
 		assert (name != null) : "name may not be null";
 		assert (count > 0) : "count may not be negative or zero";
-		assert (!name.trim().isEmpty()) : "name may not be empty";
+		assert (!name.isBlank()) : "name may not be blank";
 		int index = name.lastIndexOf('.');
 		if (index == -1)
 			throw new AssertionError("pkg may not be the root package");
@@ -111,7 +127,7 @@ public final class Exceptions
 	 */
 	@SuppressWarnings("LongLine")
 	public <E extends Exception> E createException(Class<E> type, String message, Throwable cause,
-	                                               boolean cleanStackTrace)
+		boolean cleanStackTrace)
 	{
 		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
 		//
@@ -263,7 +279,7 @@ public final class Exceptions
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	private StackTraceElement[] filterStackTrace(StackTraceElement[] elements,
-	                                             Predicate<StackTraceElement> elementFilter)
+		Predicate<StackTraceElement> elementFilter)
 	{
 		int i = elements.length - 1;
 		while (true)
@@ -285,5 +301,82 @@ public final class Exceptions
 	public boolean isOptimizedException(Class<?> type)
 	{
 		return type.getDeclaredAnnotation(OptimizedException.class) != null;
+	}
+
+	/**
+	 * Returns the requirements contextual information.
+	 *
+	 * @param threadContext          the thread context
+	 * @param validatorConfiguration the validator configuration
+	 * @param message                the exception message ({@code null} if absent)
+	 * @param exceptionContext       the failure-specific context
+	 * @return the requirements contextual information
+	 * @throws NullPointerException if any of the arguments are null
+	 */
+	public String getContextMessage(Map<String, Object> threadContext, Configuration validatorConfiguration,
+		String message, List<ContextLine> exceptionContext)
+	{
+		Map<String, Object> validatorContext = validatorConfiguration.getContext();
+
+		List<ContextLine> mergedContext = new ArrayList<>(exceptionContext.size() +
+			threadContext.size() + validatorContext.size());
+		Set<String> existingKeys = new HashSet<>();
+		for (ContextLine entry : exceptionContext)
+		{
+			if (entry.wasConvertedToString())
+				mergedContext.add(entry);
+			else
+			{
+				mergedContext.add(new ContextLine(entry.getName(), validatorConfiguration.toString(entry.getValue()),
+					true));
+			}
+			String key = entry.getName();
+			if (!key.isBlank())
+				existingKeys.add(key);
+		}
+
+		for (Entry<String, Object> entry : validatorContext.entrySet())
+		{
+			if (existingKeys.add(entry.getKey()))
+			{
+				mergedContext.add(new ContextLine(entry.getKey(), validatorConfiguration.toString(entry.getValue()),
+					true));
+			}
+		}
+
+		for (Entry<String, Object> entry : threadContext.entrySet())
+		{
+			if (existingKeys.add(entry.getKey()))
+			{
+				mergedContext.add(new ContextLine(entry.getKey(), validatorConfiguration.toString(entry.getValue()),
+					true));
+			}
+		}
+
+		int maxKeyLength = 0;
+		for (ContextLine entry : mergedContext)
+		{
+			String key = entry.getName();
+			if (key.isBlank())
+				continue;
+			int length = key.length();
+			if (length > maxKeyLength)
+				maxKeyLength = length;
+		}
+
+		StringJoiner messageWithContext = new StringJoiner("\n");
+		if (message != null)
+			messageWithContext.add(message);
+		StringBuilder line = new StringBuilder();
+		for (ContextLine entry : mergedContext)
+		{
+			line.delete(0, line.length());
+			String key = entry.getName();
+			if (!key.isBlank())
+				line.append(Strings.alignLeft(key, maxKeyLength) + ": ");
+			line.append(entry.getValue());
+			messageWithContext.add(line.toString());
+		}
+		return messageWithContext.toString();
 	}
 }

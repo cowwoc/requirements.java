@@ -4,10 +4,10 @@
  */
 package com.github.cowwoc.requirements.java;
 
-import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
+import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
+import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
@@ -17,10 +17,8 @@ import java.util.function.Supplier;
  */
 public final class ThreadRequirements
 {
-	private static final Supplier<ThreadConfiguration> DELEGATE =
-		DefaultJvmScope.INSTANCE.getThreadConfiguration();
-	// TODO: Remove alongside deprecated methods
-	private static final ThreadRequirements INSTANCE = new ThreadRequirements();
+	private static final ThreadConfiguration DELEGATE =
+		new DefaultThreadConfiguration(MainApplicationScope.INSTANCE);
 
 	/**
 	 * Prevent construction.
@@ -33,27 +31,11 @@ public final class ThreadRequirements
 	 * Returns a map to append to the exception message.
 	 *
 	 * @return an unmodifiable map to append to the exception message
-	 * @see #putContext(String, Object)
+	 * @see #withContext(String, Object)
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return DELEGATE.get().getContext();
-	}
-
-	/**
-	 * Adds or updates contextual information associated with the exception message.
-	 *
-	 * @param name  the name of the parameter
-	 * @param value the value of the parameter
-	 * @return this
-	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withContext(String, Object)}
-	 */
-	@Deprecated
-	public static ThreadRequirements putContext(String name, Object value)
-	{
-		withContext(name, value);
-		return INSTANCE;
+		return DELEGATE.getContext();
 	}
 
 	/**
@@ -66,22 +48,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withContext(String name, Object value)
 	{
-		return DELEGATE.get().withContext(name, value);
-	}
-
-	/**
-	 * Removes contextual information associated with the exception message.
-	 *
-	 * @param name the name of the parameter
-	 * @return this
-	 * @throws NullPointerException if {@code name} is null
-	 * @deprecated Use {@link #withoutContext(String)}
-	 */
-	@Deprecated
-	public static ThreadRequirements removeContext(String name)
-	{
-		withoutContext(name);
-		return INSTANCE;
+		return DELEGATE.withContext(name, value);
 	}
 
 	/**
@@ -93,20 +60,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withoutContext(String name)
 	{
-		return DELEGATE.get().withoutContext(name);
-	}
-
-	/**
-	 * Removes all contextual information associated with the exception message.
-	 *
-	 * @return this
-	 * @deprecated Use {@link #withoutAnyContext()}
-	 */
-	@Deprecated
-	public static ThreadRequirements removeAllContext()
-	{
-		withoutAnyContext();
-		return INSTANCE;
+		return DELEGATE.withoutContext(name);
 	}
 
 	/**
@@ -116,6 +70,17 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withoutAnyContext()
 	{
-		return DELEGATE.get().withoutAnyContext();
+		return DELEGATE.withoutAnyContext();
+	}
+
+	/**
+	 * Returns the contextual information associated with this thread.
+	 *
+	 * @param message the exception message ({@code null} if absent)
+	 * @return the contextual information associated with this thread
+	 */
+	public static String getContextMessage(String message)
+	{
+		return DELEGATE.getContextMessage(message);
 	}
 }

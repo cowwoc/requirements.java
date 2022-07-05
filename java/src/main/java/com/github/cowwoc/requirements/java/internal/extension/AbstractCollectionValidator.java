@@ -22,10 +22,12 @@ import com.github.cowwoc.requirements.java.internal.util.Strings;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Extensible implementation of ExtensibleCollectionValidator.
@@ -50,7 +52,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	 * @param pluralizer returns the singular or plural form of an element type
 	 * @param failures   the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code pluralizer} or
-	 *                        {@code failures} are null. If {@code name} is empty.
+	 *                        {@code failures} are null. If {@code name} is blank.
 	 */
 	protected AbstractCollectionValidator(ApplicationScope scope, Configuration config, String name, C actual,
 	                                      Pluralizer pluralizer, List<ValidationFailure> failures)
@@ -63,83 +65,27 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S isEmpty()
 	{
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
-				this.name + " may not be null");
-			addFailure(failure);
-			return getNoOp();
-		}
-		if (!actual.isEmpty())
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " must be empty.").
-				addContext("Actual", actual);
-			addFailure(failure);
-		}
-		return getThis();
+		return isEmpty(() -> actual.size());
 	}
 
 	@Override
 	public S isNotEmpty()
 	{
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
-				this.name + " may not be null");
-			addFailure(failure);
-			return getNoOp();
-		}
-		if (actual.isEmpty())
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " may not be empty");
-			addFailure(failure);
-		}
-		return getThis();
+		return isNotEmpty(() -> actual.size());
 	}
 
 	@Override
 	public S contains(E element)
 	{
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
-				this.name + " may not be null");
-			addFailure(failure);
-			return getNoOp();
-		}
-		if (!actual.contains(element))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " must contain " + element + ".").
-				addContext("Actual", actual);
-			addFailure(failure);
-		}
-		return getThis();
+		//noinspection SuspiciousMethodCalls
+		return contains(element, o -> actual.contains(o));
 	}
 
 	@Override
 	public S contains(E element, String name)
 	{
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
-				this.name + " may not be null");
-			addFailure(failure);
-			return getNoOp();
-		}
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-		if (!actual.contains(element))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				this.name + " must contain " + name + ".").
-				addContext("Actual", actual).
-				addContext("Missing", element);
-			addFailure(failure);
-		}
-		return getThis();
+		//noinspection SuspiciousMethodCalls
+		return contains(element, name, o -> actual.contains(o));
 	}
 
 	@Override
@@ -215,7 +161,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (!actualContainsAny(expected))
+		if (Collections.disjoint(actual, expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must contain any " + pluralizer.nameOf(1) + " in " + expected + ".").
@@ -223,18 +169,6 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 		}
 		return getThis();
-	}
-
-	/**
-	 * @param elements a collection of elements
-	 * @return true if actual value contains any of {@code elements}
-	 */
-	private boolean actualContainsAny(Collection<E> elements)
-	{
-		for (E element : elements)
-			if (actual.contains(element))
-				return true;
-		return false;
 	}
 
 	@Override
@@ -251,7 +185,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (!actualContainsAny(expected))
+		if (Collections.disjoint(actual, expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				this.name + " must contain any " + pluralizer.nameOf(1) + " in " + name + ".").
@@ -321,45 +255,15 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContain(E element)
 	{
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
-				this.name + " may not be null");
-			addFailure(failure);
-			return getNoOp();
-		}
-		if (actual.contains(element))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " may not contain " + element + ".").
-				addContext("Actual", actual);
-			addFailure(failure);
-		}
-		return getThis();
+		//noinspection SuspiciousMethodCalls
+		return doesNotContain(element, o -> actual.contains(o));
 	}
 
 	@Override
 	public S doesNotContain(E element, String name)
 	{
-		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
-
-		if (actual == null)
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
-				this.name + " may not be null");
-			addFailure(failure);
-			return getNoOp();
-		}
-		if (actual.contains(element))
-		{
-			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				this.name + " may not contain " + name + ".").
-				addContext("Actual", actual).
-				addContext("Unwanted", element);
-			addFailure(failure);
-		}
-		return getThis();
+		//noinspection SuspiciousMethodCalls
+		return doesNotContain(element, name, o -> actual.contains(o));
 	}
 
 	@Override
@@ -431,7 +335,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (actualContainsAny(elements))
+		if (!Collections.disjoint(actual, elements))
 		{
 			Set<E> elementsAsSet = Sets.fromCollection(elements);
 			Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -459,7 +363,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			addFailure(failure);
 			return getNoOp();
 		}
-		if (actualContainsAny(elements))
+		if (!Collections.disjoint(actual, elements))
 		{
 			Set<E> elementsAsSet = Sets.fromCollection(elements);
 			Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -592,7 +496,10 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
-		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), List.copyOf(actual), getFailures());
+		//noinspection SuspiciousMethodCalls
+		Function<Object, Boolean> contains = o -> actual.contains(o);
+		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), () -> List.copyOf(actual),
+			Object::equals, contains, () -> actual.size(), getFailures());
 	}
 
 	@Override

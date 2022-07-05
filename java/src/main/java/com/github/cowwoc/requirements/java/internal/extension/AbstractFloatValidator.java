@@ -28,7 +28,7 @@ public abstract class AbstractFloatValidator<S>
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	protected AbstractFloatValidator(ApplicationScope scope, Configuration config, String name, Float actual,
 	                                 List<ValidationFailure> failures)

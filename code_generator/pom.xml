@@ -5,11 +5,21 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.1.1-SNAPSHOT</version>
+		<version>7.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>code_generator</artifactId>
 	<packaging>jar</packaging>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.javaparser</groupId>
+			<artifactId>javaparser-core</artifactId>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -29,13 +39,13 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-sources</id>
+						<id>copy-java-sources</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/classes/com/github/cowwoc/requirements/plugins
+							<outputDirectory>${project.build.directory}/classes/com/github/cowwoc/requirements/java
 							</outputDirectory>
 							<resources>
 								<resource>
@@ -45,6 +55,19 @@
 										<include>JavaRequirements.java</include>
 									</includes>
 								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-guava-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/com/github/cowwoc/requirements/guava
+							</outputDirectory>
+							<resources>
 								<resource>
 									<directory>${project.basedir}/../guava/src/main/java/com/github/cowwoc/requirements/guava
 									</directory>
@@ -94,14 +117,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.javaparser</groupId>
-			<artifactId>javaparser-core</artifactId>
-		</dependency>
-	</dependencies>
 </project>

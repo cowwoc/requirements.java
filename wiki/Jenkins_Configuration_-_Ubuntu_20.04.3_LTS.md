@@ -81,10 +81,10 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
+				<version>1.6.13</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>sonatype-nexus-staging</serverId>
+					<serverId>maven-central-releases/serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 				</configuration>
 			</plugin>
@@ -141,7 +141,7 @@
 					<password>{encryptedPasswordForSonatype}</password>
 				</server>
 				<server>
-					<id>sonatype-nexus-staging</id>
+					<id>maven-central-releases</id>
 					<username>sonatypeUsername</username>
 					<password>{encryptedPasswordForSonatype}</password>
 				</server>

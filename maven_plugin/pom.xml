@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.1.1-SNAPSHOT</version>
+		<version>7.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>maven_plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -48,6 +48,7 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-core</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
@@ -56,10 +57,12 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -80,10 +83,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<configuration>
-					<!-- BUG: https://issues.apache.org/jira/browse/MPLUGIN-348 -->
-					<goalPrefix>requirements</goalPrefix>
-				</configuration>
 				<executions>
 					<execution>
 						<id>default-descriptor</id>

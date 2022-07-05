@@ -16,10 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
-import static com.github.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class InetAddressTest
@@ -141,28 +137,6 @@ public final class InetAddressTest
 			List<String> expectedMessages = Collections.singletonList("actual may not be null");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				isIpV6().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void validateThatNullAsString()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			InetAddress actual = null;
-			Integer expected = 5;
-			List<String> expectedMessages = Collections.singletonList(
-				"actual must be equal to " + expected + ".\n" +
-					"\n" +
-					"Actual  : null" + DIFF_PADDING + EOS_MARKER + "\n" +
-					"Diff    : " + DIFF_DELETE.repeat("null".length()) + DIFF_INSERT +
-					DIFF_PADDING.repeat(EOS_MARKER.length()) + "\n" +
-					"Expected: " + DIFF_PADDING.repeat("null".length()) + "5" + EOS_MARKER);
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				asString().isEqualTo(expected).getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

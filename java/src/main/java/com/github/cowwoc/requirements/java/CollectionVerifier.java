@@ -53,7 +53,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if the collection does not contain {@code expected}. If {@code name}
-	 *                                  is empty.
+	 *                                  is blank.
 	 */
 	CollectionVerifier<C, E> contains(E expected, String name);
 
@@ -82,7 +82,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection is missing any elements in {@code expected}. If
 	 *                                  the collection contains elements not found in {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	CollectionVerifier<C, E> containsExactly(Collection<E> expected, String name);
 
@@ -104,7 +104,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection does not contain any of {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	CollectionVerifier<C, E> containsAny(Collection<E> expected, String name);
 
@@ -126,7 +126,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code expected} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection does not contain all of {@code expected}. If
-	 *                                  {@code name} is empty.
+	 *                                  {@code name} is blank.
 	 */
 	CollectionVerifier<C, E> containsAll(Collection<E> expected, String name);
 
@@ -146,7 +146,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @param name    the name of the element
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if the collection contains {@code element}. If {@code name} is empty.
+	 * @throws IllegalArgumentException if the collection contains {@code element}. if {@code name} is blank.
 	 */
 	CollectionVerifier<C, E> doesNotContain(E element, String name);
 
@@ -169,7 +169,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code other} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains all of the elements in {@code other};
-	 *                                  nothing less, nothing more. If {@code name} is empty.
+	 *                                  nothing less, nothing more. if {@code name} is blank.
 	 */
 	CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other, String name);
 
@@ -191,7 +191,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains any of {@code elements}. If {@code name}
-	 *                                  is empty.
+	 *                                  is blank.
 	 */
 	CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name);
 
@@ -213,7 +213,7 @@ public interface CollectionVerifier<C extends Collection<E>, E>
 	 * @return the updated verifier
 	 * @throws NullPointerException     if {@code elements} or {@code name} are null
 	 * @throws IllegalArgumentException if the collection contains all of {@code elements}. If {@code name}
-	 *                                  is empty.
+	 *                                  is blank.
 	 */
 	CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name);
 

@@ -4,9 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
-
-import java.util.function.Supplier;
+import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
+import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 
 /**
  * The JVM configuration.
@@ -16,14 +15,14 @@ import java.util.function.Supplier;
 public interface JvmScope extends AutoCloseable
 {
 	/**
-	 * @return the global configuration inherited by all verifiers
+	 * @return an instance of {@code Exceptions}
 	 */
-	GlobalConfiguration getGlobalConfiguration();
+	Exceptions getExceptions();
 
 	/**
-	 * @return the configuration of all verifiers invoked by the current thread
+	 * @return the terminal attached to the process
 	 */
-	Supplier<ThreadConfiguration> getThreadConfiguration();
+	Terminal getTerminal();
 
 	@Override
 	void close();

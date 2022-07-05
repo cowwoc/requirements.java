@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.generator;
 
-import com.github.cowwoc.requirements.generator.internal.secrets.SharedSecrets;
+import com.github.cowwoc.requirements.generator.internal.secret.SharedSecrets;
 import com.github.cowwoc.requirements.generator.internal.util.Generators;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
@@ -30,9 +30,11 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -42,10 +44,6 @@ import java.util.StringJoiner;
  */
 public final class ApiGenerator
 {
-	private final PrinterConfiguration defaultFormatter =
-		new DefaultPrinterConfiguration().addOption(
-			new DefaultConfigurationOption(ConfigOption.END_OF_LINE_CHARACTER, "\n"));
-
 	static
 	{
 		SharedSecrets.INSTANCE.secretApiGenerator = ApiGenerator::exportScope;
@@ -70,19 +68,28 @@ public final class ApiGenerator
 		}
 
 		Path directory = Paths.get(args[0]);
-		ApiGenerator generator = new ApiGenerator();
+		ApiGenerator generator = new ApiGenerator(ClassLoader.getSystemClassLoader());
 		generator.writeTo(directory);
 	}
 
+	private final ClassLoader classLoader;
+	private final PrinterConfiguration defaultFormatter = new DefaultPrinterConfiguration().addOption(
+		new DefaultConfigurationOption(ConfigOption.END_OF_LINE_CHARACTER, "\n"));
 	private boolean guavaEnabled;
 	private boolean exportScope;
 	private final Logger log = LoggerFactory.getLogger(ApiGenerator.class);
 
 	/**
 	 * Creates a new ApiGenerator.
+	 *
+	 * @param classLoader the class loader used to resolve plugin classes
+	 * @throws NullPointerException if {@code classLoader} is null
 	 */
-	public ApiGenerator()
+	public ApiGenerator(ClassLoader classLoader)
 	{
+		if (classLoader == null)
+			throw new IllegalArgumentException("classLoader may not be null");
+		this.classLoader = classLoader;
 	}
 
 	/**
@@ -154,20 +161,24 @@ public final class ApiGenerator
 		addCopyright(out);
 		addPackage(out);
 		addImports(plugins, out);
-		out.append("\n" +
-			"/**\n" +
-			" * Verifies API requirements using the default {@link Configuration configuration}.\n" +
-			" * <p>\n" +
-			" * The assertion status of the {@link Configuration} class determines whether\n" +
-			" * {@code assertThat()} carries out a verification or does nothing.\n" +
-			" *\n" +
-			" * @see Requirements\n" +
-			" * @see JavaRequirements\n");
+		out.append("""
+
+			/**
+			 * Verifies API requirements using the default {@link Configuration configuration}.
+			 * <p>
+			 * The assertion status of the {@link Configuration} class determines whether
+			 * {@code assertThat()} carries out a verification or does nothing.
+			 *
+			 * @see Requirements
+			 * @see JavaRequirements
+			""");
 		if (guavaEnabled)
 			out.append(" * @see GuavaRequirements\n");
-		out.append(" */\n" +
-			"public final class DefaultRequirements\n" +
-			"{\n");
+		out.append("""
+			 */
+			public final class DefaultRequirements
+			{
+			""");
 		for (CompilationUnit plugin : plugins)
 		{
 			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
@@ -175,25 +186,40 @@ public final class ApiGenerator
 			out.append("\tprivate static final " + pluginClass.getNameAsString() + " " + delegateName +
 				" = new Default" + pluginClass.getNameAsString() + "();\n ");
 		}
-		out.append("\n" +
-			"\t/**\n" +
-			"\t * Returns true if assertions are enabled for this class.\n" +
-			"\t *\n" +
-			"\t * @return true if assertions are enabled for this class\n" +
-			"\t */\n" +
-			"\tpublic static boolean assertionsAreEnabled()\n" +
-			"\t{\n" +
-			"\t\treturn JAVA_REQUIREMENTS.assertionsAreEnabled();\n" +
-			"\t}\n");
+		out.append("""
+
+			/**
+			 * Returns the contextual information associated with this configuration.
+			 *
+			 * @param message the exception message ({@code null} if absent)
+			 * @return the contextual information associated with this configuration
+			 */
+			\tpublic static String getContextMessage(String message)
+			\t{
+			\t\treturn JAVA_REQUIREMENTS.getContextMessage(message);
+			\t}
+
+			\t/**
+			\t * Returns true if assertions are enabled for this class.
+			\t *
+			\t * @return true if assertions are enabled for this class
+			\t */
+			\tpublic static boolean assertionsAreEnabled()
+			\t{
+			\t\treturn JAVA_REQUIREMENTS.assertionsAreEnabled();
+			\t}
+			""");
 		appendPluginMethods(plugins, true, out);
-		out.append("\n" +
-			"\t/**\n" +
-			"\t * Prevent construction.\n" +
-			"\t */\n" +
-			"\tprivate DefaultRequirements()\n" +
-			"\t{\n" +
-			"\t}\n" +
-			"}\n");
+		out.append("""
+
+			\t/**
+			\t * Prevent construction.
+			\t */
+			\tprivate DefaultRequirements()
+			\t{
+			\t}
+			}
+			""");
 		return Generators.writeIfChanged(path, out.toString());
 	}
 
@@ -204,9 +230,9 @@ public final class ApiGenerator
 	private List<CompilationUnit> getPlugins() throws IOException
 	{
 		List<String> plugins = new ArrayList<>(2);
-		plugins.add("JavaRequirements");
+		plugins.add("java");
 		if (guavaEnabled)
-			plugins.add("GuavaRequirements");
+			plugins.add("guava");
 		return getPlugins(plugins);
 	}
 
@@ -220,19 +246,31 @@ public final class ApiGenerator
 		List<CompilationUnit> result = new ArrayList<>();
 		for (String plugin : plugins)
 		{
-			String path = "/com/github/cowwoc/requirements/plugins/" + plugin + ".java";
-			try (InputStream in = getClass().getResourceAsStream(path))
-			{
-				if (in == null)
-					throw new IOException("Could not find " + path + " on classpath");
-				result.add(StaticJavaParser.parse(in));
-			}
-			catch (ParseProblemException e)
-			{
-				throw new IOException(e);
-			}
+			result.add(loadJavaFile("com.github.cowwoc.requirements." + plugin + "." +
+				plugin.substring(0, 1).toUpperCase(Locale.US) + plugin.substring(1) + "Requirements"));
 		}
 		return result;
+	}
+
+	/**
+	 * @param fullyQualifiedName a fully-qualified class name
+	 * @return the AST of enabled plugins
+	 * @throws IOException if an I/O error occurs
+	 */
+	private CompilationUnit loadJavaFile(String fullyQualifiedName) throws IOException
+	{
+		fullyQualifiedName = fullyQualifiedName.replaceAll("\\.", "/");
+		String path = "/" + fullyQualifiedName + ".java";
+		try (InputStream in = getClass().getResourceAsStream(path))
+		{
+			if (in == null)
+				throw new IOException("Could not find " + path + " on classpath");
+			return StaticJavaParser.parse(in);
+		}
+		catch (ParseProblemException e)
+		{
+			throw new IOException(e);
+		}
 	}
 
 	/**
@@ -372,35 +410,37 @@ public final class ApiGenerator
 		addImports(plugins, out);
 		if (exportScope)
 		{
-			out.append("import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;\n" +
-				"import com.github.cowwoc.requirements.java.internal.secrets.JavaSecrets;\n" +
-				"import com.github.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;\n" +
-				"\n");
+			out.append("""
+				import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+				import com.github.cowwoc.requirements.java.internal.secrets.JavaSecrets;
+				import com.github.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;
+
+				""");
 		}
-		out.append("import java.math.BigDecimal;\n" +
-			"import java.net.InetAddress;\n" +
-			"import java.net.URI;\n" +
-			"import java.nio.file.Path;\n" +
-			"import java.util.Collection;\n" +
-			"import java.util.Map;\n" +
-			"import java.util.Optional;\n" +
-			"import java.util.function.Function;\n" +
-			"\n");
-		out.append("/**\n" +
-			" * Verifies API requirements using a custom {@link Configuration configuration}." +
-			" " +
-			"for verifying API requirements.\n" +
-			" * <p>\n" +
-			" * This class holds its own configuration whereas {@link DefaultRequirements} always uses the\n" +
-			" * default {@link Configuration configuration}.\n" +
-			" * <p>\n" +
-			" * The assertion status of the {@link Configuration} class determines whether\n" +
-			" * {@code assertThat()} carries out a verification or does nothing.\n" +
-			" * <p>\n" +
-			" * This class is thread-safe.\n" +
-			" *\n" +
-			" * @see DefaultRequirements\n" +
-			" * @see JavaRequirements\n");
+		out.append("""
+			import java.math.BigDecimal;
+			import java.net.InetAddress;
+			import java.net.URI;
+			import java.nio.file.Path;
+			import java.util.Collection;
+			import java.util.Map;
+			import java.util.Optional;
+			import java.util.function.Function;
+
+			""");
+		out.append("""
+			/**
+			 * Verifies API requirements using a custom {@link Configuration configuration}. for verifying API requirements.
+			 * <p>
+			 * This class holds its own configuration whereas {@link DefaultRequirements} always uses the
+			 * default {@link Configuration configuration}.
+			 * <p>
+			 * The assertion status of the {@link Configuration} class determines whether
+			 * {@code assertThat()} carries out a verification or does nothing.
+			 *
+			 * @see DefaultRequirements
+			 * @see JavaRequirements
+			""");
 		if (guavaEnabled)
 			out.append(" * @see GuavaRequirements\n");
 		out.append(" */\n" +
@@ -414,166 +454,191 @@ public final class ApiGenerator
 		appendDelegateConstructor(plugins, out);
 		if (exportScope)
 		{
-			out.append("\n" +
-				"\t/**\n" +
-				"\t * This constructor is meant to be used by automated tests, not by users.\n" +
-				"\t *\n" +
-				"\t * @param scope the application configuration\n" +
-				"\t * @throws AssertionError if any of the arguments are null\n" +
-				"\t */\n" +
-				"\tpublic Requirements(ApplicationScope scope)\n" +
-				"\t{\n" +
-				"\t\tassert (scope != null) : \"scope may not be null\";\n");
+			out.append("""
+
+				\t/**
+				\t * This constructor is meant to be used by automated tests, not by users.
+				\t *
+				\t * @param scope the application configuration
+				\t * @throws AssertionError if any of the arguments are null
+				\t */
+				\tpublic Requirements(ApplicationScope scope)
+				\t{
+				\t\tassert (scope != null) : "scope may not be null";
+				""");
 			for (CompilationUnit plugin : plugins)
 			{
 				ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-				out.append(createDelegate(pluginClass));
+				out.append("\t\t").append(createDelegate(pluginClass));
 			}
 			out.append("\t}\n");
 		}
-		out.append("\n" +
-			"\t/**\n" +
-			"\t * Returns true if assertions are enabled for this class.\n" +
-			"\t *\n" +
-			"\t * @return true if assertions are enabled for this class\n" +
-			"\t */\n" +
-			"\tpublic boolean assertionsAreEnabled()\n" +
-			"\t{\n" +
-			"\t\treturn javaRequirements.assertionsAreEnabled();\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withAssertionsEnabled()\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withAssertionsEnabled()", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\tpublic boolean isCleanStackTrace()\n" +
-			"\t{\n" +
-			"\t\treturn javaRequirements.isCleanStackTrace();\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withCleanStackTrace()\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withCleanStackTrace()", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withoutCleanStackTrace()\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withoutCleanStackTrace()", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withAssertionsDisabled()\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withAssertionsDisabled()", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\tpublic boolean isDiffEnabled()\n" +
-			"\t{\n" +
-			"\t\treturn javaRequirements.isDiffEnabled();\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withDiff()\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withDiff()", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withoutDiff()\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withoutDiff()", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\tpublic Map<String, Object> getContext()\n" +
-			"\t{\n" +
-			"\t\treturn javaRequirements.getContext();\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\t@Deprecated\n" +
-			"\tpublic Requirements putContext(String name, Object value)\n" +
-			"\t{\n" +
-			"\t\treturn withContext(name, value);\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withContext(String name, Object value)\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withContext(name, value)", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\t@Deprecated\n" +
-			"\tpublic Requirements removeContext(String name)\n" +
-			"\t{\n" +
-			"\t\treturn withoutContext(name);\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withoutContext(String name)\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withoutContext(name)", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\tpublic String toString(Object value)\n" +
-			"\t{\n" +
-			"\t\treturn javaRequirements.toString(value);\n" +
-			"\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic <T> Requirements withStringConverter(Class<T> type, Function<T, String> converter)\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withStringConverter(type, converter)", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic <T> Requirements withoutStringConverter(Class<T> type)\n" +
-			"\t{\n");
-		appendConfigurationUpdate(plugins, "withoutStringConverter(type)", out);
-		out.append("\t}\n" +
-			"\n" +
-			"\t@Override\n" +
-			"\t@CheckReturnValue\n" +
-			"\tpublic Requirements withConfiguration(Configuration newConfig)\n" +
-			"\t{\n");
-		for (CompilationUnit plugin : plugins)
-		{
-			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(pluginClass, false);
-			String newPluginInstance = "new" + Character.toUpperCase(delegateName.charAt(0)) +
-				delegateName.substring(1);
-			out.append("\t\t" + pluginClass.getNameAsString() + " " + newPluginInstance + " = " + delegateName +
-				".withConfiguration(newConfig);\n");
-		}
+		out.append("""
+
+			\t/**
+			\t * Returns a copy of this configuration.
+			\t *
+			\t * @return a copy of this configuration
+			\t */
+			\tpublic Requirements copy()
+			\t{
+			""");
+
 		out.append("\t\treturn new Requirements");
 		StringJoiner joiner = new StringJoiner(", ", "(", ");\n");
 		for (CompilationUnit plugin : plugins)
 		{
 			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-			joiner.add("new" + pluginClass.getNameAsString());
+			String pluginName = pluginClass.getNameAsString();
+			joiner.add(Character.toLowerCase(pluginName.charAt(0)) + pluginName.substring(1) + ".copy()");
 		}
-		out.append(joiner +
-			"\t}\n");
+		out.append(joiner);
+
+		out.append("""
+			\t}
+
+			\t/**
+			\t * Returns true if assertions are enabled for this class.
+			\t *
+			\t * @return true if assertions are enabled for this class
+			\t */
+			\tpublic boolean assertionsAreEnabled()
+			\t{
+			\t\treturn javaRequirements.assertionsAreEnabled();
+			\t}
+
+			\t@Override
+			\tpublic Requirements withAssertionsEnabled()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withAssertionsEnabled()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic boolean isCleanStackTrace()
+			\t{
+			\t\treturn javaRequirements.isCleanStackTrace();
+			\t}
+
+			\t@Override
+			\tpublic Requirements withCleanStackTrace()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withCleanStackTrace()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withoutCleanStackTrace()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withoutCleanStackTrace()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withAssertionsDisabled()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withAssertionsDisabled()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic boolean isDiffEnabled()
+			\t{
+			\t\treturn javaRequirements.isDiffEnabled();
+			\t}
+
+			\t@Override
+			\tpublic Requirements withDiff()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withDiff()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withoutDiff()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withoutDiff()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Map<String, Object> getContext()
+			\t{
+			\t\treturn javaRequirements.getContext();
+			\t}
+
+			\t@Override
+			\tpublic Requirements withContext(String name, Object value)
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withContext(name, value)", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withoutContext(String name)
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withoutContext(name)", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withoutAnyContext()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withoutAnyContext()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic String getContextMessage(String message)
+			\t{
+			\t\treturn javaRequirements.getContextMessage(message);
+			\t}
+
+			\t@Override
+			\tpublic String toString(Object value)
+			\t{
+			\t\treturn javaRequirements.toString(value);
+			\t}
+
+			\t@Override
+			\tpublic <T> Requirements withStringConverter(Class<T> type, Function<T, String> converter)
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withStringConverter(type, converter)", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic <T> Requirements withoutStringConverter(Class<T> type)
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withoutStringConverter(type)", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withConfiguration(Configuration newConfig)
+			\t{
+			""");
+		for (CompilationUnit plugin : plugins)
+		{
+			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
+			String delegateName = getDelegateName(pluginClass, false);
+			out.append("\t\t" + delegateName + ".withConfiguration(newConfig);\n");
+		}
+		out.append("""
+			\t\treturn this;
+			\t}
+			""");
 		appendPluginMethods(plugins, false, out);
 		out.append("}\n");
 		return Generators.writeIfChanged(path, out.toString());
@@ -619,11 +684,13 @@ public final class ApiGenerator
 	 */
 	private void appendDefaultConstructor(List<CompilationUnit> plugins, StringBuilder out)
 	{
-		out.append("\t/**\n" +
-			"\t * Creates a new instance of Requirements.\n" +
-			"\t */\n" +
-			"\tpublic Requirements()\n" +
-			"\t{\n");
+		out.append("""
+			\t/**
+			\t * Creates a new instance of Requirements.
+			\t */
+			\tpublic Requirements()
+			\t{
+			""");
 		for (CompilationUnit plugin : plugins)
 		{
 			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
@@ -643,9 +710,10 @@ public final class ApiGenerator
 	{
 		out.append("\t/**\n");
 		documentDelegateConstructorParameters(plugins, out);
-		out.append("\t * @throws AssertionError if any of the arguments are null\n" +
-			"\t */\n" +
-			"\tprivate Requirements");
+		out.append("""
+			\t * @throws AssertionError if any of the arguments are null
+			\t */
+			\tprivate Requirements""");
 		StringJoiner joiner = new StringJoiner(", ", "(", ")");
 		for (CompilationUnit plugin : plugins)
 		{
@@ -700,28 +768,14 @@ public final class ApiGenerator
 		CompilationUnit firstPlugin = plugins.get(0);
 		ClassOrInterfaceDeclaration pluginClass = firstPlugin.getType(0).asClassOrInterfaceDeclaration();
 		String delegateName = getDelegateName(pluginClass, false);
-		String newPluginInstance = "new" + Character.toUpperCase(delegateName.charAt(0)) +
-			delegateName.substring(1);
-		out.append("\t\t" + pluginClass.getNameAsString() + " " + newPluginInstance + " = " + delegateName +
-			"." + change + ";\n" +
-			"\t\tif (" + newPluginInstance + ".equals(" + delegateName + "))\n" +
-			"\t\t\treturn this;\n");
+		out.append("\t\t" + delegateName + "." + change + ";\n");
 		for (CompilationUnit plugin : plugins.subList(1, plugins.size()))
 		{
 			pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
 			delegateName = getDelegateName(pluginClass, false);
-			newPluginInstance = "new" + Character.toUpperCase(delegateName.charAt(0)) + delegateName.substring(1);
-			out.append("\t\t" + pluginClass.getNameAsString() + " " + newPluginInstance + " = " + delegateName +
-				"." + change + ";\n");
+			out.append("\t\t" + delegateName + "." + change + ";\n");
 		}
-		out.append("\t\treturn new Requirements");
-		StringJoiner joiner = new StringJoiner(", ", "(", ");\n");
-		for (CompilationUnit plugin : plugins)
-		{
-			pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-			joiner.add("new" + pluginClass.getNameAsString());
-		}
-		out.append(joiner);
+		out.append("\t\treturn this;\n");
 	}
 
 	/**
@@ -731,10 +785,12 @@ public final class ApiGenerator
 	 */
 	private void addCopyright(StringBuilder out)
 	{
-		out.append("/*\n" +
-			" * Copyright 2013 Gili Tzabari.\n" +
-			" * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0\n" +
-			" */\n");
+		out.append("""
+			/*
+			 * Copyright 2013 Gili Tzabari.
+			 * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+			 */
+			""");
 	}
 
 	/**
@@ -744,8 +800,10 @@ public final class ApiGenerator
 	 */
 	private void addPackage(StringBuilder out)
 	{
-		out.append("package com.github.cowwoc.requirements;\n" +
-			"\n");
+		out.append("""
+			package com.github.cowwoc.requirements;
+
+			""");
 	}
 
 	/**
@@ -766,24 +824,25 @@ public final class ApiGenerator
 				out.append("\n");
 				addNewline = false;
 			}
+			Map<String, String> imports = new HashMap<>();
 			for (ImportDeclaration anImport : plugin.getImports())
 			{
-				if (namesImported.add(anImport.getNameAsString()))
-				{
-					out.append(anImport.toString(defaultFormatter));
-					addNewline = true;
-				}
+				if (!namesImported.add(anImport.getNameAsString()))
+					continue;
+				out.append(anImport.toString(defaultFormatter));
+				imports.put(anImport.getName().getIdentifier(), anImport.getNameAsString());
+				addNewline = true;
 			}
 			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String packageName = plugin.getPackageDeclaration().map(PackageDeclaration::getNameAsString).
+			String pluginPackage = plugin.getPackageDeclaration().map(PackageDeclaration::getNameAsString).
 				orElse("");
 
 			for (MethodDeclaration method : pluginClass.getMethods())
 			{
-				String type = method.getType().asClassOrInterfaceType().getName().asString();
-				if (!namesImported.add(type))
+				String returnType = method.getType().asClassOrInterfaceType().getName().asString();
+				if (!namesImported.add(returnType))
 					continue;
-				out.append("import " + fullyQualifiedType(type, packageName) + ";\n");
+				out.append("import " + fullyQualifiedType(returnType, imports, pluginPackage) + ";\n");
 				addNewline = true;
 			}
 
@@ -791,34 +850,45 @@ public final class ApiGenerator
 			String defaultImplementationOfPlugin = "Default" + pluginClass.getNameAsString();
 			if (namesImported.add(defaultImplementationOfPlugin))
 			{
-				out.append("import " + packageName + "." + defaultImplementationOfPlugin + ";\n");
+				out.append("import " + pluginPackage + "." + defaultImplementationOfPlugin + ";\n");
 				addNewline = true;
 			}
 
 			for (ClassOrInterfaceType extendedType : pluginClass.getExtendedTypes())
 			{
+				// The type that this class "extends"
 				String type = extendedType.getNameAsString();
-				if (namesImported.add(type))
-				{
-					out.append("import " + fullyQualifiedType(type, packageName) + ";\n");
-					namesImported.add(type);
-					addNewline = true;
-				}
+				if (!namesImported.add(type))
+					continue;
+				out.append("import " + fullyQualifiedType(type, imports, pluginPackage) + ";\n");
+				addNewline = true;
 			}
 		}
 	}
 
 	/**
-	 * Resolves a type relative to a package.
+	 * Resolves the fully-qualified name of a type.
 	 *
-	 * @param type        the type
-	 * @param packageName the enclosing package
-	 * @return the fully-qualified type
+	 * @param type          the type
+	 * @param imports       maps simple names to fully-qualified names
+	 * @param pluginPackage the package of the plugin being processed
+	 * @return empty string is no import is required
 	 */
-	private String fullyQualifiedType(String type, String packageName)
+	private String fullyQualifiedType(String type, Map<String, String> imports, String pluginPackage)
 	{
 		if (type.contains("."))
 			return type;
-		return packageName + "." + type;
+		String fullyQualifiedName = imports.get(type);
+		if (fullyQualifiedName != null)
+			return fullyQualifiedName;
+		try
+		{
+			classLoader.loadClass(pluginPackage + "." + type);
+			return pluginPackage + "." + type;
+		}
+		catch (ClassNotFoundException e)
+		{
+			return "java.lang." + type;
+		}
 	}
 }

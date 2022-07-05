@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>6.1.1-SNAPSHOT</version>
+		<version>7.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>test</artifactId>
 	<packaging>jar</packaging>
@@ -36,14 +36,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>${project.groupId}</groupId>
-					<artifactId>maven_plugin</artifactId>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -78,7 +70,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+				<groupId>com.github.cowwoc.requirements</groupId>
 				<artifactId>maven_plugin</artifactId>
 				<executions>
 					<execution>

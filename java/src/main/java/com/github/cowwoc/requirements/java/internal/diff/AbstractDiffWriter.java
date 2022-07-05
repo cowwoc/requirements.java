@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -21,22 +20,18 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NE
  */
 abstract class AbstractDiffWriter implements DiffWriter
 {
-	protected static final BiFunction<Integer, StringBuilder, StringBuilder> DEFAULT_LINE =
-		(key, value) ->
-		{
-			if (value == null)
-				value = new StringBuilder();
-			return value;
-		};
-
 	/**
-	 * Builds a line of the actual value.
+	 * Maps each line number to its associated actual value.
 	 */
 	protected final Map<Integer, StringBuilder> lineToActualLine = new HashMap<>();
 	/**
-	 * Builds a line of the expected value.
+	 * Maps each line number to its associated expected value.
 	 */
 	protected final Map<Integer, StringBuilder> lineToExpectedLine = new HashMap<>();
+	/**
+	 * Maps each line number to an indication of whether the actual and expected values are equal.
+	 */
+	protected final Map<Integer, Boolean> lineToEqualLine = new HashMap<>();
 	/**
 	 * The current line number of the actual value.
 	 */
@@ -57,7 +52,11 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 * The final list of lines in the expected value.
 	 */
 	private List<String> expectedLines;
-	protected boolean closed;
+	/**
+	 * The final list that indicates which lines contain actual and expected values that are equal.
+	 */
+	private List<Boolean> equalLines;
+	protected boolean flushed;
 
 	/**
 	 * @param paddingMarker a padding character used to align values vertically
@@ -96,7 +95,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 */
 	protected void initActualLine(int number)
 	{
-		lineToActualLine.compute(number, DEFAULT_LINE);
+		lineToActualLine.put(number, new StringBuilder());
+		lineToEqualLine.putIfAbsent(actualLineNumber, true);
 	}
 
 	/**
@@ -106,7 +106,8 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 */
 	protected void initExpectedLine(int number)
 	{
-		lineToExpectedLine.compute(number, DEFAULT_LINE);
+		lineToExpectedLine.put(number, new StringBuilder());
+		lineToEqualLine.putIfAbsent(expectedLineNumber, true);
 	}
 
 	/**
@@ -115,10 +116,12 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 *
 	 * @param text         some text
 	 * @param lineConsumer consumes one line at a time
-	 * @param writeNewLine ends the current line
+	 * @throws IllegalStateException if the writer has already been flushed
 	 */
-	protected void splitLines(CharSequence text, Consumer<String> lineConsumer, Runnable writeNewLine)
+	protected void splitLines(CharSequence text, Consumer<String> lineConsumer)
 	{
+		if (flushed)
+			throw new IllegalStateException("Writer has already been flushed");
 		String[] lines = NEWLINE_PATTERN.split(text, -1);
 		StringBuilder line = new StringBuilder();
 		for (int i = 0; i < lines.length; ++i)
@@ -131,15 +134,22 @@ abstract class AbstractDiffWriter implements DiffWriter
 			if (line.length() > 0)
 				lineConsumer.accept(line.toString());
 			if (!isLastLine)
-				writeNewLine.run();
+			{
+				writeActualNewline();
+				writeExpectedNewline();
+			}
 		}
 	}
 
 	/**
 	 * Ends the current line.
+	 *
+	 * @throws IllegalStateException if the writer has already been flushed
 	 */
 	protected void writeActualNewline()
 	{
+		if (flushed)
+			throw new IllegalStateException("Writer has already been flushed");
 		++actualLineNumber;
 		initActualLine(actualLineNumber);
 		if (!lineToExpectedLine.containsKey(actualLineNumber))
@@ -148,9 +158,13 @@ abstract class AbstractDiffWriter implements DiffWriter
 
 	/**
 	 * Ends the current line.
+	 *
+	 * @throws IllegalStateException if the writer has already been flushed
 	 */
 	protected void writeExpectedNewline()
 	{
+		if (flushed)
+			throw new IllegalStateException("Writer has already been flushed");
 		++expectedLineNumber;
 		initExpectedLine(expectedLineNumber);
 		if (!lineToActualLine.containsKey(expectedLineNumber))
@@ -158,11 +172,11 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	@Override
-	public void close()
+	public void flush()
 	{
-		if (closed)
+		if (flushed)
 			return;
-		closed = true;
+		flushed = true;
 		beforeClose();
 		this.actualLines = Collections.synchronizedList(lineToActualLine.entrySet().stream().
 			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
@@ -170,13 +184,15 @@ abstract class AbstractDiffWriter implements DiffWriter
 		this.expectedLines = Collections.synchronizedList(lineToExpectedLine.entrySet().stream().
 			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
 			collect(Collectors.toList()));
+		this.equalLines = Collections.synchronizedList(lineToEqualLine.entrySet().stream().
+			sorted(Entry.comparingByKey()).map(Entry::getValue).collect(Collectors.toList()));
 		afterClose();
 	}
 
 	@Override
 	public List<String> getActualLines()
 	{
-		if (!closed)
+		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
 		return actualLines;
 	}
@@ -184,8 +200,16 @@ abstract class AbstractDiffWriter implements DiffWriter
 	@Override
 	public List<String> getExpectedLines()
 	{
-		if (!closed)
+		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
 		return expectedLines;
+	}
+
+	@Override
+	public List<Boolean> getEqualLines()
+	{
+		if (!flushed)
+			throw new IllegalStateException("Writer must be closed");
+		return equalLines;
 	}
 }

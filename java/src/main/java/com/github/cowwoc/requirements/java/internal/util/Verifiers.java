@@ -26,7 +26,7 @@ public final class Verifiers
 	 * @param configuration a verifier's configuration
 	 * @param name          the name of the actual value
 	 * @throws NullPointerException     if any of the arguments are null
-	 * @throws IllegalArgumentException if {@code name} is empty
+	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	public static void verifyName(ApplicationScope scope, Configuration configuration, String name)
 	{
@@ -36,7 +36,7 @@ public final class Verifiers
 				"name may not be null");
 			throw failure.createException(NullPointerException.class);
 		}
-		if (name.trim().isEmpty())
+		if (name.isBlank())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, configuration,
 				IllegalArgumentException.class, "name may not be empty");

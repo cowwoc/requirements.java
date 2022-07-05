@@ -26,7 +26,7 @@ public final class BooleanValidatorImpl
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	public BooleanValidatorImpl(ApplicationScope scope, Configuration config, String name, Boolean actual,
 	                            List<ValidationFailure> failures)

@@ -75,7 +75,7 @@ public final class UnpackMojo extends AbstractMojo
 		ExecutionEnvironment environment = MojoExecutor.executionEnvironment(project, session,
 			pluginManager);
 		Plugin dependencyPlugin = MojoExecutor.plugin("org.apache.maven.plugins",
-			"maven-dependency-plugin", "3.2.0");
+			"maven-dependency-plugin", "3.3.0");
 		MojoExecutor.executeMojo(dependencyPlugin, "unpack", configuration, environment);
 	}
 }

@@ -64,8 +64,8 @@ public final class TextOnly extends AbstractDiffWriter
 	@Override
 	public void writeEqual(String text)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
+		if (flushed)
+			throw new IllegalStateException("Writer was already flushed");
 		if (text.isEmpty())
 			return;
 		splitLines(text, line ->
@@ -84,18 +84,14 @@ public final class TextOnly extends AbstractDiffWriter
 				lineToDiffBuilder.get(expectedLineNumber).append(DIFF_EQUAL.repeat(length));
 			}
 			lineToExpectedLine.get(expectedLineNumber).append(line);
-		}, () ->
-		{
-			writeActualNewline();
-			writeExpectedNewline();
 		});
 	}
 
 	@Override
 	public void writeDeleted(String text)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
+		if (flushed)
+			throw new IllegalStateException("Writer was already flushed");
 		if (text.isEmpty())
 			return;
 		splitLines(text, line ->
@@ -104,14 +100,15 @@ public final class TextOnly extends AbstractDiffWriter
 			int length = line.length();
 			lineToDiffBuilder.get(actualLineNumber).append(DIFF_DELETE.repeat(length));
 			lineToExpectedLine.get(actualLineNumber).append(getPaddingMarker().repeat(length));
-		}, this::writeActualNewline);
+			lineToEqualLine.put(actualLineNumber, false);
+		});
 	}
 
 	@Override
 	public void writeInserted(String text)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
+		if (flushed)
+			throw new IllegalStateException("Writer was already flushed");
 		if (text.isEmpty())
 			return;
 		splitLines(text, line ->
@@ -120,7 +117,8 @@ public final class TextOnly extends AbstractDiffWriter
 			lineToActualLine.get(expectedLineNumber).append(getPaddingMarker().repeat(length));
 			lineToDiffBuilder.get(expectedLineNumber).append(DIFF_INSERT.repeat(length));
 			lineToExpectedLine.get(expectedLineNumber).append(line);
-		}, this::writeExpectedNewline);
+			lineToEqualLine.put(expectedLineNumber, false);
+		});
 	}
 
 	@Override
@@ -139,7 +137,7 @@ public final class TextOnly extends AbstractDiffWriter
 	@Override
 	public List<String> getDiffLines()
 	{
-		if (!closed)
+		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
 		return diffLines;
 	}

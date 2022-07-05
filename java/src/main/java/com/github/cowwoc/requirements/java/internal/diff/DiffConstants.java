@@ -12,10 +12,6 @@ import java.util.regex.Pattern;
 public final class DiffConstants
 {
 	/**
-	 * A performance hint indicating the expected length of a line.
-	 */
-	public static final int LINE_LENGTH = 80;
-	/**
 	 * Character denoting a newline character.
 	 */
 	public static final String NEWLINE_MARKER = "\\n";
@@ -24,7 +20,7 @@ public final class DiffConstants
 	 */
 	public static final String EOS_MARKER = "\\0";
 	/**
-	 * A pattern matching newline characters anywhere in a string.
+	 * A pattern matching newline characters.
 	 */
 	public static final Pattern NEWLINE_PATTERN = Pattern.compile("\r?\n");
 	/**

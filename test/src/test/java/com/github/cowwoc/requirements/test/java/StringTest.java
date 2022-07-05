@@ -527,8 +527,9 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual must be an InetAddress.\n" +
-				"Actual: null");
+			List<String> expectedMessages = Collections.singletonList("""
+				actual must be an InetAddress.
+				Actual: null""");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asInetAddress().isIpV4().getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
@@ -543,8 +544,9 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual must be a URI.\n" +
-				"Actual: null");
+			List<String> expectedMessages = Collections.singletonList("""
+				actual must be a URI.
+				Actual: null""");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asUri().isAbsolute().getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
@@ -559,8 +561,9 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual must be a URL.\n" +
-				"Actual: null");
+			List<String> expectedMessages = Collections.singletonList("""
+				actual must be a URL.
+				Actual: null""");
 			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
 				asUrl().isEqualTo("notEqual").getFailures();
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
@@ -683,7 +686,7 @@ public final class StringTest
 			String actualMessage = e.getMessage();
 			assert (!actualMessage.contains("Diff")) :
 				"Wasn't expecting boolean equals() to return diff.\n" +
-					"\nActual:\n" + actualMessage;
+					" Actual:\n" + actualMessage;
 		}
 	}
 

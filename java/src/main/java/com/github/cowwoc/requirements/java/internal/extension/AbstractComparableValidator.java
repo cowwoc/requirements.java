@@ -7,9 +7,9 @@ package com.github.cowwoc.requirements.java.internal.extension;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.extension.ExtensibleComparableValidator;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.extension.ExtensibleComparableValidator;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	protected AbstractComparableValidator(ApplicationScope scope, Configuration config, String name, T actual,
 	                                      List<ValidationFailure> failures)

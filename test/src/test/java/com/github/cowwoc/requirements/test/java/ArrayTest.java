@@ -1442,7 +1442,7 @@ public final class ArrayTest
 				"Expected: [" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
 				"1, 3]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n****************\nActual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1481,7 +1481,7 @@ public final class ArrayTest
 				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
 				"1, 3]]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n****************\nActual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1535,7 +1535,7 @@ public final class ArrayTest
 				"1, 3], [" + DIFF_PADDING.repeat("4,".length()) + "5," + DIFF_PADDING.repeat(" 5,".length()) + "4," +
 				DIFF_PADDING + "6]]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n****************\nActual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 

@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
 
+import static com.github.cowwoc.requirements.java.internal.diff.AbstractColorWriter.DecorationType.UNDECORATED;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.PREFIX;
 
@@ -27,13 +27,6 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	 */
 	protected static final String DIFF_PADDING = "/";
 	protected static final String DEFAULT_BACKGROUND = "49";
-	private static final BiFunction<Integer, DecorationType, DecorationType> DEFAULT_DECORATION =
-		(key, value) ->
-		{
-			if (value == null)
-				value = DecorationType.UNDECORATED;
-			return value;
-		};
 	private final Map<Integer, DecorationType> lineToActualDecoration = new HashMap<>();
 	private final Map<Integer, DecorationType> lineToExpectedDecoration = new HashMap<>();
 
@@ -48,14 +41,14 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	protected void initActualLine(int number)
 	{
 		super.initActualLine(number);
-		lineToActualDecoration.compute(number, DEFAULT_DECORATION);
+		lineToActualDecoration.put(number, UNDECORATED);
 	}
 
 	@Override
 	protected void initExpectedLine(int number)
 	{
 		super.initExpectedLine(number);
-		lineToExpectedDecoration.compute(number, DEFAULT_DECORATION);
+		lineToExpectedDecoration.put(number, UNDECORATED);
 	}
 
 	@Override
@@ -67,8 +60,8 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	@Override
 	public void writeEqual(String text)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
+		if (flushed)
+			throw new IllegalStateException("Writer was already flushed");
 		if (text.isEmpty())
 			return;
 		splitLines(text, line ->
@@ -101,18 +94,14 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 				lineToExpectedLine.get(expectedLineNumber).append(decorateEqualText(line));
 				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.EQUAL);
 			}
-		}, () ->
-		{
-			writeActualNewline();
-			writeExpectedNewline();
 		});
 	}
 
 	@Override
 	public void writeDeleted(String text)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
+		if (flushed)
+			throw new IllegalStateException("Writer was already flushed");
 		if (text.isEmpty())
 			return;
 		splitLines(text, line ->
@@ -126,35 +115,36 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 				lineToActualDecoration.put(actualLineNumber, DecorationType.DELETE);
 			}
 
-			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
+			DecorationType expectedDecoration = lineToExpectedDecoration.get(actualLineNumber);
 			String padding = getPaddingMarker().repeat(line.length());
 			if (expectedDecoration == DecorationType.DELETE)
-				lineToExpectedLine.get(expectedLineNumber).append(padding);
+				lineToExpectedLine.get(actualLineNumber).append(padding);
 			else
 			{
-				lineToExpectedLine.get(expectedLineNumber).append(decoratePadding(padding));
-				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.DELETE);
+				lineToExpectedLine.get(actualLineNumber).append(decoratePadding(padding));
+				lineToExpectedDecoration.put(actualLineNumber, DecorationType.DELETE);
 			}
-		}, this::writeActualNewline);
+			lineToEqualLine.put(actualLineNumber, false);
+		});
 	}
 
 	@Override
 	public void writeInserted(String text)
 	{
-		if (closed)
-			throw new IllegalStateException("Writer must be open");
+		if (flushed)
+			throw new IllegalStateException("Writer was already flushed");
 		if (text.isEmpty())
 			return;
 		splitLines(text, line ->
 		{
-			DecorationType actualDecoration = lineToActualDecoration.get(actualLineNumber);
+			DecorationType actualDecoration = lineToActualDecoration.get(expectedLineNumber);
 			String padding = getPaddingMarker().repeat(line.length());
 			if (actualDecoration == DecorationType.INSERT)
-				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
+				lineToActualLine.get(expectedLineNumber).append(decoratePadding(padding));
 			else
 			{
-				lineToActualLine.get(actualLineNumber).append(decoratePadding(padding));
-				lineToActualDecoration.put(actualLineNumber, DecorationType.INSERT);
+				lineToActualLine.get(expectedLineNumber).append(decoratePadding(padding));
+				lineToActualDecoration.put(expectedLineNumber, DecorationType.INSERT);
 			}
 
 			DecorationType expectedDecoration = lineToExpectedDecoration.get(expectedLineNumber);
@@ -165,7 +155,8 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 				lineToExpectedLine.get(expectedLineNumber).append(decorateInsertedText(line));
 				lineToExpectedDecoration.put(expectedLineNumber, DecorationType.INSERT);
 			}
-		}, this::writeExpectedNewline);
+			lineToEqualLine.put(expectedLineNumber, false);
+		});
 	}
 
 	@Override
@@ -173,18 +164,18 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	{
 		for (Entry<Integer, DecorationType> entry : lineToActualDecoration.entrySet())
 		{
-			if (entry.getValue() != DecorationType.UNDECORATED)
+			if (entry.getValue() != UNDECORATED)
 			{
 				lineToActualLine.get(entry.getKey()).append(stopDecoration());
-				lineToActualDecoration.put(entry.getKey(), DecorationType.UNDECORATED);
+				entry.setValue(UNDECORATED);
 			}
 		}
 		for (Entry<Integer, DecorationType> entry : lineToExpectedDecoration.entrySet())
 		{
-			if (entry.getValue() != DecorationType.UNDECORATED)
+			if (entry.getValue() != UNDECORATED)
 			{
 				lineToExpectedLine.get(entry.getKey()).append(stopDecoration());
-				lineToExpectedDecoration.put(entry.getKey(), DecorationType.UNDECORATED);
+				entry.setValue(UNDECORATED);
 			}
 		}
 	}
@@ -197,7 +188,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	@Override
 	public List<String> getDiffLines()
 	{
-		if (!closed)
+		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
 		return Collections.emptyList();
 	}

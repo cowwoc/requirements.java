@@ -26,7 +26,7 @@ public final class IntegerValidatorImpl
 	 * @param actual   the actual value
 	 * @param failures the list of validation failures
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
-	 *                        {@code name} is empty.
+	 *                        {@code name} is blank.
 	 */
 	public IntegerValidatorImpl(ApplicationScope scope, Configuration config, String name, Integer actual,
 	                            List<ValidationFailure> failures)

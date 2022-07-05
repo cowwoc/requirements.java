@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>benchmark</artifactId>
-		<version>6.1.1-SNAPSHOT</version>
+		<version>7.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>benchmark.java</artifactId>
 	<packaging>jar</packaging>
@@ -17,17 +17,9 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>${project.groupId}</groupId>
-					<artifactId>maven_plugin</artifactId>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+				<groupId>com.github.cowwoc.requirements</groupId>
 				<artifactId>maven_plugin</artifactId>
 				<executions>
 					<execution>
