@@ -29,23 +29,23 @@ Not only do we provide you with the actual and expected values, we also provide 
 
 ```java
 List<Integer> actual=Arrays.asList(2,3,4,6);
-	List<Integer> expected=Arrays.asList(1,3,5);
+List<Integer> expected=Arrays.asList(1,3,5);
 
 // Guava
-	Preconditions.checkArgument(actual.containsAll(expected),"actual must contain %s",expected);
+Preconditions.checkArgument(actual.containsAll(expected),"actual must contain %s",expected);
 
-	java.lang.IllegalArgumentException:actual must contain[1,3,5]
+java.lang.IllegalArgumentException:actual must contain[1,3,5]
 	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
 	at Main.guava3(Main.java:95)
 	at Main.run(Main.java:129)
 	at Main.main(Main.java:137)
 
 // This API
-	requireThat(actual,"actual").containsAll(expected);
+requireThat(actual,"actual").containsAll(expected);
 
-	java.lang.IllegalArgumentException:actual must contain all elements in:[1,3,5]
-	Actual:[2,3,4,6]
-	Missing:[1,5]
+java.lang.IllegalArgumentException:actual must contain all elements in:[1,3,5]
+Actual:[2,3,4,6]
+Missing:[1,5]
 	at Main.requirements3(Main.java:106)
 	at Main.run(Main.java:131)
 	at Main.main(Main.java:137)
@@ -85,7 +85,7 @@ performance and no allocations if assertions are disabled.
 String name = "George";
 String province = "Florida";
 List<String> provinces = Arrays.asList("Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba",
-			"British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
+	"British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
 
 List<ValidationFailure> failures = new ArrayList<>();
 failures.addAll(validateThat(name, "name").length().isBetween(10, 30).getFailures());
@@ -131,7 +131,7 @@ requireThat(nameToAge, "nameToAge").isNotNull().
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/6.1.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/7.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
 fails, the library outputs a [diff](String_Diff.md) of the values being compared.
 
 ![colored-diff-example4.png](colored-diff-example4.png)

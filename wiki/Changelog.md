@@ -1,7 +1,7 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 7.0.0 - ?
+## Version 7.0.0 - 2022/07/05
 
 * Breaking changes:
     * Removed thread-safety from most classes for performance-reasons. It seems like single-threaded usage is
