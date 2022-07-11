@@ -70,7 +70,6 @@
 // nexus-staging-maven-plugin does not allow us to run unit tests and deploy at the same time because skipNexusStagingDeployMojo cannot be set to true
 // in the last module. Therefore we build twice. The first time we run unit tests without deploying. The second time we deploy without running unit tests.
 
-// Create release candidate branch
 def unauthenticatedRepository = &quot;github.com/cowwoc/requirements.java.git&quot;
 def repository = &quot;https://${unauthenticatedRepository}&quot;
 // One can look up a project&apos;s profileId by running: mvn nexus-staging:rc-list-profiles -DserverId=maven-central-releases -DnexusUrl=https://oss.sonatype.org/
@@ -162,7 +161,7 @@ try
                     {
                         // Deploy platform-specific JAR
                         // Use the same GCC version as AWS. See top of this script for more information.
-                        
+
                         sh script: &quot;&quot;&quot;sudo apt-get install build-essential -y
                             mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                             mvn --batch-mode -V -e -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;

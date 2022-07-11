@@ -1,6 +1,10 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 7.0.1 - 2022/07/11
+
+* Bugfix: Fixed regression that prevented ThreadRequirements from being thread-safe.
+
 ## Version 7.0.0 - 2022/07/05
 
 * Breaking changes:

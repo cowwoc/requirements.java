@@ -8,6 +8,7 @@ import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfigura
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Configures the behavior of all verifiers invoked by the current thread.
@@ -17,8 +18,9 @@ import java.util.Map;
  */
 public final class ThreadRequirements
 {
-	private static final ThreadConfiguration DELEGATE =
-		new DefaultThreadConfiguration(MainApplicationScope.INSTANCE);
+	// Must use a Supplier because the instance is thread-local
+	private static final Supplier<ThreadConfiguration> DELEGATE =
+		 MainApplicationScope.INSTANCE.getThreadConfiguration();
 
 	/**
 	 * Prevent construction.
@@ -35,7 +37,7 @@ public final class ThreadRequirements
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return DELEGATE.getContext();
+		return DELEGATE.get().getContext();
 	}
 
 	/**
@@ -48,7 +50,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withContext(String name, Object value)
 	{
-		return DELEGATE.withContext(name, value);
+		return DELEGATE.get().withContext(name, value);
 	}
 
 	/**
@@ -60,7 +62,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withoutContext(String name)
 	{
-		return DELEGATE.withoutContext(name);
+		return DELEGATE.get().withoutContext(name);
 	}
 
 	/**
@@ -70,7 +72,7 @@ public final class ThreadRequirements
 	 */
 	public static ThreadConfiguration withoutAnyContext()
 	{
-		return DELEGATE.withoutAnyContext();
+		return DELEGATE.get().withoutAnyContext();
 	}
 
 	/**
@@ -81,6 +83,6 @@ public final class ThreadRequirements
 	 */
 	public static String getContextMessage(String message)
 	{
-		return DELEGATE.getContextMessage(message);
+		return DELEGATE.get().getContextMessage(message);
 	}
 }
