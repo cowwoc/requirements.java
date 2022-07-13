@@ -35,14 +35,14 @@ public final class ClassVerifierImpl<T>
 	@Override
 	public ClassVerifier<T> isSupertypeOf(Class<?> type)
 	{
-		validator = validator.isSupertypeOf(type);
+		validator.isSupertypeOf(type);
 		return validationResult();
 	}
 
 	@Override
 	public ClassVerifier<T> isSubtypeOf(Class<?> type)
 	{
-		validator = validator.isSubtypeOf(type);
+		validator.isSubtypeOf(type);
 		return validationResult();
 	}
 }

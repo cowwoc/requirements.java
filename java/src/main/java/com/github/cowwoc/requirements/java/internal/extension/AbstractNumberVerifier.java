@@ -31,84 +31,84 @@ public abstract class AbstractNumberVerifier
 	@Override
 	public S isNegative()
 	{
-		validator = validator.isNegative();
+		validator.isNegative();
 		return validationResult();
 	}
 
 	@Override
 	public S isNotNegative()
 	{
-		validator = validator.isNotNegative();
+		validator.isNotNegative();
 		return validationResult();
 	}
 
 	@Override
 	public S isZero()
 	{
-		validator = validator.isZero();
+		validator.isZero();
 		return validationResult();
 	}
 
 	@Override
 	public S isNotZero()
 	{
-		validator = validator.isNotZero();
+		validator.isNotZero();
 		return validationResult();
 	}
 
 	@Override
 	public S isPositive()
 	{
-		validator = validator.isPositive();
+		validator.isPositive();
 		return validationResult();
 	}
 
 	@Override
 	public S isNotPositive()
 	{
-		validator = validator.isNotPositive();
+		validator.isNotPositive();
 		return validationResult();
 	}
 
 	@Override
 	public S isWholeNumber()
 	{
-		validator = validator.isWholeNumber();
+		validator.isWholeNumber();
 		return validationResult();
 	}
 
 	@Override
 	public S isNotWholeNumber()
 	{
-		validator = validator.isNotWholeNumber();
+		validator.isNotWholeNumber();
 		return validationResult();
 	}
 
 	@Override
 	public S isMultipleOf(T divisor)
 	{
-		validator = validator.isMultipleOf(divisor);
+		validator.isMultipleOf(divisor);
 		return validationResult();
 	}
 
 	@Override
 	public S isMultipleOf(T divisor, String name)
 	{
-		validator = validator.isMultipleOf(divisor, name);
+		validator.isMultipleOf(divisor, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isNotMultipleOf(T divisor)
 	{
-		validator = validator.isNotMultipleOf(divisor);
+		validator.isNotMultipleOf(divisor);
 		return validationResult();
 	}
 
 	@Override
 	public S isNotMultipleOf(T divisor, String name)
 	{
-		validator = validator.isNotMultipleOf(divisor, name);
+		validator.isNotMultipleOf(divisor, name);
 		return validationResult();
 	}
 }

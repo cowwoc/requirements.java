@@ -37,14 +37,14 @@ public final class InetAddressVerifierImpl
 	@Override
 	public InetAddressVerifier isIpV4()
 	{
-		validator = validator.isIpV4();
+		validator.isIpV4();
 		return validationResult();
 	}
 
 	@Override
 	public InetAddressVerifier isIpV6()
 	{
-		validator = validator.isIpV6();
+		validator.isIpV6();
 		return validationResult();
 	}
 

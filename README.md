@@ -57,7 +57,7 @@ For the **Javadoc**, click **api docs** at the top of this page.
 <project>
 	...
 	<properties>
-		<requirements.version>7.0.1</requirements.version>
+		<requirements.version>7.0.2</requirements.version>
 	</properties>
 	<build>
 		<plugins>

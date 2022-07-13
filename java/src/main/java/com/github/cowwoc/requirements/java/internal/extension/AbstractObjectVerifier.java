@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValidator<V, T>, T>
 	implements ExtensibleObjectVerifier<S, T>
 {
-	protected V validator;
+	protected final V validator;
 
 	/**
 	 * @param validator the validator to delegate to
@@ -50,14 +50,34 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	}
 
 	/**
-	 * Throws an exception if the validation failed.
+	 * Equivalent to {@link #validationResult(Supplier) validationResult(this::getThis)} but with better
+	 * runtime performance.
 	 *
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the validation failed
 	 */
 	protected S validationResult()
 	{
-		return validationResult(this::getThis);
+		return validationResult(IllegalArgumentException.class);
+	}
+
+	/**
+	 * Throws an exception if the validation failed. If the exception associated with the failure is a
+	 * runtime exception or an exception of type {@code <E>} it is thrown as-is; otherwise, the exception is
+	 * wrapped in an {@code AssertionError}.
+	 *
+	 * @param <E>       the type of exception that may be thrown
+	 * @param exception the type of exception that may be thrown
+	 * @return {@link #getThis()}
+	 * @throws E if the validation failed
+	 */
+	protected <E extends Exception> S validationResult(Class<E> exception) throws E
+	{
+		assert (exception != null) : "exception may not be null";
+		List<ValidationFailure> failures = validator.getFailures();
+		if (failures.isEmpty())
+			return getThis();
+		return validationFailed(failures.get(0), exception);
 	}
 
 	/**
@@ -72,20 +92,6 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	protected <R> R validationResult(Supplier<R> result)
 	{
 		return validationResult(result, IllegalArgumentException.class);
-	}
-
-	/**
-	 * Throws an exception if the validation failed.
-	 *
-	 * @param <E>       the type of exception that may be thrown
-	 * @param exception the exception that may be thrown
-	 * @return the updated verifier
-	 * @throws E if the validation failed
-	 * @see #validationResult(Supplier, Class)
-	 */
-	protected <E extends Exception> S validationResult(Class<E> exception) throws E
-	{
-		return validationResult(this::getThis, exception);
 	}
 
 	/**
@@ -107,7 +113,22 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 		List<ValidationFailure> failures = validator.getFailures();
 		if (failures.isEmpty())
 			return result.get();
-		ValidationFailure failure = failures.get(0);
+		return validationFailed(failures.get(0), exception);
+	}
+
+	/**
+	 * Throws an exception because the validation has failed. If the exception associated with the failure is a
+	 * runtime exception or an exception of type {@code <E>} it is thrown as-is; otherwise, the exception is
+	 * wrapped in an {@code AssertionError}.
+	 *
+	 * @param <R>       the type of value to return on success
+	 * @param <E>       the type of exception that may be thrown
+	 * @param exception the type of exception that may be thrown
+	 * @return {@link #getThis()}
+	 * @throws E if the validation failed
+	 */
+	private <R, E extends Exception> R validationFailed(ValidationFailure failure, Class<E> exception) throws E
+	{
 		Class<? extends Exception> actualExceptionType = failure.getExceptionType();
 		// if "actualExceptionType" instanceof "exception"
 		if (exception.isAssignableFrom(actualExceptionType))

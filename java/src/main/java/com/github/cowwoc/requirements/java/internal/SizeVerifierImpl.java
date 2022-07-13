@@ -33,84 +33,84 @@ public final class SizeVerifierImpl
 	@Override
 	public SizeVerifier isGreaterThanOrEqualTo(Integer value)
 	{
-		validator = validator.isGreaterThanOrEqualTo(value);
+		validator.isGreaterThanOrEqualTo(value);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isGreaterThanOrEqualTo(Integer value, String name)
 	{
-		validator = validator.isGreaterThanOrEqualTo(value, name);
+		validator.isGreaterThanOrEqualTo(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isGreaterThan(Integer value)
 	{
-		validator = validator.isGreaterThan(value);
+		validator.isGreaterThan(value);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isGreaterThan(Integer value, String name)
 	{
-		validator = validator.isGreaterThan(value, name);
+		validator.isGreaterThan(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isLessThanOrEqualTo(Integer value)
 	{
-		validator = validator.isLessThanOrEqualTo(value);
+		validator.isLessThanOrEqualTo(value);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isLessThanOrEqualTo(Integer value, String name)
 	{
-		validator = validator.isLessThanOrEqualTo(value, name);
+		validator.isLessThanOrEqualTo(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isLessThan(Integer value)
 	{
-		validator = validator.isLessThan(value);
+		validator.isLessThan(value);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isLessThan(Integer value, String name)
 	{
-		validator = validator.isLessThan(value, name);
+		validator.isLessThan(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isNotPositive()
 	{
-		validator = validator.isNotPositive();
+		validator.isNotPositive();
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isPositive()
 	{
-		validator = validator.isPositive();
+		validator.isPositive();
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isNotZero()
 	{
-		validator = validator.isNotZero();
+		validator.isNotZero();
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isZero()
 	{
-		validator = validator.isZero();
+		validator.isZero();
 		return validationResult();
 	}
 
@@ -118,7 +118,7 @@ public final class SizeVerifierImpl
 	@Deprecated
 	public SizeVerifier isNotNegative()
 	{
-		validator = validator.isNotNegative();
+		validator.isNotNegative();
 		return validationResult();
 	}
 
@@ -126,49 +126,49 @@ public final class SizeVerifierImpl
 	@Deprecated
 	public SizeVerifier isNegative()
 	{
-		validator = validator.isNegative();
+		validator.isNegative();
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isBetween(Integer startInclusive, Integer endExclusive)
 	{
-		validator = validator.isBetween(startInclusive, endExclusive);
+		validator.isBetween(startInclusive, endExclusive);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isBetweenClosed(Integer startInclusive, Integer endInclusive)
 	{
-		validator = validator.isBetweenClosed(startInclusive, endInclusive);
+		validator.isBetweenClosed(startInclusive, endInclusive);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isEqualTo(Object expected)
 	{
-		validator = validator.isEqualTo(expected);
+		validator.isEqualTo(expected);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isEqualTo(Object expected, String name)
 	{
-		validator = validator.isEqualTo(expected, name);
+		validator.isEqualTo(expected, name);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isNotEqualTo(Object other)
 	{
-		validator = validator.isNotEqualTo(other);
+		validator.isNotEqualTo(other);
 		return validationResult();
 	}
 
 	@Override
 	public SizeVerifier isNotEqualTo(Object other, String name)
 	{
-		validator = validator.isNotEqualTo(other, name);
+		validator.isNotEqualTo(other, name);
 		return validationResult();
 	}
 
@@ -176,7 +176,7 @@ public final class SizeVerifierImpl
 	@Deprecated
 	public SizeVerifier isNull()
 	{
-		validator = validator.isNull();
+		validator.isNull();
 		return validationResult();
 	}
 }

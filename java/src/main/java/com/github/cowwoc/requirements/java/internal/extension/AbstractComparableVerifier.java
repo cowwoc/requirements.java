@@ -31,98 +31,98 @@ public abstract class AbstractComparableVerifier<S, V extends ExtensibleComparab
 	@Override
 	public S isLessThan(T value)
 	{
-		validator = validator.isLessThan(value);
+		validator.isLessThan(value);
 		return validationResult();
 	}
 
 	@Override
 	public S isLessThan(T value, String name)
 	{
-		validator = validator.isLessThan(value, name);
+		validator.isLessThan(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isLessThanOrEqualTo(T value)
 	{
-		validator = validator.isLessThanOrEqualTo(value);
+		validator.isLessThanOrEqualTo(value);
 		return validationResult();
 	}
 
 	@Override
 	public S isLessThanOrEqualTo(T value, String name)
 	{
-		validator = validator.isLessThanOrEqualTo(value, name);
+		validator.isLessThanOrEqualTo(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThan(T value)
 	{
-		validator = validator.isGreaterThan(value);
+		validator.isGreaterThan(value);
 		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThan(T value, String name)
 	{
-		validator = validator.isGreaterThan(value, name);
+		validator.isGreaterThan(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThanOrEqualTo(T value)
 	{
-		validator = validator.isGreaterThanOrEqualTo(value);
+		validator.isGreaterThanOrEqualTo(value);
 		return validationResult();
 	}
 
 	@Override
 	public S isGreaterThanOrEqualTo(T value, String name)
 	{
-		validator = validator.isGreaterThanOrEqualTo(value, name);
+		validator.isGreaterThanOrEqualTo(value, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isComparableTo(T expected)
 	{
-		validator = validator.isComparableTo(expected);
+		validator.isComparableTo(expected);
 		return validationResult();
 	}
 
 	@Override
 	public S isComparableTo(T expected, String name)
 	{
-		validator = validator.isComparableTo(expected, name);
+		validator.isComparableTo(expected, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isNotComparableTo(T value)
 	{
-		validator = validator.isNotComparableTo(value);
+		validator.isNotComparableTo(value);
 		return validationResult();
 	}
 
 	@Override
 	public S isNotComparableTo(T other, String name)
 	{
-		validator = validator.isNotComparableTo(other, name);
+		validator.isNotComparableTo(other, name);
 		return validationResult();
 	}
 
 	@Override
 	public S isBetween(T startInclusive, T endExclusive)
 	{
-		validator = validator.isBetween(startInclusive, endExclusive);
+		validator.isBetween(startInclusive, endExclusive);
 		return validationResult();
 	}
 
 	@Override
 	public S isBetweenClosed(T startInclusive, T endInclusive)
 	{
-		validator = validator.isBetweenClosed(startInclusive, endInclusive);
+		validator.isBetweenClosed(startInclusive, endInclusive);
 		return validationResult();
 	}
 }

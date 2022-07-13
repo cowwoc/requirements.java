@@ -31,28 +31,28 @@ public abstract class AbstractFloatingPointVerifier
 	@Override
 	public S isNumber()
 	{
-		validator = validator.isNumber();
+		validator.isNumber();
 		return validationResult();
 	}
 
 	@Override
 	public S isNotNumber()
 	{
-		validator = validator.isNotNumber();
+		validator.isNotNumber();
 		return validationResult();
 	}
 
 	@Override
 	public S isFinite()
 	{
-		validator = validator.isFinite();
+		validator.isFinite();
 		return validationResult();
 	}
 
 	@Override
 	public S isNotFinite()
 	{
-		validator = validator.isNotFinite();
+		validator.isNotFinite();
 		return validationResult();
 	}
 }

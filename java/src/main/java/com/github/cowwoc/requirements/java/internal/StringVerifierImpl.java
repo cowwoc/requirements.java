@@ -45,42 +45,42 @@ public final class StringVerifierImpl
 	@Override
 	public StringVerifier isEmpty()
 	{
-		validator = validator.isEmpty();
+		validator.isEmpty();
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier isNotEmpty()
 	{
-		validator = validator.isNotEmpty();
+		validator.isNotEmpty();
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier isBlank()
 	{
-		validator = validator.isBlank();
+		validator.isBlank();
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier isNotBlank()
 	{
-		validator = validator.isNotBlank();
+		validator.isNotBlank();
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier trim()
 	{
-		validator = validator.trim();
+		validator.trim();
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier isTrimmed()
 	{
-		validator = validator.isTrimmed();
+		validator.isTrimmed();
 		return validationResult();
 	}
 
@@ -151,42 +151,42 @@ public final class StringVerifierImpl
 	@Override
 	public StringVerifier startsWith(String prefix)
 	{
-		validator = validator.startsWith(prefix);
+		validator.startsWith(prefix);
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier doesNotStartWith(String prefix)
 	{
-		validator = validator.doesNotStartWith(prefix);
+		validator.doesNotStartWith(prefix);
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier endsWith(String suffix)
 	{
-		validator = validator.endsWith(suffix);
+		validator.endsWith(suffix);
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier doesNotEndWith(String suffix)
 	{
-		validator = validator.doesNotEndWith(suffix);
+		validator.doesNotEndWith(suffix);
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier contains(String expected)
 	{
-		validator = validator.contains(expected);
+		validator.contains(expected);
 		return validationResult();
 	}
 
 	@Override
 	public StringVerifier doesNotContain(String value)
 	{
-		validator = validator.doesNotContain(value);
+		validator.doesNotContain(value);
 		return validationResult();
 	}
 

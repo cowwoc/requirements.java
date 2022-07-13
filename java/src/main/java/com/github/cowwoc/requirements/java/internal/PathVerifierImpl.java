@@ -36,21 +36,21 @@ public final class PathVerifierImpl extends AbstractObjectVerifier<PathVerifier,
 	@Override
 	public PathVerifier exists()
 	{
-		validator = validator.exists();
+		validator.exists();
 		return validationResult();
 	}
 
 	@Override
 	public PathVerifier isRegularFile(LinkOption... options) throws IOException
 	{
-		validator = validator.isRegularFile(options);
+		validator.isRegularFile(options);
 		return validationResult(IOException.class);
 	}
 
 	@Override
 	public PathVerifier isDirectory(LinkOption... options) throws IOException
 	{
-		validator = validator.isDirectory(options);
+		validator.isDirectory(options);
 		return validationResult(IOException.class);
 	}
 
