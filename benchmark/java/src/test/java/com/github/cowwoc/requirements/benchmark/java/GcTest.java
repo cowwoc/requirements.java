@@ -62,13 +62,13 @@ public class GcTest
 	@Benchmark
 	public SizeVerifier requireThat()
 	{
-		return DefaultRequirements.requireThat(value, name).isNotNull().size().isGreaterThan(3);
+		return DefaultRequirements.requireThat(value, name).size().isGreaterThan(3);
 	}
 
 	@Benchmark
 	public SizeVerifier assertThatWithAssertionsDisabled()
 	{
-		return DefaultRequirements.assertThat(value, name).isNotNull().size().isGreaterThan(3);
+		return DefaultRequirements.assertThat(value, name).size().isGreaterThan(3);
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
@@ -76,7 +76,7 @@ public class GcTest
 	@Benchmark
 	public SizeVerifier assertThatWithAssertionsEnabled()
 	{
-		return requirementsWithAssertions.assertThat(value, name).isNotNull().size().
+		return requirementsWithAssertions.assertThat(value, name).size().
 			isGreaterThan(3);
 	}
 }

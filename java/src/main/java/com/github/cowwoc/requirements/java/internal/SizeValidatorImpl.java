@@ -88,7 +88,7 @@ public final class SizeValidatorImpl
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (actual < value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -125,7 +125,7 @@ public final class SizeValidatorImpl
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (actual <= value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -162,7 +162,7 @@ public final class SizeValidatorImpl
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (actual > value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -199,7 +199,7 @@ public final class SizeValidatorImpl
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (actual >= value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -285,7 +285,7 @@ public final class SizeValidatorImpl
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
-		verifier.requireThat(endExclusive, "endExclusive").isNotNull().
+		verifier.requireThat(endExclusive, "endExclusive").
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual < startInclusive || actual >= endExclusive)
 		{
@@ -307,7 +307,7 @@ public final class SizeValidatorImpl
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
-		verifier.requireThat(endInclusive, "endInclusive").isNotNull().
+		verifier.requireThat(endInclusive, "endInclusive").
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 		if (actual < startInclusive && actual > endInclusive)
 		{
@@ -354,7 +354,7 @@ public final class SizeValidatorImpl
 	public SizeValidator isEqualTo(Object expected, String name)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (!Objects.equals(actual, expected))
 		{
 			List<ValidationFailure> wrongType = verifier.validateThat(expected, "expected").
@@ -400,7 +400,7 @@ public final class SizeValidatorImpl
 	public SizeValidator isNotEqualTo(Object other, String name)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (Objects.equals(actual, other))
 		{
 			int valueAsInt = (Integer) other;

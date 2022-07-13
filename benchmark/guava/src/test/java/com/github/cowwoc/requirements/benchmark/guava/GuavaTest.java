@@ -52,6 +52,6 @@ public class GuavaTest
 	@Benchmark
 	public SizeVerifier requireThat()
 	{
-		return DefaultRequirements.requireThat(value, name).isNotNull().size().isGreaterThan(3);
+		return DefaultRequirements.requireThat(value, name).size().isGreaterThan(3);
 	}
 }

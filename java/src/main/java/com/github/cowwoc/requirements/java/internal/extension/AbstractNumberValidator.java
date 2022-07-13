@@ -239,7 +239,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -290,7 +290,7 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{

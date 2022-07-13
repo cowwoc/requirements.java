@@ -67,7 +67,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -117,7 +117,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -167,7 +167,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -217,7 +217,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -266,7 +266,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -314,7 +314,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(other, "other").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -339,7 +339,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
-		verifier.requireThat(endExclusive, "endExclusive").isNotNull().
+		verifier.requireThat(endExclusive, "endExclusive").
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 
 		if (actual == null)
@@ -366,7 +366,7 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
-		verifier.requireThat(endInclusive, "endInclusive").isNotNull().
+		verifier.requireThat(endInclusive, "endInclusive").
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
 
 		if (actual == null)

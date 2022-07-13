@@ -237,7 +237,7 @@ public final class BigDecimalValidatorImpl
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (!isMultipleOf(actual, divisor))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -284,7 +284,7 @@ public final class BigDecimalValidatorImpl
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (isMultipleOf(actual, divisor))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,

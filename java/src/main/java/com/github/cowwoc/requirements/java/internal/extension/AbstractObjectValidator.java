@@ -156,7 +156,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	public S isSameObjectAs(Object expected, String name)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (actual != expected)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -188,7 +188,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	public S isNotSameObjectAs(Object other, String name)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (actual == other)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -371,7 +371,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	protected S isEqualTo(Object expected, String name, BiFunction<Object, Object, Boolean> equals)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (!equals.apply(actual, expected))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -414,7 +414,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	protected S isNotEqualTo(Object other, String name, BiFunction<Object, Object, Boolean> equals)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (equals.apply(actual, other))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -525,7 +525,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			return getNoOp();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 		if (!contains.apply(element))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -579,7 +579,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	public <E> S doesNotContain(E element, String name, Function<Object, Boolean> contains)
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{

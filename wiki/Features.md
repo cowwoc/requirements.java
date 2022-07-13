@@ -114,7 +114,6 @@ Map<String, Integer> nameToAge = new HashMap<>();
 nameToAge.put("Leah", 3);
 nameToAge.put("Nathaniel", 1);
 
-requireThat(nameToAge, "nameToAge").isNotNull();
 requireThat(nameToAge, "nameToAge").keySet().containsAll(Arrays.asList("Leah", "Nathaniel"));
 requireThat(nameToAge, "nameToAge").values().containsAll(Arrays.asList(3, 1));
 ```
@@ -123,7 +122,7 @@ can be rewritten as:
 
 ```java
 
-requireThat(nameToAge, "nameToAge").isNotNull().
+requireThat(nameToAge, "nameToAge").
   keySet(k -> k.containsAll(Arrays.asList("Leah", "Nathaniel"))).
   values(v -> v.containsAll(Arrays.asList(3, 1)));
 ```

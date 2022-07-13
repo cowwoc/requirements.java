@@ -122,7 +122,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -176,7 +176,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -228,7 +228,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -271,7 +271,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(other, "other").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -298,7 +298,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(other, "other").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -354,7 +354,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
@@ -406,7 +406,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	{
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
-		verifier.requireThat(name, "name").isNotNull().trim().isNotEmpty();
+		verifier.requireThat(name, "name").isNotBlank();
 
 		if (actual == null)
 		{
