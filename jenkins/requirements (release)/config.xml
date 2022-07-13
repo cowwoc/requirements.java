@@ -161,8 +161,9 @@ try
                     {
                         // Deploy platform-specific JAR
                         // Use the same GCC version as AWS. See top of this script for more information.
-
-                        sh script: &quot;&quot;&quot;sudo apt-get install build-essential -y
+                        
+                        sh script: &quot;&quot;&quot;sudo apt-get update
+                            sudo apt-get install build-essential -y
                             mvn --batch-mode -V -e -U -Dsurefire.useFile=false install
                             mvn --batch-mode -V -e -U -Dsurefire.useFile=false -DstagingProfileId=${stagingProfileId} -DstagingRepositoryId=${stagingRepositoryId} -Ddeploy deploy&quot;&quot;&quot;
                         archiveArtifacts artifacts: &quot;**/target/*.jar, natives/target/linux-x86_64-release/*.jar&quot;, excludes: &quot;**/target/test-classes/**&quot;
