@@ -1,6 +1,11 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 7.0.3 - 2022/07/17
+
+* Improvements
+    * Added support for `aarch64` architecture. Native libraries are not available at this time.
+
 ## Version 7.0.2 - 2022/07/13
 
 * Improvements

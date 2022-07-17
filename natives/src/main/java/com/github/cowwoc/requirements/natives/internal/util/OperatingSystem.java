@@ -157,7 +157,7 @@ public final class OperatingSystem
 		 */
 		public Version(int major)
 		{
-			this(major, null, null, null, true);
+			this(major, null, null, null);
 		}
 
 		/**
@@ -167,7 +167,7 @@ public final class OperatingSystem
 		 */
 		public Version(int major, int minor)
 		{
-			this(major, minor, null, null, true);
+			this(major, minor, null, null);
 		}
 
 		/**
@@ -178,7 +178,7 @@ public final class OperatingSystem
 		 */
 		public Version(int major, int minor, int build)
 		{
-			this(major, minor, build, null, true);
+			this(major, minor, build, null);
 		}
 
 		/**
@@ -188,21 +188,7 @@ public final class OperatingSystem
 		 * @param revision the revision component of the version number
 		 * @throws AssertionError if any of the components are negative
 		 */
-		public Version(int major, int minor, int build, int revision)
-		{
-			this(major, minor, build, revision, true);
-		}
-
-		/**
-		 * @param major    the major component of the version number
-		 * @param minor    the minor component of the version number ({@code null} if absent)
-		 * @param build    the build component of the version number ({@code null} if absent)
-		 * @param revision the revision component of the version number ({@code null} if absent)
-		 * @param internal an unused value that differentiates between the public and private constructors
-		 * @throws AssertionError if any of the components are negative
-		 */
-		@SuppressWarnings("SameParameterValue")
-		private Version(int major, Integer minor, Integer build, Integer revision, boolean internal)
+		public Version(int major, Integer minor, Integer build, Integer revision)
 		{
 			assert (major >= 0) : "major: " + major;
 			this.major = major;
@@ -315,7 +301,7 @@ public final class OperatingSystem
 	/**
 	 * The architecture of an operating system.
 	 * <p>
-	 * Naming convention based on https://github.com/trustin/os-maven-plugin.
+	 * Naming convention based on <a href="https://github.com/trustin/os-maven-plugin">os-maven-plugin</a>.
 	 */
 	public enum Architecture
 	{
@@ -326,33 +312,24 @@ public final class OperatingSystem
 		/**
 		 * x86 64-bit.
 		 */
-		X86_64;
+		X86_64,
+		/**
+		 * ARM 64-bit
+		 */
+		AARCH_64;
 
 		private static final Reference<Architecture> DETECTED = ConcurrentLazyReference.create(() ->
 		{
 			String osArch = System.getProperty("os.arch");
 			osArch = osArch.toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
-			switch (osArch)
-			{
-				case "x8632":
-				case "x86":
-				case "i386":
-				case "i486":
-				case "i586":
-				case "i686":
-				case "ia32":
-				case "x32":
-					return X86_32;
-				case "x8664":
-				case "amd64":
-				case "ia32e":
-				case "em64t":
-				case "x64":
-					return X86_64;
-				default:
-					throw new AssertionError("Unsupported architecture: " + osArch + "\n" +
+			return switch (osArch)
+				{
+					case "x8632", "x86", "i386", "i486", "i586", "i686", "ia32", "x32" -> X86_32;
+					case "x8664", "amd64", "ia32e", "em64t", "x64" -> X86_64;
+					case "aarch64" -> AARCH_64;
+					default -> throw new AssertionError("Unsupported architecture: " + osArch + "\n" +
 						"properties: " + System.getProperties());
-			}
+				};
 		});
 
 		/**

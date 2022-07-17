@@ -65,81 +65,89 @@ public final class Terminal
 	private Set<TerminalEncoding> getSupportedTypesImpl()
 	{
 		OperatingSystem os = OperatingSystem.detected();
-		if (os.type == WINDOWS)
+		switch (os.type)
 		{
-			log.debug("Detected Windows {}", os.version);
-			if (os.version.compareTo(new Version(10, 0, 10586)) >= 0)
+			case WINDOWS ->
 			{
-				// Windows 10.0.10586 added 16-bit color support:
-				// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
-				Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
-				result.add(NONE);
-				result.add(XTERM_8_COLORS);
-				result.add(XTERM_16_COLORS);
-				if (os.version.compareTo(new Version(10, 0, 14931)) >= 0)
+				log.debug("Detected Windows {}", os.version);
+				if (os.version.compareTo(new Version(10, 0, 10586)) >= 0)
 				{
-					// build 14931 added 24-bit color support:
-					// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
-					result.add(RGB_888_COLORS);
+					// Windows 10.0.10586 added 16-bit color support:
+					// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
+					Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
+					result.add(NONE);
+					result.add(XTERM_8_COLORS);
+					result.add(XTERM_16_COLORS);
+					if (os.version.compareTo(new Version(10, 0, 14931)) >= 0)
+					{
+						// build 14931 added 24-bit color support:
+						// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
+						result.add(RGB_888_COLORS);
+					}
+					log.debug("Returning {}", result);
+					return result;
 				}
-				log.debug("Returning {}", result);
+				return Collections.singleton(NONE);
+			}
+			case LINUX, MAC ->
+			{
+				String term = System.getenv("TERM");
+				if (term == null)
+					return Collections.singleton(NONE);
+				// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
+				// support all possible terminal types. Instead, we support mainstream types and require the terminal
+				// to support or emulate them.
+				Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length / 0.75));
+				result.add(NONE);
+				switch (term)
+				{
+					case "xterm":
+					{
+						// Used by older Linux deployments (e.g. routers)
+						result.add(XTERM_8_COLORS);
+						break;
+					}
+					case "xterm-16color":
+					{
+						// http://stackoverflow.com/a/10039347/14731
+						result.add(XTERM_16_COLORS);
+						result.add(XTERM_8_COLORS);
+						break;
+					}
+					case "xterm-256color":
+					{
+						// Used by Linux and OSX 10.9+
+						result.add(XTERM_256_COLORS);
+						result.add(XTERM_16_COLORS);
+						result.add(XTERM_8_COLORS);
+						break;
+					}
+					default:
+					{
+						log.error("Unexpected TERM: " + term);
+						break;
+					}
+				}
+				// There is no reliable way to detect RGB_888_COLORS support but we our best:
+				// https://gist.github.com/XVilka/8346728#true-color-detection
+				String colorterm = System.getenv("COLORTERM");
+				if (colorterm != null)
+				{
+					switch (colorterm)
+					{
+						case "truecolor":
+						case "24bit":
+						{
+							result.add(RGB_888_COLORS);
+							break;
+						}
+					}
+				}
 				return result;
 			}
-			return Collections.singleton(NONE);
+			default ->
+				throw new IllegalArgumentException("Unsupported OS type: " + os.type);
 		}
-		String term = System.getenv("TERM");
-		if (term == null)
-			return Collections.singleton(NONE);
-		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
-		// support all possible terminal types. Instead, we support mainstream types and require the terminal
-		// to support or emulate them.
-		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length / 0.75));
-		result.add(NONE);
-		switch (term)
-		{
-			case "xterm":
-			{
-				// Used by older Linux deployments (e.g. routers)
-				result.add(XTERM_8_COLORS);
-				break;
-			}
-			case "xterm-16color":
-			{
-				// http://stackoverflow.com/a/10039347/14731
-				result.add(XTERM_16_COLORS);
-				result.add(XTERM_8_COLORS);
-				break;
-			}
-			case "xterm-256color":
-			{
-				// Used by Linux and OSX 10.9+
-				result.add(XTERM_256_COLORS);
-				result.add(XTERM_16_COLORS);
-				result.add(XTERM_8_COLORS);
-				break;
-			}
-			default:
-			{
-				log.error("Unexpected TERM: " + term);
-				break;
-			}
-		}
-		// There is no reliable way to detect RGB_888_COLORS support but we our best:
-		// https://gist.github.com/XVilka/8346728#true-color-detection
-		String colorterm = System.getenv("COLORTERM");
-		if (colorterm != null)
-		{
-			switch (colorterm)
-			{
-				case "truecolor":
-				case "24bit":
-				{
-					result.add(RGB_888_COLORS);
-					break;
-				}
-			}
-		}
-		return result;
 	}
 
 	/**

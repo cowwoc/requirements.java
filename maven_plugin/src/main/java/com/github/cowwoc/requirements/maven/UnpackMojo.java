@@ -24,7 +24,7 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 import java.io.File;
 
 /**
- * Unpacks native binaries used by this library.
+ * Unpacks native libraries used by this library.
  */
 @Mojo(name = "unpack", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true)
 public final class UnpackMojo extends AbstractMojo
@@ -48,6 +48,19 @@ public final class UnpackMojo extends AbstractMojo
 	public void execute() throws MojoExecutionException
 	{
 		OperatingSystem os = OperatingSystem.detected();
+		switch (os.architecture)
+		{
+			case X86_32, X86_64 ->
+			{
+			}
+			case AARCH_64 ->
+			{
+				getLog().info("Skipping. Native libraries not available for this platform.");
+				return;
+			}
+			default ->
+				throw new IllegalArgumentException("Unsupported architecture: " + os.architecture);
+		}
 		String classifier = os.type.name().toLowerCase() + "-" + os.architecture.name().toLowerCase();
 		File outputDirectory;
 		if (target != null)
