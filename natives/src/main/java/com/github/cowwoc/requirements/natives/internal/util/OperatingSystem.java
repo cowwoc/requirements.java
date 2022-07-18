@@ -38,7 +38,7 @@ public final class OperatingSystem
 
 	/**
 	 * @return the detected operating system
-	 * @throws AssertionError if the operating system is unsupported
+	 * @throws IllegalStateException if the operating system is unsupported
 	 */
 	public static OperatingSystem detected()
 	{
@@ -67,7 +67,7 @@ public final class OperatingSystem
 
 		/**
 		 * @return the version of Windows
-		 * @throws AssertionError if the version is not supported
+		 * @throws IllegalStateException if the version is not supported
 		 */
 		private static Version getWindowsVersion()
 		{
@@ -78,37 +78,37 @@ public final class OperatingSystem
 			}
 			catch (IOException e)
 			{
-				throw new AssertionError("Failed to get Windows version", e);
+				throw new IllegalStateException("Failed to get Windows version", e);
 			}
 			Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
 			if (!matcher.find())
-				throw new AssertionError("Unsupported Windows version: " + versionAsString);
+				throw new IllegalStateException("Unsupported Windows version: " + versionAsString);
 			return parseVersion(matcher.group(1));
 		}
 
 		/**
 		 * @param versionAsString the output of the "ver" command
 		 * @return the version
-		 * @throws AssertionError if the version is not supported
+		 * @throws IllegalStateException if the version is not supported
 		 */
 		public static Version parseWindowsVersion(String versionAsString)
 		{
 			Matcher matcher = WINDOWS_VERSION.matcher(versionAsString);
 			if (!matcher.find())
-				throw new AssertionError("Unsupported Windows version: " + versionAsString);
+				throw new IllegalStateException("Unsupported Windows version: " + versionAsString);
 			return parseVersion(matcher.group(1));
 		}
 
 		/**
 		 * @param versionAsString the String representation of the version number
 		 * @return the version of the operating system
-		 * @throws AssertionError if the version is not supported
+		 * @throws IllegalStateException if the version is not supported
 		 */
 		public static Version parseVersion(String versionAsString)
 		{
 			Matcher matcher = VERSION_PATTERN.matcher(versionAsString);
 			if (!matcher.find())
-				throw new AssertionError("Unsupported version: " + versionAsString);
+				throw new IllegalStateException("Unsupported version: " + versionAsString);
 			try
 			{
 				int major = Integer.parseInt(matcher.group(1));
@@ -125,7 +125,7 @@ public final class OperatingSystem
 			}
 			catch (NumberFormatException e)
 			{
-				throw new AssertionError("Failed to parse version: " + versionAsString, e);
+				throw new IllegalStateException("Failed to parse version: " + versionAsString, e);
 			}
 		}
 
@@ -153,7 +153,7 @@ public final class OperatingSystem
 
 		/**
 		 * @param major the major component of the version number
-		 * @throws AssertionError if {@code major} is negative
+		 * @throws IllegalArgumentException if {@code major} is negative
 		 */
 		public Version(int major)
 		{
@@ -163,7 +163,7 @@ public final class OperatingSystem
 		/**
 		 * @param major the major component of the version number
 		 * @param minor the minor component of the version number
-		 * @throws AssertionError if any of the components are negative
+		 * @throws IllegalArgumentException if any of the components are negative
 		 */
 		public Version(int major, int minor)
 		{
@@ -174,7 +174,7 @@ public final class OperatingSystem
 		 * @param major the major component of the version number
 		 * @param minor the minor component of the version number
 		 * @param build the build component of the version number
-		 * @throws AssertionError if any of the components are negative
+		 * @throws IllegalArgumentException if any of the components are negative
 		 */
 		public Version(int major, int minor, int build)
 		{
@@ -186,7 +186,7 @@ public final class OperatingSystem
 		 * @param minor    the minor component of the version number
 		 * @param build    the build component of the version number
 		 * @param revision the revision component of the version number
-		 * @throws AssertionError if any of the components are negative
+		 * @throws IllegalArgumentException if any of the components are negative
 		 */
 		public Version(int major, Integer minor, Integer build, Integer revision)
 		{
@@ -280,7 +280,7 @@ public final class OperatingSystem
 	 * @param type         the type of the operating system
 	 * @param version      the version of the operating system
 	 * @param architecture the architecture of the operating system
-	 * @throws AssertionError if any of the arguments are null
+	 * @throws NullPointerException if any of the arguments are null
 	 */
 	OperatingSystem(Type type, Version version, Architecture architecture)
 	{
@@ -327,7 +327,7 @@ public final class OperatingSystem
 					case "x8632", "x86", "i386", "i486", "i586", "i686", "ia32", "x32" -> X86_32;
 					case "x8664", "amd64", "ia32e", "em64t", "x64" -> X86_64;
 					case "aarch64" -> AARCH_64;
-					default -> throw new AssertionError("Unsupported architecture: " + osArch + "\n" +
+					default -> throw new IllegalStateException("Unsupported architecture: " + osArch + "\n" +
 						"properties: " + System.getProperties());
 				};
 		});
@@ -368,7 +368,7 @@ public final class OperatingSystem
 				return LINUX;
 			if (startsWith(osName, "mac", true))
 				return MAC;
-			throw new AssertionError("Unsupported operating system: " + osName + "\n" +
+			throw new IllegalStateException("Unsupported operating system: " + osName + "\n" +
 				"properties: " + System.getProperties());
 		});
 

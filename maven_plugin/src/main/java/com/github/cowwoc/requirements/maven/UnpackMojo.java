@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.maven;
 
 import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem;
+import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem.Architecture;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
@@ -47,19 +48,22 @@ public final class UnpackMojo extends AbstractMojo
 	@Override
 	public void execute() throws MojoExecutionException
 	{
-		OperatingSystem os = OperatingSystem.detected();
-		switch (os.architecture)
+		OperatingSystem os;
+		try
 		{
-			case X86_32, X86_64 ->
-			{
-			}
-			case AARCH_64 ->
-			{
-				getLog().info("Skipping. Native libraries not available for this platform.");
-				return;
-			}
-			default ->
-				throw new IllegalArgumentException("Unsupported architecture: " + os.architecture);
+			os = OperatingSystem.detected();
+			if (os.architecture == Architecture.AARCH_64)
+				os = null;
+		}
+		catch (IllegalStateException e)
+		{
+			getLog().debug(e);
+			os = null;
+		}
+		if (os == null)
+		{
+			getLog().info("Skipping. Native libraries not available for this platform.");
+			return;
 		}
 		String classifier = os.type.name().toLowerCase() + "-" + os.architecture.name().toLowerCase();
 		File outputDirectory;
