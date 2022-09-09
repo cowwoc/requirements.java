@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings("ConstantConditions")
 public final class BooleanTest
 {
 	@Test(expectedExceptions = IllegalArgumentException.class)

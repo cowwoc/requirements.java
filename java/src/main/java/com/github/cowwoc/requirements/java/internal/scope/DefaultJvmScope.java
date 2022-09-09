@@ -9,7 +9,6 @@ import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Factory;
 import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 import com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +71,6 @@ public final class DefaultJvmScope implements JvmScope
 	private final Thread shutdownHook;
 	private final AtomicBoolean closed = new AtomicBoolean();
 	private final Logger terminalLog = LoggerFactory.getLogger(NativeTerminal.class);
-	private final Exceptions exceptions = new Exceptions();
 
 	private DefaultJvmScope()
 	{
@@ -114,12 +112,6 @@ public final class DefaultJvmScope implements JvmScope
 	public Terminal getTerminal()
 	{
 		return terminal.getValue();
-	}
-
-	@Override
-	public Exceptions getExceptions()
-	{
-		return exceptions;
 	}
 
 	@Override

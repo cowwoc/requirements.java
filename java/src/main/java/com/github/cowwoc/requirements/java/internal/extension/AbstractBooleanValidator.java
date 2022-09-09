@@ -6,9 +6,9 @@ package com.github.cowwoc.requirements.java.internal.extension;
 
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.extension.ExtensibleBooleanValidator;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.extension.ExtensibleBooleanValidator;
 
 import java.util.List;
 
@@ -21,29 +21,33 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 	implements ExtensibleBooleanValidator<S>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	protected AbstractBooleanValidator(ApplicationScope scope, Configuration config, String name,
-	                                   Boolean actual, List<ValidationFailure> failures)
+		Boolean actual, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	public S isTrue()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!actual)
 		{
@@ -57,12 +61,15 @@ public abstract class AbstractBooleanValidator<S> extends AbstractObjectValidato
 	@Override
 	public S isFalse()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual)
 		{

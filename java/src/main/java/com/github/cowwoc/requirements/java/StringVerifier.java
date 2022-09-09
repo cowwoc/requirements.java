@@ -146,6 +146,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not trimmed
 	 * @see #trim()
+	 * @see #isBlank()
 	 */
 	StringVerifier isTrimmed();
 

@@ -25,7 +25,7 @@ import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EO
 import static com.github.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "ResultOfMethodCallIgnored"})
 public final class ArrayTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -1546,7 +1546,8 @@ public final class ArrayTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Collection<?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 

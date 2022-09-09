@@ -30,7 +30,8 @@ module com.github.cowwoc.requirements.java
 		com.github.cowwoc.requirements.benchmark.java;
 	exports com.github.cowwoc.requirements.java.internal.diff to com.github.cowwoc.requirements.test;
 	exports com.github.cowwoc.requirements.java.internal.util to com.github.cowwoc.requirements.guava,
-		com.github.cowwoc.requirements.test, com.github.cowwoc.requirements;
+		com.github.cowwoc.requirements.test, com.github.cowwoc.requirements,
+		com.github.cowwoc.requirements.benchmark.java;
 	exports com.github.cowwoc.requirements.java.internal.extension to
 		com.github.cowwoc.requirements.guava, com.github.cowwoc.requirements.test;
 	exports com.github.cowwoc.requirements.java.internal.secrets to com.github.cowwoc.requirements.test;

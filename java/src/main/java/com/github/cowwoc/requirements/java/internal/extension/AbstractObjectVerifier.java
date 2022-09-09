@@ -6,9 +6,9 @@ package com.github.cowwoc.requirements.java.internal.extension;
 
 import com.github.cowwoc.requirements.java.StringVerifier;
 import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.internal.StringVerifierImpl;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
+import com.github.cowwoc.requirements.java.internal.StringVerifierImpl;
 
 import java.util.Collection;
 import java.util.List;
@@ -234,12 +234,6 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asString());
 		return getThis();
-	}
-
-	@Override
-	public boolean isActualAvailable()
-	{
-		return true;
 	}
 
 	@Override

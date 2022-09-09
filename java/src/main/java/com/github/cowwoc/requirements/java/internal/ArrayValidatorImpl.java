@@ -50,13 +50,14 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	 * @param contains             returns true if the array contains a value
 	 * @param length               returns the length of the array
 	 * @param failures             the list of validation failures
+	 * @param fatalFailure         true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if any of the parameters except for {@code actual} are null. If {@code name} is
 	 *                        empty.
 	 */
 	public ArrayValidatorImpl(ApplicationScope scope, Configuration config, String name, A actual,
-	                          Supplier<List<E>> actualAsListSupplier,
-	                          BiFunction<Object, Object, Boolean> equals, Function<Object, Boolean> contains,
-	                          Supplier<Integer> length, List<ValidationFailure> failures)
+		Supplier<List<E>> actualAsListSupplier, BiFunction<Object, Object, Boolean> equals,
+		Function<Object, Boolean> contains, Supplier<Integer> length, List<ValidationFailure> failures,
+		boolean fatalFailure)
 	{
 		// DESIGN NOTES:
 		// * "A" is not always equal to E[]. Example: for primitive arrays we construct
@@ -64,23 +65,17 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 		//   type-parameters cannot be primitives.
 		// * We use lazy-loading to defer converting the array into a list until absolutely
 		// necessary. This conversion is expensive for large arrays.
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 		assert actualAsListSupplier != null;
 		assert equals != null;
 		assert contains != null;
 		this.actualAsList = LazyReference.create(actualAsListSupplier);
 		this.asList = LazyReference.create(() ->
-			new ListValidatorImpl<>(scope, config, name, actualAsListSupplier.get(), Pluralizer.ELEMENT,
-				failures));
+			new ListValidatorImpl<>(scope, config, name, actualAsListSupplier.get(), Pluralizer.ELEMENT, failures,
+				fatalFailure));
 		this.equals = equals;
 		this.contains = contains;
 		this.length = length;
-	}
-
-	@Override
-	protected ArrayValidator<A, E> getNoOp()
-	{
-		return new ArrayValidatorNoOp<>(getFailures());
 	}
 
 	@Override
@@ -140,6 +135,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> containsExactly(Collection<E> expected)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().containsExactly(expected);
 		return this;
 	}
@@ -147,6 +144,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> containsExactly(Collection<E> expected, String name)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().containsExactly(expected, name);
 		return this;
 	}
@@ -154,6 +153,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> containsAny(Collection<E> expected)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().containsAny(expected);
 		return this;
 	}
@@ -161,6 +162,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> containsAny(Collection<E> elements, String name)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().containsAny(elements, name);
 		return this;
 	}
@@ -168,6 +171,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> containsAll(Collection<E> expected)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().containsAll(expected);
 		return this;
 	}
@@ -175,6 +180,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> containsAll(Collection<E> expected, String name)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().containsAll(expected, name);
 		return this;
 	}
@@ -196,6 +203,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainExactly(Collection<E> other)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainExactly(other);
 		return this;
 	}
@@ -203,6 +212,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainExactly(Collection<E> other, String name)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainExactly(other, name);
 		return this;
 	}
@@ -210,6 +221,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAny(Collection<E> elements)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainAny(elements);
 		return this;
 	}
@@ -217,6 +230,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAny(Collection<E> elements, String name)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainAny(elements, name);
 		return this;
 	}
@@ -224,6 +239,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAll(Collection<E> elements)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainAll(elements);
 		return this;
 	}
@@ -231,6 +248,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainAll(Collection<E> elements, String name)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainAll(elements, name);
 		return this;
 	}
@@ -238,6 +257,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> doesNotContainDuplicates()
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().doesNotContainDuplicates();
 		return this;
 	}
@@ -245,6 +266,8 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidatorImpl<A, E> isSorted(Comparator<E> comparator)
 	{
+		if (fatalFailure)
+			return this;
 		asList.getValue().isSorted(comparator);
 		return this;
 	}
@@ -252,20 +275,29 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public SizeValidator length()
 	{
+		if (fatalFailure)
+		{
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".length", 0,
+				Pluralizer.ELEMENT, getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new SizeValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".length", 0,
+				Pluralizer.ELEMENT, getFailures(), fatalFailure);
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".length", length.get(),
-			Pluralizer.ELEMENT, getFailures());
+			Pluralizer.ELEMENT, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> length(Consumer<SizeValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -276,13 +308,20 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public CollectionValidator<Collection<E>, E> asCollection()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name, null, Pluralizer.ELEMENT, getFailures(),
+				fatalFailure);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name, actualAsList.getValue(), Pluralizer.ELEMENT,
-			getFailures());
+			getFailures(), fatalFailure);
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> asCollection(Consumer<CollectionValidator<Collection<E>, E>> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -293,12 +332,16 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ListValidator<List<E>, E> asList()
 	{
+		if (fatalFailure)
+			return new ListValidatorImpl<>(scope, config, name, null, Pluralizer.ELEMENT, failures, fatalFailure);
 		return asList.getValue();
 	}
 
 	@Override
 	public ArrayValidatorImpl<A, E> asList(Consumer<ListValidator<List<E>, E>> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 

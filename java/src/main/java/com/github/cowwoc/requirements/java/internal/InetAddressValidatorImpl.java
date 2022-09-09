@@ -24,18 +24,19 @@ public final class InetAddressValidatorImpl
 	implements InetAddressValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public InetAddressValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                InetAddress actual, List<ValidationFailure> failures)
+		InetAddress actual, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -45,20 +46,17 @@ public final class InetAddressValidatorImpl
 	}
 
 	@Override
-	protected InetAddressValidator getNoOp()
-	{
-		return new InetAddressValidatorNoOp(getFailures());
-	}
-
-	@Override
 	public InetAddressValidator isIpV4()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!(actual instanceof Inet4Address))
 		{
@@ -73,12 +71,15 @@ public final class InetAddressValidatorImpl
 	@Override
 	public InetAddressValidator isIpV6()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!(actual instanceof Inet6Address))
 		{
@@ -94,11 +95,11 @@ public final class InetAddressValidatorImpl
 	public StringValidator asString()
 	{
 		if (actual == null)
-			return new StringValidatorImpl(scope, config, name, "null", getFailures());
+			return new StringValidatorImpl(scope, config, name, "null", getFailures(), fatalFailure);
 		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
 		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
 		// format.
 		String hostName = actual.getHostName();
-		return new StringValidatorImpl(scope, config, name, hostName, getFailures());
+		return new StringValidatorImpl(scope, config, name, hostName, getFailures(), fatalFailure);
 	}
 }

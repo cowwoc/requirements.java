@@ -22,18 +22,19 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	implements OptionalValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public OptionalValidatorImpl(ApplicationScope scope, Configuration config, String name, Optional<?> actual,
-	                             List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -43,21 +44,18 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	}
 
 	@Override
-	protected OptionalValidator getNoOp()
-	{
-		return new OptionalValidatorNoOp(getFailures());
-	}
-
-	@Override
 	public OptionalValidator isPresent()
 	{
+		if (fatalFailure)
+			return this;
 		//noinspection OptionalAssignedToNull
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.isEmpty())
 		{
@@ -71,13 +69,16 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator isEmpty()
 	{
+		if (fatalFailure)
+			return this;
 		//noinspection OptionalAssignedToNull
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.isPresent())
 		{
@@ -92,13 +93,16 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator contains(Object value)
 	{
+		if (fatalFailure)
+			return this;
 		//noinspection OptionalAssignedToNull
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (value == null)
 			return isEmpty();
@@ -116,6 +120,8 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 	@Override
 	public OptionalValidator contains(Object expected, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotNull();
 		//noinspection OptionalAssignedToNull
@@ -124,7 +130,8 @@ public final class OptionalValidatorImpl extends AbstractObjectValidator<Optiona
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		Optional<?> expectedAsOptional = Optional.ofNullable(expected);
 		if (!actual.equals(expectedAsOptional))

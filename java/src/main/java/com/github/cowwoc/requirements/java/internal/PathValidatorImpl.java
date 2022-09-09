@@ -28,18 +28,19 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	/**
 	 * Creates a new PathValidatorImpl with existing validation failures.
 	 *
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public PathValidatorImpl(ApplicationScope scope, Configuration config, String name, Path actual,
-	                         List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -49,20 +50,17 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	}
 
 	@Override
-	protected PathValidator getNoOp()
-	{
-		return new PathValidatorNoOp(getFailures());
-	}
-
-	@Override
 	public PathValidator exists()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!Files.exists(actual))
 		{
@@ -77,6 +75,8 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isRegularFile(LinkOption... options)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements internalVerifier = scope.getInternalVerifier();
 		internalVerifier.requireThat(options, "options").isNotNull();
 		if (actual == null)
@@ -84,7 +84,8 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		try
 		{
@@ -132,6 +133,8 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isDirectory(LinkOption... options)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements internalVerifier = scope.getInternalVerifier();
 		internalVerifier.requireThat(options, "options").isNotNull();
 		if (actual == null)
@@ -139,7 +142,8 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		try
 		{
@@ -162,12 +166,15 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isRelative()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.isAbsolute())
 		{
@@ -182,12 +189,15 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isAbsolute()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.isAbsolute())
 		{

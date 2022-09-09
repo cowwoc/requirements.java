@@ -785,7 +785,8 @@ public final class BigDecimalTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			BigDecimal actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 

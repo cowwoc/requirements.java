@@ -1,6 +1,23 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.0 - ???
+
+* Breaking changes:
+    * `Requirements.assertThat(actual, name)` replaced
+      by `assertThat(requirements -> requirements.requireThat(actual, name))`
+      and `assertThatAndReturn(requirements -> requirements.requireThat(actual, name))` for assertions with a
+      return value. This change improves runtime performance and reduces code duplication across the library.
+    * `ThreadRequirements.getContextMessage()` replaced by `DefaultRequirements.getContextMessage()`.
+    * `Object.isActualAvailable()` was removed in favor of `Requirements.assertionsAreEnabled()`.
+* Bugfixes:
+    * `DefaultRequirements` was not thread-safe.
+    * `Exceptions.createException()` wasn't finding optimized exceptions in certain cases in spite of them
+      existing.
+* Improvements
+    * Added `Configuration`-related methods (except for `withoutContext()` and `withoutAnyContext()` which
+      wouldn't have any effect) to `DefaultRequirements`.
+
 ## Version 7.0.4 - 2022/08/22
 
 * Improvements

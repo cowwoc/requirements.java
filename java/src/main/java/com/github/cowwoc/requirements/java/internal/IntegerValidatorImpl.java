@@ -20,29 +20,24 @@ public final class IntegerValidatorImpl
 	implements IntegerValidator<Integer>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public IntegerValidatorImpl(ApplicationScope scope, Configuration config, String name, Integer actual,
-	                            List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	protected IntegerValidator<Integer> getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected IntegerValidator<Integer> getNoOp()
-	{
-		return new IntegerValidatorNoOp<>(getFailures());
 	}
 }

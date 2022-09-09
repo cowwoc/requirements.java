@@ -27,30 +27,25 @@ public final class CollectionValidatorImpl<C extends Collection<E>, E>
 	/**
 	 * Creates a CollectionValidatorImpl with existing validation failures.
 	 *
-	 * @param scope      the application configuration
-	 * @param config     the instance configuration
-	 * @param name       the name of the value
-	 * @param actual     the actual value
-	 * @param pluralizer returns the singular or plural form of an element type
-	 * @param failures   the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param pluralizer   returns the singular or plural form of an element type
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code pluralizer} or
 	 *                        {@code failures} are null. if {@code name} is blank.
 	 */
 	public CollectionValidatorImpl(ApplicationScope scope, Configuration config, String name, C actual,
-	                               Pluralizer pluralizer, List<ValidationFailure> failures)
+		Pluralizer pluralizer, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, pluralizer, failures);
+		super(scope, config, name, actual, pluralizer, failures, fatalFailure);
 	}
 
 	@Override
 	protected CollectionValidator<C, E> getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected CollectionValidator<C, E> getNoOp()
-	{
-		return new CollectionValidatorNoOp<>(getFailures());
 	}
 }

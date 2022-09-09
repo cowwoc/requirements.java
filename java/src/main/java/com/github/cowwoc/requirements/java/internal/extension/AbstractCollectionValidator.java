@@ -11,9 +11,7 @@ import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.extension.ExtensibleCollectionValidator;
 import com.github.cowwoc.requirements.java.internal.ArrayValidatorImpl;
-import com.github.cowwoc.requirements.java.internal.ArrayValidatorNoOp;
 import com.github.cowwoc.requirements.java.internal.SizeValidatorImpl;
-import com.github.cowwoc.requirements.java.internal.SizeValidatorNoOp;
 import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
@@ -45,19 +43,20 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	/**
 	 * Creates a AbstractCollectionValidator with existing validation failures.
 	 *
-	 * @param scope      the application configuration
-	 * @param config     the instance configuration
-	 * @param name       the name of the value
-	 * @param actual     the actual value
-	 * @param pluralizer returns the singular or plural form of an element type
-	 * @param failures   the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param pluralizer   returns the singular or plural form of an element type
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code pluralizer} or
 	 *                        {@code failures} are null. If {@code name} is blank.
 	 */
 	protected AbstractCollectionValidator(ApplicationScope scope, Configuration config, String name, C actual,
-	                                      Pluralizer pluralizer, List<ValidationFailure> failures)
+		Pluralizer pluralizer, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 		assert (pluralizer != null) : "pluralizer may not be null";
 		this.pluralizer = pluralizer;
 	}
@@ -77,20 +76,20 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S contains(E element)
 	{
-		//noinspection SuspiciousMethodCalls
 		return contains(element, o -> actual.contains(o));
 	}
 
 	@Override
 	public S contains(E element, String name)
 	{
-		//noinspection SuspiciousMethodCalls
 		return contains(element, name, o -> actual.contains(o));
 	}
 
 	@Override
 	public S containsExactly(Collection<E> expected)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 
@@ -99,7 +98,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -120,6 +120,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S containsExactly(Collection<E> expected, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -129,7 +131,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		Set<E> expectedAsSet = Sets.fromCollection(expected);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -151,6 +154,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S containsAny(Collection<E> expected)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 
@@ -159,7 +164,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (Collections.disjoint(actual, expected))
 		{
@@ -174,6 +180,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S containsAny(Collection<E> expected, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -183,7 +191,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (Collections.disjoint(actual, expected))
 		{
@@ -199,6 +208,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S containsAll(Collection<E> expected)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		if (actual == null)
@@ -206,7 +217,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 
 		if (!actual.containsAll(expected))
@@ -226,6 +238,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S containsAll(Collection<E> expected, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -235,7 +249,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!actual.containsAll(expected))
 		{
@@ -255,20 +270,20 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContain(E element)
 	{
-		//noinspection SuspiciousMethodCalls
 		return doesNotContain(element, o -> actual.contains(o));
 	}
 
 	@Override
 	public S doesNotContain(E element, String name)
 	{
-		//noinspection SuspiciousMethodCalls
 		return doesNotContain(element, name, o -> actual.contains(o));
 	}
 
 	@Override
 	public S doesNotContainExactly(Collection<E> other)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(other, "other").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -278,7 +293,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		Set<E> otherAsSet = Sets.fromCollection(other);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -296,6 +312,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContainExactly(Collection<E> other, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(other, "other").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -305,7 +323,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		Set<E> otherAsSet = Sets.fromCollection(other);
 		Set<E> actualAsSet = Sets.fromCollection(actual);
@@ -325,6 +344,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContainAny(Collection<E> elements)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 
@@ -333,7 +354,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!Collections.disjoint(actual, elements))
 		{
@@ -352,6 +374,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContainAny(Collection<E> elements, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -361,7 +385,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!Collections.disjoint(actual, elements))
 		{
@@ -381,6 +406,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContainAll(Collection<E> elements)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 
@@ -389,7 +416,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.containsAll(elements))
 		{
@@ -404,6 +432,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContainAll(Collection<E> elements, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(elements, "elements").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -413,7 +443,8 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.containsAll(elements))
 		{
@@ -429,12 +460,15 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S doesNotContainDuplicates()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual instanceof Set)
 			return getThis();
@@ -460,20 +494,29 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public SizeValidator size()
 	{
+		if (fatalFailure)
+		{
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".size()", 0, pluralizer,
+				getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new SizeValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".size()", 0, pluralizer,
+				getFailures(), fatalFailure);
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(), pluralizer,
-			getFailures());
+			getFailures(), fatalFailure);
 	}
 
 	@Override
 	public S size(Consumer<SizeValidator> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -484,6 +527,11 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public ArrayValidator<E[], E> asArray(Class<E> type)
 	{
+		if (fatalFailure)
+		{
+			return new ArrayValidatorImpl<>(scope, config, name, null, () -> null, Object::equals,
+				array -> false, () -> 0, getFailures(), fatalFailure);
+		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 
@@ -492,19 +540,23 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new ArrayValidatorNoOp<>(getFailures());
+			fatalFailure = true;
+			return new ArrayValidatorImpl<>(scope, config, name, null, () -> null, Object::equals,
+				array -> false, () -> 0, getFailures(), fatalFailure);
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, actual.size());
 		//noinspection SuspiciousMethodCalls
-		Function<Object, Boolean> contains = o -> actual.contains(o);
+		Function<Object, Boolean> contains = actual::contains;
 		return new ArrayValidatorImpl<>(scope, config, name, actual.toArray(array), () -> List.copyOf(actual),
-			Object::equals, contains, () -> actual.size(), getFailures());
+			Object::equals, contains, actual::size, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public S asArray(Class<E> type, Consumer<ArrayValidator<E[], E>> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 		verifier.requireThat(consumer, "consumer").isNotNull();

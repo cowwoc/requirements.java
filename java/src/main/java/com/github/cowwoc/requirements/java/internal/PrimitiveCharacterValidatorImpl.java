@@ -20,30 +20,25 @@ public final class PrimitiveCharacterValidatorImpl
 	implements PrimitiveCharacterValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public PrimitiveCharacterValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                       char actual, List<ValidationFailure> failures)
+		char actual, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	protected PrimitiveCharacterValidator getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected PrimitiveCharacterValidator getNoOp()
-	{
-		return new PrimitiveCharacterValidatorNoOp(getFailures());
 	}
 
 	@Override

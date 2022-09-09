@@ -4,12 +4,12 @@
  */
 package com.github.cowwoc.requirements.test.guava;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import org.testng.annotations.Test;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -254,7 +254,8 @@ public final class MultimapTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Multimap<?, ?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 

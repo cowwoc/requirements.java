@@ -4,9 +4,7 @@
  */
 package com.github.cowwoc.requirements.java;
 
-import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
-import com.github.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.internal.scope.MainGlobalConfiguration;
+import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;
@@ -22,12 +20,12 @@ import java.util.Set;
  * are expected to update these settings at startup, or take active measures to ensure that verifiers are
  * idle while the configuration is being updated. Failure to do so may result in undesirable behavior such
  * as verifiers outputting ANSI colors to a terminal that is no longer configured to render them.
+ * <p>
+ * <b>Thread-safety</b>: This class is thread-safe.
  */
 public final class GlobalRequirements
 {
-	private static final GlobalConfiguration DELEGATE = new MainGlobalConfiguration(
-		DefaultJvmScope.INSTANCE.getTerminal());
-	private static final GlobalRequirements INSTANCE = new GlobalRequirements();
+	private static final GlobalConfiguration DELEGATE = MainApplicationScope.INSTANCE.getGlobalConfiguration();
 
 	/**
 	 * Prevent construction.
@@ -64,10 +62,9 @@ public final class GlobalRequirements
 	 * @return this
 	 * @see #withTerminalEncoding(TerminalEncoding)
 	 */
-	public static GlobalRequirements withDefaultTerminalEncoding()
+	public static GlobalConfiguration withDefaultTerminalEncoding()
 	{
-		DELEGATE.withDefaultTerminalEncoding();
-		return INSTANCE;
+		return DELEGATE.withDefaultTerminalEncoding();
 	}
 
 	/**
@@ -80,10 +77,9 @@ public final class GlobalRequirements
 	 * @throws NullPointerException if {@code encoding} is null
 	 * @see #withDefaultTerminalEncoding()
 	 */
-	public static GlobalRequirements withTerminalEncoding(TerminalEncoding encoding)
+	public static GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding)
 	{
-		DELEGATE.withTerminalEncoding(encoding);
-		return INSTANCE;
+		return DELEGATE.withTerminalEncoding(encoding);
 	}
 
 	/**
@@ -104,10 +100,9 @@ public final class GlobalRequirements
 	 * @return this
 	 * @see #isCleanStackTrace()
 	 */
-	public static GlobalRequirements withCleanStackTrace()
+	public static GlobalConfiguration withCleanStackTrace()
 	{
-		DELEGATE.withCleanStackTrace();
-		return INSTANCE;
+		return DELEGATE.withCleanStackTrace();
 	}
 
 	/**
@@ -116,10 +111,9 @@ public final class GlobalRequirements
 	 * @return this
 	 * @see #isCleanStackTrace()
 	 */
-	public static GlobalRequirements withoutCleanStackTrace()
+	public static GlobalConfiguration withoutCleanStackTrace()
 	{
-		DELEGATE.withoutCleanStackTrace();
-		return INSTANCE;
+		return DELEGATE.withoutCleanStackTrace();
 	}
 
 	/**
@@ -141,10 +135,9 @@ public final class GlobalRequirements
 	 * @return this
 	 * @see #isDiffEnabled()
 	 */
-	public static GlobalRequirements withDiff()
+	public static GlobalConfiguration withDiff()
 	{
-		DELEGATE.withDiff();
-		return INSTANCE;
+		return DELEGATE.withDiff();
 	}
 
 	/**
@@ -153,9 +146,8 @@ public final class GlobalRequirements
 	 * @return this
 	 * @see #isDiffEnabled()
 	 */
-	public static GlobalRequirements withoutDiff()
+	public static GlobalConfiguration withoutDiff()
 	{
-		DELEGATE.withoutDiff();
-		return INSTANCE;
+		return DELEGATE.withoutDiff();
 	}
 }

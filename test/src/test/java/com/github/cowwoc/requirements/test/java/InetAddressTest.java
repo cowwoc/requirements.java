@@ -105,11 +105,12 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			Requirements requirements = new Requirements(scope);
 			String actual = "1.2.3.4";
-			InetAddress actualAsInetAddress = new Requirements(scope).
-				requireThat(actual, "actual").asInetAddress().getActual();
-			assert (actualAsInetAddress.toString().equals("/" + actual)) :
-				"actualAsInetAddress: " + actualAsInetAddress + ", actual: /" + actual;
+			InetAddress actualAsInetAddress = requirements.requireThat(actual, "actual").asInetAddress().
+				getActual();
+			requirements.requireThat(actualAsInetAddress.toString(), "actualAsInetAddress").
+				isEqualTo("/" + actual);
 		}
 	}
 

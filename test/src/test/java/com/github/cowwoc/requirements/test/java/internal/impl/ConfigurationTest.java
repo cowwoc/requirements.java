@@ -13,8 +13,6 @@ import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import static com.github.cowwoc.requirements.DefaultRequirements.assertThat;
-
 public final class ConfigurationTest
 {
 	/**
@@ -25,13 +23,13 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
-			Configuration first = scope.getDefaultConfiguration().get();
-			first = first.withContext("name1", "value1");
+			Configuration first = scope.getDefaultConfiguration().get().
+				withContext("name1", "value1");
 
-			Configuration second = scope.getDefaultConfiguration().get();
-			second = second.withContext("name2", "value2");
+			Configuration second = scope.getDefaultConfiguration().get().
+				withContext("name2", "value2");
 
-			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+			new Requirements(scope).requireThat(first, "first.config").isNotEqualTo(second, "second.config");
 		}
 	}
 
@@ -43,13 +41,10 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
-			Configuration first = scope.getDefaultConfiguration().get();
-			first = first.withDiff();
+			Configuration first = scope.getDefaultConfiguration().get().withDiff();
+			Configuration second = scope.getDefaultConfiguration().get().withoutDiff();
 
-			Configuration second = scope.getDefaultConfiguration().get();
-			second = second.withoutDiff();
-
-			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+			new Requirements(scope).requireThat(first, "first.config").isNotEqualTo(second, "second.config");
 		}
 	}
 
@@ -61,13 +56,10 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
 		{
-			Configuration first = scope.getDefaultConfiguration().get();
-			first = first.withDiff();
+			Configuration first = scope.getDefaultConfiguration().get().withDiff();
+			Configuration second = first.copy().withoutDiff();
 
-			Configuration second = first.copy();
-			second = second.withoutDiff();
-
-			assertThat(first, "first.config").isNotEqualTo(second, "second.config");
+			new Requirements(scope).requireThat(first, "first.config").isNotEqualTo(second, "second.config");
 		}
 	}
 
@@ -82,9 +74,9 @@ public final class ConfigurationTest
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
-			assertThat(failure.getMessage(), "message").contains("verifierName : \"verifierValue\"");
-			assertThat(failure.getMessage(), "message").contains("threadName   : \"threadValue\"");
+			requirements.requireThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
+			requirements.requireThat(failure.getMessage(), "message").contains("verifierName : \"verifierValue\"");
+			requirements.requireThat(failure.getMessage(), "message").contains("threadName   : \"threadValue\"");
 		}
 	}
 
@@ -98,8 +90,8 @@ public final class ConfigurationTest
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("exceptionName", "exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
-			assertThat(failure.getMessage(), "message").contains("name         : \"verifierValue\"");
+			requirements.requireThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
+			requirements.requireThat(failure.getMessage(), "message").contains("name         : \"verifierValue\"");
 		}
 	}
 
@@ -113,7 +105,7 @@ public final class ConfigurationTest
 			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
 				IllegalArgumentException.class, "message").
 				addContext("name", "exceptionValue");
-			assertThat(failure.getMessage(), "message").contains("name: \"exceptionValue\"");
+			requirements.requireThat(failure.getMessage(), "message").contains("name: \"exceptionValue\"");
 		}
 	}
 }

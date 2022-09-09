@@ -32,18 +32,19 @@ public final class MapValidatorImpl<K, V>
 	implements MapValidator<K, V>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public MapValidatorImpl(ApplicationScope scope, Configuration config, String name, Map<K, V> actual,
-	                        List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -53,28 +54,31 @@ public final class MapValidatorImpl<K, V>
 	}
 
 	@Override
-	protected MapValidator<K, V> getNoOp()
-	{
-		return new MapValidatorNoOp<>(getFailures());
-	}
-
-	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", null, Pluralizer.KEY,
+				getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new CollectionValidatorNoOp<>(getFailures());
+			fatalFailure = true;
+			return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", null, Pluralizer.KEY,
+				getFailures(), fatalFailure);
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			getFailures());
+			getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -85,20 +89,29 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name + ".values()", null, Pluralizer.VALUE,
+				getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new CollectionValidatorNoOp<>(getFailures());
+			fatalFailure = true;
+			return new CollectionValidatorImpl<>(scope, config, name + ".values()", null, Pluralizer.VALUE,
+				getFailures(), fatalFailure);
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
-			getFailures());
+			getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -109,20 +122,29 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", null,
+				Pluralizer.ENTRY, getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new CollectionValidatorNoOp<>(getFailures());
+			fatalFailure = true;
+			return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", null,
+				Pluralizer.ENTRY, getFailures(), fatalFailure);
 		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".entrySet()", actual.entrySet(),
-			Pluralizer.ENTRY, getFailures());
+			Pluralizer.ENTRY, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MapValidator<K, V> entrySet(Consumer<CollectionValidator<Set<Entry<K, V>>, Entry<K, V>>> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -133,12 +155,15 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> isEmpty()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.isEmpty())
 		{
@@ -153,12 +178,15 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public MapValidator<K, V> isNotEmpty()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.isEmpty())
 		{
@@ -172,20 +200,29 @@ public final class MapValidatorImpl<K, V>
 	@Override
 	public SizeValidator size()
 	{
+		if (fatalFailure)
+		{
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".size()", 0,
+				Pluralizer.ENTRY, getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new SizeValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".size()", 0,
+				Pluralizer.ENTRY, getFailures(), fatalFailure);
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, getFailures());
+			Pluralizer.ENTRY, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MapValidator<K, V> size(Consumer<SizeValidator> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 

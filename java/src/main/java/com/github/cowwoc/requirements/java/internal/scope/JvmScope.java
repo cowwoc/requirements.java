@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 
 /**
  * The JVM configuration.
@@ -14,11 +13,6 @@ import com.github.cowwoc.requirements.java.internal.util.Exceptions;
  */
 public interface JvmScope extends AutoCloseable
 {
-	/**
-	 * @return an instance of {@code Exceptions}
-	 */
-	Exceptions getExceptions();
-
 	/**
 	 * @return the terminal attached to the process
 	 */

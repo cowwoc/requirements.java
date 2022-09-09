@@ -94,7 +94,8 @@ public final class UriTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			URI actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 

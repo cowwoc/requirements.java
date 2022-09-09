@@ -4,14 +4,6 @@
  */
 package com.github.cowwoc.requirements.test;
 
-import com.github.cowwoc.requirements.java.GlobalRequirements;
-import org.testng.annotations.BeforeSuite;
-
 public final class TestSuite
 {
-	@BeforeSuite
-	public void beforeSuite()
-	{
-		GlobalRequirements.withoutCleanStackTrace();
-	}
 }

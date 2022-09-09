@@ -24,29 +24,33 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	implements ExtensibleNumberValidator<S, T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	protected AbstractNumberValidator(ApplicationScope scope, Configuration config, String name, T actual,
-	                                  List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	public S isNegative()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.doubleValue() >= 0L)
 		{
@@ -61,12 +65,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotNegative()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.doubleValue() < 0L)
 		{
@@ -81,12 +88,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isZero()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.doubleValue() != 0L)
 		{
@@ -101,12 +111,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotZero()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.doubleValue() == 0L)
 		{
@@ -120,12 +133,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isPositive()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		double actualAsDouble = actual.doubleValue();
 		if (actualAsDouble <= 0L || Double.isNaN(actualAsDouble))
@@ -141,12 +157,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotPositive()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.doubleValue() > 0L)
 		{
@@ -161,12 +180,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isWholeNumber()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!isWholeNumber(actual.doubleValue()))
 		{
@@ -191,12 +213,15 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotWholeNumber()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		// Based on https://stackoverflow.com/a/12748321/14731
 		if (isWholeNumber(actual.doubleValue()))
@@ -212,6 +237,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isMultipleOf(T divisor)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 
@@ -220,7 +247,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
@@ -237,6 +265,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isMultipleOf(T divisor, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -246,7 +276,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble == 0 || !isWholeNumber(actual.doubleValue() / divisorAsDouble))
@@ -263,6 +294,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotMultipleOf(T divisor)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 
@@ -271,7 +304,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && isWholeNumber(actual.doubleValue() / divisorAsDouble))
@@ -288,6 +322,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 	@Override
 	public S isNotMultipleOf(T divisor, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(divisor, "divisor").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -297,7 +333,8 @@ public abstract class AbstractNumberValidator<S, T extends Number & Comparable<?
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		double divisorAsDouble = divisor.doubleValue();
 		if (divisorAsDouble != 0 && !isWholeNumber(actual.doubleValue() / divisorAsDouble))

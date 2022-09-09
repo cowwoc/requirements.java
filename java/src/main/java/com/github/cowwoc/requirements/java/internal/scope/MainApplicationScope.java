@@ -4,9 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
-
-import java.util.function.Supplier;
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
 
 /**
  * ApplicationScope for the main codebase.
@@ -21,8 +19,6 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	 * The global configuration.
 	 */
 	private final GlobalConfiguration globalConfiguration;
-	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
-		ThreadLocal.withInitial(() -> new DefaultThreadConfiguration(this));
 
 	/**
 	 * Creates a new application scope.
@@ -30,12 +26,6 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	public MainApplicationScope()
 	{
 		this.globalConfiguration = new MainGlobalConfiguration(parent.getTerminal());
-	}
-
-	@Override
-	public Supplier<ThreadConfiguration> getThreadConfiguration()
-	{
-		return threadConfiguration::get;
 	}
 
 	@Override

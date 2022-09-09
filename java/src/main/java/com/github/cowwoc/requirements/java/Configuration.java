@@ -8,27 +8,26 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Configures the behavior of a single verifier.
+ * Configures the behavior of a single {@code Requirements} instance.
  */
 public interface Configuration
 {
 	/**
-	 * Returns a copy of this configuration.
+	 * Returns a copy of this configuration. This method is thread-safe. Other methods may not be.
 	 *
 	 * @return a copy of this configuration
 	 */
 	Configuration copy();
 
 	/**
-	 * Indicates if {@code assertThat()} should delegate to {@code requireThat()}; otherwise, it won't
-	 * do anything.
+	 * Indicates if {@code assertThat()} will verify requirements; otherwise, it won't do anything.
 	 *
 	 * @return true if assertions are enabled for this class
 	 */
 	boolean assertionsAreEnabled();
 
 	/**
-	 * Indicates that {@code assertThat()} should invoke {@code requireThat()}.
+	 * Indicates that {@code assertThat()} should verify requirements.
 	 *
 	 * @return this
 	 */
@@ -122,7 +121,7 @@ public interface Configuration
 	 * @return this
 	 */
 	Configuration withoutAnyContext();
-	
+
 	/**
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for
 	 * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, and {@code Path}.
@@ -159,7 +158,7 @@ public interface Configuration
 	<T> Configuration withoutStringConverter(Class<T> type);
 
 	/**
-	 * Replaces a verifier's configuration.
+	 * Replaces the configuration.
 	 *
 	 * @param configuration a new configuration
 	 * @return this

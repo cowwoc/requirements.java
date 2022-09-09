@@ -22,29 +22,33 @@ public abstract class AbstractFloatValidator<S>
 	implements ExtensibleFloatingPointValidator<S, Float>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	protected AbstractFloatValidator(ApplicationScope scope, Configuration config, String name, Float actual,
-	                                 List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	public S isNumber()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.isNaN())
 		{
@@ -59,12 +63,15 @@ public abstract class AbstractFloatValidator<S>
 	@Override
 	public S isNotNumber()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!actual.isNaN())
 		{
@@ -73,18 +80,22 @@ public abstract class AbstractFloatValidator<S>
 				addContext("Actual", actual);
 			addFailure(failure);
 		}
+
 		return getThis();
 	}
 
 	@Override
 	public S isFinite()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.isInfinite())
 		{
@@ -99,12 +110,15 @@ public abstract class AbstractFloatValidator<S>
 	@Override
 	public S isNotFinite()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!actual.isInfinite())
 		{

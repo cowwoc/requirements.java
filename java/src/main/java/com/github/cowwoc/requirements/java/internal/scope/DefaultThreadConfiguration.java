@@ -4,13 +4,10 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ThreadConfiguration;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,21 +15,13 @@ import java.util.Map;
  */
 public final class DefaultThreadConfiguration implements ThreadConfiguration
 {
-	private final Map<String, Object> context;
-	private final Exceptions exceptions;
-	private final Configuration validatorConfiguration;
+	private final Map<String, Object> context = new LinkedHashMap<>();
 
 	/**
 	 * Creates a new configuration.
-	 *
-	 * @param scope the application configuration
-	 * @throws NullPointerException if {@code scope} is null
 	 */
-	public DefaultThreadConfiguration(ApplicationScope scope)
+	public DefaultThreadConfiguration()
 	{
-		this.context = new LinkedHashMap<>();
-		this.exceptions = scope.getExceptions();
-		this.validatorConfiguration = scope.getDefaultConfiguration().get();
 	}
 
 	@Override
@@ -64,12 +53,6 @@ public final class DefaultThreadConfiguration implements ThreadConfiguration
 	{
 		context.clear();
 		return this;
-	}
-
-	@Override
-	public String getContextMessage(String message)
-	{
-		return exceptions.getContextMessage(context, validatorConfiguration, message, List.of());
 	}
 
 	@Override

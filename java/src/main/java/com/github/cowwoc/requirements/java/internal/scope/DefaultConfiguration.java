@@ -32,7 +32,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 /**
- * Configures the behavior of a single verifier.
+ * The default implementation of {@code Configuration}.
  */
 public final class DefaultConfiguration implements Configuration
 {
@@ -43,6 +43,7 @@ public final class DefaultConfiguration implements Configuration
 		CLASS_ASSERTIONS_ENABLED = Configuration.class.desiredAssertionStatus();
 	}
 
+	// NOTE: This class must contain at least one "final" field. See explanation in copy() method.
 	private final Map<String, Object> context;
 	private final Map<Class<?>, Function<Object, String>> typeToStringConverter;
 	private boolean assertionsEnabled;
@@ -105,6 +106,8 @@ public final class DefaultConfiguration implements Configuration
 	@Override
 	public Configuration copy()
 	{
+		// Per https://shipilev.net/blog/2014/safe-public-construction/ section "A final field was written" this
+		// object is safe for publication because it contains at least one final field.
 		return new DefaultConfiguration(this);
 	}
 

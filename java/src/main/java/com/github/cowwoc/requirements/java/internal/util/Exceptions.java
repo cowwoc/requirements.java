@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements.java.internal.util;
 
 import com.github.cowwoc.requirements.annotation.OptimizedException;
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.GlobalRequirements;
 import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -38,53 +39,48 @@ public final class Exceptions
 	 * The package name of this library.
 	 */
 	private final String libraryPackage = getParentPackage(Exceptions.class.getPackage().getName(), 3);
-	private final MethodType constructorWithCause = MethodType.methodType(void.class, String.class,
-		Throwable.class);
-	private final MethodType constructorWithoutCause = MethodType.methodType(void.class, String.class);
+
 	private final MethodType optimizedConstructorWithCause = MethodType.methodType(void.class,
 		Exceptions.class, String.class, Throwable.class);
 	private final MethodType optimizedConstructorWithoutCause = MethodType.methodType(void.class,
 		Exceptions.class, String.class);
-	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithCause =
-		(clazz, cleanStackTrace) ->
+
+	private final MethodType nonOptimizedConstructorWithCause = MethodType.methodType(void.class, String.class,
+		Throwable.class);
+	private final MethodType nonOptimizedConstructorWithoutCause = MethodType.methodType(void.class,
+		String.class);
+
+	private record CacheKey(Class<?> type, boolean optimized, boolean withCause)
+	{
+	}
+
+	private final Function<CacheKey, MethodHandle> computeConstructor =
+		key ->
 		{
 			try
 			{
-				if (cleanStackTrace)
+				Class<?> optimizedType;
+				if (key.optimized)
+					optimizedType = getOptimizedException(key.type).orElse(null);
+				else
+					optimizedType = null;
+
+				if (optimizedType == null)
 				{
-					Class<?> optimizedException = getOptimizedException(clazz).orElse(null);
-					if (optimizedException != null)
-						return lookup.findConstructor(optimizedException, optimizedConstructorWithCause);
+					if (key.withCause)
+						return lookup.findConstructor(key.type, nonOptimizedConstructorWithCause);
+					return lookup.findConstructor(key.type, nonOptimizedConstructorWithoutCause);
 				}
-				return lookup.findConstructor(clazz, constructorWithCause);
+				if (key.withCause)
+					return lookup.findConstructor(optimizedType, optimizedConstructorWithCause);
+				return lookup.findConstructor(optimizedType, optimizedConstructorWithoutCause);
 			}
 			catch (ReflectiveOperationException e)
 			{
 				throw new RuntimeException(e);
 			}
 		};
-	private final BiFunction<Class<?>, Boolean, MethodHandle> computeConstructorWithoutCause =
-		(clazz, cleanStackTrace) ->
-		{
-			try
-			{
-				if (cleanStackTrace)
-				{
-					Class<?> optimizedException = getOptimizedException(clazz).orElse(null);
-					if (optimizedException != null)
-						return lookup.findConstructor(optimizedException, optimizedConstructorWithoutCause);
-				}
-				return lookup.findConstructor(clazz, constructorWithoutCause);
-			}
-			catch (ReflectiveOperationException e)
-			{
-				throw new RuntimeException(e);
-			}
-		};
-	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithoutCause =
-		new ConcurrentHashMap<>(3);
-	private final ConcurrentMap<Class<?>, MethodHandle> classToConstructorsWithCause =
-		new ConcurrentHashMap<>(3);
+	private final ConcurrentMap<CacheKey, MethodHandle> classToConstructor = new ConcurrentHashMap<>(3);
 	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
 
 	/**
@@ -206,7 +202,7 @@ public final class Exceptions
 	 */
 	private Optional<Class<?>> getOptimizedException(Class<?> type)
 	{
-		String exceptionProxy = libraryPackage + ".exception." + type.getName() + "Wrapper";
+		String exceptionProxy = libraryPackage + ".exception." + type.getName();
 		try
 		{
 			// Instantiate a proxy that filters the stack trace lazily
@@ -214,10 +210,15 @@ public final class Exceptions
 			log.debug("Found optimized exception: {}", exceptionProxy);
 			return Optional.of(result);
 		}
-		catch (ClassNotFoundException unused)
+		catch (ClassNotFoundException e)
 		{
 			// Instantiate the original exception
-			log.debug("Could not find optimized exception: {}", exceptionProxy);
+			log.debug("Failed to load \"" + exceptionProxy + ".\n" +
+				"\n" +
+				"Relevant System Properties\n" +
+				"--------------------------\n" +
+				"java.class.path=" + System.getProperty("java.class.path") + "\n" +
+				"user.dir=" + System.getProperty("user.dir"), e);
 			return Optional.empty();
 		}
 	}
@@ -234,13 +235,9 @@ public final class Exceptions
 	{
 		try
 		{
-			if (withCause)
-			{
-				return classToConstructorsWithCause.computeIfAbsent(type, clazz ->
-					computeConstructorWithCause.apply(clazz, cleanStackTrace));
-			}
-			return classToConstructorsWithoutCause.computeIfAbsent(type, clazz ->
-				computeConstructorWithoutCause.apply(clazz, cleanStackTrace));
+			boolean optimized = cleanStackTrace;
+			CacheKey key = new CacheKey(type, optimized, withCause);
+			return classToConstructor.computeIfAbsent(key, theKey -> computeConstructor.apply(theKey));
 		}
 		catch (RuntimeException e)
 		{
@@ -295,6 +292,12 @@ public final class Exceptions
 	}
 
 	/**
+	 * Indicates if the specified type is an optimized exception.
+	 * <p>
+	 * The purpose of optimized exceptions is to defer {@link GlobalRequirements#withCleanStackTrace()}
+	 * cleaning stack traces) until the stack trace is actually needed. If {@code isCleanStackTrace()} is
+	 * false, no attempt is made to use optimized exceptions.
+	 *
 	 * @param type a class
 	 * @return true if the class is an optimized exception
 	 */

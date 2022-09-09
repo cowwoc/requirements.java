@@ -22,18 +22,19 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	implements ClassValidator<T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public ClassValidatorImpl(ApplicationScope scope, Configuration config, String name, Class<T> actual,
-	                          List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -43,14 +44,10 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	}
 
 	@Override
-	protected ClassValidator<T> getNoOp()
-	{
-		return new ClassValidatorNoOp<>(getFailures());
-	}
-
-	@Override
 	public ClassValidator<T> isSupertypeOf(Class<?> type)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 
@@ -59,7 +56,8 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.isAssignableFrom(type))
 		{
@@ -74,6 +72,8 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	@Override
 	public ClassValidator<T> isSubtypeOf(Class<?> type)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 
@@ -82,7 +82,8 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!type.isAssignableFrom(actual))
 		{

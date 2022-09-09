@@ -24,23 +24,26 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	implements ExtensibleComparableValidator<S, T>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	protected AbstractComparableValidator(ApplicationScope scope, Configuration config, String name, T actual,
-	                                      List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	public S isLessThan(T value)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 
@@ -49,7 +52,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
@@ -65,6 +69,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isLessThan(T value, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -74,7 +80,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference >= 0)
@@ -91,6 +98,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isLessThanOrEqualTo(T value)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 
@@ -99,7 +108,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference > 0)
@@ -115,6 +125,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isLessThanOrEqualTo(T value, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -124,7 +136,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference > 0)
@@ -141,6 +154,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isGreaterThan(T value)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 
@@ -149,7 +164,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
@@ -165,6 +181,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isGreaterThan(T value, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -174,7 +192,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference <= 0)
@@ -191,6 +210,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isGreaterThanOrEqualTo(T value)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 
@@ -199,7 +220,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference < 0)
@@ -215,6 +237,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isGreaterThanOrEqualTo(T value, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -224,7 +248,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		int difference = actual.compareTo(value);
 		if (difference < 0)
@@ -241,6 +266,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isComparableTo(T expected)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 
@@ -249,7 +276,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.compareTo(expected) != 0)
 		{
@@ -264,6 +292,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isComparableTo(T expected, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -273,7 +303,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.compareTo(expected) != 0)
 		{
@@ -289,6 +320,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isNotComparableTo(T value)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 
@@ -297,7 +330,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.compareTo(value) == 0)
 		{
@@ -312,6 +346,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isNotComparableTo(T other, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(other, "other").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -321,7 +357,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.compareTo(other) == 0)
 		{
@@ -337,6 +374,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isBetween(T startInclusive, T endExclusive)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
 		verifier.requireThat(endExclusive, "endExclusive").
@@ -347,7 +386,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.compareTo(startInclusive) < 0 || actual.compareTo(endExclusive) >= 0)
 		{
@@ -364,6 +404,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 	@Override
 	public S isBetweenClosed(T startInclusive, T endInclusive)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
 		verifier.requireThat(endInclusive, "endInclusive").
@@ -374,7 +416,8 @@ public abstract class AbstractComparableValidator<S, T extends Comparable<? supe
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (actual.compareTo(startInclusive) < 0 || actual.compareTo(endInclusive) > 0)
 		{

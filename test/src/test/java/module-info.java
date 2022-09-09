@@ -6,6 +6,7 @@ module com.github.cowwoc.requirements.test
 {
 	requires com.google.common;
 	requires org.testng;
+	requires org.slf4j;
 	requires com.github.cowwoc.requirements.natives;
 	requires com.github.cowwoc.requirements.guava;
 

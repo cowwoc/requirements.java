@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 

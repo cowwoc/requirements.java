@@ -34,18 +34,19 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	/**
 	 * Creates a StringValidatorImpl with existing validation failures.
 	 *
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public StringValidatorImpl(ApplicationScope scope, Configuration config, String name, String actual,
-	                           List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -55,20 +56,17 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	protected StringValidator getNoOp()
-	{
-		return new StringValidatorNoOp(getFailures());
-	}
-
-	@Override
 	public StringValidator isEmpty()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.isEmpty())
 		{
@@ -83,12 +81,15 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator isNotEmpty()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.isEmpty())
 		{
@@ -102,12 +103,15 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator isBlank()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.isBlank())
 		{
@@ -122,12 +126,15 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator isNotBlank()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.isBlank())
 		{
@@ -141,12 +148,15 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator trim()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		String trimmed = actual.trim();
 		if (trimmed.equals(actual))
@@ -159,12 +169,15 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator isTrimmed()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		String trimmed = actual.trim();
 		if (!trimmed.equals(actual))
@@ -180,13 +193,16 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public InetAddressValidator asInetAddress()
 	{
+		if (fatalFailure)
+			return new InetAddressValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		if (actual == null)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " must be an InetAddress.").
 				addContext("Actual", this.actual);
 			addFailure(failure);
-			return new InetAddressValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new InetAddressValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 		// IPv4 must start with a digit. IPv6 must start with a colon.
 		if (actual.isEmpty())
@@ -194,7 +210,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " may not be empty");
 			addFailure(failure);
-			return new InetAddressValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new InetAddressValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 
 		char firstCharacter = actual.charAt(0);
@@ -204,7 +221,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				name + " must contain a valid IP address or hostname format.").
 				addContext("Actual", actual);
 			addFailure(failure);
-			return new InetAddressValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new InetAddressValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 		InetAddress address;
 		try
@@ -218,14 +236,17 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				setCause(e).
 				addContext("Actual", actual);
 			addFailure(failure);
-			return new InetAddressValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new InetAddressValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
-		return new InetAddressValidatorImpl(scope, config, name, address, getFailures());
+		return new InetAddressValidatorImpl(scope, config, name, address, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public StringValidator asInetAddress(Consumer<InetAddressValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -236,18 +257,21 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public UriValidator asUri()
 	{
+		if (fatalFailure)
+			return new UriValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		if (actual == null)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " must be a URI.").
 				addContext("Actual", this.actual);
 			addFailure(failure);
-			return new UriValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new UriValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 		try
 		{
 			URI uri = URI.create(actual);
-			return new UriValidatorImpl(scope, config, name, uri, getFailures());
+			return new UriValidatorImpl(scope, config, name, uri, getFailures(), fatalFailure);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -256,13 +280,16 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				setCause(e).
 				addContext("Actual", actual);
 			addFailure(failure);
-			return new UriValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new UriValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 	}
 
 	@Override
 	public StringValidator asUri(Consumer<UriValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -273,18 +300,21 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public UrlValidator asUrl()
 	{
+		if (fatalFailure)
+			return new UrlValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		if (actual == null)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " must be a URL.").
-				addContext("Actual", this.actual);
+				addContext("Actual", null);
 			addFailure(failure);
-			return new UrlValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new UrlValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 		try
 		{
 			URL url = new URL(actual);
-			return new UrlValidatorImpl(scope, config, name, url, getFailures());
+			return new UrlValidatorImpl(scope, config, name, url, getFailures(), fatalFailure);
 		}
 		catch (MalformedURLException e)
 		{
@@ -293,13 +323,15 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				setCause(e).
 				addContext("Actual", actual);
 			addFailure(failure);
-			return new UrlValidatorNoOp(getFailures());
+			return new UrlValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 	}
 
 	@Override
 	public StringValidator asUrl(Consumer<UrlValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -310,21 +342,26 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public BooleanValidator asBoolean()
 	{
+		if (fatalFailure)
+			return new BooleanValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		if (actual == null)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " must be a Boolean.").
 				addContext("Actual", this.actual);
 			addFailure(failure);
-			return new BooleanValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new BooleanValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
 		}
 		Boolean actualBoolean = Boolean.parseBoolean(actual);
-		return new BooleanValidatorImpl(scope, config, name, actualBoolean, getFailures());
+		return new BooleanValidatorImpl(scope, config, name, actualBoolean, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public StringValidator asBoolean(Consumer<BooleanValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -335,6 +372,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator startsWith(String prefix)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(prefix, "prefix").isNotNull();
 
@@ -343,7 +382,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.startsWith(prefix))
 		{
@@ -358,6 +398,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotStartWith(String prefix)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(prefix, "prefix").isNotNull();
 
@@ -366,7 +408,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.startsWith(prefix))
 		{
@@ -381,6 +424,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator endsWith(String suffix)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(suffix, "suffix").isNotNull();
 
@@ -389,7 +434,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.endsWith(suffix))
 		{
@@ -404,6 +450,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotEndWith(String suffix)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(suffix, "suffix").isNotNull();
 
@@ -412,7 +460,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.endsWith(suffix))
 		{
@@ -427,6 +476,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator contains(String expected)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(expected, "expected").isNotNull();
 
@@ -435,7 +486,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (!actual.contains(expected))
 		{
@@ -450,6 +502,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotContain(String value)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 
@@ -458,7 +512,8 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		if (actual.contains(value))
 		{
@@ -473,20 +528,29 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public SizeValidator length()
 	{
+		if (fatalFailure)
+		{
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".length()", 0,
+				Pluralizer.CHARACTER, getFailures(), fatalFailure);
+		}
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return new SizeValidatorNoOp(getFailures());
+			fatalFailure = true;
+			return new SizeValidatorImpl(scope, config, name, List.of(), name + ".length()", 0,
+				Pluralizer.CHARACTER, getFailures(), fatalFailure);
 		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".length()", actual.length(),
-			Pluralizer.CHARACTER, getFailures());
+			Pluralizer.CHARACTER, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public StringValidator length(Consumer<SizeValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 

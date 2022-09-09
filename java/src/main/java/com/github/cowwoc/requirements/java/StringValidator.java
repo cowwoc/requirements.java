@@ -132,6 +132,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 *
 	 * @return the updated validator
 	 * @see #trim()
+	 * @see #isBlank()
 	 */
 	StringValidator isTrimmed();
 

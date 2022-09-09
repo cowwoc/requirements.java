@@ -2,9 +2,8 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements.java.internal.scope;
+package com.github.cowwoc.requirements.java;
 
-import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Set;

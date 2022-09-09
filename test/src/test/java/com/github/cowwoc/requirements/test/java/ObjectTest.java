@@ -376,7 +376,8 @@ public final class ObjectTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Object actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 
@@ -387,8 +388,8 @@ public final class ObjectTest
 		{
 			// Ensure that verification occurs if we start with assertions disabled, then enable them
 			Object actual = null;
-			new Requirements(scope).withAssertionsDisabled().withAssertionsEnabled().
-				assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().withAssertionsEnabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 
@@ -399,8 +400,8 @@ public final class ObjectTest
 		{
 			// Ensure that no exception gets thrown if we start with assertions enabled, then disable them
 			Object actual = null;
-			new Requirements(scope).withAssertionsEnabled().withAssertionsDisabled().
-				assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsEnabled().withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 
@@ -411,7 +412,8 @@ public final class ObjectTest
 		{
 			ArrayList<ValidationFailure> failures = new ArrayList<>();
 			Configuration config = scope.getDefaultConfiguration().get();
-			PathValidatorImpl validator = new PathValidatorImpl(scope, config, "name", Path.of("/"), failures);
+			PathValidatorImpl validator = new PathValidatorImpl(scope, config, "name", Path.of("/"), failures,
+				false);
 
 			failures.add(new ValidationFailureImpl(scope, config, IOException.class, "This is a test"));
 			PathVerifier verifier = new PathVerifierImpl(validator);

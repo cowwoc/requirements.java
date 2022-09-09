@@ -94,7 +94,7 @@ public final class ExceptionOptimizer
 	 */
 	private static String exceptionToWrapperName(String exceptionName)
 	{
-		return "com.github.cowwoc.requirements.exception." + exceptionName + "Wrapper";
+		return "com.github.cowwoc.requirements.exception." + exceptionName;
 	}
 
 	/**
@@ -130,9 +130,8 @@ public final class ExceptionOptimizer
 	 */
 	private boolean writeWrapper(Path path, Class<?> exception) throws IOException
 	{
-		String exceptionSimpleName = exception.getSimpleName();
-		String packageName = exception.getPackage().getName();
-
+		// NOTE: Any exceptions thrown by the generated code must use fully-qualified names to avoid conflict
+		// with other optimized exceptions that have the same simple name.
 		String wrapperName = exceptionToWrapperName(exception.getName());
 		String wrapperSimpleName = getSimpleName(wrapperName);
 		String wrapperPackageName = wrapperName.substring(0,
@@ -155,11 +154,6 @@ public final class ExceptionOptimizer
 				import java.io.PrintStream;
 				import java.io.PrintWriter;
 				""");
-			if (!packageName.equals("java.lang"))
-			{
-				// No need to import classes in "java.lang"
-				writer.write("import " + exception.getName() + ";\n");
-			}
 			writer.write("\n" +
 				"/**\n" +
 				" * Optimizes exceptions thrown by the library.\n" +
@@ -167,7 +161,7 @@ public final class ExceptionOptimizer
 				" * @see GlobalRequirements#isCleanStackTrace()\n" +
 				" */\n" +
 				"@OptimizedException\n" +
-				"public final class " + wrapperSimpleName + " extends " + exceptionSimpleName + "\n" +
+				"public final class " + wrapperSimpleName + " extends " + exception.getName() + "\n" +
 				"{\n" +
 				"\tprivate static final long serialVersionUID = 0L;\n" +
 				"\t/**\n" +
@@ -189,7 +183,7 @@ public final class ExceptionOptimizer
 				"\t{\n" +
 				"\t\tsuper(message);\n" +
 				"\t\tif (exceptions == null)\n" +
-				"\t\t\tthrow new NullPointerException(\"exceptions may not be null\");\n" +
+				"\t\t\tthrow new java.lang.NullPointerException(\"exceptions may not be null\");\n" +
 				"\t\tthis.exceptions = exceptions;\n" +
 				"\t}\n" +
 				"\n");
@@ -219,7 +213,7 @@ public final class ExceptionOptimizer
 					"\t{\n" +
 					"\t\tsuper(message, cause);\n" +
 					"\t\tif (exceptions == null)\n" +
-					"\t\t\tthrow new NullPointerException(\"exceptions may not be null\");\n" +
+					"\t\t\tthrow new java.lang.NullPointerException(\"exceptions may not be null\");\n" +
 					"\t\tthis.exceptions = exceptions;\n" +
 					"\t}\n" +
 					"\n");

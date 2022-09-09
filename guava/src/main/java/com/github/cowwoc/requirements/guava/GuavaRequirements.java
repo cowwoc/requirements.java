@@ -67,19 +67,6 @@ public interface GuavaRequirements extends Configuration
 	<K, V> MultimapVerifier<K, V> requireThat(Multimap<K, V> actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Multimap, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <K>    the type of key in the multimap
-	 * @param <V>    the type of value in the multimap
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name);
-
-	/**
 	 * Verifies the requirements of a {@code Multimap}.
 	 *
 	 * @param <K>    the type of key in the multimap

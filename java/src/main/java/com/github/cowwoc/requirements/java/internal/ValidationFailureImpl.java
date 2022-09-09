@@ -20,8 +20,8 @@ public final class ValidationFailureImpl implements ValidationFailure
 {
 	private final ApplicationScope scope;
 	private final Configuration validatorConfiguration;
-	private final Class<? extends Exception> exceptionType;
 	private final String message;
+	private final Class<? extends Exception> exceptionType;
 	private final Exceptions exceptions;
 	private String messageWithContext;
 	private Throwable cause;
@@ -123,13 +123,7 @@ public final class ValidationFailureImpl implements ValidationFailure
 		return messageWithContext;
 	}
 
-	/**
-	 * Creates an exception that corresponds to with this failure.
-	 *
-	 * @param <T>  type the type of exception to create
-	 * @param type the type of exception to create
-	 * @return the created exception
-	 */
+	@Override
 	public <T extends Exception> T createException(Class<T> type)
 	{
 		Exceptions exceptions = scope.getExceptions();

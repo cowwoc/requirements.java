@@ -21,30 +21,25 @@ public final class BigDecimalPrecisionValidatorImpl
 	implements BigDecimalPrecisionValidator
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	BigDecimalPrecisionValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                                 BigDecimal actual, List<ValidationFailure> failures)
+		BigDecimal actual, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name + ".precision()", actual.precision(), failures);
+		super(scope, config, name + ".precision()", actual.precision(), failures, fatalFailure);
 	}
 
 	@Override
 	protected BigDecimalPrecisionValidator getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected BigDecimalPrecisionValidator getNoOp()
-	{
-		return new BigDecimalPrecisionValidatorNoOp(getFailures());
 	}
 
 	@Override
@@ -91,6 +86,8 @@ public final class BigDecimalPrecisionValidatorImpl
 
 	private BigDecimalPrecisionValidator neverZero()
 	{
+		if (fatalFailure)
+			return this;
 		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be zero");
 		addFailure(failure);
@@ -99,6 +96,8 @@ public final class BigDecimalPrecisionValidatorImpl
 
 	private BigDecimalPrecisionValidator neverZeroOrNegative()
 	{
+		if (fatalFailure)
+			return this;
 		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be zero or negative");
 		addFailure(failure);
@@ -107,6 +106,8 @@ public final class BigDecimalPrecisionValidatorImpl
 
 	private BigDecimalPrecisionValidator neverNegative()
 	{
+		if (fatalFailure)
+			return this;
 		ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be negative");
 		addFailure(failure);

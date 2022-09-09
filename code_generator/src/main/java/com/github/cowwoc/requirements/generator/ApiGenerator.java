@@ -162,12 +162,20 @@ public final class ApiGenerator
 		addPackage(out);
 		addImports(plugins, out);
 		out.append("""
+			import com.github.cowwoc.requirements.java.ThreadRequirements;
+
+			import java.util.function.Consumer;
+			import java.util.function.Function;
 
 			/**
-			 * Verifies API requirements using the default {@link Configuration configuration}.
+			 * Verifies requirements using the default {@link Configuration configuration}. Any method that exposes
+			 * a {@code Requirements} instance is returning an independent copy. Any modifications applied to that
+			 * copy are thrown away and do not affect the configuration of this class.
 			 * <p>
-			 * The assertion status of the {@link Configuration} class determines whether
-			 * {@code assertThat()} carries out a verification or does nothing.
+			 * To retain configuration changes, instantiate and reuse the same {@code Requirements} instance across
+			 * multiple runs.
+			 * <p>
+			 * <b>Thread-safety</b>: This class is thread-safe.
 			 *
 			 * @see Requirements
 			 * @see JavaRequirements
@@ -178,26 +186,7 @@ public final class ApiGenerator
 			 */
 			public final class DefaultRequirements
 			{
-			""");
-		for (CompilationUnit plugin : plugins)
-		{
-			ClassOrInterfaceDeclaration pluginClass = plugin.getType(0).asClassOrInterfaceDeclaration();
-			String delegateName = getDelegateName(pluginClass, true);
-			out.append("\tprivate static final " + pluginClass.getNameAsString() + " " + delegateName +
-				" = new Default" + pluginClass.getNameAsString() + "();\n ");
-		}
-		out.append("""
-
-			/**
-			 * Returns the contextual information associated with this configuration.
-			 *
-			 * @param message the exception message ({@code null} if absent)
-			 * @return the contextual information associated with this configuration
-			 */
-			\tpublic static String getContextMessage(String message)
-			\t{
-			\t\treturn JAVA_REQUIREMENTS.getContextMessage(message);
-			\t}
+			\tprivate static final Requirements REQUIREMENTS = new Requirements();
 
 			\t/**
 			\t * Returns true if assertions are enabled for this class.
@@ -206,7 +195,218 @@ public final class ApiGenerator
 			\t */
 			\tpublic static boolean assertionsAreEnabled()
 			\t{
-			\t\treturn JAVA_REQUIREMENTS.assertionsAreEnabled();
+			\t\treturn REQUIREMENTS.assertionsAreEnabled();
+			\t}
+
+			\t/**
+			\t * Indicates that {@code assertThat()} should verify requirements.
+			\t *
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t */
+			\tpublic static Requirements withAssertionsEnabled()
+			\t{
+			\t\treturn REQUIREMENTS.copy().withAssertionsEnabled();
+			\t}
+
+			\t/**
+			\t * Indicates that {@code assertThat()} shouldn't do anything.
+			\t *
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t */
+			\tpublic static Requirements withAssertionsDisabled()
+			\t{
+			\t\treturn REQUIREMENTS.copy().withAssertionsDisabled();
+			\t}
+
+			\t/**
+			\t * Indicates if exceptions should show the difference between the actual and expected values.
+			\t *
+			\t * @return true by default
+			\t */
+			\tpublic static boolean isDiffEnabled()
+			\t{
+			\t\treturn REQUIREMENTS.isDiffEnabled();
+			\t}
+
+			\t/**
+			\t * Indicates that exceptions should show the difference between the actual and expected values.
+			\t *
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t */
+			\tpublic static Requirements withDiff()
+			\t{
+			\t\treturn REQUIREMENTS.copy().withDiff();
+			\t}
+
+			\t/**
+			\t * Indicates that exceptions should not show the difference between the actual and expected
+			\t * values.
+			\t *
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t*/
+			\tpublic static Requirements withoutDiff()
+			\t{
+			\t\treturn REQUIREMENTS.copy().withDiff();
+			\t}
+
+			\t/**
+			\t * Indicates if stack trace references to this library should be removed.
+			\t *
+			\t * @return {@code true} by default
+			\t * @see #withCleanStackTrace()
+			\t * @see #withoutCleanStackTrace()
+			\t */
+			\tpublic static boolean isCleanStackTrace()
+			\t{
+			\t\treturn REQUIREMENTS.isCleanStackTrace();
+			\t}
+
+			\t/**
+			\t * Indicates that stack trace references to this library should be removed.
+			\t *
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t * @see #isCleanStackTrace()
+			\t */
+			\tpublic static Requirements withCleanStackTrace()
+			\t{
+			\t\treturn REQUIREMENTS.copy().withCleanStackTrace();
+			\t}
+
+			\t/**
+			\t * Indicates that stack trace references to this library should be kept.
+			\t *
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t * @see #isCleanStackTrace()
+			\t */
+			\tpublic static Requirements withoutCleanStackTrace()
+			\t{
+			\t\treturn REQUIREMENTS.copy().withoutCleanStackTrace();
+			\t}
+
+			\t/**
+			\t * Returns an unmodifiable map to append to the exception message.
+			\t *
+			\t * @return an empty map by default
+			\t * @see #withContext(String, Object)
+			\t */
+			\tpublic static Map<String, Object> getContext()
+			\t{
+			\t\treturn REQUIREMENTS.getContext();
+			\t}
+
+			\t/**
+			\t * Adds or updates contextual information associated with the exception message. Overrides any values
+			\t * associated with the {@code name} at the {@link ThreadRequirements} level.
+			\t *
+			\t * @param name  the name of the parameter
+			\t * @param value the value of the parameter
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t * @throws NullPointerException if {@code name} is null
+			\t */
+			\tpublic static Requirements withContext(String name, Object value)
+			\t{
+			\t\treturn REQUIREMENTS.copy().withContext(name, value);
+			\t}
+
+			\t/**
+			\t * Returns the contextual information associated with this configuration.
+			\t *
+			\t * @param message the exception message ({@code null} if absent)
+			\t * @return the contextual information associated with this configuration
+			\t */
+			\tpublic static String getContextMessage(String message)
+			\t{
+			\t\treturn REQUIREMENTS.getContextMessage(message);
+			\t}
+
+			\t/**
+			\t * Returns the {@code String} representation of an object. By default, custom handlers are provided for
+			\t * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, and {@code Path}.
+			\t *
+			\t * @param value a value
+			\t * @return the {@code String} representation of the value
+			\t * @see #withStringConverter(Class, Function)
+			\t */
+			\tpublic static String toString(Object value)
+			\t{
+			\t\treturn REQUIREMENTS.toString(value);
+			\t}
+
+			\t/**
+			\t * Indicates that a function should be used to convert an object to a String.
+			\t * <p>
+			\t * Please note that {@code type} must be an exact match (e.g. configuring a converter for
+			\t * {@code Set} will not match values of type {@code HashSet}).
+			\t *
+			\t * @param <T>       the type of object being converted
+			\t * @param type      the type of object being converted (non-primitive arrays are mapped to
+			\t *                  {@code Object[].class})
+			\t * @param converter a function that converts an object of the specified type to a String
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t * @throws NullPointerException if any of the arguments are null
+			\t */
+			\tpublic static <T> Requirements withStringConverter(Class<T> type, Function<T, String> converter)
+			\t{
+			\t\treturn REQUIREMENTS.copy().withStringConverter(type, converter);
+			\t}
+
+			\t/**
+			\t * Indicates that an object's {@code toString()} method should be used to convert it to a String.
+			\t *
+			\t * @param <T>  the type of object being converted
+			\t * @param type the type of object being converted
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t * @throws NullPointerException if {@code type} is null
+			\t */
+			\tpublic static <T> Requirements withoutStringConverter(Class<T> type)
+			\t{
+			\t\treturn REQUIREMENTS.copy().withoutStringConverter(type);
+			\t}
+
+			\t/**
+			\t * Replaces the configuration.
+			\t *
+			\t * @param configuration a new configuration
+			\t * @return a new {@code Requirements} object that operates independently of the original instance
+			\t * @throws NullPointerException if {@code configuration} is null
+			\t */
+			\tpublic static Requirements withConfiguration(Configuration configuration)
+			\t{
+			\t\treturn REQUIREMENTS.copy().withConfiguration(configuration);
+			\t}
+
+			\t/**
+			\t * Verifies requirements only if {@link Configuration#assertionsAreEnabled() assertions are enabled}.
+			\t *
+			\t * @param <V>          the return value of the operation
+			\t * @param requirements the requirements to verify
+			\t * @return the return value of the operation, or {@code null} if assertions are disabled
+			\t * @throws NullPointerException if {@code requirements} is null
+			\t * @see #assertThat(Consumer)
+			\t */
+			\tpublic static <V> V assertThatAndReturn(Function<Requirements, V> requirements)
+			\t{
+			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\tif (!assertionsAreEnabled())
+			\t\t\treturn null;
+			\t\tRequirements copy = REQUIREMENTS.copy();
+			\t\treturn requirements.apply(copy);
+			\t}
+
+			\t/**
+			\t * Verifies requirements only if assertions are enabled.
+			\t *
+			\t * @param requirements the requirements to verify
+			\t * @throws NullPointerException if {@code requirements} is null
+			\t * @see #assertThatAndReturn(Function)
+			\t */
+			\tpublic static void assertThat(Consumer<Requirements> requirements)
+			\t{
+			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\tif (!assertionsAreEnabled())
+			\t\t\treturn;
+			\t\tRequirements copy = REQUIREMENTS.copy();
+			\t\trequirements.accept(copy);
 			\t}
 			""");
 		appendPluginMethods(plugins, true, out);
@@ -218,8 +418,7 @@ public final class ApiGenerator
 			\tprivate DefaultRequirements()
 			\t{
 			\t}
-			}
-			""");
+			}""");
 		return Generators.writeIfChanged(path, out.toString());
 	}
 
@@ -277,7 +476,7 @@ public final class ApiGenerator
 	 * Delegates calls to a plugin method.
 	 *
 	 * @param plugins  the list of enabled plugins
-	 * @param isStatic true if the delegate field is static
+	 * @param isStatic true if the delegate method is static
 	 * @param out      the buffer to write into
 	 */
 	private void appendPluginMethods(List<CompilationUnit> plugins, boolean isStatic, StringBuilder out)
@@ -292,7 +491,6 @@ public final class ApiGenerator
 				switch (method.getNameAsString())
 				{
 					case "requireThat":
-					case "assertThat":
 					case "validateThat":
 						break;
 					default:
@@ -300,28 +498,31 @@ public final class ApiGenerator
 				}
 
 				out.append("\n");
-				method.getJavadoc().ifPresent(javadoc ->
+				if (isStatic)
 				{
-					StringBuilder text = new StringBuilder(method.getJavadoc().get().toComment().
-						toString(defaultFormatter));
-					// Increase indentation
-					text.insert(0, "\t");
-					int index = 0;
-					while (true)
+					// Copy Javadoc
+					method.getJavadoc().ifPresent(javadoc ->
 					{
-						index = text.indexOf("\n", index);
-						if (index == -1)
-							break;
-						++index;
-						text.insert(index, '\t');
-						++index;
-					}
-					if (text.length() > 0 && text.charAt(text.length() - 1) == '\t')
-						text.delete(text.length() - 1, text.length());
-					out.append(text);
-				});
-				// Annotations
-				if (!isStatic)
+						StringBuilder text = new StringBuilder(method.getJavadoc().get().toComment().
+							toString(defaultFormatter));
+						// Increase indentation
+						text.insert(0, "\t");
+						int index = 0;
+						while (true)
+						{
+							index = text.indexOf("\n", index);
+							if (index == -1)
+								break;
+							++index;
+							text.insert(index, '\t');
+							++index;
+						}
+						if (text.length() > 0 && text.charAt(text.length() - 1) == '\t')
+							text.delete(text.length() - 1, text.length());
+						out.append(text);
+					});
+				}
+				else
 					out.append("\t@Override\n");
 				out.append("\t@CheckReturnValue\n");
 				// Modifiers
@@ -347,7 +548,6 @@ public final class ApiGenerator
 				for (Parameter parameter : method.getParameters())
 					joiner.add(parameter.getTypeAsString() + " " + parameter.getNameAsString());
 				out.append(joiner + "\n");
-
 				out.append("\t{\n");
 				out.append("\t\treturn " + delegateName + "." + method.getNameAsString() + "(actual, name);\n");
 				out.append("\t}\n");
@@ -365,9 +565,7 @@ public final class ApiGenerator
 		String pluginName = plugin.getNameAsString();
 		if (!isStatic)
 			return Character.toLowerCase(pluginName.charAt(0)) + pluginName.substring(1);
-		int requirementsIndex = pluginName.indexOf("Requirements");
-		String delegateName = pluginName.substring(0, requirementsIndex);
-		return delegateName.toUpperCase(Locale.US) + "_REQUIREMENTS";
+		return "REQUIREMENTS";
 	}
 
 	/**
@@ -425,19 +623,15 @@ public final class ApiGenerator
 			import java.util.Collection;
 			import java.util.Map;
 			import java.util.Optional;
+			import java.util.function.Consumer;
 			import java.util.function.Function;
 
 			""");
 		out.append("""
 			/**
-			 * Verifies API requirements using a custom {@link Configuration configuration}. for verifying API requirements.
+			 * Verifies requirements using a thread-specific {@link Configuration configuration}.
 			 * <p>
-			 * This class holds its own configuration whereas {@link DefaultRequirements} always uses the
-			 * default {@link Configuration configuration}.
-			 * <p>
-			 * The assertion status of the {@link Configuration} class determines whether
-			 * {@code assertThat()} carries out a verification or does nothing.
-			 *
+			 * <b>Thread-safety</b>: This class is <b>not</b> thread-safe.
 			 * @see DefaultRequirements
 			 * @see JavaRequirements
 			""");
@@ -497,11 +691,7 @@ public final class ApiGenerator
 		out.append("""
 			\t}
 
-			\t/**
-			\t * Returns true if assertions are enabled for this class.
-			\t *
-			\t * @return true if assertions are enabled for this class
-			\t */
+			\t@Override
 			\tpublic boolean assertionsAreEnabled()
 			\t{
 			\t\treturn javaRequirements.assertionsAreEnabled();
@@ -512,28 +702,6 @@ public final class ApiGenerator
 			\t{
 			""");
 		appendConfigurationUpdate(plugins, "withAssertionsEnabled()", out);
-		out.append("""
-			\t}
-
-			\t@Override
-			\tpublic boolean isCleanStackTrace()
-			\t{
-			\t\treturn javaRequirements.isCleanStackTrace();
-			\t}
-
-			\t@Override
-			\tpublic Requirements withCleanStackTrace()
-			\t{
-			""");
-		appendConfigurationUpdate(plugins, "withCleanStackTrace()", out);
-		out.append("""
-			\t}
-
-			\t@Override
-			\tpublic Requirements withoutCleanStackTrace()
-			\t{
-			""");
-		appendConfigurationUpdate(plugins, "withoutCleanStackTrace()", out);
 		out.append("""
 			\t}
 
@@ -564,6 +732,28 @@ public final class ApiGenerator
 			\t{
 			""");
 		appendConfigurationUpdate(plugins, "withoutDiff()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic boolean isCleanStackTrace()
+			\t{
+			\t\treturn javaRequirements.isCleanStackTrace();
+			\t}
+
+			\t@Override
+			\tpublic Requirements withCleanStackTrace()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withCleanStackTrace()", out);
+		out.append("""
+			\t}
+
+			\t@Override
+			\tpublic Requirements withoutCleanStackTrace()
+			\t{
+			""");
+		appendConfigurationUpdate(plugins, "withoutCleanStackTrace()", out);
 		out.append("""
 			\t}
 
@@ -638,7 +828,37 @@ public final class ApiGenerator
 		out.append("""
 			\t\treturn this;
 			\t}
-			""");
+
+			\t/**
+			\t * Verifies requirements only if {@link Configuration#assertionsAreEnabled() assertions are enabled}.
+			\t *
+			\t * @param <V>          the return value of the operation
+			\t * @param requirements the requirements to verify
+			\t * @return the return value of the operation, or {@code null} if assertions are disabled
+			\t * @throws NullPointerException if {@code requirements} is null
+			\t * @see #assertThat(Consumer)
+			\t */
+			\tpublic <V> V assertThatAndReturn(Function<Requirements, V> requirements)
+			\t{
+			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\tif (assertionsAreEnabled())
+			\t\t\treturn requirements.apply(this);
+			\t\treturn null;
+			\t}
+
+			\t/**
+			\t * Verifies requirements only if {@link Configuration#assertionsAreEnabled() assertions are enabled}.
+			\t *
+			\t * @param requirements the requirements to verify
+			\t * @throws NullPointerException if {@code requirements} is null
+			\t * @see #assertThatAndReturn(Function)
+			\t */
+			\tpublic void assertThat(Consumer<Requirements> requirements)
+			\t{
+			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\tif (assertionsAreEnabled())
+			\t\t\trequirements.accept(this);
+			\t}""");
 		appendPluginMethods(plugins, false, out);
 		out.append("}\n");
 		return Generators.writeIfChanged(path, out.toString());
@@ -839,6 +1059,11 @@ public final class ApiGenerator
 
 			for (MethodDeclaration method : pluginClass.getMethods())
 			{
+				if (!method.getType().isClassOrInterfaceType())
+				{
+					// No imports are necessary for void and primitive types
+					continue;
+				}
 				String returnType = method.getType().asClassOrInterfaceType().getName().asString();
 				if (!namesImported.add(returnType))
 					continue;

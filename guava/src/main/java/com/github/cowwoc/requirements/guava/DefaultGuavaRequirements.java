@@ -6,7 +6,6 @@ package com.github.cowwoc.requirements.guava;
 
 import com.github.cowwoc.requirements.guava.internal.MultimapValidatorImpl;
 import com.github.cowwoc.requirements.guava.internal.MultimapVerifierImpl;
-import com.github.cowwoc.requirements.guava.internal.MultimapVerifierNoOp;
 import com.github.cowwoc.requirements.guava.internal.secrets.GuavaSecrets;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
@@ -196,17 +195,9 @@ public final class DefaultGuavaRequirements implements GuavaRequirements
 	}
 
 	@Override
-	public <K, V> MultimapVerifier<K, V> assertThat(Multimap<K, V> actual, String name)
-	{
-		if (config.assertionsAreEnabled())
-			return requireThat(actual, name);
-		return MultimapVerifierNoOp.getInstance();
-	}
-
-	@Override
 	public <K, V> MultimapValidator<K, V> validateThat(Multimap<K, V> actual, String name)
 	{
 		Verifiers.verifyName(scope, config, name);
-		return new MultimapValidatorImpl<>(scope, config, name, actual, new ArrayList<>());
+		return new MultimapValidatorImpl<>(scope, config, name, actual, new ArrayList<>(), false);
 	}
 }

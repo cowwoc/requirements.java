@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "ResultOfMethodCallIgnored", "OptionalAssignedToNull"})
 public final class OptionalTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -147,7 +147,8 @@ public final class OptionalTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			Optional<?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 

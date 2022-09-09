@@ -80,18 +80,6 @@ public interface JavaRequirements extends Configuration
 	<T> ObjectVerifier<T> requireThat(T actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Object, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <T>    the type of the value
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<T> ObjectVerifier<T> assertThat(T actual, String name);
-
-	/**
 	 * Validates the requirements of an {@code Object}.
 	 *
 	 * @param <T>    the type of the value
@@ -115,19 +103,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<C extends Collection<E>, E> CollectionVerifier<C, E> requireThat(C actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(Collection, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <C>    the type of the collection
-	 * @param <E>    the type of elements in the collection
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<C extends Collection<E>, E> CollectionVerifier<C, E> assertThat(C actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code Collection}.
@@ -156,19 +131,6 @@ public interface JavaRequirements extends Configuration
 	<L extends List<E>, E> ListVerifier<L, E> requireThat(L actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(List, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <L>    the type of the list
-	 * @param <E>    the type of elements in the list
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<L extends List<E>, E> ListVerifier<L, E> assertThat(L actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code List}.
 	 *
 	 * @param <L>    the type of the list
@@ -193,17 +155,6 @@ public interface JavaRequirements extends Configuration
 	ArrayVerifier<byte[], Byte> requireThat(byte[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(byte[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<byte[], Byte> assertThat(byte[] actual, String name);
-
-	/**
 	 * Validates the requirements of a primitive {@code byte} array.
 	 *
 	 * @param actual the actual value
@@ -224,17 +175,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<short[], Short> requireThat(short[] actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(short[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<short[], Short> assertThat(short[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code short} array.
@@ -259,17 +199,6 @@ public interface JavaRequirements extends Configuration
 	ArrayVerifier<int[], Integer> requireThat(int[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(int[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<int[], Integer> assertThat(int[] actual, String name);
-
-	/**
 	 * Validates the requirements of a primitive {@code int} array.
 	 *
 	 * @param actual the actual value
@@ -290,17 +219,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<long[], Long> requireThat(long[] actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(long[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<long[], Long> assertThat(long[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code long} array.
@@ -325,17 +243,6 @@ public interface JavaRequirements extends Configuration
 	ArrayVerifier<float[], Float> requireThat(float[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(float[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<float[], Float> assertThat(float[] actual, String name);
-
-	/**
 	 * Validates the requirements of a primitive {@code float} array.
 	 *
 	 * @param actual the actual value
@@ -356,17 +263,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<double[], Double> requireThat(double[] actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(double[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<double[], Double> assertThat(double[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code double} array.
@@ -391,17 +287,6 @@ public interface JavaRequirements extends Configuration
 	ArrayVerifier<boolean[], Boolean> requireThat(boolean[] actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(boolean[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<boolean[], Boolean> assertThat(boolean[] actual, String name);
-
-	/**
 	 * Validates the requirements of a primitive {@code boolean} array.
 	 *
 	 * @param actual the actual value
@@ -422,17 +307,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	ArrayVerifier<char[], Character> requireThat(char[] actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(char[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	ArrayVerifier<char[], Character> assertThat(char[] actual, String name);
 
 	/**
 	 * Validates the requirements of a primitive {@code char} array.
@@ -456,18 +330,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<E> ArrayVerifier<E[], E> requireThat(E[] actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(Object[], String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <E>    the type of elements in the array
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<E> ArrayVerifier<E[], E> assertThat(E[] actual, String name);
 
 	/**
 	 * Validates the requirements of an {@code Object} array.
@@ -494,18 +356,6 @@ public interface JavaRequirements extends Configuration
 	<T extends Comparable<? super T>> ComparableVerifier<T> requireThat(T actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Comparable, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <T>    the type of the number
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<T extends Comparable<? super T>> ComparableVerifier<T> assertThat(T actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Comparable}.
 	 *
 	 * @param <T>    the type of objects that the value may be compared to
@@ -527,18 +377,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveNumberVerifier<Byte> requireThat(byte actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(byte, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveNumberVerifier<Byte> assertThat(byte actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code byte}.
@@ -563,18 +401,6 @@ public interface JavaRequirements extends Configuration
 	PrimitiveNumberVerifier<Short> requireThat(short actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(short, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveNumberVerifier<Short> assertThat(short actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code short}.
 	 *
 	 * @param actual the actual value
@@ -595,18 +421,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerVerifier<Integer> requireThat(int actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(int, String)} but does nothing if assertions are disabled for this
-	 * class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveIntegerVerifier<Integer> assertThat(int actual, String name);
 
 	/**
 	 * Validates the requirements of an {@code int}.
@@ -631,18 +445,6 @@ public interface JavaRequirements extends Configuration
 	IntegerVerifier<Integer> requireThat(Integer actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Integer, String)} but does nothing if assertions are disabled for this
-	 * class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	IntegerVerifier<Integer> assertThat(Integer actual, String name);
-
-	/**
 	 * Validates the requirements of an {@code Integer}.
 	 *
 	 * @param actual the actual value
@@ -663,18 +465,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveIntegerVerifier<Long> requireThat(long actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(long, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveIntegerVerifier<Long> assertThat(long actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code long}.
@@ -699,18 +489,6 @@ public interface JavaRequirements extends Configuration
 	IntegerVerifier<Long> requireThat(Long actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Long, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	IntegerVerifier<Long> assertThat(Long actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Long}.
 	 *
 	 * @param actual the actual value
@@ -731,18 +509,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveFloatingPointVerifier<Float> requireThat(float actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(float, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveFloatingPointVerifier<Float> assertThat(float actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code float}.
@@ -767,18 +533,6 @@ public interface JavaRequirements extends Configuration
 	PrimitiveFloatingPointVerifier<Double> requireThat(double actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(double, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveFloatingPointVerifier<Double> assertThat(double actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code double}.
 	 *
 	 * @param actual the actual value
@@ -801,18 +555,6 @@ public interface JavaRequirements extends Configuration
 	PrimitiveBooleanVerifier requireThat(boolean actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(boolean, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveBooleanVerifier assertThat(boolean actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code boolean}.
 	 *
 	 * @param actual the actual value
@@ -833,18 +575,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	PrimitiveCharacterVerifier requireThat(char actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(char, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PrimitiveCharacterVerifier assertThat(char actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code char}.
@@ -870,18 +600,6 @@ public interface JavaRequirements extends Configuration
 	<T extends Number & Comparable<? super T>> NumberVerifier<T> requireThat(T actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Number, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <T>    the type of the number
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<T extends Number & Comparable<? super T>> NumberVerifier<T> assertThat(T actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Number}.
 	 *
 	 * @param <T>    the type of the number
@@ -903,18 +621,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BooleanVerifier requireThat(Boolean actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(Boolean, String)} but does nothing if assertions are disabled for
-	 * this class.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	BooleanVerifier assertThat(Boolean actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code Boolean}.
@@ -939,17 +645,6 @@ public interface JavaRequirements extends Configuration
 	FloatingPointVerifier<Float> requireThat(Float actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Float, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	FloatingPointVerifier<Float> assertThat(Float actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Float}.
 	 *
 	 * @param actual the actual value
@@ -972,17 +667,6 @@ public interface JavaRequirements extends Configuration
 	FloatingPointVerifier<Double> requireThat(Double actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Double, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	FloatingPointVerifier<Double> assertThat(Double actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Double}.
 	 *
 	 * @param actual the actual value
@@ -1003,17 +687,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	BigDecimalVerifier requireThat(BigDecimal actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(BigDecimal, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	BigDecimalVerifier assertThat(BigDecimal actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code BigDecimal}.
@@ -1040,19 +713,6 @@ public interface JavaRequirements extends Configuration
 	<K, V> MapVerifier<K, V> requireThat(Map<K, V> actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Map, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <K>    the type of key in the map
-	 * @param <V>    the type of value in the map
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<K, V> MapVerifier<K, V> assertThat(Map<K, V> actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Map}.
 	 *
 	 * @param <K>    the type of key in the map
@@ -1077,17 +737,6 @@ public interface JavaRequirements extends Configuration
 	PathVerifier requireThat(Path actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Path, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	PathVerifier assertThat(Path actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code Path}.
 	 *
 	 * @param actual the actual value
@@ -1108,17 +757,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	StringVerifier requireThat(String actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(String, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	StringVerifier assertThat(String actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code String}.
@@ -1143,17 +781,6 @@ public interface JavaRequirements extends Configuration
 	UriVerifier requireThat(URI actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	UriVerifier assertThat(URI actual, String name);
-
-	/**
 	 * Validates the requirements of a {@code URI}.
 	 *
 	 * @param actual the actual value
@@ -1174,17 +801,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	UrlVerifier requireThat(URL actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(URI, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	UrlVerifier assertThat(URL actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code URL}.
@@ -1208,18 +824,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	<T> ClassVerifier<T> requireThat(Class<T> actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(Class, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param <T>    the type of class
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	<T> ClassVerifier<T> assertThat(Class<T> actual, String name);
 
 	/**
 	 * Validates the requirements of a {@code Class}.
@@ -1246,18 +850,6 @@ public interface JavaRequirements extends Configuration
 	OptionalVerifier requireThat(Optional<?> actual, String name);
 
 	/**
-	 * Same as {@link #requireThat(Optional, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	OptionalVerifier assertThat(Optional<?> actual, String name);
-
-	/**
 	 * Validates the requirements of an {@code Optional}.
 	 *
 	 * @param actual the actual value
@@ -1279,17 +871,6 @@ public interface JavaRequirements extends Configuration
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
 	InetAddressVerifier requireThat(InetAddress actual, String name);
-
-	/**
-	 * Same as {@link #requireThat(InetAddress, String)} but does nothing if assertions are disabled.
-	 *
-	 * @param actual the actual value
-	 * @param name   the name of the value
-	 * @return a verifier for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} is blank
-	 */
-	InetAddressVerifier assertThat(InetAddress actual, String name);
 
 	/**
 	 * Validates the requirements of an {@code InetAddress}.

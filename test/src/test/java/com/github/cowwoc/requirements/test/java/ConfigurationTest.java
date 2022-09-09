@@ -17,7 +17,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class ConfigurationTest
@@ -27,23 +26,27 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Set<Integer> actual = Sets.newLinkedHashSetWithExpectedSize(2);
-			actual.add(1);
-			actual.add(2);
-
-			Set<Integer> notEqual = Collections.emptySet();
-
-			new Requirements(scope).withStringConverter(LinkedHashSet.class, s ->
+			Requirements requirements = new Requirements(scope);
+			try
 			{
-				@SuppressWarnings({"unchecked", "rawtypes"})
-				List<Integer> result = new ArrayList<>(s);
-				result.sort(Comparator.reverseOrder());
-				return result.toString();
-			}).requireThat(actual, "actual").isEqualTo(notEqual);
-		}
-		catch (IllegalArgumentException e)
-		{
-			requireThat(e.getMessage(), "e.getMessage()").contains("[2, 1]");
+				Set<Integer> actual = Sets.newLinkedHashSetWithExpectedSize(2);
+				actual.add(1);
+				actual.add(2);
+
+				Set<Integer> notEqual = Collections.emptySet();
+
+				requirements.withStringConverter(LinkedHashSet.class, s ->
+				{
+					@SuppressWarnings({"unchecked", "rawtypes"})
+					List<Integer> result = new ArrayList<>(s);
+					result.sort(Comparator.reverseOrder());
+					return result.toString();
+				}).requireThat(actual, "actual").isEqualTo(notEqual);
+			}
+			catch (IllegalArgumentException e)
+			{
+				requirements.requireThat(e.getMessage(), "e.getMessage()").contains("[2, 1]");
+			}
 		}
 	}
 }

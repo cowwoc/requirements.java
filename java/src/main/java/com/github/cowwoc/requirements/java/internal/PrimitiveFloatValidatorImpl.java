@@ -20,29 +20,24 @@ public final class PrimitiveFloatValidatorImpl
 	implements PrimitiveFloatingPointValidator<Float>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public PrimitiveFloatValidatorImpl(ApplicationScope scope, Configuration config, String name, Float actual,
-	                                   List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	protected PrimitiveFloatingPointValidator<Float> getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected PrimitiveFloatingPointValidator<Float> getNoOp()
-	{
-		return new PrimitiveFloatingPointValidatorNoOp<>(getFailures());
 	}
 }

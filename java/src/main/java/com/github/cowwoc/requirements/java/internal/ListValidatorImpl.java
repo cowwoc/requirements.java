@@ -28,24 +28,27 @@ public final class ListValidatorImpl<L extends List<E>, E>
 	/**
 	 * Creates a ListValidatorImpl with existing validation failures.
 	 *
-	 * @param scope      the application configuration
-	 * @param config     the instance configuration
-	 * @param name       the name of the value
-	 * @param actual     the actual value
-	 * @param pluralizer returns the singular or plural form of an element type
-	 * @param failures   the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param pluralizer   returns the singular or plural form of an element type
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code pluralizer} or
 	 *                        {@code failures} are null. If {@code name} is blank.
 	 */
 	public ListValidatorImpl(ApplicationScope scope, Configuration config, String name, L actual,
-		Pluralizer pluralizer, List<ValidationFailure> failures)
+		Pluralizer pluralizer, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, pluralizer, failures);
+		super(scope, config, name, actual, pluralizer, failures, fatalFailure);
 	}
 
 	@Override
 	public ListValidator<L, E> isSorted(Comparator<E> comparator)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(comparator, "comparator").isNotNull();
 
@@ -54,7 +57,8 @@ public final class ListValidatorImpl<L extends List<E>, E>
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return this;
 		}
 		List<E> sorted = actual.stream().sorted(comparator).toList();
 		if (!actual.equals(sorted))
@@ -65,18 +69,12 @@ public final class ListValidatorImpl<L extends List<E>, E>
 				addContext("Sorted", sorted);
 			addFailure(failure);
 		}
-		return getThis();
+		return this;
 	}
 
 	@Override
 	protected ListValidator<L, E> getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected ListValidator<L, E> getNoOp()
-	{
-		return new ListValidatorNoOp<>(getFailures());
 	}
 }

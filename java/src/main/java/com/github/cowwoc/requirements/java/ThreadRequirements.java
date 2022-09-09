@@ -4,7 +4,6 @@
  */
 package com.github.cowwoc.requirements.java;
 
-import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 
 import java.util.Map;
@@ -20,7 +19,7 @@ public final class ThreadRequirements
 {
 	// Must use a Supplier because the instance is thread-local
 	private static final Supplier<ThreadConfiguration> DELEGATE =
-		 MainApplicationScope.INSTANCE.getThreadConfiguration();
+		MainApplicationScope.INSTANCE.getThreadConfiguration();
 
 	/**
 	 * Prevent construction.
@@ -73,16 +72,5 @@ public final class ThreadRequirements
 	public static ThreadConfiguration withoutAnyContext()
 	{
 		return DELEGATE.get().withoutAnyContext();
-	}
-
-	/**
-	 * Returns the contextual information associated with this thread.
-	 *
-	 * @param message the exception message ({@code null} if absent)
-	 * @return the contextual information associated with this thread
-	 */
-	public static String getContextMessage(String message)
-	{
-		return DELEGATE.get().getContextMessage(message);
 	}
 }

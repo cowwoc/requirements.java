@@ -47,12 +47,4 @@ public interface ThreadConfiguration
 	 * @return this
 	 */
 	ThreadConfiguration withoutAnyContext();
-
-	/**
-	 * Returns the contextual information associated with this configuration.
-	 *
-	 * @param message the exception message ({@code null} if absent)
-	 * @return the contextual information associated with this configuration
-	 */
-	String getContextMessage(String message);
 }

@@ -35,18 +35,19 @@ public final class MultimapValidatorImpl<K, V>
 	implements MultimapValidator<K, V>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the parameter
-	 * @param actual   the actual value of the parameter
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the parameter
+	 * @param actual       the actual value of the parameter
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public MultimapValidatorImpl(ApplicationScope scope, Configuration config, String name,
-	                             Multimap<K, V> actual, List<ValidationFailure> failures)
+		Multimap<K, V> actual, List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
@@ -56,21 +57,22 @@ public final class MultimapValidatorImpl<K, V>
 	}
 
 	@Override
-	protected MultimapValidator<K, V> getNoOp()
-	{
-		return new MultimapValidatorNoOp<>(getFailures());
-	}
-
-	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", null, Pluralizer.KEY,
+				getFailures(), fatalFailure);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
-			getFailures());
+			getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MultimapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -81,13 +83,20 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name + ".values()", null, Pluralizer.VALUE,
+				getFailures(), fatalFailure);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
-			getFailures());
+			getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MultimapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -98,14 +107,21 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
+		if (fatalFailure)
+		{
+			return new CollectionValidatorImpl<>(scope, config, name + ".entries()", null, Pluralizer.ENTRY,
+				getFailures(), fatalFailure);
+		}
 		return new CollectionValidatorImpl<>(scope, config, name + ".entries()", actual.entries(),
-			Pluralizer.ENTRY, getFailures());
+			Pluralizer.ENTRY, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MultimapValidator<K, V> entries(Consumer<CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>>>
-		                                       consumer)
+		consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -116,6 +132,8 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public MultimapValidator<K, V> isEmpty()
 	{
+		if (fatalFailure)
+			return this;
 		if (!actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -129,6 +147,8 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public MultimapValidator<K, V> isNotEmpty()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual.isEmpty())
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -141,13 +161,20 @@ public final class MultimapValidatorImpl<K, V>
 	@Override
 	public SizeValidator size()
 	{
+		if (fatalFailure)
+		{
+			return new SizeValidatorImpl(scope, config, name, null, name + ".size()", 0, Pluralizer.ENTRY,
+				getFailures(), fatalFailure);
+		}
 		return new SizeValidatorImpl(scope, config, name, actual, name + ".size()", actual.size(),
-			Pluralizer.ENTRY, getFailures());
+			Pluralizer.ENTRY, getFailures(), fatalFailure);
 	}
 
 	@Override
 	public MultimapValidator<K, V> size(Consumer<SizeValidator> consumer)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements internalVerifier = scope.getInternalVerifier();
 		internalVerifier.requireThat(consumer, "consumer").isNotNull();
 

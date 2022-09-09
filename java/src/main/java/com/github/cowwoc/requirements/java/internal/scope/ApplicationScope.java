@@ -5,8 +5,10 @@
 package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ThreadConfiguration;
+import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 
 import java.util.function.Supplier;
 
@@ -21,19 +23,24 @@ public interface ApplicationScope extends JvmScope
 	GlobalConfiguration getGlobalConfiguration();
 
 	/**
-	 * @return the default configuration (value may change with every invocation)
-	 */
-	Supplier<Configuration> getDefaultConfiguration();
-
-	/**
 	 * @return the configuration shared by all verifiers invoked by the current thread
 	 */
 	Supplier<ThreadConfiguration> getThreadConfiguration();
 
 	/**
+	 * @return the default configuration (value may change with every invocation)
+	 */
+	Supplier<Configuration> getDefaultConfiguration();
+
+	/**
 	 * @return a verifier that can be used to check a verifier's own parameters
 	 */
 	JavaRequirements getInternalVerifier();
+
+	/**
+	 * @return an instance of {@code Exceptions}
+	 */
+	Exceptions getExceptions();
 
 	@Override
 	void close();

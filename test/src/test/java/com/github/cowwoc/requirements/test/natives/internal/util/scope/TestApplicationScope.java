@@ -4,13 +4,9 @@
  */
 package com.github.cowwoc.requirements.test.natives.internal.util.scope;
 
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.AbstractApplicationScope;
-import com.github.cowwoc.requirements.java.internal.scope.DefaultThreadConfiguration;
-import com.github.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
-
-import java.util.function.Supplier;
 
 /**
  * ApplicationScope for the test codebase.
@@ -18,8 +14,6 @@ import java.util.function.Supplier;
 public final class TestApplicationScope extends AbstractApplicationScope
 {
 	private final GlobalConfiguration globalConfiguration;
-	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
-		ThreadLocal.withInitial(() -> new DefaultThreadConfiguration(this));
 
 	/**
 	 * @param terminalEncoding the type of encoding that verifiers should output
@@ -27,7 +21,9 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	 */
 	public TestApplicationScope(TerminalEncoding terminalEncoding)
 	{
-		this.globalConfiguration = new TestGlobalConfiguration(terminalEncoding);
+		// Show the full stack trace in case of failure
+		this.globalConfiguration = new TestGlobalConfiguration(terminalEncoding).
+			withoutCleanStackTrace();
 	}
 
 	/**
@@ -45,12 +41,6 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	public GlobalConfiguration getGlobalConfiguration()
 	{
 		return globalConfiguration;
-	}
-
-	@Override
-	public Supplier<ThreadConfiguration> getThreadConfiguration()
-	{
-		return threadConfiguration::get;
 	}
 
 	@Override

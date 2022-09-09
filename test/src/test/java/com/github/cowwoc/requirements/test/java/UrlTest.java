@@ -72,7 +72,8 @@ public final class UrlTest
 		{
 			// Ensure that no exception is thrown if assertions are disabled
 			URL actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(actual, "actual").isNotNull();
+			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
+				r.requireThat(actual, "actual").isNotNull());
 		}
 	}
 

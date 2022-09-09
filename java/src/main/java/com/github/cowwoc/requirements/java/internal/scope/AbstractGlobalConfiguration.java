@@ -4,10 +4,12 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Base class for {@code GlobalConfigurable} instances.
+ * Base class for {@code GlobalConfiguration} instances.
  */
 public abstract class AbstractGlobalConfiguration implements GlobalConfiguration
 {

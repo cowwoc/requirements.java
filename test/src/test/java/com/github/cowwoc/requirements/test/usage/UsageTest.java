@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements.test.usage;
 
 import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
@@ -18,8 +19,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.cowwoc.requirements.DefaultRequirements.assertThat;
-import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
 
 public final class UsageTest
@@ -30,17 +29,21 @@ public final class UsageTest
 	@Test
 	public void verifiersFromMultipleModules()
 	{
-		Map<Integer, Integer> map = Collections.singletonMap(1, 5);
-		Multimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5, 1, 6);
+		try (ApplicationScope scope = new MainApplicationScope())
+		{
+			Requirements requirements = new Requirements(scope);
+			Map<Integer, Integer> map = Collections.singletonMap(1, 5);
+			Multimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5, 1, 6);
 
-		// Java will invoke java.Requirements.requireThat() or guava.Requirements.requireThat()
-		// depending on the context
-		requireThat(map, "map").size().isPositive();
-		requireThat(multimap, "multimap").entries().containsAll(ImmutableList.of(
-			Maps.immutableEntry(1, 5), Maps.immutableEntry(1, 6)));
+			// Java will invoke java.Requirements.requireThat() or guava.Requirements.requireThat()
+			// depending on the context
+			requirements.requireThat(map, "map").size().isPositive();
+			requirements.requireThat(multimap, "multimap").entries().containsAll(ImmutableList.of(
+				Maps.immutableEntry(1, 5), Maps.immutableEntry(1, 6)));
 
-		// Assertions work too
-		assertThat(multimap, "multimap").size().isPositive();
+			// Assertions work too
+			requirements.assertThat(r -> r.requireThat(multimap, "multimap").size().isPositive());
+		}
 	}
 
 	@Test
@@ -51,11 +54,11 @@ public final class UsageTest
 			Duration duration = Duration.ofDays(1);
 			Set<Duration> bucket = Collections.emptySet();
 
-			Requirements verifier = new Requirements(scope);
-			verifier.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
+			Requirements requirements = new Requirements(scope);
+			requirements.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{
-				verifier.withContext("SomeName", "SomeContext").
+				requirements.withContext("SomeName", "SomeContext").
 					requireThat(bucket, "bucket").contains(duration);
 			}
 			catch (IllegalArgumentException e)

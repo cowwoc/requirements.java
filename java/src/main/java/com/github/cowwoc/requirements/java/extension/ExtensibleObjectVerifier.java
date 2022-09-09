@@ -4,7 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.extension;
 
-import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.ObjectVerifier;
 import com.github.cowwoc.requirements.java.StringVerifier;
 
@@ -165,17 +164,7 @@ public interface ExtensibleObjectVerifier<S, T>
 	S asString(Consumer<StringVerifier> consumer);
 
 	/**
-	 * Indicates if the actual value is available.
-	 *
-	 * @return true unless {@link JavaRequirements#assertThat(Object, String) assertThat()} was invoked and
-	 * assertions are disabled (in which case the value was discarded), or the actual value was converted to an
-	 * incompatible type
-	 */
-	boolean isActualAvailable();
-
-	/**
-	 * Returns the actual value. The return value is undefined if {@link #isActualAvailable()}
-	 * is {@code false}.
+	 * Returns the actual value.
 	 *
 	 * @return the actual value
 	 */

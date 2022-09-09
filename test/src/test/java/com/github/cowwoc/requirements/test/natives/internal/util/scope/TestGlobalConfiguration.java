@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements.test.natives.internal.util.scope;
 
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.AbstractGlobalConfiguration;
-import com.github.cowwoc.requirements.java.internal.scope.GlobalConfiguration;
 import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
 
 import java.util.Collections;

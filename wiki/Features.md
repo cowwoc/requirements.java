@@ -8,7 +8,7 @@ String number = "1234567";
 // Guava
 Preconditions.checkArgument(number.length() <= 5, "number must be shorter than 6 characters");
 
-java.lang.IllegalArgumentException: number must be shorter than 6 characters
+java.lang.IllegalArgumentException:number must be shorter than 6 characters
 	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
 	at Main.guava2(Main.java:45)
 	at Main.main(Main.java:70)
@@ -16,7 +16,7 @@ java.lang.IllegalArgumentException: number must be shorter than 6 characters
 // This API
 requireThat(number, "number").length().isLessThanOrEqualTo(5);
 
-java.lang.IllegalArgumentException: number may not contain more than 5 characters.
+java.lang.IllegalArgumentException:number may not contain more than 5 characters.
 Actual: 7
 number: 1234567
 	at Main.requirements2(Main.java:57)
@@ -28,24 +28,24 @@ number: 1234567
 Not only do we provide you with the actual and expected values, we also provide a diff whenever possible.
 
 ```java
-List<Integer> actual=Arrays.asList(2,3,4,6);
-List<Integer> expected=Arrays.asList(1,3,5);
+List<Integer> actual = Arrays.asList(2, 3, 4, 6);
+List<Integer> expected = Arrays.asList(1, 3, 5);
 
 // Guava
-Preconditions.checkArgument(actual.containsAll(expected),"actual must contain %s",expected);
+Preconditions.checkArgument(actual.containsAll(expected), "actual must contain %s", expected);
 
-java.lang.IllegalArgumentException:actual must contain[1,3,5]
+java.lang.IllegalArgumentException:actual must contain [1, 3, 5]
 	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
 	at Main.guava3(Main.java:95)
 	at Main.run(Main.java:129)
 	at Main.main(Main.java:137)
 
 // This API
-requireThat(actual,"actual").containsAll(expected);
+requireThat(actual, "actual").containsAll(expected);
 
-java.lang.IllegalArgumentException:actual must contain all elements in:[1,3,5]
-Actual:[2,3,4,6]
-Missing:[1,5]
+java.lang.IllegalArgumentException:actual must contain all elements in: [1, 3, 5]
+Actual : [2, 3, 4, 6]
+Missing: [1, 5]
 	at Main.requirements3(Main.java:106)
 	at Main.run(Main.java:131)
 	at Main.main(Main.java:137)
@@ -90,8 +90,8 @@ List<String> provinces = Arrays.asList("Ontario", "Quebec", "Nova Scotia", "New 
 List<ValidationFailure> failures = new ArrayList<>();
 failures.addAll(validateThat(name, "name").length().isBetween(10, 30).getFailures());
 failures.addAll(validateThat(province, "province").isOneOf(provinces).getFailures());
-for (ValidationFailure failure : failures)
-	System.out.println(failure.getMessage());
+for(ValidationFailure failure : failures)
+System.out.println(failure.getMessage());
 ```
 
 Output will look like:
@@ -122,15 +122,15 @@ can be rewritten as:
 
 ```java
 
-requireThat(nameToAge, "nameToAge").
-  keySet(k -> k.containsAll(Arrays.asList("Leah", "Nathaniel"))).
-  values(v -> v.containsAll(Arrays.asList(3, 1)));
+requireThat(nameToAge,"nameToAge").
+keySet(k -> k.containsAll(Arrays.asList("Leah", "Nathaniel"))).
+values(v -> v.containsAll(Arrays.asList(3, 1)));
 ```
 
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/7.0.1/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
 fails, the library outputs a [diff](String_Diff.md) of the values being compared.
 
 ![colored-diff-example4.png](colored-diff-example4.png)
@@ -145,11 +145,11 @@ Sometimes it is convenient to retrieve the actual value after a verification/val
 ```java
 class Player
 {
-    private final String name;
+	private final String name;
 
-    public Player(String name)
-    {
-        this.name = requireThat(name, "name").isNotEmpty().getActual();
-    }
+	public Player(String name)
+	{
+		this.name = requireThat(name, "name").isNotEmpty().getActual();
+	}
 }
 ```

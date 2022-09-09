@@ -20,29 +20,24 @@ public final class DoubleValidatorImpl
 	implements FloatingPointValidator<Double>
 {
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	public DoubleValidatorImpl(ApplicationScope scope, Configuration config, String name, Double actual,
-	                           List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, name, actual, failures);
+		super(scope, config, name, actual, failures, fatalFailure);
 	}
 
 	@Override
 	protected FloatingPointValidator<Double> getThis()
 	{
 		return this;
-	}
-
-	@Override
-	protected FloatingPointValidator<Double> getNoOp()
-	{
-		return new FloatingPointValidatorNoOp<>(getFailures());
 	}
 }

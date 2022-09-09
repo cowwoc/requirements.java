@@ -35,19 +35,21 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	protected final Configuration config;
 	protected String name;
 	protected T actual;
-	private final List<ValidationFailure> failures;
+	protected boolean fatalFailure;
+	protected final List<ValidationFailure> failures;
 
 	/**
-	 * @param scope    the application configuration
-	 * @param config   the instance configuration
-	 * @param name     the name of the value
-	 * @param actual   the actual value
-	 * @param failures the list of validation failures
+	 * @param scope        the application configuration
+	 * @param config       the instance configuration
+	 * @param name         the name of the value
+	 * @param actual       the actual value
+	 * @param failures     the list of validation failures
+	 * @param fatalFailure true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name} or {@code failures} are null. If
 	 *                        {@code name} is blank.
 	 */
 	protected AbstractObjectValidator(ApplicationScope scope, Configuration config, String name, T actual,
-		List<ValidationFailure> failures)
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
 		assert (scope != null) : "scope may not be null";
 		assert (config != null) : "config may not be null";
@@ -58,6 +60,7 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 		this.config = config;
 		this.name = name;
 		this.actual = actual;
+		this.fatalFailure = fatalFailure;
 		// Intentionally avoid making a defensive copy of the list because some validators delegate some
 		// (but not all) methods to a secondary validator. For example: ArrayValidatorImpl delegates some
 		// methods to ListValidatorImpl.
@@ -68,11 +71,6 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @return this
 	 */
 	protected abstract S getThis();
-
-	/**
-	 * @return a validator that does nothing
-	 */
-	protected abstract S getNoOp();
 
 	/**
 	 * Adds a validation failure.
@@ -155,6 +153,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isSameObjectAs(Object expected, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 		if (actual != expected)
@@ -187,6 +187,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isNotSameObjectAs(Object other, String name)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 		if (actual == other)
@@ -202,6 +204,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isOneOf(Collection<? super T> collection)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(collection, "collection").isNotNull();
 
@@ -210,7 +214,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!collection.contains(actual))
 		{
@@ -225,6 +230,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isNotOneOf(Collection<? super T> collection)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(collection, "collection").isNotNull();
 
@@ -233,7 +240,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (collection.contains(actual))
 		{
@@ -248,6 +256,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 		if (!type.isInstance(actual))
@@ -270,6 +280,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isNotInstanceOf(Class<?> type)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(type, "type").isNotNull();
 		if (type.isInstance(actual))
@@ -287,6 +299,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isNull()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual != null)
 		{
 			// Output a diff because actual.toString() may return "null" which is misleading
@@ -301,24 +315,29 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	@Override
 	public S isNotNull()
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual != null)
 			return getThis();
 		ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 			this.name + " may not be null");
 		addFailure(failure);
-		return getNoOp();
+		fatalFailure = true;
+		return getThis();
 	}
 
 	@Override
 	public StringValidator asString()
 	{
 		String value = config.toString(actual);
-		return new StringValidatorImpl(scope, config, name, value, failures);
+		return new StringValidatorImpl(scope, config, name, value, failures, fatalFailure);
 	}
 
 	@Override
 	public S asString(Consumer<StringValidator> consumer)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
@@ -336,6 +355,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected S isEqualTo(Object expected, BiFunction<Object, Object, Boolean> equals)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (!equals.apply(actual, expected))
 		{
 			String expectedAsString = config.toString(expected);
@@ -370,6 +391,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected S isEqualTo(Object expected, String name, BiFunction<Object, Object, Boolean> equals)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 		if (!equals.apply(actual, expected))
@@ -392,6 +415,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected S isNotEqualTo(Object other, BiFunction<Object, Object, Boolean> equals)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (equals.apply(actual, other))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -413,6 +438,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected S isNotEqualTo(Object other, String name, BiFunction<Object, Object, Boolean> equals)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 		if (equals.apply(actual, other))
@@ -434,12 +461,15 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected S isEmpty(Supplier<Integer> length)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (length.get() != 0)
 		{
@@ -460,12 +490,15 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 */
 	protected S isNotEmpty(Supplier<Integer> length)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (length.get() == 0)
 		{
@@ -485,14 +518,17 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code contains} is null
 	 */
-	protected <E> S contains(E element, Function<Object, Boolean> contains)
+	protected <E> S contains(E element, Function<E, Boolean> contains)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (!contains.apply(element))
 		{
@@ -515,14 +551,17 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @throws NullPointerException     if {@code name} or {@code contains} are null
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
-	protected <E> S contains(E element, String name, Function<Object, Boolean> contains)
+	protected <E> S contains(E element, String name, Function<E, Boolean> contains)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -546,14 +585,17 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @return the updated validator
 	 * @throws NullPointerException if {@code contains} is null
 	 */
-	protected <E> S doesNotContain(E element, Function<Object, Boolean> contains)
+	protected <E> S doesNotContain(E element, Function<E, Boolean> contains)
 	{
+		if (fatalFailure)
+			return getThis();
 		if (actual == null)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (contains.apply(element))
 		{
@@ -576,8 +618,10 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	 * @throws NullPointerException     if {@code name} or {@code contains} are null
 	 * @throws IllegalArgumentException if {@code name} is blank
 	 */
-	public <E> S doesNotContain(E element, String name, Function<Object, Boolean> contains)
+	protected <E> S doesNotContain(E element, String name, Function<E, Boolean> contains)
 	{
+		if (fatalFailure)
+			return getThis();
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 
@@ -586,7 +630,8 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
 				this.name + " may not be null");
 			addFailure(failure);
-			return getNoOp();
+			fatalFailure = true;
+			return getThis();
 		}
 		if (contains.apply(element))
 		{

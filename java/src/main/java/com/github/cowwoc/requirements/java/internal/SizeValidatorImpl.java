@@ -35,15 +35,16 @@ public final class SizeValidatorImpl
 	 * @param size           the size of the collection
 	 * @param pluralizer     returns the singular or plural form of the collection's element type
 	 * @param failures       the list of validation failures
+	 * @param fatalFailure   true if validation stopped as the result of a fatal failure
 	 * @throws AssertionError if {@code scope}, {@code config}, {@code name}, {@code collection},
 	 *                        {@code pluralizer} or {@code failures} are null. If {@code name} or
 	 *                        {@code collectionName} are blank.
 	 */
 	public SizeValidatorImpl(ApplicationScope scope, Configuration config, String collectionName,
-	                         Object collection, String sizeName, int size, Pluralizer pluralizer,
-	                         List<ValidationFailure> failures)
+		Object collection, String sizeName, int size, Pluralizer pluralizer,
+		List<ValidationFailure> failures, boolean fatalFailure)
 	{
-		super(scope, config, sizeName, size, failures);
+		super(scope, config, sizeName, size, failures, fatalFailure);
 		assert (collectionName != null) : "collectionName may not be null";
 		assert (!collectionName.isBlank()) : "collectionName may not be blank";
 		assert (collection != null) : "collection may not be null";
@@ -60,32 +61,30 @@ public final class SizeValidatorImpl
 	}
 
 	@Override
-	protected SizeValidator getNoOp()
-	{
-		return new SizeValidatorNoOp(getFailures());
-	}
-
-	@Override
 	public SizeValidator isGreaterThanOrEqualTo(Integer value)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual < value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain at least " + config.toString(value) + " " + pluralizer.nameOf(value) +
-				".").
+					".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
 			addFailure(failure);
 		}
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public SizeValidator isGreaterThanOrEqualTo(Integer value, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -105,13 +104,15 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isGreaterThan(Integer value)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual <= value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain more than " + config.toString(value) + " " +
-				pluralizer.nameOf(value) + ".").
+					pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -123,6 +124,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isGreaterThan(Integer value, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -142,13 +145,15 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isLessThanOrEqualTo(Integer value)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual > value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " may not contain more than " + config.toString(value) + " " +
-				pluralizer.nameOf(value) + ".").
+					pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -160,6 +165,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isLessThanOrEqualTo(Integer value, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -179,13 +186,15 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isLessThan(Integer value)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		if (actual >= value)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain less than " + config.toString(value) + " " +
-				pluralizer.nameOf(value) + ".").
+					pluralizer.nameOf(value) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -197,6 +206,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isLessThan(Integer value, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(value, "value").isNotNull();
 		verifier.requireThat(name, "name").isNotBlank();
@@ -222,6 +233,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isPositive()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual <= 0)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -241,6 +254,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isZero()
 	{
+		if (fatalFailure)
+			return this;
 		if (actual != 0)
 		{
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -274,6 +289,8 @@ public final class SizeValidatorImpl
 	@Deprecated
 	public SizeValidator isNegative()
 	{
+		if (fatalFailure)
+			return this;
 		ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be negative");
 		addFailure(failure);
@@ -283,6 +300,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isBetween(Integer startInclusive, Integer endExclusive)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
 		verifier.requireThat(endExclusive, "endExclusive").
@@ -293,7 +312,7 @@ public final class SizeValidatorImpl
 			String endAsString = config.toString(endExclusive);
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain [" + startAsString + ", " + endAsString + ") " +
-				pluralizer.nameOf(2) + ".").
+					pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -305,6 +324,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isBetweenClosed(Integer startInclusive, Integer endInclusive)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
 		verifier.requireThat(endInclusive, "endInclusive").
@@ -315,7 +336,7 @@ public final class SizeValidatorImpl
 			String endAsString = config.toString(endInclusive);
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain [" + startAsString + ", " + endAsString + "] " +
-				pluralizer.nameOf(2) + ".").
+					pluralizer.nameOf(2) + ".").
 				addContext("Actual", actual);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
@@ -327,6 +348,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isEqualTo(Object expected)
 	{
+		if (fatalFailure)
+			return this;
 		if (!Objects.equals(actual, expected))
 		{
 			JavaRequirements verifier = scope.getInternalVerifier();
@@ -353,6 +376,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isEqualTo(Object expected, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 		if (!Objects.equals(actual, expected))
@@ -381,6 +406,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isNotEqualTo(Object other)
 	{
+		if (fatalFailure)
+			return this;
 		if (Objects.equals(actual, other))
 		{
 			JavaRequirements verifier = scope.getInternalVerifier();
@@ -399,6 +426,8 @@ public final class SizeValidatorImpl
 	@Override
 	public SizeValidator isNotEqualTo(Object other, String name)
 	{
+		if (fatalFailure)
+			return this;
 		JavaRequirements verifier = scope.getInternalVerifier();
 		verifier.requireThat(name, "name").isNotBlank();
 		if (Objects.equals(actual, other))
@@ -420,6 +449,8 @@ public final class SizeValidatorImpl
 	@Deprecated
 	public SizeValidator isNull()
 	{
+		if (fatalFailure)
+			return this;
 		ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 			name + " can never be null");
 		addFailure(failure);
