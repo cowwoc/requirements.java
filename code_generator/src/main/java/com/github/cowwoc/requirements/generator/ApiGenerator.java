@@ -386,7 +386,9 @@ public final class ApiGenerator
 			\t */
 			\tpublic static <V> V assertThatAndReturn(Function<Requirements, V> requirements)
 			\t{
-			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\t// Use a simple if-statement to reduce computation/allocation when assertions are disabled
+			\t\tif (requirements == null)
+			\t\t\tthrow new IllegalArgumentException("requirements may not be null");
 			\t\tif (!assertionsAreEnabled())
 			\t\t\treturn null;
 			\t\tRequirements copy = REQUIREMENTS.copy();
@@ -402,7 +404,9 @@ public final class ApiGenerator
 			\t */
 			\tpublic static void assertThat(Consumer<Requirements> requirements)
 			\t{
-			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\t// Use a simple if-statement to reduce computation/allocation when assertions are disabled
+			\t\tif (requirements == null)
+			\t\t\tthrow new IllegalArgumentException("requirements may not be null");
 			\t\tif (!assertionsAreEnabled())
 			\t\t\treturn;
 			\t\tRequirements copy = REQUIREMENTS.copy();
@@ -840,7 +844,9 @@ public final class ApiGenerator
 			\t */
 			\tpublic <V> V assertThatAndReturn(Function<Requirements, V> requirements)
 			\t{
-			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\t// Use a simple if-statement to reduce computation/allocation when assertions are disabled
+			\t\tif (requirements == null)
+			\t\t\tthrow new IllegalArgumentException("requirements may not be null");
 			\t\tif (assertionsAreEnabled())
 			\t\t\treturn requirements.apply(this);
 			\t\treturn null;
@@ -855,7 +861,9 @@ public final class ApiGenerator
 			\t */
 			\tpublic void assertThat(Consumer<Requirements> requirements)
 			\t{
-			\t\trequireThat(requirements, "requirements").isNotNull();
+			\t\t// Use a simple if-statement to reduce computation/allocation when assertions are disabled
+			\t\tif (requirements == null)
+			\t\t\tthrow new IllegalArgumentException("requirements may not be null");
 			\t\tif (assertionsAreEnabled())
 			\t\t\trequirements.accept(this);
 			\t}""");

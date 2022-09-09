@@ -8,6 +8,7 @@ import com.github.cowwoc.requirements.DefaultRequirements;
 import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.CompilerControl;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
+@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 @SuppressWarnings({"CanBeFinal", "LongLine", "FieldMayBeFinal"})
 public class GcTest
 {
