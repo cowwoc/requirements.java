@@ -59,7 +59,7 @@
 24. Choose EFI, OC, OpenCore.efi off the hard drive and confirm.
 25. Reboot and log into the system.
 26. Run:
-	
+
         # Add "builds" to _developer group: http://stackoverflow.com/a/10594414/14731
         sudo dscl . append /Groups/_developer GroupMembership builds
 
@@ -88,7 +88,7 @@
         sudo tee -a /etc/ssh/sshd_config <<EOF
         PasswordAuthentication no
         EOF
-		
+
         # Add github to trusted hosts: http://stackoverflow.com/a/29380765/14731
         mkdir -p ~/.ssh
         ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
@@ -218,10 +218,10 @@
     3. Tool home = "/usr/bin/git"
 
 39. Create a new Node in Jenkins
-	1. Node should have the following Tool Locations:
+    1. Node should have the following Tool Locations:
         1. JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home. If this changes, you
            can invoke "/usr/libexec/java_home" to get the current value.
-	2. Wait for user to login before allowing Jenkins to execute any jobs
+    2. Wait for user to login before allowing Jenkins to execute any jobs
         1. Install the [Slave Setup plugin](https://wiki.jenkins-ci.org/display/JENKINS/Slave+Setup+Plugin)
         2. Under "Configure System" subsection "Slave Setups" add a new entry
         3. Set "setup files directory" to "C:\Program Files (x86)\Jenkins\scripts\osx\scripts" (or whatever

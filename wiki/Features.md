@@ -9,9 +9,9 @@ String number = "1234567";
 Preconditions.checkArgument(number.length() <= 5, "number must be shorter than 6 characters");
 
 java.lang.IllegalArgumentException:number must be shorter than 6 characters
-	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
-	at Main.guava2(Main.java:45)
-	at Main.main(Main.java:70)
+  at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
+  at Main.guava2(Main.java:45)
+  at Main.main(Main.java:70)
 
 // This API
 requireThat(number, "number").length().isLessThanOrEqualTo(5);
@@ -19,8 +19,8 @@ requireThat(number, "number").length().isLessThanOrEqualTo(5);
 java.lang.IllegalArgumentException:number may not contain more than 5 characters.
 Actual: 7
 number: 1234567
-	at Main.requirements2(Main.java:57)
-	at Main.main(Main.java:72)
+  at Main.requirements2(Main.java:57)
+  at Main.main(Main.java:72)
 ```
 
 ## Diffs provided whenever possible
@@ -35,10 +35,10 @@ List<Integer> expected = Arrays.asList(1, 3, 5);
 Preconditions.checkArgument(actual.containsAll(expected), "actual must contain %s", expected);
 
 java.lang.IllegalArgumentException:actual must contain [1, 3, 5]
-	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
-	at Main.guava3(Main.java:95)
-	at Main.run(Main.java:129)
-	at Main.main(Main.java:137)
+  at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
+  at Main.guava3(Main.java:95)
+  at Main.run(Main.java:129)
+  at Main.main(Main.java:137)
 
 // This API
 requireThat(actual, "actual").containsAll(expected);
@@ -46,9 +46,9 @@ requireThat(actual, "actual").containsAll(expected);
 java.lang.IllegalArgumentException:actual must contain all elements in: [1, 3, 5]
 Actual : [2, 3, 4, 6]
 Missing: [1, 5]
-	at Main.requirements3(Main.java:106)
-	at Main.run(Main.java:131)
-	at Main.main(Main.java:137)
+  at Main.requirements3(Main.java:106)
+  at Main.run(Main.java:131)
+  at Main.main(Main.java:137)
 ```
 
 ## Clean stack-traces
@@ -59,14 +59,14 @@ This API's classes do not show up in your stack-traces.
 
 // Guava
 java.lang.NullPointerException: actual may not be null
-	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:251)
-	at Main.guava1(Main.java:21)
-	at Main.main(Main.java:65)
+  at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:251)
+  at Main.guava1(Main.java:21)
+  at Main.main(Main.java:65)
 
 // This API
 java.lang.NullPointerException: actual may not be null
-	at Main.requirements1(Main.java:33)
-	at Main.main(Main.java:67)
+  at Main.requirements1(Main.java:33)
+  at Main.main(Main.java:67)
 ```
 
 ## Assertion support
@@ -85,7 +85,7 @@ performance and no allocations if assertions are disabled.
 String name = "George";
 String province = "Florida";
 List<String> provinces = Arrays.asList("Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba",
-	"British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
+  "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
 
 List<ValidationFailure> failures = new ArrayList<>();
 failures.addAll(validateThat(name, "name").length().isBetween(10, 30).getFailures());
@@ -145,11 +145,11 @@ Sometimes it is convenient to retrieve the actual value after a verification/val
 ```java
 class Player
 {
-	private final String name;
+  private final String name;
 
-	public Player(String name)
-	{
-		this.name = requireThat(name, "name").isNotEmpty().getActual();
-	}
+  public Player(String name)
+  {
+    this.name = requireThat(name, "name").isNotEmpty().getActual();
+  }
 }
 ```

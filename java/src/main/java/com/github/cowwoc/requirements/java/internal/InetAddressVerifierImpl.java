@@ -38,14 +38,14 @@ public final class InetAddressVerifierImpl
 	public InetAddressVerifier isIpV4()
 	{
 		validator.isIpV4();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public InetAddressVerifier isIpV6()
 	{
 		validator.isIpV6();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

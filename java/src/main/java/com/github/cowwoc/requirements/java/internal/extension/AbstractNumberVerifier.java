@@ -32,83 +32,83 @@ public abstract class AbstractNumberVerifier
 	public S isNegative()
 	{
 		validator.isNegative();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotNegative()
 	{
 		validator.isNotNegative();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isZero()
 	{
 		validator.isZero();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotZero()
 	{
 		validator.isNotZero();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isPositive()
 	{
 		validator.isPositive();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotPositive()
 	{
 		validator.isNotPositive();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isWholeNumber()
 	{
 		validator.isWholeNumber();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotWholeNumber()
 	{
 		validator.isNotWholeNumber();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isMultipleOf(T divisor)
 	{
 		validator.isMultipleOf(divisor);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isMultipleOf(T divisor, String name)
 	{
 		validator.isMultipleOf(divisor, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotMultipleOf(T divisor)
 	{
 		validator.isNotMultipleOf(divisor);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotMultipleOf(T divisor, String name)
 	{
 		validator.isNotMultipleOf(divisor, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 }

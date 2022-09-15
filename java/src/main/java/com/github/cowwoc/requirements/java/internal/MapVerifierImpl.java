@@ -95,14 +95,14 @@ public final class MapVerifierImpl<K, V>
 	public MapVerifier<K, V> isEmpty()
 	{
 		validator.isEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public MapVerifier<K, V> isNotEmpty()
 	{
 		validator.isNotEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

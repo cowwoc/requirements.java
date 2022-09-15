@@ -37,7 +37,7 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	public PrimitiveNumberVerifier<T> isNull()
 	{
 		validator.isNull();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
@@ -45,6 +45,6 @@ public final class PrimitiveNumberVerifierImpl<T extends Number & Comparable<? s
 	public PrimitiveNumberVerifier<T> isNotNull()
 	{
 		validator.isNotNull();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 }

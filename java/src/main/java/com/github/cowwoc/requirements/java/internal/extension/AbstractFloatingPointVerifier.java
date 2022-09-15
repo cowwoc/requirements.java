@@ -32,27 +32,27 @@ public abstract class AbstractFloatingPointVerifier
 	public S isNumber()
 	{
 		validator.isNumber();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotNumber()
 	{
 		validator.isNotNumber();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isFinite()
 	{
 		validator.isFinite();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotFinite()
 	{
 		validator.isNotFinite();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 }

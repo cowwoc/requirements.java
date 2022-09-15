@@ -7,20 +7,20 @@ The following code snippet unpacks the native libraries under Maven:
 
 ```xml
 <build>
-    <plugins>
-        <plugin>
-            <groupId>com.github.cowwoc.requirements</groupId>
-            <artifactId>maven_plugin</artifactId>
-            <version>${requirements.version}</version>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>unpack</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
+  <plugins>
+    <plugin>
+      <groupId>com.github.cowwoc.requirements</groupId>
+      <artifactId>maven_plugin</artifactId>
+      <version>${requirements.version}</version>
+      <executions>
+      <execution>
+          <goals>
+          <goal>unpack</goal>
+          </goals>
+      </execution>
+      </executions>
+    </plugin>
+  </plugins>
 </build>
 ```
 
@@ -28,12 +28,12 @@ If you are using [Surefire](http://maven.apache.org/surefire/maven-surefire-plug
 
 ```xml
 <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-    <version>${surefire.version}</version>
-    <configuration>
-        <argLine>-Djava.library.path=${project.build.directory}</argLine>
-    </configuration>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-surefire-plugin</artifactId>
+  <version>${surefire.version}</version>
+  <configuration>
+    <argLine>-Djava.library.path=${project.build.directory}</argLine>
+  </configuration>
 </plugin>
 ```
 

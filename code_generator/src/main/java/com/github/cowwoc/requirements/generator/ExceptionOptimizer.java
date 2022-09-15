@@ -147,7 +147,6 @@ public final class ExceptionOptimizer
 				"package " + wrapperPackageName + ";\n" +
 				"\n");
 			writer.write("""
-				import com.github.cowwoc.requirements.annotation.OptimizedException;
 				import com.github.cowwoc.requirements.java.GlobalRequirements;
 				import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 
@@ -160,14 +159,13 @@ public final class ExceptionOptimizer
 				" *\n" +
 				" * @see GlobalRequirements#isCleanStackTrace()\n" +
 				" */\n" +
-				"@OptimizedException\n" +
 				"public final class " + wrapperSimpleName + " extends " + exception.getName() + "\n" +
 				"{\n" +
 				"\tprivate static final long serialVersionUID = 0L;\n" +
 				"\t/**\n" +
 				"\t * An instance of {@code Exceptions}.\n" +
 				"\t */\n" +
-				"\tprivate final Exceptions exceptions;\n" +
+				"\tprivate final transient Exceptions exceptions;\n" +
 				"\t/**\n" +
 				"\t * Indicates if stack trace references to this library have already been removed.\n" +
 				"\t */\n" +

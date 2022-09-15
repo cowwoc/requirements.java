@@ -4,17 +4,18 @@
  */
 package com.github.cowwoc.requirements.java.internal.util;
 
-import com.github.cowwoc.requirements.annotation.OptimizedException;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.GlobalRequirements;
 import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,47 +41,155 @@ public final class Exceptions
 	 */
 	private final String libraryPackage = getParentPackage(Exceptions.class.getPackage().getName(), 3);
 
-	private final MethodType optimizedConstructorWithCause = MethodType.methodType(void.class,
-		Exceptions.class, String.class, Throwable.class);
-	private final MethodType optimizedConstructorWithoutCause = MethodType.methodType(void.class,
-		Exceptions.class, String.class);
+	/**
+	 * Constructs an exception.
+	 *
+	 * @param <E> the type of the exception
+	 */
+	@FunctionalInterface
+	private interface ExceptionBuilder<E>
+	{
+		/**
+		 * Constructs an exception.
+		 *
+		 * @param exceptions an instance of {@code Exceptions}
+		 * @param message    the detail message. The detail message is saved for later retrieval by the
+		 *                   {@code getMessage()} method
+		 * @param cause      the cause (which is saved for later retrieval by the {@code getCause()} method).
+		 *                   (A {@code null} value is permitted, and indicates that the cause is nonexistent or
+		 *                   unknown.)
+		 * @return a new instance of the exception
+		 */
+		E apply(Exceptions exceptions, String message, Throwable cause);
+	}
 
-	private final MethodType nonOptimizedConstructorWithCause = MethodType.methodType(void.class, String.class,
-		Throwable.class);
-	private final MethodType nonOptimizedConstructorWithoutCause = MethodType.methodType(void.class,
-		String.class);
+	/**
+	 * Constructs an optimized exception with a "message" parameter.
+	 *
+	 * @param <E> the type of the exception
+	 */
+	@FunctionalInterface
+	private interface OptimizedExceptionWithMessage<E>
+	{
+		/**
+		 * Constructs an exception.
+		 *
+		 * @param exceptions an instance of {@code Exceptions}
+		 * @param message    the detail message. The detail message is saved for later retrieval by the
+		 *                   {@code getMessage()} method
+		 * @return a new instance of the exception
+		 */
+		E apply(Exceptions exceptions, String message);
+	}
 
-	private record CacheKey(Class<?> type, boolean optimized, boolean withCause)
+	/**
+	 * Constructs an optimized exception with "message" and "cause" parameters.
+	 *
+	 * @param <E> the type of the exception
+	 */
+	@FunctionalInterface
+	private interface OptimizedExceptionWithMessageAndCause<E> extends ExceptionBuilder<E>
 	{
 	}
 
-	private final Function<CacheKey, MethodHandle> computeConstructor =
+	/**
+	 * Constructs a regular exception with a "message" parameter.
+	 *
+	 * @param <E> the type of the exception
+	 */
+	@FunctionalInterface
+	private interface RegularExceptionWithMessage<E>
+	{
+		/**
+		 * Constructs an exception.
+		 *
+		 * @param message the detail message. The detail message is saved for later retrieval by the
+		 *                {@code getMessage()} method
+		 * @return a new instance of the exception
+		 */
+		E apply(String message);
+	}
+
+	/**
+	 * Constructs a regular exception with "message" and "cause" parameters.
+	 *
+	 * @param <E> the type of the exception
+	 */
+	@FunctionalInterface
+	private interface RegularExceptionWithMessageAndCause<E>
+	{
+		/**
+		 * Constructs an exception.
+		 *
+		 * @param message the detail message. The detail message is saved for later retrieval by the
+		 *                {@code getMessage()} method
+		 * @param cause   the cause (which is saved for later retrieval by the {@code getCause()} method).
+		 *                (A {@code null} value is permitted, and indicates that the cause is nonexistent or
+		 *                unknown.)
+		 * @return a new instance of the exception
+		 */
+		E apply(String message, Throwable cause);
+	}
+
+	private record CacheKey(Class<?> type, boolean tryToOptimize)
+	{
+	}
+
+	private final Function<CacheKey, ExceptionBuilder<?>> computeExceptionBuilder =
 		key ->
 		{
 			try
 			{
+				MethodHandle exceptionConstructor;
+				MethodType factoryType;
+
 				Class<?> optimizedType;
-				if (key.optimized)
+				if (key.tryToOptimize)
 					optimizedType = getOptimizedException(key.type).orElse(null);
 				else
 					optimizedType = null;
+				boolean exceptionSupportsCause = supportsMessageAndCause(key.type);
 
 				if (optimizedType == null)
 				{
-					if (key.withCause)
-						return lookup.findConstructor(key.type, nonOptimizedConstructorWithCause);
-					return lookup.findConstructor(key.type, nonOptimizedConstructorWithoutCause);
+					MethodType constructorType;
+					if (exceptionSupportsCause)
+					{
+						factoryType = MethodType.methodType(RegularExceptionWithMessageAndCause.class);
+						constructorType = MethodType.methodType(void.class, String.class, Throwable.class);
+					}
+					else
+					{
+						factoryType = MethodType.methodType(RegularExceptionWithMessage.class);
+						constructorType = MethodType.methodType(void.class, String.class);
+					}
+					exceptionConstructor = lookup.findConstructor(key.type, constructorType);
 				}
-				if (key.withCause)
-					return lookup.findConstructor(optimizedType, optimizedConstructorWithCause);
-				return lookup.findConstructor(optimizedType, optimizedConstructorWithoutCause);
+				else
+				{
+					MethodType constructorType;
+					if (exceptionSupportsCause)
+					{
+						factoryType = MethodType.methodType(OptimizedExceptionWithMessageAndCause.class);
+						constructorType = MethodType.methodType(void.class, Exceptions.class, String.class,
+							Throwable.class);
+					}
+					else
+					{
+						factoryType = MethodType.methodType(OptimizedExceptionWithMessage.class);
+						constructorType = MethodType.methodType(void.class, Exceptions.class, String.class);
+					}
+					exceptionConstructor = lookup.findConstructor(optimizedType, constructorType);
+				}
+				return getExceptionBuilder(exceptionConstructor, factoryType, exceptionSupportsCause);
 			}
-			catch (ReflectiveOperationException e)
+			catch (Throwable e)
 			{
-				throw new RuntimeException(e);
+				throw WrappingException.wrap(e);
 			}
 		};
-	private final ConcurrentMap<CacheKey, MethodHandle> classToConstructor = new ConcurrentHashMap<>(3);
+	private final ConcurrentMap<CacheKey, ExceptionBuilder<?>> classToExceptionBuilder =
+		new ConcurrentHashMap<>((int) Math.ceil(3 / 0.75));
 	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
 
 	/**
@@ -88,6 +197,102 @@ public final class Exceptions
 	 */
 	public Exceptions()
 	{
+	}
+
+	/**
+	 * @param type an exception type
+	 * @return true if the exception accepts a {@code (message, cause)} signature
+	 */
+	private boolean supportsMessageAndCause(Class<?> type)
+	{
+		for (Constructor<?> constructor : type.getDeclaredConstructors())
+		{
+			Class<?>[] parameterTypes = constructor.getParameterTypes();
+			if (parameterTypes.length != 2)
+				continue;
+			if (parameterTypes[0] == String.class && parameterTypes[1] == Throwable.class)
+				return true;
+		}
+		return false;
+	}
+
+	private <T extends Throwable> ExceptionBuilder<T> getExceptionBuilder(
+		MethodHandle exceptionConstructor, MethodType factoryType, boolean supportsCause) throws Throwable
+	{
+		MethodHandles.Lookup lookup = MethodHandles.lookup();
+		MethodHandle target = LambdaMetafactory.metafactory(
+			lookup,
+			"apply",
+			factoryType,
+			// https://stackoverflow.com/a/73749785/14731: Only type parameters have to be "erased" to "Object"
+			exceptionConstructor.type().changeReturnType(Object.class),
+			exceptionConstructor,
+			exceptionConstructor.type()
+		).getTarget();
+
+		Class<?> exceptionType = factoryType.returnType();
+		if (exceptionType.isAssignableFrom(RegularExceptionWithMessage.class))
+		{
+			return (exceptions, message, cause) ->
+			{
+				try
+				{
+					RegularExceptionWithMessage<?> exceptionBuilderFactory =
+						(RegularExceptionWithMessage<?>) target.invokeExact();
+					@SuppressWarnings("unchecked")
+					T exception = (T) exceptionBuilderFactory.apply(message);
+					@SuppressWarnings("unchecked")
+					T exceptionBuilder = (T) exception.initCause(cause);
+					return exceptionBuilder;
+				}
+				catch (Throwable e)
+				{
+					throw WrappingException.wrap(e);
+				}
+			};
+		}
+		if (exceptionType.isAssignableFrom(RegularExceptionWithMessageAndCause.class))
+		{
+			return (exceptions, message, cause) ->
+			{
+				try
+				{
+					RegularExceptionWithMessageAndCause<?> exceptionBuilderFactory =
+						(RegularExceptionWithMessageAndCause<?>) target.invokeExact();
+					@SuppressWarnings("unchecked")
+					T exceptionBuilder = (T) exceptionBuilderFactory.apply(message, cause);
+					return exceptionBuilder;
+				}
+				catch (Throwable e)
+				{
+					throw WrappingException.wrap(e);
+				}
+			};
+		}
+		MethodHandle methodHandle = target.asType(target.type().changeReturnType(ExceptionBuilder.class));
+
+		if (!supportsCause)
+		{
+			return (exceptions, message, cause) ->
+			{
+				try
+				{
+					OptimizedExceptionWithMessage<?> exceptionBuilder =
+						(OptimizedExceptionWithMessage<?>) target.invokeExact();
+					@SuppressWarnings("unchecked")
+					T result = (T) exceptionBuilder.apply(exceptions, message);
+					return result;
+				}
+				catch (Throwable e)
+				{
+					throw WrappingException.wrap(e);
+				}
+			};
+		}
+
+		@SuppressWarnings("unchecked")
+		ExceptionBuilder<T> result = (ExceptionBuilder<T>) methodHandle.invokeExact();
+		return result;
 	}
 
 	/**
@@ -125,74 +330,43 @@ public final class Exceptions
 	public <E extends Exception> E createException(Class<E> type, String message, Throwable cause,
 		boolean cleanStackTrace)
 	{
-		// DESIGN: When we instantiate a new exception inside this method, we will end up with:
-		//
-		// java.lang.IllegalArgumentException: message of top exception
-		//   at com.github.cowwoc.requirements.java.internal.util.Exceptions.createException(Exceptions.java:76)
-		//   at com.github.cowwoc.requirements.java.internal.util.ExceptionBuilder.build(ExceptionBuilder.java:179)
-		//   at com.github.cowwoc.requirements.java.internal.impl.SomeVerifier.method(SomeVerifier.java:1)
-		//   at UserCode.method1(UserCode.java:1)
-		// Caused by: message of underlying exception
-		//   at Cause.method1(Cause.java:1)
-		//
-		// If cleanStackTrace is true, we need to strip out the top 3 stack trace elements. But we are also
-		// forced to strip out the exception cause because it was thrown inside our API.
 		assert (type != null) : "type may not be null";
 		try
 		{
-			boolean withCause = !cleanStackTrace && cause != null;
-			MethodHandle constructor = getConstructor(type, withCause, cleanStackTrace);
-			boolean isOptimized = isOptimizedException(constructor.type().returnType());
-
-			// invokeExact() fails unless we provide exact type specifications. Per
-			// https://stackoverflow.com/a/27279268/14731 invokeExact() assumes that the method return type
-			// is equal to the compile-time cast applied to it, unless we invoke changeReturnType() as seen below.
-			// If we were to skip changeReturnType() and cast the return value to "E" then invokeExact() would
-			// assume the return type is "Exception". This would fail because the real value
-			// of "E" is only known at runtime and is rarely equal to "Exception". Therefore, we are forced to
-			// cast the return type to "Exception" then back to "E" at runtime.
-			constructor = constructor.asType(constructor.type().changeReturnType(Exception.class));
-
-			E result;
-			if (isOptimized)
+			// When we instantiate a new exception inside this method, we end up with:
+			//
+			// java.lang.IllegalArgumentException: message of top exception
+			//   at com.github.cowwoc.requirements.java.internal.util.Exceptions.createException(Exceptions.java:76)
+			//   at com.github.cowwoc.requirements.java.internal.util.ExceptionBuilder.build(ExceptionBuilder.java:179)
+			//   at com.github.cowwoc.requirements.java.internal.impl.SomeVerifier.method(SomeVerifier.java:1)
+			//   at UserCode.method1(UserCode.java:1)
+			// Caused by: message of underlying exception
+			//   at Cause.method1(Cause.java:1)
+			//
+			// If "cleanStackTrace" is true, we need to strip out the top 3 stack trace elements. But we are also
+			// forced to strip out the exception cause because it was thrown inside this library.
+			if (cleanStackTrace)
 			{
-				if (withCause)
-				{
-					//noinspection unchecked
-					result = (E) constructor.invokeExact(this, message, cause);
-				}
-				else
-				{
-					//noinspection unchecked
-					result = (E) constructor.invokeExact(this, message);
-				}
+				// Why? Read previous comment
+				cause = null;
 			}
-			else
+			ExceptionBuilder<E> exceptionBuilder = getExceptionBuilder(type, cleanStackTrace);
+
+			E result = exceptionBuilder.apply(this, message, cause);
+			boolean isOptimized = isOptimizedException(result.getClass());
+			if (!isOptimized && cleanStackTrace)
 			{
-				if (withCause)
-				{
-					//noinspection unchecked
-					result = (E) constructor.invokeExact(message, cause);
-				}
-				else
-				{
-					//noinspection unchecked
-					result = (E) constructor.invokeExact(message);
-				}
-				if (cleanStackTrace)
-				{
-					// We need to strip the stack trace eagerly because we don't have an optimized exception
-					StackTraceElement[] stackTrace = result.getStackTrace();
-					StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
-					if (newStackTrace != stackTrace)
-						result.setStackTrace(newStackTrace);
-				}
+				// We need to strip the stack trace eagerly because we don't have an optimized exception
+				StackTraceElement[] stackTrace = result.getStackTrace();
+				StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
+				if (newStackTrace != stackTrace)
+					result.setStackTrace(newStackTrace);
 			}
 			return result;
 		}
 		catch (Throwable e)
 		{
-			throw new AssertionError(e);
+			throw WrappingException.wrap(e);
 		}
 	}
 
@@ -224,27 +398,21 @@ public final class Exceptions
 	}
 
 	/**
+	 * @param <T>             the type of the exception
 	 * @param type            the type of the exception
-	 * @param withCause       true if the constructor takes an exception cause
 	 * @param cleanStackTrace true if stack trace references to this library should be removed
-	 * @return the constructor of the exception
-	 * @throws Throwable if an error occurs
+	 * @return a factory used to construct the exception
 	 */
-	private MethodHandle getConstructor(Class<?> type, boolean withCause, boolean cleanStackTrace)
-		throws Throwable
+	private <T extends Throwable> ExceptionBuilder<T> getExceptionBuilder(Class<T> type,
+		boolean cleanStackTrace)
 	{
-		try
-		{
-			boolean optimized = cleanStackTrace;
-			CacheKey key = new CacheKey(type, optimized, withCause);
-			return classToConstructor.computeIfAbsent(key, theKey -> computeConstructor.apply(theKey));
-		}
-		catch (RuntimeException e)
-		{
-			if (e.getCause() instanceof ReflectiveOperationException)
-				throw e.getCause();
-			throw e;
-		}
+		boolean tryToOptimize = cleanStackTrace;
+		CacheKey key = new CacheKey(type, tryToOptimize);
+
+		@SuppressWarnings("unchecked")
+		ExceptionBuilder<T> exceptionBuilder = (ExceptionBuilder<T>) classToExceptionBuilder.
+			computeIfAbsent(key, computeExceptionBuilder);
+		return exceptionBuilder;
 	}
 
 	/**
@@ -303,7 +471,14 @@ public final class Exceptions
 	 */
 	public boolean isOptimizedException(Class<?> type)
 	{
-		return type.getDeclaredAnnotation(OptimizedException.class) != null;
+		Constructor<?>[] constructors = type.getDeclaredConstructors();
+		if (constructors.length < 1)
+			return false;
+		Class<?>[] parameterTypes = constructors[0].getParameterTypes();
+		if (parameterTypes.length < 1)
+			return false;
+		Class<?> firstParameter = parameterTypes[0];
+		return firstParameter != null && firstParameter.isAssignableFrom(Exceptions.class);
 	}
 
 	/**

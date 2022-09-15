@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
-import com.github.cowwoc.requirements.java.PathVerifier;
 import com.github.cowwoc.requirements.java.PathValidator;
+import com.github.cowwoc.requirements.java.PathVerifier;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public final class PathVerifierImpl extends AbstractObjectVerifier<PathVerifier,
 	public PathVerifier exists()
 	{
 		validator.exists();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
@@ -58,13 +58,13 @@ public final class PathVerifierImpl extends AbstractObjectVerifier<PathVerifier,
 	public PathVerifier isRelative()
 	{
 		validator.isRelative();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public PathVerifier isAbsolute()
 	{
 		validator.isAbsolute();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 }

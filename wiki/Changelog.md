@@ -18,6 +18,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 * Improvements
     * Added `Configuration`-related methods (except for `withoutContext()` and `withoutAnyContext()` which
       wouldn't have any effect) to `DefaultRequirements`.
+    * Instantiate exceptions 3% faster by using `LambdaMetafactory` instead of `MethodHandle.invokeExact()`.
 
 ## Version 7.0.4 - 2022/08/22
 

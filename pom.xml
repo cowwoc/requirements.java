@@ -54,6 +54,7 @@
 	</modules>
 
 	<properties>
+		<!--		<license.verbose>true</license.verbose>-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.version>3.6.1</maven.version>
@@ -375,7 +376,26 @@
 						</goals>
 						<phase>process-sources</phase>
 						<configuration>
-							<missingFile>3rd-party-licenses.txt</missingFile>
+							<outputDirectory>${project.basedir}</outputDirectory>
+							<thirdPartyFilename>LICENSE-3RD-PARTY.md</thirdPartyFilename>
+							<fileTemplate>${basedir}/licenses/format.ftl</fileTemplate>
+							<missingFile>${basedir}/licenses/missing.txt</missingFile>
+							<overrideUrl>file:${basedir}/licenses/override.txt</overrideUrl>
+							<licenseMerges>
+								<licenseMerge>Apache License, Version 2.0|Apache 2.0|Apache License, Version 2.0, GNU Lesser
+									General Public License|The Apache Software License, Version 2.0
+								</licenseMerge>
+								<licenseMerge>Eclipse Public License (EPL), Version 1.0|Eclipse Public License - v 1.0|Eclipse
+									Public License - v 1.0, GNU Lesser General Public License|Eclipse Public License, Version
+									1.0
+								</licenseMerge>
+								<licenseMerge>MIT License|The MIT License</licenseMerge>
+								<licenseMerge>GNU Lesser General Public License (LGPL)|GNU Lesser General Public License
+								</licenseMerge>
+								<licenseMerge>Common Development And Distribution License (CDDL) + GPL, version 2.0, with
+									classpath exception|CDDL + GPLv2 with classpath exception
+								</licenseMerge>
+							</licenseMerges>
 						</configuration>
 					</execution>
 				</executions>

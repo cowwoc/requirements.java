@@ -6,7 +6,6 @@ package com.github.cowwoc.requirements.guava.internal;
 
 import com.github.cowwoc.requirements.guava.MultimapValidator;
 import com.github.cowwoc.requirements.guava.MultimapVerifier;
-import com.google.common.collect.Multimap;
 import com.github.cowwoc.requirements.java.CollectionValidator;
 import com.github.cowwoc.requirements.java.CollectionVerifier;
 import com.github.cowwoc.requirements.java.SizeValidator;
@@ -14,6 +13,7 @@ import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.internal.CollectionVerifierImpl;
 import com.github.cowwoc.requirements.java.internal.SizeVerifierImpl;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVerifier;
+import com.google.common.collect.Multimap;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -86,7 +86,7 @@ public final class MultimapVerifierImpl<K, V>
 
 	@Override
 	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>>
-		                                      consumer)
+		consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
@@ -98,14 +98,14 @@ public final class MultimapVerifierImpl<K, V>
 	public MultimapVerifier<K, V> isEmpty()
 	{
 		validator.isEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public MultimapVerifier<K, V> isNotEmpty()
 	{
 		validator.isNotEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

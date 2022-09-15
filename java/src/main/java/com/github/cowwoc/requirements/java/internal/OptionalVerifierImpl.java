@@ -36,27 +36,27 @@ public final class OptionalVerifierImpl
 	public OptionalVerifier isPresent()
 	{
 		validator.isPresent();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public OptionalVerifier isEmpty()
 	{
 		validator.isEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public OptionalVerifier contains(Object value)
 	{
 		validator.contains(value);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public OptionalVerifier contains(Object expected, String name)
 	{
 		validator.contains(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 }

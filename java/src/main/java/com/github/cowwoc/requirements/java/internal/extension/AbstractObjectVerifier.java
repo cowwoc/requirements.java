@@ -46,32 +46,20 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	public S isEqualTo(Object expected)
 	{
 		validator.isEqualTo(expected);
-		return validationResult();
-	}
-
-	/**
-	 * Equivalent to {@link #validationResult(Supplier) validationResult(this::getThis)} but with better
-	 * runtime performance.
-	 *
-	 * @return the updated verifier
-	 * @throws IllegalArgumentException if the validation failed
-	 */
-	protected S validationResult()
-	{
 		return validationResult(IllegalArgumentException.class);
 	}
 
 	/**
 	 * Throws an exception if the validation failed. If the exception associated with the failure is a
-	 * runtime exception or an exception of type {@code <E>} it is thrown as-is; otherwise, the exception is
-	 * wrapped in an {@code AssertionError}.
+	 * {@code RuntimeException} or of type {@code <E>}, it is thrown as-is; otherwise, the exception is wrapped
+	 * in an {@code AssertionError}.
 	 *
 	 * @param <E>       the type of exception that may be thrown
 	 * @param exception the type of exception that may be thrown
 	 * @return {@link #getThis()}
 	 * @throws E if the validation failed
 	 */
-	protected <E extends Exception> S validationResult(Class<E> exception) throws E
+	public <E extends Exception> S validationResult(Class<E> exception) throws E
 	{
 		assert (exception != null) : "exception may not be null";
 		List<ValidationFailure> failures = validator.getFailures();
@@ -148,70 +136,70 @@ public abstract class AbstractObjectVerifier<S, V extends ExtensibleObjectValida
 	public S isEqualTo(Object expected, String name)
 	{
 		validator.isEqualTo(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotEqualTo(Object other)
 	{
 		validator.isNotEqualTo(other);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotEqualTo(Object other, String name)
 	{
 		validator.isNotEqualTo(other, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isSameObjectAs(Object expected, String name)
 	{
 		validator.isSameObjectAs(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotSameObjectAs(Object other, String name)
 	{
 		validator.isNotSameObjectAs(other, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isOneOf(Collection<? super T> collection)
 	{
 		validator.isOneOf(collection);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotOneOf(Collection<? super T> collection)
 	{
 		validator.isNotOneOf(collection);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isInstanceOf(Class<?> type)
 	{
 		validator.isInstanceOf(type);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNotInstanceOf(Class<?> type)
 	{
 		validator.isNotInstanceOf(type);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isNull()
 	{
 		validator.isNull();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

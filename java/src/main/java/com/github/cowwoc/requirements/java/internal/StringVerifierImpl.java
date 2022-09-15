@@ -46,42 +46,42 @@ public final class StringVerifierImpl
 	public StringVerifier isEmpty()
 	{
 		validator.isEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier isNotEmpty()
 	{
 		validator.isNotEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier isBlank()
 	{
 		validator.isBlank();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier isNotBlank()
 	{
 		validator.isNotBlank();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier trim()
 	{
 		validator.trim();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier isTrimmed()
 	{
 		validator.isTrimmed();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
@@ -152,42 +152,42 @@ public final class StringVerifierImpl
 	public StringVerifier startsWith(String prefix)
 	{
 		validator.startsWith(prefix);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier doesNotStartWith(String prefix)
 	{
 		validator.doesNotStartWith(prefix);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier endsWith(String suffix)
 	{
 		validator.endsWith(suffix);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier doesNotEndWith(String suffix)
 	{
 		validator.doesNotEndWith(suffix);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier contains(String expected)
 	{
 		validator.contains(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public StringVerifier doesNotContain(String value)
 	{
 		validator.doesNotContain(value);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

@@ -30,13 +30,13 @@ public abstract class AbstractBooleanVerifier<S, V extends ExtensibleBooleanVali
 	public S isTrue()
 	{
 		validator.isTrue();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public S isFalse()
 	{
 		validator.isFalse();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 }

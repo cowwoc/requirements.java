@@ -1,0 +1,4 @@
+ch.qos.logback--logback-classic--1.4.0=GNU Lesser General Public License (LGPL), version 2.1
+ch.qos.logback--logback-core--1.4.0=GNU Lesser General Public License (LGPL), version 2.1
+com.github.javaparser--javaparser-core--3.24.4=Apache License, Version 2.0
+com.github.javaparser--javaparser-core--3.24.4=GNU Lesser General Public License (LGPL), version 2.1

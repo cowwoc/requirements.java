@@ -46,140 +46,140 @@ public final class ListVerifierImpl<L extends List<E>, E>
 	public ListVerifier<L, E> isEmpty()
 	{
 		validator.isEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> isNotEmpty()
 	{
 		validator.isNotEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> contains(E element)
 	{
 		validator.contains(element);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> contains(E element, String name)
 	{
 		validator.contains(element, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> containsExactly(Collection<E> expected)
 	{
 		validator.containsExactly(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> containsExactly(Collection<E> expected, String name)
 	{
 		validator.containsExactly(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> containsAny(Collection<E> expected)
 	{
 		validator.containsAny(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> containsAny(Collection<E> expected, String name)
 	{
 		validator.containsAny(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> containsAll(Collection<E> expected)
 	{
 		validator.containsAll(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> containsAll(Collection<E> expected, String name)
 	{
 		validator.containsAll(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContain(E element)
 	{
 		validator.doesNotContain(element);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContain(E element, String name)
 	{
 		validator.doesNotContain(element, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainExactly(Collection<E> other)
 	{
 		validator.doesNotContainExactly(other);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainExactly(Collection<E> other, String name)
 	{
 		validator.doesNotContainExactly(other, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainAny(Collection<E> elements)
 	{
 		validator.doesNotContainAny(elements);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		validator.doesNotContainAny(elements, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainAll(Collection<E> elements)
 	{
 		validator.doesNotContainAll(elements);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		validator.doesNotContainAll(elements, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> doesNotContainDuplicates()
 	{
 		validator.doesNotContainDuplicates();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public ListVerifier<L, E> isSorted(Comparator<E> comparator)
 	{
 		validator.isSorted(comparator);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

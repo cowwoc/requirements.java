@@ -38,7 +38,7 @@ public final class UriVerifierImpl extends AbstractObjectVerifier<UriVerifier, U
 	public UriVerifier isAbsolute()
 	{
 		validator.isAbsolute();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override

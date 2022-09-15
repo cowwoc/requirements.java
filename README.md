@@ -16,11 +16,11 @@ import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 
 public final class Player
 {
-	public Player(String name, int age)
-	{
-		requireThat(name, "name").isNotEmpty();
-		requireThat(age, "age").isBetween(18, 30);
-	}
+  public Player(String name, int age)
+  {
+    requireThat(name, "name").isNotEmpty();
+    requireThat(age, "age").isBetween(18, 30);
+  }
 }
 ```
 
@@ -28,11 +28,11 @@ Exception messages will look like this:
 
 ```java
 java.lang.NullPointerException:name may not be null
-	[...]
-	java.lang.IllegalArgumentException:name may not be empty
-	[...]
-	java.lang.IllegalArgumentException:age must be in range[18,30).
-	Actual:15
+  [...]
+  java.lang.IllegalArgumentException:name may not be empty
+  [...]
+  java.lang.IllegalArgumentException:age must be in range[18,30).
+  Actual:15
 ```
 
 For the **Javadoc**, click **api docs** at the top of this page.
@@ -55,38 +55,35 @@ For the **Javadoc**, click **api docs** at the top of this page.
 ```xml
 
 <project>
-	...
-	<properties>
-		<requirements.version>8.0.0</requirements.version>
-	</properties>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.github.cowwoc.requirements</groupId>
-				<artifactId>maven_plugin</artifactId>
-				<version>${requirements.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<!-- Generates the DefaultRequirements, Requirements endpoints -->
-							<goal>generate-api</goal>
-							<!-- Adds support for colored diffs (optional) -->
-							<goal>unpack</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-	...
-	<dependencies>
-	<dependency>
-		<groupId>com.github.cowwoc.requirements</groupId>
-		<artifactId>java</artifactId>
-		<version>${requirements.version}</version>
-	</dependency>
-	<dependencies>
-	...
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.cowwoc.requirements</groupId>
+        <artifactId>maven_plugin</artifactId>
+        <version>8.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <!-- Generates the DefaultRequirements, Requirements endpoints -->
+              <goal>generate-api</goal>
+              <!-- Adds support for colored diffs (optional) -->
+              <goal>unpack</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  ...
+  <dependencies>
+    <dependency>
+      <groupId>com.github.cowwoc.requirements</groupId>
+      <artifactId>java</artifactId>
+      <version>8.0.0</version>
+    </dependency>
+  </dependencies>
+  ...
 </project>
 ```
 
@@ -109,11 +106,11 @@ import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 ```java
 public final class Player
 {
-	public Player(String name, int age)
-	{
-		requireThat(name, "name").isNotEmpty();
-		requireThat(age, "age").isBetween(18, 30);
-	}
+  public Player(String name, int age)
+  {
+    requireThat(name, "name").isNotEmpty();
+    requireThat(age, "age").isBetween(18, 30);
+  }
 }
 ```
 

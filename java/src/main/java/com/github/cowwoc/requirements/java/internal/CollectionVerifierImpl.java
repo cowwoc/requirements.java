@@ -44,133 +44,133 @@ public final class CollectionVerifierImpl<C extends Collection<E>, E>
 	public CollectionVerifier<C, E> isEmpty()
 	{
 		validator.isEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> isNotEmpty()
 	{
 		validator.isNotEmpty();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> contains(E element)
 	{
 		validator.contains(element);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> contains(E element, String name)
 	{
 		validator.contains(element, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> containsExactly(Collection<E> expected)
 	{
 		validator.containsExactly(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> containsExactly(Collection<E> expected, String name)
 	{
 		validator.containsExactly(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> containsAny(Collection<E> expected)
 	{
 		validator.containsAny(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> containsAny(Collection<E> expected, String name)
 	{
 		validator.containsAny(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> containsAll(Collection<E> expected)
 	{
 		validator.containsAll(expected);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> containsAll(Collection<E> expected, String name)
 	{
 		validator.containsAll(expected, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContain(E element)
 	{
 		validator.doesNotContain(element);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContain(E element, String name)
 	{
 		validator.doesNotContain(element, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other)
 	{
 		validator.doesNotContainExactly(other);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainExactly(Collection<E> other, String name)
 	{
 		validator.doesNotContainExactly(other, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements)
 	{
 		validator.doesNotContainAny(elements);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainAny(Collection<E> elements, String name)
 	{
 		validator.doesNotContainAny(elements, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements)
 	{
 		validator.doesNotContainAll(elements);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainAll(Collection<E> elements, String name)
 	{
 		validator.doesNotContainAll(elements, name);
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
 	public CollectionVerifier<C, E> doesNotContainDuplicates()
 	{
 		validator.doesNotContainDuplicates();
-		return validationResult();
+		return validationResult(IllegalArgumentException.class);
 	}
 
 	@Override
