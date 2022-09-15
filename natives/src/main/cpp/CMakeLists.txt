@@ -65,7 +65,7 @@ ELSE ()
 	MESSAGE (FATAL_ERROR "CMAKE_SYSTEM_NAME must be one of [Windows, Linux, Darwin], was ${CMAKE_SYSTEM_NAME}")
 ENDIF ()
 
-INCLUDE_DIRECTORIES (include $ENV{JAVA_HOME}/include ${java_include_path} "${PROJECT_BINARY_DIR}/../include")
+INCLUDE_DIRECTORIES (include "$ENV{JAVA_HOME}/include" ${java_include_path} "${PROJECT_BINARY_DIR}/../include")
 
 get_headers ("${CMAKE_CURRENT_SOURCE_DIR}/include" HEADER_FILES)
 get_sources ("${CMAKE_CURRENT_SOURCE_DIR}/source" SOURCE_FILES)
