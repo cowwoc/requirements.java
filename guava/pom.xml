@@ -54,7 +54,9 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
+								<!--								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>-->
+								<!-- WORKAROUND: https://github.com/google/guava/issues/5653 -->
+								<link>https://guava.dev/releases/29.0-jre/api/docs/</link>
 							</links>
 							<offlineLinks>
 								<!--
