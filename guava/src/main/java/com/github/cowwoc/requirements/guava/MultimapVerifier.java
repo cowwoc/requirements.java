@@ -24,6 +24,8 @@ public interface MultimapVerifier<K, V>
 	extends ExtensibleObjectVerifier<MultimapVerifier<K, V>, Multimap<K, V>>
 {
 	/**
+	 * Returns a verifier over {@link Multimap#keySet()}.
+	 *
 	 * @return a verifier over {@link Multimap#keySet()}
 	 */
 	CollectionVerifier<Set<K>, K> keySet();
@@ -40,6 +42,8 @@ public interface MultimapVerifier<K, V>
 	MultimapVerifier<K, V> keySet(Consumer<CollectionVerifier<Set<K>, K>> consumer);
 
 	/**
+	 * Returns a verifier over {@link Multimap#values()}.
+	 *
 	 * @return a verifier over {@link Multimap#values()}
 	 */
 	CollectionVerifier<Collection<V>, V> values();
@@ -56,6 +60,8 @@ public interface MultimapVerifier<K, V>
 	MultimapVerifier<K, V> values(Consumer<CollectionVerifier<Collection<V>, V>> consumer);
 
 	/**
+	 * Returns a verifier over {@link Multimap#entries()}.
+	 *
 	 * @return a verifier over {@link Multimap#entries()}
 	 */
 	CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>> entries();
@@ -88,6 +94,8 @@ public interface MultimapVerifier<K, V>
 	MultimapVerifier<K, V> isNotEmpty();
 
 	/**
+	 * Returns a verifier over {@link Multimap#size()}.
+	 *
 	 * @return a verifier over {@link Multimap#size()}
 	 */
 	SizeVerifier size();

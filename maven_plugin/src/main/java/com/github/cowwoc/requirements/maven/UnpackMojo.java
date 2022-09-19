@@ -45,6 +45,13 @@ public final class UnpackMojo extends AbstractMojo
 	@Component
 	private BuildPluginManager pluginManager;
 
+	/**
+	 * Creates a new instance of this plugin.
+	 */
+	public UnpackMojo()
+	{
+	}
+
 	@Override
 	public void execute() throws MojoExecutionException
 	{

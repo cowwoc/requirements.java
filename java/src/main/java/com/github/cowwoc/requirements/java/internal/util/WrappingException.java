@@ -1,5 +1,6 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
+import java.io.Serial;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
@@ -8,7 +9,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class WrappingException extends RuntimeException
 {
-	static final long serialVersionUID = 0L;
+	@Serial
+	private static final long serialVersionUID = 0L;
 
 	/**
 	 * Wraps an exception.

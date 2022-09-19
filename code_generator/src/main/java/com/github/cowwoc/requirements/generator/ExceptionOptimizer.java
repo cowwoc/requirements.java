@@ -140,51 +140,62 @@ public final class ExceptionOptimizer
 		StringWriter sw = new StringWriter();
 		try (BufferedWriter writer = new BufferedWriter(sw))
 		{
-			writer.write("/*\n" +
-				" * Copyright 2018 Gili Tzabari.\n" +
-				" * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0\n" +
-				" */\n" +
-				"package " + wrapperPackageName + ";\n" +
-				"\n");
 			writer.write("""
+				/*
+				 * Copyright 2018 Gili Tzabari.
+				 * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+				 */
+				""");
+			writer.write("package " + wrapperPackageName + ";\n");
+			writer.write("""
+
 				import com.github.cowwoc.requirements.java.GlobalRequirements;
 				import com.github.cowwoc.requirements.java.internal.util.Exceptions;
 
+				import java.io.Serial;
 				import java.io.PrintStream;
 				import java.io.PrintWriter;
+
+				/**
+				 * Optimizes exceptions thrown by the library.
+				 *
+				 * @see GlobalRequirements#isCleanStackTrace()
+				 */
 				""");
-			writer.write("\n" +
-				"/**\n" +
-				" * Optimizes exceptions thrown by the library.\n" +
-				" *\n" +
-				" * @see GlobalRequirements#isCleanStackTrace()\n" +
-				" */\n" +
-				"public final class " + wrapperSimpleName + " extends " + exception.getName() + "\n" +
-				"{\n" +
-				"\tprivate static final long serialVersionUID = 0L;\n" +
-				"\t/**\n" +
-				"\t * An instance of {@code Exceptions}.\n" +
-				"\t */\n" +
-				"\tprivate final transient Exceptions exceptions;\n" +
-				"\t/**\n" +
-				"\t * Indicates if stack trace references to this library have already been removed.\n" +
-				"\t */\n" +
-				"\tprivate boolean cleanedStackTrace;\n" +
-				"\n" +
-				"\t/**\n" +
-				"\t * @param exceptions an instance of {@link Exceptions}\n" +
-				"\t * @param message    the detail message. The detail message is saved for later retrieval by " +
-				"the\n" +
-				"\t *                   {@link #getMessage()} method\n" +
-				"\t */\n" +
-				"\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message)\n" +
-				"\t{\n" +
-				"\t\tsuper(message);\n" +
-				"\t\tif (exceptions == null)\n" +
-				"\t\t\tthrow new java.lang.NullPointerException(\"exceptions may not be null\");\n" +
-				"\t\tthis.exceptions = exceptions;\n" +
-				"\t}\n" +
-				"\n");
+			writer.write("public final class " + wrapperSimpleName + " extends " + exception.getName() + "\n");
+			writer.write("""
+				{
+				\t@Serial
+				\tprivate static final long serialVersionUID = 0L;
+				\t/**
+				\t * An instance of {@code Exceptions}.
+				\t */
+				\tprivate final transient Exceptions exceptions;
+				\t/**
+				\t * Indicates if stack trace references to this library have already been removed.
+				\t */
+				\tprivate boolean cleanedStackTrace;
+
+				\t/**
+				""");
+			writer.write("\t * Creates a new " + wrapperSimpleName + ".\n");
+			writer.write("""
+				\t *
+				\t * @param exceptions an instance of {@link Exceptions}
+				\t * @param message    the detail message. The detail message is saved for later retrieval by the
+				\t *                   {@link #getMessage()} method
+				\t */
+				""");
+			writer.write("\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message)\n");
+			writer.write("""
+				\t{
+				\t\tsuper(message);
+				\t\tif (exceptions == null)
+				\t\t\tthrow new java.lang.NullPointerException("exceptions may not be null");
+				\t\tthis.exceptions = exceptions;
+				\t}
+
+				""");
 			Constructor<?> constructor;
 			try
 			{
@@ -196,25 +207,31 @@ public final class ExceptionOptimizer
 			}
 			if (constructor != null)
 			{
-				writer.write("\t/**\n" +
-					"\t * @param exceptions an instance of {@link Exceptions}\n" +
-					"\t * @param message    the detail message. The detail message is saved for later retrieval by " +
-					"the\n" +
-					"\t *                   {@link #getMessage()} method\n" +
-					"\t * @param cause      the cause (which is saved for later retrieval by the {@link #getCause()} " +
-					"method).\n" +
-					"\t *                   (A {@code null} value is permitted, and indicates that the cause is " +
-					"nonexistent or\n" +
-					"\t *                   unknown.)\n" +
-					"\t */\n" +
-					"\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message, Throwable cause)\n" +
-					"\t{\n" +
-					"\t\tsuper(message, cause);\n" +
-					"\t\tif (exceptions == null)\n" +
-					"\t\t\tthrow new java.lang.NullPointerException(\"exceptions may not be null\");\n" +
-					"\t\tthis.exceptions = exceptions;\n" +
-					"\t}\n" +
-					"\n");
+				writer.write("""
+					\t/**
+					""");
+				writer.write("\t* public " + wrapperSimpleName + "(Exceptions exceptions, String message)\n");
+				writer.write("""
+					\t
+					\t * @param exceptions an instance of {@link Exceptions}
+					\t * @param message    the detail message. The detail message is saved for later retrieval by the
+					\t *                   {@link #getMessage()} method
+					\t * @param cause      the cause (which is saved for later retrieval by the {@link #getCause()} method).
+					\t *                   (A {@code null} value is permitted, and indicates that the cause is nonexistent or
+					\t *                   unknown.)
+					\t */
+					""");
+				writer.write("\tpublic " + wrapperSimpleName + "(Exceptions exceptions, String message, Throwable " +
+					"cause)\n");
+				writer.write("""
+					\t{
+					\t\tsuper(message, cause);
+					\t\tif (exceptions == null)
+					\t\t\tthrow new java.lang.NullPointerException("exceptions may not be null");
+					\t\tthis.exceptions = exceptions;
+					\t}
+
+					""");
 			}
 			writer.write("""
 				\t@Override

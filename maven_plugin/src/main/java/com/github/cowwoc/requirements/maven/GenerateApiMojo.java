@@ -57,6 +57,13 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 	@Parameter(defaultValue = "${plugin}", readonly = true)
 	private PluginDescriptor plugin;
 
+	/**
+	 * Creates a new instance of this plugin.
+	 */
+	public GenerateApiMojo()
+	{
+	}
+
 	@Override
 	public void execute() throws MojoExecutionException
 	{

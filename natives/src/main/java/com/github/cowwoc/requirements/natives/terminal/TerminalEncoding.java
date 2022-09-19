@@ -33,6 +33,9 @@ public enum TerminalEncoding
 	RGB_888_COLORS;
 
 	/**
+	 * Returns a comparator that sorts encodings based on the number of colors that they support, from the most
+	 * to the least number of colors.
+	 *
 	 * @return a comparator that sorts encodings based on the number of colors that they support, from the most
 	 * to the least number of colors
 	 */

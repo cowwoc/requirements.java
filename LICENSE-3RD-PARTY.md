@@ -46,15 +46,19 @@
   * Common Development And Distribution License (CDDL) + GPL, version 2.0, with
 									classpath exception:
     * [javax.annotation API](http://jcp.org/en/jsr/detail?id=250)
+  * Eclipse Public License (EPL), Version 1.0:
+    * [Logback Classic Module](http://logback.qos.ch/logback-classic)
+    * [Logback Core Module](http://logback.qos.ch/logback-core)
   * Eclipse Public License, Version 1.0:
     * [org.eclipse.sisu.inject](http://www.eclipse.org/sisu/org.eclipse.sisu.inject/)
     * [org.eclipse.sisu.plexus](http://www.eclipse.org/sisu/org.eclipse.sisu.plexus/)
   * GNU General Public License (GPL), version 2, with the Classpath exception:
     * [JMH Core](http://openjdk.java.net/projects/code-tools/jmh/jmh-core/)
     * [JMH Generators: Annotation Processors](http://openjdk.java.net/projects/code-tools/jmh/jmh-generator-annprocess/)
-  * GNU Lesser General Public License (LGPL), version 2.1:
+  * GNU Lesser General Public License (LGPL):
     * [Logback Classic Module](http://logback.qos.ch/logback-classic)
     * [Logback Core Module](http://logback.qos.ch/logback-core)
+  * GNU Lesser General Public License (LGPL), version 2.1:
     * [javaparser-core](https://github.com/javaparser/javaparser-core)
   * MIT License:
     * [JOpt Simple](http://jopt-simple.github.io/jopt-simple)

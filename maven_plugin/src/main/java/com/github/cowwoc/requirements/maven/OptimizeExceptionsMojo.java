@@ -44,6 +44,13 @@ public final class OptimizeExceptionsMojo extends AbstractGeneratorMojo
 	@Parameter(property = "project", required = true, readonly = true)
 	private MavenProject project;
 
+	/**
+	 * Creates a new instance of this plugin.
+	 */
+	public OptimizeExceptionsMojo()
+	{
+	}
+
 	@Override
 	public void execute() throws MojoExecutionException
 	{

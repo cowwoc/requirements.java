@@ -98,6 +98,9 @@
 								<option>--override-methods</option>
 								<option>summary</option>
 							</additionalOptions>
+							<excludePackageNames>
+								com.github.cowwoc.requirements.generator.internal:com.github.cowwoc.requirements.generator.internal.*
+							</excludePackageNames>
 						</configuration>
 					</execution>
 				</executions>

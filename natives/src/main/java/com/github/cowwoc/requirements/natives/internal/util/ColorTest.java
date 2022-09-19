@@ -40,4 +40,8 @@ public final class ColorTest
 			}
 		}
 	}
+
+	private ColorTest()
+	{
+	}
 }

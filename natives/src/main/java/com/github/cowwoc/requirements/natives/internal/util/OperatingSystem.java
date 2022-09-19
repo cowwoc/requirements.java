@@ -381,15 +381,17 @@ public final class OperatingSystem
 		}
 
 		/**
-		 * @param str        a string
+		 * Indicates if {@code text} starts with {@code prefix}, disregarding case sensitivity.
+		 *
+		 * @param text       a string
 		 * @param prefix     a prefix
 		 * @param ignoreCase {@code true} if case should be ignored when comparing characters
-		 * @return true if {@code start} starts with {@code prefix}, disregarding case sensitivity
+		 * @return true if {@code text} starts with {@code prefix}, disregarding case sensitivity
 		 * @throws NullPointerException if any of the arguments are null
 		 */
-		public static boolean startsWith(String str, String prefix, boolean ignoreCase)
+		public static boolean startsWith(String text, String prefix, boolean ignoreCase)
 		{
-			return str.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
+			return text.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
 		}
 	}
 }

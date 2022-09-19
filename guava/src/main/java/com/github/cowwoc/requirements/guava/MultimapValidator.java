@@ -4,10 +4,10 @@
  */
 package com.github.cowwoc.requirements.guava;
 
-import com.google.common.collect.Multimap;
 import com.github.cowwoc.requirements.java.CollectionValidator;
 import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
+import com.google.common.collect.Multimap;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -24,6 +24,8 @@ public interface MultimapValidator<K, V>
 	extends ExtensibleObjectValidator<MultimapValidator<K, V>, Multimap<K, V>>
 {
 	/**
+	 * Returns a validator over {@link Multimap#keySet()}.
+	 *
 	 * @return a validator over {@link Multimap#keySet()}
 	 */
 	CollectionValidator<Set<K>, K> keySet();
@@ -40,6 +42,8 @@ public interface MultimapValidator<K, V>
 	MultimapValidator<K, V> keySet(Consumer<CollectionValidator<Set<K>, K>> consumer);
 
 	/**
+	 * Returns a validator over {@link Multimap#values()}.
+	 *
 	 * @return a validator over {@link Multimap#values()}
 	 */
 	CollectionValidator<Collection<V>, V> values();
@@ -56,6 +60,8 @@ public interface MultimapValidator<K, V>
 	MultimapValidator<K, V> values(Consumer<CollectionValidator<Collection<V>, V>> consumer);
 
 	/**
+	 * Reutrns a validator over {@link Multimap#entries()}.
+	 *
 	 * @return a validator over {@link Multimap#entries()}
 	 */
 	CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries();
@@ -89,6 +95,8 @@ public interface MultimapValidator<K, V>
 	MultimapValidator<K, V> isNotEmpty();
 
 	/**
+	 * Returns a validator over {@link Multimap#size()}.
+	 *
 	 * @return a validator over {@link Multimap#size()}
 	 */
 	SizeValidator size();
