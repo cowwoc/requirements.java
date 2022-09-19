@@ -15,6 +15,9 @@ import java.io.IOException;
 @SuppressWarnings("RedundantThrows")
 public final class NativeTerminal
 {
+	/**
+	 * Creates a new NativeTerminal.
+	 */
 	public NativeTerminal()
 	{
 	}
