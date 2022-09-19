@@ -347,7 +347,7 @@ public final class Exceptions
 			// forced to strip out the exception cause because it was thrown inside this library.
 			if (cleanStackTrace)
 			{
-				// Why? Read previous comment
+				// Why? Read previous comment.
 				cause = null;
 			}
 			ExceptionBuilder<E> exceptionBuilder = getExceptionBuilder(type, cleanStackTrace);

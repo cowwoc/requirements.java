@@ -85,8 +85,8 @@ public final class MultimapVerifierImpl<K, V>
 	}
 
 	@Override
-	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>, Entry<K, V>>>
-		consumer)
+	public MultimapVerifier<K, V> entries(Consumer<CollectionVerifier<Collection<Entry<K, V>>,
+		Entry<K, V>>> consumer)
 	{
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");

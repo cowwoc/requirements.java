@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.benchmark.java;
 
-import com.github.cowwoc.requirements.java.internal.StringVerifierImpl;
+import com.github.cowwoc.requirements.DefaultRequirements;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -16,9 +16,9 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.concurrent.TimeUnit;
-
-import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 
 @State(Scope.Benchmark)
 @SuppressWarnings({"CanBeFinal", "LongLine", "FieldCanBeLocal", "FieldMayBeFinal"})
@@ -36,42 +36,65 @@ public class ExceptionTest
 			include(ExceptionTest.class.getSimpleName()).
 			timeUnit(TimeUnit.NANOSECONDS).
 			mode(Mode.AverageTime).
-			warmupIterations(3).
-			measurementIterations(5).
-			forks(0).
+			warmupIterations(10).
+			measurementIterations(20).
 			build();
 		new Runner(opt).run();
 	}
 
 	@Benchmark
-	public String validationResult(Blackhole bh)
+	public void throwException(Blackhole bh)
 	{
 		try
 		{
-			StringVerifierImpl result = (StringVerifierImpl) requireThat((String) null, "null");
-			result.validationResult(IllegalArgumentException.class);
-			return result.getActual();
+			throw new IllegalArgumentException("Hard-coded exception");
 		}
-		catch (Throwable t)
+		catch (IllegalArgumentException e)
 		{
-			bh.consume(t);
-			return null;
+			bh.consume(e);
 		}
 	}
 
 	@Benchmark
-	public String validateResultType(Blackhole bh)
+	public void requireThatThrowException(Blackhole bh)
 	{
 		try
 		{
-			StringVerifierImpl result = (StringVerifierImpl) requireThat((String) null, "null");
-			result.validationResult(IllegalArgumentException.class);
-			return result.getActual();
+			DefaultRequirements.requireThat(nullObject, name).isNotNull();
 		}
-		catch (Throwable t)
+		catch (NullPointerException e)
 		{
-			bh.consume(t);
-			return null;
+			bh.consume(e);
+		}
+	}
+
+	@Benchmark
+	public void throwAndConsumeStackTrace(Blackhole bh)
+	{
+		try
+		{
+			throw new IllegalArgumentException("Hard-coded exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			bh.consume(sw.toString());
+		}
+	}
+
+	@Benchmark
+	public void requireThatThrowAndConsumeStackTrace(Blackhole bh)
+	{
+		try
+		{
+			DefaultRequirements.requireThat(nullObject, name).isNotNull();
+		}
+		catch (NullPointerException e)
+		{
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			bh.consume(sw.toString());
 		}
 	}
 }

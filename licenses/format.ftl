@@ -30,25 +30,29 @@
    values are all dependencies using this license
 -->
 <#function artifactFormat p>
-    <#if p.name?index_of('Unnamed') &gt; -1>
-        <#return "[" + p.artifactId + "](" + (p.url!"no url defined") + ")">
-    <#else>
-        <#return "[" + p.name + "](" + (p.url!"no url defined") + ")">
-    </#if>
+  <#if p.name?index_of('Unnamed') &gt; -1>
+    <#assign projectName = p.artifactId/>
+  <#else>
+    <#assign projectName = p.name/>
+  </#if>
+  <#if p.url??>
+    <#return "[" + projectName  + "](" + p.url + ")">
+  <#else>
+    <#return projectName>
+  </#if>
 </#function>
 <#if licenseMap?size == 0>
-The project has no dependencies.
+  The project has no dependencies.
 <#else>
-# Third-party dependencies
-    <#list licenseMap as e>
-
-        <#assign license = e.getKey()/>
-        <#assign projects = e.getValue()/>
-        <#if projects?size &gt; 0>
+  # Third-party dependencies
+  <#list licenseMap as e>
+    <#assign license = e.getKey()/>
+    <#assign projects = e.getValue()/>
+    <#if projects?size &gt; 0>
   * ${license}:
-            <#list projects as project>
+      <#list projects as project>
     * ${artifactFormat(project)}
-            </#list>
-        </#if>
-    </#list>
+      </#list>
+    </#if>
+  </#list>
 </#if>
