@@ -3,7 +3,7 @@
 
 # <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Fluent Design by Contract for Java APIs
 
-[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/)
+[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](wiki/Changelog.md)
 [![js](https://img.shields.io/badge/other%20languages-js-457FD5.svg)](../../../requirements.js)
 
@@ -61,7 +61,7 @@ For the **Javadoc**, click **api docs** at the top of this page.
       <plugin>
         <groupId>com.github.cowwoc.requirements</groupId>
         <artifactId>maven_plugin</artifactId>
-        <version>8.0.0</version>
+        <version>8.0.1</version>
         <executions>
           <execution>
             <goals>
@@ -80,7 +80,7 @@ For the **Javadoc**, click **api docs** at the top of this page.
     <dependency>
       <groupId>com.github.cowwoc.requirements</groupId>
       <artifactId>java</artifactId>
-      <version>8.0.0</version>
+      <version>8.0.1</version>
     </dependency>
   </dependencies>
   ...
@@ -119,13 +119,13 @@ public final class Player
 The best way to learn about the API is using your IDE's auto-complete engine. There are six entry points you
 can navigate from:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#requireThat(T,java.lang.String))
-* [validateThat(value, name)](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#validateThat(T,java.lang.String))
-* [assertThat(Consumer)](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#assertThat(java.util.function.Consumer))
-* [assertThatAndReturn(Function)](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#assertThatAndReturn(java.util.function.Function))
-* [Requirements](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/Requirements.html)
-* [GlobalRequirements](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html)
-* [ThreadRequirements](https://cowwoc.github.io/requirements.java/8.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ThreadRequirements.html)
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#requireThat(T,java.lang.String))
+* [validateThat(value, name)](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#validateThat(T,java.lang.String))
+* [assertThat(Consumer)](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#assertThat(java.util.function.Consumer))
+* [assertThatAndReturn(Function)](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#assertThatAndReturn(java.util.function.Function))
+* [Requirements](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/Requirements.html)
+* [GlobalRequirements](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html)
+* [ThreadRequirements](https://cowwoc.github.io/requirements.java/8.0.1/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ThreadRequirements.html)
 
 The first three methods are designed to be statically imported from `DefaultRequirements`.
 
