@@ -146,6 +146,6 @@ Enhanced support is available for the following 3rd-party libraries and tools:
 
 ## Licenses
 
-* Code licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
-* [Third party licenses](wiki/Third_Party_Licenses.md)
+* Code licensed under the [Apache License, Version 2.0](LICENSE)
+* [Third party licenses](LICENSE-3RD-PARTY.md)
 * Icons made by Flat Icons from www.flaticon.com is licensed by CC 3.0 BY
