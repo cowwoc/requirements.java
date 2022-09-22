@@ -177,6 +177,9 @@ public final class ExceptionOptimizer
 				\t * Indicates if stack trace references to this library have already been removed.
 				\t */
 				\tprivate boolean cleanedStackTrace;
+				\t/**
+				\t * Locks over the exception's state.
+				\t */
 				\tprivate final ReentrantStampedLock lock = new ReentrantStampedLock();
 
 				\t/**
