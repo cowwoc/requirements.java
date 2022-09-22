@@ -1,6 +1,11 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.2 - 2022/09/22
+
+* Improvements:
+  * Replaced use of `synchronized` keyword with `StampedLock` to improve compatibility with virtual threads.
+
 ## Version 8.0.1 - 2022/09/18
 
 * Improvements:
