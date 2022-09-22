@@ -150,7 +150,9 @@ public final class ExceptionOptimizer
 			writer.write("""
 
 				import com.github.cowwoc.requirements.java.GlobalRequirements;
+				import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
 				import com.github.cowwoc.requirements.java.internal.util.Exceptions;
+				import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
 
 				import java.io.Serial;
 				import java.io.PrintStream;
@@ -175,6 +177,7 @@ public final class ExceptionOptimizer
 				\t * Indicates if stack trace references to this library have already been removed.
 				\t */
 				\tprivate boolean cleanedStackTrace;
+				\tprivate final ReentrantStampedLock lock = new ReentrantStampedLock();
 
 				\t/**
 				""");
@@ -258,15 +261,18 @@ public final class ExceptionOptimizer
 				\t/**
 				\t * Removes stack trace references to this library.
 				\t */
-				\tprivate synchronized void cleanStackTrace()
+				\tprivate void cleanStackTrace()
 				\t{
-				\t\tif (cleanedStackTrace)
-				\t\t\treturn;
-				\t\tStackTraceElement[] stackTrace = super.getStackTrace();
-				\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);
-				\t\tif (newStackTrace != stackTrace)
-				\t\t\tsetStackTrace(newStackTrace);
-				\t\tcleanedStackTrace = true;
+				\t\ttry (CloseableLock ignored = lock.write())
+				\t\t{
+				\t\t\tif (cleanedStackTrace)
+				\t\t\t\treturn;
+				\t\t\tStackTraceElement[] stackTrace = super.getStackTrace();
+				\t\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);
+				\t\t\tif (newStackTrace != stackTrace)
+				\t\t\t\tsetStackTrace(newStackTrace);
+				\t\t\tcleanedStackTrace = true;
+				\t\t}
 				\t}
 				}
 				""");

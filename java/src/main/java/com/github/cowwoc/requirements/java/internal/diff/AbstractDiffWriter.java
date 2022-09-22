@@ -6,11 +6,11 @@ package com.github.cowwoc.requirements.java.internal.diff;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.NEWLINE_PATTERN;
@@ -47,15 +47,15 @@ abstract class AbstractDiffWriter implements DiffWriter
 	/**
 	 * The final list of lines in the actual value.
 	 */
-	private List<String> actualLines;
+	private final Queue<String> actualLines = new ConcurrentLinkedQueue<>();
 	/**
 	 * The final list of lines in the expected value.
 	 */
-	private List<String> expectedLines;
+	private final Queue<String> expectedLines = new ConcurrentLinkedQueue<>();
 	/**
 	 * The final list that indicates which lines contain actual and expected values that are equal.
 	 */
-	private List<Boolean> equalLines;
+	private final Queue<Boolean> equalLines = new ConcurrentLinkedQueue<>();
 	protected boolean flushed;
 
 	/**
@@ -178,19 +178,17 @@ abstract class AbstractDiffWriter implements DiffWriter
 			return;
 		flushed = true;
 		beforeClose();
-		this.actualLines = Collections.synchronizedList(lineToActualLine.entrySet().stream().
-			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
-			collect(Collectors.toList()));
-		this.expectedLines = Collections.synchronizedList(lineToExpectedLine.entrySet().stream().
-			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
-			collect(Collectors.toList()));
-		this.equalLines = Collections.synchronizedList(lineToEqualLine.entrySet().stream().
-			sorted(Entry.comparingByKey()).map(Entry::getValue).collect(Collectors.toList()));
+		this.actualLines.addAll(lineToActualLine.entrySet().stream().
+			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).toList());
+		this.expectedLines.addAll(lineToExpectedLine.entrySet().stream().
+			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).toList());
+		this.equalLines.addAll(lineToEqualLine.entrySet().stream().
+			sorted(Entry.comparingByKey()).map(Entry::getValue).toList());
 		afterClose();
 	}
 
 	@Override
-	public List<String> getActualLines()
+	public Queue<String> getActualLines()
 	{
 		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
@@ -198,7 +196,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	@Override
-	public List<String> getExpectedLines()
+	public Queue<String> getExpectedLines()
 	{
 		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
@@ -206,7 +204,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	@Override
-	public List<Boolean> getEqualLines()
+	public Queue<Boolean> getEqualLines()
 	{
 		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");

@@ -4,11 +4,11 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import java.util.Collections;
+import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 import static com.github.cowwoc.requirements.java.internal.diff.AbstractColorWriter.DecorationType.UNDECORATED;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.POSTFIX;
@@ -27,6 +27,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	 */
 	protected static final String DIFF_PADDING = "/";
 	protected static final String DEFAULT_BACKGROUND = "49";
+	private static final Queue<String> EMPTY_QUEUE = new ArrayDeque<>(0);
 	private final Map<Integer, DecorationType> lineToActualDecoration = new HashMap<>();
 	private final Map<Integer, DecorationType> lineToExpectedDecoration = new HashMap<>();
 
@@ -186,11 +187,11 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	}
 
 	@Override
-	public List<String> getDiffLines()
+	public Queue<String> getDiffLines()
 	{
 		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");
-		return Collections.emptyList();
+		return EMPTY_QUEUE;
 	}
 
 	/**

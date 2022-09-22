@@ -4,12 +4,11 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
@@ -25,7 +24,7 @@ public final class TextOnly extends AbstractDiffWriter
 	 */
 	public static final String DIFF_PADDING = " ";
 	private final Map<Integer, StringBuilder> lineToDiffBuilder = new HashMap<>();
-	private List<String> diffLines;
+	private final Queue<String> diffLines = new ConcurrentLinkedQueue<>();
 
 	/**
 	 * Creates a new text-only diff.
@@ -129,13 +128,13 @@ public final class TextOnly extends AbstractDiffWriter
 	@Override
 	protected void afterClose()
 	{
-		this.diffLines = Collections.synchronizedList(lineToDiffBuilder.entrySet().stream().
-			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).
-			collect(Collectors.toList()));
+		this.diffLines.addAll(lineToDiffBuilder.entrySet().stream().
+			sorted(Entry.comparingByKey()).
+			map(Entry::getValue).map(StringBuilder::toString).toList());
 	}
 
 	@Override
-	public List<String> getDiffLines()
+	public Queue<String> getDiffLines()
 	{
 		if (!flushed)
 			throw new IllegalStateException("Writer must be closed");

@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * A runtime exception dedicated to wrapping checked exceptions.
  */
-public class WrappingException extends RuntimeException
+public class WrappedCheckedException extends RuntimeException
 {
 	@Serial
 	private static final long serialVersionUID = 0L;
@@ -19,7 +19,7 @@ public class WrappingException extends RuntimeException
 	 * @param cause   the exception to wrap
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public WrappingException(String message, Throwable cause)
+	private WrappedCheckedException(String message, Throwable cause)
 	{
 		super(message, cause);
 		if (message == null)
@@ -34,7 +34,7 @@ public class WrappingException extends RuntimeException
 	 * @param cause the exception to wrap
 	 * @throws NullPointerException if {@code cause} is null
 	 */
-	private WrappingException(Throwable cause)
+	private WrappedCheckedException(Throwable cause)
 	{
 		super(cause);
 		if (cause == null)
@@ -57,7 +57,7 @@ public class WrappingException extends RuntimeException
 		}
 		catch (Exception e)
 		{
-			throw WrappingException.wrap(e);
+			throw WrappedCheckedException.wrap(e);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class WrappingException extends RuntimeException
 		}
 		catch (Exception e)
 		{
-			throw WrappingException.wrap(e);
+			throw WrappedCheckedException.wrap(e);
 		}
 	}
 
@@ -90,13 +90,13 @@ public class WrappingException extends RuntimeException
 	 * @return the updated exception
 	 * @throws NullPointerException if {@code t} is null
 	 */
-	public static WrappingException wrap(Throwable t)
+	public static RuntimeException wrap(Throwable t)
 	{
 		if (t instanceof RuntimeException re)
-			throw re;
+			return re;
 		if (t instanceof ExecutionException ee)
 			return wrap(ee.getCause());
-		return new WrappingException(t);
+		return new WrappedCheckedException(t);
 	}
 
 	/**

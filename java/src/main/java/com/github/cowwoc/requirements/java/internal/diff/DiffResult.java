@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.diff;
 
 import java.util.List;
+import java.util.Queue;
 
 /**
  * The result of calculating the difference between two strings.
@@ -23,8 +24,8 @@ public final class DiffResult
 	 * @param equalLines    indicates which lines are equal
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public DiffResult(List<String> actualLines, List<String> diffLines, List<String> expectedLines,
-		List<Boolean> equalLines)
+	public DiffResult(Queue<String> actualLines, Queue<String> diffLines, Queue<String> expectedLines,
+		Queue<Boolean> equalLines)
 	{
 		if (actualLines == null)
 			throw new NullPointerException("actualLines may not be null");

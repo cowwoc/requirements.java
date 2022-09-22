@@ -185,7 +185,7 @@ public final class Exceptions
 			}
 			catch (Throwable e)
 			{
-				throw WrappingException.wrap(e);
+				throw WrappedCheckedException.wrap(e);
 			}
 		};
 	private final ConcurrentMap<CacheKey, ExceptionBuilder<?>> classToExceptionBuilder =
@@ -247,7 +247,7 @@ public final class Exceptions
 				}
 				catch (Throwable e)
 				{
-					throw WrappingException.wrap(e);
+					throw WrappedCheckedException.wrap(e);
 				}
 			};
 		}
@@ -265,7 +265,7 @@ public final class Exceptions
 				}
 				catch (Throwable e)
 				{
-					throw WrappingException.wrap(e);
+					throw WrappedCheckedException.wrap(e);
 				}
 			};
 		}
@@ -285,7 +285,7 @@ public final class Exceptions
 				}
 				catch (Throwable e)
 				{
-					throw WrappingException.wrap(e);
+					throw WrappedCheckedException.wrap(e);
 				}
 			};
 		}
@@ -366,7 +366,7 @@ public final class Exceptions
 		}
 		catch (Throwable e)
 		{
-			throw WrappingException.wrap(e);
+			throw WrappedCheckedException.wrap(e);
 		}
 	}
 
