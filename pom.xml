@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.cowwoc.requirements</groupId>
 	<artifactId>root</artifactId>
-	<version>8.0.3</version>
+	<version>8.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
