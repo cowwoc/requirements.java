@@ -109,12 +109,6 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	}
 
 	@Override
-	public boolean isActualAvailable()
-	{
-		return true;
-	}
-
-	@Override
 	public T getActual()
 	{
 		return actual;

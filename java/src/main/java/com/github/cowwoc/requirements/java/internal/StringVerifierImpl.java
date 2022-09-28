@@ -85,6 +85,20 @@ public final class StringVerifierImpl
 	}
 
 	@Override
+	public StringVerifier strip()
+	{
+		validator.strip();
+		return validationResult(IllegalArgumentException.class);
+	}
+
+	@Override
+	public StringVerifier isStripped()
+	{
+		validator.isStripped();
+		return validationResult(IllegalArgumentException.class);
+	}
+
+	@Override
 	public InetAddressVerifier asInetAddress()
 	{
 		InetAddressValidator newValidator = validator.asInetAddress();

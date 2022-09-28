@@ -134,14 +134,16 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	StringVerifier length(Consumer<SizeVerifier> consumer);
 
 	/**
-	 * Trims whitespace at the beginning and end of the actual value.
+	 * Removes all white space from the beginning and end of the actual value, where white space is defined as
+	 * any character whose codepoint is less than or equal to {@code 'U+0020'} (the space character).
 	 *
 	 * @return the updated verifier
 	 */
 	StringVerifier trim();
 
 	/**
-	 * Ensures that the actual value does not contain leading or trailing whitespace.
+	 * Ensures that the actual value does not contain leading or trailing white space, where white space is
+	 * defined by {@link #trim()}.
 	 *
 	 * @return the updated verifier
 	 * @throws IllegalArgumentException if the actual value is not trimmed
@@ -149,6 +151,25 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * @see #isBlank()
 	 */
 	StringVerifier isTrimmed();
+
+	/**
+	 * Strips {@linkplain Character#isWhitespace(int) white space} from the beginning and the end of the actual
+	 * value, where white space is defined by the Unicode standard.
+	 *
+	 * @return the updated verifier
+	 */
+	StringVerifier strip();
+
+	/**
+	 * Ensures that the actual value does not contain leading or trailing white space, where white space is
+	 * defined by {@link #strip()}.
+	 *
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value is not trimmed
+	 * @see #strip()
+	 * @see #isBlank()
+	 */
+	StringVerifier isStripped();
 
 	/**
 	 * Ensures that the actual value contains a valid Internet address format.

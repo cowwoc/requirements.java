@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.extension;
 
+import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.java.StringValidator;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 
@@ -20,18 +21,11 @@ import java.util.function.Consumer;
 public interface ExtensibleObjectValidator<S, T>
 {
 	/**
-	 * Indicates if the actual value is available.
-	 *
-	 * @return true unless the actual value was converted to an incompatible type
-	 */
-	boolean isActualAvailable();
-
-	/**
-	 * Returns the actual value. The return value is undefined if {@link #isActualAvailable()}
-	 * is {@code false}.
+	 * Returns the actual value.
 	 *
 	 * @return the actual value
 	 */
+	@CheckReturnValue
 	T getActual();
 
 	/**

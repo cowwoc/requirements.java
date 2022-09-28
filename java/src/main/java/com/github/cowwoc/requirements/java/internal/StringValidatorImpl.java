@@ -183,7 +183,52 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		if (!trimmed.equals(actual))
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				name + " may not contain leading or trailing whitespace").
+				name + " may not contain leading or trailing white space").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return this;
+	}
+
+	@Override
+	public StringValidator strip()
+	{
+		if (fatalFailure)
+			return this;
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			fatalFailure = true;
+			return this;
+		}
+		String stripped = actual.strip();
+		if (stripped.equals(actual))
+			return this;
+		this.name = name + ".strip()";
+		this.actual = stripped;
+		return this;
+	}
+
+	@Override
+	public StringValidator isStripped()
+	{
+		if (fatalFailure)
+			return this;
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			fatalFailure = true;
+			return this;
+		}
+		String stripped = actual.strip();
+		if (!stripped.equals(actual))
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " may not contain leading or trailing white space").
 				addContext("Actual", actual);
 			addFailure(failure);
 		}

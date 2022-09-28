@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java.extension;
 
+import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.java.ObjectVerifier;
 import com.github.cowwoc.requirements.java.StringVerifier;
 
@@ -168,5 +169,6 @@ public interface ExtensibleObjectVerifier<S, T>
 	 *
 	 * @return the actual value
 	 */
+	@CheckReturnValue
 	T getActual();
 }

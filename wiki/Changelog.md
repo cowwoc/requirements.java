@@ -1,6 +1,12 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.3 - 2022/09/28
+
+* Improvements:
+  * Added `StringValidator/Verifier.strip()` and `isStripped()`.
+  * Added `@CheckReturnValue` to `ObjectValidator/Verifier.getActual()`.
+
 ## Version 8.0.2 - 2022/09/22
 
 * Improvements:
@@ -42,8 +48,8 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 ## Version 7.0.2 - 2022/07/13
 
 * Improvements
-  * AbstractObjectVerifier.validator is now final.
-  * Optimized common case where validationResult() returns this.
+  * `AbstractObjectVerifier.validator` is now final.
+  * Optimized common case where `validationResult()` returns `this`.
 
 ## Version 7.0.1 - 2022/07/11
 

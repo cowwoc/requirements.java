@@ -150,6 +150,26 @@ public final class StringTest
 	}
 
 	@Test
+	public void stripIsEmpty()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "   ";
+			new Requirements(scope).requireThat(actual, "actual").strip().isEmpty();
+		}
+	}
+
+	@Test
+	public void isStripped()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "abc";
+			new Requirements(scope).requireThat(actual, "actual").isStripped();
+		}
+	}
+
+	@Test
 	public void isBlank()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -506,6 +526,22 @@ public final class StringTest
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
+
+	@Test
+	public void validateThatNullStrip()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			List<String> expectedMessages = Collections.singletonList("actual may not be null");
+			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
+				strip().isNotEqualTo(5).getFailures();
+			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
+				collect(Collectors.toList());
+			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
 
 	@Test
 	public void validateThatNullLength()

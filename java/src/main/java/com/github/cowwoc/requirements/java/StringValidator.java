@@ -74,7 +74,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value is empty.
 	 *
 	 * @return the updated validator
-	 * @see #trim()
+	 * @see #strip()
 	 */
 	StringValidator isEmpty();
 
@@ -82,7 +82,7 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 * Ensures that the actual value is not empty.
 	 *
 	 * @return the updated validator
-	 * @see #trim()
+	 * @see #strip()
 	 */
 	StringValidator isNotEmpty();
 
@@ -121,20 +121,43 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	StringValidator length(Consumer<SizeValidator> consumer);
 
 	/**
-	 * Trims whitespace at the beginning and end of the actual value.
+	 * Removes all white space from the beginning and end of the actual value, where white space is defined as
+	 * any character whose codepoint is less than or equal to {@code 'U+0020'} (the space character).
 	 *
 	 * @return the updated validator
+	 * @see String#trim()
 	 */
 	StringValidator trim();
 
 	/**
-	 * Ensures that the actual value does not contain leading or trailing whitespace.
+	 * Ensures that the actual value does not contain leading or trailing white space, where white space is
+	 * defined by {@link #trim()}.
 	 *
 	 * @return the updated validator
 	 * @see #trim()
 	 * @see #isBlank()
 	 */
 	StringValidator isTrimmed();
+
+	/**
+	 * Strips {@linkplain Character#isWhitespace(int) white space} from the beginning and the end of the actual
+	 * value, where white space is defined by the Unicode standard.
+	 *
+	 * @return the updated validator
+	 * @see String#strip()
+	 */
+	StringValidator strip();
+
+
+	/**
+	 * Ensures that the actual value does not contain leading or trailing white space, where white space is
+	 * defined by {@link #strip()}.
+	 *
+	 * @return the updated validator
+	 * @see #strip()
+	 * @see #isBlank()
+	 */
+	StringValidator isStripped();
 
 	/**
 	 * Ensures that the actual value contains a valid Internet address format.

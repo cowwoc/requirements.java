@@ -61,7 +61,7 @@ For the **Javadoc**, click **api docs** at the top of this page.
       <plugin>
         <groupId>com.github.cowwoc.requirements</groupId>
         <artifactId>maven_plugin</artifactId>
-        <version>8.0.2</version>
+        <version>8.0.3</version>
         <executions>
           <execution>
             <goals>
@@ -80,7 +80,7 @@ For the **Javadoc**, click **api docs** at the top of this page.
     <dependency>
       <groupId>com.github.cowwoc.requirements</groupId>
       <artifactId>java</artifactId>
-      <version>8.0.2</version>
+      <version>8.0.3</version>
     </dependency>
   </dependencies>
   ...
