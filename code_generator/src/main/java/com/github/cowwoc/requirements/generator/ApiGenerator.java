@@ -250,7 +250,8 @@ public final class ApiGenerator
 			\t}
 
 			\t/**
-			\t * Indicates if stack trace references to this library should be removed.
+			\t * Indicates if stack trace references to this library should be removed, so long as it does not
+			\t * result in any user code being removed.
 			\t *
 			\t * @return {@code true} by default
 			\t * @see #withCleanStackTrace()
@@ -262,7 +263,8 @@ public final class ApiGenerator
 			\t}
 
 			\t/**
-			\t * Indicates that stack trace references to this library should be removed.
+			\t * Indicates that stack trace references to this library should be removed, so long as it does not
+			\t * result in any user code being removed.
 			\t *
 			\t * @return a new {@code Requirements} object that operates independently of the original instance
 			\t * @see #isCleanStackTrace()

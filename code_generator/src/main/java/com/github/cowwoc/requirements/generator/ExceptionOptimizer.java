@@ -270,10 +270,7 @@ public final class ExceptionOptimizer
 				\t\t{
 				\t\t\tif (cleanedStackTrace)
 				\t\t\t\treturn;
-				\t\t\tStackTraceElement[] stackTrace = super.getStackTrace();
-				\t\t\tStackTraceElement[] newStackTrace = exceptions.removeLibraryFromStackTrace(stackTrace);
-				\t\t\tif (newStackTrace != stackTrace)
-				\t\t\t\tsetStackTrace(newStackTrace);
+				\t\t\texceptions.removeLibraryFromStackTrace(this, super.getStackTrace());
 				\t\t\tcleanedStackTrace = true;
 				\t\t}
 				\t}

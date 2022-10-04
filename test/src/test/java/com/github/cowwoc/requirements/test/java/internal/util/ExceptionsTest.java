@@ -16,6 +16,8 @@ import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.N
 
 public final class ExceptionsTest
 {
+	private static final String LIBRARY_PACKAGE = Requirements.class.getPackage().getName();
+	private static final String TEST_PACKAGE = LIBRARY_PACKAGE + ".test";
 	/**
 	 * Regression test. Exceptions.createException() was throwing:
 	 * <p>
@@ -135,13 +137,55 @@ public final class ExceptionsTest
 				boolean optimizedException = exceptions.isOptimizedException(e.getClass());
 				new Requirements(scope).withContext("exception", exceptions.getClass()).
 					requireThat(optimizedException, "optimizedException").isTrue();
-
-				for (StackTraceElement element : e.getStackTrace())
-				{
-					requirements.requireThat(element.getClassName(), "stacktrace").
-						doesNotStartWith(Requirements.class.getPackage().getName());
-				}
+				ensureCleanStackTrace(e, requirements);
 			}
+		}
+	}
+
+	/**
+	 * Ensure that cleanStackTrace does not remove any user-code from the stack trace.
+	 */
+	@Test
+	public void cleanStackTraceWithInterleavedUserCode()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			scope.getGlobalConfiguration().withCleanStackTrace();
+			Requirements requirements = new Requirements(scope);
+
+			try
+			{
+				requirements.assertThat(r ->
+					r.requireThat("actual", null).isNotNull());
+			}
+			catch (NullPointerException e)
+			{
+				ensureCleanStackTrace(e, requirements);
+			}
+		}
+	}
+
+	/**
+	 * @param throwable      a throwable
+	 * @param requirements   the instance to use for verifications
+	 * @throws IllegalArgumentException if {@code throwable}'s stack trace contains any elements that should
+	 *                                  have been removed by the "cleanStackTrace" feature
+	 */
+	private void ensureCleanStackTrace(Throwable throwable, Requirements requirements)
+	{
+		boolean foundUserCode = false;
+		for (StackTraceElement element : throwable.getStackTrace())
+		{
+			if (foundUserCode)
+				continue;
+			String className = element.getClassName();
+			if (!className.startsWith(LIBRARY_PACKAGE) || className.startsWith(TEST_PACKAGE))
+			{
+				foundUserCode = true;
+				continue;
+			}
+			requirements.requireThat(element.getClassName(), "stacktrace").
+				doesNotStartWith(LIBRARY_PACKAGE);
 		}
 	}
 }

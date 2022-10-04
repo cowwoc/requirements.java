@@ -16,6 +16,8 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -40,6 +43,10 @@ public final class Exceptions
 	 * The package name of this library.
 	 */
 	private final String libraryPackage = getParentPackage(Exceptions.class.getPackage().getName(), 3);
+	/**
+	 * The package name of the unit tests.
+	 */
+	private final String testPackage = libraryPackage + ".test";
 
 	/**
 	 * Constructs an exception.
@@ -322,7 +329,8 @@ public final class Exceptions
 	 * @param type            the type of the exception
 	 * @param message         an explanation of what went wrong
 	 * @param cause           the cause of the exception ({@code null} if absent)
-	 * @param cleanStackTrace true if stack trace references to this library should be removed
+	 * @param cleanStackTrace true if stack trace references to this library should be removed, so long as it
+	 *                        does not result in any user code being removed.
 	 * @return the exception
 	 * @throws AssertionError if {@code type} is null
 	 */
@@ -343,24 +351,15 @@ public final class Exceptions
 			// Caused by: message of underlying exception
 			//   at Cause.method1(Cause.java:1)
 			//
-			// If "cleanStackTrace" is true, we need to strip out the top 3 stack trace elements. But we are also
-			// forced to strip out the exception cause because it was thrown inside this library.
-			if (cleanStackTrace)
-			{
-				// Why? Read previous comment.
-				cause = null;
-			}
+			// If cleanStackTrace is true, We need to strip any private library methods, as well as any public
+			// library methods that do not invoke user code.
 			ExceptionBuilder<E> exceptionBuilder = getExceptionBuilder(type, cleanStackTrace);
-
 			E result = exceptionBuilder.apply(this, message, cause);
 			boolean isOptimized = isOptimizedException(result.getClass());
 			if (!isOptimized && cleanStackTrace)
 			{
 				// We need to strip the stack trace eagerly because we don't have an optimized exception
-				StackTraceElement[] stackTrace = result.getStackTrace();
-				StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
-				if (newStackTrace != stackTrace)
-					result.setStackTrace(newStackTrace);
+				removeLibraryFromStackTrace(result, result.getStackTrace());
 			}
 			return result;
 		}
@@ -400,7 +399,8 @@ public final class Exceptions
 	/**
 	 * @param <T>             the type of the exception
 	 * @param type            the type of the exception
-	 * @param cleanStackTrace true if stack trace references to this library should be removed
+	 * @param cleanStackTrace true if stack trace references to this library should be removed, so long as it
+	 *                        does not result in any user code being removed.
 	 * @return a factory used to construct the exception
 	 */
 	private <T extends Throwable> ExceptionBuilder<T> getExceptionBuilder(Class<T> type,
@@ -416,47 +416,106 @@ public final class Exceptions
 	}
 
 	/**
-	 * Removes references to this library from an exception stack trace.
+	 * Removes references to this library from an exception stack trace, so long as it does not result in any
+	 * user code being removed.
+	 *
+	 * @param throwable  the exception to process
+	 * @param stackTrace the stack trace elements to process
+	 * @throws NullPointerException if {@code throwable} is null
+	 */
+	public void removeLibraryFromStackTrace(Throwable throwable, StackTraceElement[] stackTrace)
+	{
+		StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
+		if (newStackTrace != stackTrace)
+			throwable.setStackTrace(newStackTrace);
+
+		Throwable cause = throwable.getCause();
+		if (cause != null)
+		{
+			if (!isOptimizedException(cause.getClass()))
+				removeLibraryFromStackTrace(cause, cause.getStackTrace());
+		}
+		for (Throwable suppressed : throwable.getSuppressed())
+		{
+			if (!isOptimizedException(suppressed.getClass()))
+				removeLibraryFromStackTrace(suppressed, suppressed.getStackTrace());
+		}
+	}
+
+	/**
+	 * Removes references to this library from an exception stack trace, so long as it does not result in any
+	 * user code being removed.
 	 *
 	 * @param elements the stack trace elements to process
 	 * @return the updated stack trace elements
 	 * @throws NullPointerException if {@code elements} are null
 	 */
-	public StackTraceElement[] removeLibraryFromStackTrace(StackTraceElement[] elements)
+	private StackTraceElement[] removeLibraryFromStackTrace(StackTraceElement[] elements)
 	{
+		AtomicBoolean foundUserCode = new AtomicBoolean();
 		return filterStackTrace(elements, element ->
 		{
 			String className = element.getClassName();
-			return className.startsWith(libraryPackage);
+			if (!className.startsWith(libraryPackage) || className.startsWith(testPackage))
+			{
+				foundUserCode.set(true);
+				return false;
+			}
+			if (!foundUserCode.get())
+			{
+				// Strip out references to the library until we find user code
+				return true;
+			}
+			Class<?> aClass = WrappedCheckedException.wrap(() -> Class.forName(className));
+			if (aClass.getPackageName().contains(".internal."))
+			{
+				// Always strip out internal classes
+				return true;
+			}
+			String methodName = element.getMethodName();
+			for (Method method : aClass.getMethods())
+			{
+				if (!method.getName().equals(methodName))
+					continue;
+				if (Modifier.isPublic(method.getModifiers()))
+				{
+					// Keep public library methods because when users invoke:
+					//
+					// assertThat(r -> r.requireThat(...));
+					//
+					// They expect to see assertThat() in the stack trace.
+
+					// We can't differentiate between method overloads, so we assume that the public method was invoked.
+					return false;
+				}
+			}
+			return true;
 		});
 	}
 
 	/**
-	 * Runs a predicate against all lines of a stack trace removing lines at or above those that match.
+	 * Runs a predicate against all lines of a stack trace removing lines that match.
 	 * <p>
 	 * This method can be used to remove lines that hold little value for the end user (such as
 	 * internal methods invoked by this library).
 	 *
 	 * @param elements      the stack trace elements to process
-	 * @param elementFilter returns true if the current stack trace element and methods it invokes should be
-	 *                      removed
+	 * @param elementFilter returns true if the current stack trace element should be removed
 	 * @return the updated stack trace elements
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	private StackTraceElement[] filterStackTrace(StackTraceElement[] elements,
 		Predicate<StackTraceElement> elementFilter)
 	{
-		int i = elements.length - 1;
-		while (true)
+		List<StackTraceElement> linesToKeep = new ArrayList<>();
+		for (int i = 0; i < elements.length; ++i)
 		{
 			StackTraceElement element = elements[i];
 			if (elementFilter.test(element))
-				break;
-			if (i == 0)
-				return elements;
-			--i;
+				continue;
+			linesToKeep.add(element);
 		}
-		return Arrays.copyOfRange(elements, i + 1, elements.length);
+		return linesToKeep.toArray(new StackTraceElement[0]);
 	}
 
 	/**

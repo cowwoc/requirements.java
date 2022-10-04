@@ -87,7 +87,8 @@ public interface GlobalConfiguration
 	GlobalConfiguration withTerminalWidth(int width);
 
 	/**
-	 * Indicates if stack trace references to this library should be removed.
+	 * Indicates if stack trace references to this library should be removed, so long as it does not result in
+	 * any user code being removed.
 	 *
 	 * @return {@code true} by default
 	 * @see #withCleanStackTrace()
@@ -96,7 +97,8 @@ public interface GlobalConfiguration
 	boolean isCleanStackTrace();
 
 	/**
-	 * Indicates that stack trace references to this library should be removed.
+	 * Indicates that stack trace references to this library should be removed, so long as it does not result in
+	 * any user code being removed.
 	 *
 	 * @return this
 	 * @see #isCleanStackTrace()

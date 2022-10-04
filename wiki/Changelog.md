@@ -1,6 +1,11 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.4 - 2022/10/04
+
+* Improvements:
+  * `cleanStackTrace` no longer strip public library methods that invoke user code (e.g. `assertThat`).
+
 ## Version 8.0.3 - 2022/09/28
 
 * Improvements:

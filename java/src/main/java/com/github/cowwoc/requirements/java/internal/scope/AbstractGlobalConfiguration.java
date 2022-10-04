@@ -14,7 +14,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class AbstractGlobalConfiguration implements GlobalConfiguration
 {
 	/**
-	 * True if stack trace references to this library should be removed.
+	 * True if stack trace references to this library should be removed, so long as it does not result in any
+	 * user code being removed.
 	 */
 	private final AtomicBoolean cleanStackTrace = new AtomicBoolean(true);
 	/**
