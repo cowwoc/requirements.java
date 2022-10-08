@@ -169,8 +169,8 @@ public final class ApiGenerator
 
 			/**
 			 * Verifies requirements using the default {@link Configuration configuration}. Any method that exposes
-			 * a {@code Requirements} instance is returning an independent copy. Any modifications applied to that
-			 * copy are thrown away and do not affect the configuration of this class.
+			 * a {@code Requirements} instance returns an independent copy. Any modifications applied to that copy
+			 * are thrown away and do not affect the configuration of this class.
 			 * <p>
 			 * To retain configuration changes, instantiate and reuse the same {@code Requirements} instance across
 			 * multiple runs.

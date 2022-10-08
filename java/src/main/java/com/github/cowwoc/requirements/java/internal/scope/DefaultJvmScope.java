@@ -10,6 +10,8 @@ import com.github.cowwoc.pouch.core.Factory;
 import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
 import com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
+import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem;
+import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem.Architecture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,25 +76,16 @@ public final class DefaultJvmScope implements JvmScope
 
 	private DefaultJvmScope()
 	{
-		boolean nativeLibraryLoaded;
-		try
+		// Avoid loading native libraries on unsupported platforms
+		if (!nativeLibrariesAreSupported())
 		{
-			System.loadLibrary("requirements");
-			nativeLibraryLoaded = true;
+			this.nativeLibraryLoaded = false;
+			this.shutdownHook = null;
+			return;
 		}
-		catch (UnsatisfiedLinkError e)
-		{
-			nativeLibraryLoaded = false;
-			terminalLog.debug("Failed to load \"requirements\" native library. Please see " +
-				"https://github.com/cowwoc/requirements.java/blob/master/wiki/Deploying_Native_Libraries.md for more information.\n" +
-				"\n" +
-				"Relevant System Properties\n" +
-				"--------------------------\n" +
-				"java.library.path=" + System.getProperty("java.library.path") + "\n" +
-				"user.dir=" + System.getProperty("user.dir"), e);
-		}
-		this.nativeLibraryLoaded = nativeLibraryLoaded;
-		shutdownHook = new Thread(() ->
+
+		this.nativeLibraryLoaded = loadNativeLibraries();
+		this.shutdownHook = new Thread(() ->
 		{
 			try
 			{
@@ -104,6 +97,42 @@ public final class DefaultJvmScope implements JvmScope
 			}
 		});
 		Runtime.getRuntime().addShutdownHook(shutdownHook);
+	}
+
+	/**
+	 * @return true if native libraries support the current operating system
+	 */
+	private boolean nativeLibrariesAreSupported()
+	{
+		try
+		{
+			OperatingSystem os = OperatingSystem.detected();
+			return os.architecture != Architecture.AARCH_64;
+		}
+		catch (IllegalStateException e)
+		{
+			return false;
+		}
+	}
+
+	private boolean loadNativeLibraries()
+	{
+		try
+		{
+			System.loadLibrary("requirements");
+			return true;
+		}
+		catch (UnsatisfiedLinkError e)
+		{
+			terminalLog.debug("Failed to load \"requirements\" native library. Please see " +
+				"https://github.com/cowwoc/requirements.java/blob/master/wiki/Deploying_Native_Libraries.md for more information.\n" +
+				"\n" +
+				"Relevant System Properties\n" +
+				"--------------------------\n" +
+				"java.library.path=" + System.getProperty("java.library.path") + "\n" +
+				"user.dir=" + System.getProperty("user.dir"), e);
+			return false;
+		}
 	}
 
 	/**
@@ -122,7 +151,8 @@ public final class DefaultJvmScope implements JvmScope
 		nativeTerminal.close();
 		try
 		{
-			Runtime.getRuntime().removeShutdownHook(shutdownHook);
+			if (shutdownHook != null)
+				Runtime.getRuntime().removeShutdownHook(shutdownHook);
 		}
 		catch (IllegalStateException unused)
 		{
