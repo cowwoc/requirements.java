@@ -180,7 +180,7 @@ public final class ExceptionOptimizer
 				\t/**
 				\t * Locks over the exception's state.
 				\t */
-				\tprivate final ReentrantStampedLock lock = new ReentrantStampedLock();
+				\tprivate final transient ReentrantStampedLock lock = new ReentrantStampedLock();
 
 				\t/**
 				""");

@@ -126,7 +126,8 @@ public interface Configuration
 
 	/**
 	 * Returns the {@code String} representation of an object. By default, custom handlers are provided for
-	 * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, and {@code Path}.
+	 * arrays, {@code Integer}, {@code Long}, {@code BigDecimal}, {@code List}, {@code Set}, {@code Map},
+	 * {@code Path}, and {@code Throwable}.
 	 *
 	 * @param value a value
 	 * @return the {@code String} representation of the value

@@ -312,34 +312,32 @@ public final class DefaultConfiguration implements Configuration
 	private String mapToString(Object object)
 	{
 		if (object instanceof SortedMap<?, ?> sorted)
-			return orderedMapToString(sorted);
+			return mapEntriesToString(sorted.entrySet());
 		Map<?, ?> map = (Map<?, ?>) object;
 		for (Entry<?, ?> entry : map.entrySet())
 		{
 			if (!(entry.getKey() instanceof Comparable<?>))
-				return orderedMapToString(map);
+				return mapEntriesToString(map.entrySet());
 		}
-		return orderedMapToString(new TreeMap<>(map));
+		return mapEntriesToString(new TreeMap<>(map).entrySet());
 	}
 
 	/**
-	 * @param orderedMap a {@code Map} that may have been reordered
-	 * @return the String representation of {@code sortedMap}
+	 * @param entries map entries
+	 * @return the String representation of {@code entries}
 	 */
-	private String orderedMapToString(Map<?, ?> orderedMap)
+	private String mapEntriesToString(Set<? extends Entry<?, ?>> entries)
 	{
 		// We cannot use Object.toString() because Arrays.asList(array) only converts the outermost array into a
 		// List. List.toString() does not invoke Arrays.deepToString(array) so any nested arrays do not display
 		// correctly.
-		Set<? extends Entry<?, ?>> entries = orderedMap.entrySet();
-
 		StringJoiner joiner = new StringJoiner(", ", "{", "}");
 		for (Entry<?, ?> entry : entries)
 		{
 			Object key = entry.getKey();
 			Object value = entry.getValue();
 			Object keyAsString;
-			if (key == orderedMap)
+			if (key == entries)
 				keyAsString = "(this Map)";
 			else
 			{
@@ -347,12 +345,12 @@ public final class DefaultConfiguration implements Configuration
 				keyAsString = keyToString.apply(key);
 			}
 			Object valueAsString;
-			if (value == orderedMap)
+			if (value == entries)
 				valueAsString = "(this Map)";
 			else
 			{
 				Function<Object, String> valueToString = getToStringConverter(value);
-				valueAsString = valueToString.apply(key);
+				valueAsString = valueToString.apply(value);
 			}
 			joiner.add(keyAsString + "=" + valueAsString);
 		}

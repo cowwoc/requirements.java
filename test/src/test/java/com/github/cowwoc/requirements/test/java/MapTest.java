@@ -12,8 +12,13 @@ import org.testng.annotations.Test;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.StringJoiner;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
@@ -424,6 +429,73 @@ public final class MapTest
 			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
 				collect(Collectors.toList());
 			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+		}
+	}
+
+	@Test
+	public void mapToStringWithSortedKeys()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Map<Integer, Integer> input = new LinkedHashMap<>();
+			input.put(2, 2);
+			input.put(3, 1);
+			input.put(1, 3);
+
+			Requirements requirements = new Requirements(scope);
+			Map<Integer, Integer> sorted = new TreeMap<>(input);
+			String output = requirements.toString(sorted);
+
+			// Ordering should not change
+			StringJoiner expected = new StringJoiner(", ", "{", "}");
+			for (Entry<Integer, Integer> entry : sorted.entrySet())
+				expected.add(entry.getKey().toString() + "=" + entry.getValue().toString());
+
+			requirements.requireThat(output, "output").isEqualTo(expected.toString(), "expected");
+		}
+	}
+
+	@Test
+	public void mapToStringWithNonComparableKeys()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Map<AtomicInteger, Integer> input = new LinkedHashMap<>();
+			input.put(new AtomicInteger(2), 2);
+			input.put(new AtomicInteger(3), 1);
+			input.put(new AtomicInteger(1), 3);
+
+			Requirements requirements = new Requirements(scope);
+			String output = requirements.toString(input);
+
+			// Ordering should not change
+			StringJoiner expected = new StringJoiner(", ", "{", "}");
+			for (Entry<AtomicInteger, Integer> entry : input.entrySet())
+				expected.add(entry.getKey().toString() + "=" + entry.getValue().toString());
+
+ 			requirements.requireThat(output, "output").isEqualTo(expected.toString(), "expected");
+		}
+	}
+
+	@Test
+	public void mapToStringWithComparableKeys()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Map<Integer, Integer> input = new LinkedHashMap<>();
+			input.put(2, 2);
+			input.put(3, 1);
+			input.put(1, 3);
+			Requirements requirements = new Requirements(scope);
+			String output = requirements.toString(input);
+
+			// Input should get sorted
+			Map<Integer, Integer> sorted = new TreeMap<>(input);
+			StringJoiner expected = new StringJoiner(", ", "{", "}");
+			for (Entry<Integer, Integer> entry : sorted.entrySet())
+				expected.add(entry.getKey().toString() + "=" + entry.getValue().toString());
+
+			requirements.requireThat(output, "output").isEqualTo(expected.toString(), "expected");
 		}
 	}
 }
