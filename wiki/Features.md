@@ -130,7 +130,7 @@ values(v -> v.containsAll(Arrays.asList(3, 1)));
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/8.0.3/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
 fails, the library outputs a [diff](String_Diff.md) of the values being compared.
 
 ![colored-diff-example4.png](colored-diff-example4.png)

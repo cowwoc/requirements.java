@@ -1,6 +1,12 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.5 - 2022/10/04
+
+* Bugfixes
+  * Configuration.toString(Map) does not print out the correct values.
+  * The "lock" field of optimized exceptions must be declared transient.
+
 ## Version 8.0.4 - 2022/10/04
 
 * Improvements:
