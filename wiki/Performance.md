@@ -1,5 +1,16 @@
 Here are benchmark results for version 5.1.2 per [jmh](http://openjdk.java.net/projects/code-tools/jmh/). Ignore absolute numbers as they will differ from machine to machine.
 
+assertThat() overhead
+---
+
+| Benchmark                         | Nanoseconds | Alloc rate (bytes / operation) |
+|-----------------------------------|-------------|--------------------------------|
+| empty method                      | 0.932       | 0.000                          |
+| assertThat() with asserts disabled| 5.283       | 0.000                          |
+| requireThat()                     | 121.388     | 216.000                        |
+
+* `assertThat()` is cheap and allocation-free if assertions are disabled.
+
 requireThat() overhead
 ---
 
@@ -22,18 +33,6 @@ Overhead of consuming stack trace
 | requireThat() throws, stack trace consumed                    | 73,249.623  |
 
 * `requireThat()` overhead is low (~10 µs) if checks fail and the stack trace is consumed.
-
-
-assertThat() overhead
----
-
-| Benchmark                         | Nanoseconds | Alloc rate (bytes / operation) |
-|-----------------------------------|-------------|--------------------------------|
-| empty method                      | 0.932       | 0.000                          |
-| assertThat() with asserts disabled| 5.283       | 0.000                          |
-| requireThat()                     | 121.388     | 216.000                        |
-
-* `assertThat()` is cheap and allocation-free if assertions are disabled.
 
 
 Overhead of assertThat() vs requireThat()
