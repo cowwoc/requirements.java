@@ -28,11 +28,11 @@ Exception messages will look like this:
 
 ```java
 java.lang.NullPointerException:name may not be null
-  [...]
-  java.lang.IllegalArgumentException:name may not be empty
-  [...]
-  java.lang.IllegalArgumentException:age must be in range[18,30).
-  Actual:15
+[...]
+java.lang.IllegalArgumentException:name may not be empty
+[...]
+java.lang.IllegalArgumentException:age must be in range[18,30).
+Actual:15
 ```
 
 For the **Javadoc**, click **api docs** at the top of this page.
