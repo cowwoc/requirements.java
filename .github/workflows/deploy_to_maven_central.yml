@@ -53,7 +53,7 @@ jobs:
         run: |
           echo "TAG=$(git describe --tag --abbrev=0)" >> $GITHUB_OUTPUT
           output=$(./mvnw --batch-mode -e -DstagingProfileId=${{ env.STAGING_PROFILE_ID }} nexus-staging:rc-open)
-          [[ "$output" =~ Opened\ (comgooglecodecmake-maven-project-[[:digit:]]+) ]]
+          [[ "$output" =~ Opened\ (comgithubcowwoc-[[:digit:]]+) ]]
           stagingRepositoryId="${BASH_REMATCH[1]}"
           echo "STAGING_REPOSITORY_ID=$stagingRepositoryId" >> $GITHUB_OUTPUT
 
