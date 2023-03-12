@@ -11,9 +11,9 @@ A [fluent API](https://en.m.wikipedia.org/wiki/Fluent_interface) for enforcing
 [design contracts](https://en.wikipedia.org/wiki/Design_by_contract) with
 [automatic message generation](wiki/Features.md#automatic-message-generation):
 
-✅ Easy to use  
-✅ Fast  
-✅ Production-ready
+✔️ Easy to use  
+✔️ Fast  
+✔️ Production-ready
 
 To get started, add this Maven dependency:
 
