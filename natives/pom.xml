@@ -13,7 +13,7 @@
 
 	<properties>
 		<classifier>${platform}</classifier>
-		<cmake.version>3.23.2-b1</cmake.version>
+		<cmake.version>3.25.2-b1</cmake.version>
 	</properties>
 	<dependencies>
 		<dependency>
