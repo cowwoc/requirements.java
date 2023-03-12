@@ -9,7 +9,46 @@
 
 A [fluent API](https://en.m.wikipedia.org/wiki/Fluent_interface) for enforcing
 [design contracts](https://en.wikipedia.org/wiki/Design_by_contract) with
-[automatic message generation](wiki/Features.md#automatic-message-generation).
+[automatic message generation](wiki/Features.md#automatic-message-generation):
+
+✅ Easy to use  
+✅ Fast  
+✅ Production-ready
+
+To get started, add this Maven dependency:
+
+```xml
+<dependency>
+  <groupId>com.github.cowwoc.requirements</groupId>
+  <artifactId>java</artifactId>
+  <version>8.0.5</version>
+</dependency>
+```
+
+and this Maven plugin:
+
+```xml
+<plugin>
+  <groupId>com.github.cowwoc.requirements</groupId>
+  <artifactId>maven_plugin</artifactId>
+  <version>8.0.5</version>
+  <executions>
+    <execution>
+      <goals>
+        <!-- Generates DefaultRequirements, Requirements classes -->
+        <goal>generate-api</goal>
+        <!-- Adds support for colored diffs (optional) -->
+        <goal>unpack</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
+
+The Maven plugin generates `Requirements` and `DefaultRequirements` based on the [modules](wiki/Supported_Libraries.md) 
+you enable.
+
+## Sample Code
 
 ```java
 import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
@@ -24,18 +63,16 @@ public final class Player
 }
 ```
 
-Exception messages will look like this:
+Failure messages look like this:
 
 ```java
-java.lang.NullPointerException:name may not be null
-[...]
-java.lang.IllegalArgumentException:name may not be empty
-[...]
-java.lang.IllegalArgumentException:age must be in range[18,30).
+java.lang.NullPointerException: name may not be null
+
+java.lang.IllegalArgumentException: name may not be empty
+
+java.lang.IllegalArgumentException: age must be in range [18, 30).
 Actual:15
 ```
-
-For the **Javadoc**, click **api docs** at the top of this page.
 
 ## Features
 
@@ -50,74 +87,10 @@ For the **Javadoc**, click **api docs** at the top of this page.
 
 ## Getting Started
 
-### Step 1: Update pom.xml
+The best way to learn about the API is using your IDE's auto-complete engine.
+There are seven entry points you can navigate from:
 
-```xml
-
-<project>
-  ...
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.github.cowwoc.requirements</groupId>
-        <artifactId>maven_plugin</artifactId>
-        <version>8.0.5</version>
-        <executions>
-          <execution>
-            <goals>
-              <!-- Generates the DefaultRequirements, Requirements endpoints -->
-              <goal>generate-api</goal>
-              <!-- Adds support for colored diffs (optional) -->
-              <goal>unpack</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-  ...
-  <dependencies>
-    <dependency>
-      <groupId>com.github.cowwoc.requirements</groupId>
-      <artifactId>java</artifactId>
-      <version>8.0.5</version>
-    </dependency>
-  </dependencies>
-  ...
-</project>
-```
-
-### Step 2: Rebuild your project
-
-The build process will generate `Requirements` and `DefaultRequirements` classes. These classes are
-dynamically generated at build-time because their functionality varies depending on which
-[modules](wiki/Supported_Libraries.md) you enable.
-
-### Step 3: Statically import `DefaultRequirements.requireThat()`
-
-Statically import methods from `DefaultRequirements` to improve the readability of your code:
-
-```java
-import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
-```
-
-### Step 4: Use `requireThat()` in your code to verify design contracts
-
-```java
-public final class Player
-{
-  public Player(String name, int age)
-  {
-    requireThat(name, "name").isNotEmpty();
-    requireThat(age, "age").isBetween(18, 30);
-  }
-}
-```
-
-### Learn more
-
-The best way to learn about the API is using your IDE's auto-complete engine. There are six entry points you
-can navigate from:
+The API has 7 entry points:
 
 * [requireThat(value, name)](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#requireThat(T,java.lang.String))
 * [validateThat(value, name)](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html#validateThat(T,java.lang.String))
@@ -127,15 +100,18 @@ can navigate from:
 * [GlobalRequirements](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html)
 * [ThreadRequirements](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ThreadRequirements.html)
 
-The first three methods are designed to be statically imported from `DefaultRequirements`.
+The first four methods are designed to be statically imported from `DefaultRequirements`.
+
+See the [API documentation](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/) for more details.
 
 ## Best practices
 
-* Use `requireThat()` for public APIs to give users superior feedback when something goes wrong.
-* Use `assertThat()` for private APIs and to verify code assumptions. This results in excellent performance
-  when assertions are disabled. Have your cake and eat it too!
-* Prefer `assertThat()` to `assert`. It has a slightly higher overhead, but most applications fail to catch or
-  log `AssertionError` (that is thrown by `assert`) leading to silent failures.
+* Use `requireThat()` to verify pre-conditions of public APIs.
+* Use `assertThat()` to verify object invariants and method post-conditions.
+  This results in excellent performance when assertions are disabled.
+  Have your cake and eat it too!
+* Prefer `assertThat()` to `assert`. It has a slightly higher overhead, but most applications fail to catch or 
+log `AssertionError` that is thrown by `assert`, leading to silent failures.
 
 ## 3rd-party libraries and tools
 

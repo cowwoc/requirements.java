@@ -13,7 +13,7 @@
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -58,14 +58,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.version>3.6.1</maven.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
-		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 		<guava.version>31.1-jre</guava.version>
 		<slf4j.version>2.0.1</slf4j.version>
 		<logback.version>1.4.1</logback.version>
 		<testng.version>7.6.1</testng.version>
-		<pouch.version>2.1</pouch.version>
+		<pouch.version>3.0</pouch.version>
 		<jmh.version>1.35</jmh.version>
 	</properties>
 
@@ -209,16 +207,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${maven-source-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>${maven-gpg-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.0.0-M7</version>
 				</plugin>
@@ -356,7 +344,7 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<!--								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>-->
+								<!-- <link>https://guava.dev/releases/${guava.version}/api/docs/</link>-->
 								<!-- WORKAROUND: https://github.com/google/guava/issues/5653 -->
 								<link>https://guava.dev/releases/29.0-jre/api/docs/</link>
 							</links>
@@ -516,7 +504,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>${maven-source-plugin.version}</version>
+						<version>3.2.1</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -533,7 +521,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>${maven-gpg-plugin.version}</version>
+						<version>3.0.1</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>

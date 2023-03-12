@@ -1,5 +1,8 @@
 name: Build
 on: [ push ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -9,29 +12,27 @@ jobs:
       matrix:
         os: [ windows-latest, ubuntu-latest, macos-latest ]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
+          distribution: zulu
           java-version: 17
-          distribution: "zulu"
-      - uses: ilammy/msvc-dev-cmd@v1
-      - name: Cache Maven dependencies
-        uses: actions/cache@v1
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
         with:
-          path: ~/.m2/repository
+          # Avoid caching generated artifacts
+          path: |
+            ~/.m2/repository/*
+            !~/.m2/repository/com/github/cowwoc/requirements
           key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.OS }}-maven-
-      - name: Show versions
-        run: |
-          java --version
-          mvn --version
+
+      # Maven command-line options:
+      # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)
+      # -V: strongly recommended in CI, will display the JDK and Maven versions in use.
+      #      Very useful to be quickly sure the selected versions were the ones you think.
+      # -e: Display stack-traces on failure
       - name: Build
-        run: mvn install -e
-      - name: Prevent generated artifacts from getting cached
-        shell: cmd
-        run: del /s /q %USERPROFILE%\.m2\repository\com\github\cowwoc\requirements
-        if: matrix.os == 'windows-latest'
-      - name: Prevent generated artifacts from getting cached
-        run: rm -rf ~/.m2/repository/com/github/cowwoc/requirements
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: ./mvnw install --batch-mode -V -e

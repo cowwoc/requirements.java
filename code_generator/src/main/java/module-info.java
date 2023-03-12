@@ -11,6 +11,5 @@ module com.github.cowwoc.requirements.generator
 	requires com.github.javaparser.core;
 
 	exports com.github.cowwoc.requirements.generator;
-	exports com.github.cowwoc.requirements.generator.internal.secret to
-		com.github.cowwoc.requirements.maven_plugin;
+	exports com.github.cowwoc.requirements.generator.internal.secret to com.github.cowwoc.requirements.maven_plugin;
 }
