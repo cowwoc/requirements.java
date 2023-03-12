@@ -1,7 +1,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cowwoc.requirements/java/badge.svg)](https://search.maven.org/search?q=g:com.github.cowwoc.requirements)
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
 
-# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Fluent Design by Contract for Java APIs
+# <img src="wiki/checklist.svg" width=64 height=64 alt="checklist"> Fluent API for Design Contracts
 
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](wiki/Changelog.md)
@@ -35,9 +35,9 @@ and this Maven plugin:
   <executions>
     <execution>
       <goals>
-        <!-- Generates DefaultRequirements, Requirements classes -->
+        <!-- Generate API classes -->
         <goal>generate-api</goal>
-        <!-- Adds support for colored diffs (optional) -->
+        <!-- Optional: enable colored diffs -->
         <goal>unpack</goal>
       </goals>
     </execution>
@@ -45,8 +45,7 @@ and this Maven plugin:
 </plugin>
 ```
 
-The Maven plugin generates `Requirements` and `DefaultRequirements` based on the [modules](wiki/Supported_Libraries.md) 
-you enable.
+The contents of the API classes depend on which [modules](wiki/Supported_Libraries.md) are enabled.
 
 ## Sample Code
 
@@ -71,7 +70,7 @@ java.lang.NullPointerException: name may not be null
 java.lang.IllegalArgumentException: name may not be empty
 
 java.lang.IllegalArgumentException: age must be in range [18, 30).
-Actual:15
+Actual: 15
 ```
 
 ## Features

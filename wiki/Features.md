@@ -3,22 +3,22 @@
 Guava's API forces you to repeat yourself. This API generates concise messages on your behalf.
 
 ```java
-String number = "1234567";
+String name = "John Smith";
 
 // Guava
-Preconditions.checkArgument(number.length() <= 5, "number must be shorter than 6 characters");
+Preconditions.checkArgument(name.length() <= 5, "name must be shorter than 6 characters");
 
-java.lang.IllegalArgumentException:number must be shorter than 6 characters
+java.lang.IllegalArgumentException: name must be shorter than 6 characters
   at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
   at Main.guava2(Main.java:45)
   at Main.main(Main.java:70)
 
 // This API
-requireThat(number, "number").length().isLessThanOrEqualTo(5);
+requireThat(name, "name").length().isLessThanOrEqualTo(5);
 
-java.lang.IllegalArgumentException:number may not contain more than 5 characters.
+java.lang.IllegalArgumentException: name may not contain more than 5 characters.
 Actual: 7
-number: 1234567
+name: John Smith
   at Main.requirements2(Main.java:57)
   at Main.main(Main.java:72)
 ```
@@ -34,7 +34,7 @@ List<Integer> expected = Arrays.asList(1, 3, 5);
 // Guava
 Preconditions.checkArgument(actual.containsAll(expected), "actual must contain %s", expected);
 
-java.lang.IllegalArgumentException:actual must contain [1, 3, 5]
+java.lang.IllegalArgumentException: actual must contain [1, 3, 5]
   at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
   at Main.guava3(Main.java:95)
   at Main.run(Main.java:129)
@@ -43,7 +43,7 @@ java.lang.IllegalArgumentException:actual must contain [1, 3, 5]
 // This API
 requireThat(actual, "actual").containsAll(expected);
 
-java.lang.IllegalArgumentException:actual must contain all elements in: [1, 3, 5]
+java.lang.IllegalArgumentException: actual must contain all elements in: [1, 3, 5]
 Actual : [2, 3, 4, 6]
 Missing: [1, 5]
   at Main.requirements3(Main.java:106)
