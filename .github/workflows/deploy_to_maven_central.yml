@@ -33,7 +33,7 @@ jobs:
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+          git config user.name "Gili Tzabari"
 
       # Maven command-line options:
       # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)
@@ -83,7 +83,7 @@ jobs:
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+          git config user.name "Gili Tzabari"
 
       - name: Deploy to Maven Central
         run: >
@@ -112,7 +112,7 @@ jobs:
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+          git config user.name "Gili Tzabari"
 
       - name: Close staging repository
         run: >
@@ -143,7 +143,7 @@ jobs:
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+          git config user.name "Gili Tzabari"
 
       - name: Delete tag
         run: git push --delete origin ${{ needs.open-release.outputs.TAG }}

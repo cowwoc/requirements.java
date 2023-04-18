@@ -25,7 +25,6 @@ abstract class AbstractGeneratorMojo extends AbstractMojo
 	{
 		if (scope == null)
 			throw new MojoExecutionException("scope may not be null");
-		Path targetPath;
 		switch (scope)
 		{
 			case "compile":

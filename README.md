@@ -21,7 +21,7 @@ To get started, add this Maven dependency:
 <dependency>
   <groupId>com.github.cowwoc.requirements</groupId>
   <artifactId>java</artifactId>
-  <version>8.0.5</version>
+  <version>8.0.6</version>
 </dependency>
 ```
 
@@ -31,7 +31,7 @@ and this Maven plugin:
 <plugin>
   <groupId>com.github.cowwoc.requirements</groupId>
   <artifactId>maven_plugin</artifactId>
-  <version>8.0.5</version>
+  <version>8.0.6</version>
   <executions>
     <execution>
       <goals>
