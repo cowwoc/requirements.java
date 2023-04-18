@@ -426,6 +426,46 @@ public final class StringTest
 	}
 
 	@Test
+	public void lengthIsBetween()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "1234567890";
+			new Requirements(scope).requireThat(actual, "actual").length(l -> l.isBetween(1, 11));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void lengthIsBetween_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "1234567890";
+			new Requirements(scope).requireThat(actual, "actual").length(l -> l.isBetween(1, 10));
+		}
+	}
+
+	@Test
+	public void lengthIsBetweenClosed()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "1234567890";
+			new Requirements(scope).requireThat(actual, "actual").length(l -> l.isBetweenClosed(1, 10));
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void lengthIsBetweenClosed_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "1234567890";
+			new Requirements(scope).requireThat(actual, "actual").length(l -> l.isBetweenClosed(1, 9));
+		}
+	}
+
+	@Test
 	public void assertionsDisabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

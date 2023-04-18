@@ -1,6 +1,15 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.7 - 2023/04/18
+
+* Bugfixes
+  * `StringValidator.length(l -> l.isBetweenClosed(min, max))` was not throwing an exception on failure.
+
+## Version 8.0.6 - 2023/04/18
+
+* No changes (deployed by mistake)
+
 ## Version 8.0.5 - 2022/10/04
 
 * Bugfixes

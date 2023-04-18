@@ -2,6 +2,9 @@
 name: Deploy to Maven Central
 on:
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   # One can look up a project's profileId by running:
   # mvn nexus-staging:rc-list-profiles -DserverId=maven-central-releases -DnexusUrl=https://oss.sonatype.org/
@@ -13,8 +16,9 @@ jobs:
   open-release:
     runs-on: ubuntu-latest
     outputs:
-      TAG: ${{ steps.capture-staging.outputs.TAG }}
-      STAGING_REPOSITORY_ID: ${{ steps.capture-staging.outputs.STAGING_REPOSITORY_ID }}
+      INITIAL_REF_POSITION: ${{ steps.open-staging.outputs.INITIAL_REF_POSITION }}
+      TAG: ${{ steps.open-staging.outputs.TAG }}
+      STAGING_REPOSITORY_ID: ${{ steps.open-staging.outputs.STAGING_REPOSITORY_ID }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,11 +33,21 @@ jobs:
           server-password: OSSRH_TOKEN
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          # Avoid caching generated artifacts
+          path: |
+            ~/.m2/repository/*
+            !~/.m2/repository/com/github/cowwoc/requirements
+          key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.OS }}-maven-
 
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+          git config user.name "Gili Tzabari"
 
       # Maven command-line options:
       # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)
@@ -47,28 +61,29 @@ jobs:
       # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
       - name: Open staging repository
         id: open-staging
-        run: ./mvnw release:prepare --batch-mode -V -e -Darguments="-Ddeploy -Dinvoker.skip=true"
-        
-      - id: capture-staging
         run: |
+          echo "INITIAL_REF_POSITION=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          ./mvnw release:prepare --batch-mode -V -e -Darguments="-Ddeploy -Dinvoker.skip=true"
           echo "TAG=$(git describe --tag --abbrev=0)" >> $GITHUB_OUTPUT
+          
           output=$(./mvnw --batch-mode -e -DstagingProfileId=${{ env.STAGING_PROFILE_ID }} nexus-staging:rc-open)
           [[ "$output" =~ Opened\ (comgithubcowwoc-[[:digit:]]+) ]]
           stagingRepositoryId="${BASH_REMATCH[1]}"
           echo "STAGING_REPOSITORY_ID=$stagingRepositoryId" >> $GITHUB_OUTPUT
 
-  # Concurrent deploys of the files that are common across all platforms may lead to corruption
   deploy:
+    name: Deploy (${{ matrix.os }})
     needs: open-release
     runs-on: ${{ matrix.os }}
     strategy:
+      # Concurrent deploys of the files that are common across platforms may lead to data corruption
       max-parallel: 1
       matrix:
-        os: [ windows-latest, ubuntu-latest, macos-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: "${{ needs.open-release.outputs.TAG }}"
+          ref: ${{ needs.open-release.outputs.TAG }}
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
@@ -79,11 +94,16 @@ jobs:
           server-password: OSSRH_TOKEN
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-
-      - name: Configure Git User
-        run: |
-          git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          # Avoid caching generated artifacts
+          path: |
+            ~/.m2/repository/*
+            !~/.m2/repository/com/github/cowwoc/requirements
+          key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.OS }}-maven-
 
       - name: Deploy to Maven Central
         run: >
@@ -97,7 +117,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: "${{ needs.open-release.outputs.TAG }}"
+          ref: ${{ needs.open-release.outputs.TAG }}
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
@@ -108,11 +128,16 @@ jobs:
           server-password: OSSRH_TOKEN
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-
-      - name: Configure Git User
-        run: |
-          git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          # Avoid caching generated artifacts
+          path: |
+            ~/.m2/repository/*
+            !~/.m2/repository/com/github/cowwoc/requirements
+          key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.OS }}-maven-
 
       - name: Close staging repository
         run: >
@@ -128,7 +153,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: "${{ needs.open-release.outputs.TAG }}"
+          ref: ${{ github.ref }}
+          fetch-depth: 0
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
@@ -139,16 +165,41 @@ jobs:
           server-password: OSSRH_TOKEN
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          # Avoid caching generated artifacts
+          path: |
+            ~/.m2/repository/*
+            !~/.m2/repository/com/github/cowwoc/requirements
+          key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.OS }}-maven-
 
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili"
+          git config user.name "Gili Tzabari"
+
+      - name: Restore the workflow ref to its original position
+        if: needs.open-release.outputs.INITIAL_REF_POSITION != ''
+        run: |
+          CURRENT_REF_POSITION=$(git rev-parse HEAD)
+          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_REF_POSITION }}" ]; then
+            git reset --hard ${{ needs.open-release.outputs.INITIAL_REF_POSITION }}
+            if [ "${{ github.ref_type }}" == "tag" ]; then
+              git ${{ github.ref_type }} -f ${{ github.ref_name }}
+            fi
+            git push -f origin ${{ github.ref_name }}
+          fi
 
       - name: Delete tag
-        run: git push --delete origin ${{ needs.open-release.outputs.TAG }}
+        if: needs.open-release.outputs.TAG != ''
+        run: |
+          git push --delete origin ${{ needs.open-release.outputs.TAG }}
 
       - name: Drop staging repository
+        if: needs.open-release.outputs.STAGING_REPOSITORY_ID != ''
         run: >
           ./mvnw --batch-mode -V -e -DstagingProfileId=${{ env.STAGING_PROFILE_ID }}
           -DstagingRepositoryId=${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}

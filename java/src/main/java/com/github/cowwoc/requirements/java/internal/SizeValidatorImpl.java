@@ -330,7 +330,7 @@ public final class SizeValidatorImpl
 		verifier.requireThat(startInclusive, "startInclusive").isNotNull();
 		verifier.requireThat(endInclusive, "endInclusive").
 			isGreaterThanOrEqualTo(startInclusive, "startInclusive");
-		if (actual < startInclusive && actual > endInclusive)
+		if (actual < startInclusive || actual > endInclusive)
 		{
 			String startAsString = config.toString(startInclusive);
 			String endAsString = config.toString(endInclusive);
