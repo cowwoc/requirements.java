@@ -4,7 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -131,7 +130,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 			line.append(lines[i]);
 			if (!isLastLine)
 				line.append(NEWLINE_MARKER);
-			if (line.length() > 0)
+			if (!line.isEmpty())
 				lineConsumer.accept(line.toString());
 			if (!isLastLine)
 			{

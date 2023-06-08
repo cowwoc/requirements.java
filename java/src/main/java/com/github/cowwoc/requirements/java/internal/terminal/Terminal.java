@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -40,7 +39,7 @@ public final class Terminal
 		ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
 	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
 	private final AtomicReference<Integer> width = new AtomicReference<>();
-	private final Optional<NativeTerminal> nativeTerminal;
+	private final NativeTerminal nativeTerminal;
 	private final Logger log = LoggerFactory.getLogger(Terminal.class);
 
 	/**
@@ -48,7 +47,7 @@ public final class Terminal
 	 */
 	public Terminal(NativeTerminal nativeTerminal)
 	{
-		this.nativeTerminal = Optional.ofNullable(nativeTerminal);
+		this.nativeTerminal = nativeTerminal;
 	}
 
 	/**
@@ -65,89 +64,78 @@ public final class Terminal
 	private Set<TerminalEncoding> getSupportedTypesImpl()
 	{
 		OperatingSystem os = OperatingSystem.detected();
-		switch (os.type)
+		return switch (os.type)
 		{
-			case WINDOWS ->
+			case WINDOWS -> getSupportedTypesForWindows(os);
+			case LINUX, MAC -> getSupportedTypesForLinuxOrMac();
+			default -> throw new IllegalArgumentException("Unsupported OS type: " + os.type);
+		};
+	}
+
+	private Set<TerminalEncoding> getSupportedTypesForLinuxOrMac()
+	{
+		String term = System.getenv("TERM");
+		if (term == null)
+			return Collections.singleton(NONE);
+		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
+		// support all possible terminal types. Instead, we support mainstream types and require the terminal
+		// to support or emulate them.
+		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(
+			TerminalEncoding.values().length / 0.75));
+		result.add(NONE);
+		switch (term)
+		{
+			case "xterm" ->
 			{
-				log.debug("Detected Windows {}", os.version);
-				if (os.version.compareTo(new Version(10, 0, 10586)) >= 0)
-				{
-					// Windows 10.0.10586 added 16-bit color support:
-					// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
-					Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
-					result.add(NONE);
-					result.add(XTERM_8_COLORS);
-					result.add(XTERM_16_COLORS);
-					if (os.version.compareTo(new Version(10, 0, 14931)) >= 0)
-					{
-						// build 14931 added 24-bit color support:
-						// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
-						result.add(RGB_888_COLORS);
-					}
-					log.debug("Returning {}", result);
-					return result;
-				}
-				return Collections.singleton(NONE);
+				// Used by older Linux deployments (e.g. routers)
+				result.add(XTERM_8_COLORS);
 			}
-			case LINUX, MAC ->
+			case "xterm-16color" ->
 			{
-				String term = System.getenv("TERM");
-				if (term == null)
-					return Collections.singleton(NONE);
-				// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
-				// support all possible terminal types. Instead, we support mainstream types and require the terminal
-				// to support or emulate them.
-				Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(TerminalEncoding.values().length / 0.75));
-				result.add(NONE);
-				switch (term)
-				{
-					case "xterm":
-					{
-						// Used by older Linux deployments (e.g. routers)
-						result.add(XTERM_8_COLORS);
-						break;
-					}
-					case "xterm-16color":
-					{
-						// http://stackoverflow.com/a/10039347/14731
-						result.add(XTERM_16_COLORS);
-						result.add(XTERM_8_COLORS);
-						break;
-					}
-					case "xterm-256color":
-					{
-						// Used by Linux and OSX 10.9+
-						result.add(XTERM_256_COLORS);
-						result.add(XTERM_16_COLORS);
-						result.add(XTERM_8_COLORS);
-						break;
-					}
-					default:
-					{
-						log.error("Unexpected TERM: " + term);
-						break;
-					}
-				}
-				// There is no reliable way to detect RGB_888_COLORS support but we our best:
-				// https://gist.github.com/XVilka/8346728#true-color-detection
-				String colorterm = System.getenv("COLORTERM");
-				if (colorterm != null)
-				{
-					switch (colorterm)
-					{
-						case "truecolor":
-						case "24bit":
-						{
-							result.add(RGB_888_COLORS);
-							break;
-						}
-					}
-				}
-				return result;
+				// http://stackoverflow.com/a/10039347/14731
+				result.add(XTERM_16_COLORS);
+				result.add(XTERM_8_COLORS);
 			}
-			default ->
-				throw new IllegalArgumentException("Unsupported OS type: " + os.type);
+			case "xterm-256color" ->
+			{
+				// Used by Linux and OSX 10.9+
+				result.add(XTERM_256_COLORS);
+				result.add(XTERM_16_COLORS);
+				result.add(XTERM_8_COLORS);
+			}
+			default -> log.error("Unexpected TERM: " + term);
 		}
+		// There is no reliable way to detect RGB_888_COLORS support but we our best:
+		// https://gist.github.com/XVilka/8346728#true-color-detection
+		String colorterm = System.getenv("COLORTERM");
+		if (colorterm == null)
+			return result;
+		if (colorterm.equals("truecolor") || colorterm.equals("24bit"))
+			result.add(RGB_888_COLORS);
+		return result;
+	}
+
+	private Set<TerminalEncoding> getSupportedTypesForWindows(OperatingSystem os)
+	{
+		log.debug("Detected Windows {}", os.version);
+		if (os.version.compareTo(new Version(10, 0, 10_586)) >= 0)
+		{
+			// Windows 10.0.10586 added 16-bit color support:
+			// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
+			Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
+			result.add(NONE);
+			result.add(XTERM_8_COLORS);
+			result.add(XTERM_16_COLORS);
+			if (os.version.compareTo(new Version(10, 0, 14_931)) >= 0)
+			{
+				// build 14931 added 24-bit color support:
+				// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
+				result.add(RGB_888_COLORS);
+			}
+			log.debug("Returning {}", result);
+			return result;
+		}
+		return Collections.singleton(NONE);
 	}
 
 	/**
@@ -223,22 +211,21 @@ public final class Terminal
 	 */
 	private boolean nativeSetEncoding(TerminalEncoding encoding, boolean force)
 	{
-		return nativeTerminal.map(terminal ->
+		if (nativeTerminal == null)
+			return false;
+		try
 		{
-			try
-			{
-				terminal.setEncoding(encoding);
-				return true;
-			}
-			catch (IOException e)
-			{
-				if (force)
-					log.debug("", e);
-				else
-					log.warn("", e);
-				return false;
-			}
-		}).orElse(false);
+			nativeTerminal.setEncoding(encoding);
+			return true;
+		}
+		catch (IOException e)
+		{
+			if (force)
+				log.debug("", e);
+			else
+				log.warn("", e);
+			return false;
+		}
 	}
 
 	/**
@@ -291,24 +278,22 @@ public final class Terminal
 			log.debug("System.console() != null");
 			return true;
 		}
-		return nativeTerminal.map(terminal ->
-		{
-			try
-			{
-				boolean result = terminal.isConnectedToStdout();
-				log.debug("Returning {}", result);
-				return result;
-			}
-			catch (IOException e)
-			{
-				log.error("", e);
-				return false;
-			}
-		}).orElseGet(() ->
+		if (nativeTerminal == null)
 		{
 			log.debug("NativeTerminal is not available");
 			return false;
-		});
+		}
+		try
+		{
+			boolean result = nativeTerminal.isConnectedToStdout();
+			log.debug("Returning {}", result);
+			return result;
+		}
+		catch (IOException e)
+		{
+			log.error("", e);
+			return false;
+		}
 	}
 
 	/**
@@ -334,21 +319,21 @@ public final class Terminal
 	 */
 	private int nativeGetWidth()
 	{
-		return nativeTerminal.map(terminal ->
-		{
-			if (isConnectedToStdout())
-			{
-				try
-				{
-					return terminal.getWidth();
-				}
-				catch (IOException e)
-				{
-					log.warn("", e);
-				}
-			}
+		if (nativeTerminal == null)
 			return 0;
-		}).orElse(0);
+
+		if (isConnectedToStdout())
+		{
+			try
+			{
+				return nativeTerminal.getWidth();
+			}
+			catch (IOException e)
+			{
+				log.warn("", e);
+			}
+		}
+		return 0;
 	}
 
 	/**

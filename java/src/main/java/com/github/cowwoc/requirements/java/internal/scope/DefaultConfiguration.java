@@ -404,6 +404,7 @@ public final class DefaultConfiguration implements Configuration
 		return configuration;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		int hash = 3;

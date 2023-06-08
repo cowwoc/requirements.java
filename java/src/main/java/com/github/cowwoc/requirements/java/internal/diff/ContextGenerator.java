@@ -248,68 +248,30 @@ public final class ContextGenerator
 	 */
 	private List<ContextLine> getContextOfObjects()
 	{
-		String actualAsString;
-		if (actualExists)
-			actualAsString = config.toString(actualValue);
-		else
-			actualAsString = "";
-
-		String expectedAsString;
-		if (expectedExists)
-			expectedAsString = config.toString(expectedValue);
-		else
-			expectedAsString = "";
+		String actualAsString = getActualAsString();
+		String expectedAsString = getExpectedAsString();
 
 		if (!compareValues)
-		{
-			List<ContextLine> result = new ArrayList<>(2);
-			result.add(new ContextLine(actualName, actualAsString, true));
-			if (!expectedInMessage)
-				result.add(new ContextLine(expectedName, expectedAsString, true));
-			return result;
-		}
+			return getContextWithoutComparison(actualAsString, expectedAsString);
 		DiffResult lines = diffGenerator.diff(actualAsString, expectedAsString);
 		int numberOfLines = lines.getActualLines().size();
 		boolean diffLinesExist = !lines.getDiffLines().isEmpty();
 
-		List<ContextLine> result = new ArrayList<>(2 * numberOfLines);
 		if (numberOfLines == 1)
-		{
-			String actualLine = lines.getActualLines().get(0);
-			String expectedLine = lines.getExpectedLines().get(0);
-			boolean linesAreEqual = lines.getEqualLines().get(0);
-			result.add(new ContextLine("", "", true));
-			result.add(new ContextLine(actualName, actualLine, true));
-			if (diffLinesExist && !linesAreEqual)
-			{
-				String diffLine = lines.getDiffLines().get(0);
-				result.add(new ContextLine("Diff", diffLine, true));
-			}
-			result.add(new ContextLine(expectedName, expectedLine, true));
-
-			if (compareValues && linesAreEqual)
-			{
-				// If the String representation of the values is equal, output getClass(), hashCode(),
-				// or System.identityHashCode()] that differ.
-				result.addAll(compareTypes());
-			}
-			return result;
-		}
+			return getContextForSingleLine(lines, diffLinesExist);
 		int actualLineNumber = 0;
 		int expectedLineNumber = 0;
 		List<String> actualLines = lines.getActualLines();
 		List<String> expectedLines = lines.getExpectedLines();
 		List<Boolean> equalLines = lines.getEqualLines();
+
 		// Indicates if the previous line was equal
 		boolean skippedEqualLines = false;
+		List<ContextLine> result = new ArrayList<>(2 * numberOfLines);
 		for (int i = 0; i < numberOfLines; ++i)
 		{
 			String actualLine = actualLines.get(i);
-			String expectedLine;
-			if (expectedLines.size() > i)
-				expectedLine = expectedLines.get(i);
-			else
-				expectedLine = "";
+			String expectedLine = getExpectedLines(expectedLines, i);
 			boolean valuesAreEqual = equalLines.get(i);
 			if (i != 0 && i != numberOfLines - 1 && valuesAreEqual)
 			{
@@ -353,6 +315,70 @@ public final class ContextGenerator
 			result.add(new ContextLine(expectedNameForLine, expectedLine, true));
 		}
 		return result;
+	}
+
+	private static String getExpectedLines(List<String> expectedLines, int i)
+	{
+		String expectedLine;
+		if (expectedLines.size() > i)
+			expectedLine = expectedLines.get(i);
+		else
+			expectedLine = "";
+		return expectedLine;
+	}
+
+	private List<ContextLine> getContextForSingleLine(DiffResult lines, boolean diffLinesExist)
+	{
+		String actualLine = lines.getActualLines().get(0);
+		String expectedLine = lines.getExpectedLines().get(0);
+		boolean linesAreEqual = lines.getEqualLines().get(0);
+
+		List<ContextLine> result = new ArrayList<>();
+		result.add(new ContextLine("", "", true));
+		result.add(new ContextLine(actualName, actualLine, true));
+		if (diffLinesExist && !linesAreEqual)
+		{
+			String diffLine = lines.getDiffLines().get(0);
+			result.add(new ContextLine("Diff", diffLine, true));
+		}
+		result.add(new ContextLine(expectedName, expectedLine, true));
+
+		if (compareValues && linesAreEqual)
+		{
+			// If the String representation of the values is equal, output getClass(), hashCode(),
+			// or System.identityHashCode()] that differ.
+			result.addAll(compareTypes());
+		}
+		return result;
+	}
+
+	private List<ContextLine> getContextWithoutComparison(String actualAsString, String expectedAsString)
+	{
+		List<ContextLine> result = new ArrayList<>(2);
+		result.add(new ContextLine(actualName, actualAsString, true));
+		if (!expectedInMessage)
+			result.add(new ContextLine(expectedName, expectedAsString, true));
+		return result;
+	}
+
+	private String getExpectedAsString()
+	{
+		String expectedAsString;
+		if (expectedExists)
+			expectedAsString = config.toString(expectedValue);
+		else
+			expectedAsString = "";
+		return expectedAsString;
+	}
+
+	private String getActualAsString()
+	{
+		String actualAsString;
+		if (actualExists)
+			actualAsString = config.toString(actualValue);
+		else
+			actualAsString = "";
+		return actualAsString;
 	}
 
 	/**

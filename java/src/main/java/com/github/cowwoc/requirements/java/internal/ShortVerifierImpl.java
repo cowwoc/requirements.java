@@ -9,23 +9,23 @@ import com.github.cowwoc.requirements.java.IntegerVerifier;
 import com.github.cowwoc.requirements.java.internal.extension.AbstractNumberVerifier;
 
 /**
- * Default implementation of {@code IntegerVerifier<Long>}.
+ * Default implementation of {@code IntegerVerifier<Short>}.
  */
-public final class LongVerifierImpl
-	extends AbstractNumberVerifier<IntegerVerifier<Long>, IntegerValidator<Long>, Long>
-	implements IntegerVerifier<Long>
+public final class ShortVerifierImpl
+	extends AbstractNumberVerifier<IntegerVerifier<Short>, IntegerValidator<Short>, Short>
+	implements IntegerVerifier<Short>
 {
 	/**
 	 * @param validator the validator to delegate to
 	 * @throws AssertionError if {@code validator} is null
 	 */
-	public LongVerifierImpl(IntegerValidator<Long> validator)
+	public ShortVerifierImpl(IntegerValidator<Short> validator)
 	{
 		super(validator);
 	}
 
 	@Override
-	protected IntegerVerifier<Long> getThis()
+	protected IntegerVerifier<Short> getThis()
 	{
 		return this;
 	}

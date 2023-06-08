@@ -15,6 +15,9 @@ import java.nio.file.Path;
  */
 abstract class AbstractGeneratorMojo extends AbstractMojo
 {
+	protected AbstractGeneratorMojo()
+	{}
+
 	/**
 	 * @param scope           the scope to export for
 	 * @param targetDirectory the value of {@code ${project.build.directory}}

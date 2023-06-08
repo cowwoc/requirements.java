@@ -55,7 +55,6 @@ public final class OptimizeExceptionsMojo extends AbstractGeneratorMojo
 	public void execute() throws MojoExecutionException
 	{
 		Path generatedSources = getGeneratedSourcesPath(scope, targetDirectory.toPath());
-		ExceptionOptimizer optimizer = new ExceptionOptimizer();
 		try
 		{
 			Files.createDirectories(generatedSources);
@@ -77,9 +76,10 @@ public final class OptimizeExceptionsMojo extends AbstractGeneratorMojo
 				}
 				catch (ClassNotFoundException e)
 				{
-					log.error("Cannot find " + exceptionName);
+					log.error("Cannot find {}", exceptionName);
 					continue;
 				}
+				ExceptionOptimizer optimizer = new ExceptionOptimizer();
 				optimizer.apply(generatedSources, exception);
 			}
 		}

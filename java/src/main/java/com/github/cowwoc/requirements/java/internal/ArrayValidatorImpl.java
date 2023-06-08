@@ -111,7 +111,7 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	@Override
 	public ArrayValidator<A, E> isEmpty()
 	{
-		return isEmpty(length);
+		return isEmpty(length, "Actual.length");
 	}
 
 	@Override
@@ -333,7 +333,7 @@ public final class ArrayValidatorImpl<A, E> extends AbstractObjectValidator<Arra
 	public ListValidator<List<E>, E> asList()
 	{
 		if (fatalFailure)
-			return new ListValidatorImpl<>(scope, config, name, null, Pluralizer.ELEMENT, failures, fatalFailure);
+			return new ListValidatorImpl<>(scope, config, name, null, Pluralizer.ELEMENT, failures, true);
 		return asList.getValue();
 	}
 

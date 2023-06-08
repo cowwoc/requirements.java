@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.generator.internal.util;
 
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -52,9 +52,9 @@ public final class Generators
 
 		if (existingContents.equals(newContents))
 			return false;
-		try (FileWriter fw = new FileWriter(path.toFile()))
+		try (BufferedWriter bw = Files.newBufferedWriter(path))
 		{
-			fw.write(newContents);
+			bw.write(newContents);
 		}
 		return true;
 	}
@@ -71,4 +71,3 @@ public final class Generators
 		return text.replace("\n", nativeNewline);
 	}
 }
-

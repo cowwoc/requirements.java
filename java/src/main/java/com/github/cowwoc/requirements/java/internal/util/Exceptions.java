@@ -19,7 +19,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -276,7 +275,6 @@ public final class Exceptions
 				}
 			};
 		}
-		MethodHandle methodHandle = target.asType(target.type().changeReturnType(ExceptionBuilder.class));
 
 		if (!supportsCause)
 		{
@@ -297,6 +295,7 @@ public final class Exceptions
 			};
 		}
 
+		MethodHandle methodHandle = target.asType(target.type().changeReturnType(ExceptionBuilder.class));
 		@SuppressWarnings("unchecked")
 		ExceptionBuilder<T> result = (ExceptionBuilder<T>) methodHandle.invokeExact();
 		return result;
@@ -386,12 +385,15 @@ public final class Exceptions
 		catch (ClassNotFoundException e)
 		{
 			// Instantiate the original exception
-			log.debug("Failed to load \"" + exceptionProxy + ".\n" +
-				"\n" +
-				"Relevant System Properties\n" +
-				"--------------------------\n" +
-				"java.class.path=" + System.getProperty("java.class.path") + "\n" +
-				"user.dir=" + System.getProperty("user.dir"), e);
+			if (log.isDebugEnabled())
+			{
+				log.debug("Failed to load \"" + exceptionProxy + ".\n" +
+					"\n" +
+					"Relevant System Properties\n" +
+					"--------------------------\n" +
+					"java.class.path=" + System.getProperty("java.class.path") + "\n" +
+					"user.dir=" + System.getProperty("user.dir"), e);
+			}
 			return Optional.empty();
 		}
 	}
@@ -423,18 +425,15 @@ public final class Exceptions
 	 * @param stackTrace the stack trace elements to process
 	 * @throws NullPointerException if {@code throwable} is null
 	 */
-	public void removeLibraryFromStackTrace(Throwable throwable, StackTraceElement[] stackTrace)
+	public void removeLibraryFromStackTrace(Throwable throwable, StackTraceElement... stackTrace)
 	{
 		StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
-		if (newStackTrace != stackTrace)
+		if (newStackTrace.length != stackTrace.length)
 			throwable.setStackTrace(newStackTrace);
 
 		Throwable cause = throwable.getCause();
-		if (cause != null)
-		{
-			if (!isOptimizedException(cause.getClass()))
-				removeLibraryFromStackTrace(cause, cause.getStackTrace());
-		}
+		if (cause != null && !isOptimizedException(cause.getClass()))
+			removeLibraryFromStackTrace(cause, cause.getStackTrace());
 		for (Throwable suppressed : throwable.getSuppressed())
 		{
 			if (!isOptimizedException(suppressed.getClass()))
@@ -508,9 +507,8 @@ public final class Exceptions
 		Predicate<StackTraceElement> elementFilter)
 	{
 		List<StackTraceElement> linesToKeep = new ArrayList<>();
-		for (int i = 0; i < elements.length; ++i)
+		for (StackTraceElement element : elements)
 		{
-			StackTraceElement element = elements[i];
 			if (elementFilter.test(element))
 				continue;
 			linesToKeep.add(element);
@@ -610,7 +608,7 @@ public final class Exceptions
 			line.delete(0, line.length());
 			String key = entry.getName();
 			if (!key.isBlank())
-				line.append(Strings.alignLeft(key, maxKeyLength) + ": ");
+				line.append(Strings.alignLeft(key, maxKeyLength)).append(": ");
 			line.append(entry.getValue());
 			messageWithContext.add(line.toString());
 		}

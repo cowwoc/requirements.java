@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.cowwoc.requirements</groupId>
 	<artifactId>root</artifactId>
@@ -64,6 +65,7 @@
 		<testng.version>7.7.1</testng.version>
 		<pouch.version>3.0</pouch.version>
 		<jmh.version>1.36</jmh.version>
+		<pmd.version>6.55.0</pmd.version>
 	</properties>
 
 	<dependencyManagement>
@@ -264,6 +266,33 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>3.5.0</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.20.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-core</artifactId>
+							<version>${pmd.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-java</artifactId>
+							<version>${pmd.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-javascript</artifactId>
+							<version>${pmd.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-jsp</artifactId>
+							<version>${pmd.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -395,6 +424,29 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<printFailingErrors>true</printFailingErrors>
+					<rulesets>
+						<ruleset>pmd.xml</ruleset>
+					</rulesets>
+					<excludeFromFailureFile>pmd-file-exclusions.properties</excludeFromFailureFile>
+					<excludes>
+						<exclude>com/github/cowwoc/requirements/natives/internal/util/ColorTest.java</exclude>
+					</excludes>
+					<analysisCache>true</analysisCache>
+					<linkXRef>false</linkXRef>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -424,9 +476,9 @@
 										<echo>* linux-x86_64-release</echo>
 										<echo>* mac-x86_64-debug</echo>
 										<echo>* mac-x86_64-release</echo>
-										<echo />
+										<echo/>
 										<echo>For instance: mvn -Pwindows-x86_64-debug install</echo>
-										<fail />
+										<fail/>
 									</tasks>
 								</configuration>
 							</execution>

@@ -1,5 +1,5 @@
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/8.0.8/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/extension/ExtensibleObjectVerifier.html#isEqualTo(java.lang.Object))
 fails, the library outputs a [diff](https://en.wikipedia.org/wiki/Diff) of the values being compared.
 
 Depending on the terminal capability, you will see a [Textual](Textual_Diff.md) or [Colored](Colored_Diff.md)
@@ -16,5 +16,5 @@ See the aforementioned link for disabling the use of native libraries.
 
 We disable colors if stdout is redirected. This doesn't necessarily mean that ANSI codes are not supported,
 but we chose to err on the side of caution. Users can override this behavior by
-invoking [GlobalRequirements.withTerminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html#withTerminalEncoding(com.github.cowwoc.requirements.natives.terminal.TerminalEncoding))
+invoking [GlobalRequirements.withTerminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/8.0.8/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalRequirements.html#withTerminalEncoding(com.github.cowwoc.requirements.natives.terminal.TerminalEncoding))
 .

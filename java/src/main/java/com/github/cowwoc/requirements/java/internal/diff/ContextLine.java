@@ -62,7 +62,7 @@ public final class ContextLine
 	@Override
 	public String toString()
 	{
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new StringBuilder(23);
 		if (!name.isBlank())
 			result.append(name + ": ");
 		result.append(value).

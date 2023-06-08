@@ -4,9 +4,11 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
+import com.github.cowwoc.requirements.java.BigDecimalValidator;
 import com.github.cowwoc.requirements.java.BooleanValidator;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.InetAddressValidator;
+import com.github.cowwoc.requirements.java.IntegerValidator;
 import com.github.cowwoc.requirements.java.JavaRequirements;
 import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.StringValidator;
@@ -17,6 +19,7 @@ import com.github.cowwoc.requirements.java.internal.extension.AbstractObjectVali
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -411,6 +414,126 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		verifier.requireThat(consumer, "consumer").isNotNull();
 
 		consumer.accept(asBoolean());
+		return this;
+	}
+
+	@Override
+	public IntegerValidator<Short> asShort()
+	{
+		if (fatalFailure)
+			return new ShortValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		if (actual == null)
+		{
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a Short.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
+			fatalFailure = true;
+			return new ShortValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		}
+		Short actualShort = Short.parseShort(actual);
+		return new ShortValidatorImpl(scope, config, name, actualShort, getFailures(), fatalFailure);
+	}
+
+	@Override
+	public StringValidator asShort(Consumer<IntegerValidator<Short>> consumer)
+	{
+		if (fatalFailure)
+			return this;
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
+		consumer.accept(asShort());
+		return this;
+	}
+
+	@Override
+	public IntegerValidator<Integer> asInteger()
+	{
+		if (fatalFailure)
+			return new IntegerValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		if (actual == null)
+		{
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a Integer.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
+			fatalFailure = true;
+			return new IntegerValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		}
+		Integer actualInteger = Integer.parseInt(actual);
+		return new IntegerValidatorImpl(scope, config, name, actualInteger, getFailures(), fatalFailure);
+	}
+
+	@Override
+	public StringValidator asInteger(Consumer<IntegerValidator<Integer>> consumer)
+	{
+		if (fatalFailure)
+			return this;
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
+		consumer.accept(asInteger());
+		return this;
+	}
+
+	@Override
+	public IntegerValidator<Long> asLong()
+	{
+		if (fatalFailure)
+			return new LongValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		if (actual == null)
+		{
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a Long.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
+			fatalFailure = true;
+			return new LongValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		}
+		Long actualLong = Long.parseLong(actual);
+		return new LongValidatorImpl(scope, config, name, actualLong, getFailures(), fatalFailure);
+	}
+
+	@Override
+	public StringValidator asLong(Consumer<IntegerValidator<Long>> consumer)
+	{
+		if (fatalFailure)
+			return this;
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
+		consumer.accept(asLong());
+		return this;
+	}
+
+	@Override
+	public BigDecimalValidator asBigDecimal()
+	{
+		if (fatalFailure)
+			return new BigDecimalValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		if (actual == null)
+		{
+			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " must be a BigDecimal.").
+				addContext("Actual", this.actual);
+			addFailure(failure);
+			fatalFailure = true;
+			return new BigDecimalValidatorImpl(scope, config, name, null, getFailures(), fatalFailure);
+		}
+		BigDecimal actualBigDecimal = new BigDecimal(actual);
+		return new BigDecimalValidatorImpl(scope, config, name, actualBigDecimal, getFailures(), fatalFailure);
+	}
+
+	@Override
+	public StringValidator asBigDecimal(Consumer<BigDecimalValidator> consumer)
+	{
+		if (fatalFailure)
+			return this;
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(consumer, "consumer").isNotNull();
+
+		consumer.accept(asBigDecimal());
 		return this;
 	}
 

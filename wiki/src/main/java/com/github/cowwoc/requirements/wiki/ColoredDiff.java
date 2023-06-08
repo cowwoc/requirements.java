@@ -6,6 +6,11 @@ import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 
 public final class ColoredDiff
 {
+	/**
+	 * The main entry point of this application.
+	 *
+	 * @param args the command-line arguments
+	 */
 	public static void main(String[] args)
 	{
 		System.out.println("Example 1");

@@ -1,7 +1,7 @@
 Simply add a dependency for the module you are interested in, rebuild your project, and additional API methods
 will get generated
-inside [DefaultRequirements](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html)
-and [Requirements](https://cowwoc.github.io/requirements.java/8.0.5/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/Requirements.html):
+inside [DefaultRequirements](https://cowwoc.github.io/requirements.java/8.0.8/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultRequirements.html)
+and [Requirements](https://cowwoc.github.io/requirements.java/8.0.8/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/Requirements.html):
 
 | Library                                                       | Dependency |
 |---------------------------------------------------------------|------------|

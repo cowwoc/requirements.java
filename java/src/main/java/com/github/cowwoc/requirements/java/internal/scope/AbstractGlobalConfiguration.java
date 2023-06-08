@@ -23,6 +23,9 @@ public abstract class AbstractGlobalConfiguration implements GlobalConfiguration
 	 */
 	private final AtomicBoolean diffEnabled = new AtomicBoolean(true);
 
+	protected AbstractGlobalConfiguration()
+	{}
+
 	@Override
 	public boolean isCleanStackTrace()
 	{

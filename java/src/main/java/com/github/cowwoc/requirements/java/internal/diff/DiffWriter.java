@@ -4,7 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import java.util.List;
 import java.util.Queue;
 
 /**

@@ -254,11 +254,11 @@ public final class OperatingSystem
 			StringBuilder result = new StringBuilder(10);
 			result.append(major);
 			if (minor != ABSENT)
-				result.append(".").append(minor);
+				result.append('.').append(minor);
 			if (build != ABSENT)
-				result.append(".").append(build);
+				result.append('.').append(build);
 			if (revision != ABSENT)
-				result.append(".").append(revision);
+				result.append('.').append(revision);
 			return result.toString();
 		}
 	}
@@ -282,7 +282,7 @@ public final class OperatingSystem
 	 * @param architecture the architecture of the operating system
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	OperatingSystem(Type type, Version version, Architecture architecture)
+	private OperatingSystem(Type type, Version version, Architecture architecture)
 	{
 		assert (type != null) : "type may not be null";
 		assert (version != null) : "version may not be null";

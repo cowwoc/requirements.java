@@ -39,14 +39,14 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	}
 
 	@Override
-	protected void initActualLine(int number)
+	protected final void initActualLine(int number)
 	{
 		super.initActualLine(number);
 		lineToActualDecoration.put(number, UNDECORATED);
 	}
 
 	@Override
-	protected void initExpectedLine(int number)
+	protected final void initExpectedLine(int number)
 	{
 		super.initExpectedLine(number);
 		lineToExpectedDecoration.put(number, UNDECORATED);
@@ -179,11 +179,6 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 				entry.setValue(UNDECORATED);
 			}
 		}
-	}
-
-	@Override
-	protected void afterClose()
-	{
 	}
 
 	@Override
