@@ -19,6 +19,13 @@ public final class Writer16Colors extends AbstractColorWriter
 	private static final String RED_BACKGROUND = "41";
 	private static final String GRAY_BACKGROUND = "100";
 
+	/**
+	 * Creates a new writer.
+	 */
+	public Writer16Colors()
+	{
+	}
+
 	@Override
 	public String decorateEqualText(String text)
 	{
@@ -41,5 +48,10 @@ public final class Writer16Colors extends AbstractColorWriter
 	public String decoratePadding(String text)
 	{
 		return PREFIX + WHITE_FOREGROUND + ";" + GRAY_BACKGROUND + POSTFIX + text;
+	}
+
+	@Override
+	protected void afterClose()
+	{
 	}
 }

@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements.java;
 
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 
+import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 /**
@@ -148,7 +149,6 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	 */
 	StringValidator strip();
 
-
 	/**
 	 * Ensures that the actual value does not contain leading or trailing white space, where white space is
 	 * defined by {@link #strip()}.
@@ -248,10 +248,95 @@ public interface StringValidator extends ExtensibleObjectValidator<StringValidat
 	StringValidator asBoolean(Consumer<BooleanValidator> consumer);
 
 	/**
+	 * Returns a validator for the Short representation of the value.
+	 *
+	 * @return a validator for the Short representation of the value
+	 * @see Short#parseShort(String)
+	 */
+	IntegerValidator<Short> asShort();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asShort()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Shorts
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringValidator asShort(Consumer<IntegerValidator<Short>> consumer);
+
+	/**
+	 * Returns a validator for the Integer representation of the value.
+	 *
+	 * @return a validator for the Integer representation of the value
+	 * @see Integer#parseInt(String)
+	 */
+	IntegerValidator<Integer> asInteger();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asInteger()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Integers
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringValidator asInteger(Consumer<IntegerValidator<Integer>> consumer);
+
+	/**
+	 * Returns a validator for the Long representation of the value.
+	 *
+	 * @return a validator for the Long representation of the value
+	 * @see Long#parseLong(String)
+	 */
+	IntegerValidator<Long> asLong();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asLong()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Longs
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringValidator asLong(Consumer<IntegerValidator<Long>> consumer);
+
+	/**
+	 * Returns a validator for the BigDecimal representation of the value.
+	 *
+	 * @return a validator for the BigDecimal representation of the value
+	 * @see BigDecimal#BigDecimal(String)
+	 */
+	BigDecimalValidator asBigDecimal();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asBigDecimal()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates BigDecimals
+	 * @return the updated validator
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringValidator asBigDecimal(Consumer<BigDecimalValidator> consumer);
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @deprecated {@code actual} is already a String
 	 */
+	@Override
 	@Deprecated
 	StringValidator asString();
 }

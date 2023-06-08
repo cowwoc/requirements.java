@@ -64,7 +64,7 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	@Override
 	public S isEmpty()
 	{
-		return isEmpty(() -> actual.size());
+		return isEmpty(() -> actual.size(), "Actual.size()");
 	}
 
 	@Override

@@ -4,10 +4,14 @@
  */
 package com.github.cowwoc.requirements.java.internal;
 
+import com.github.cowwoc.requirements.java.BigDecimalValidator;
+import com.github.cowwoc.requirements.java.BigDecimalVerifier;
 import com.github.cowwoc.requirements.java.BooleanValidator;
 import com.github.cowwoc.requirements.java.BooleanVerifier;
 import com.github.cowwoc.requirements.java.InetAddressValidator;
 import com.github.cowwoc.requirements.java.InetAddressVerifier;
+import com.github.cowwoc.requirements.java.IntegerValidator;
+import com.github.cowwoc.requirements.java.IntegerVerifier;
 import com.github.cowwoc.requirements.java.SizeValidator;
 import com.github.cowwoc.requirements.java.SizeVerifier;
 import com.github.cowwoc.requirements.java.StringValidator;
@@ -159,6 +163,70 @@ public final class StringVerifierImpl
 		if (consumer == null)
 			throw new NullPointerException("consumer may not be null");
 		consumer.accept(asBoolean());
+		return this;
+	}
+
+	@Override
+	public IntegerVerifier<Short> asShort()
+	{
+		IntegerValidator<Short> newValidator = validator.asShort();
+		return validationResult(() -> new ShortVerifierImpl(newValidator));
+	}
+
+	@Override
+	public StringVerifier asShort(Consumer<IntegerVerifier<Short>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asShort());
+		return this;
+	}
+
+	@Override
+	public IntegerVerifier<Integer> asInteger()
+	{
+		IntegerValidator<Integer> newValidator = validator.asInteger();
+		return validationResult(() -> new IntegerVerifierImpl(newValidator));
+	}
+
+	@Override
+	public StringVerifier asInteger(Consumer<IntegerVerifier<Integer>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asInteger());
+		return this;
+	}
+
+	@Override
+	public IntegerVerifier<Long> asLong()
+	{
+		IntegerValidator<Long> newValidator = validator.asLong();
+		return validationResult(() -> new LongVerifierImpl(newValidator));
+	}
+
+	@Override
+	public StringVerifier asLong(Consumer<IntegerVerifier<Long>> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asLong());
+		return this;
+	}
+
+	@Override
+	public BigDecimalVerifier asBigDecimal()
+	{
+		BigDecimalValidator newValidator = validator.asBigDecimal();
+		return validationResult(() -> new BigDecimalVerifierImpl(newValidator));
+	}
+
+	@Override
+	public StringVerifier asBigDecimal(Consumer<BigDecimalVerifier> consumer)
+	{
+		if (consumer == null)
+			throw new NullPointerException("consumer may not be null");
+		consumer.accept(asBigDecimal());
 		return this;
 	}
 

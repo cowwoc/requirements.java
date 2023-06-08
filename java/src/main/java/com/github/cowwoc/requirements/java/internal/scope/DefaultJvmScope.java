@@ -124,20 +124,21 @@ public final class DefaultJvmScope implements JvmScope
 		}
 		catch (UnsatisfiedLinkError e)
 		{
-			terminalLog.debug("Failed to load \"requirements\" native library. Please see " +
-				"https://github.com/cowwoc/requirements.java/blob/master/wiki/Deploying_Native_Libraries.md for more information.\n" +
-				"\n" +
-				"Relevant System Properties\n" +
-				"--------------------------\n" +
-				"java.library.path=" + System.getProperty("java.library.path") + "\n" +
-				"user.dir=" + System.getProperty("user.dir"), e);
+			if (terminalLog.isDebugEnabled())
+			{
+				terminalLog.debug("Failed to load \"requirements\" native library. Please see " +
+					"https://github.com/cowwoc/requirements.java/blob/master/wiki/Deploying_Native_Libraries.md for more information.\n" +
+					"\n" +
+					"Relevant System Properties\n" +
+					"--------------------------\n" +
+					"java.library.path=" + System.getProperty("java.library.path") + "\n" +
+					"user.dir=" + System.getProperty("user.dir"), e);
+			}
 			return false;
 		}
 	}
 
-	/**
-	 * @return the terminal attached to the process
-	 */
+	@Override
 	public Terminal getTerminal()
 	{
 		return terminal.getValue();

@@ -28,6 +28,13 @@ public final class Writer8Colors extends AbstractColorWriter
 	private static final String RED_BACKGROUND = "41";
 	private static final String BLACK_BACKGROUND = "40";
 
+	/**
+	 * Creates a new writer.
+	 */
+	public Writer8Colors()
+	{
+	}
+
 	@Override
 	public String decorateEqualText(String text)
 	{
@@ -50,5 +57,10 @@ public final class Writer8Colors extends AbstractColorWriter
 	public String decoratePadding(String text)
 	{
 		return PREFIX + BLACK_FOREGROUND + ";" + DEFAULT_BACKGROUND + POSTFIX + text;
+	}
+
+	@Override
+	protected void afterClose()
+	{
 	}
 }

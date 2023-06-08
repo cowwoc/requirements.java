@@ -46,7 +46,7 @@ public final class JavaSecrets
 		{
 			if (initialized)
 				return;
-			// Force static initializers to run
+			// Force the class's static initializers to run
 			ClassLoader cl = getClass().getClassLoader();
 			try
 			{

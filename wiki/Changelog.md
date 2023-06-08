@@ -1,6 +1,12 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 8.0.8 - 2023/05/11
+
+* Improvements:
+  * Added `StringValidator/Verifier.asShort()`, `asInteger()`, `asLong()` and `asBigDecimal()`.
+  * Removed unused imports in the generated API files.
+
 ## Version 8.0.7 - 2023/04/18
 
 * Bugfixes

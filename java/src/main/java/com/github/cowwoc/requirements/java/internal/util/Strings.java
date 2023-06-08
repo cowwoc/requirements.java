@@ -190,16 +190,10 @@ public final class Strings
 	{
 		for (int codepoint : (Iterable<Integer>) text.codePoints()::iterator)
 		{
-			switch (codepoint)
+			if (codepoint == '\t' || codepoint == '\b' || codepoint == '\n' || codepoint == '\r' ||
+				codepoint == '\f' || codepoint == '\"' || codepoint == '\\')
 			{
-				case '\t':
-				case '\b':
-				case '\n':
-				case '\r':
-				case '\f':
-				case '\"':
-				case '\\':
-					return true;
+				return true;
 			}
 		}
 		return false;

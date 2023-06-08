@@ -7,6 +7,7 @@ package com.github.cowwoc.requirements.java;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectValidator;
 import com.github.cowwoc.requirements.java.extension.ExtensibleObjectVerifier;
 
+import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 /**
@@ -249,6 +250,7 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * Returns a verifier for the Boolean representation of the value.
 	 *
 	 * @return a verifier for the Boolean representation of the value
+	 * @see Boolean#parseBoolean(String)
 	 * @throws IllegalArgumentException if the actual value cannot be converted to a Boolean
 	 */
 	BooleanVerifier asBoolean();
@@ -265,6 +267,94 @@ public interface StringVerifier extends ExtensibleObjectVerifier<StringVerifier,
 	 * @throws NullPointerException if {@code consumer} is null
 	 */
 	StringVerifier asBoolean(Consumer<BooleanVerifier> consumer);
+
+	/**
+	 * Returns a verifier for the Short representation of the value.
+	 *
+	 * @return a verifier for the Short representation of the value
+	 * @see Short#parseShort(String)
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a Short
+	 */
+	IntegerVerifier<Short> asShort();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asShort()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Shorts
+	 * @return the updated verifier
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringVerifier asShort(Consumer<IntegerVerifier<Short>> consumer);
+
+	/**
+	 * Returns a verifier for the Integer representation of the value.
+	 *
+	 * @return a verifier for the Integer representation of the value
+	 * @see Integer#parseInt(String)
+	 * @throws IllegalArgumentException if the actual value cannot be converted to an Integer
+	 */
+	IntegerVerifier<Integer> asInteger();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asInteger()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Integers
+	 * @return the updated verifier
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringVerifier asInteger(Consumer<IntegerVerifier<Integer>> consumer);
+
+	/**
+	 * Returns a verifier for the Long representation of the value.
+	 *
+	 * @return a verifier for the Long representation of the value
+	 * @see Long#parseLong(String)
+	 */
+	IntegerVerifier<Long> asLong();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asLong()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates Longs
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a Long
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringVerifier asLong(Consumer<IntegerVerifier<Long>> consumer);
+
+	/**
+	 * Returns a verifier for the BigDecimal representation of the value.
+	 *
+	 * @return a verifier for the BigDecimal representation of the value
+	 * @see BigDecimal#BigDecimal(String)
+	 */
+	BigDecimalVerifier asBigDecimal();
+
+	/**
+	 * Validates nested requirements. This mechanism can be used to
+	 * <a href="https://github.com/cowwoc/requirements.java/wiki/Features.md#grouping-nested-requirements">
+	 * group related requirements</a>.
+	 * <p>
+	 * See {@link #asBigDecimal()} for exceptions that may be thrown to the consumer.
+	 *
+	 * @param consumer validates BigDecimals
+	 * @return the updated verifier
+	 * @throws IllegalArgumentException if the actual value cannot be converted to a BigDecimal
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	StringVerifier asBigDecimal(Consumer<BigDecimalVerifier> consumer);
 
 	/**
 	 * {@inheritDoc}

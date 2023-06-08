@@ -10,6 +10,7 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -582,7 +583,6 @@ public final class StringTest
 		}
 	}
 
-
 	@Test
 	public void validateThatNullLength()
 	{
@@ -774,6 +774,198 @@ public final class StringTest
 		{
 			String actual = null;
 			new Requirements(scope).validateThat(actual, "actual").asBoolean(null);
+		}
+	}
+
+	@Test
+	public void stringAsShort()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			short expected = (short) 1;
+			String actual = String.valueOf(expected);
+			new Requirements(scope).requireThat(actual, "actual").asShort().isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void stringAsShort_Overflow()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = String.valueOf(Short.MAX_VALUE + 1);
+			new Requirements(scope).requireThat(actual, "actual").asShort();
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting short equals() to return diff.\n" +
+					" Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void stringAsShort_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			new Requirements(scope).requireThat(actual, "actual").asShort();
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting short equals() to return diff.\n" +
+					" Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsShortNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asShort(null);
+		}
+	}
+
+	@Test
+	public void stringAsInteger()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Integer expected = Short.MAX_VALUE + 1;
+			String actual = String.valueOf(expected);
+			new Requirements(scope).requireThat(actual, "actual").asInteger().isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void stringAsInteger_Overflow()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = String.valueOf((long) Integer.MAX_VALUE + 1);
+			new Requirements(scope).requireThat(actual, "actual").asInteger();
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting integer equals() to return diff.\n" +
+					" Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test
+	public void stringAsInteger_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			new Requirements(scope).requireThat(actual, "actual").asInteger();
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting integer equals() to return diff.\n" +
+					" Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsIntegerNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asInteger(null);
+		}
+	}
+
+	@Test
+	public void stringAsLong()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Long expected = (long) Integer.MAX_VALUE + 1;
+			String actual = String.valueOf(expected);
+			new Requirements(scope).requireThat(actual, "actual").asLong().isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void stringAsLong_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			new Requirements(scope).requireThat(actual, "actual").asLong();
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting long equals() to return diff.\n" +
+					" Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsLongNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asLong(null);
+		}
+	}
+
+	@Test
+	public void stringAsBigDecimal()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			BigDecimal expected = BigDecimal.valueOf(Long.MAX_VALUE).add(BigDecimal.ONE);
+			String actual = expected.toString();
+			new Requirements(scope).requireThat(actual, "actual").asBigDecimal().isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void stringAsBigDecimal_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			new Requirements(scope).requireThat(actual, "actual").asBigDecimal();
+			assert (false) : "Expected verifier to throw an exception";
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (!actualMessage.contains("Diff")) :
+				"Wasn't expecting bigDecimal equals() to return diff.\n" +
+					" Actual:\n" + actualMessage;
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void validateThatAsBigDecimalNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = null;
+			new Requirements(scope).validateThat(actual, "actual").asBigDecimal(null);
 		}
 	}
 }

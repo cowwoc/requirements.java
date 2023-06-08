@@ -45,7 +45,7 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 	private String scope;
 	/**
 	 * Indicates if the generated class should assume that the guava plugin is enabled. If the guava plugin
-	 * is present as a project dependency (of any scope) this value is true by default; otherwise, it is
+	 * is present as a project dependency (of any scope), this value is true by default; otherwise, it is
 	 * false by default.
 	 */
 	@Parameter(property = "guavaEnabled")
@@ -69,14 +69,14 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 	{
 		// Create a ClassLoader containing the enclosing project's dependencies
 		// https://stackoverflow.com/a/883219/14731
-		URLClassLoader projectClassLoader;
+		URL[] runtimeUrls;
 		try
 		{
 			List<String> runtimeClasspathElements = project.getRuntimeClasspathElements();
 			List<String> testClasspathElements = project.getTestClasspathElements();
 			int runtimeSize = runtimeClasspathElements.size();
 			int testSize = testClasspathElements.size();
-			URL[] runtimeUrls = new URL[runtimeSize + testSize];
+			runtimeUrls = new URL[runtimeSize + testSize];
 			for (int i = 0; i < runtimeSize; ++i)
 			{
 				String element = runtimeClasspathElements.get(i);
@@ -87,49 +87,56 @@ public final class GenerateApiMojo extends AbstractGeneratorMojo
 				String element = testClasspathElements.get(i);
 				runtimeUrls[runtimeSize + i] = new File(element).toURI().toURL();
 			}
-			projectClassLoader = new URLClassLoader(runtimeUrls, Thread.currentThread().getContextClassLoader());
 		}
 		catch (DependencyResolutionRequiredException | MalformedURLException e)
 		{
 			throw new MojoExecutionException(e);
 		}
-		boolean guavaEnabled;
-		if (overrideGuavaEnabled == null)
+		try (URLClassLoader projectClassLoader = new URLClassLoader(runtimeUrls,
+			Thread.currentThread().getContextClassLoader()))
 		{
-			guavaEnabled = false;
+			boolean guavaEnabled;
+			if (overrideGuavaEnabled == null)
+			{
+				guavaEnabled = false;
+				try
+				{
+					projectClassLoader.loadClass("com.github.cowwoc.requirements.guava.GuavaRequirements");
+					guavaEnabled = true;
+				}
+				catch (ClassNotFoundException ignored)
+				{
+				}
+			}
+			else
+				guavaEnabled = overrideGuavaEnabled;
+			Path generatedSources = getGeneratedSourcesPath(scope, targetDirectory.toPath());
+			ApiGenerator generator = new ApiGenerator(projectClassLoader);
+			generator.setGuavaEnabled(guavaEnabled);
+			if (project.getGroupId().equals(pluginGroupId) && (project.getArtifactId().equals("test")))
+				SharedSecrets.INSTANCE.secretApiGenerator.exportScope(generator);
 			try
 			{
-				projectClassLoader.loadClass("com.github.cowwoc.requirements.guava.GuavaRequirements");
-				guavaEnabled = true;
+				Files.createDirectories(generatedSources);
 			}
-			catch (ClassNotFoundException ignored)
+			catch (IOException e)
 			{
+				getLog().error("Failed to create: " + generatedSources.toAbsolutePath());
+				throw new MojoExecutionException("", e);
 			}
-		}
-		else
-			guavaEnabled = overrideGuavaEnabled;
-		Path generatedSources = getGeneratedSourcesPath(scope, targetDirectory.toPath());
-		ApiGenerator generator = new ApiGenerator(projectClassLoader);
-		generator.setGuavaEnabled(guavaEnabled);
-		if (project.getGroupId().equals(pluginGroupId) && (project.getArtifactId().equals("test")))
-			SharedSecrets.INSTANCE.secretApiGenerator.exportScope(generator);
-		try
-		{
-			Files.createDirectories(generatedSources);
+			try
+			{
+				generator.writeTo(generatedSources);
+			}
+			catch (IOException e)
+			{
+				throw new MojoExecutionException("", e);
+			}
+			addFilesToSources(project, scope, generatedSources);
 		}
 		catch (IOException e)
 		{
-			getLog().error("Failed to create: " + generatedSources.toAbsolutePath());
-			throw new MojoExecutionException("", e);
+			throw new MojoExecutionException(e);
 		}
-		try
-		{
-			generator.writeTo(generatedSources);
-		}
-		catch (IOException e)
-		{
-			throw new MojoExecutionException("", e);
-		}
-		addFilesToSources(project, scope, generatedSources);
 	}
 }

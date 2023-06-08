@@ -449,11 +449,12 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 	/**
 	 * Ensures that the actual value is empty.
 	 *
-	 * @param length the length of the array or collection
+	 * @param size the size of the array or collection
+	 * @param nameOfSize the name of the size method or length property
 	 * @return the updated validator
-	 * @throws NullPointerException if {@code length} is null
+	 * @throws NullPointerException if {@code size} is null
 	 */
-	protected S isEmpty(Supplier<Integer> length)
+	protected S isEmpty(Supplier<Integer> size, String nameOfSize)
 	{
 		if (fatalFailure)
 			return getThis();
@@ -465,11 +466,14 @@ public abstract class AbstractObjectValidator<S, T> implements ExtensibleObjectV
 			fatalFailure = true;
 			return getThis();
 		}
-		if (length.get() != 0)
+		// The size can change when invoked on a concurrent collection
+		int finalSize = size.get();
+		if (finalSize != 0)
 		{
 			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				name + " must be empty.").
-				addContext("Actual", actual);
+				addContext("Actual", actual).
+				addContext(nameOfSize, finalSize);
 			addFailure(failure);
 		}
 		return getThis();

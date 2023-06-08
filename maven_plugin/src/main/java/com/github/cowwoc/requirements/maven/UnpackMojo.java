@@ -23,6 +23,7 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.Element;
 import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Unpacks native libraries used by this library.
@@ -72,7 +73,8 @@ public final class UnpackMojo extends AbstractMojo
 			getLog().info("Skipping. Native libraries not available for this platform.");
 			return;
 		}
-		String classifier = os.type.name().toLowerCase() + "-" + os.architecture.name().toLowerCase();
+		String classifier = os.type.name().toLowerCase(Locale.US) + "-" +
+			os.architecture.name().toLowerCase(Locale.US);
 		File outputDirectory;
 		if (target != null)
 			outputDirectory = target;

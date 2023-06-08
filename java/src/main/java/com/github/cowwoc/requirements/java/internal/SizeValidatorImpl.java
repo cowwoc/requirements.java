@@ -395,7 +395,7 @@ public final class SizeValidatorImpl
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
 				collectionName + " must contain " + name + " " + pluralizer.nameOf(expectedAsInt) + ".").
 				addContext("Actual", actual).
-				addContext("Expected", expected);
+				addContext("Expected", expectedAsString);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
 			addFailure(failure);
@@ -410,7 +410,6 @@ public final class SizeValidatorImpl
 			return this;
 		if (Objects.equals(actual, other))
 		{
-			JavaRequirements verifier = scope.getInternalVerifier();
 			int valueAsInt = (Integer) other;
 			String valueAsString = config.toString(other);
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
@@ -432,12 +431,12 @@ public final class SizeValidatorImpl
 		verifier.requireThat(name, "name").isNotBlank();
 		if (Objects.equals(actual, other))
 		{
-			int valueAsInt = (Integer) other;
-			String valueAsString = config.toString(other);
+			int otherAsInt = (Integer) other;
+			String otherAsString = config.toString(other);
 			ValidationFailureImpl failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
-				collectionName + " may not contain " + name + " " + pluralizer.nameOf(valueAsInt) + ".").
+				collectionName + " may not contain " + name + " " + pluralizer.nameOf(otherAsInt) + ".").
 				addContext("Actual", actual).
-				addContext("Unwanted", other);
+				addContext("Unwanted", otherAsString);
 			if (actual > 0)
 				failure.addContext(collectionName, collection);
 			addFailure(failure);
