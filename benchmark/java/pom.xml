@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>benchmark</artifactId>
-		<version>8.0.8-SNAPSHOT</version>
+		<version>8.0.8</version>
 	</parent>
 	<artifactId>benchmark.java</artifactId>
 	<packaging>jar</packaging>

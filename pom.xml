@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.cowwoc.requirements</groupId>
 	<artifactId>root</artifactId>
-	<version>8.0.8-SNAPSHOT</version>
+	<version>8.0.8</version>
 	<packaging>pom</packaging>
 	<name>Requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
@@ -22,7 +21,7 @@
 		<url>https://github.com/cowwoc/requirements.java/</url>
 		<connection>scm:git:https://github.com/cowwoc/requirements.java/</connection>
 		<developerConnection>scm:git:https://github.com/cowwoc/requirements.java/</developerConnection>
-		<tag>HEAD</tag>
+		<tag>release-8.0.8</tag>
 	</scm>
 
 	<developers>
@@ -476,9 +475,9 @@
 										<echo>* linux-x86_64-release</echo>
 										<echo>* mac-x86_64-debug</echo>
 										<echo>* mac-x86_64-release</echo>
-										<echo/>
+										<echo />
 										<echo>For instance: mvn -Pwindows-x86_64-debug install</echo>
-										<fail/>
+										<fail />
 									</tasks>
 								</configuration>
 							</execution>
