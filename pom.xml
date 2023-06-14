@@ -58,7 +58,7 @@
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.version>3.9.1</maven.version>
 		<maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-		<guava.version>31.1-jre</guava.version>
+		<guava.version>32.0.0-jre</guava.version>
 		<slf4j.version>2.0.7</slf4j.version>
 		<logback.version>1.4.6</logback.version>
 		<testng.version>7.7.1</testng.version>
