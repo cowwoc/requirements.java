@@ -62,7 +62,7 @@
     * [javaparser-core](https://github.com/javaparser/javaparser-core)
   * MIT License:
     * [JOpt Simple](http://jopt-simple.github.io/jopt-simple)
-    * [Checker Qual](https://checkerframework.org)
+    * [Checker Qual](https://checkerframework.org/)
     * [SLF4J API Module](http://www.slf4j.org)
     * [SLF4J Simple Binding](http://www.slf4j.org)
     * [jquery](http://webjars.org)

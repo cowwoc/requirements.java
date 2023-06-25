@@ -174,6 +174,13 @@ public final class CollectionVerifierImpl<C extends Collection<E>, E>
 	}
 
 	@Override
+	public CollectionVerifier<C, E> doesNotContainMixedNulls()
+	{
+		validator.doesNotContainMixedNulls();
+		return validationResult(IllegalArgumentException.class);
+	}
+
+	@Override
 	public SizeVerifier size()
 	{
 		SizeValidator newValidator = validator.size();

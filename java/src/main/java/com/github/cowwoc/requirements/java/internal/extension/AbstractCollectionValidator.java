@@ -492,6 +492,37 @@ public abstract class AbstractCollectionValidator<S, C extends Collection<E>, E>
 	}
 
 	@Override
+	public S doesNotContainMixedNulls()
+	{
+		if (fatalFailure)
+			return getThis();
+		JavaRequirements verifier = scope.getInternalVerifier();
+		verifier.requireThat(actual, "actual").isNotNull();
+		if (actual == null)
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, NullPointerException.class,
+				this.name + " may not be null");
+			addFailure(failure);
+			fatalFailure = true;
+			return getThis();
+		}
+
+		int numberOfNulls = 0;
+		for (E value : actual)
+			if (value == null)
+				++numberOfNulls;
+
+		if (numberOfNulls != 0 && numberOfNulls != actual.size())
+		{
+			ValidationFailure failure = new ValidationFailureImpl(scope, config, IllegalArgumentException.class,
+				name + " must contain all nulls, or no nulls.").
+				addContext("Actual", actual);
+			addFailure(failure);
+		}
+		return getThis();
+	}
+
+	@Override
 	public SizeValidator size()
 	{
 		if (fatalFailure)

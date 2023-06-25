@@ -1,13 +1,18 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 8.0.9 - 2023/06/08
+## Version 8.0.10 - 2023/06/24
+
+* Improvements:
+  * Added `CollectionValidator/Verifier.doesNotContainMixedNulls()`.
+
+## Version 8.0.10 - 2023/06/08
 
 * Improvements:
   * Added `StringValidator/Verifier.asShort()`, `asInteger()`, `asLong()` and `asBigDecimal()`.
   * Removed unused imports in the generated API files.
 
-## Version 8.0.9 - 2023/06/08
+## Version 8.0.8 - 2023/06/08
 
 * Skipped due to deployment error
 
