@@ -22,7 +22,6 @@
 		<exclude name="EmptyControlStatement"/>
 		<exclude name="CallSuperInConstructor"/>
 		<exclude name="CommentDefaultAccessModifier"/>
-		<exclude name="AvoidUsingNativeCode"/>
 		<exclude name="TooManyStaticImports"/>
 		<exclude name="LinguisticNaming"/>
 		<exclude name="ShortClassName"/>
@@ -51,6 +50,11 @@
 	<rule ref="category/java/design.xml/NPathComplexity">
 		<properties>
 			<property name="reportLevel" value="2000"/>
+		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
+		<properties>
+			<property name="problemDepth" value="4"/>
 		</properties>
 	</rule>
 	<rule ref="category/java/documentation.xml">

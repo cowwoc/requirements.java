@@ -4,9 +4,11 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidators;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import com.google.common.collect.Sets;
 import org.testng.annotations.Test;
 
@@ -17,7 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class ConfigurationTest
 {
@@ -26,7 +28,7 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			try
 			{
 				Set<Integer> actual = Sets.newLinkedHashSetWithExpectedSize(2);
@@ -34,18 +36,21 @@ public final class ConfigurationTest
 				actual.add(2);
 
 				Set<Integer> notEqual = Collections.emptySet();
-
-				requirements.withStringConverter(LinkedHashSet.class, s ->
+				try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 				{
-					@SuppressWarnings({"unchecked", "rawtypes"})
-					List<Integer> result = new ArrayList<>(s);
-					result.sort(Comparator.reverseOrder());
-					return result.toString();
-				}).requireThat(actual, "actual").isEqualTo(notEqual);
+					configurationUpdater.stringMappers().put(LinkedHashSet.class, s ->
+					{
+						@SuppressWarnings("unchecked")
+						List<Integer> result = new ArrayList<>((LinkedHashSet<Integer>) s);
+						result.sort(Comparator.reverseOrder());
+						return result.toString();
+					});
+				}
+				validators.requireThat(actual, "Actual").isEqualTo(notEqual);
 			}
 			catch (IllegalArgumentException e)
 			{
-				requirements.requireThat(e.getMessage(), "e.getMessage()").contains("[2, 1]");
+				validators.requireThat(e.getMessage(), "e.getMessage()").contains("[2, 1]");
 			}
 		}
 	}

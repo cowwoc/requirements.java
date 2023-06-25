@@ -13,67 +13,67 @@ public enum Pluralizer
 	 * The names of one or more characters.
 	 */
 	CHARACTER
-	{
-		@Override
-		public String nameOf(int count)
 		{
-			if (count == 1)
-				return "character";
-			return "characters";
-		}
-	},
+			@Override
+			public String nameOf(int count)
+			{
+				if (count == 1)
+					return "character";
+				return "characters";
+			}
+		},
 	/**
 	 * The names of one or more keys.
 	 */
 	KEY
-	{
-		@Override
-		public String nameOf(int count)
 		{
-			if (count == 1)
-				return "key";
-			return "keys";
-		}
-	},
+			@Override
+			public String nameOf(int count)
+			{
+				if (count == 1)
+					return "key";
+				return "keys";
+			}
+		},
 	/**
 	 * The names of one or more values.
 	 */
 	VALUE
-	{
-		@Override
-		public String nameOf(int count)
 		{
-			if (count == 1)
-				return "value";
-			return "values";
-		}
-	},
+			@Override
+			public String nameOf(int count)
+			{
+				if (count == 1)
+					return "value";
+				return "values";
+			}
+		},
 	/**
 	 * The names of one or more entries.
 	 */
 	ENTRY
-	{
-		@Override
-		public String nameOf(int count)
 		{
-			if (count == 1)
-				return "entry";
-			return "entries";
-		}
-	},
+			@Override
+			public String nameOf(int count)
+			{
+				if (count == 1)
+					return "entry";
+				return "entries";
+			}
+		},
 	/**
 	 * The names of one or more elements.
 	 */
 	ELEMENT
-	{
-		@Override
-		public String nameOf(int count)
 		{
-			if (count == 1)
-				return "element";
-			return "elements";
-		}
-	};
+			@Override
+			public String nameOf(int count)
+			{
+				if (count == 1)
+					return "element";
+				return "elements";
+			}
+		};
 
 	/**
 	 * @param count the number of elements

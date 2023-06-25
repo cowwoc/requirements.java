@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>8.0.11-SNAPSHOT</version>
+		<version>9.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>test</artifactId>
 	<packaging>jar</packaging>
 
 	<properties>
-		<argLine />
+		<argLine/>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,7 +59,10 @@
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
 					<useModulePath>false</useModulePath>
-					<argLine>${argLine} -Dfile.encoding=UTF-8 "-Djava.library.path=${project.build.directory}"</argLine>
+					<argLine>
+						${argLine} -Dfile.encoding=UTF-8 "-Djava.library.path=${project.build.directory}" -ea
+						-da:com.github.cowwoc.requirements.test.java.AssertionsDisabledTest
+					</argLine>
 					<!--
 					Tests run faster sequentially than in parallel for me, but they are fast regardless.
 
@@ -75,27 +79,12 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>com.github.cowwoc.requirements</groupId>
-				<artifactId>maven_plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate-api</goal>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<scope>test</scope>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Tests don't publish artifacts -->
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>default-jar</id>
+						<!-- Tests don't publish artifacts -->
 						<phase>none</phase>
 					</execution>
 				</executions>

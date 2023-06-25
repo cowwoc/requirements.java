@@ -4,7 +4,8 @@
  */
 package com.github.cowwoc.requirements.benchmark.java;
 
-import com.github.cowwoc.requirements.DefaultRequirements;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
@@ -12,38 +13,73 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @SuppressWarnings({"CanBeFinal", "LongLine", "FieldCanBeLocal", "FieldMayBeFinal"})
 public class ExceptionTest
 {
+	private static final boolean FAST_ESTIMATE = true;
 	// Fields may not be final:
-	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
-	private String name = "actual";
-	private Object nullObject = null;
+	// https://github.com/openjdk/jmh/blob/cb3c3a90137dad781a2a37fda72dc11ebf253593/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#L58
+	private String name = "map";
+	private Map<Integer, Integer> value;
+	private JavaValidators validators = JavaValidators.newInstance();
+	private JavaValidators withoutCleanStackTrace = JavaValidators.newInstance();
+	private JavaValidators withoutLazy = JavaValidators.newInstance();
+
+	public ExceptionTest()
+	{
+		value = HashMap.newHashMap(5);
+		for (int i = 0; i < 5; ++i)
+			value.put(i, 5 - i);
+		try (ConfigurationUpdater config = withoutLazy.updateConfiguration())
+		{
+			config.lazyExceptions(false);
+		}
+		try (ConfigurationUpdater config = withoutCleanStackTrace.updateConfiguration())
+		{
+			config.cleanStackTrace(false);
+		}
+	}
 
 	@Test
 	public void runBenchmarks() throws RunnerException
 	{
-		Options opt = new OptionsBuilder().
+		ChainedOptionsBuilder builder = new OptionsBuilder().
 			include(ExceptionTest.class.getSimpleName()).
 			timeUnit(TimeUnit.NANOSECONDS).
-			mode(Mode.AverageTime).
-			warmupIterations(10).
-			measurementIterations(20).
-			build();
-		new Runner(opt).run();
+			mode(Mode.AverageTime);
+		if (FAST_ESTIMATE)
+		{
+			builder.warmupIterations(5).
+				measurementIterations(5).
+				forks(1);
+		}
+		else
+		{
+			builder.warmupIterations(10).
+				measurementIterations(20);
+		}
+		Options options = builder.build();
+		new Runner(options).run();
 	}
 
 	@Benchmark
-	public void throwException(Blackhole bh)
+	public void requireThatIsSuccessful(Blackhole bh)
+	{
+		bh.consume(validators.requireThat(value, name).size().isGreaterThan(3));
+	}
+
+	@Benchmark
+	public void throwExceptionCatchException(Blackhole bh)
 	{
 		try
 		{
@@ -51,50 +87,48 @@ public class ExceptionTest
 		}
 		catch (IllegalArgumentException e)
 		{
-			bh.consume(e);
+			// The stack trace is not populated unless we explicitly invoke getStackTrace()
+			bh.consume(e.getStackTrace());
 		}
 	}
 
 	@Benchmark
-	public void requireThatThrowException(Blackhole bh)
+	public void requireThatWithCleanStackTrace(Blackhole bh)
 	{
 		try
 		{
-			DefaultRequirements.requireThat(nullObject, name).isNotNull();
-		}
-		catch (NullPointerException e)
-		{
-			bh.consume(e);
-		}
-	}
-
-	@Benchmark
-	public void throwAndConsumeStackTrace(Blackhole bh)
-	{
-		try
-		{
-			throw new IllegalArgumentException("Hard-coded exception");
+			validators.requireThat(value, name).size().isLessThan(3);
 		}
 		catch (IllegalArgumentException e)
 		{
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(sw));
-			bh.consume(sw.toString());
+			// The stack trace is not populated unless we explicitly invoke getStackTrace()
+			bh.consume(e.getStackTrace());
 		}
 	}
 
 	@Benchmark
-	public void requireThatThrowAndConsumeStackTrace(Blackhole bh)
+	public void requireThatWithoutCleanStackTrace(Blackhole bh)
 	{
 		try
 		{
-			DefaultRequirements.requireThat(nullObject, name).isNotNull();
+			withoutCleanStackTrace.requireThat(value, name).size().isLessThan(3);
 		}
-		catch (NullPointerException e)
+		catch (IllegalArgumentException e)
 		{
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(sw));
-			bh.consume(sw.toString());
+			// The stack trace is not populated unless we explicitly invoke getStackTrace()
+			bh.consume(e.getStackTrace());
 		}
+	}
+
+	@Benchmark
+	public void checkIfAndGetMessagesWithLazyExceptions(Blackhole bh)
+	{
+		bh.consume(validators.checkIf(value, name).isNull().elseGetMessages());
+	}
+
+	@Benchmark
+	public void checkIfAndGetMessagesWithoutLazyExceptions(Blackhole bh)
+	{
+		bh.consume(withoutLazy.checkIf(value, name).isNull().elseGetMessages());
 	}
 }

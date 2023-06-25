@@ -4,17 +4,14 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class FloatingPointTest
 {
@@ -24,7 +21,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = 1.0f;
-			new Requirements(scope).requireThat(actual, "actual").isNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNumber();
 		}
 	}
 
@@ -34,7 +31,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = Float.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNumber();
 		}
 	}
 
@@ -44,7 +41,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNumber();
 		}
 	}
 
@@ -54,7 +51,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNumber();
 		}
 	}
 
@@ -64,7 +61,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = Float.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNumber();
 		}
 	}
 
@@ -74,7 +71,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = 1.0f;
-			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNumber();
 		}
 	}
 
@@ -84,7 +81,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNumber();
 		}
 	}
 
@@ -94,7 +91,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isNotNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNumber();
 		}
 	}
 
@@ -104,7 +101,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = 1.0f;
-			new Requirements(scope).requireThat(actual, "actual").isFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFinite();
 		}
 	}
 
@@ -115,7 +112,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = 1.0f / 0.0f;
-			new Requirements(scope).requireThat(actual, "actual").isFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFinite();
 		}
 	}
 
@@ -125,7 +122,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFinite();
 		}
 	}
 
@@ -136,7 +133,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0 / 0.0;
-			new Requirements(scope).requireThat(actual, "actual").isFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFinite();
 		}
 	}
 
@@ -147,7 +144,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = 1.0f / 0.0f;
-			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInfinite();
 		}
 	}
 
@@ -157,18 +154,18 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = 1.0f;
-			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInfinite();
 		}
 	}
 
 	@Test
 	@SuppressWarnings({"divzero", "NumericOverflow"})
-	public void doubleIsNotFinite()
+	public void doubleisInfinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0 / 0.0;
-			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInfinite();
 		}
 	}
 
@@ -178,17 +175,17 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isNotFinite();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInfinite();
 		}
 	}
 
-	@Test//(expectedExceptions = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void doubleIsNegative_NaN()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNegative();
 		}
 	}
 
@@ -198,7 +195,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNotNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNegative();
 		}
 	}
 
@@ -208,7 +205,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isZero();
 		}
 	}
 
@@ -218,7 +215,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNotZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotZero();
 		}
 	}
 
@@ -228,7 +225,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPositive();
 		}
 	}
 
@@ -238,7 +235,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = Double.NaN;
-			new Requirements(scope).requireThat(actual, "actual").isNotPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotPositive();
 		}
 	}
 
@@ -248,7 +245,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = -0.0d;
-			new Requirements(scope).requireThat(actual, "actual").isNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNegative();
 		}
 	}
 
@@ -258,7 +255,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = -0.0d;
-			new Requirements(scope).requireThat(actual, "actual").isNotNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNegative();
 		}
 	}
 
@@ -268,7 +265,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = -0.0d;
-			new Requirements(scope).requireThat(actual, "actual").isZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isZero();
 		}
 	}
 
@@ -278,7 +275,7 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = -0.0d;
-			new Requirements(scope).requireThat(actual, "actual").isNotZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotZero();
 		}
 	}
 
@@ -288,127 +285,119 @@ public final class FloatingPointTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = -0.0d;
-			new Requirements(scope).requireThat(actual, "actual").isNotPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotPositive();
 		}
 	}
 
 	@Test
-	public void validateThatFloat_nullIsNumber()
+	public void multipleFailuresFloat_nullIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNumber().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNumber().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatDouble_nullIsNumber()
+	public void multipleFailuresDouble_nullIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNumber().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNumber().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatFloat_nullIsNotNumber()
+	public void multipleFailuresFloat_nullIsNotNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotNumber().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotNumber().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatDouble_nullIsNotNumber()
+	public void multipleFailuresDouble_nullIsNotNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotNumber().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotNumber().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatFloat_nullIsFinite()
+	public void multipleFailuresFloat_nullIsFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isFinite().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isFinite().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatDouble_nullIsFinite()
+	public void multipleFailuresDouble_nullIsFinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isFinite().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isFinite().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatFloat_nullIsNotFinite()
+	public void multipleFailuresFloat_nullisInfinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Float actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotFinite().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isInfinite().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatDouble_nullIsNotFinite()
+	public void multipleFailuresDouble_nullisInfinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotFinite().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isInfinite().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

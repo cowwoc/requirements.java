@@ -4,10 +4,9 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -16,11 +15,9 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class PathTest
@@ -31,7 +28,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("/");
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -41,7 +38,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("/");
-			new Requirements(scope).requireThat(actual, "");
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -53,7 +50,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new Requirements(scope).requireThat(actual, "actual").exists();
+				new TestValidatorsImpl(scope).requireThat(actual, "Actual").exists();
 			}
 			finally
 			{
@@ -69,7 +66,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempFile(null, null);
 			Files.delete(actual);
-			new Requirements(scope).requireThat(actual, "actual").exists();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").exists();
 		}
 	}
 
@@ -81,7 +78,7 @@ public final class PathTest
 			Path actual = Files.createTempDirectory(null);
 			try
 			{
-				new Requirements(scope).requireThat(actual, "actual").isDirectory();
+				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
 			}
 			finally
 			{
@@ -96,7 +93,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).requireThat(actual, "actual").isDirectory((LinkOption[]) null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory((LinkOption[]) null);
 		}
 	}
 
@@ -107,7 +104,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempDirectory(null);
 			Files.delete(actual);
-			new Requirements(scope).requireThat(actual, "actual").isDirectory();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
 		}
 	}
 
@@ -119,7 +116,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new Requirements(scope).requireThat(actual, "actual").isDirectory();
+				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
 			}
 			finally
 			{
@@ -136,7 +133,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new Requirements(scope).requireThat(actual, "actual").isRegularFile();
+				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile();
 			}
 			finally
 			{
@@ -151,7 +148,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).requireThat(actual, "actual").isRegularFile((LinkOption[]) null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile((LinkOption[]) null);
 		}
 	}
 
@@ -162,7 +159,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempFile(null, null);
 			Files.delete(actual);
-			new Requirements(scope).requireThat(actual, "actual").isRegularFile();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile();
 		}
 	}
 
@@ -174,7 +171,7 @@ public final class PathTest
 			Path actual = Files.createTempDirectory(null);
 			try
 			{
-				new Requirements(scope).requireThat(actual, "actual").isRegularFile();
+				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile();
 			}
 			finally
 			{
@@ -189,7 +186,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("path1/path2");
-			new Requirements(scope).requireThat(actual, "actual").isRelative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRelative();
 		}
 	}
 
@@ -199,7 +196,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new Requirements(scope).requireThat(actual, "actual").isRelative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRelative();
 		}
 	}
 
@@ -209,7 +206,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new Requirements(scope).requireThat(actual, "actual").isAbsolute();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
 		}
 	}
 
@@ -219,114 +216,103 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("path1/path2");
-			new Requirements(scope).requireThat(actual, "actual").isAbsolute();
-		}
-	}
-
-	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Path actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsDirectoryNullOptions() throws IOException
+	public void multipleFailuresIsDirectoryNullOptions() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).validateThat(actual, "actual").isDirectory((LinkOption[]) null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isDirectory((LinkOption[]) null);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsRegularFileNullOptions() throws IOException
+	public void multipleFailuresIsRegularFileNullOptions() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new Requirements(scope).validateThat(actual, "actual").isRegularFile((LinkOption[]) null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isRegularFile((LinkOption[]) null);
 		}
 	}
 
 	@Test
-	public void validateThatNullExists()
+	public void multipleFailuresNullExists()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				exists().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				exists().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsAbsolute()
+	public void multipleFailuresNullIsAbsolute()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isAbsolute().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isAbsolute().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsDirectory()
+	public void multipleFailuresNullIsDirectory() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isDirectory().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isDirectory().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsRegularFile()
+	public void multipleFailuresNullIsRegularFile() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isRegularFile().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isRegularFile().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsRelative()
+	public void multipleFailuresNullIsRelative()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isRelative().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isRelative().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				isEqualTo(expectedMessages);
 		}
 	}
 }

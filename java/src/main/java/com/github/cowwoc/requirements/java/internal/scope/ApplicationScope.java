@@ -4,12 +4,10 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.JavaRequirements;
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
+import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -18,29 +16,19 @@ import java.util.function.Supplier;
 public interface ApplicationScope extends JvmScope
 {
 	/**
-	 * @return the global configuration inherited by all verifiers
+	 * @return the global configuration inherited by all validators
 	 */
 	GlobalConfiguration getGlobalConfiguration();
 
 	/**
-	 * @return the configuration shared by all verifiers invoked by the current thread
+	 * @return the contextual information for validations performed by this thread using any validator
 	 */
-	Supplier<ThreadConfiguration> getThreadConfiguration();
+	Supplier<Map<String, Object>> getThreadContext();
 
 	/**
-	 * @return the default configuration (value may change with every invocation)
+	 * @return creates validators used to check the arguments of validation methods
 	 */
-	Supplier<Configuration> getDefaultConfiguration();
-
-	/**
-	 * @return a verifier that can be used to check a verifier's own parameters
-	 */
-	JavaRequirements getInternalVerifier();
-
-	/**
-	 * @return an instance of {@code Exceptions}
-	 */
-	Exceptions getExceptions();
+	JavaValidatorsImpl getInternalValidator();
 
 	@Override
 	void close();

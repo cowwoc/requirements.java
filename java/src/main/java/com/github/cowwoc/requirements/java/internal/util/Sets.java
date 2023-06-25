@@ -15,10 +15,17 @@ import java.util.Set;
 public final class Sets
 {
 	/**
+	 * Prevent construction.
+	 */
+	private Sets()
+	{
+	}
+
+	/**
 	 * @param <E>        the type of elements held by the collection
 	 * @param collection a collection
-	 * @return {@code collection} if it is already a {@code Set}; otherwise, a new {@code Set}
-	 * containing {@code collection}'s elements
+	 * @return {@code collection} if it is already a {@code Set}; otherwise, a new {@code Set} containing
+	 * {@code collection}'s elements
 	 * @throws AssertionError if {@code collection} is null
 	 */
 	public static <E> Set<E> fromCollection(Collection<E> collection)
@@ -30,8 +37,8 @@ public final class Sets
 	}
 
 	/**
-	 * Returns the elements in {@code first} minus the elements in {@code second}, retaining the
-	 * iteration order.
+	 * Returns the elements in {@code first} minus the elements in {@code second}, retaining the iteration
+	 * order.
 	 *
 	 * @param <E>    the type of elements in the sets
 	 * @param first  the first set
@@ -80,12 +87,5 @@ public final class Sets
 		Set<E> result = new LinkedHashSet<>(big);
 		result.removeAll(unwanted);
 		return result;
-	}
-
-	/**
-	 * Prevent construction.
-	 */
-	private Sets()
-	{
 	}
 }

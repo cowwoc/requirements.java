@@ -32,14 +32,6 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 */
 	protected final Map<Integer, Boolean> lineToEqualLine = new HashMap<>();
 	/**
-	 * The current line number of the actual value.
-	 */
-	protected int actualLineNumber;
-	/**
-	 * The current line number of the expected value.
-	 */
-	protected int expectedLineNumber;
-	/**
 	 * A padding character used to align values vertically.
 	 */
 	private final String paddingMarker;
@@ -55,6 +47,14 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 * The final list that indicates which lines contain actual and expected values that are equal.
 	 */
 	private final Queue<Boolean> equalLines = new ConcurrentLinkedQueue<>();
+	/**
+	 * The current line number of the actual value.
+	 */
+	protected int actualLineNumber;
+	/**
+	 * The current line number of the expected value.
+	 */
+	protected int expectedLineNumber;
 	protected boolean flushed;
 
 	/**

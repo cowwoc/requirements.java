@@ -4,28 +4,26 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidators;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings({"ConstantConditions", "ResultOfMethodCallIgnored"})
+@SuppressWarnings("ConstantConditions")
 public final class ArrayTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -36,7 +34,7 @@ public final class ArrayTest
 			String[] actual =
 				{
 				};
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -48,25 +46,7 @@ public final class ArrayTest
 			String[] actual =
 				{
 				};
-			new Requirements(scope).requireThat(actual, "");
-		}
-	}
-
-	/**
-	 * Regression test: primitiveArray.isNotNull() used to be deprecated.
-	 */
-	@Test
-	public void isNotNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int[] actual =
-				{
-					1,
-					2,
-					3
-				};
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -78,7 +58,7 @@ public final class ArrayTest
 			String[] actual =
 				{
 				};
-			new Requirements(scope).requireThat(actual, "actual").isEmpty();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEmpty();
 		}
 	}
 
@@ -91,7 +71,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").isEmpty();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEmpty();
 		}
 	}
 
@@ -104,7 +84,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEmpty();
 		}
 	}
 
@@ -116,7 +96,7 @@ public final class ArrayTest
 			String[] actual =
 				{
 				};
-			new Requirements(scope).requireThat(actual, "actual").isNotEmpty();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEmpty();
 		}
 	}
 
@@ -129,7 +109,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").contains("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains("element");
 		}
 	}
 
@@ -142,7 +122,7 @@ public final class ArrayTest
 				{
 					"notElement"
 				};
-			new Requirements(scope).requireThat(actual, "actual").contains("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains("element");
 		}
 	}
 
@@ -155,7 +135,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				contains("element", "nameOfExpected");
 		}
 	}
@@ -169,7 +149,7 @@ public final class ArrayTest
 				{
 					"notElement"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				contains("element", "nameOfExpected");
 		}
 	}
@@ -185,7 +165,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -201,7 +181,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -216,7 +196,7 @@ public final class ArrayTest
 					"one",
 					"two"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -231,8 +211,8 @@ public final class ArrayTest
 					"one",
 					"two"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				containsExactly(Arrays.asList("one", "two", "three"), "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				containsExactly(Arrays.asList("one", "two", "three"), "Expected");
 		}
 	}
 
@@ -247,7 +227,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsExactly(Arrays.asList("one", "two", "three"), "nameOfExpected");
 		}
 	}
@@ -263,7 +243,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsExactly(Arrays.asList("one", "two"), "nameOfExpected");
 		}
 	}
@@ -279,7 +259,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsExactly(Arrays.asList("one", "two", "three"), " ");
 		}
 	}
@@ -295,7 +275,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAny(Arrays.asList("two", "four"));
 		}
 	}
@@ -311,7 +291,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAny(Arrays.asList("four", "five"));
 		}
 	}
@@ -327,7 +307,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAny(Arrays.asList("two", "four"), "nameOfExpected");
 		}
 	}
@@ -343,7 +323,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAny(Arrays.asList("four", "five"), "nameOfExpected");
 		}
 	}
@@ -359,8 +339,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAny(Arrays.asList("two", "four"), " ");
+
 		}
 	}
 
@@ -375,7 +356,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAll(Arrays.asList("two", "three"));
 		}
 	}
@@ -391,7 +372,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAll(Arrays.asList("two", "four"));
 		}
 	}
@@ -407,8 +388,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAll(Arrays.asList("two", "three"), "nameOfExpected");
+
 		}
 	}
 
@@ -423,8 +405,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAll(Arrays.asList("two", "four"), "nameOfExpected");
+
 		}
 	}
 
@@ -439,8 +422,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				containsAll(Arrays.asList("two", "three"), " ");
+
 		}
 	}
 
@@ -453,7 +437,7 @@ public final class ArrayTest
 				{
 					"notElement"
 				};
-			new Requirements(scope).requireThat(actual, "actual").doesNotContain("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContain("element");
 		}
 	}
 
@@ -466,7 +450,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").doesNotContain("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContain("element");
 		}
 	}
 
@@ -479,8 +463,8 @@ public final class ArrayTest
 				{
 					"notElement"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContain("element", "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContain("element", "nameOfUnwanted");
 		}
 	}
 
@@ -493,13 +477,13 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContain("element", "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContain("element", "nameOfUnwanted");
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContain_expectedEmptyName()
+	public void doesNotContain_unwantedEmptyName()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -507,7 +491,7 @@ public final class ArrayTest
 				{
 					"notElement"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContain("element", " ");
 		}
 	}
@@ -523,7 +507,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -538,7 +522,7 @@ public final class ArrayTest
 					"one",
 					"two"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -554,7 +538,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -570,8 +554,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainExactly(Arrays.asList("one", "two"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainExactly(Arrays.asList("one", "two"), "nameOfUnwanted");
+
 		}
 	}
 
@@ -585,8 +570,9 @@ public final class ArrayTest
 					"one",
 					"two"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainExactly(Arrays.asList("one", "two", "three"), "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainExactly(Arrays.asList("one", "two", "three"), "unwanted");
+
 		}
 	}
 
@@ -601,8 +587,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainExactly(Arrays.asList("one", "two", "three"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainExactly(Arrays.asList("one", "two", "three"), "nameOfUnwanted");
+
 		}
 	}
 
@@ -617,7 +604,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"));
 		}
 	}
@@ -633,7 +620,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainAny(Arrays.asList("three", "four", "five"));
 		}
 	}
@@ -649,8 +636,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainAny(Arrays.asList("four", "five", "six"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainAny(Arrays.asList("four", "five", "six"), "nameOfUnwanted");
+
 		}
 	}
 
@@ -665,13 +653,14 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainAny(Arrays.asList("three", "four", "five"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainAny(Arrays.asList("three", "four", "five"), "nameOfUnwanted");
+
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContainAny_expectedEmptyName()
+	public void doesNotContainAny_unwantedEmptyName()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -681,8 +670,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"), " ");
+
 		}
 	}
 
@@ -697,7 +687,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"));
 		}
 	}
@@ -714,7 +704,7 @@ public final class ArrayTest
 					"three",
 					"four"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainAll(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -730,8 +720,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainAll(Arrays.asList("one", "two", "four"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainAll(Arrays.asList("one", "two", "four"), "nameOfUnwanted");
+
 		}
 	}
 
@@ -747,13 +738,14 @@ public final class ArrayTest
 					"three",
 					"four"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
-				doesNotContainAll(Arrays.asList("one", "two", "three"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				doesNotContainAll(Arrays.asList("one", "two", "three"), "nameOfUnwanted");
+
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContainAll_expectedEmptyName()
+	public void doesNotContainAll_unwantedEmptyName()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -763,8 +755,9 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"), " ");
+
 		}
 	}
 
@@ -779,7 +772,7 @@ public final class ArrayTest
 					"two",
 					"three"
 				};
-			new Requirements(scope).requireThat(actual, "actual").doesNotContainDuplicates();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -796,7 +789,7 @@ public final class ArrayTest
 					"two",
 					"four"
 				};
-			new Requirements(scope).requireThat(actual, "actual").doesNotContainDuplicates();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -806,7 +799,7 @@ public final class ArrayTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer[] actual = {1, 2, 3};
-			new Requirements(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 
@@ -816,7 +809,7 @@ public final class ArrayTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer[] actual = {3, 2, 1};
-			new Requirements(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 
@@ -829,7 +822,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isEqualTo(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isEqualTo(1);
 		}
 	}
 
@@ -842,7 +835,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isEqualTo(2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isEqualTo(2);
 		}
 	}
 
@@ -855,7 +848,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().
 				isEqualTo(1, "nameOfExpected");
 		}
 	}
@@ -869,7 +862,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().
 				isEqualTo(2, "nameOfExpected");
 		}
 	}
@@ -883,7 +876,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isEqualTo(1, " ");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isEqualTo(1, " ");
 		}
 	}
 
@@ -896,7 +889,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isNotEqualTo(2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isNotEqualTo(2);
 		}
 	}
 
@@ -909,7 +902,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isNotEqualTo(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isNotEqualTo(1);
 		}
 	}
 
@@ -922,7 +915,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().
 				isNotEqualTo(2, "nameOfExpected");
 		}
 	}
@@ -936,7 +929,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().
 				isNotEqualTo(1, "nameOfExpected");
 		}
 	}
@@ -950,7 +943,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isNotEqualTo(2, " ");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isNotEqualTo(2, " ");
 		}
 	}
 
@@ -965,7 +958,7 @@ public final class ArrayTest
 					2,
 					3
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -981,7 +974,7 @@ public final class ArrayTest
 					3,
 					4
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -998,7 +991,7 @@ public final class ArrayTest
 					4,
 					5
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -1012,7 +1005,7 @@ public final class ArrayTest
 					1,
 					2
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -1029,7 +1022,7 @@ public final class ArrayTest
 					4,
 					5
 				};
-			new Requirements(scope).requireThat(actual, "actual").length().isBetweenClosed(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").length().isBetween(3, true, 5, true);
 		}
 	}
 
@@ -1038,15 +1031,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidatorsImpl validator = new TestValidatorsImpl(scope);
 			Integer[] actual =
 				{
 					1, 2, 3, 4, 5
 				};
 			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
-			List<Integer> output = new ArrayList<>(requirements.requireThat(actual, "actual").
-				asCollection().getActual());
-			requirements.requireThat(input, "Input").isEqualTo(output, "Output");
+			List<Integer> output = new ArrayList<>(validator.requireThat(actual, "Actual").
+				asCollection().getValue());
+			validator.requireThat(input, "Input").isEqualTo(output, "Output");
 		}
 	}
 
@@ -1055,15 +1048,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			Integer[] actual =
 				{
 					1, 2, 3, 4, 5
 				};
 			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
-			List<Integer> actualOutput = new ArrayList<>(requirements.requireThat(actual, "actual").
-				asCollection().getActual());
-			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
+			List<Integer> actualOutput = new ArrayList<>(validators.requireThat(actual, "Actual").
+				asCollection().getValue());
+			validators.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}
 
@@ -1072,14 +1065,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			Integer[] actual =
 				{
 					1, 2, 3, 4, 5
 				};
 			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
-			List<Integer> output = requirements.requireThat(actual, "actual").asList().getActual();
-			requirements.requireThat(input, "Input").isEqualTo(output, "Output");
+			List<Integer> output = validators.requireThat(actual, "Actual").asList().getValue();
+			validators.requireThat(input, "Input").isEqualTo(output, "Output");
 		}
 	}
 
@@ -1088,14 +1081,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			Integer[] actual =
 				{
 					1, 2, 3, 4, 5
 				};
 			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
-			List<Integer> actualOutput = requirements.requireThat(actual, "actual").asList().getActual();
-			requirements.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
+			List<Integer> actualOutput = validators.requireThat(actual, "Actual").asList().getValue();
+			validators.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
 	}
 
@@ -1113,7 +1106,7 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new Requirements(scope).requireThat((Object) actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat((Object) actual, "Actual").isEqualTo(expected);
 		}
 	}
 
@@ -1132,7 +1125,8 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 			expected[0] = 4;
 
-			new Requirements(scope).requireThat((Object) actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat((Object) actual, "Actual").isEqualTo(expected);
+
 		}
 	}
 
@@ -1147,11 +1141,11 @@ public final class ArrayTest
 					2,
 					3
 				};
-			int[] expected = new int[actual.length];
-			System.arraycopy(actual, 0, expected, 0, actual.length);
-			expected[0] = 4;
+			int[] unwanted = new int[actual.length];
+			System.arraycopy(actual, 0, unwanted, 0, actual.length);
+			unwanted[0] = 4;
 
-			new Requirements(scope).requireThat((Object) actual, "actual").isNotEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat((Object) actual, "Actual").isNotEqualTo(unwanted);
 		}
 	}
 
@@ -1166,10 +1160,10 @@ public final class ArrayTest
 					2,
 					3
 				};
-			int[] expected = new int[actual.length];
-			System.arraycopy(actual, 0, expected, 0, actual.length);
+			int[] unwanted = new int[actual.length];
+			System.arraycopy(actual, 0, unwanted, 0, actual.length);
 
-			new Requirements(scope).requireThat((Object) actual, "actual").isNotEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat((Object) actual, "Actual").isNotEqualTo(unwanted);
 		}
 	}
 
@@ -1187,7 +1181,7 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 		}
 	}
 
@@ -1206,7 +1200,7 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 			expected[0] = 4;
 
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 		}
 	}
 
@@ -1225,7 +1219,7 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 			expected[0] = 4;
 
-			new Requirements(scope).requireThat(actual, "actual").isNotEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEqualTo(expected);
 		}
 	}
 
@@ -1243,12 +1237,12 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new Requirements(scope).requireThat(actual, "actual").isNotEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEqualTo(expected);
 		}
 	}
 
 	@Test
-	public void isSameObjectAs()
+	public void isSameReferenceAs()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -1258,12 +1252,12 @@ public final class ArrayTest
 					2,
 					3
 				};
-			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(actual, "actual");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSameReferenceAs(actual, "itself");
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isSameObjectAs_False()
+	public void isSameReferenceAs_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -1276,7 +1270,7 @@ public final class ArrayTest
 			int[] other = new int[actual.length];
 			System.arraycopy(actual, 0, other, 0, actual.length);
 
-			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(other, "other");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSameReferenceAs(other, "other");
 		}
 	}
 
@@ -1294,7 +1288,7 @@ public final class ArrayTest
 			int[] other = new int[actual.length];
 			System.arraycopy(actual, 0, other, 0, actual.length);
 
-			new Requirements(scope).requireThat(actual, "actual").isNotSameObjectAs(other, "other");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotSameReferenceAs(other, "other");
 		}
 	}
 
@@ -1310,7 +1304,19 @@ public final class ArrayTest
 					3
 				};
 
-			new Requirements(scope).requireThat(actual, "actual").isNotSameObjectAs(actual, "actual");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotSameReferenceAs(actual, "Actual");
+		}
+	}
+
+	@Test
+	public void nullStringMapper()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+			String actual = validators.configuration().stringMappers().toString(null);
+			String expected = "null";
+			validators.requireThat(actual, "Actual").isEqualTo(expected);
 		}
 	}
 
@@ -1331,8 +1337,12 @@ public final class ArrayTest
 					1,
 					3
 				};
-			new Requirements(scope).withStringConverter(int[].class, o -> "primitive[]").
-				requireThat(actual, "actual").isEqualTo(expected);
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.stringMappers().put(int[].class, o -> "primitive[]");
+			}
+			validators.requireThat(actual, "Actual").isEqualTo(expected);
 			assert (false) : "Exception was never thrown";
 		}
 		catch (IllegalArgumentException e)
@@ -1373,8 +1383,12 @@ public final class ArrayTest
 						6
 					}
 				};
-			new Requirements(scope).withStringConverter(int[][].class, o -> "primitive[][]").
-				requireThat(actual, "actual").isEqualTo(expected);
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.stringMappers().put(int[][].class, o -> "primitive[][]");
+			}
+			validators.requireThat(actual, "Actual").isEqualTo(expected);
 			assert (false) : "Exception was never thrown";
 		}
 		catch (IllegalArgumentException e)
@@ -1401,8 +1415,12 @@ public final class ArrayTest
 					"1",
 					"3"
 				};
-			new Requirements(scope).withStringConverter(Object[].class, o -> "object[]").
-				requireThat(actual, "actual").isEqualTo(expected);
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.stringMappers().put(Object[].class, o -> "object[]");
+			}
+			validators.requireThat(actual, "Actual").isEqualTo(expected);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -1428,21 +1446,17 @@ public final class ArrayTest
 					1,
 					3
 				};
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 			assert (false) : "Exception was never thrown";
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : [1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
-				DIFF_PADDING.repeat("1,".length()) + " 3]" + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_PADDING.repeat("[".length()) + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3]" + EOS_MARKER).length()) + "\n" +
-				"Expected: [" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
-				"1, 3]" + EOS_MARKER;
+			String expectedMessage = """
+				"Actual" must be equal to [2, 1, 3].
+				Actual: [1, 2, 3]""";
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n**************** Actual:\n" + actualMessage;
+			                                                   "\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1467,21 +1481,27 @@ public final class ArrayTest
 						3
 					}
 				};
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 			assert (false) : "Exception was never thrown";
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
-				DIFF_PADDING.repeat("1,".length()) + " 3]]" + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_PADDING.repeat("[[".length()) + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3]]" + EOS_MARKER).length()) + "\n" +
-				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2, " + DIFF_PADDING.repeat("2,".length()) +
-				"1, 3]]" + EOS_MARKER;
+			String expectedMessage = "\"Actual\" had an unexpected value.\n" +
+			                         "\n" +
+			                         "Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2, " +
+			                         DIFF_PADDING.repeat("2,".length()) +
+			                         "1, 3]]" + EOS_MARKER + "\n" +
+			                         "Diff    : " + DIFF_PADDING.repeat("[[".length()) +
+			                         DIFF_DELETE.repeat("1,".length()) +
+			                         DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL +
+			                         DIFF_DELETE.repeat("1,".length()) +
+			                         DIFF_INSERT.repeat("2,".length()) +
+			                         DIFF_EQUAL.repeat((" 3]]" + EOS_MARKER).length()) + "\n" +
+			                         "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+			                         DIFF_PADDING.repeat("1,".length()) + " 3]]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n**************** Actual:\n" + actualMessage;
+			                                                   "\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1516,87 +1536,60 @@ public final class ArrayTest
 						6
 					}
 				};
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 			assert (false) : "Exception was never thrown";
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage = "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
-				DIFF_PADDING.repeat("1,".length()) + " 3], [4," + DIFF_PADDING.repeat("5,".length()) + " 5," +
-				DIFF_PADDING.repeat("4,".length()) + " 6]]" + EOS_MARKER + "\n" +
-				"Diff    : " + DIFF_PADDING.repeat("[[".length()) + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL + DIFF_DELETE.repeat("1,".length()) +
-				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3], [").length()) +
-				DIFF_DELETE.repeat("4,".length()) + DIFF_INSERT.repeat("5,".length()) + DIFF_EQUAL +
-				DIFF_DELETE.repeat("5,".length()) + DIFF_INSERT.repeat("4,".length()) +
-				DIFF_EQUAL.repeat((" 6]]" + EOS_MARKER).length()) + "\n" +
-				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2," + DIFF_PADDING.repeat(" 2,".length()) +
-				"1, 3], [" + DIFF_PADDING.repeat("4,".length()) + "5," + DIFF_PADDING.repeat(" 5,".length()) + "4," +
-				DIFF_PADDING + "6]]" + EOS_MARKER;
+			String expectedMessage = "\"Actual\" had an unexpected value.\n" +
+			                         "\n" +
+			                         "Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2," +
+			                         DIFF_PADDING.repeat(" 2,".length()) +
+			                         "1, 3], [" + DIFF_PADDING.repeat("4,".length()) + "5," +
+			                         DIFF_PADDING.repeat(" 5,".length()) + "4," +
+			                         DIFF_PADDING + "6]]" + EOS_MARKER + "\n" +
+			                         "Diff    : " + DIFF_PADDING.repeat("[[".length()) +
+			                         DIFF_DELETE.repeat("1,".length()) +
+			                         DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL +
+			                         DIFF_DELETE.repeat("1,".length()) +
+			                         DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3], [").length()) +
+			                         DIFF_DELETE.repeat("4,".length()) + DIFF_INSERT.repeat("5,".length()) +
+			                         DIFF_EQUAL +
+			                         DIFF_DELETE.repeat("5,".length()) + DIFF_INSERT.repeat("4,".length()) +
+			                         DIFF_EQUAL.repeat((" 6]]" + EOS_MARKER).length()) + "\n" +
+			                         "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+			                         DIFF_PADDING.repeat("1,".length()) + " 3], [4," +
+			                         DIFF_PADDING.repeat("5,".length()) + " 5," +
+			                         DIFF_PADDING.repeat("4,".length()) + " 6]]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n**************** Actual:\n" + actualMessage;
+			                                                   "\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
 	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Collection<?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatLengthNull()
+	public void multipleFailuresNullLength()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String[] actual = null;
-			new Requirements(scope).validateThat(actual, "actual").length(null);
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatAsCollectionNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String[] actual = null;
-			new Requirements(scope).validateThat(actual, "actual").asCollection(null);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" may not contain 5 elements");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				length().isNotEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullLength()
+	public void multipleFailuresNullAsCollection()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String[] actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				length().isNotEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void validateThatNullAsCollection()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String[] actual = null;
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				asCollection().getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEmpty();
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				asCollection().elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEmpty();
 		}
 	}
 }

@@ -42,7 +42,7 @@ public interface DiffWriter
 	Queue<String> getActualLines();
 
 	/**
-	 * @return the lines to display after "actual" and before "expected" (empty lines should not be displayed)
+	 * @return the lines to display after "Actual" and before "Expected" (empty lines should not be displayed)
 	 * @throws IllegalStateException if the writer was already flushed
 	 */
 	Queue<String> getDiffLines();

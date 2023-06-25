@@ -4,19 +4,16 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class UriTest
@@ -27,7 +24,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/");
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -37,7 +34,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/");
-			new Requirements(scope).requireThat(actual, "");
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -47,7 +44,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/index.html");
-			new Requirements(scope).requireThat(actual, "actual").isAbsolute();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
 		}
 	}
 
@@ -56,8 +53,8 @@ public final class UriTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			URI actual = URI.create("../index.html");
-			new Requirements(scope).requireThat(actual, "actual").isAbsolute();
+			URI actual = URI.create("./index.html");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
 		}
 	}
 
@@ -66,9 +63,8 @@ public final class UriTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "../index.html";
-			URI actualAsUri = new Requirements(scope).requireThat(actual, "actual").asUri().
-				getActual();
+			String actual = "./index.html";
+			URI actualAsUri = new TestValidatorsImpl(scope).requireThat(actual, "Actual").asUri().getValue();
 			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " +
 				actual;
 		}
@@ -80,64 +76,56 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new Requirements(scope).requireThat(actual, "actual").asUri().asUrl().
-				getActual();
+			URL actualAsUrl = new TestValidatorsImpl(scope).requireThat(actual, "Actual").asUri().asUrl().
+				getValue();
 			assert (actualAsUrl.toString().equals(actual)) : "actualAsUri: " + actualAsUrl + ", actual: " +
 				actual;
 		}
 	}
 
 	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			URI actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatAsUrlNull()
+	public void multipleFailuresAsUrlNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			new Requirements(scope).validateThat(actual, "actual").asUrl(null);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				asUrl().elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsAbsolute()
+	public void multipleFailuresNullIsAbsolute()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isAbsolute().isEqualTo("notEqual").getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"""
+					"Actual" must be equal to "notEqual"\
+					""");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isAbsolute().isEqualTo("notEqual").elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullAsUrl()
+	public void multipleFailuresNullAsUrl()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			List<String> expectedMessages = Collections.singletonList("""
-				actual must be a URL.
-				Actual: null""");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				asUrl().isEqualTo("notEqual").getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"""
+					"Actual" must be equal to "notEqual"\
+					""");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				asUrl().isEqualTo("notEqual").elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

@@ -6,14 +6,10 @@ package com.github.cowwoc.requirements.java.internal.terminal;
 
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
-import com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
-import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem;
-import com.github.cowwoc.requirements.natives.internal.util.OperatingSystem.Version;
-import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,33 +17,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.github.cowwoc.requirements.natives.internal.util.OperatingSystem.Type.WINDOWS;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888_COLORS;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_16_COLORS;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_256_COLORS;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.XTERM_8_COLORS;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.RGB_888_COLORS;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_16_COLORS;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_256_COLORS;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_8_COLORS;
 
 /**
  * The terminal associated with the JVM.
  */
 public final class Terminal
 {
+	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
 	private final Reference<Set<TerminalEncoding>> supportedTypes =
 		ConcurrentLazyReference.create(this::getSupportedTypesImpl);
 	private final Reference<Boolean> connectedToStdout =
 		ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
-	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
-	private final AtomicReference<Integer> width = new AtomicReference<>();
-	private final NativeTerminal nativeTerminal;
 	private final Logger log = LoggerFactory.getLogger(Terminal.class);
 
 	/**
-	 * @param nativeTerminal the native terminal (null if unavailable)
+	 * Creates a new instance.
 	 */
-	public Terminal(NativeTerminal nativeTerminal)
+	public Terminal()
 	{
-		this.nativeTerminal = nativeTerminal;
 	}
 
 	/**
@@ -68,7 +60,6 @@ public final class Terminal
 		{
 			case WINDOWS -> getSupportedTypesForWindows(os);
 			case LINUX, MAC -> getSupportedTypesForLinuxOrMac();
-			default -> throw new IllegalArgumentException("Unsupported OS type: " + os.type);
 		};
 	}
 
@@ -85,7 +76,7 @@ public final class Terminal
 		result.add(NONE);
 		switch (term)
 		{
-			case "xterm" ->
+			case "term", "xterm" ->
 			{
 				// Used by older Linux deployments (e.g. routers)
 				result.add(XTERM_8_COLORS);
@@ -118,46 +109,15 @@ public final class Terminal
 	private Set<TerminalEncoding> getSupportedTypesForWindows(OperatingSystem os)
 	{
 		log.debug("Detected Windows {}", os.version);
-		if (os.version.compareTo(new Version(10, 0, 10_586)) >= 0)
-		{
-			// Windows 10.0.10586 added 16-bit color support:
-			// http://www.nivot.org/blog/post/2016/02/04/Windows-10-TH2-%28v1511%29-Console-Host-Enhancements
-			Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(4 / 0.75));
-			result.add(NONE);
-			result.add(XTERM_8_COLORS);
-			result.add(XTERM_16_COLORS);
-			if (os.version.compareTo(new Version(10, 0, 14_931)) >= 0)
-			{
-				// build 14931 added 24-bit color support:
-				// https://blogs.msdn.microsoft.com/commandline/2016/09/22/24-bit-color-in-the-windows-console/
-				result.add(RGB_888_COLORS);
-			}
-			log.debug("Returning {}", result);
-			return result;
-		}
-		return Collections.singleton(NONE);
+		if (System.getenv("WT_SESSION") == null)
+			return Set.of(NONE);
+		return Set.of(NONE, XTERM_8_COLORS, XTERM_16_COLORS, XTERM_256_COLORS, RGB_888_COLORS);
 	}
 
 	/**
 	 * Indicates the type of encoding that the terminal should use.
 	 * <p>
-	 * This feature can be used to force the use of ANSI colors even when their support is not
-	 * detected.
-	 *
-	 * @param encoding the type of encoding that the terminal should use
-	 * @throws NullPointerException if {@code encoding} is null
-	 * @see #useBestEncoding()
-	 */
-	public void setEncoding(TerminalEncoding encoding)
-	{
-		setEncodingImpl(encoding, true);
-	}
-
-	/**
-	 * Indicates the type of encoding that the terminal should use.
-	 * <p>
-	 * This feature can be used to force the use of ANSI colors even when their support is not
-	 * detected.
+	 * This feature can be used to force the use of ANSI colors even when their support is not detected.
 	 *
 	 * @param encoding the type of encoding that the terminal should use
 	 * @param force    true if the encoding should be forced regardless of what the system supports
@@ -182,54 +142,12 @@ public final class Terminal
 			this.encoding.set(encoding);
 			return;
 		}
-		OperatingSystem os = OperatingSystem.detected();
-		if (os.type == WINDOWS)
-		{
-			// Only Windows needs nativeSetEncoding() to be invoked
-			if (nativeSetEncoding(encoding, force) || force)
-			{
-				log.debug("Setting encoding to {}", encoding);
-				this.encoding.set(encoding);
-			}
-			else
-			{
-				log.debug("nativeSetEncoding() failed. Falling back to {}", NONE);
-				this.encoding.set(NONE);
-			}
-		}
 		this.encoding.set(encoding);
-		log.debug("Setting encoding to {} without native interaction", encoding);
+		log.debug("Setting encoding to {}", encoding);
 	}
 
 	/**
-	 * Indicates the type of encoding that the terminal should use.
-	 *
-	 * @param encoding the type of encoding that the terminal should use (null if the best available encoding
-	 *                 should be used)
-	 * @param force    true if the encoding should be forced regardless of what the system supports
-	 * @return true on success
-	 */
-	private boolean nativeSetEncoding(TerminalEncoding encoding, boolean force)
-	{
-		if (nativeTerminal == null)
-			return false;
-		try
-		{
-			nativeTerminal.setEncoding(encoding);
-			return true;
-		}
-		catch (IOException e)
-		{
-			if (force)
-				log.debug("", e);
-			else
-				log.warn("", e);
-			return false;
-		}
-	}
-
-	/**
-	 * Indicates that verifiers should output the best encoding supported by the terminal.
+	 * Indicates that validators should output the best encoding supported by the terminal.
 	 *
 	 * @see #setEncoding(TerminalEncoding)
 	 */
@@ -239,7 +157,7 @@ public final class Terminal
 		log.debug("supportedType: {}", supportedTypes);
 		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
 		sortedTypes.sort(TerminalEncoding.sortByDecreasingRank());
-		setEncodingImpl(sortedTypes.get(0), false);
+		setEncodingImpl(sortedTypes.getFirst(), false);
 	}
 
 	/**
@@ -255,6 +173,20 @@ public final class Terminal
 			result = encoding.get();
 		}
 		return result;
+	}
+
+	/**
+	 * Indicates the type of encoding that the terminal should use.
+	 * <p>
+	 * This feature can be used to force the use of ANSI colors even when their support is not detected.
+	 *
+	 * @param encoding the type of encoding that the terminal should use
+	 * @throws NullPointerException if {@code encoding} is null
+	 * @see #useBestEncoding()
+	 */
+	public void setEncoding(TerminalEncoding encoding)
+	{
+		setEncodingImpl(encoding, true);
 	}
 
 	/**
@@ -278,91 +210,6 @@ public final class Terminal
 			log.debug("System.console() != null");
 			return true;
 		}
-		if (nativeTerminal == null)
-		{
-			log.debug("NativeTerminal is not available");
-			return false;
-		}
-		try
-		{
-			boolean result = nativeTerminal.isConnectedToStdout();
-			log.debug("Returning {}", result);
-			return result;
-		}
-		catch (IOException e)
-		{
-			log.error("", e);
-			return false;
-		}
-	}
-
-	/**
-	 * Indicates the width that the terminal should use.
-	 * <p>
-	 * This feature can be used to override the default terminal width when it cannot be auto-detected.
-	 *
-	 * @param width the width that the terminal should use
-	 * @throws IllegalArgumentException if {@code width} is zero or negative
-	 * @see #useBestWidth()
-	 */
-	public void setWidth(int width)
-	{
-		if (width <= 0)
-			throw new IllegalArgumentException("width must be positive");
-		this.width.set(width);
-	}
-
-	/**
-	 * Returns the terminal width.
-	 *
-	 * @return the terminal width in characters
-	 */
-	private int nativeGetWidth()
-	{
-		if (nativeTerminal == null)
-			return 0;
-
-		if (isConnectedToStdout())
-		{
-			try
-			{
-				return nativeTerminal.getWidth();
-			}
-			catch (IOException e)
-			{
-				log.warn("", e);
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Indicates that verifiers should use the best width supported by the terminal. If the width cannot be
-	 * auto-detected, a value of {@code 80} is used.
-	 *
-	 * @see #setWidth(int)
-	 */
-	public void useBestWidth()
-	{
-		int detectedWidth = nativeGetWidth();
-		log.debug("detectedWidth: {}", detectedWidth);
-		if (detectedWidth == 0)
-			detectedWidth = 80;
-		setWidth(detectedWidth);
-	}
-
-	/**
-	 * @return the width of the terminal in characters (defaults to the auto-detected width)
-	 */
-	public int getWidth()
-	{
-		Integer result = width.get();
-		log.debug("encoding is {}", result);
-		if (result == null)
-		{
-			useBestWidth();
-			result = width.get();
-		}
-		return result;
+		return false;
 	}
 }

@@ -4,9 +4,9 @@
  */
 package com.github.cowwoc.requirements.java.internal.diff;
 
-import com.github.cowwoc.requirements.java.GlobalRequirements;
+import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.util.Strings;
-import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 import com.github.difflib.DiffUtils;
 import com.github.difflib.patch.AbstractDelta;
 import com.github.difflib.patch.Chunk;
@@ -32,7 +32,7 @@ public final class DiffGenerator
 {
 	// See https://www.regular-expressions.info/unicode.html for an explanation of \p{Zs}
 	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|(?:\\\\r)?\\\\n|[.\\[\\]()" +
-		"{}/\\\\*+\\-#:;]");
+	                                                     "{}/\\\\*+\\-#:;]");
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 	private final ReduceDeltasPerWord reduceDeltasPerWord = new ReduceDeltasPerWord();
@@ -75,7 +75,7 @@ public final class DiffGenerator
 	 * Generates the diff of two strings.
 	 * <p>
 	 * <b>NOTE</b>: Colors may be disabled when stdin or stdout are redirected. To override this
-	 * behavior, use {@link GlobalRequirements#withTerminalEncoding(TerminalEncoding)}.
+	 * behavior, use {@link GlobalConfiguration#terminalEncoding(TerminalEncoding)}.
 	 *
 	 * @param actual   the actual value
 	 * @param expected the expected value
@@ -101,12 +101,94 @@ public final class DiffGenerator
 	}
 
 	/**
-	 * For every word associated with 2 or more unequal deltas, replace the deltas with a single
+	 * Write a single delta.
+	 *
+	 * @param delta  a delta
+	 * @param writer the writer to write into
+	 */
+	private void writeDelta(AbstractDelta<Integer> delta, DiffWriter writer)
+	{
+		switch (delta.getType())
+		{
+			case EQUAL:
+			{
+				writer.writeEqual(Strings.fromCodepoints(delta.getSource().getLines()));
+				break;
+			}
+			case DELETE:
+			{
+				writer.writeDeleted(Strings.fromCodepoints(delta.getSource().getLines()));
+				break;
+			}
+			case INSERT:
+			{
+				writer.writeInserted(Strings.fromCodepoints(delta.getTarget().getLines()));
+				break;
+			}
+			case CHANGE:
+			{
+				writer.writeDeleted(Strings.fromCodepoints(delta.getSource().getLines()));
+				writer.writeInserted(Strings.fromCodepoints(delta.getTarget().getLines()));
+				break;
+			}
+			default:
+				throw new AssertionError("Unexpected type: " + delta.getType());
+		}
+	}
+
+	/**
+	 * @return a new writer
+	 */
+	private DiffWriter createDiffWriter()
+	{
+		switch (encoding)
+		{
+			case NONE:
+				return new TextOnly();
+			case XTERM_8_COLORS:
+				return new Writer8Colors();
+			case XTERM_16_COLORS:
+				return new Writer16Colors();
+			case XTERM_256_COLORS:
+				return new Writer256Colors();
+			case RGB_888_COLORS:
+				return new Writer16MillionColors();
+			default:
+				throw new AssertionError(encoding.name());
+		}
+	}
+
+	/**
+	 * @param line a line
+	 * @return true if {@code line} only contains padding characters
+	 */
+	public boolean isEmpty(String line)
+	{
+		switch (encoding)
+		{
+			case NONE:
+				break;
+			case XTERM_8_COLORS:
+			case XTERM_16_COLORS:
+			case XTERM_256_COLORS:
+			case RGB_888_COLORS:
+			{
+				line = line.replaceAll(Pattern.quote(PREFIX) + ".+?" + Pattern.quote(POSTFIX), "");
+				break;
+			}
+			default:
+				throw new AssertionError(encoding.name());
+		}
+		return Strings.containsOnly(line, paddingMarker);
+	}
+
+	/**
+	 * For every word associated with two or more unequal deltas, replace the deltas with a single
 	 * {@code [DELETE actual, INSERT expected]} pair.
 	 */
 	private static class ReduceDeltasPerWord implements Consumer<List<AbstractDelta<Integer>>>
 	{
-		// Format: [optional] (mandatory)
+		// Syntax: [optional] (mandatory)
 		//
 		// word: (start-delta) (end-delta)
 		// start-delta: [pre-word] [delimiter] (word-in-start-delta)
@@ -128,7 +210,8 @@ public final class DiffGenerator
 		 */
 		private int indexOfEndDelta;
 		/**
-		 * The index of the delimiter in the end delta. If there is no delimiter, points to the end of the string.
+		 * The index of the delimiter in the end delta. If there is no delimiter, points to the end of the
+		 * string.
 		 */
 		private int indexOfDelimiterInEndDelta;
 		/**
@@ -163,7 +246,7 @@ public final class DiffGenerator
 		{
 			// Words start after a whitespace delimiter within an EQUAL delta. If none is found, the start
 			// of the first delta acts as a word boundary.
-			AbstractDelta<Integer> delta = deltas.get(0);
+			AbstractDelta<Integer> delta = deltas.getFirst();
 			indexOfStartDelta = 0;
 			String actual = Strings.fromCodepoints(delta.getSource().getLines());
 			MatchResult result = Strings.lastIndexOf(actual, WORDS).orElse(null);
@@ -210,7 +293,7 @@ public final class DiffGenerator
 				return;
 			// Improve readability by avoiding many diffs per word or short diffs in short words
 			if (numberOfUnequalDeltas(deltasInWord) <= 2 &&
-				(shortestDelta(deltasInWord) >= 3 || longestWord(deltasInWord) >= 5))
+			    (shortestDelta(deltasInWord) >= 3 || longestWord(deltasInWord) >= 5))
 			{
 				// Provide character-level granularity
 				//
@@ -249,6 +332,39 @@ public final class DiffGenerator
 			numberOfDeltas -= deltasRemoved;
 			indexOfEndDelta -= deltasRemoved;
 			indexOfNextWordInEndDelta -= indexOfDelimiterInEndDelta;
+		}
+
+		/**
+		 * @param <T>    the type of elements being compared
+		 * @param deltas a list of deltas
+		 * @return the number of deltas whose type is not EQUAL
+		 */
+		private static <T> int numberOfUnequalDeltas(List<AbstractDelta<T>> deltas)
+		{
+			int result = 0;
+			for (AbstractDelta<T> delta : deltas)
+			{
+				switch (delta.getType())
+				{
+					case EQUAL:
+						break;
+					case DELETE:
+					case INSERT:
+					{
+						++result;
+						break;
+					}
+					case CHANGE:
+					{
+						// Equivalent to DELETE followed by INSERT
+						result += 2;
+						break;
+					}
+					default:
+						throw new AssertionError(delta.getType().name());
+				}
+			}
+			return result;
 		}
 
 		/**
@@ -387,44 +503,11 @@ public final class DiffGenerator
 				String actual = Strings.fromCodepoints(delta.getSource().getLines());
 				MatchResult result = Strings.lastIndexOf(actual, WORDS).orElseThrow(() ->
 					new AssertionError("Expecting result to be equal to " +
-						"indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later.\n" +
-						"actual: '" + actual + "'"));
+					                   "indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later.\n" +
+					                   "actual: '" + actual + "'"));
 				indexOfWordInStartDelta = result.end();
 			}
 			return true;
-		}
-
-		/**
-		 * @param <T>    the type of elements being compared
-		 * @param deltas a list of deltas
-		 * @return the number of deltas whose type is not EQUAL
-		 */
-		private static <T> int numberOfUnequalDeltas(List<AbstractDelta<T>> deltas)
-		{
-			int result = 0;
-			for (AbstractDelta<T> delta : deltas)
-			{
-				switch (delta.getType())
-				{
-					case EQUAL:
-						break;
-					case DELETE:
-					case INSERT:
-					{
-						++result;
-						break;
-					}
-					case CHANGE:
-					{
-						// Equivalent to DELETE followed by INSERT
-						result += 2;
-						break;
-					}
-					default:
-						throw new AssertionError(delta.getType().name());
-				}
-			}
-			return result;
 		}
 
 		/**
@@ -509,92 +592,10 @@ public final class DiffGenerator
 			int result = Math.max(lengthOfSource, lengthOfTarget);
 			// Trim text before the first delta and after the last delta
 			result -= indexOfWordInStartDelta;
-			AbstractDelta<Integer> lastDelta = deltas.get(deltas.size() - 1);
+			AbstractDelta<Integer> lastDelta = deltas.getLast();
 			String actual = Strings.fromCodepoints(lastDelta.getSource().getLines());
 			result -= actual.length() - indexOfNextWordInEndDelta;
 			return Math.max(0, result);
 		}
-	}
-
-	/**
-	 * Write a single delta.
-	 *
-	 * @param delta  a delta
-	 * @param writer the writer to write into
-	 */
-	private void writeDelta(AbstractDelta<Integer> delta, DiffWriter writer)
-	{
-		switch (delta.getType())
-		{
-			case EQUAL:
-			{
-				writer.writeEqual(Strings.fromCodepoints(delta.getSource().getLines()));
-				break;
-			}
-			case DELETE:
-			{
-				writer.writeDeleted(Strings.fromCodepoints(delta.getSource().getLines()));
-				break;
-			}
-			case INSERT:
-			{
-				writer.writeInserted(Strings.fromCodepoints(delta.getTarget().getLines()));
-				break;
-			}
-			case CHANGE:
-			{
-				writer.writeDeleted(Strings.fromCodepoints(delta.getSource().getLines()));
-				writer.writeInserted(Strings.fromCodepoints(delta.getTarget().getLines()));
-				break;
-			}
-			default:
-				throw new AssertionError("Unexpected type: " + delta.getType());
-		}
-	}
-
-	/**
-	 * @return a new writer
-	 */
-	private DiffWriter createDiffWriter()
-	{
-		switch (encoding)
-		{
-			case NONE:
-				return new TextOnly();
-			case XTERM_8_COLORS:
-				return new Writer8Colors();
-			case XTERM_16_COLORS:
-				return new Writer16Colors();
-			case XTERM_256_COLORS:
-				return new Writer256Colors();
-			case RGB_888_COLORS:
-				return new Writer16MillionColors();
-			default:
-				throw new AssertionError(encoding.name());
-		}
-	}
-
-	/**
-	 * @param line a line
-	 * @return true if {@code line} only contains padding characters
-	 */
-	public boolean isEmpty(String line)
-	{
-		switch (encoding)
-		{
-			case NONE:
-				break;
-			case XTERM_8_COLORS:
-			case XTERM_16_COLORS:
-			case XTERM_256_COLORS:
-			case RGB_888_COLORS:
-			{
-				line = line.replaceAll(Pattern.quote(PREFIX) + ".+?" + Pattern.quote(POSTFIX), "");
-				break;
-			}
-			default:
-				throw new AssertionError(encoding.name());
-		}
-		return Strings.containsOnly(line, paddingMarker);
 	}
 }

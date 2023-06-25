@@ -4,31 +4,32 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.PathVerifier;
-import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.internal.PathValidatorImpl;
-import com.github.cowwoc.requirements.java.internal.PathVerifierImpl;
-import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.UnknownHostException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
+@SuppressWarnings("ConstantConditions")
 public final class ObjectTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -37,7 +38,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -47,7 +48,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "");
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -56,8 +57,8 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "actual";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(actual);
+			String actual = "Actual";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(actual);
 		}
 	}
 
@@ -66,8 +67,8 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "actual";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo("expected");
+			String actual = "Actual";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo("Expected");
 		}
 	}
 
@@ -77,7 +78,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "null";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(null);
 		}
 	}
 
@@ -88,7 +89,7 @@ public final class ObjectTest
 		{
 			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
 			SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 		}
 	}
 
@@ -98,8 +99,9 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			SameToStringAndHashCodeDifferentIdentity actual = new SameToStringAndHashCodeDifferentIdentity();
-			SameToStringAndHashCodeDifferentIdentity expected = new SameToStringAndHashCodeDifferentIdentity();
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected);
+			SameToStringAndHashCodeDifferentIdentity expected =
+				new SameToStringAndHashCodeDifferentIdentity();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
 		}
 	}
 
@@ -109,7 +111,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(actual);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(actual);
 		}
 	}
 
@@ -119,7 +121,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo("expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo("Expected");
 		}
 	}
 
@@ -128,8 +130,8 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "actual";
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(null);
+			String actual = "Actual";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(null);
 		}
 	}
 
@@ -139,7 +141,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isNotEqualTo(new Object());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEqualTo(new Object());
 		}
 	}
 
@@ -149,38 +151,38 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isNotEqualTo(actual);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEqualTo(actual);
 		}
 	}
 
 	@Test
-	public void isSameObject()
+	public void isSameReference()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(actual, "actual");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSameReferenceAs(actual, "itself");
 		}
 	}
 
 	@Test
-	public void isSameObjectNull()
+	public void isSameReferenceNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(actual, "actual");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSameReferenceAs(actual, "itself");
 		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isSameObject_False()
+	public void isSameReference_False()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
 			Object expected = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isSameObjectAs(expected, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSameReferenceAs(expected, "Expected");
 		}
 	}
 
@@ -191,7 +193,7 @@ public final class ObjectTest
 		{
 			Object actual = new Object();
 			Object expected = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isNotSameObjectAs(expected, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotSameReferenceAs(expected, "Expected");
 		}
 	}
 
@@ -201,34 +203,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isNotSameObjectAs(actual, "actual");
-		}
-	}
-
-	@Test
-	public void isInCollection()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "value";
-
-			// Make sure that the collection uses equals()
-			@SuppressWarnings("StringOperationCanBeSimplified")
-			String equivalent = new String(actual);
-
-			new Requirements(scope).requireThat(actual, "actual").isOneOf(Arrays.asList("first",
-				equivalent, "third"));
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void isInCollection_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "value";
-			new Requirements(scope).requireThat(actual, "actual").isOneOf(Arrays.asList("first",
-				"second", "third"));
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotSameReferenceAs(actual, "Actual");
 		}
 	}
 
@@ -238,7 +213,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Requirements(scope).requireThat(actual, "actual").isInstanceOf(Random.class).
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInstanceOf(Random.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -249,7 +224,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isInstanceOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInstanceOf(Random.class);
 		}
 	}
 
@@ -259,7 +234,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Requirements(scope).requireThat(actual, "actual").isInstanceOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInstanceOf(null);
 		}
 	}
 
@@ -269,7 +244,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Requirements(scope).requireThat(actual, "actual").isInstanceOf(String.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInstanceOf(String.class);
 		}
 	}
 
@@ -279,7 +254,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Requirements(scope).requireThat(actual, "actual").isNotInstanceOf(Integer.class).
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotInstanceOf(Integer.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -290,7 +265,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isNotInstanceOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotInstanceOf(Random.class);
 		}
 	}
 
@@ -300,7 +275,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Requirements(scope).requireThat(actual, "actual").isNotInstanceOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotInstanceOf(null);
 		}
 	}
 
@@ -310,7 +285,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Random actual = new Random();
-			new Requirements(scope).requireThat(actual, "actual").isNotInstanceOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotInstanceOf(Random.class);
 		}
 	}
 
@@ -320,7 +295,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNull();
 		}
 	}
 
@@ -330,7 +305,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isNull();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNull();
 		}
 	}
 
@@ -340,7 +315,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNull();
 		}
 	}
 
@@ -350,7 +325,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNull();
 		}
 	}
 
@@ -365,99 +340,617 @@ public final class ObjectTest
 			Object actual = new HashSet<>(Collections.singletonList(1));
 			Object expected = new LinkedHashSet<>(Collections.singletonList(2));
 
-			new Requirements(scope).requireThat(actual, "actual").isEqualTo(expected, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected, "Expected");
 		}
 	}
 
-	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Object actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void withAssertionsEnabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that verification occurs if we start with assertions disabled, then enable them
-			Object actual = null;
-			new Requirements(scope).withAssertionsDisabled().withAssertionsEnabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test
-	public void withAssertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception gets thrown if we start with assertions enabled, then disable them
-			Object actual = null;
-			new Requirements(scope).withAssertionsEnabled().withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test(expectedExceptions = IOException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void failWithCheckedException() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			ArrayList<ValidationFailure> failures = new ArrayList<>();
-			Configuration config = scope.getDefaultConfiguration().get();
-			PathValidatorImpl validator = new PathValidatorImpl(scope, config, "name", Path.of("/"), failures,
-				false);
-
-			failures.add(new ValidationFailureImpl(scope, config, IOException.class, "This is a test"));
-			PathVerifier verifier = new PathVerifierImpl(validator);
-			verifier.isDirectory();
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatAsStringNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Double actual = null;
-			new Requirements(scope).validateThat(actual, "actual").asString(null);
+			Path actual = Paths.get("non-existing-path");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
 		}
 	}
 
 	@Test
-	public void validateThatNullIsOneOf()
+	public void isByte()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isOneOf(Collections.singleton(null)).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			Object actual = (byte) 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isByte();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isByte_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isByte();
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNotOneOf()
+	public void isShort()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotOneOf(Collections.singleton(null)).isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			Object actual = (short) 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isShort();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isShort_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = (byte) 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isShort();
+		}
+	}
+
+	@Test
+	public void isInt()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInt();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInt_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = (short) 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInt();
+		}
+	}
+
+	@Test
+	public void isLong()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5L;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLong();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isLong_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLong();
+		}
+	}
+
+	@Test
+	public void isFloat()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5f;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFloat();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isFloat_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5L;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFloat();
+		}
+	}
+
+	@Test
+	public void isDouble()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5.0;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDouble();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isDouble_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5f;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDouble();
+		}
+	}
+
+	@Test
+	public void isBoolean()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = false;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBoolean();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBoolean_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5.0;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBoolean();
+		}
+	}
+
+	@Test
+	public void isChar()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = '5';
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isChar();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isChar_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = true;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isChar();
+		}
+	}
+
+	@Test
+	public void isBigInteger()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = BigInteger.ZERO;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBigInteger();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBigInteger_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = '5';
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBigInteger();
+		}
+	}
+
+	@Test
+	public void isBigDecimal()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = BigDecimal.ZERO;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBigDecimal();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBigDecimal_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = BigInteger.ZERO;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBigDecimal();
+		}
+	}
+
+	@Test
+	public void isComparable()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = BigDecimal.ZERO;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isComparable();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isComparable_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new Object();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isComparable();
+		}
+	}
+
+	@Test
+	public void isCollection()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Set.of(1, 2, 3);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isCollection();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isCollection_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Map.of(1, 1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isCollection();
+		}
+	}
+
+	@Test
+	public void isList()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = List.of(1, 2, 3);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isList();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isList_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Map.of(1, 1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isList();
+		}
+	}
+
+	@Test
+	public void isByteArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new byte[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isByteArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isByteArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = List.of(1, 2, 3);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isByteArray();
+		}
+	}
+
+	@Test
+	public void isShortArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new short[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isShortArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isShortArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new byte[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isShortArray();
+		}
+	}
+
+	@Test
+	public void isIntArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new int[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isIntArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isIntArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new short[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isIntArray();
+		}
+	}
+
+	@Test
+	public void isLongArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new long[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLongArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isLongArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new int[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLongArray();
+		}
+	}
+
+	@Test
+	public void isFloatArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new float[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFloatArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isFloatArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new long[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFloatArray();
+		}
+	}
+
+	@Test
+	public void isDoubleArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new double[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDoubleArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isDoubleArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new float[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDoubleArray();
+		}
+	}
+
+	@Test
+	public void isBooleanArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new boolean[]{true, false, true};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBooleanArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isBooleanArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new double[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBooleanArray();
+		}
+	}
+
+	@Test
+	public void isCharArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new char[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isCharArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isCharArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new boolean[]{true, false, true};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isCharArray();
+		}
+	}
+
+	@Test
+	public void isObjectArray()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new Object[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isObjectArray();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isObjectArray_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new char[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isObjectArray();
+		}
+	}
+
+	@Test
+	public void isMap()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Map.of(1, 2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMap();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isMap_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = new Object[]{1, 2, 3};
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMap();
+		}
+	}
+
+	@Test
+	public void isPath()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Path.of("/");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPath();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isPath_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Map.of(1, 2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPath();
+		}
+	}
+
+	@Test
+	public void isString()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = "";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isString();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isString_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Path.of("/");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isString();
+		}
+	}
+
+	@Test
+	public void isUri()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = URI.create("https://example.com/");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isUri();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isUri_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = "";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isUri();
+		}
+	}
+
+	@Test
+	public void isUrl() throws MalformedURLException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = URI.create("https://example.com/").toURL();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isUrl();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isUrl_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = URI.create("https://example.com/");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isUrl();
+		}
+	}
+
+	@Test
+	public void isClass()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = int.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isClass();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isClass_False() throws MalformedURLException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = URI.create("https://example.com/").toURL();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isClass();
+		}
+	}
+
+	@Test
+	public void isOptional()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = Optional.of(5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isOptional();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isOptional_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = int.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isOptional();
+		}
+	}
+
+	@Test
+	public void isInetAddress() throws UnknownHostException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = InetAddress.getByName("192.168.1.100");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInetAddress();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isInetAddress_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object actual = 5;
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInetAddress();
 		}
 	}
 }

@@ -4,310 +4,41 @@
  */
 package com.github.cowwoc.requirements.java.internal.util;
 
-import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.GlobalRequirements;
-import com.github.cowwoc.requirements.java.internal.diff.ContextLine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.cowwoc.requirements.java.MultipleFailuresException;
+import com.github.cowwoc.requirements.java.ValidationFailure;
 
-import java.lang.invoke.LambdaMetafactory;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.invoke.MethodType;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Exception helper functions.
  */
 public final class Exceptions
 {
-	private final Lookup lookup = MethodHandles.lookup();
 	/**
 	 * The package name of this library.
 	 */
-	private final String libraryPackage = getParentPackage(Exceptions.class.getPackage().getName(), 3);
+	public static final String LIBRARY_PACKAGE = getParentPackage(Exceptions.class.getPackage().getName(), 3);
 	/**
 	 * The package name of the unit tests.
 	 */
-	private final String testPackage = libraryPackage + ".test";
+	public static final String TEST_PACKAGE = LIBRARY_PACKAGE + ".test";
+	private static final StackTraceElement[] EMPTY_STACK_TRACE = new StackTraceElement[0];
 
-	/**
-	 * Constructs an exception.
-	 *
-	 * @param <E> the type of the exception
-	 */
-	@FunctionalInterface
-	private interface ExceptionBuilder<E>
+	private Exceptions()
 	{
-		/**
-		 * Constructs an exception.
-		 *
-		 * @param exceptions an instance of {@code Exceptions}
-		 * @param message    the detail message. The detail message is saved for later retrieval by the
-		 *                   {@code getMessage()} method
-		 * @param cause      the cause (which is saved for later retrieval by the {@code getCause()} method).
-		 *                   (A {@code null} value is permitted, and indicates that the cause is nonexistent or
-		 *                   unknown.)
-		 * @return a new instance of the exception
-		 */
-		E apply(Exceptions exceptions, String message, Throwable cause);
-	}
-
-	/**
-	 * Constructs an optimized exception with a "message" parameter.
-	 *
-	 * @param <E> the type of the exception
-	 */
-	@FunctionalInterface
-	private interface OptimizedExceptionWithMessage<E>
-	{
-		/**
-		 * Constructs an exception.
-		 *
-		 * @param exceptions an instance of {@code Exceptions}
-		 * @param message    the detail message. The detail message is saved for later retrieval by the
-		 *                   {@code getMessage()} method
-		 * @return a new instance of the exception
-		 */
-		E apply(Exceptions exceptions, String message);
-	}
-
-	/**
-	 * Constructs an optimized exception with "message" and "cause" parameters.
-	 *
-	 * @param <E> the type of the exception
-	 */
-	@FunctionalInterface
-	private interface OptimizedExceptionWithMessageAndCause<E> extends ExceptionBuilder<E>
-	{
-	}
-
-	/**
-	 * Constructs a regular exception with a "message" parameter.
-	 *
-	 * @param <E> the type of the exception
-	 */
-	@FunctionalInterface
-	private interface RegularExceptionWithMessage<E>
-	{
-		/**
-		 * Constructs an exception.
-		 *
-		 * @param message the detail message. The detail message is saved for later retrieval by the
-		 *                {@code getMessage()} method
-		 * @return a new instance of the exception
-		 */
-		E apply(String message);
-	}
-
-	/**
-	 * Constructs a regular exception with "message" and "cause" parameters.
-	 *
-	 * @param <E> the type of the exception
-	 */
-	@FunctionalInterface
-	private interface RegularExceptionWithMessageAndCause<E>
-	{
-		/**
-		 * Constructs an exception.
-		 *
-		 * @param message the detail message. The detail message is saved for later retrieval by the
-		 *                {@code getMessage()} method
-		 * @param cause   the cause (which is saved for later retrieval by the {@code getCause()} method).
-		 *                (A {@code null} value is permitted, and indicates that the cause is nonexistent or
-		 *                unknown.)
-		 * @return a new instance of the exception
-		 */
-		E apply(String message, Throwable cause);
-	}
-
-	private record CacheKey(Class<?> type, boolean tryToOptimize)
-	{
-	}
-
-	private final Function<CacheKey, ExceptionBuilder<?>> computeExceptionBuilder =
-		key ->
-		{
-			try
-			{
-				MethodHandle exceptionConstructor;
-				MethodType factoryType;
-
-				Class<?> optimizedType;
-				if (key.tryToOptimize)
-					optimizedType = getOptimizedException(key.type).orElse(null);
-				else
-					optimizedType = null;
-				boolean exceptionSupportsCause = supportsMessageAndCause(key.type);
-
-				if (optimizedType == null)
-				{
-					MethodType constructorType;
-					if (exceptionSupportsCause)
-					{
-						factoryType = MethodType.methodType(RegularExceptionWithMessageAndCause.class);
-						constructorType = MethodType.methodType(void.class, String.class, Throwable.class);
-					}
-					else
-					{
-						factoryType = MethodType.methodType(RegularExceptionWithMessage.class);
-						constructorType = MethodType.methodType(void.class, String.class);
-					}
-					exceptionConstructor = lookup.findConstructor(key.type, constructorType);
-				}
-				else
-				{
-					MethodType constructorType;
-					if (exceptionSupportsCause)
-					{
-						factoryType = MethodType.methodType(OptimizedExceptionWithMessageAndCause.class);
-						constructorType = MethodType.methodType(void.class, Exceptions.class, String.class,
-							Throwable.class);
-					}
-					else
-					{
-						factoryType = MethodType.methodType(OptimizedExceptionWithMessage.class);
-						constructorType = MethodType.methodType(void.class, Exceptions.class, String.class);
-					}
-					exceptionConstructor = lookup.findConstructor(optimizedType, constructorType);
-				}
-				return getExceptionBuilder(exceptionConstructor, factoryType, exceptionSupportsCause);
-			}
-			catch (Throwable e)
-			{
-				throw WrappedCheckedException.wrap(e);
-			}
-		};
-	private final ConcurrentMap<CacheKey, ExceptionBuilder<?>> classToExceptionBuilder =
-		new ConcurrentHashMap<>((int) Math.ceil(3 / 0.75));
-	private final Logger log = LoggerFactory.getLogger(Exceptions.class);
-
-	/**
-	 * Creates a new instance.
-	 */
-	public Exceptions()
-	{
-	}
-
-	/**
-	 * @param type an exception type
-	 * @return true if the exception accepts a {@code (message, cause)} signature
-	 */
-	private boolean supportsMessageAndCause(Class<?> type)
-	{
-		for (Constructor<?> constructor : type.getDeclaredConstructors())
-		{
-			Class<?>[] parameterTypes = constructor.getParameterTypes();
-			if (parameterTypes.length != 2)
-				continue;
-			if (parameterTypes[0] == String.class && parameterTypes[1] == Throwable.class)
-				return true;
-		}
-		return false;
-	}
-
-	private <T extends Throwable> ExceptionBuilder<T> getExceptionBuilder(
-		MethodHandle exceptionConstructor, MethodType factoryType, boolean supportsCause) throws Throwable
-	{
-		MethodHandles.Lookup lookup = MethodHandles.lookup();
-		MethodHandle target = LambdaMetafactory.metafactory(
-			lookup,
-			"apply",
-			factoryType,
-			// https://stackoverflow.com/a/73749785/14731: Only type parameters have to be "erased" to "Object"
-			exceptionConstructor.type().changeReturnType(Object.class),
-			exceptionConstructor,
-			exceptionConstructor.type()
-		).getTarget();
-
-		Class<?> exceptionType = factoryType.returnType();
-		if (exceptionType.isAssignableFrom(RegularExceptionWithMessage.class))
-		{
-			return (exceptions, message, cause) ->
-			{
-				try
-				{
-					RegularExceptionWithMessage<?> exceptionBuilderFactory =
-						(RegularExceptionWithMessage<?>) target.invokeExact();
-					@SuppressWarnings("unchecked")
-					T exception = (T) exceptionBuilderFactory.apply(message);
-					@SuppressWarnings("unchecked")
-					T exceptionBuilder = (T) exception.initCause(cause);
-					return exceptionBuilder;
-				}
-				catch (Throwable e)
-				{
-					throw WrappedCheckedException.wrap(e);
-				}
-			};
-		}
-		if (exceptionType.isAssignableFrom(RegularExceptionWithMessageAndCause.class))
-		{
-			return (exceptions, message, cause) ->
-			{
-				try
-				{
-					RegularExceptionWithMessageAndCause<?> exceptionBuilderFactory =
-						(RegularExceptionWithMessageAndCause<?>) target.invokeExact();
-					@SuppressWarnings("unchecked")
-					T exceptionBuilder = (T) exceptionBuilderFactory.apply(message, cause);
-					return exceptionBuilder;
-				}
-				catch (Throwable e)
-				{
-					throw WrappedCheckedException.wrap(e);
-				}
-			};
-		}
-
-		if (!supportsCause)
-		{
-			return (exceptions, message, cause) ->
-			{
-				try
-				{
-					OptimizedExceptionWithMessage<?> exceptionBuilder =
-						(OptimizedExceptionWithMessage<?>) target.invokeExact();
-					@SuppressWarnings("unchecked")
-					T result = (T) exceptionBuilder.apply(exceptions, message);
-					return result;
-				}
-				catch (Throwable e)
-				{
-					throw WrappedCheckedException.wrap(e);
-				}
-			};
-		}
-
-		MethodHandle methodHandle = target.asType(target.type().changeReturnType(ExceptionBuilder.class));
-		@SuppressWarnings("unchecked")
-		ExceptionBuilder<T> result = (ExceptionBuilder<T>) methodHandle.invokeExact();
-		return result;
 	}
 
 	/**
 	 * @param name  the name of a Java package
 	 * @param count the number of times to walk up the hierarchy
-	 * @return the name of the parent of the package
+	 * @return the parent of the package
 	 * @throws AssertionError if {@code name} is null or has no parent. If {@code count} is negative.
 	 */
-	private String getParentPackage(String name, int count)
+	private static String getParentPackage(String name, int count)
 	{
 		assert (name != null) : "name may not be null";
 		assert (count > 0) : "count may not be negative or zero";
@@ -322,123 +53,47 @@ public final class Exceptions
 	}
 
 	/**
-	 * Throws an exception with the specified message and cause.
-	 *
-	 * @param <E>             the type of the exception
-	 * @param type            the type of the exception
-	 * @param message         an explanation of what went wrong
-	 * @param cause           the cause of the exception ({@code null} if absent)
-	 * @param cleanStackTrace true if stack trace references to this library should be removed, so long as it
-	 *                        does not result in any user code being removed.
-	 * @return the exception
-	 * @throws AssertionError if {@code type} is null
-	 */
-	@SuppressWarnings("LongLine")
-	public <E extends Exception> E createException(Class<E> type, String message, Throwable cause,
-		boolean cleanStackTrace)
-	{
-		assert (type != null) : "type may not be null";
-		try
-		{
-			// When we instantiate a new exception inside this method, we end up with:
-			//
-			// java.lang.IllegalArgumentException: message of top exception
-			//   at com.github.cowwoc.requirements.java.internal.util.Exceptions.createException(Exceptions.java:76)
-			//   at com.github.cowwoc.requirements.java.internal.util.ExceptionBuilder.build(ExceptionBuilder.java:179)
-			//   at com.github.cowwoc.requirements.java.internal.impl.SomeVerifier.method(SomeVerifier.java:1)
-			//   at UserCode.method1(UserCode.java:1)
-			// Caused by: message of underlying exception
-			//   at Cause.method1(Cause.java:1)
-			//
-			// If cleanStackTrace is true, We need to strip any private library methods, as well as any public
-			// library methods that do not invoke user code.
-			ExceptionBuilder<E> exceptionBuilder = getExceptionBuilder(type, cleanStackTrace);
-			E result = exceptionBuilder.apply(this, message, cause);
-			boolean isOptimized = isOptimizedException(result.getClass());
-			if (!isOptimized && cleanStackTrace)
-			{
-				// We need to strip the stack trace eagerly because we don't have an optimized exception
-				removeLibraryFromStackTrace(result, result.getStackTrace());
-			}
-			return result;
-		}
-		catch (Throwable e)
-		{
-			throw WrappedCheckedException.wrap(e);
-		}
-	}
-
-	/**
-	 * @param type the type of the exception
-	 * @return the type of the optimized exception
-	 */
-	private Optional<Class<?>> getOptimizedException(Class<?> type)
-	{
-		String exceptionProxy = libraryPackage + ".exception." + type.getName();
-		try
-		{
-			// Instantiate a proxy that filters the stack trace lazily
-			Class<?> result = Class.forName(exceptionProxy);
-			log.debug("Found optimized exception: {}", exceptionProxy);
-			return Optional.of(result);
-		}
-		catch (ClassNotFoundException e)
-		{
-			// Instantiate the original exception
-			if (log.isDebugEnabled())
-			{
-				log.debug("Failed to load \"" + exceptionProxy + ".\n" +
-					"\n" +
-					"Relevant System Properties\n" +
-					"--------------------------\n" +
-					"java.class.path=" + System.getProperty("java.class.path") + "\n" +
-					"user.dir=" + System.getProperty("user.dir"), e);
-			}
-			return Optional.empty();
-		}
-	}
-
-	/**
-	 * @param <T>             the type of the exception
-	 * @param type            the type of the exception
-	 * @param cleanStackTrace true if stack trace references to this library should be removed, so long as it
-	 *                        does not result in any user code being removed.
-	 * @return a factory used to construct the exception
-	 */
-	private <T extends Throwable> ExceptionBuilder<T> getExceptionBuilder(Class<T> type,
-		boolean cleanStackTrace)
-	{
-		boolean tryToOptimize = cleanStackTrace;
-		CacheKey key = new CacheKey(type, tryToOptimize);
-
-		@SuppressWarnings("unchecked")
-		ExceptionBuilder<T> exceptionBuilder = (ExceptionBuilder<T>) classToExceptionBuilder.
-			computeIfAbsent(key, computeExceptionBuilder);
-		return exceptionBuilder;
-	}
-
-	/**
 	 * Removes references to this library from an exception stack trace, so long as it does not result in any
 	 * user code being removed.
 	 *
-	 * @param throwable  the exception to process
-	 * @param stackTrace the stack trace elements to process
+	 * @param throwable the exception to process
 	 * @throws NullPointerException if {@code throwable} is null
 	 */
-	public void removeLibraryFromStackTrace(Throwable throwable, StackTraceElement... stackTrace)
+	public static void removeLibraryFromStackTrace(Throwable throwable)
 	{
+		// When we instantiate a new exception inside this method, we end up with:
+		//
+		// java.lang.IllegalArgumentException: message of top exception
+		//   at com.github.cowwoc.requirements.java.internal.util.Exceptions.createException(Exceptions.java:76)
+		//   at com.github.cowwoc.requirements.java.internal.util.ExceptionBuilder.build(ExceptionBuilder.java:179)
+		//   at com.github.cowwoc.requirements.java.internal.impl.SomeValidator.method(SomeValidator.java:1)
+		//   at UserCode.method1(UserCode.java:1)
+		// Caused by: message of underlying exception
+		//   at Cause.method1(Cause.java:1)
+		//
+		// If cleanStackTrace is true, we strip any reference to the library so only user code remains.
+
+		StackTraceElement[] stackTrace = throwable.getStackTrace();
 		StackTraceElement[] newStackTrace = removeLibraryFromStackTrace(stackTrace);
 		if (newStackTrace.length != stackTrace.length)
 			throwable.setStackTrace(newStackTrace);
 
 		Throwable cause = throwable.getCause();
-		if (cause != null && !isOptimizedException(cause.getClass()))
-			removeLibraryFromStackTrace(cause, cause.getStackTrace());
-		for (Throwable suppressed : throwable.getSuppressed())
+		if (cause != null)
+			removeLibraryFromStackTrace(cause);
+
+		Throwable[] suppressedExceptions;
+		if (throwable instanceof MultipleFailuresException mfe)
 		{
-			if (!isOptimizedException(suppressed.getClass()))
-				removeLibraryFromStackTrace(suppressed, suppressed.getStackTrace());
+			List<ValidationFailure> nestedFailures = mfe.getFailures();
+			suppressedExceptions = new Throwable[nestedFailures.size()];
+			for (int i = 0; i < suppressedExceptions.length; ++i)
+				suppressedExceptions[i] = nestedFailures.get(i).getException();
 		}
+		else
+			suppressedExceptions = throwable.getSuppressed();
+		for (Throwable suppressed : suppressedExceptions)
+			removeLibraryFromStackTrace(suppressed);
 	}
 
 	/**
@@ -449,169 +104,50 @@ public final class Exceptions
 	 * @return the updated stack trace elements
 	 * @throws NullPointerException if {@code elements} are null
 	 */
-	private StackTraceElement[] removeLibraryFromStackTrace(StackTraceElement[] elements)
+	private static StackTraceElement[] removeLibraryFromStackTrace(StackTraceElement[] elements)
 	{
-		AtomicBoolean foundUserCode = new AtomicBoolean();
-		return filterStackTrace(elements, element ->
-		{
-			String className = element.getClassName();
-			if (!className.startsWith(libraryPackage) || className.startsWith(testPackage))
-			{
-				foundUserCode.set(true);
-				return false;
-			}
-			if (!foundUserCode.get())
-			{
-				// Strip out references to the library until we find user code
-				return true;
-			}
-			Class<?> aClass = WrappedCheckedException.wrap(() -> Class.forName(className));
-			if (aClass.getPackageName().contains(".internal."))
-			{
-				// Always strip out internal classes
-				return true;
-			}
-			String methodName = element.getMethodName();
-			for (Method method : aClass.getMethods())
-			{
-				if (!method.getName().equals(methodName))
-					continue;
-				if (Modifier.isPublic(method.getModifiers()))
-				{
-					// Keep public library methods because when users invoke:
-					//
-					// assertThat(r -> r.requireThat(...));
-					//
-					// They expect to see assertThat() in the stack trace.
-
-					// We can't differentiate between method overloads, so we assume that the public method was invoked.
-					return false;
-				}
-			}
-			return true;
-		});
-	}
-
-	/**
-	 * Runs a predicate against all lines of a stack trace removing lines that match.
-	 * <p>
-	 * This method can be used to remove lines that hold little value for the end user (such as
-	 * internal methods invoked by this library).
-	 *
-	 * @param elements      the stack trace elements to process
-	 * @param elementFilter returns true if the current stack trace element should be removed
-	 * @return the updated stack trace elements
-	 * @throws NullPointerException if any of the arguments are null
-	 */
-	private StackTraceElement[] filterStackTrace(StackTraceElement[] elements,
-		Predicate<StackTraceElement> elementFilter)
-	{
-		List<StackTraceElement> linesToKeep = new ArrayList<>();
+		List<StackTraceElement> linesToKeep = new ArrayList<>(elements.length);
 		for (StackTraceElement element : elements)
 		{
-			if (elementFilter.test(element))
+			String className = element.getClassName();
+			if (className.startsWith(LIBRARY_PACKAGE) && !className.startsWith(TEST_PACKAGE))
 				continue;
 			linesToKeep.add(element);
 		}
+		if (linesToKeep.isEmpty())
+			return EMPTY_STACK_TRACE;
 		return linesToKeep.toArray(new StackTraceElement[0]);
 	}
 
 	/**
-	 * Indicates if the specified type is an optimized exception.
-	 * <p>
-	 * The purpose of optimized exceptions is to defer {@link GlobalRequirements#withCleanStackTrace()}
-	 * cleaning stack traces) until the stack trace is actually needed. If {@code isCleanStackTrace()} is
-	 * false, no attempt is made to use optimized exceptions.
-	 *
-	 * @param type a class
-	 * @return true if the class is an optimized exception
+	 * @param exception an exception
+	 * @param text      some text
+	 * @return {@code true} if any of the exception's stack trace elements contain {@code text}
 	 */
-	public boolean isOptimizedException(Class<?> type)
+	public static boolean contains(Throwable exception, String text)
 	{
-		Constructor<?>[] constructors = type.getDeclaredConstructors();
-		if (constructors.length < 1)
-			return false;
-		Class<?>[] parameterTypes = constructors[0].getParameterTypes();
-		if (parameterTypes.length < 1)
-			return false;
-		Class<?> firstParameter = parameterTypes[0];
-		return firstParameter != null && firstParameter.isAssignableFrom(Exceptions.class);
+		return getStackTraceAsString(exception).contains(text);
 	}
 
 	/**
-	 * Returns the requirements contextual information.
+	 * Returns the stack trace of an exception
 	 *
-	 * @param threadContext          the thread context
-	 * @param validatorConfiguration the validator configuration
-	 * @param message                the exception message ({@code null} if absent)
-	 * @param exceptionContext       the failure-specific context
-	 * @return the requirements contextual information
-	 * @throws NullPointerException if any of the arguments are null
+	 * @param throwable the exception
+	 * @return the stack trace of the exception
 	 */
-	public String getContextMessage(Map<String, Object> threadContext, Configuration validatorConfiguration,
-		String message, List<ContextLine> exceptionContext)
+	public static String getStackTraceAsString(Throwable throwable)
 	{
-		Map<String, Object> validatorContext = validatorConfiguration.getContext();
-
-		List<ContextLine> mergedContext = new ArrayList<>(exceptionContext.size() +
-			threadContext.size() + validatorContext.size());
-		Set<String> existingKeys = new HashSet<>();
-		for (ContextLine entry : exceptionContext)
+		try (StringWriter stringWriter = new StringWriter())
 		{
-			if (entry.wasConvertedToString())
-				mergedContext.add(entry);
-			else
+			try (PrintWriter pw = new PrintWriter(stringWriter))
 			{
-				mergedContext.add(new ContextLine(entry.getName(), validatorConfiguration.toString(entry.getValue()),
-					true));
-			}
-			String key = entry.getName();
-			if (!key.isBlank())
-				existingKeys.add(key);
-		}
-
-		for (Entry<String, Object> entry : validatorContext.entrySet())
-		{
-			if (existingKeys.add(entry.getKey()))
-			{
-				mergedContext.add(new ContextLine(entry.getKey(), validatorConfiguration.toString(entry.getValue()),
-					true));
+				throwable.printStackTrace(pw);
+				return stringWriter.toString();
 			}
 		}
-
-		for (Entry<String, Object> entry : threadContext.entrySet())
+		catch (IOException e)
 		{
-			if (existingKeys.add(entry.getKey()))
-			{
-				mergedContext.add(new ContextLine(entry.getKey(), validatorConfiguration.toString(entry.getValue()),
-					true));
-			}
+			throw new AssertionError(e);
 		}
-
-		int maxKeyLength = 0;
-		for (ContextLine entry : mergedContext)
-		{
-			String key = entry.getName();
-			if (key.isBlank())
-				continue;
-			int length = key.length();
-			if (length > maxKeyLength)
-				maxKeyLength = length;
-		}
-
-		StringJoiner messageWithContext = new StringJoiner("\n");
-		if (message != null)
-			messageWithContext.add(message);
-		StringBuilder line = new StringBuilder();
-		for (ContextLine entry : mergedContext)
-		{
-			line.delete(0, line.length());
-			String key = entry.getName();
-			if (!key.isBlank())
-				line.append(Strings.alignLeft(key, maxKeyLength)).append(": ");
-			line.append(entry.getValue());
-			messageWithContext.add(line.toString());
-		}
-		return messageWithContext.toString();
 	}
 }
