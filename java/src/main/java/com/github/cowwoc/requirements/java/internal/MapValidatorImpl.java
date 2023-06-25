@@ -70,6 +70,7 @@ public final class MapValidatorImpl<K, V>
 			return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", null, Pluralizer.KEY,
 				getFailures(), fatalFailure);
 		}
+		config.withContext(name, actual);
 		return new CollectionValidatorImpl<>(scope, config, name + ".keySet()", actual.keySet(), Pluralizer.KEY,
 			getFailures(), fatalFailure);
 	}
@@ -103,6 +104,7 @@ public final class MapValidatorImpl<K, V>
 			return new CollectionValidatorImpl<>(scope, config, name + ".values()", null, Pluralizer.VALUE,
 				getFailures(), fatalFailure);
 		}
+		config.withContext(name, actual);
 		return new CollectionValidatorImpl<>(scope, config, name + ".values()", actual.values(), Pluralizer.VALUE,
 			getFailures(), fatalFailure);
 	}

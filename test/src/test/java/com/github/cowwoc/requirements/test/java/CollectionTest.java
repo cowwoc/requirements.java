@@ -14,7 +14,9 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
@@ -33,6 +35,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.emptyList();
+			//noinspection ResultOfMethodCallIgnored
 			new Requirements(scope).requireThat(actual, null);
 		}
 	}
@@ -43,6 +46,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Collections.emptyList();
+			//noinspection ResultOfMethodCallIgnored
 			new Requirements(scope).requireThat(actual, "");
 		}
 	}
@@ -1317,6 +1321,42 @@ public final class CollectionTest
 				"Expected[2]: " + "3" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
 				"\n\n**************** Actual:\n" + actualMessage;
+		}
+	}
+
+	public void doesNotContainMixedNulls_IsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Requirements requirements = new Requirements(scope);
+			Map<String, Object> nameToValue = new HashMap<>();
+			nameToValue.put("first", null);
+			nameToValue.put("second", null);
+			requirements.requireThat(nameToValue, "nameToValue").values().doesNotContainMixedNulls();
+		}
+	}
+
+	public void doesNotContainMixedNulls_IsNotNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Requirements requirements = new Requirements(scope);
+			Map<String, Object> nameToValue = Map.of("first", 1,
+				"second", 10);
+			requirements.requireThat(nameToValue, "nameToValue").values().doesNotContainMixedNulls();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainMixedNulls_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Requirements requirements = new Requirements(scope);
+			Map<String, Object> nameToValue = new HashMap<>();
+			nameToValue.put("first", 1);
+			nameToValue.put("second", null);
+			requirements.requireThat(nameToValue, "nameToValue").values().doesNotContainMixedNulls();
 		}
 	}
 }

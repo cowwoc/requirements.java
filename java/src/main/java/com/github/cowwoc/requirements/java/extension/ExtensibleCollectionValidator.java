@@ -80,7 +80,7 @@ public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
 	S containsExactly(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the actual value contains any of specified elements.
+	 * Ensures that the actual value contains any of the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
@@ -100,7 +100,7 @@ public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
 	S containsAny(Collection<E> expected, String name);
 
 	/**
-	 * Ensures that the actual value contains all of the specified elements.
+	 * Ensures that the actual value contains all the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @return the updated validator
@@ -109,7 +109,7 @@ public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
 	S containsAll(Collection<E> expected);
 
 	/**
-	 * Ensures that the actual value contains all of the specified elements.
+	 * Ensures that the actual value contains all the specified elements.
 	 *
 	 * @param expected the elements that must exist
 	 * @param name     the name of the expected elements
@@ -204,6 +204,13 @@ public interface ExtensibleCollectionValidator<S, C extends Collection<E>, E>
 	 * @return the updated validator
 	 */
 	S doesNotContainDuplicates();
+
+	/**
+	 * Ensures that the actual value does not contain a mix of null and non-null values.
+	 *
+	 * @return the updated validator
+	 */
+	S doesNotContainMixedNulls();
 
 	/**
 	 * Returns a validator for the collection's size.
