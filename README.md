@@ -52,24 +52,25 @@ The contents of the API classes depend on which [modules](wiki/Supported_Librari
 ```java
 import static com.github.cowwoc.requirements.DefaultRequirements.requireThat;
 
-public final class Player
+public final class Credentials
 {
-  public Player(String name, int age)
+  public Credentials(String username, String password)
   {
-    requireThat(name, "name").isNotEmpty();
-    requireThat(age, "age").isBetween(18, 30);
+    this.username = requireThat(username, "username").isTrimmed().isNotEmpty().getActual();
+    this.password = requireThat(password, "password").isTrimmed().length().isBetween(18, 30).getActual();
   }
 }
 ```
 
-Failure messages look like this:
+Failures would trigger the following kind of exceptions:
 
 ```java
-java.lang.NullPointerException: name may not be null
+java.lang.NullPointerException: username may not be null
 
-java.lang.IllegalArgumentException: name may not be empty
+java.lang.IllegalArgumentException: password may not contain leading or trailing whitespace.
+Actual: " Dumbl4dor4 "
 
-java.lang.IllegalArgumentException: age must be in range [18, 30).
+java.lang.IllegalArgumentException: password must contain [18, 30) characters.
 Actual: 15
 ```
 
