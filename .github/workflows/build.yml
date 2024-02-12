@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
 
       - name: Cache Dependencies
         uses: actions/cache@v3
@@ -26,8 +26,6 @@ jobs:
             ~/.m2/repository/*
             !~/.m2/repository/com/github/cowwoc/requirements
           key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.OS }}-maven-
 
       # Maven command-line options:
       # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)

@@ -74,7 +74,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>annotations</artifactId>
+			<artifactId>annotation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.github.java-diff-utils</groupId>
