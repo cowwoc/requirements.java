@@ -25,7 +25,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be negative.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -43,7 +43,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " may not be negative.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -60,7 +60,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be zero.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -88,7 +88,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be positive.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -106,7 +106,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " may not be positive.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -156,7 +156,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be a whole number.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -173,7 +173,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " may not be a whole number.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -190,7 +190,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			name + " must be a well-defined number.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -208,7 +208,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			name + " may not be a well-defined number.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -225,7 +225,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be a finite number.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -242,7 +242,7 @@ public final class NumberMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be an infinite number.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 }

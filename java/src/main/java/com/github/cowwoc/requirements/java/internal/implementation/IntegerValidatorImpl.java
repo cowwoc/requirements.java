@@ -49,7 +49,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	public IntegerValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		Integer value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

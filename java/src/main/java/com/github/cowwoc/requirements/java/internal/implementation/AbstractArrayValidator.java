@@ -147,8 +147,8 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 			{
 				MessageBuilder message = CollectionMessages.containsExactly(scope, this, this.name, value, name,
 						expected, PLURALIZER).
-					addContext(missing, "Missing").
-					addContext(unwanted, "Unwanted");
+					putContext(missing, "Missing").
+					putContext(unwanted, "Unwanted");
 				addIllegalArgumentException(message.toString());
 			}
 		}
@@ -286,7 +286,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 
 			MessageBuilder message = CollectionMessages.containsAll(scope, this, this.name, value, name,
 					expected, PLURALIZER).
-				addContext(missingElements, "Missing");
+				putContext(missingElements, "Missing");
 			addIllegalArgumentException(message.toString());
 		}
 		return self();
@@ -413,7 +413,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 
 			MessageBuilder message = CollectionMessages.doesNotContainAny(scope, this, this.name, value,
 					name, unwanted, PLURALIZER).
-				addContext(unwantedElements, "Unwanted");
+				putContext(unwantedElements, "Unwanted");
 			addIllegalArgumentException(message.toString());
 		}
 		return self();

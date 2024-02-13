@@ -37,9 +37,9 @@ public abstract class AbstractValidator<S> implements Validator<S>
 	/**
 	 * The validator configuration.
 	 */
-	protected Configuration configuration;
+	protected final Configuration configuration;
 	/**
-	 * the name of the value.
+	 * The name of the value.
 	 */
 	protected String name;
 

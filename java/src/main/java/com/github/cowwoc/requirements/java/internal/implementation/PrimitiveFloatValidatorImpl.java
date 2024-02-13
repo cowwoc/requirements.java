@@ -51,7 +51,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	public PrimitiveFloatValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, float value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

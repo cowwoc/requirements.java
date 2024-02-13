@@ -50,7 +50,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	public PrimitiveCharacterValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, char value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

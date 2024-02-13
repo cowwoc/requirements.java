@@ -25,7 +25,7 @@ public final class StringMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			name + " must be empty or contain only white space codepoints.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -42,7 +42,7 @@ public final class StringMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			name + " may not be empty or contain only white space codepoints.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -59,7 +59,7 @@ public final class StringMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			name + " may not contain leading or trailing white space.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 
@@ -76,7 +76,7 @@ public final class StringMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			name + " may not contain leading or trailing white space codepoints.");
 		if (value != null)
-			message.addContext(value, "Actual");
+			message.putContext(value, "Actual");
 		return message;
 	}
 }

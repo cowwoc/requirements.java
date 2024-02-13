@@ -14,7 +14,6 @@ module com.github.cowwoc.requirements.guava
 	requires transitive com.google.common;
 	requires transitive com.github.cowwoc.requirements.annotation;
 	requires transitive com.github.cowwoc.requirements.java;
-	requires org.slf4j;
 
 	exports com.github.cowwoc.requirements.guava;
 	exports com.github.cowwoc.requirements.guava.internal.implementation to com.github.cowwoc.requirements.test;

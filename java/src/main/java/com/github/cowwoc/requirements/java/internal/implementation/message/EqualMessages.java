@@ -64,8 +64,8 @@ public final class EqualMessages
 				//    Actual  : 456
 				return new MessageBuilder(scope, validator,
 					MessageBuilder.quoteName(nameOfValue) + " must be equal to " + nameOfExpected + ".").
-					addContext(expected, nameOfExpected).
-					addContext(value, "Actual");
+					putContext(expected, nameOfExpected).
+					putContext(value, "Actual");
 			}
 			// 3. The actual and expected values are short, and the name of the expected value is unknown:
 			//
@@ -73,7 +73,7 @@ public final class EqualMessages
 			//    Actual: 456
 			return new MessageBuilder(scope, validator,
 				MessageBuilder.quoteName(nameOfValue) + " must be equal to " + expectedAsString + ".").
-				addContext(value, "Actual");
+				putContext(value, "Actual");
 		}
 		if (nameOfExpected == null)
 			nameOfExpected = "Expected";
@@ -87,8 +87,8 @@ public final class EqualMessages
 			//    Actual  : 456
 			return new MessageBuilder(scope, validator,
 				MessageBuilder.quoteName(nameOfValue) + " had an unexpected value.").
-				addContext(expected, nameOfExpected).
-				addContext(value, "Actual");
+				putContext(expected, nameOfExpected).
+				putContext(value, "Actual");
 		}
 
 		// 5. Either actual or expected are long:

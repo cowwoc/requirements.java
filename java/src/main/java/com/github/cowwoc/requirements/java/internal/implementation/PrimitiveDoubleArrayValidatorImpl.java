@@ -53,7 +53,7 @@ public final class PrimitiveDoubleArrayValidatorImpl
 	public PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, double[] value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
 	}
 
 	/**

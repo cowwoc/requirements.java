@@ -47,14 +47,15 @@ public final class MessageBuilder
 	}
 
 	/**
-	 * Appends context to the exception message.
+	 * Appends context to the exception message. If the context previously contained a mapping for the name, the
+	 * old value is replaced.
 	 *
 	 * @param value the value of the context
 	 * @param name  (optional) the name of the context (empty string if absent)
 	 * @return this
 	 * @throws AssertionError if the name is null, empty or contains leading or trailing whitespace, or a colon
 	 */
-	public MessageBuilder addContext(Object value, String name)
+	public MessageBuilder putContext(Object value, String name)
 	{
 		failureContext.put(name, value);
 		return this;

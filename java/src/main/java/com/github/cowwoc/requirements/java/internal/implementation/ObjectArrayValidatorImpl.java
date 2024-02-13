@@ -61,7 +61,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 	public ObjectArrayValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, E[] value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
 	}
 
 	/**
@@ -174,10 +174,10 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 		else if (!Arrays.contains(value, expected))
 		{
 			MessageBuilder messageBuilder = ComparableMessages.getExpectedVsActual(scope, this, this.name,
-				value, "must contain", name, expected);
-			messageBuilder.addContext(value, this.name);
+					value, "must contain", name, expected).
+				putContext(value, this.name);
 			if (name != null)
-				messageBuilder.addContext(expected, name);
+				messageBuilder.putContext(expected, name);
 			addIllegalArgumentException(messageBuilder.toString());
 		}
 		return this;

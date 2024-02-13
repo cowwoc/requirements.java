@@ -55,7 +55,7 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	public InetAddressValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		InetAddress value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

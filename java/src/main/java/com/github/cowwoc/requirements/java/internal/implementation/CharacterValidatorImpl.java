@@ -48,7 +48,7 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	public CharacterValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		Character value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

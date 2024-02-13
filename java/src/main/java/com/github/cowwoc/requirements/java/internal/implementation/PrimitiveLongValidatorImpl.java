@@ -51,7 +51,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	public PrimitiveLongValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, long value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

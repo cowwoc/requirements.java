@@ -48,7 +48,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		Long value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

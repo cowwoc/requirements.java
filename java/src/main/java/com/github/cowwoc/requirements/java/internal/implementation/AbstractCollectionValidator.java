@@ -184,8 +184,8 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 			{
 				MessageBuilder message = CollectionMessages.containsExactly(scope, this, this.name, value, name,
 						expected, pluralizer).
-					addContext(missing, "Missing").
-					addContext(unwanted, "Unwanted");
+					putContext(missing, "Missing").
+					putContext(unwanted, "Unwanted");
 				addIllegalArgumentException(message.toString());
 			}
 		}
@@ -303,7 +303,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 
 			MessageBuilder message = CollectionMessages.containsAll(scope, this, this.name, value, name,
 					expected, pluralizer).
-				addContext(missing, "Missing");
+				putContext(missing, "Missing");
 			addIllegalArgumentException(message.toString());
 		}
 		return self();
@@ -463,7 +463,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 
 			MessageBuilder message = CollectionMessages.doesNotContainAny(scope, this,
 					this.name, value, name, unwanted, pluralizer).
-				addContext(unwantedElements, "Unwanted");
+				putContext(unwantedElements, "Unwanted");
 			addIllegalArgumentException(message.toString());
 		}
 		return self();

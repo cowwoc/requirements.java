@@ -53,7 +53,7 @@ public final class PrimitiveIntegerArrayValidatorImpl
 	public PrimitiveIntegerArrayValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, int[] value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
 	}
 
 	/**

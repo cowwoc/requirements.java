@@ -54,7 +54,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	public ClassValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		Class<T> value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		{
 			MessageBuilder message = new MessageBuilder(scope, this,
 				name + " must be a supertype of " + type + ".").
-				addContext(value, "Actual");
+				putContext(value, "Actual");
 			addIllegalArgumentException(message.toString());
 		}
 		return this;
@@ -101,14 +101,14 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		{
 			MessageBuilder message = new MessageBuilder(scope, this,
 				name + " must be a subtype of " + type + ".").
-				addContext(value, "Actual");
+				putContext(value, "Actual");
 			addIllegalArgumentException(message.toString());
 		}
 		else if (value == null || !type.isAssignableFrom(value))
 		{
 			MessageBuilder message = new MessageBuilder(scope, this,
 				name + " must be a subtype of " + type + ".").
-				addContext(value, "Actual");
+				putContext(value, "Actual");
 			addIllegalArgumentException(message.toString());
 		}
 		return this;

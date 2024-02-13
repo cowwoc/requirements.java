@@ -54,7 +54,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		BigDecimal value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

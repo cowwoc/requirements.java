@@ -55,7 +55,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	public UrlValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		URL value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 			catch (URISyntaxException e)
 			{
 				addFailure(new MessageBuilder(scope, this, name + " is not a valid URI.").
-					addContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+					putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 				return new UriValidatorImpl(scope, this, name, null);
 			}
 		}

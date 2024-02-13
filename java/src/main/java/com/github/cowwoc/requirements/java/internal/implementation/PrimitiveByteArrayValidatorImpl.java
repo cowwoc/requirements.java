@@ -53,7 +53,7 @@ public final class PrimitiveByteArrayValidatorImpl
 	public PrimitiveByteArrayValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, byte[] value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
 	}
 
 	/**

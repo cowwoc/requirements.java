@@ -81,10 +81,6 @@
 			<artifactId>java-diff-utils</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.github.cowwoc.pouch</groupId>
 			<artifactId>core</artifactId>
 		</dependency>

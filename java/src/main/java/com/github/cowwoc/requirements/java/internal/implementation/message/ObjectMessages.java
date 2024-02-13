@@ -61,8 +61,8 @@ public final class ObjectMessages
 		if (valueIsAvailable)
 		{
 			if (value != null)
-				message.addContext(value.getClass(), nameOfValue + ".getClass()");
-			message.addContext(validator.configuration().stringMappers().toString(value), nameOfValue);
+				message.putContext(value.getClass(), nameOfValue + ".getClass()");
+			message.putContext(validator.configuration().stringMappers().toString(value), nameOfValue);
 		}
 		return message;
 	}
@@ -89,8 +89,8 @@ public final class ObjectMessages
 				classOfValue = "null";
 			else
 				classOfValue = value.getClass().getName();
-			message.addContext(classOfValue, nameOfValue + ".getClass()").
-				addContext(value, "Actual");
+			message.putContext(classOfValue, nameOfValue + ".getClass()").
+				putContext(value, "Actual");
 		}
 		return message;
 	}
@@ -107,7 +107,7 @@ public final class ObjectMessages
 	{
 		return new MessageBuilder(scope, validator,
 			MessageBuilder.quoteName(name) + " must be null.").
-			addContext(value, "Actual");
+			putContext(value, "Actual");
 	}
 
 	/**

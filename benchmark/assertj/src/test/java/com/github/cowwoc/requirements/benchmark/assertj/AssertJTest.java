@@ -66,7 +66,11 @@ public class AssertJTest
 	@Benchmark
 	public void requireThatIsSuccessful(Blackhole bh)
 	{
-		bh.consume(assertThat(value).as(name).size().isGreaterThan(3));
+		bh.consume(assertThat(value).as(name + ": %s").size().
+			as("""
+				%s must be greater than %s.
+				Actual: %s
+				Actual.size: %s""", name, 3, value, value.size()).isGreaterThan(3));
 	}
 
 	@Benchmark
@@ -104,13 +108,6 @@ public class AssertJTest
 	{
 		SoftAssertions softly = new SoftAssertions();
 		softly.assertThat(value).as(name).size().isLessThan(3);
-		try
-		{
-			softly.assertAll();
-		}
-		catch (AssertionError e)
-		{
-			bh.consume(e.getMessage());
-		}
+		bh.consume(softly.errorsCollected());
 	}
 }

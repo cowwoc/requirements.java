@@ -12,6 +12,7 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements.java.type.CollectionValidator;
 import com.github.cowwoc.requirements.java.type.MapValidator;
+import com.github.cowwoc.requirements.java.type.PrimitiveUnsignedIntegerValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,8 +43,7 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	public MapValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator,
-		String name, T value)
+	public MapValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name, T value)
 	{
 		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
 	}
@@ -60,10 +60,9 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	public MapValidatorImpl(ApplicationScope scope, Configuration configuration,
-		String name, T value)
+	public MapValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
 	}
 
 	/**
@@ -78,8 +77,8 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private MapValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value, Map<String, Object> context, List<ValidationFailure> failures)
+	private MapValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value,
+		Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -137,7 +136,7 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	}
 
 	@Override
-	public PrimitiveUnsignedIntegerValidatorImpl size()
+	public PrimitiveUnsignedIntegerValidator size()
 	{
 		if (hasFailed())
 		{
@@ -151,10 +150,9 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
 				null, Pluralizer.ENTRY);
 		}
-		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
-			this, name + ".size()", value.size(), value, Pluralizer.ENTRY);
-		newValidator.context(value, name);
-		return newValidator;
+		return new PrimitiveUnsignedIntegerValidatorImpl(scope,
+			this, name + ".size()", value.size(), value, Pluralizer.ENTRY).
+			context(value, name);
 	}
 
 	@Override

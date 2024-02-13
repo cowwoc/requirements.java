@@ -58,7 +58,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	public PathValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, Path value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		{
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " references a non-existent path.").
-					addContext(value, "Actual").
+					putContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -127,8 +127,8 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 				{
 					addIllegalArgumentException(
 						new MessageBuilder(scope, this, name + " must reference a file.").
-							addContext(value.toAbsolutePath(), name).
-							addContext(options, "options").
+							putContext(value.toAbsolutePath(), name).
+							putContext(options, "options").
 							toString());
 				}
 			}
@@ -163,8 +163,8 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 				{
 					addIllegalArgumentException(
 						new MessageBuilder(scope, this, name + " must reference a directory.").
-							addContext(value.toAbsolutePath(), name).
-							addContext(options, "options").
+							putContext(value.toAbsolutePath(), name).
+							putContext(options, "options").
 							toString());
 				}
 			}
@@ -188,15 +188,15 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		{
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " referenced a non-existent file.").
-					addContext(value.toAbsolutePath(), name).
-					addContext(options, "options").
+					putContext(value.toAbsolutePath(), name).
+					putContext(options, "options").
 					toString());
 		}
 		else
 		{
 			addFailure(new MessageBuilder(scope, this, "Failed to read attributes of " + name + ".").
-				addContext(value.toAbsolutePath(), name).
-				addContext(options, "options").
+				putContext(value.toAbsolutePath(), name).
+				putContext(options, "options").
 				toString(), e, IOException::new);
 		}
 	}
@@ -218,7 +218,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		{
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must reference a relative path.").
-					addContext(value.toAbsolutePath(), name).
+					putContext(value.toAbsolutePath(), name).
 					toString());
 		}
 		return this;
@@ -241,7 +241,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		{
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must reference an absolute path.").
-					addContext(value.toAbsolutePath(), name).
+					putContext(value.toAbsolutePath(), name).
 					toString());
 		}
 		return this;

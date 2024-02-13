@@ -73,10 +73,17 @@ public class GcTest
 	}
 
 	@Benchmark
-	public void manualPreconditionCheck()
+	public void manualCheckIsSuccessful(Blackhole bh)
 	{
-		if (value.size() <= 3)
-			throw new IllegalArgumentException("value.size() must be greater than 3");
+		try
+		{
+			if (value.size() <= 3)
+				throw new IllegalArgumentException("value.size() must be greater than 3");
+		}
+		catch (IllegalArgumentException e)
+		{
+			bh.consume(e.getStackTrace());
+		}
 	}
 
 	@Benchmark

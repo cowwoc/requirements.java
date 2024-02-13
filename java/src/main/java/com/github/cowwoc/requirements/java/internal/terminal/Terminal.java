@@ -7,8 +7,6 @@ package com.github.cowwoc.requirements.java.internal.terminal;
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +31,6 @@ public final class Terminal
 		ConcurrentLazyReference.create(this::getSupportedTypesImpl);
 	private final Reference<Boolean> connectedToStdout =
 		ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
-	private final Logger log = LoggerFactory.getLogger(Terminal.class);
 
 	/**
 	 * Creates a new instance.
@@ -94,7 +91,7 @@ public final class Terminal
 				result.add(XTERM_16_COLORS);
 				result.add(XTERM_8_COLORS);
 			}
-			default -> log.error("Unexpected TERM: " + term);
+			default -> System.err.println("Unexpected TERM: " + term);
 		}
 		// There is no reliable way to detect RGB_888_COLORS support but we our best:
 		// https://gist.github.com/XVilka/8346728#true-color-detection
@@ -108,7 +105,6 @@ public final class Terminal
 
 	private Set<TerminalEncoding> getSupportedTypesForWindows(OperatingSystem os)
 	{
-		log.debug("Detected Windows {}", os.version);
 		if (System.getenv("WT_SESSION") == null)
 			return Set.of(NONE);
 		return Set.of(NONE, XTERM_8_COLORS, XTERM_16_COLORS, XTERM_256_COLORS, RGB_888_COLORS);
@@ -128,22 +124,18 @@ public final class Terminal
 	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
-		log.debug("setEncodingImpl({}, {})", encoding, force);
 		boolean connectedToStdout = isConnectedToStdout();
 		if (!connectedToStdout && !force)
 		{
-			log.debug("stdout was redirected. Falling back to {}", NONE);
 			this.encoding.set(NONE);
 			return;
 		}
 		if (!getSupportedTypes().contains(encoding))
 		{
-			log.debug("User forced the use of an unsupported encoding: {}", encoding);
 			this.encoding.set(encoding);
 			return;
 		}
 		this.encoding.set(encoding);
-		log.debug("Setting encoding to {}", encoding);
 	}
 
 	/**
@@ -154,7 +146,6 @@ public final class Terminal
 	public void useBestEncoding()
 	{
 		Set<TerminalEncoding> supportedTypes = getSupportedTypes();
-		log.debug("supportedType: {}", supportedTypes);
 		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
 		sortedTypes.sort(TerminalEncoding.sortByDecreasingRank());
 		setEncodingImpl(sortedTypes.getFirst(), false);
@@ -166,7 +157,6 @@ public final class Terminal
 	public TerminalEncoding getEncoding()
 	{
 		TerminalEncoding result = encoding.get();
-		log.debug("encoding is {}", result);
 		if (result == null)
 		{
 			useBestEncoding();
@@ -206,10 +196,7 @@ public final class Terminal
 		// is redirected (which we don't care about). We try using System.console() and if we need more
 		// information we send a follow-up query to the native library.
 		if (System.console() != null)
-		{
-			log.debug("System.console() != null");
 			return true;
-		}
 		return false;
 	}
 }

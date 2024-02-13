@@ -61,7 +61,7 @@ public final class ListValidatorImpl<E, T extends List<E>>
 	public ListValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		T value, Pluralizer pluralizer)
 	{
-		this(scope, configuration, name, value, pluralizer, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, pluralizer, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

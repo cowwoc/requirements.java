@@ -50,7 +50,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 	public PrimitiveBooleanValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, boolean value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

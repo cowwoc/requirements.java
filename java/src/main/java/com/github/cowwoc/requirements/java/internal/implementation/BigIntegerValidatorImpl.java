@@ -54,7 +54,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	public BigIntegerValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		BigInteger value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

@@ -51,7 +51,7 @@ public final class PrimitiveByteValidatorImpl extends AbstractValidator<Primitiv
 	public PrimitiveByteValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		byte value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

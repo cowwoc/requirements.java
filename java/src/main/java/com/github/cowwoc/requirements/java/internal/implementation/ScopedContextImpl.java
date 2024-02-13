@@ -12,14 +12,15 @@ public final class ScopedContextImpl implements ScopedContext
 {
 	private final ApplicationScope scope;
 	private final Set<String> updatedEntries = new HashSet<>();
-	private final Map<String, Object> nameToOldValue = new HashMap<>();
 	private final Map<String, Object> threadContext;
+	private final Map<String, Object> nameToOldValue;
 
 	public ScopedContextImpl(ApplicationScope scope)
 	{
 		assert scope != null;
 		this.scope = scope;
 		this.threadContext = scope.getThreadContext().get();
+		this.nameToOldValue = HashMap.newHashMap(threadContext.size());
 	}
 
 	@Override

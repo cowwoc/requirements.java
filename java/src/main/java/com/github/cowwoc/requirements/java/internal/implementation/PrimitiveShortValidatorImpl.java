@@ -51,7 +51,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	public PrimitiveShortValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String name, short value)
 	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
 	}
 
 	/**

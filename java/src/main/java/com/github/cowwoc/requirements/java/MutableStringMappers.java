@@ -36,7 +36,7 @@ public final class MutableStringMappers
 	 */
 	public MutableStringMappers()
 	{
-		typeToMapper = HashMap.newHashMap(22);
+		typeToMapper = HashMap.newHashMap(23);
 		typeToMapper.put(Optional.of(boolean.class), o -> String.format("%b", o));
 		typeToMapper.put(Optional.of(byte.class), o -> String.format("%,d", (byte) o));
 		typeToMapper.put(Optional.of(short.class), o -> String.format("%,d", (short) o));

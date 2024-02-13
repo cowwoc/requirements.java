@@ -59,7 +59,7 @@ public final class CollectionValidatorImpl<E, T extends Collection<E>>
 	public CollectionValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		T value, Pluralizer pluralizer)
 	{
-		this(scope, configuration, name, value, pluralizer, new HashMap<>(), new ArrayList<>());
+		this(scope, configuration, name, value, pluralizer, HashMap.newHashMap(4), new ArrayList<>(1));
 	}
 
 	/**
