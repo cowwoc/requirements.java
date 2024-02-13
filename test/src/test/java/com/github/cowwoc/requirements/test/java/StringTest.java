@@ -1011,7 +1011,7 @@ public final class StringTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			String actual = "\\\\";
+			String actual = "\0";
 			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPath();
 		}
 	}

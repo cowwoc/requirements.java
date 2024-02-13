@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
           server-id: maven-central-releases
           # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
           server-username: OSSRH_USERNAME
@@ -41,8 +41,6 @@ jobs:
             ~/.m2/repository/*
             !~/.m2/repository/com/github/cowwoc/requirements
           key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.OS }}-maven-
 
       - name: Configure Git User
         run: |
@@ -72,14 +70,9 @@ jobs:
           echo "STAGING_REPOSITORY_ID=$stagingRepositoryId" >> $GITHUB_OUTPUT
 
   deploy:
-    name: Deploy (${{ matrix.os }})
+    name: Deploy
     needs: open-release
-    runs-on: ${{ matrix.os }}
-    strategy:
-      # Concurrent deploys of the files that are common across platforms may lead to data corruption
-      max-parallel: 1
-      matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -87,7 +80,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
           server-id: maven-central-releases
           # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
           server-username: OSSRH_USERNAME
@@ -102,12 +95,10 @@ jobs:
             ~/.m2/repository/*
             !~/.m2/repository/com/github/cowwoc/requirements
           key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.OS }}-maven-
 
       - name: Deploy to Maven Central
         run: >
-          ./mvnw --batch-mode -V -e -Ddeploy -Dportable -DstagingProfileId=${{ env.STAGING_PROFILE_ID }}
+          ./mvnw --batch-mode -V -e -Ddeploy -DstagingProfileId=${{ env.STAGING_PROFILE_ID }}
           -DstagingRepositoryId=${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}
           deploy
 
@@ -121,7 +112,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
           server-id: maven-central-releases
           # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
           server-username: OSSRH_USERNAME
@@ -136,8 +127,6 @@ jobs:
             ~/.m2/repository/*
             !~/.m2/repository/com/github/cowwoc/requirements
           key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.OS }}-maven-
 
       - name: Close staging repository
         run: >
@@ -158,7 +147,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
           server-id: maven-central-releases
           # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
           server-username: OSSRH_USERNAME
@@ -173,8 +162,6 @@ jobs:
             ~/.m2/repository/*
             !~/.m2/repository/com/github/cowwoc/requirements
           key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.OS }}-maven-
 
       - name: Configure Git User
         run: |
