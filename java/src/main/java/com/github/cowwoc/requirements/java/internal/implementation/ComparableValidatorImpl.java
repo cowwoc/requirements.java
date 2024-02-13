@@ -95,7 +95,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		internalValidator.requireThat(maximumExclusive, "maximumExclusive").isNotNull();
 		return isLessThanImpl(maximumExclusive, name);
@@ -135,7 +135,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		internalValidator.requireThat(maximumInclusive, "maximumInclusive").isNotNull();
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
@@ -170,7 +170,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		internalValidator.requireThat(minimumInclusive, "minimumInclusive").isNotNull();
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
@@ -210,7 +210,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		internalValidator.requireThat(minimumExclusive, "minimumExclusive").isNotNull();
 		return isGreaterThanImpl(minimumExclusive, name);

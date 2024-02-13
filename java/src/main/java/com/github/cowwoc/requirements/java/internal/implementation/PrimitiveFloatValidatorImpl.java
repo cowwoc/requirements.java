@@ -109,7 +109,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	public PrimitiveFloatValidator isEqualTo(float expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 
 		return isEqualToImpl(expected, name);
@@ -142,7 +142,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 		scope.getInternalValidator().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);

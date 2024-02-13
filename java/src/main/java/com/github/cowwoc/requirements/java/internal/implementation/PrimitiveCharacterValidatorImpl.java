@@ -88,7 +88,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	public PrimitiveCharacterValidator isEqualTo(char expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isEqualToImpl(expected, name);
 	}
 
@@ -119,7 +119,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 		scope.getInternalValidator().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);
@@ -145,7 +145,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	public PrimitiveCharacterValidator isLessThan(char maximumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -176,7 +176,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	public PrimitiveCharacterValidator isLessThanOrEqualTo(char maximumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 

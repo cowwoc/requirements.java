@@ -176,7 +176,7 @@ public final class PrimitiveLongArrayValidatorImpl
 	public PrimitiveLongArrayValidatorImpl contains(long expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return containsImpl(expected, name);
 	}
 

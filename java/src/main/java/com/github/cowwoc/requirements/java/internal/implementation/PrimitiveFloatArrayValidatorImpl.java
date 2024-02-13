@@ -112,7 +112,7 @@ public final class PrimitiveFloatArrayValidatorImpl
 	public PrimitiveFloatArrayValidator contains(float expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return containsImpl(expected, name);
 	}
 
@@ -160,7 +160,7 @@ public final class PrimitiveFloatArrayValidatorImpl
 	public PrimitiveFloatArrayValidator doesNotContain(float unwanted, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return doesNotContainImpl(unwanted, name);
 	}
 

@@ -356,7 +356,7 @@ public final class FloatValidatorImpl extends AbstractObjectValidator<FloatValid
 	public FloatValidator isMultipleOf(float factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isMultipleOfImpl(factor, name);
 	}
@@ -391,7 +391,7 @@ public final class FloatValidatorImpl extends AbstractObjectValidator<FloatValid
 	public FloatValidator isNotMultipleOf(float factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isNotMultipleOfImpl(factor, name);
 	}
@@ -426,7 +426,7 @@ public final class FloatValidatorImpl extends AbstractObjectValidator<FloatValid
 	public FloatValidator isLessThan(float maximumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanImpl(maximumExclusive, name);
 	}
@@ -462,7 +462,7 @@ public final class FloatValidatorImpl extends AbstractObjectValidator<FloatValid
 	public FloatValidator isLessThanOrEqualTo(float maximumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
@@ -499,7 +499,7 @@ public final class FloatValidatorImpl extends AbstractObjectValidator<FloatValid
 	public FloatValidator isGreaterThanOrEqualTo(float minimumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
@@ -536,7 +536,7 @@ public final class FloatValidatorImpl extends AbstractObjectValidator<FloatValid
 	public FloatValidator isGreaterThan(float minimumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isGreaterThanImpl(minimumExclusive, name);
 	}

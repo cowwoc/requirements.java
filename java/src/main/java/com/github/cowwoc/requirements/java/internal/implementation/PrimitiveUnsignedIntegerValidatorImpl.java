@@ -154,7 +154,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 		scope.getInternalValidator().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);

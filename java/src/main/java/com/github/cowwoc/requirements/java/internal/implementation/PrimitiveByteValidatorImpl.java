@@ -99,7 +99,7 @@ public final class PrimitiveByteValidatorImpl extends AbstractValidator<Primitiv
 	public PrimitiveByteValidator isEqualTo(byte expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isEqualToImpl(expected, name);
 	}
 
@@ -130,7 +130,7 @@ public final class PrimitiveByteValidatorImpl extends AbstractValidator<Primitiv
 		scope.getInternalValidator().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);
@@ -252,7 +252,7 @@ public final class PrimitiveByteValidatorImpl extends AbstractValidator<Primitiv
 	public PrimitiveByteValidator isMultipleOf(byte factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -281,7 +281,7 @@ public final class PrimitiveByteValidatorImpl extends AbstractValidator<Primitiv
 	public PrimitiveByteValidator isNotMultipleOf(byte factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isNotMultipleOfImpl(factor, name);
 	}
 

@@ -18,6 +18,7 @@ A [fluent API](https://en.m.wikipedia.org/docs/Fluent_interface) for enforcing
 To get started, add this Maven dependency:
 
 ```xml
+
 <dependency>
 	<groupId>com.github.cowwoc.requirements</groupId>
 	<artifactId>java</artifactId>
@@ -33,7 +34,8 @@ The main entry points are:
 * [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#checkIf(T,java.lang.String))
 * [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html)
 
-The first three methods use a global configuration, while `JavaValidators` allows you to create a local configuration.
+The first three methods use a global configuration, while `JavaValidators` allows you to create a local
+configuration.
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
 
@@ -92,13 +94,15 @@ args[0]: "world"
 This library offers the following features:
 
 * [Automatic message generation](docs/Features.md#automatic-message-generation) for validation failures
-* [Diffs provided whenever possible](docs/Features.md#diffs-provided-whenever-possible) to highlight the differences between expected and actual values
+* [Diffs provided whenever possible](docs/Features.md#diffs-provided-whenever-possible) to highlight the
+  differences between expected and actual values
 * [Clean stack-traces](docs/Features.md#clean-stack-traces) that remove unnecessary frames
 * [Zero overhead when assertions are disabled](docs/Features.md#assertion-support) for better performance
-* [Multiple validation failures](docs/Features.md#multiple-validation-failures) that report all the errors at once
+* [Multiple validation failures](docs/Features.md#multiple-validation-failures) that report all the errors at
+  once
 * [Nested validations](docs/Features.md#nested-validations) that allow you to validate complex objects
 * [String diff](docs/Features.md#string-diff) that shows the differences between two strings
-* [Fast... very fast!](docs/Performance.md) compared to other validation libraries
+* [Performant and robust](docs/Performance.md) compared to other validation libraries
 
 ## Getting Started
 
@@ -127,7 +131,8 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/doc
 * Use `checkIf()` to return multiple failures at once.
 * Use `checkIf().elseGetMessages()` to return failures without throwing an exception.
   This is the best-performing approach, ideal for web services.
-* You can omit parameter names, but it is better to include them for clarity of failure messages.
+* To enhance the clarity of failure messages, you should provide parameter names, even though they are
+  optional.
 
 ## Third-party libraries and tools
 

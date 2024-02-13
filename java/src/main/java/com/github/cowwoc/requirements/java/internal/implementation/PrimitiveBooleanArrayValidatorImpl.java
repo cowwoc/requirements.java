@@ -151,7 +151,7 @@ public final class PrimitiveBooleanArrayValidatorImpl
 	public PrimitiveBooleanArrayValidatorImpl contains(boolean expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return containsImpl(expected, name);
 	}
 
@@ -199,7 +199,7 @@ public final class PrimitiveBooleanArrayValidatorImpl
 	public PrimitiveBooleanArrayValidatorImpl doesNotContain(boolean unwanted, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return doesNotContainImpl(unwanted, name);
 	}
 

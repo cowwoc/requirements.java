@@ -223,7 +223,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(factor, "factor").isNotNull();
 		return isMultipleOfImpl(factor, name);
 	}
@@ -260,7 +260,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		internalValidator.requireThat(factor, "factor").isNotNull();
 		return isNotMultipleOfImpl(factor, name);
@@ -296,7 +296,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	public BigIntegerValidator isLessThan(BigInteger maximumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanImpl(maximumExclusive, name);
 	}
@@ -331,7 +331,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	public BigIntegerValidator isLessThanOrEqualTo(BigInteger maximumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -367,7 +367,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	public BigIntegerValidator isGreaterThanOrEqualTo(BigInteger minimumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -403,7 +403,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	public BigIntegerValidator isGreaterThan(BigInteger minimumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

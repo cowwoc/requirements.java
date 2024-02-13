@@ -216,7 +216,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	public ByteValidator isMultipleOf(byte factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isMultipleOfImpl(factor, name);
 	}
@@ -251,7 +251,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	public ByteValidator isNotMultipleOf(byte factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isNotMultipleOfImpl(name, factor);
 	}
@@ -286,7 +286,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	public ByteValidator isLessThan(byte maximumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanImpl(maximumExclusive, name);
 	}
@@ -322,7 +322,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	public ByteValidator isLessThanOrEqualTo(byte maximumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
@@ -359,7 +359,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	public ByteValidator isGreaterThanOrEqualTo(byte minimumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
@@ -396,7 +396,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	public ByteValidator isGreaterThan(byte minimumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isGreaterThanImpl(minimumExclusive, name);
 	}

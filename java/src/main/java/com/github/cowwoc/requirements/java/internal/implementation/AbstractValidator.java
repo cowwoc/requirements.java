@@ -254,7 +254,7 @@ public abstract class AbstractValidator<S> implements Validator<S>
 			throw new NullPointerException("name may not be null");
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		if (value == null)

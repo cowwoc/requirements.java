@@ -99,7 +99,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	public PrimitiveShortValidator isEqualTo(short expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isEqualToImpl(expected, name);
 	}

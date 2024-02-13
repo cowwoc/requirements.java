@@ -73,7 +73,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	public S isSameReferenceAs(Object expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		if (value != expected)
 		{
@@ -87,7 +87,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	public S isNotSameReferenceAs(Object unwanted, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		if (value == unwanted)
 		{
@@ -135,7 +135,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 		scope.getInternalValidator().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		return isEqualToImpl(expected, name);
@@ -169,7 +169,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 		scope.getInternalValidator().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
+			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
 			                                   "Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);

@@ -2,7 +2,7 @@
   * Apache License, Version 2.0:
     * [jcommander](https://jcommander.org)
     * [core](https://github.com/cowwoc/pouch/core/)
-    * [annotations](https://github.com/cowwoc/requirements.java/annotations/)
+    * [annotation](https://github.com/cowwoc/requirements.java/annotation/)
     * [guava](https://github.com/cowwoc/requirements.java/guava/)
     * [java](https://github.com/cowwoc/requirements.java/java/)
     * [FindBugs-jsr305](http://findbugs.sourceforge.net/)

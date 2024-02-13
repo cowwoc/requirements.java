@@ -215,7 +215,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidator isMultipleOf(long factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isMultipleOfImpl(factor, name);
 	}
@@ -250,7 +250,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidator isNotMultipleOf(long factor, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isNotMultipleOfImpl(factor, name);
 	}
@@ -285,7 +285,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidator isLessThan(long maximumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanImpl(maximumExclusive, name);
 	}
@@ -321,7 +321,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidator isLessThanOrEqualTo(long maximumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
@@ -358,7 +358,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidator isGreaterThanOrEqualTo(long minimumInclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
@@ -395,7 +395,7 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	public LongValidator isGreaterThan(long minimumExclusive, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return isGreaterThanImpl(minimumExclusive, name);
 	}

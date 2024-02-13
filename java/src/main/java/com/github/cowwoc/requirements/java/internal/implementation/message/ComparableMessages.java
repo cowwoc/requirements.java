@@ -51,10 +51,18 @@ public final class ComparableMessages
 		message.append(".");
 
 		MessageBuilder messageBuilder = new MessageBuilder(scope, validator, message.toString());
+		if (EqualMessages.isMixedNullity(nameOfOther, value))
+		{
+			// If there is only one contextual parameter, name it "Actual".
+			if (nameOfOther == null)
+				nameOfValue = "Actual";
+			else
+				nameOfOther = "Actual";
+		}
 		if (nameOfOther != null)
 			messageBuilder.addContext(other, nameOfOther);
 		if (value != null)
-			messageBuilder.addContext(value, "Actual");
+			messageBuilder.addContext(value, nameOfValue);
 		return messageBuilder;
 	}
 
@@ -82,10 +90,10 @@ public final class ComparableMessages
 		message.append(".");
 
 		MessageBuilder builder = new MessageBuilder(scope, validator, message.toString());
-		if (value != null)
-			builder.addContext(value, "Actual");
 		if (nameOfOther != null)
 			builder.addContext(other, nameOfOther);
+		if (value != null)
+			builder.addContext(value, nameOfValue);
 		return builder;
 	}
 

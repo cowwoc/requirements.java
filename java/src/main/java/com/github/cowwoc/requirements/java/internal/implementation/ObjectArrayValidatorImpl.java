@@ -153,7 +153,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 	public ObjectArrayValidator<E, E[]> contains(E expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		return containsImpl(expected, name);
 	}
@@ -194,7 +194,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 	{
 		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 
 		internalValidator.requireThat(unwanted, name).isNotNull();
 

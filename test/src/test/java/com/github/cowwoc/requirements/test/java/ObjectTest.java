@@ -52,6 +52,16 @@ public final class ObjectTest
 		}
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void sameNameAsValue()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			List<Integer> actual = List.of(1, 2, 3);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains(2, "actual");
+		}
+	}
+
 	@Test
 	public void isEqualTo()
 	{

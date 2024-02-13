@@ -109,10 +109,10 @@ import java.time.Month;
 
 public class Person
 {
-	public void eatLunch()
-	{
-		assert assumeThat("time", LocalDateTime.now().getHour()).isAfter("noon", 12).elseThrow();
-	}
+  public void eatLunch()
+  {
+    assert assumeThat("time", LocalDateTime.now().getHour()).isAfter("noon", 12).elseThrow();
+  }
 }
 ```
 
@@ -126,38 +126,24 @@ Per https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html:
 String name = "George";
 String province = "Florida";
 List<String> provinces = Arrays.asList("Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba",
-	"British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
+  "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
 
 List<ValidationFailure> failures = new ArrayList<>();
-failures.
+failures.addAll(checkIf(name, "name").length().isBetween(10, 30).elseGetFailures();
+failures.addAll(checkIf(provinces, "provinces").contains(province).elseGetFailures());
 
-addAll(checkIf(name, "name").
-
-length().
-
-isBetween(10,30).
-
-getResult());
-	failures.
-
-addAll(checkIf(province, "province").
-
-isOneOf(provinces).
-
-getResult());
-
-	for(
-ValidationFailure failure:failures)
-	System.out.
-
-println(failure.getMessage());
+for (ValidationFailure failure: failures)
+  System.out.println(failure.getMessage());
 ```
 
 Output will look like:
 
 ```
 name must contain [10, 30) characters.
-province must be one of [Ontario, Quebec, Nova Scotia, New Brunswick, Manitoba, British Columbia, Prince Edward Island, Saskatchewan, Alberta, Newfoundland and Labrador].
+
+"provinces" must contain provide "province".
+province: Florida
+Actual: [Ontario, Quebec, Nova Scotia, New Brunswick, Manitoba, British Columbia, Prince Edward Island, Saskatchewan, Alberta, Newfoundland and Labrador]
 ```
 
 ## Nested validations
@@ -166,8 +152,8 @@ Nested validations facilitate checking multiple properties of a value. For examp
 
 ```java
 Map<String, Integer> nameToAge = new HashMap<>();
-nameToAge.put("Leah",3);
-nameToAge.put("Nathaniel",1);
+nameToAge.put("Leah", 3);
+nameToAge.put("Nathaniel", 1);
 ```
 
 To validate that `nameToAge` has the keys "Leah" and "Nathaniel" and the values 3 and 1, you can write:
@@ -214,11 +200,11 @@ You can get the value after validating or transforming it, e.g.
 ```java
 class Player
 {
-	private final String name;
+  private final String name;
 
-	public Player(String name)
-	{
-		this.name = requireThat(name, "name").strip().isNotEmpty().getValue();
-	}
+  public Player(String name)
+  {
+    this.name = requireThat(name, "name").strip().isNotEmpty().getValue();
+  }
 }
 ```

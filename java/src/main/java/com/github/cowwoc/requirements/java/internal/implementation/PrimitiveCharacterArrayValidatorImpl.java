@@ -98,7 +98,7 @@ public final class PrimitiveCharacterArrayValidatorImpl
 	public PrimitiveCharacterArrayValidator contains(char expected, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return containsImpl(expected, name);
 	}
 
@@ -146,7 +146,7 @@ public final class PrimitiveCharacterArrayValidatorImpl
 	public PrimitiveCharacterArrayValidator doesNotContain(char unwanted, String name)
 	{
 		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "Actual");
+			isNotEqualTo(this.name, "the same name as the value");
 		return doesNotContainImpl(unwanted, name);
 	}
 
