@@ -72,7 +72,7 @@ public final class HelloWorldTest
 Failure messages look like this:
 
 ```
-java.lang.NullPointerException: args may not be null
+java.lang.NullPointerException: "args" may not be null
 
 java.lang.IllegalArgumentException: args.length() must be positive
 Actual: 0
@@ -82,7 +82,7 @@ Actual: "planet"
 
 Multiple failures
 -----------------
-args must be empty.
+"args" must be empty.
 args       : ["world"]
 args.length: 1
 
