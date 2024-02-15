@@ -27,7 +27,7 @@ To get started, add this Maven dependency:
 </dependency>
 ```
 
-`Designed for discovery using your favorite IDE's auto-complete feature.
+Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
 * [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for preconditions
