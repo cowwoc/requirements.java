@@ -11,9 +11,14 @@ import java.util.concurrent.locks.StampedLock;
  */
 public final class ReentrantStampedLock
 {
+	private static void doNotUnlock()
+	{
+	}
+
 	// Excellent overview of StampedLock:
 	// https://www.javaspecialists.eu/talks/pdfs/2014%20JavaLand%20in%20Germany%20-%20%22Java%208%20From%20Smile%20To%20Tears%20-%20Emotional%20StampedLock%22%20by%20Heinz%20Kabutz.pdf
 	private final StampedLock lock = new StampedLock();
+
 	/**
 	 * The stamp associated with the current thread. {@code null} if none.
 	 */
@@ -26,8 +31,31 @@ public final class ReentrantStampedLock
 	{
 	}
 
-	private static void doNotUnlock()
+	/**
+	 * @return true if the caller is holding an optimistic read-lock
+	 */
+	public boolean isOptimisticRead()
 	{
+		Long existingStamp = this.stamp.get();
+		return existingStamp != null && StampedLock.isOptimisticReadStamp(existingStamp);
+	}
+
+	/**
+	 * @return true if the caller is holding a read-lock
+	 */
+	public boolean isRead()
+	{
+		Long existingStamp = this.stamp.get();
+		return existingStamp != null && StampedLock.isReadLockStamp(existingStamp);
+	}
+
+	/**
+	 * @return true if the caller is holding a write-lock
+	 */
+	public boolean isWrite()
+	{
+		Long existingStamp = this.stamp.get();
+		return existingStamp != null && StampedLock.isWriteLockStamp(existingStamp);
 	}
 
 	/**

@@ -1,11 +1,12 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cowwoc.requirements/java/badge.svg)](https://search.maven.org/search?q=g:com.github.cowwoc.requirements)
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
 
-# <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Fluent API for Design Contracts
+# <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
+## Fluent API for Design Contracts
 
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/Changelog.md)
-[![js](https://img.shields.io/badge/other%20languages-js-457FD5.svg)](../../../requirements.js)
+[![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
 A [fluent API](https://en.m.wikipedia.org/docs/Fluent_interface) for enforcing
 [design contracts](https://en.wikipedia.org/docs/Design_by_contract) with
@@ -20,21 +21,21 @@ To get started, add this Maven dependency:
 ```xml
 
 <dependency>
-	<groupId>com.github.cowwoc.requirements</groupId>
-	<artifactId>java</artifactId>
-	<version>9.0.0</version>
+  <groupId>com.github.cowwoc.requirements</groupId>
+  <artifactId>java</artifactId>
+  <version>9.0.0</version>
 </dependency>
 ```
 
-You can learn about the API by using your IDE's auto-complete feature.
+`Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#requireThat(T,java.lang.String))
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#assumeThat(T,java.lang.String))
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#checkIf(T,java.lang.String))
-* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html)
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for preconditions
+* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for postconditions and class invariants
+* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and everything else
+* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html) for custom configurations
 
-The first three methods use a global configuration, while `JavaValidators` allows you to create a local
+The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
 configuration.
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
@@ -48,23 +49,23 @@ import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireT
 
 public final class HelloWorldTest
 {
-	public static void main(String[] args)
-	{
-		// Preconditions
-		requireThat(args, "args").length().isPositive();
+  public static void main(String[] args)
+  {
+    // Preconditions
+    requireThat(args, "args").length().isPositive();
 
-		// Class invariants or method postconditions
-		assert assumeThat("args[0]", args[0]).isEqualTo("world").elseThrow();
+    // Class invariants or method postconditions
+    assert assumeThat("args[0]", args[0]).isEqualTo("world").elseThrow();
 
-		// Return multiple validation failures at once
-		List<String> messages = checkIf(args, "args").isEmpty().
-			and(checkIf("args[0]", args[0]).isEqualTo("planet")).
-			elseGetMessages();
-		StringJoiner joiner = new StringJoiner("\n\n");
-		for (String message : messages)
-			joiner.add(message);
-		System.out.println("Multiple failures\n" + joiner.toString());
-	}
+    // Return multiple validation failures at once
+    List<String> messages = checkIf(args, "args").isEmpty().
+      and(checkIf("args[0]", args[0]).isEqualTo("planet")).
+      elseGetMessages();
+    StringJoiner joiner = new StringJoiner("\n\n");
+    for (String message : messages)
+      joiner.add(message);
+    System.out.println("Multiple failures\n" + joiner.toString());
+  }
 }
 ```
 
@@ -74,10 +75,10 @@ Failure messages look like this:
 java.lang.NullPointerException: args may not be null
 
 java.lang.IllegalArgumentException: args.length() must be positive
-args.length(): 0
+Actual: 0
 
 java.lang.AssertionError: args[0] must be equal to "world"
-args[0]: "planet"
+Actual: "planet"
 
 Multiple failures
 -----------------
@@ -86,7 +87,7 @@ args       : ["world"]
 args.length: 1
 
 args[0] must be equal to "planet".
-args[0]: "world"
+Actual: "world"
 ```
 
 ## Features
@@ -102,7 +103,7 @@ This library offers the following features:
   once
 * [Nested validations](docs/Features.md#nested-validations) that allow you to validate complex objects
 * [String diff](docs/Features.md#string-diff) that shows the differences between two strings
-* [Performant and robust](docs/Performance.md) compared to other validation libraries
+* [Performant and robust](docs/Performance.md)
 
 ## Getting Started
 
@@ -112,15 +113,11 @@ The main entry points you should be aware of are:
 * [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#requireThat(T,java.lang.String))
 * [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#assumeThat(T,java.lang.String))
 * [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#checkIf(T,java.lang.String))
-* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html)
 
-The three static methods share a global configuration.
-`JavaValidators` contains a local configuration, which is useful if you want to use different configuration at
-once.
+The three static methods share the same configuration.
+To create an independent configuration, use [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html).
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
-
-## Performance Tips
 
 ## Best practices
 
@@ -136,7 +133,7 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/doc
 
 ## Third-party libraries and tools
 
-This library supports the following 3rd-party libraries and tools:
+This library supports the following third-party libraries and tools:
 
 * [guava](docs/Supported_Libraries.md)
 * [IntelliJ IDEA](docs/Supported_Tools.md)

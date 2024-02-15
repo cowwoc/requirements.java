@@ -63,7 +63,7 @@ import java.util.function.Function;
 /**
  * Creates validators for the Java API, using the default configuration.
  *
- * @see JavaValidators#newInstance() Creating a new instance with an independent configuration
+ * @see JavaValidators#newInstance() Creating an independent configuration
  */
 public final class DefaultJavaValidators
 {
@@ -2707,6 +2707,7 @@ public final class DefaultJavaValidators
 	 * Returns the configuration used by new validators.
 	 *
 	 * @return the configuration used by new validators
+	 * @see JavaValidators#newInstance() Creating an independent configuration
 	 */
 	@CheckReturnValue
 	public static Configuration configuration()
@@ -2720,6 +2721,7 @@ public final class DefaultJavaValidators
 	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
 	 *
 	 * @return the configuration updater
+	 * @see JavaValidators#newInstance() Creating an independent configuration
 	 */
 	@CheckReturnValue
 	public static ConfigurationUpdater updateConfiguration()

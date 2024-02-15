@@ -11,20 +11,23 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
         * This caused a “split package” error since only one module is allowed to export a package.
     3. Removed the use of native binaries. Colored DIFFs are still supported, but Windows requires the use of
        Windows Terminal (free download in Windows 10, built-in feature in Windows 11).
-    4. Improved performance by reducing memory usage and the frequency of GC runs.
-    5. Renamed `validateThat()` to `checkIf()`.
-    6. Renamed `assertThat()` to `assumeThat()`.
-    7. Added support for the built-in `assert` mechanism.
+    4. Renamed `validateThat()` to `checkIf()`.
+    5. Replaced `assertThat()` with `assert assumeThat().elseThrow()`.
+    6. Added support for the built-in `assert` mechanism.
         - Asserts can be used with any type of validator, but are typically used
           with `assumeThat().orElseThrow()` and `checkIf().orElseThrow()`.
-    8. Use consistent parameter ordering across the entire API: `(value, name)`
+    7. Use consistent parameter ordering across the entire API: `(value, name)`
         - Adding contextual information now looks like this: `requireThat().context(value, name)`
-    9. Added `Validator.apply(Consumer)` to nest validations, and `Validator.and(Validator)` to combine
+    8. Added `Validator.apply(Consumer)` to nest validations, and `Validator.and(Validator)` to combine
        validation results.
-    10. Added support for primitive types to avoid boxing when possible.
-    11. Dropped the `isOneOf()` and `isNotOneOf()` functionality yet again. I haven't figured out a good
+    9. Renamed `Validator.getActual()` to `getValue()`.
+    10. Replaced `isBetweenClosed(min, max)` with `isBetween(min, true, max, true)`.
+    11. Renamed `StringValidator.isInteger()` to `isInt()` and `isCharacter()` to `isChar()`.
+    12. Improved performance by reducing memory usage and the frequency of GC runs.
+    13. Added support for primitive types to avoid boxing when possible.
+    14. Dropped the `isOneOf()` and `isNotOneOf()` functionality yet again. I haven't figured out a good
         design for this yet.
-    12. Added `ObjectValidator.isX()` methods to downcast to known types.
+    15. Added `ObjectValidator.isX()` methods to downcast to known types.
 * Bugfixes:
     * `StringValidator/Verifier.asShort()`, `asInteger()` and `asLong()` were not handling the case where a
       string could not be converted to a number.
