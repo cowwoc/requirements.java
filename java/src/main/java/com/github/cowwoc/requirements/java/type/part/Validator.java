@@ -52,7 +52,7 @@ public interface Validator<S>
 	 * @return an unmodifiable map with the context information
 	 * @see Validators#threadContext()
 	 */
-	Map<String, Object> context();
+	Map<String, Object> getContext();
 
 	/**
 	 * Sets the contextual information for upcoming validations.
@@ -69,7 +69,7 @@ public interface Validator<S>
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	S context(Object value, String name);
+	S putContext(Object value, String name);
 
 	/**
 	 * Executes a nested validation. This facilitates validating multiple properties of the same value. For

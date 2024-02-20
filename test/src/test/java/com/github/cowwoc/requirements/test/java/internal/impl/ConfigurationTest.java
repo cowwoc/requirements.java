@@ -77,7 +77,7 @@ public final class ConfigurationTest
 			{
 				context.put("threadValue", "threadName");
 				String message = validators.checkIf("value", "name").
-					context("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+					putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
 				validators.requireThat(message, "message").contains("validatorName: \"validatorValue\"").
 					contains("threadName   : \"threadValue\"");
 			}
@@ -94,7 +94,7 @@ public final class ConfigurationTest
 			{
 				context.put("threadValue", "collision");
 				String message = validators.checkIf("value", "name").
-					context("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+					putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
 				validators.requireThat(message, "message").contains("collision: \"validatorValue\"").
 					doesNotContain("collision: \"threadValue\"");
 			}
@@ -111,7 +111,7 @@ public final class ConfigurationTest
 			{
 				context.put("threadValue", "name2");
 				String message = validators.checkIf("value", "name").
-					context("validatorValue", "name2").isNull().elseGetMessages().getFirst();
+					putContext("validatorValue", "name2").isNull().elseGetMessages().getFirst();
 				validators.requireThat(message, "message").contains("Actual: \"value\"").
 					doesNotContain("name2: \"validatorValue\"").
 					doesNotContain("name2: \"threadValue\"");

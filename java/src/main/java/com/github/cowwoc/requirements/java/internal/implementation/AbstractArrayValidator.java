@@ -584,7 +584,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 		}
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
 			this, name + ".length", getLength(value), value, PLURALIZER);
-		newValidator.context(value, name);
+		newValidator.putContext(value, name);
 		return newValidator;
 	}
 

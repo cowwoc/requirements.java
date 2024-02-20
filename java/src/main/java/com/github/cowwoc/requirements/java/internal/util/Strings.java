@@ -191,7 +191,7 @@ public final class Strings
 		for (int codepoint : (Iterable<Integer>) text.codePoints()::iterator)
 		{
 			if (codepoint == '\t' || codepoint == '\b' || codepoint == '\n' || codepoint == '\r' ||
-				codepoint == '\f' || codepoint == '\"' || codepoint == '\\')
+			    codepoint == '\f' || codepoint == '\"' || codepoint == '\\')
 			{
 				return true;
 			}
@@ -247,6 +247,6 @@ public final class Strings
 			text += "\\\n";
 
 		return TEXT_BLOCK_DELIMITER + "\n" +
-			text + TEXT_BLOCK_DELIMITER;
+		       text + TEXT_BLOCK_DELIMITER;
 	}
 }

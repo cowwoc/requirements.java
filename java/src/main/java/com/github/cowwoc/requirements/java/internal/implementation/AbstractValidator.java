@@ -242,13 +242,13 @@ public abstract class AbstractValidator<S> implements Validator<S>
 	}
 
 	@Override
-	public Map<String, Object> context()
+	public Map<String, Object> getContext()
 	{
 		return Collections.unmodifiableMap(context);
 	}
 
 	@Override
-	public S context(Object value, String name)
+	public S putContext(Object value, String name)
 	{
 		if (name == null)
 			throw new NullPointerException("name may not be null");

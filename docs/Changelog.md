@@ -1,7 +1,7 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 9.0.0 - 2024/02/08
+## Version 9.0.0 - ?
 
 * Breaking changes:
     1. The library now requires JDK 21.
@@ -17,7 +17,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
         - Asserts can be used with any type of validator, but are typically used
           with `assumeThat().orElseThrow()` and `checkIf().orElseThrow()`.
     7. Use consistent parameter ordering across the entire API: `(value, name)`
-        - Adding contextual information now looks like this: `requireThat().context(value, name)`
+        - Adding contextual information now looks like this: `requireThat().putContext(value, name)`
     8. Added `Validator.apply(Consumer)` to nest validations, and `Validator.and(Validator)` to combine
        validation results.
     9. Renamed `Validator.getActual()` to `getValue()`.

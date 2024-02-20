@@ -72,7 +72,7 @@ public final class TypicalUsageTest
 			try
 			{
 				validators.requireThat(bucket, "bucket").
-					context("SomeContext", "SomeName").
+					putContext("SomeContext", "SomeName").
 					contains(duration);
 			}
 			catch (IllegalArgumentException e)

@@ -1,7 +1,7 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
-import com.github.cowwoc.requirements.java.WrappedCheckedException;
-import com.github.cowwoc.requirements.java.WrappedCheckedException.Task;
+import com.github.cowwoc.pouch.core.WrappedCheckedException;
+import com.github.cowwoc.pouch.core.WrappedCheckedException.Task;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.StampedLock;

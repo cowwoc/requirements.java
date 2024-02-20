@@ -160,7 +160,7 @@ public final class DiffGenerator
 
 	/**
 	 * @param line a line
-	 * @return true if {@code line} only contains padding characters
+	 * @return true if {@code line} is empty once all colors and padding characters are removed
 	 */
 	public boolean isEmpty(String line)
 	{

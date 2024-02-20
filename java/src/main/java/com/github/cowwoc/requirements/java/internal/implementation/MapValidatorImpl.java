@@ -152,7 +152,7 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 		}
 		return new PrimitiveUnsignedIntegerValidatorImpl(scope,
 			this, name + ".size()", value.size(), value, Pluralizer.ENTRY).
-			context(value, name);
+			putContext(value, name);
 	}
 
 	@Override

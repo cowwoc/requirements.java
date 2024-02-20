@@ -56,7 +56,7 @@ public interface Validators
 	 * Password may not be empty
 	 * username: john.smith}
 	 * <p>
-	 * Values set by this method may be overridden by {@link Validator#context()}.
+	 * Values set by this method may be overridden by {@link Validator#putContext(Object, String)}}.
 	 * <p>
 	 * <b>NOTE</b>: This method affects existing and new validators used by current thread. Changes are
 	 * reversed once {@link ScopedContext#close()} is invoked.

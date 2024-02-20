@@ -91,7 +91,7 @@ public final class MessageBuilder
 	private String getValidatorContext()
 	{
 		Map<String, Object> threadContext = scope.getThreadContext().get();
-		Map<String, Object> validatorContext = validator.context();
+		Map<String, Object> validatorContext = validator.getContext();
 
 		Set<String> existingKeys = new HashSet<>(failureContext.keySet());
 		Map<String, Object> section = LinkedHashMap.newLinkedHashMap(failureContext.size() +

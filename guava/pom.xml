@@ -69,7 +69,8 @@
 								</offlineLink>
 							</offlineLinks>
 							<excludePackageNames>
-								com.github.cowwoc.requirements.guava.internal:com.github.cowwoc.requirements.guava.internal.*
+								com.github.cowwoc.requirements.guava.internal,
+								com.github.cowwoc.requirements.guava.internal.*
 							</excludePackageNames>
 						</configuration>
 					</execution>

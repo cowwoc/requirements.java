@@ -50,7 +50,8 @@
 								<option>summary</option>
 							</additionalOptions>
 							<excludePackageNames>
-								com.github.cowwoc.requirements.java.internal:com.github.cowwoc.requirements.java.internal.*
+								com.github.cowwoc.requirements.java.internal,
+								com.github.cowwoc.requirements.java.internal.*
 							</excludePackageNames>
 						</configuration>
 					</execution>

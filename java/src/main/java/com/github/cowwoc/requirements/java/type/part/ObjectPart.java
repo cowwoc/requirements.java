@@ -41,7 +41,7 @@ public interface ObjectPart<S, T>
 	 * This method should be used to validate method arguments that are assigned to class fields but not
 	 * accessed right away (such as constructor and setter arguments). It should also be used to validate any
 	 * method arguments when the validator contains
-	 * {@link Validator#context() additional contextual information}. Otherwise, the default Java handler is
+	 * {@link Validator#getContext() additional contextual information}. Otherwise, the default Java handler is
 	 * preferable because it throws {@code NullPointerException} with a helpful message.
 	 *
 	 * @return this
