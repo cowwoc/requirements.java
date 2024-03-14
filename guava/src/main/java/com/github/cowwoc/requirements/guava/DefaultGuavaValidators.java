@@ -9,11 +9,13 @@ import com.github.cowwoc.requirements.guava.internal.implementation.GuavaValidat
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.ScopedContext;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
+import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
+import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
 import com.github.cowwoc.requirements.java.type.part.Validator;
 import com.google.common.collect.Multimap;
 
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -36,6 +38,8 @@ import java.util.function.Function;
  * of 0, are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
  * without being thrown. The type of thrown exceptions is configurable using
  * {@link ConfigurationUpdater#exceptionTransformer(Function)}.
+ * <p>
+ * <b>Thread Safety</b>: This class is thread-safe.
  *
  * @see GuavaValidators#newInstance() Creating a new instance with an independent configuration
  */
@@ -43,6 +47,7 @@ public final class DefaultGuavaValidators
 {
 	private static final GuavaValidatorsImpl delegate = new GuavaValidatorsImpl(MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
+	private static final ReentrantStampedLock contextLock = new ReentrantStampedLock();
 
 	/**
 	 * Validates the state of a {@code Multimap}. Any exceptions thrown due to validation failure are
@@ -54,7 +59,7 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value, String name)
@@ -86,7 +91,7 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value, String name)
@@ -117,7 +122,7 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> requireThat(T value, String name)
@@ -150,26 +155,56 @@ public final class DefaultGuavaValidators
 	}
 
 	/**
-	 * Returns the contextual information for validations performed by this thread using any validator. The
-	 * contextual information is a map of key-value pairs that can provide more details about validation
-	 * failures. For example, if the message is "Password may not be empty" and the map contains the key-value
-	 * pair {@code {"username": "john.smith"}}, the exception message would be:
+	 * Returns the contextual information for validators created out by this factory. The contextual information
+	 * is a map of key-value pairs that can provide more details about validation failures. For example, if the
+	 * message is "Password may not be empty" and the map contains the key-value pair
+	 * {@code {"username": "john.smith"}}, the exception message would be:
 	 * <p>
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
-	 * <p>
-	 * Values set by this method may be overridden by {@link Validator#putContext(Object, String)}}.
-	 * <p>
-	 * <b>NOTE</b>: This method affects existing and new validators used by current thread. Changes are
-	 * reversed once {@link ScopedContext#close()} is invoked.
 	 *
-	 * @return the thread context updater
+	 * @return an unmodifiable map from each entry's name to its value
 	 */
-	@CheckReturnValue
-	public static ScopedContext threadContext()
+	public static Map<String, Object> getContext()
 	{
-		return delegate.threadContext();
+		return contextLock.optimisticRead(delegate::getContext);
+	}
+
+	/**
+	 * Sets the contextual information for validators created by this factory.
+	 * <p>
+	 * This method adds contextual information to exception messages. The contextual information is stored as
+	 * key-value pairs in a map. Values set by this method may be overridden by
+	 * {@link Validator#putContext(Object, String)}}.
+	 *
+	 * @param value the value of the entry
+	 * @param name  the name of an entry
+	 * @return the underlying validator factory
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	public static GuavaValidators putContext(Object value, String name)
+	{
+		try (CloseableLock unused = contextLock.write())
+		{
+			return delegate.putContext(value, name);
+		}
+	}
+
+	/**
+	 * Removes the contextual information of validators created by this factory.
+	 *
+	 * @param name the parameter name
+	 * @return the underlying validator factory
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 */
+	public static GuavaValidators removeContext(String name)
+	{
+		try (CloseableLock unused = contextLock.write())
+		{
+			return delegate.removeContext(name);
+		}
 	}
 
 	/**

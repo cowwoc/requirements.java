@@ -8,8 +8,6 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Numbe
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.type.PrimitiveFloatValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,42 +15,6 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	implements PrimitiveFloatValidator
 {
 	private final float value;
-
-	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public PrimitiveFloatValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name,
-		float value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public PrimitiveFloatValidatorImpl(ApplicationScope scope, Configuration configuration,
-		String name, float value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
-	}
 
 	/**
 	 * @param scope         the application configuration
@@ -66,8 +28,8 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private PrimitiveFloatValidatorImpl(ApplicationScope scope, Configuration configuration,
-		String name, float value, Map<String, Object> context, List<ValidationFailure> failures)
+	public PrimitiveFloatValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
+		float value, Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, context, failures);
 		this.value = value;
@@ -578,6 +540,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public StringValidatorImpl asString()
 	{
-		return new StringValidatorImpl(scope, this, "String.valueOf(" + name + ")", String.valueOf(value));
+		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
+			String.valueOf(value), context, failures);
 	}
 }

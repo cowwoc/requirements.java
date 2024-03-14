@@ -39,8 +39,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,55 +48,19 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	private static final Pluralizer PLURALIZER = Pluralizer.CHARACTER;
 
 	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public StringValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name,
-		String value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public StringValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		String value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
-	}
-
-	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
 	 * @param value         (optional) the value
 	 * @param context       the contextual information set by the user
 	 * @param failures      the list of validation failures
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private StringValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		String value, Map<String, Object> context, List<ValidationFailure> failures)
+	public StringValidatorImpl(ApplicationScope scope, Configuration configuration, String name, String value,
+		Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -300,13 +262,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a byte.").
 					toString());
-			return new PrimitiveByteValidatorImpl(scope, this, name, (byte) 0);
+			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveByteValidatorImpl(scope, this, name, (byte) 0);
+			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		}
 
 		byte valueAsByte;
@@ -318,9 +280,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a byte.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PrimitiveByteValidatorImpl(scope, this, name, (byte) 0);
+			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		}
-		return new PrimitiveByteValidatorImpl(scope, this, name, valueAsByte);
+		return new PrimitiveByteValidatorImpl(scope, configuration, name, valueAsByte, context, failures);
 	}
 
 	@Override
@@ -331,13 +293,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a short.").
 					toString());
-			return new PrimitiveShortValidatorImpl(scope, this, name, (short) 0);
+			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveShortValidatorImpl(scope, this, name, (short) 0);
+			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		}
 
 		short valueAsShort;
@@ -349,9 +311,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a short.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PrimitiveShortValidatorImpl(scope, this, name, (short) 0);
+			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		}
-		return new PrimitiveShortValidatorImpl(scope, this, name, valueAsShort);
+		return new PrimitiveShortValidatorImpl(scope, configuration, name, valueAsShort, context, failures);
 	}
 
 	@Override
@@ -362,13 +324,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a int.").
 					toString());
-			return new PrimitiveIntegerValidatorImpl(scope, this, name, 0);
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveIntegerValidatorImpl(scope, this, name, 0);
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		}
 
 		int valueAsInt;
@@ -380,9 +342,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a int.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PrimitiveIntegerValidatorImpl(scope, this, name, 0);
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		}
-		return new PrimitiveIntegerValidatorImpl(scope, this, name, valueAsInt);
+		return new PrimitiveIntegerValidatorImpl(scope, configuration, name, valueAsInt, context, failures);
 	}
 
 	@Override
@@ -393,13 +355,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a long.").
 					toString());
-			return new PrimitiveLongValidatorImpl(scope, this, name, 0L);
+			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveLongValidatorImpl(scope, this, name, 0L);
+			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		}
 
 		long valueAsLong;
@@ -411,9 +373,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a long.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PrimitiveLongValidatorImpl(scope, this, name, 0L);
+			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		}
-		return new PrimitiveLongValidatorImpl(scope, this, name, valueAsLong);
+		return new PrimitiveLongValidatorImpl(scope, configuration, name, valueAsLong, context, failures);
 	}
 
 	@Override
@@ -424,13 +386,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a float.").
 					toString());
-			return new PrimitiveFloatValidatorImpl(scope, this, name, 0.0f);
+			return new PrimitiveFloatValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveFloatValidatorImpl(scope, this, name, 0.0f);
+			return new PrimitiveFloatValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		}
 
 		float valueAsFloat;
@@ -442,9 +404,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a float.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PrimitiveFloatValidatorImpl(scope, this, name, 0.0f);
+			return new PrimitiveFloatValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		}
-		return new PrimitiveFloatValidatorImpl(scope, this, name, valueAsFloat);
+		return new PrimitiveFloatValidatorImpl(scope, configuration, name, valueAsFloat, context, failures);
 	}
 
 	@Override
@@ -455,13 +417,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a double.").
 					toString());
-			return new PrimitiveDoubleValidatorImpl(scope, this, name, 0.0f);
+			return new PrimitiveDoubleValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveDoubleValidatorImpl(scope, this, name, 0.0);
+			return new PrimitiveDoubleValidatorImpl(scope, configuration, name, 0.0, context, failures);
 		}
 
 		double valueAsDouble;
@@ -473,9 +435,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a double.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PrimitiveDoubleValidatorImpl(scope, this, name, 0.0);
+			return new PrimitiveDoubleValidatorImpl(scope, configuration, name, 0.0, context, failures);
 		}
-		return new PrimitiveDoubleValidatorImpl(scope, this, name, valueAsDouble);
+		return new PrimitiveDoubleValidatorImpl(scope, configuration, name, valueAsDouble, context, failures);
 	}
 
 	@Override
@@ -486,17 +448,17 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a boolean.").
 					toString());
-			return new PrimitiveBooleanValidatorImpl(scope, this, name, false);
+			return new PrimitiveBooleanValidatorImpl(scope, configuration, name, false, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveBooleanValidatorImpl(scope, this, name, false);
+			return new PrimitiveBooleanValidatorImpl(scope, configuration, name, false, context, failures);
 		}
 
 		boolean valueAsBoolean = Boolean.parseBoolean(value);
-		return new PrimitiveBooleanValidatorImpl(scope, this, name, valueAsBoolean);
+		return new PrimitiveBooleanValidatorImpl(scope, configuration, name, valueAsBoolean, context, failures);
 	}
 
 	@Override
@@ -507,13 +469,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a character.").
 					toString());
-			return new PrimitiveCharacterValidatorImpl(scope, this, name, '-');
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveCharacterValidatorImpl(scope, this, name, '-');
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
 		}
 
 		if (value.length() != 1)
@@ -522,9 +484,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				new MessageBuilder(scope, this, name + " must be convertible to a character.").
 					putContext(value, "Actual").
 					toString());
-			return new PrimitiveCharacterValidatorImpl(scope, this, name, '-');
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
 		}
-		return new PrimitiveCharacterValidatorImpl(scope, this, name, value.charAt(0));
+		return new PrimitiveCharacterValidatorImpl(scope, configuration, name, value.charAt(0), context, failures);
 	}
 
 	@Override
@@ -535,13 +497,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a BigInteger.").
 					toString());
-			return new BigIntegerValidatorImpl(scope, this, name, null);
+			return new BigIntegerValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new BigIntegerValidatorImpl(scope, this, name, null);
+			return new BigIntegerValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		BigInteger valueAsBigInteger;
@@ -553,9 +515,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a BigInteger.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new BigIntegerValidatorImpl(scope, this, name, null);
+			return new BigIntegerValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new BigIntegerValidatorImpl(scope, this, name, valueAsBigInteger);
+		return new BigIntegerValidatorImpl(scope, configuration, name, valueAsBigInteger, context, failures);
 	}
 
 	@Override
@@ -566,13 +528,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a BigDecimal.").
 					toString());
-			return new BigDecimalValidatorImpl(scope, this, name, null);
+			return new BigDecimalValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new BigDecimalValidatorImpl(scope, this, name, null);
+			return new BigDecimalValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		BigDecimal valueAsBigDecimal;
@@ -584,9 +546,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a BigDecimal.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new BigDecimalValidatorImpl(scope, this, name, null);
+			return new BigDecimalValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new BigDecimalValidatorImpl(scope, this, name, valueAsBigDecimal);
+		return new BigDecimalValidatorImpl(scope, configuration, name, valueAsBigDecimal, context, failures);
 	}
 
 	@Override
@@ -597,13 +559,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a Path.").
 					toString());
-			return new PathValidatorImpl(scope, this, name, null);
+			return new PathValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PathValidatorImpl(scope, this, name, null);
+			return new PathValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		Path valueAsPath;
@@ -615,9 +577,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a Path.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new PathValidatorImpl(scope, this, name, null);
+			return new PathValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PathValidatorImpl(scope, this, name, valueAsPath);
+		return new PathValidatorImpl(scope, configuration, name, valueAsPath, context, failures);
 	}
 
 	@Override
@@ -628,25 +590,25 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a URI.").
 					toString());
-			return new UriValidatorImpl(scope, this, name, null);
+			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new UriValidatorImpl(scope, this, name, null);
+			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		try
 		{
 			URI uri = URI.create(value);
-			return new UriValidatorImpl(scope, this, name, uri);
+			return new UriValidatorImpl(scope, configuration, name, uri, context, failures);
 		}
 		catch (IllegalArgumentException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a URI.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new UriValidatorImpl(scope, this, name, null);
+			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}
 
@@ -658,25 +620,25 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a URL.").
 					toString());
-			return new UrlValidatorImpl(scope, this, name, null);
+			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new UrlValidatorImpl(scope, this, name, null);
+			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		try
 		{
 			URL url = URI.create(value).toURL();
-			return new UrlValidatorImpl(scope, this, name, url);
+			return new UrlValidatorImpl(scope, configuration, name, url, context, failures);
 		}
 		catch (MalformedURLException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a URL.").
 				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-			return new UrlValidatorImpl(scope, this, name, null);
+			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}
 
@@ -688,13 +650,13 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to an InetAddress.").
 					toString());
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		else if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		// IPv4 must start with a digit. IPv6 must start with a colon.
@@ -702,7 +664,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addIllegalArgumentException(
 				CollectionMessages.isNotEmpty(scope, this, name).toString());
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		char firstCharacter = value.charAt(0);
@@ -713,7 +675,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 					name + " must contain a valid IP address or hostname format.").
 					putContext(value, "Actual").
 					toString());
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 
 		InetAddress address;
@@ -727,9 +689,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 				name + " must contain a valid IP address or hostname format.").
 				putContext(value, "Actual").
 				toString(), e, IllegalArgumentException::new);
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new InetAddressValidatorImpl(scope, this, name, address);
+		return new InetAddressValidatorImpl(scope, configuration, name, address, context, failures);
 	}
 
 	@Override
@@ -905,17 +867,17 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (hasFailed())
 		{
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".length()",
-				0, null, PLURALIZER);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".length()",
+				0, name, null, PLURALIZER, context, failures);
 		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, name).toString());
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".length()",
-				0, null, PLURALIZER);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".length()",
+				0, name, null, PLURALIZER, context, failures);
 		}
-		return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".length()",
-			value.length(), value, PLURALIZER);
+		return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".length()",
+			value.length(), name, value, PLURALIZER, context, failures);
 	}
 }

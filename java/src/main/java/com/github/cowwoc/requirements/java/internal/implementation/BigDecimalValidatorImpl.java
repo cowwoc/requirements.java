@@ -13,50 +13,12 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.type.BigDecimalValidator;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDecimalValidator, BigDecimal>
 	implements BigDecimalValidator
 {
-	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public BigDecimalValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name,
-		BigDecimal value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		BigDecimal value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
-	}
-
 	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
@@ -69,7 +31,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private BigDecimalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
+	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		BigDecimal value, Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
@@ -531,28 +493,37 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	public PrimitiveUnsignedIntegerValidatorImpl precision()
 	{
 		if (hasFailed())
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".precision()", 0, value, null);
+		{
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".precision()",
+				0, name, value, null, context, failures);
+		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".precision()", 0, value, null);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".precision()",
+				0, name, value, null, context, failures);
 		}
-		return new PrimitiveUnsignedIntegerValidatorImpl(scope, this,
-			name + ".precision()", value.precision(), value, null);
+		return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".precision()",
+			value.precision(), name, value, null, context, failures);
 	}
 
 	@Override
 	public PrimitiveIntegerValidatorImpl scale()
 	{
 		if (hasFailed())
-			return new PrimitiveIntegerValidatorImpl(scope, this, name + ".scale()", 0);
+		{
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name + ".scale()", 0, context,
+				failures);
+		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new PrimitiveIntegerValidatorImpl(scope, this, name + ".scale()", 0);
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name + ".scale()", 0, context,
+				failures);
 		}
-		return new PrimitiveIntegerValidatorImpl(scope, this, name + ".scale()", value.scale());
+		return new PrimitiveIntegerValidatorImpl(scope, configuration, name + ".scale()", value.scale(),
+			context, failures);
 	}
 }

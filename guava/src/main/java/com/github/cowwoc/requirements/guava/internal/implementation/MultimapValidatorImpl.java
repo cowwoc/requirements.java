@@ -8,7 +8,6 @@ import com.github.cowwoc.requirements.guava.MultimapValidator;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.AbstractObjectValidator;
-import com.github.cowwoc.requirements.java.internal.implementation.AbstractValidator;
 import com.github.cowwoc.requirements.java.internal.implementation.CollectionValidatorImpl;
 import com.github.cowwoc.requirements.java.internal.implementation.PrimitiveUnsignedIntegerValidatorImpl;
 import com.github.cowwoc.requirements.java.internal.implementation.message.CollectionMessages;
@@ -19,9 +18,7 @@ import com.github.cowwoc.requirements.java.type.CollectionValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveUnsignedIntegerValidator;
 import com.google.common.collect.Multimap;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,54 +33,19 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	implements MultimapValidator<K, V, T>
 {
 	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public MultimapValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name, T value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public MultimapValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value)
-	{
-		this(scope, configuration, name, value, new HashMap<>(), new ArrayList<>());
-	}
-
-	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
 	 * @param value         (optional) the value
 	 * @param context       the contextual information set by the user
 	 * @param failures      the list of validation failures
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private MultimapValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value, Map<String, Object> context, List<ValidationFailure> failures)
+	public MultimapValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value,
+		Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -145,18 +107,18 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (hasFailed())
 		{
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
-				null, Pluralizer.ENTRY);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", 0,
+				name, null, Pluralizer.ENTRY, context, failures);
 		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
-				null, Pluralizer.ENTRY);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", 0,
+				name, null, Pluralizer.ENTRY, context, failures);
 		}
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
-			this, name + ".size()", value.size(), value, Pluralizer.ENTRY);
+			configuration, name + ".size()", value.size(), name, value, Pluralizer.ENTRY, context, failures);
 		newValidator.putContext(value, name);
 		return newValidator;
 	}
@@ -165,18 +127,24 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	public CollectionValidator<K, Set<K>> keySet()
 	{
 		if (hasFailed() || value == null)
-			return new CollectionValidatorImpl<>(scope, this, name + ".keySet()", null, Pluralizer.KEY);
+		{
+			return new CollectionValidatorImpl<>(scope, configuration,
+				name + ".keySet()", null, Pluralizer.KEY, context, failures);
+		}
 		return new CollectionValidatorImpl<>(scope, configuration, name + ".keySet()", value.keySet(),
-			Pluralizer.KEY);
+			Pluralizer.KEY, context, failures);
 	}
 
 	@Override
 	public CollectionValidator<V, Collection<V>> values()
 	{
 		if (hasFailed() || value == null)
-			return new CollectionValidatorImpl<>(scope, configuration, name + ".values()", null, Pluralizer.VALUE);
+		{
+			return new CollectionValidatorImpl<>(scope, configuration,
+				name + ".values()", null, Pluralizer.VALUE, context, failures);
+		}
 		return new CollectionValidatorImpl<>(scope, configuration, name + ".values()", value.values(),
-			Pluralizer.VALUE);
+			Pluralizer.VALUE, context, failures);
 	}
 
 	@Override
@@ -185,9 +153,9 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 		if (hasFailed() || value == null)
 		{
 			return new CollectionValidatorImpl<>(scope, configuration, name + ".entries()", null,
-				Pluralizer.ENTRY);
+				Pluralizer.ENTRY, context, failures);
 		}
 		return new CollectionValidatorImpl<>(scope, configuration, name + ".entries()", value.entries(),
-			Pluralizer.ENTRY);
+			Pluralizer.ENTRY, context, failures);
 	}
 }

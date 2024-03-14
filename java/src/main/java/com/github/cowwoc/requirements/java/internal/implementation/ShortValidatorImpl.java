@@ -8,49 +8,12 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Objec
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.type.ShortValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValidator, Short>
 	implements ShortValidator
 {
-	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public ShortValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name, Short value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public ShortValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		Short value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
-	}
-
 	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
@@ -63,8 +26,8 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private ShortValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		Short value, Map<String, Object> context, List<ValidationFailure> failures)
+	public ShortValidatorImpl(ApplicationScope scope, Configuration configuration, String name, Short value,
+		Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}

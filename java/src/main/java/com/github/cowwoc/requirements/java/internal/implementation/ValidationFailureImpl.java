@@ -28,8 +28,8 @@ public final class ValidationFailureImpl implements ValidationFailure
 	 * @throws AssertionError if any of the arguments are null. If the exception message contains leading or
 	 *                        trailing whitespace, or is empty.
 	 */
-	public ValidationFailureImpl(Configuration configuration, String message,
-		Throwable cause, ExceptionBuilder exceptionBuilder)
+	public ValidationFailureImpl(Configuration configuration, String message, Throwable cause,
+		ExceptionBuilder exceptionBuilder)
 	{
 		assert (configuration != null);
 		assert (exceptionBuilder != null);

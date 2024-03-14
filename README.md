@@ -30,13 +30,23 @@ To get started, add this Maven dependency:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for preconditions
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for postconditions and class invariants
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and everything else
-* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html) for custom configurations
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
+* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
+* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
+* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/JavaValidators.html) for custom configurations.
 
 The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
 configuration.
+
+`requireThat()` and `assumeThat()` throw an exception on the first validation failure,
+while `checkIf()` collects multiple validation failures before throwing an exception at the end.
+`checkIf()` is more flexible than the others, but its syntax is more verbose.
+
+Exceptions that are thrown in response to invalid method arguments (e.g. `isGreaterThan(null, value)`) are
+thrown by all validators and cannot be configured. Exceptions that are thrown in response to the value
+failing a validation check, e.g. `isGreaterThan(5)` on a value of 0, are thrown by `requireThat()` and
+`assumeThat()` but are recorded by `checkIf()` without being thrown. The type of thrown exceptions is
+configurable using [ConfigurationUpdater#exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
 
@@ -105,31 +115,13 @@ This library offers the following features:
 * [String diff](docs/Features.md#string-diff) that shows the differences between two strings
 * [Performant and robust](docs/Performance.md)
 
-## Getting Started
+## Tips
 
-The best way to learn about the API is using your IDE's auto-complete engine.
-The main entry points you should be aware of are:
-
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#requireThat(T,java.lang.String))
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#assumeThat(T,java.lang.String))
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/DefaultJavaValidators.html#checkIf(T,java.lang.String))
-
-The three static methods share the same configuration.
-To create an independent configuration, use [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/JavaValidators.html).
-
-See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
-
-## Best practices
-
-* Use `requireThat()` to verify the preconditions of public APIs.
-* Use `assert assumeThat()` to verify class invariants, method post-conditions, and the preconditions of
-  private methods.
-  The JVM will remove these checks if assertions are disabled.
-* Use `checkIf()` to return multiple failures at once.
-* Use `checkIf().elseGetMessages()` to return failures without throwing an exception.
-  This is the best-performing approach, ideal for web services.
-* To enhance the clarity of failure messages, you should provide parameter names, even though they are
-  optional.
+* Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, they will get 
+  disabled.
+* Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
+  This is the fastest validation approach, ideal for web services.
+* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
 
 ## Third-party libraries and tools
 

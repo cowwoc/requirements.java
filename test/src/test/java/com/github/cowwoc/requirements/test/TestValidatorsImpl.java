@@ -4,9 +4,8 @@ import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.guava.MultimapValidator;
 import com.github.cowwoc.requirements.guava.internal.implementation.GuavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.ScopedContext;
-import com.github.cowwoc.requirements.java.internal.implementation.AbstractValidators;
 import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.type.BigDecimalValidator;
@@ -59,10 +58,10 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
-public final class TestValidatorsImpl extends AbstractValidators<TestValidators>
-	implements TestValidators
+public final class TestValidatorsImpl implements TestValidators
 {
 	private final JavaValidatorsImpl javaValidators;
 	private final GuavaValidatorsImpl guavaValidators;
@@ -75,15 +74,32 @@ public final class TestValidatorsImpl extends AbstractValidators<TestValidators>
 	 */
 	public TestValidatorsImpl(ApplicationScope scope)
 	{
-		super(scope, Configuration.DEFAULT);
 		this.javaValidators = new JavaValidatorsImpl(scope, Configuration.DEFAULT);
 		this.guavaValidators = new GuavaValidatorsImpl(scope, Configuration.DEFAULT);
 	}
 
-	@Override
-	public void setConfiguration(Configuration configuration)
+	/**
+	 * Creates a copy of an existing validator factory.
+	 *
+	 * @param other the factory to copy
+	 * @throws NullPointerException if {@code other} is null
+	 */
+	public TestValidatorsImpl(TestValidatorsImpl other)
 	{
-		super.setConfiguration(configuration);
+		this(other.javaValidators.getScope());
+		setConfiguration(other.configuration());
+		for (Entry<String, Object> entry : other.getContext().entrySet())
+			putContext(entry.getValue(), entry.getKey());
+	}
+
+	/**
+	 * Set the configuration used by new validators.
+	 *
+	 * @param configuration the updated configuration
+	 * @throws NullPointerException if {@code configuration} is null
+	 */
+	private void setConfiguration(Configuration configuration)
+	{
 		javaValidators.setConfiguration(configuration);
 		guavaValidators.setConfiguration(configuration);
 	}
@@ -1290,15 +1306,48 @@ public final class TestValidatorsImpl extends AbstractValidators<TestValidators>
 
 	@Override
 	@CheckReturnValue
-	public ScopedContext threadContext()
-	{
-		return javaValidators.threadContext();
-	}
-
-	@Override
-	@CheckReturnValue
 	public GlobalConfiguration globalConfiguration()
 	{
 		return javaValidators.globalConfiguration();
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return javaValidators.configuration();
+	}
+
+	@Override
+	public ConfigurationUpdater updateConfiguration()
+	{
+		return javaValidators.updateConfiguration(this::setConfiguration);
+	}
+
+	@Override
+	public TestValidatorsImpl copy()
+	{
+		return new TestValidatorsImpl(this);
+	}
+
+	@Override
+	public Map<String, Object> getContext()
+	{
+		return javaValidators.getContext();
+	}
+
+	@Override
+	public TestValidatorsImpl putContext(Object value, String name)
+	{
+		javaValidators.putContext(value, name);
+		guavaValidators.putContext(value, name);
+		return this;
+	}
+
+	@Override
+	public TestValidatorsImpl removeContext(String name)
+	{
+		javaValidators.removeContext(name);
+		guavaValidators.removeContext(name);
+		return this;
 	}
 }

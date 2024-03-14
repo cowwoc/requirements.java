@@ -47,7 +47,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	 * @param pluralizer    the type of items in the collection
 	 * @param context       the contextual information set by the user
 	 * @param failures      the list of validation failures
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
@@ -613,47 +613,56 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	{
 		if (hasFailed())
 		{
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
-				null, pluralizer);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", 0,
+				name, null, pluralizer, context, failures);
 		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
-				null, pluralizer);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", 0,
+				name, null, pluralizer, context, failures);
 		}
-		return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", value.size(),
-			value, pluralizer);
+		return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", value.size(),
+			name, value, pluralizer, context, failures);
 	}
 
 	@Override
 	public ObjectArrayValidator<E, E[]> asArray(Class<E> type)
 	{
 		if (hasFailed())
-			return new ObjectArrayValidatorImpl<>(scope, this, name + ".asArray()", null);
+		{
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name + ".asArray()", null, context,
+				failures);
+		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new ObjectArrayValidatorImpl<>(scope, this, name + ".asArray()", null);
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name + ".asArray()", null, context,
+				failures);
 		}
 		@SuppressWarnings("unchecked")
 		E[] array = (E[]) Array.newInstance(type, value.size());
-		return new ObjectArrayValidatorImpl<>(scope, this, name, value.toArray(array));
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, value.toArray(array), context, failures);
 	}
 
 	@Override
 	public ListValidator<E, List<E>> asList()
 	{
 		if (hasFailed())
-			return new ListValidatorImpl<>(scope, this, name + ".asList()", null, pluralizer);
+		{
+			return new ListValidatorImpl<>(scope, configuration, name + ".asList()", null, pluralizer, context,
+				failures);
+		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new ListValidatorImpl<>(scope, this, name + ".asList()", null, pluralizer);
+			return new ListValidatorImpl<>(scope, configuration, name + ".asList()", null, pluralizer, context,
+				failures);
 		}
-		return new ListValidatorImpl<>(scope, this, name, new ArrayList<>(value), pluralizer);
+		return new ListValidatorImpl<>(scope, configuration, name, new ArrayList<>(value), pluralizer, context,
+			failures);
 	}
 }

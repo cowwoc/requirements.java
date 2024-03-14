@@ -14,9 +14,7 @@ import com.github.cowwoc.requirements.java.type.CollectionValidator;
 import com.github.cowwoc.requirements.java.type.MapValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveUnsignedIntegerValidator;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,52 +30,18 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	implements MapValidator<K, V, T>
 {
 	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public MapValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name, T value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public MapValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
-	}
-
-	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
 	 * @param value         (optional) the value
 	 * @param context       the contextual information set by the user
 	 * @param failures      the list of validation failures
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private MapValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value,
+	public MapValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value,
 		Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
@@ -140,18 +104,18 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	{
 		if (hasFailed())
 		{
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
-				null, Pluralizer.ENTRY);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", 0,
+				name, null, Pluralizer.ENTRY, context, failures);
 		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".size()", 0,
-				null, Pluralizer.ENTRY);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", 0,
+				name, null, Pluralizer.ENTRY, context, failures);
 		}
-		return new PrimitiveUnsignedIntegerValidatorImpl(scope,
-			this, name + ".size()", value.size(), value, Pluralizer.ENTRY).
+		return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".size()", value.size(),
+			name, value, Pluralizer.ENTRY, context, failures).
 			putContext(value, name);
 	}
 
@@ -159,28 +123,38 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	public CollectionValidator<K, Set<K>> keySet()
 	{
 		if (hasFailed())
-			return new CollectionValidatorImpl<>(scope, this, name + ".keySet()", null, Pluralizer.KEY);
+		{
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".keySet()", null, Pluralizer.KEY,
+				context, failures);
+		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new CollectionValidatorImpl<>(scope, this, name + ".keySet()", null, Pluralizer.KEY);
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".keySet()", null, Pluralizer.KEY,
+				context, failures);
 		}
-		return new CollectionValidatorImpl<>(scope, this, name + ".keySet()", value.keySet(), Pluralizer.KEY);
+		return new CollectionValidatorImpl<>(scope, configuration, name + ".keySet()", value.keySet(),
+			Pluralizer.KEY, context, failures);
 	}
 
 	@Override
 	public CollectionValidator<V, Collection<V>> values()
 	{
 		if (hasFailed())
-			return new CollectionValidatorImpl<>(scope, this, name + ".values()", null, Pluralizer.VALUE);
+		{
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".values()", null, Pluralizer.VALUE,
+				context, failures);
+		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new CollectionValidatorImpl<>(scope, this, name + ".values()", null, Pluralizer.VALUE);
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".values()", null, Pluralizer.VALUE,
+				context, failures);
 		}
-		return new CollectionValidatorImpl<>(scope, this, name + ".values()", value.values(), Pluralizer.VALUE);
+		return new CollectionValidatorImpl<>(scope, configuration, name + ".values()", value.values(),
+			Pluralizer.VALUE, context, failures);
 	}
 
 	@Override
@@ -188,15 +162,17 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 	{
 		if (hasFailed())
 		{
-			return new CollectionValidatorImpl<>(scope, this, name + ".entrySet()", null, Pluralizer.ENTRY);
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".entrySet()", null,
+				Pluralizer.ENTRY, context, failures);
 		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new CollectionValidatorImpl<>(scope, this, name + ".entrySet()", null, Pluralizer.ENTRY);
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".entrySet()", null,
+				Pluralizer.ENTRY, context, failures);
 		}
-		return new CollectionValidatorImpl<>(scope, this, name + ".entrySet()", value.entrySet(),
-			Pluralizer.ENTRY);
+		return new CollectionValidatorImpl<>(scope, configuration, name + ".entrySet()", value.entrySet(),
+			Pluralizer.ENTRY, context, failures);
 	}
 }

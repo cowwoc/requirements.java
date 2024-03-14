@@ -31,9 +31,7 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,41 +42,6 @@ import java.util.Optional;
 public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<ObjectValidator<T>, T>
 	implements ObjectValidator<T>
 {
-	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public ObjectValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name, T value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public ObjectValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
-	}
-
 	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
@@ -91,8 +54,8 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private ObjectValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value, Map<String, Object> context, List<ValidationFailure> failures)
+	public ObjectValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value,
+		Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -107,7 +70,7 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	public PrimitiveByteValidatorImpl isByte()
 	{
 		if (hasFailed())
-			return new PrimitiveByteValidatorImpl(scope, this, name, (byte) 0);
+			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -118,16 +81,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Byte.class).
 					toString());
-			return new PrimitiveByteValidatorImpl(scope, this, name, (byte) 0);
+			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		}
-		return new PrimitiveByteValidatorImpl(scope, this, name, (byte) value);
+		return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveShortValidatorImpl isShort()
 	{
 		if (hasFailed())
-			return new PrimitiveShortValidatorImpl(scope, this, name, (short) 0);
+			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -138,16 +101,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Short.class).
 					toString());
-			return new PrimitiveShortValidatorImpl(scope, this, name, (short) 0);
+			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		}
-		return new PrimitiveShortValidatorImpl(scope, this, name, (short) value);
+		return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveIntegerValidatorImpl isInt()
 	{
 		if (hasFailed())
-			return new PrimitiveIntegerValidatorImpl(scope, this, name, 0);
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -158,16 +121,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Integer.class).
 					toString());
-			return new PrimitiveIntegerValidatorImpl(scope, this, name, 0);
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		}
-		return new PrimitiveIntegerValidatorImpl(scope, this, name, (int) value);
+		return new PrimitiveIntegerValidatorImpl(scope, configuration, name, (int) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveLongValidatorImpl isLong()
 	{
 		if (hasFailed())
-			return new PrimitiveLongValidatorImpl(scope, this, name, 0L);
+			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -178,16 +141,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Long.class).
 					toString());
-			return new PrimitiveLongValidatorImpl(scope, this, name, 0L);
+			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		}
-		return new PrimitiveLongValidatorImpl(scope, this, name, (long) value);
+		return new PrimitiveLongValidatorImpl(scope, configuration, name, (long) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveFloatValidatorImpl isFloat()
 	{
 		if (hasFailed())
-			return new PrimitiveFloatValidatorImpl(scope, this, name, 0.0f);
+			return new PrimitiveFloatValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -198,16 +161,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Float.class).
 					toString());
-			return new PrimitiveFloatValidatorImpl(scope, this, name, 0.0f);
+			return new PrimitiveFloatValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		}
-		return new PrimitiveFloatValidatorImpl(scope, this, name, (float) value);
+		return new PrimitiveFloatValidatorImpl(scope, configuration, name, (float) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveDoubleValidatorImpl isDouble()
 	{
 		if (hasFailed())
-			return new PrimitiveDoubleValidatorImpl(scope, this, name, 0.0);
+			return new PrimitiveDoubleValidatorImpl(scope, configuration, name, 0.0, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -218,16 +181,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Double.class).
 					toString());
-			return new PrimitiveDoubleValidatorImpl(scope, this, name, 0.0);
+			return new PrimitiveDoubleValidatorImpl(scope, configuration, name, 0.0, context, failures);
 		}
-		return new PrimitiveDoubleValidatorImpl(scope, this, name, (double) value);
+		return new PrimitiveDoubleValidatorImpl(scope, configuration, name, (double) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveBooleanValidatorImpl isBoolean()
 	{
 		if (hasFailed())
-			return new PrimitiveBooleanValidatorImpl(scope, this, name, false);
+			return new PrimitiveBooleanValidatorImpl(scope, configuration, name, false, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -238,16 +201,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Boolean.class).
 					toString());
-			return new PrimitiveBooleanValidatorImpl(scope, this, name, false);
+			return new PrimitiveBooleanValidatorImpl(scope, configuration, name, false, context, failures);
 		}
-		return new PrimitiveBooleanValidatorImpl(scope, this, name, (boolean) value);
+		return new PrimitiveBooleanValidatorImpl(scope, configuration, name, (boolean) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveCharacterValidatorImpl isChar()
 	{
 		if (hasFailed())
-			return new PrimitiveCharacterValidatorImpl(scope, this, name, '-');
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -258,16 +221,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Character.class).
 					toString());
-			return new PrimitiveCharacterValidatorImpl(scope, this, name, '-');
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
 		}
-		return new PrimitiveCharacterValidatorImpl(scope, this, name, (char) value);
+		return new PrimitiveCharacterValidatorImpl(scope, configuration, name, (char) value, context, failures);
 	}
 
 	@Override
 	public BigIntegerValidatorImpl isBigInteger()
 	{
 		if (hasFailed())
-			return new BigIntegerValidatorImpl(scope, this, name, null);
+			return new BigIntegerValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -278,16 +241,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, BigInteger.class).
 					toString());
-			return new BigIntegerValidatorImpl(scope, this, name, null);
+			return new BigIntegerValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new BigIntegerValidatorImpl(scope, this, name, (BigInteger) value);
+		return new BigIntegerValidatorImpl(scope, configuration, name, (BigInteger) value, context, failures);
 	}
 
 	@Override
 	public BigDecimalValidatorImpl isBigDecimal()
 	{
 		if (hasFailed())
-			return new BigDecimalValidatorImpl(scope, this, name, null);
+			return new BigDecimalValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -298,16 +261,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, BigDecimal.class).
 					toString());
-			return new BigDecimalValidatorImpl(scope, this, name, null);
+			return new BigDecimalValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new BigDecimalValidatorImpl(scope, this, name, (BigDecimal) value);
+		return new BigDecimalValidatorImpl(scope, configuration, name, (BigDecimal) value, context, failures);
 	}
 
 	@Override
 	public ComparableValidatorImpl<?> isComparable()
 	{
 		if (hasFailed())
-			return new ComparableValidatorImpl<>(scope, this, name, null);
+			return new ComparableValidatorImpl<>(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -318,16 +281,19 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Comparable.class).
 					toString());
-			return new ComparableValidatorImpl<>(scope, this, name, null);
+			return new ComparableValidatorImpl<>(scope, configuration, name, null, context, failures);
 		}
-		return new ComparableValidatorImpl<>(scope, this, name, (BigDecimal) value);
+		return new ComparableValidatorImpl<>(scope, configuration, name, (BigDecimal) value, context, failures);
 	}
 
 	@Override
 	public CollectionValidator<?, ? extends Collection<?>> isCollection()
 	{
 		if (hasFailed())
-			return new CollectionValidatorImpl<>(scope, this, name, null, Pluralizer.ELEMENT);
+		{
+			return new CollectionValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
+				failures);
+		}
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -338,17 +304,21 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Collection.class).
 					toString());
-			return new CollectionValidatorImpl<>(scope, this, name, null, Pluralizer.ELEMENT);
+			return new CollectionValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
+				failures);
 		}
-		return new CollectionValidatorImpl<>(scope, this, name, (Collection<?>) value,
-			Pluralizer.ELEMENT);
+		return new CollectionValidatorImpl<>(scope, configuration, name, (Collection<?>) value,
+			Pluralizer.ELEMENT, context, failures);
 	}
 
 	@Override
 	public ListValidator<?, ? extends List<?>> isList()
 	{
 		if (hasFailed())
-			return new ListValidatorImpl<>(scope, this, name, null, Pluralizer.ELEMENT);
+		{
+			return new ListValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
+				failures);
+		}
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -359,16 +329,18 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, List.class).
 					toString());
-			return new ListValidatorImpl<>(scope, this, name, null, Pluralizer.ELEMENT);
+			return new ListValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
+				failures);
 		}
-		return new ListValidatorImpl<>(scope, this, name, (List<?>) value, Pluralizer.ELEMENT);
+		return new ListValidatorImpl<>(scope, configuration, name, (List<?>) value, Pluralizer.ELEMENT, context,
+			failures);
 	}
 
 	@Override
 	public PrimitiveByteArrayValidator isByteArray()
 	{
 		if (hasFailed())
-			return new PrimitiveByteArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveByteArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -379,16 +351,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, byte[].class).
 					toString());
-			return new PrimitiveByteArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveByteArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveByteArrayValidatorImpl(scope, this, name, (byte[]) value);
+		return new PrimitiveByteArrayValidatorImpl(scope, configuration, name, (byte[]) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveShortArrayValidator isShortArray()
 	{
 		if (hasFailed())
-			return new PrimitiveShortArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveShortArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -399,16 +371,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, short[].class).
 					toString());
-			return new PrimitiveShortArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveShortArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveShortArrayValidatorImpl(scope, this, name, (short[]) value);
+		return new PrimitiveShortArrayValidatorImpl(scope, configuration, name, (short[]) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveIntegerArrayValidator isIntArray()
 	{
 		if (hasFailed())
-			return new PrimitiveIntegerArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveIntegerArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -419,16 +391,17 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, int[].class).
 					toString());
-			return new PrimitiveIntegerArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveIntegerArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveIntegerArrayValidatorImpl(scope, this, name, (int[]) value);
+		return new PrimitiveIntegerArrayValidatorImpl(scope, configuration, name, (int[]) value, context,
+			failures);
 	}
 
 	@Override
 	public PrimitiveLongArrayValidator isLongArray()
 	{
 		if (hasFailed())
-			return new PrimitiveLongArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveLongArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -439,16 +412,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, long[].class).
 					toString());
-			return new PrimitiveLongArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveLongArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveLongArrayValidatorImpl(scope, this, name, (long[]) value);
+		return new PrimitiveLongArrayValidatorImpl(scope, configuration, name, (long[]) value, context, failures);
 	}
 
 	@Override
 	public PrimitiveFloatArrayValidator isFloatArray()
 	{
 		if (hasFailed())
-			return new PrimitiveFloatArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveFloatArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -459,16 +432,17 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, float[].class).
 					toString());
-			return new PrimitiveFloatArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveFloatArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveFloatArrayValidatorImpl(scope, this, name, (float[]) value);
+		return new PrimitiveFloatArrayValidatorImpl(scope, configuration, name, (float[]) value, context,
+			failures);
 	}
 
 	@Override
 	public PrimitiveDoubleArrayValidator isDoubleArray()
 	{
 		if (hasFailed())
-			return new PrimitiveDoubleArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveDoubleArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -479,16 +453,17 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, double[].class).
 					toString());
-			return new PrimitiveDoubleArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveDoubleArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveDoubleArrayValidatorImpl(scope, this, name, (double[]) value);
+		return new PrimitiveDoubleArrayValidatorImpl(scope, configuration, name, (double[]) value, context,
+			failures);
 	}
 
 	@Override
 	public PrimitiveBooleanArrayValidator isBooleanArray()
 	{
 		if (hasFailed())
-			return new PrimitiveBooleanArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveBooleanArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -499,16 +474,17 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, boolean[].class).
 					toString());
-			return new PrimitiveBooleanArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveBooleanArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveBooleanArrayValidatorImpl(scope, this, name, (boolean[]) value);
+		return new PrimitiveBooleanArrayValidatorImpl(scope, configuration, name, (boolean[]) value, context,
+			failures);
 	}
 
 	@Override
 	public PrimitiveCharacterArrayValidator isCharArray()
 	{
 		if (hasFailed())
-			return new PrimitiveCharacterArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveCharacterArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -519,16 +495,17 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, char[].class).
 					toString());
-			return new PrimitiveCharacterArrayValidatorImpl(scope, this, name, null);
+			return new PrimitiveCharacterArrayValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PrimitiveCharacterArrayValidatorImpl(scope, this, name, (char[]) value);
+		return new PrimitiveCharacterArrayValidatorImpl(scope, configuration, name, (char[]) value, context,
+			failures);
 	}
 
 	@Override
 	public ObjectArrayValidator<?, ?> isObjectArray()
 	{
 		if (hasFailed())
-			return new ObjectArrayValidatorImpl<>(scope, this, name, null);
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -539,16 +516,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Object[].class).
 					toString());
-			return new ObjectArrayValidatorImpl<>(scope, this, name, null);
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
 		}
-		return new ObjectArrayValidatorImpl<>(scope, this, name, (Object[]) value);
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, (Object[]) value, context, failures);
 	}
 
 	@Override
 	public MapValidator<?, ?, ? extends Map<?, ?>> isMap()
 	{
 		if (hasFailed())
-			return new MapValidatorImpl<>(scope, this, name, null);
+			return new MapValidatorImpl<>(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -559,16 +536,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Map.class).
 					toString());
-			return new MapValidatorImpl<>(scope, this, name, null);
+			return new MapValidatorImpl<>(scope, configuration, name, null, context, failures);
 		}
-		return new MapValidatorImpl<>(scope, this, name, (Map<?, ?>) value);
+		return new MapValidatorImpl<>(scope, configuration, name, (Map<?, ?>) value, context, failures);
 	}
 
 	@Override
 	public PathValidator isPath()
 	{
 		if (hasFailed())
-			return new PathValidatorImpl(scope, this, name, null);
+			return new PathValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -579,16 +556,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Path.class).
 					toString());
-			return new PathValidatorImpl(scope, this, name, null);
+			return new PathValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new PathValidatorImpl(scope, this, name, (Path) value);
+		return new PathValidatorImpl(scope, configuration, name, (Path) value, context, failures);
 	}
 
 	@Override
 	public StringValidatorImpl isString()
 	{
 		if (hasFailed())
-			return new StringValidatorImpl(scope, this, name, null);
+			return new StringValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -599,16 +576,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, String.class).
 					toString());
-			return new StringValidatorImpl(scope, this, name, null);
+			return new StringValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new StringValidatorImpl(scope, this, name, (String) value);
+		return new StringValidatorImpl(scope, configuration, name, (String) value, context, failures);
 	}
 
 	@Override
 	public UriValidatorImpl isUri()
 	{
 		if (hasFailed())
-			return new UriValidatorImpl(scope, this, name, null);
+			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -619,16 +596,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, URI.class).
 					toString());
-			return new UriValidatorImpl(scope, this, name, null);
+			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new UriValidatorImpl(scope, this, name, (URI) value);
+		return new UriValidatorImpl(scope, configuration, name, (URI) value, context, failures);
 	}
 
 	@Override
 	public UrlValidatorImpl isUrl()
 	{
 		if (hasFailed())
-			return new UrlValidatorImpl(scope, this, name, null);
+			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -639,16 +616,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, URL.class).
 					toString());
-			return new UrlValidatorImpl(scope, this, name, null);
+			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new UrlValidatorImpl(scope, this, name, (URL) value);
+		return new UrlValidatorImpl(scope, configuration, name, (URL) value, context, failures);
 	}
 
 	@Override
 	public ClassValidatorImpl<?> isClass()
 	{
 		if (hasFailed())
-			return new ClassValidatorImpl<>(scope, this, name, null);
+			return new ClassValidatorImpl<>(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -659,16 +636,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Class.class).
 					toString());
-			return new ClassValidatorImpl<>(scope, this, name, null);
+			return new ClassValidatorImpl<>(scope, configuration, name, null, context, failures);
 		}
-		return new ClassValidatorImpl<>(scope, this, name, (Class<?>) value);
+		return new ClassValidatorImpl<>(scope, configuration, name, (Class<?>) value, context, failures);
 	}
 
 	@Override
 	public OptionalValidator<?> isOptional()
 	{
 		if (hasFailed())
-			return new OptionalValidatorImpl<>(scope, this, name, null);
+			return new OptionalValidatorImpl<>(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -679,16 +656,16 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Optional.class).
 					toString());
-			return new OptionalValidatorImpl<>(scope, this, name, null);
+			return new OptionalValidatorImpl<>(scope, configuration, name, null, context, failures);
 		}
-		return new OptionalValidatorImpl<>(scope, this, name, (Optional<?>) value);
+		return new OptionalValidatorImpl<>(scope, configuration, name, (Optional<?>) value, context, failures);
 	}
 
 	@Override
 	public InetAddressValidatorImpl isInetAddress()
 	{
 		if (hasFailed())
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -699,8 +676,8 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, InetAddress.class).
 					toString());
-			return new InetAddressValidatorImpl(scope, this, name, null);
+			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		return new InetAddressValidatorImpl(scope, this, name, (InetAddress) value);
+		return new InetAddressValidatorImpl(scope, configuration, name, (InetAddress) value, context, failures);
 	}
 }

@@ -7,6 +7,8 @@ package com.github.cowwoc.requirements.java;
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
+import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
+import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
 import com.github.cowwoc.requirements.java.type.BigDecimalValidator;
 import com.github.cowwoc.requirements.java.type.BigIntegerValidator;
 import com.github.cowwoc.requirements.java.type.BooleanValidator;
@@ -75,11 +77,13 @@ import java.util.function.Function;
  * {@code checkIf()} is more flexible than the others, but its syntax is more verbose.
  * <p>
  * Exceptions that are thrown in response to invalid method arguments (e.g.
- * {@code isGreaterThan(null, value)} are thrown by all validators and cannot be configured. Exceptions that
+ * {@code isGreaterThan(null, value)}) are thrown by all validators and cannot be configured. Exceptions that
  * are thrown in response to the value failing a validation check, e.g. {@code isGreaterThan(5)} on a value
  * of 0, are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
  * without being thrown. The type of thrown exceptions is configurable using
  * {@link ConfigurationUpdater#exceptionTransformer(Function)}.
+ * <p>
+ * <b>Thread Safety</b>: This class is thread-safe.
  *
  * @see JavaValidators#newInstance() Creating an independent configuration
  */
@@ -87,6 +91,7 @@ public final class DefaultJavaValidators
 {
 	private static final JavaValidatorsImpl delegate = new JavaValidatorsImpl(MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
+	private static final ReentrantStampedLock contextLock = new ReentrantStampedLock();
 
 	private DefaultJavaValidators()
 	{
@@ -2748,26 +2753,56 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Returns the contextual information for validations performed by this thread using any validator. The
-	 * contextual information is a map of key-value pairs that can provide more details about validation
-	 * failures. For example, if the message is "Password may not be empty" and the map contains the key-value
-	 * pair {@code {"username": "john.smith"}}, the exception message would be:
+	 * Returns the contextual information for validators created out by this factory. The contextual information
+	 * is a map of key-value pairs that can provide more details about validation failures. For example, if the
+	 * message is "Password may not be empty" and the map contains the key-value pair
+	 * {@code {"username": "john.smith"}}, the exception message would be:
 	 * <p>
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
-	 * <p>
-	 * Values set by this method may be overridden by {@link Validator#putContext(Object, String)}}.
-	 * <p>
-	 * <b>NOTE</b>: This method affects existing and new validators used by current thread. Changes are
-	 * reversed once {@link ScopedContext#close()} is invoked.
 	 *
-	 * @return the thread context updater
+	 * @return an unmodifiable map from each entry's name to its value
 	 */
-	@CheckReturnValue
-	public static ScopedContext threadContext()
+	public static Map<String, Object> getContext()
 	{
-		return delegate.threadContext();
+		return contextLock.optimisticRead(delegate::getContext);
+	}
+
+	/**
+	 * Sets the contextual information for validators created by this factory.
+	 * <p>
+	 * This method adds contextual information to exception messages. The contextual information is stored as
+	 * key-value pairs in a map. Values set by this method may be overridden by
+	 * {@link Validator#putContext(Object, String)}}.
+	 *
+	 * @param value the value of the entry
+	 * @param name  the name of an entry
+	 * @return the underlying validator factory
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	public static JavaValidators putContext(Object value, String name)
+	{
+		try (CloseableLock unused = contextLock.write())
+		{
+			return delegate.putContext(value, name);
+		}
+	}
+
+	/**
+	 * Removes the contextual information of validators created by this factory.
+	 *
+	 * @param name the parameter name
+	 * @return the underlying validator factory
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 */
+	public static JavaValidators removeContext(String name)
+	{
+		try (CloseableLock unused = contextLock.write())
+		{
+			return delegate.removeContext(name);
+		}
 	}
 
 	/**

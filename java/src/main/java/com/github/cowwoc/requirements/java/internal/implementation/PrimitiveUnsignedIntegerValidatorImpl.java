@@ -20,27 +20,6 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	private final Pluralizer pluralizer;
 
 	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope      the application configuration
-	 * @param validator  the validator
-	 * @param name       the name of the value
-	 * @param value      (optional) the value
-	 * @param parent     the object that contains this value
-	 * @param pluralizer (optional) the type of items in the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public PrimitiveUnsignedIntegerValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator,
-		String name, int value, Object parent, Pluralizer pluralizer)
-	{
-		this(scope, validator.configuration(), name, value, validator.name, parent, pluralizer, validator.context,
-			validator.failures);
-	}
-
-	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param nameOfValue   the name of the value
@@ -50,12 +29,12 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	 * @param pluralizer    (optional) the type of items in the value
 	 * @param context       the contextual information set by the user
 	 * @param failures      the list of validation failures
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if any of the mandatory arguments are null
 	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private PrimitiveUnsignedIntegerValidatorImpl(ApplicationScope scope, Configuration configuration,
+	public PrimitiveUnsignedIntegerValidatorImpl(ApplicationScope scope, Configuration configuration,
 		String nameOfValue, int value, String nameOfParent, Object parent, Pluralizer pluralizer,
 		Map<String, Object> context, List<ValidationFailure> failures)
 	{
@@ -615,6 +594,6 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public StringValidatorImpl asString()
 	{
-		return new StringValidatorImpl(scope, this, name, String.valueOf(value));
+		return new StringValidatorImpl(scope, configuration, name, String.valueOf(value), context, failures);
 	}
 }

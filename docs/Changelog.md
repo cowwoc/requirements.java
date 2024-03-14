@@ -28,6 +28,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
     14. Dropped the `isOneOf()` and `isNotOneOf()` functionality yet again. I haven't figured out a good
         design for this yet.
     15. Added `ObjectValidator.isX()` methods to downcast to known types.
+    16. Replaced thread context with `Validators.getContext()`, `putContext()`, `removeContext()`.
 * Bugfixes:
     * `StringValidator/Verifier.asShort()`, `asInteger()` and `asLong()` were not handling the case where a
       string could not be converted to a number.

@@ -572,18 +572,18 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	{
 		if (hasFailed())
 		{
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".length", 0,
-				value, PLURALIZER);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".length", 0,
+				name, value, PLURALIZER, context, failures);
 		}
 		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
-			return new PrimitiveUnsignedIntegerValidatorImpl(scope, this, name + ".length", 0,
-				value, PLURALIZER);
+			return new PrimitiveUnsignedIntegerValidatorImpl(scope, configuration, name + ".length", 0,
+				name, value, PLURALIZER, context, failures);
 		}
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
-			this, name + ".length", getLength(value), value, PLURALIZER);
+			configuration, name + ".length", getLength(value), name, value, PLURALIZER, context, failures);
 		newValidator.putContext(value, name);
 		return newValidator;
 	}
@@ -592,15 +592,23 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	public CollectionValidatorImpl<E, Collection<E>> asCollection()
 	{
 		if (!failures.isEmpty())
-			return new CollectionValidatorImpl<>(scope, this, name, null, Pluralizer.ELEMENT);
-		return new CollectionValidatorImpl<>(scope, this, name, asList(value), Pluralizer.ELEMENT);
+		{
+			return new CollectionValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
+				failures);
+		}
+		return new CollectionValidatorImpl<>(scope, configuration, name, asList(value), Pluralizer.ELEMENT,
+			context, failures);
 	}
 
 	@Override
 	public ListValidatorImpl<E, List<E>> asList()
 	{
 		if (!failures.isEmpty())
-			return new ListValidatorImpl<>(scope, this, name, null, Pluralizer.ELEMENT);
-		return new ListValidatorImpl<>(scope, this, name, asList(value), Pluralizer.ELEMENT);
+		{
+			return new ListValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
+				failures);
+		}
+		return new ListValidatorImpl<>(scope, configuration, name, asList(value), Pluralizer.ELEMENT, context,
+			failures);
 	}
 }

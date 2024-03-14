@@ -12,9 +12,7 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements.java.type.ListValidator;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,44 +24,6 @@ public final class ListValidatorImpl<E, T extends List<E>>
 	extends AbstractCollectionValidator<ListValidator<E, T>, E, T>
 	implements ListValidator<E, T>
 {
-	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope      the application configuration
-	 * @param validator  the validator
-	 * @param name       the name of the value
-	 * @param value      (optional) the value
-	 * @param pluralizer (optional) the type of items in the collection
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public ListValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name,
-		T value, Pluralizer pluralizer)
-	{
-		this(scope, validator.configuration(), name, value, pluralizer, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @param pluralizer    (optional) the type of items in the collection
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public ListValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value, Pluralizer pluralizer)
-	{
-		this(scope, configuration, name, value, pluralizer, HashMap.newHashMap(2), new ArrayList<>(1));
-	}
-
 	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
@@ -77,8 +37,8 @@ public final class ListValidatorImpl<E, T extends List<E>>
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private ListValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		T value, Pluralizer pluralizer, Map<String, Object> context, List<ValidationFailure> failures)
+	public ListValidatorImpl(ApplicationScope scope, Configuration configuration, String name, T value,
+		Pluralizer pluralizer, Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, pluralizer, context, failures);
 	}

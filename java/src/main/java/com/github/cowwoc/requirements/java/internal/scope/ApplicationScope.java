@@ -7,9 +7,6 @@ package com.github.cowwoc.requirements.java.internal.scope;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 
-import java.util.Map;
-import java.util.function.Supplier;
-
 /**
  * The configuration of an application. A JVM may contain multiple applications.
  */
@@ -19,11 +16,6 @@ public interface ApplicationScope extends JvmScope
 	 * @return the global configuration inherited by all validators
 	 */
 	GlobalConfiguration getGlobalConfiguration();
-
-	/**
-	 * @return the contextual information for validations performed by this thread using any validator
-	 */
-	Supplier<Map<String, Object>> getThreadContext();
 
 	/**
 	 * @return creates validators used to check the arguments of validation methods

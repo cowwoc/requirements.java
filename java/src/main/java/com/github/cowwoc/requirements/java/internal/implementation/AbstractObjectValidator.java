@@ -201,6 +201,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public StringValidatorImpl asString()
 	{
-		return new StringValidatorImpl(scope, this, "String.valueOf(" + name + ")", String.valueOf(value));
+		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
+			String.valueOf(value), context, failures);
 	}
 }

@@ -90,12 +90,10 @@ public final class MessageBuilder
 	 */
 	private String getValidatorContext()
 	{
-		Map<String, Object> threadContext = scope.getThreadContext().get();
 		Map<String, Object> validatorContext = validator.getContext();
 
 		Set<String> existingKeys = new HashSet<>(failureContext.keySet());
 		Map<String, Object> section = LinkedHashMap.newLinkedHashMap(failureContext.size() +
-		                                                             threadContext.size() +
 		                                                             validatorContext.size());
 		section.putAll(failureContext);
 
@@ -104,10 +102,6 @@ public final class MessageBuilder
 			if (existingKeys.add(entry.getKey()))
 				section.put(entry.getKey(), entry.getValue());
 		}
-
-		for (Entry<String, Object> entry : threadContext.entrySet())
-			if (existingKeys.add(entry.getKey()))
-				section.put(entry.getKey(), entry.getValue());
 
 		StringJoiner joiner = new StringJoiner("\n");
 		String sectionAsString = contextToString(List.of(section), true);

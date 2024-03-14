@@ -1,30 +1,38 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
+import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.EqualityMethod;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.MutableStringMappers;
-import com.github.cowwoc.requirements.java.ScopedContext;
 import com.github.cowwoc.requirements.java.StringMappers;
 import com.github.cowwoc.requirements.java.Validators;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
 import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeThat;
+
 /**
- * @param <S> the type of validator that the methods should return
+ * @param <S> the type of the validator factory
  */
-public abstract class AbstractValidators<S> implements Validators
+public abstract class AbstractValidators<S> implements Validators<S>
 {
 	protected final ApplicationScope scope;
+	private final ReentrantStampedLock requireThatLock = new ReentrantStampedLock();
 	private final ReentrantStampedLock assumeThatLock = new ReentrantStampedLock();
 	private final ReentrantStampedLock checkIfLock = new ReentrantStampedLock();
-	private Configuration configuration;
+	private Configuration requireThatConfiguration;
 	private Configuration assumeThatConfiguration;
 	private Configuration checkIfConfiguration;
+	protected final Map<String, Object> context = new HashMap<>();
 
 	/**
 	 * Creates a new instance.
@@ -40,7 +48,15 @@ public abstract class AbstractValidators<S> implements Validators
 		if (configuration == null)
 			throw new NullPointerException("configuration may not be null");
 		this.scope = scope;
-		this.configuration = configuration;
+		setConfiguration(configuration);
+	}
+
+	/**
+	 * @return the application configuration
+	 */
+	public ApplicationScope getScope()
+	{
+		return scope;
 	}
 
 	/**
@@ -72,44 +88,7 @@ public abstract class AbstractValidators<S> implements Validators
 	@Override
 	public Configuration configuration()
 	{
-		return configuration;
-	}
-
-	@Override
-	public ConfigurationUpdater updateConfiguration()
-	{
-		return new UpdatableConfigurationImpl();
-	}
-
-	/**
-	 * Set the configuration used by new validators.
-	 *
-	 * @param configuration the updated configuration
-	 * @throws NullPointerException if {@code configuration} is null
-	 */
-	public void setConfiguration(Configuration configuration)
-	{
-		if (configuration == null)
-			throw new NullPointerException("configuration may not be null");
-		this.configuration = configuration;
-		try (CloseableLock unused = assumeThatLock.write())
-		{
-			assumeThatConfiguration = null;
-		}
-		try (CloseableLock unused = checkIfLock.write())
-		{
-			checkIfConfiguration = null;
-		}
-	}
-
-	/**
-	 * Returns the configuration for {@code requireThat()} factory methods.
-	 *
-	 * @return the configuration for {@code requireThat()} factory methods
-	 */
-	protected Configuration getRequireThatConfiguration()
-	{
-		return configuration();
+		return requireThatLock.optimisticRead(() -> this.requireThatConfiguration);
 	}
 
 	/**
@@ -119,16 +98,7 @@ public abstract class AbstractValidators<S> implements Validators
 	 */
 	protected Configuration getAssumeThatConfiguration()
 	{
-		Configuration assumeThatConfiguration = assumeThatLock.optimisticRead(() ->
-			this.assumeThatConfiguration);
-		if (assumeThatConfiguration != null)
-			return assumeThatConfiguration;
-		try (CloseableLock unused = assumeThatLock.write())
-		{
-			this.assumeThatConfiguration = assumeThatConfiguration = MutableConfiguration.from(configuration()).
-				exceptionTransformer(convertToAssertionError()).toImmutable();
-		}
-		return assumeThatConfiguration;
+		return assumeThatLock.optimisticRead(() -> this.assumeThatConfiguration);
 	}
 
 	/**
@@ -138,22 +108,71 @@ public abstract class AbstractValidators<S> implements Validators
 	 */
 	protected Configuration getCheckIfConfiguration()
 	{
-		Configuration checkIfConfiguration = checkIfLock.optimisticRead(() ->
-			this.checkIfConfiguration);
-		if (checkIfConfiguration != null)
-			return checkIfConfiguration;
-		try (CloseableLock unused = checkIfLock.write())
-		{
-			this.checkIfConfiguration = checkIfConfiguration = MutableConfiguration.from(configuration()).
-				throwOnFailure(false).toImmutable();
-		}
-		return checkIfConfiguration;
+		return checkIfLock.optimisticRead(() -> this.checkIfConfiguration);
 	}
 
 	@Override
-	public ScopedContext threadContext()
+	public ConfigurationUpdater updateConfiguration()
 	{
-		return new ScopedContextImpl(scope);
+		return updateConfiguration(this::setConfiguration);
+	}
+
+	/**
+	 * Updates the configuration used by new validators.
+	 * <p>
+	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
+	 *
+	 * @param setConfiguration a method that sets the validator factory's configuration
+	 * @return the configuration updater
+	 * @throws NullPointerException if {@code setConfiguration} is null
+	 */
+	@CheckReturnValue
+	public ConfigurationUpdater updateConfiguration(Consumer<Configuration> setConfiguration)
+	{
+		return new UpdatableConfigurationImpl(setConfiguration);
+	}
+
+	/**
+	 * Set the configuration used by new validators.
+	 *
+	 * @param configuration the updated configuration
+	 * @throws NullPointerException if {@code configuration} is null
+	 */
+	public final void setConfiguration(Configuration configuration)
+	{
+		if (configuration == null)
+			throw new NullPointerException("configuration may not be null");
+		try (CloseableLock unused = requireThatLock.write())
+		{
+			this.requireThatConfiguration = configuration;
+		}
+		try (CloseableLock unused = assumeThatLock.write())
+		{
+			this.assumeThatConfiguration = MutableConfiguration.from(configuration).
+				exceptionTransformer(convertToAssertionError()).toImmutable();
+		}
+		try (CloseableLock unused = checkIfLock.write())
+		{
+			this.checkIfConfiguration = MutableConfiguration.from(configuration).
+				throwOnFailure(false).toImmutable();
+		}
+	}
+
+	/**
+	 * Returns the contextual information for validators created out by this factory. The contextual information
+	 * is a map of key-value pairs that can provide more details about validation failures. For example, if the
+	 * message is "Password may not be empty" and the map contains the key-value pair
+	 * {@code {"username": "john.smith"}}, the exception message would be:
+	 * <p>
+	 * {@snippet lang = output:
+	 * Password may not be empty
+	 * username: john.smith}
+	 *
+	 * @return an unmodifiable map from each entry's name to its value
+	 */
+	public Map<String, Object> getContext()
+	{
+		return Collections.unmodifiableMap(context);
 	}
 
 	@Override
@@ -169,6 +188,7 @@ public abstract class AbstractValidators<S> implements Validators
 	{
 		// REMINDER: Per https://shipilev.net/blog/2014/safe-public-construction/ section
 		// "A final field was written" objects are safe for publication if they contain at least one final field.
+		private final Consumer<Configuration> setConfiguration;
 		private final MutableStringMappers mutableStringMappers;
 		private boolean cleanStackTrace;
 		private boolean includeDiff;
@@ -180,9 +200,15 @@ public abstract class AbstractValidators<S> implements Validators
 
 		/**
 		 * Creates a new configuration updater.
+		 *
+		 * @param setConfiguration a method that sets the validator factory's configuration
+		 * @throws NullPointerException if {@code setConfiguration} is null
 		 */
-		private UpdatableConfigurationImpl()
+		private UpdatableConfigurationImpl(Consumer<Configuration> setConfiguration)
 		{
+			assert assumeThat(setConfiguration, "setConfiguration").isNotNull().elseThrow();
+			this.setConfiguration = setConfiguration;
+
 			Configuration configuration = AbstractValidators.this.configuration();
 			this.cleanStackTrace = configuration.cleanStackTrace();
 			this.includeDiff = configuration.includeDiff();
@@ -353,7 +379,7 @@ public abstract class AbstractValidators<S> implements Validators
 			changed |= !immutableStringMappers.equals(oldConfiguration.stringMappers());
 			if (!changed)
 				return;
-			setConfiguration(new Configuration(cleanStackTrace, includeDiff,
+			this.setConfiguration.accept(new Configuration(cleanStackTrace, includeDiff,
 				equalityMethod, immutableStringMappers, lazyExceptions, oldConfiguration.throwOnFailure(),
 				exceptionTransformer));
 		}

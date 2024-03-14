@@ -12,10 +12,6 @@ import com.github.cowwoc.requirements.java.internal.implementation.JavaValidator
 import com.github.cowwoc.requirements.java.internal.implementation.MutableConfiguration;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 /**
  * ApplicationScope for the main and test codebases.
  */
@@ -26,7 +22,6 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	 * The global configuration.
 	 */
 	private final GlobalConfiguration globalConfiguration;
-	private final ThreadLocal<Map<String, Object>> threadConfiguration = ThreadLocal.withInitial(HashMap::new);
 	@SuppressWarnings("this-escape")
 	private final Reference<JavaValidatorsImpl> internalValidator = ConcurrentLazyReference.create(() ->
 		new JavaValidatorsImpl(this, MutableConfiguration.from(Configuration.DEFAULT).cleanStackTrace(false).
@@ -63,11 +58,5 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	public JavaValidatorsImpl getInternalValidator()
 	{
 		return internalValidator.getValue();
-	}
-
-	@Override
-	public Supplier<Map<String, Object>> getThreadContext()
-	{
-		return threadConfiguration::get;
 	}
 }

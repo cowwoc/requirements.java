@@ -24,8 +24,8 @@ import com.github.cowwoc.requirements.java.type.part.Validator;
  * scenarios 1 and 2. For scenario 3, the exception is available via
  * {@link Validator#elseGetException() validator.elseGetException()}}.
  */
-public interface TestValidators extends Validators, JavaRequireThat, JavaAssumeThat, JavaCheckIf,
-	GuavaRequireThat, GuavaAssumeThat, GuavaCheckIf
+public interface TestValidators
+	extends Validators<TestValidators>, JavaRequireThat, JavaAssumeThat, JavaCheckIf, GuavaRequireThat, GuavaAssumeThat, GuavaCheckIf
 {
 	/**
 	 * Creates a validator factory with a custom configuration.

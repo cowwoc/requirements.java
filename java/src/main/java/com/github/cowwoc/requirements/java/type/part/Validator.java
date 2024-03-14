@@ -49,8 +49,8 @@ public interface Validator<S>
 	 * Password may not be empty
 	 * username: john.smith}
 	 *
-	 * @return an unmodifiable map with the context information
-	 * @see Validators#threadContext()
+	 * @return an unmodifiable map from each entry's name to its value
+	 * @see Validators#getContext()
 	 */
 	Map<String, Object> getContext();
 
@@ -59,7 +59,7 @@ public interface Validator<S>
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method override any values that are set using
-	 * {@link Validators#threadContext()}.
+	 * {@link Validators#putContext(Object, String)}.
 	 * <p>
 	 * There is no way to remove contextual information from a validator. Thread-level contextual information is
 	 * removed automatically.

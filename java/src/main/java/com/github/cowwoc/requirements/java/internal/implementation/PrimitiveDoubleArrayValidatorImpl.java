@@ -8,9 +8,7 @@ import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Arrays;
 import com.github.cowwoc.requirements.java.type.PrimitiveDoubleArrayValidator;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,42 +18,6 @@ public final class PrimitiveDoubleArrayValidatorImpl
 	extends AbstractArrayValidator<PrimitiveDoubleArrayValidator, Double, double[]>
 	implements PrimitiveDoubleArrayValidator
 {
-	/**
-	 * Creates a new validator as a result of a validation.
-	 *
-	 * @param scope     the application configuration
-	 * @param validator the validator
-	 * @param name      the name of the value
-	 * @param value     (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator,
-		String name, double[] value)
-	{
-		this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	}
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param scope         the application configuration
-	 * @param configuration the validator configuration
-	 * @param name          the name of the value
-	 * @param value         (optional) the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	 *                                  leading or trailing whitespace, or is empty.
-	 */
-	public PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, Configuration configuration,
-		String name, double[] value)
-	{
-		this(scope, configuration, name, value, HashMap.newHashMap(4), new ArrayList<>(1));
-	}
-
 	/**
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
@@ -68,8 +30,8 @@ public final class PrimitiveDoubleArrayValidatorImpl
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
-	private PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, Configuration configuration,
-		String name, double[] value, Map<String, Object> context, List<ValidationFailure> failures)
+	public PrimitiveDoubleArrayValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
+		double[] value, Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}

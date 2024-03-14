@@ -12,50 +12,12 @@
  import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
  import com.github.cowwoc.requirements.java.type.DoubleValidator;
 
- import java.util.ArrayList;
- import java.util.HashMap;
  import java.util.List;
  import java.util.Map;
 
  public final class DoubleValidatorImpl extends AbstractObjectValidator<DoubleValidator, Double>
 	 implements DoubleValidator
  {
-	 /**
-	  * Creates a new validator as a result of a validation.
-	  *
-	  * @param scope     the application configuration
-	  * @param validator the validator
-	  * @param name      the name of the value
-	  * @param value     (optional) the value
-	  * @throws NullPointerException     if {@code name} is null
-	  * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	  * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	  *                                  leading or trailing whitespace, or is empty.
-	  */
-	 public DoubleValidatorImpl(ApplicationScope scope, AbstractValidator<?> validator, String name,
-		 Double value)
-	 {
-		 this(scope, validator.configuration(), name, value, validator.context, validator.failures);
-	 }
-
-	 /**
-	  * Creates a new validator.
-	  *
-	  * @param scope         the application configuration
-	  * @param configuration the validator configuration
-	  * @param name          the name of the value
-	  * @param value         (optional) the value
-	  * @throws NullPointerException     if {@code name} is null
-	  * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
-	  * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
-	  *                                  leading or trailing whitespace, or is empty.
-	  */
-	 public DoubleValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		 Double value)
-	 {
-		 this(scope, configuration, name, value, HashMap.newHashMap(2), new ArrayList<>(1));
-	 }
-
 	 /**
 	  * @param scope         the application configuration
 	  * @param configuration the validator configuration
@@ -68,7 +30,7 @@
 	  * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	  *                                  leading or trailing whitespace, or is empty.
 	  */
-	 private DoubleValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
+	 public DoubleValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		 Double value, Map<String, Object> context, List<ValidationFailure> failures)
 	 {
 		 super(scope, configuration, name, value, context, failures);

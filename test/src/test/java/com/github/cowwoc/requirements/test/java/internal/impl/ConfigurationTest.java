@@ -6,12 +6,12 @@ package com.github.cowwoc.requirements.test.java.internal.impl;
 
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
-import com.github.cowwoc.requirements.java.ScopedContext;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
+import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
 import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class ConfigurationTest
@@ -68,36 +68,84 @@ public final class ConfigurationTest
 	}
 
 	@Test
-	public void threadConfiguration()
+	public void factorySeparateContext()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
-			try (ScopedContext context = validators.threadContext())
-			{
-				context.put("threadValue", "threadName");
-				String message = validators.checkIf("value", "name").
-					putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
-				validators.requireThat(message, "message").contains("validatorName: \"validatorValue\"").
-					contains("threadName   : \"threadValue\"");
-			}
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+
+			TestValidatorsImpl factory2 = factory1.copy();
+			factory2.putContext("factoryValue", "factoryName");
+
+			String message1 = factory1.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+			String message2 = factory2.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+
+			requireThat(message1, "message1").contains("validatorName: \"validatorValue\"").
+				doesNotContain("factoryName   : \"factoryValue\"");
+			requireThat(message2, "message2").contains("validatorName: \"validatorValue\"").
+				contains("factoryName  : \"factoryValue\"");
 		}
 	}
 
 	@Test
-	public void validatorOverridesThreadContext()
+	public void factoryInheritedContext()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
-			try (ScopedContext context = validators.threadContext())
-			{
-				context.put("threadValue", "collision");
-				String message = validators.checkIf("value", "name").
-					putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
-				validators.requireThat(message, "message").contains("collision: \"validatorValue\"").
-					doesNotContain("collision: \"threadValue\"");
-			}
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+			factory1.putContext("factoryValue", "factoryName");
+
+			TestValidatorsImpl factory2 = factory1.copy();
+			String message = factory2.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+
+			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
+				contains("factoryName  : \"factoryValue\"");
+		}
+	}
+
+	/**
+	 * Ensure that the validator context is separate from the factory context.
+	 */
+	@Test
+	public void validatorContextSeparateFromFactory()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidatorsImpl factory = new TestValidatorsImpl(scope);
+
+			String message = factory.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+
+			// Ensure that this does not affect pre-existing validators
+			factory.putContext("factoryValue", "factoryName");
+
+			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
+				doesNotContain("factoryName  : \"factoryValue\"");
+		}
+	}
+
+	@Test
+	public void validatorOverridesFactoryContext()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+			factory1.putContext("factoryValue", "collision");
+
+			TestValidatorsImpl factory2 = factory1.copy();
+
+			String message1 = factory1.checkIf("value", "name").
+				putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+			String message2 = factory2.checkIf("value", "name").
+				putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+
+			requireThat(message1, "message1").contains("collision: \"validatorValue\"").
+				doesNotContain("collision: \"factoryValue\"");
+			requireThat(message2, "message2").contains("collision: \"validatorValue\"").
+				doesNotContain("collision: \"factoryValue\"");
 		}
 	}
 
@@ -107,15 +155,13 @@ public final class ConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
-			try (ScopedContext context = validators.threadContext())
-			{
-				context.put("threadValue", "name2");
-				String message = validators.checkIf("value", "name").
-					putContext("validatorValue", "name2").isNull().elseGetMessages().getFirst();
-				validators.requireThat(message, "message").contains("Actual: \"value\"").
-					doesNotContain("name2: \"validatorValue\"").
-					doesNotContain("name2: \"threadValue\"");
-			}
+			validators.putContext("factoryValue", "name2");
+
+			String message = validators.checkIf("value", "name").
+				putContext("validatorValue", "name2").isNull().elseGetMessages().getFirst();
+			validators.requireThat(message, "message").contains("Actual: \"value\"").
+				doesNotContain("name2: \"validatorValue\"").
+				doesNotContain("name2: \"factoryValue\"");
 		}
 	}
 }
