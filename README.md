@@ -117,8 +117,7 @@ This library offers the following features:
 
 ## Tips
 
-* Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, they will get 
-  disabled.
+* Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, the checks will get removed.
 * Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
   This is the fastest validation approach, ideal for web services.
 * To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
