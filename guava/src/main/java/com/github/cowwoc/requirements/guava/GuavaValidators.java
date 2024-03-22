@@ -49,18 +49,6 @@ public interface GuavaValidators
 	}
 
 	/**
-	 * Creates a new instance of this validator with an independent configuration.
-	 *
-	 * @param configuration the configuration to use for new validators
-	 * @return an instance of this interface
-	 * @see Validators#configuration()
-	 */
-	static GuavaValidators newInstance(Configuration configuration)
-	{
-		return new GuavaValidatorsImpl(MainApplicationScope.INSTANCE, configuration);
-	}
-
-	/**
 	 * Returns a new factory instance with an independent configuration. This method is commonly used to inherit
 	 * and update contextual information from the original factory before passing it into a nested operation.
 	 * For example:
