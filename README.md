@@ -10,7 +10,7 @@
 
 A [fluent API](https://en.m.wikipedia.org/docs/Fluent_interface) for enforcing
 [design contracts](https://en.wikipedia.org/docs/Design_by_contract) with
-[automatic message generation](wiki/Features.md#automatic-message-generation):
+[automatic message generation](docs/Features.md#automatic-message-generation):
 
 ✔️ Easy to use  
 ✔️ Fast  
