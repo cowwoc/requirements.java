@@ -48,6 +48,14 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	}
 
 	@Override
+	public T getValueOrDefault(T defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public S isNull()
 	{
 		if (value != null)

@@ -24,10 +24,19 @@ public interface PrimitiveCharacterValidator extends Validator<PrimitiveCharacte
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @return the value that is being validated
+	 * @return the validated value, or <code>&#92;u0000</code> if a validation failed
 	 */
 	@CheckReturnValue
 	char getValue();
+
+	/**
+	 * Returns the value that is being validated.
+	 *
+	 * @param defaultValue the fallback value in case of a validation failure
+	 * @return the validated value, or {@code defaultValue} if a validation failed
+	 */
+	@CheckReturnValue
+	char getValueOrDefault(char defaultValue);
 
 	/**
 	 * Ensures that the value is equal to {@code expected}.

@@ -33,10 +33,19 @@ public interface PrimitiveDoubleValidator extends
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @return the value that is being validated
+	 * @return the validated value, or {@code 0.0} if a validation failed
 	 */
 	@CheckReturnValue
 	double getValue();
+
+	/**
+	 * Returns the value that is being validated.
+	 *
+	 * @param defaultValue the fallback value in case of a validation failure
+	 * @return the validated value, or {@code defaultValue} if a validation failed
+	 */
+	@CheckReturnValue
+	double getValueOrDefault(double defaultValue);
 
 	/**
 	 * Ensures that the value is equal to {@code expected}.

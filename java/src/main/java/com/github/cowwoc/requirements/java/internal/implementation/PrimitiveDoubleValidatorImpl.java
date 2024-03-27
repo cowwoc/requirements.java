@@ -62,6 +62,14 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	}
 
 	@Override
+	public double getValueOrDefault(double defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveDoubleValidator isEqualTo(double expected)
 	{
 		return isEqualToImpl(expected, null);

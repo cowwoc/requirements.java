@@ -41,6 +41,14 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 	}
 
 	@Override
+	public boolean getValueOrDefault(boolean defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveBooleanValidatorImpl isTrue()
 	{
 		if (hasFailed() || !value)

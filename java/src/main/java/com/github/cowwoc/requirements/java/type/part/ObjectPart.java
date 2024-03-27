@@ -22,10 +22,19 @@ public interface ObjectPart<S, T>
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @return the value that is being validated
+	 * @return the validated value, or {@code null} if a validation failed
 	 */
 	@CheckReturnValue
 	T getValue();
+
+	/**
+	 * Returns the value that is being validated.
+	 *
+	 * @param defaultValue the fallback value in case of a validation failure
+	 * @return the validated value, or {@code defaultValue} if a validation failed
+	 */
+	@CheckReturnValue
+	T getValueOrDefault(T defaultValue);
 
 	/**
 	 * Ensures that the value is null.

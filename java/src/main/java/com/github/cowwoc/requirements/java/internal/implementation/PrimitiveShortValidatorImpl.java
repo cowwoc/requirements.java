@@ -52,6 +52,14 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	}
 
 	@Override
+	public short getValueOrDefault(short defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveShortValidator isEqualTo(short expected)
 	{
 		return isEqualToImpl(expected, null);

@@ -65,6 +65,14 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	}
 
 	@Override
+	public int getValueOrDefault(int defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveUnsignedIntegerValidator isEqualTo(int expected)
 	{
 		return isEqualToImpl(expected, null);
