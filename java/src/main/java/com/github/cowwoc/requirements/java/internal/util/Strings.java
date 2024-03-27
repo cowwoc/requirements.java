@@ -62,8 +62,8 @@ public final class Strings
 	}
 
 	/**
-	 * Returns the index within {@code source} of the last consecutive occurrence of {@code target}.
-	 * The last occurrence of the empty string {@code ""} is considered to occur at the index value
+	 * Returns the index within {@code source} of the last consecutive occurrence of {@code target}. The last
+	 * occurrence of the empty string {@code ""} is considered to occur at the index value
 	 * {@code source.length()}.
 	 * <p>
 	 * The returned index is the largest value {@code k} for which {@code source.startsWith(target, k)}
@@ -71,8 +71,8 @@ public final class Strings
 	 *
 	 * @param source the string to search within
 	 * @param target the string to search for
-	 * @return the index of the last consecutive occurrence of {@code target} in {@code source}, or
-	 * {@code -1} if there is no such occurrence.
+	 * @return the index of the last consecutive occurrence of {@code target} in {@code source}, or {@code -1}
+	 * if there is no such occurrence.
 	 */
 	public static int lastConsecutiveIndexOf(String source, String target)
 	{
@@ -191,7 +191,7 @@ public final class Strings
 		for (int codepoint : (Iterable<Integer>) text.codePoints()::iterator)
 		{
 			if (codepoint == '\t' || codepoint == '\b' || codepoint == '\n' || codepoint == '\r' ||
-				codepoint == '\f' || codepoint == '\"' || codepoint == '\\')
+			    codepoint == '\f' || codepoint == '\"' || codepoint == '\\')
 			{
 				return true;
 			}
@@ -237,8 +237,16 @@ public final class Strings
 		text = text.replaceAll("(?<!\\\\)\"\"\"", Matcher.quoteReplacement("\\" + TEXT_BLOCK_DELIMITER));
 		// Lines that end with whitespace must replace the last whitespace character with \s
 		text = text.replaceAll("\\p{Zs}$", Matcher.quoteReplacement("\\s"));
+		// Text blocks that end with a quote character require a special end sequence:
+		// """
+		// "someQuotedText"\
+		// """
+		//
+		// The slash at the end of the line indicates a line continuation. The text block then ends normally.
+		if (text.endsWith("\""))
+			text += "\\\n";
 
 		return TEXT_BLOCK_DELIMITER + "\n" +
-			text + TEXT_BLOCK_DELIMITER;
+		       text + TEXT_BLOCK_DELIMITER;
 	}
 }

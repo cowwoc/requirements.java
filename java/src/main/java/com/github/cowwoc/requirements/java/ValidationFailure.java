@@ -10,28 +10,23 @@ package com.github.cowwoc.requirements.java;
 public interface ValidationFailure
 {
 	/**
-	 * Returns the message associated with the failure.
+	 * Returns the message corresponding to the validation failure.
 	 *
-	 * @return the message associated with the failure
-	 * @see ThreadRequirements#getContext()
-	 * @see Configuration#getContext()
+	 * @return the message corresponding to the validation failure
 	 */
 	String getMessage();
 
 	/**
-	 * Returns the type of exception associated with the failure.
+	 * Returns the type of exception that is associated with this failure.
 	 *
-	 * @return the type of exception associated with the failure
+	 * @return the type of exception that is associated with this failure
 	 */
-	Class<? extends Exception> getExceptionType();
+	Class<? extends Throwable> getType();
 
 	/**
-	 * Creates an exception containing the failure message.
+	 * Returns the exception corresponding to the validation failure.
 	 *
-	 * @param <E>  the type of the exception
-	 * @param type the type of the exception
 	 * @return the exception corresponding to the validation failure
-	 * @throws NullPointerException if {@code type} is null
 	 */
-	<E extends Exception> E createException(Class<E> type);
+	Throwable getException();
 }

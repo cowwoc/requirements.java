@@ -4,20 +4,17 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
-@SuppressWarnings({"ConstantConditions", "ResultOfMethodCallIgnored", "OptionalAssignedToNull"})
+@SuppressWarnings({"ConstantConditions", "OptionalAssignedToNull"})
 public final class OptionalTest
 {
 	@Test(expectedExceptions = NullPointerException.class)
@@ -26,7 +23,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -36,7 +33,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Requirements(scope).requireThat(actual, "");
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -46,7 +43,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Requirements(scope).requireThat(actual, "actual").isPresent();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPresent();
 		}
 	}
 
@@ -56,7 +53,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Requirements(scope).requireThat(actual, "actual").isPresent();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPresent();
 		}
 	}
 
@@ -66,7 +63,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Requirements(scope).requireThat(actual, "actual").isEmpty();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEmpty();
 		}
 	}
 
@@ -76,7 +73,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Requirements(scope).requireThat(actual, "actual").isEmpty();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEmpty();
 		}
 	}
 
@@ -86,7 +83,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Requirements(scope).requireThat(actual, "actual").contains(5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains(5);
 		}
 	}
 
@@ -96,7 +93,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Requirements(scope).requireThat(actual, "actual").contains(6);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains(6);
 		}
 	}
 
@@ -106,7 +103,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Requirements(scope).requireThat(actual, "actual").contains(5);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains(5);
 		}
 	}
 
@@ -116,7 +113,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.empty();
-			new Requirements(scope).requireThat(actual, "actual").contains(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains(null);
 		}
 	}
 
@@ -126,7 +123,7 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Requirements(scope).requireThat(actual, "actual").contains(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains(null);
 		}
 	}
 
@@ -136,79 +133,63 @@ public final class OptionalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = Optional.of(5);
-			new Requirements(scope).requireThat(actual, "actual").contains(null, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains("Expected", null);
 		}
 	}
 
 	@Test
-	public void assertionsDisabled()
+	public void multipleFailuresNullIsPresent()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			// Ensure that no exception is thrown if assertions are disabled
 			Optional<?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isPresent().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsPresent()
+	public void multipleFailuresNullIsEmpty()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isPresent().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isEmpty().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsEmpty()
+	public void multipleFailuresNullContains()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isEmpty().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				contains(5).isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullContains()
+	public void multipleFailuresNullContainsWithName()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Optional<?> actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				contains(5).isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void validateThatNullContainsWithName()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Optional<?> actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				contains(5, "name").isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				contains(5, "name").isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

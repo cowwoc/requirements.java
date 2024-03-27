@@ -7,7 +7,6 @@ module com.github.cowwoc.requirements.test
 	requires com.google.common;
 	requires org.testng;
 	requires org.slf4j;
-	requires com.github.cowwoc.requirements.natives;
 	requires com.github.cowwoc.requirements.guava;
 
 	exports com.github.cowwoc.requirements.test to org.testng;
@@ -18,6 +17,5 @@ module com.github.cowwoc.requirements.test
 	exports com.github.cowwoc.requirements.test.java.internal.terminal to org.testng;
 	exports com.github.cowwoc.requirements.test.java.internal.util to org.testng;
 	exports com.github.cowwoc.requirements.test.java.terminal to org.testng;
-	exports com.github.cowwoc.requirements.test.natives.internal.util to org.testng;
-	exports com.github.cowwoc.requirements.test.usage to org.testng;
+	exports com.github.cowwoc.requirements.test.sample to org.testng;
 }

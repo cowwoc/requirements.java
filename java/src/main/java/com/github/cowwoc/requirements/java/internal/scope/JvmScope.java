@@ -9,7 +9,7 @@ import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
 /**
  * The JVM configuration.
  * <p>
- * Implementations must be thread-safe.
+ * <b>Thread-safety</b>: Implementations must be thread-safe.
  */
 public interface JvmScope extends AutoCloseable
 {

@@ -4,9 +4,9 @@
  */
 /**
  * Classes used to verify
- * <a href="https://en.wikipedia.org/wiki/Precondition">preconditions</a>,
- * <a href="https://en.wikipedia.org/wiki/Postcondition">postconditions</a> and
- * <a href="https://en.wikipedia.org/wiki/Invariant_(mathematics)#Invariants_in_computer_science">
+ * <a href="https://en.wikipedia.org/docs/Precondition">preconditions</a>,
+ * <a href="https://en.wikipedia.org/docs/Postcondition">postconditions</a> and
+ * <a href="https://en.wikipedia.org/docs/Invariant_(mathematics)#Invariants_in_computer_science">
  * invariants</a> of <a href="https://github.com/google/guava">Guava</a> types.
  * <p>
  * Interfaces in this package may be implemented but not be extended (because methods contain a fixed

@@ -4,15 +4,15 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class ListTest
 {
@@ -22,7 +22,7 @@ public final class ListTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			List<Integer> actual = List.of(1, 2, 3);
-			new Requirements(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 
@@ -32,7 +32,7 @@ public final class ListTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			List<Integer> actual = List.of(3, 2, 1);
-			new Requirements(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 }

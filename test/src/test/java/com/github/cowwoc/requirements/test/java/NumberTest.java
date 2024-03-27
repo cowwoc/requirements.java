@@ -4,22 +4,16 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidators;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_DELETE;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_EQUAL;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.DIFF_INSERT;
-import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOS_MARKER;
-import static com.github.cowwoc.requirements.java.internal.diff.TextOnly.DIFF_PADDING;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class NumberTest
@@ -30,7 +24,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -40,7 +34,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "");
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -52,7 +46,7 @@ public final class NumberTest
 			Integer actual = 0;
 			int first = 0;
 			int last = 2;
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -64,7 +58,7 @@ public final class NumberTest
 			Integer actual = 1;
 			int first = 0;
 			int last = 2;
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -76,7 +70,7 @@ public final class NumberTest
 			Integer actual = 2;
 			int first = 0;
 			int last = 2;
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -88,7 +82,7 @@ public final class NumberTest
 			Integer actual = 1;
 			int first = 10;
 			int last = 20;
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -100,7 +94,7 @@ public final class NumberTest
 			Integer actual = 2;
 			int first = 0;
 			int last = 2;
-			new Requirements(scope).requireThat(actual, "actual").isBetweenClosed(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, true, last, true);
 		}
 	}
 
@@ -110,7 +104,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Requirements(scope).requireThat(actual, "actual").isNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNegative();
 		}
 	}
 
@@ -120,7 +114,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNegative();
 		}
 	}
 
@@ -130,7 +124,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNegative();
 		}
 	}
 
@@ -139,12 +133,12 @@ public final class NumberTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			Integer actual = 0;
-			requirements.requireThat(actual, "actual").isNotNegative();
+			validators.requireThat(actual, "Actual").isNotNegative();
 
 			actual = 1;
-			requirements.requireThat(actual, "actual").isNotNegative();
+			validators.requireThat(actual, "Actual").isNotNegative();
 		}
 	}
 
@@ -154,7 +148,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Requirements(scope).requireThat(actual, "actual").isNotNegative();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotNegative();
 		}
 	}
 
@@ -164,7 +158,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isZero();
 		}
 	}
 
@@ -174,7 +168,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isZero();
 		}
 	}
 
@@ -184,7 +178,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Requirements(scope).requireThat(actual, "actual").isZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isZero();
 		}
 	}
 
@@ -193,12 +187,12 @@ public final class NumberTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			Integer actual = -1;
-			requirements.requireThat(actual, "actual").isNotZero();
+			validators.requireThat(actual, "Actual").isNotZero();
 
 			actual = 1;
-			requirements.requireThat(actual, "actual").isNotZero();
+			validators.requireThat(actual, "Actual").isNotZero();
 		}
 	}
 
@@ -208,7 +202,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isNotZero();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotZero();
 		}
 	}
 
@@ -218,7 +212,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPositive();
 		}
 	}
 
@@ -228,7 +222,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPositive();
 		}
 	}
 
@@ -238,7 +232,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = -1;
-			new Requirements(scope).requireThat(actual, "actual").isPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isPositive();
 		}
 	}
 
@@ -247,12 +241,12 @@ public final class NumberTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope);
+			TestValidators validators = new TestValidatorsImpl(scope);
 			Integer actual = 0;
-			requirements.requireThat(actual, "actual").isNotPositive();
+			validators.requireThat(actual, "Actual").isNotPositive();
 
 			actual = -1;
-			requirements.requireThat(actual, "actual").isNotPositive();
+			validators.requireThat(actual, "Actual").isNotPositive();
 		}
 	}
 
@@ -262,7 +256,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isNotPositive();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotPositive();
 		}
 	}
 
@@ -272,7 +266,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isLessThan(1, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThan(1, "Expected");
 		}
 	}
 
@@ -282,7 +276,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isLessThan(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThan(1);
 		}
 	}
 
@@ -292,7 +286,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isLessThan(1, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThan(1, "Expected");
 		}
 	}
 
@@ -302,7 +296,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isLessThan(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThan(1);
 		}
 	}
 
@@ -312,7 +306,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 2;
-			new Requirements(scope).requireThat(actual, "actual").isLessThan(1, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThan(1, "Expected");
 		}
 	}
 
@@ -322,7 +316,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 2;
-			new Requirements(scope).requireThat(actual, "actual").isLessThan(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThan(1);
 		}
 	}
 
@@ -332,8 +326,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").
-				isLessThanOrEqualTo(1, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isLessThanOrEqualTo(1, "Expected");
 		}
 	}
 
@@ -343,7 +337,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isLessThanOrEqualTo(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThanOrEqualTo(1);
 		}
 	}
 
@@ -353,8 +347,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 3;
-			new Requirements(scope).requireThat(actual, "actual").
-				isLessThanOrEqualTo(2, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isLessThanOrEqualTo(2, "Expected");
 		}
 	}
 
@@ -364,7 +358,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 3;
-			new Requirements(scope).requireThat(actual, "actual").isLessThanOrEqualTo(2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isLessThanOrEqualTo(2);
 		}
 	}
 
@@ -374,7 +368,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(0, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThan(0, "Expected");
 		}
 	}
 
@@ -384,7 +378,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(0);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThan(0);
 		}
 	}
 
@@ -394,7 +388,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(1, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThan(1, "Expected");
 		}
 	}
 
@@ -404,7 +398,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThan(1);
 		}
 	}
 
@@ -414,7 +408,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(2, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThan(2, "Expected");
 		}
 	}
 
@@ -424,7 +418,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThan(2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThan(2);
 		}
 	}
 
@@ -434,8 +428,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").
-				isGreaterThanOrEqualTo(1, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isGreaterThanOrEqualTo(1, "Expected");
 		}
 	}
 
@@ -445,7 +439,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThanOrEqualTo(1);
 		}
 	}
 
@@ -455,8 +449,8 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").
-				isGreaterThanOrEqualTo(2, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isGreaterThanOrEqualTo(2, "Expected");
 		}
 	}
 
@@ -466,172 +460,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(2);
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void byteIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			byte actual = (byte) 1;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void byteIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			byte actual = (byte) 1;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void shortIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			short actual = (short) 1;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void shortIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			short actual = (short) 1;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void intIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void intIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void longIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			long actual = 1L;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void longIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			long actual = 1L;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void floatIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			float actual = 1.0F;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void floatIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			float actual = 1.0F;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void doubleIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void doubleIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void intIsWholeNumber()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isWholeNumber();
-		}
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void intIsWholeNumber_Zero()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isWholeNumber();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	@SuppressWarnings("deprecation")
-	public void intIsNotWholeNumber()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isNotWholeNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isGreaterThanOrEqualTo(2);
 		}
 	}
 
@@ -641,7 +470,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 2;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(1);
 		}
 	}
 
@@ -651,7 +480,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(actual);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(actual);
 		}
 	}
 
@@ -661,7 +490,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(1);
 		}
 	}
 
@@ -671,7 +500,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(0);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(0);
 		}
 	}
 
@@ -681,7 +510,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(0);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(0);
 		}
 	}
 
@@ -691,7 +520,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(2);
 		}
 	}
 
@@ -701,7 +530,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			int actual = 1;
-			new Requirements(scope).requireThat(actual, "actual").isNotMultipleOf(2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotMultipleOf(2);
 		}
 	}
 
@@ -711,7 +540,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.0;
-			new Requirements(scope).requireThat(actual, "actual").isWholeNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isWholeNumber();
 		}
 	}
 
@@ -721,7 +550,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 0.0;
-			new Requirements(scope).requireThat(actual, "actual").isWholeNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isWholeNumber();
 		}
 	}
 
@@ -731,7 +560,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.1;
-			new Requirements(scope).requireThat(actual, "actual").isWholeNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isWholeNumber();
 		}
 	}
 
@@ -741,7 +570,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.1;
-			new Requirements(scope).requireThat(actual, "actual").isNotWholeNumber();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotWholeNumber();
 		}
 	}
 
@@ -751,7 +580,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 2.2;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(1.1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(1.1);
 		}
 	}
 
@@ -761,7 +590,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.1;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(actual);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(actual);
 		}
 	}
 
@@ -771,7 +600,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 0;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(1.1);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(1.1);
 		}
 	}
 
@@ -781,7 +610,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.1;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(0.0);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(0.0);
 		}
 	}
 
@@ -791,7 +620,7 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.1;
-			new Requirements(scope).requireThat(actual, "actual").isMultipleOf(1.2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isMultipleOf(1.2);
 		}
 	}
 
@@ -801,251 +630,164 @@ public final class NumberTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			double actual = 1.1;
-			new Requirements(scope).requireThat(actual, "actual").isNotMultipleOf(1.2);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotMultipleOf(1.2);
 		}
 	}
 
 	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Integer actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void assertionsEnabledInteger()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			int actual = 5;
-			new Requirements(scope).withAssertionsEnabled().requireThat(actual, "actual").isGreaterThan(10);
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void assertionsEnabledDouble()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			double actual = 5.5;
-			new Requirements(scope).withAssertionsEnabled().requireThat(actual, "actual").isGreaterThan(10.5);
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsMultipleOfNull()
+	public void multipleFailuresNullIsNegative()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			new Requirements(scope).validateThat(actual, "actual").isMultipleOf(null);
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsMultipleOfWithNameNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Double actual = null;
-			new Requirements(scope).validateThat(actual, "actual").isMultipleOf(null, "name");
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsNotMultipleOfNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Double actual = null;
-			new Requirements(scope).validateThat(actual, "actual").isNotMultipleOf(null);
-		}
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsNotMultipleOfWithNameNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Double actual = null;
-			new Requirements(scope).validateThat(actual, "actual").isNotMultipleOf(null, "name");
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNegative().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNegative()
+	public void multipleFailuresNullIsNotNegative()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNegative().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotNegative().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNotNegative()
+	public void multipleFailuresNullIsZero()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotNegative().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isZero().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsZero()
+	public void multipleFailuresNullIsNotZero()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isZero().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotZero().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNotZero()
+	public void multipleFailuresNullIsPositive()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotZero().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isPositive().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsPositive()
+	public void multipleFailuresNullIsNotPositive()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isPositive().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotPositive().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNotPositive()
+	public void multipleFailuresNullIsWholeNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotPositive().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isWholeNumber().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsWholeNumber()
+	public void multipleFailuresNullIsNotWholeNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isWholeNumber().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotWholeNumber().isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNotWholeNumber()
+	public void multipleFailuresNullIsMultipleOf()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotWholeNumber().isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isMultipleOf(5.0).isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsMultipleOf()
+	public void multipleFailuresNullIsNotMultipleOf()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isMultipleOf(5.0).isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("\"Actual\" may not be null",
+				"\"Actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isNotMultipleOf(5.0).isEqualTo(5).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsNotMultipleOf()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Double actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isNotMultipleOf(5.0).isEqualTo(5).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void validateThatNullIsNumber()
+	public void multipleFailuresNullIsNumber()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Integer actual = null;
 			Integer expected = 5;
 			List<String> expectedMessages = Collections.singletonList(
-				"actual must be equal to " + expected + ".\n" +
-					"\n" +
-					"Actual  : null" + DIFF_PADDING + EOS_MARKER + "\n" +
-					"Diff    : " + DIFF_DELETE.repeat("null".length()) + DIFF_INSERT +
-					DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
-					"Expected: " + DIFF_PADDING.repeat("null".length()) + "5" + EOS_MARKER);
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isEqualTo(expected).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+				"\"Actual\" must be equal to " + expected + ".\n" +
+
+					"Actual: null");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isEqualTo(expected).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

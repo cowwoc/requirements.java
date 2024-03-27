@@ -5,10 +5,13 @@
 package com.github.cowwoc.requirements.java.internal.diff;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.StringMappers;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.github.cowwoc.requirements.java.internal.diff.DiffConstants.EOL_PATTERN;
@@ -21,17 +24,17 @@ public final class ContextGenerator
 	private final Configuration config;
 	private final DiffGenerator diffGenerator;
 	private final ApplicationScope scope;
-	private String actualName = "";
-	private boolean actualExists;
-	private Object actualValue;
 	private String expectedName = "";
 	private boolean expectedExists;
 	private Object expectedValue;
 	private boolean expectedInMessage;
+	private String actualName = "";
+	private boolean actualExists;
+	private Object actualValue;
 	private boolean compareValues = true;
 
 	/**
-	 * @param configuration the instance configuration
+	 * @param configuration the validator configuration
 	 * @param scope         the application configuration
 	 * @throws AssertionError if {@code configuration} or {@code scope} are null
 	 */
@@ -41,7 +44,7 @@ public final class ContextGenerator
 		assert (scope != null) : "scope may not be null";
 		this.config = configuration;
 		this.scope = scope;
-		this.diffGenerator = new DiffGenerator(scope.getGlobalConfiguration().getTerminalEncoding());
+		this.diffGenerator = new DiffGenerator(scope.getGlobalConfiguration().terminalEncoding());
 	}
 
 	/**
@@ -56,7 +59,7 @@ public final class ContextGenerator
 		assert (name != null);
 		assert (!name.isBlank()) : "name may not be blank";
 		assert (!name.contains(":")) : "name may not contain a colon.\n" +
-			"Actual: " + name;
+		                               "Actual: " + name;
 		actualName = name;
 		return this;
 	}
@@ -64,7 +67,7 @@ public final class ContextGenerator
 	/**
 	 * Sets the actual value.
 	 *
-	 * @param value the actual value
+	 * @param value the object representation of the actual value
 	 * @return this
 	 */
 	public ContextGenerator actualValue(Object value)
@@ -77,7 +80,7 @@ public final class ContextGenerator
 	/**
 	 * Sets the name of the expected value.
 	 *
-	 * @param name the name of the actual value
+	 * @param name the name of the expected value
 	 * @return this
 	 * @throws AssertionError if {@code name} is null, blank or contains a colon
 	 */
@@ -86,7 +89,7 @@ public final class ContextGenerator
 		assert (name != null);
 		assert (!name.isBlank()) : "name may not be blank";
 		assert (!name.contains(":")) : "name may not contain a colon.\n" +
-			"Actual: " + name;
+		                               "Actual: " + name;
 		expectedName = name;
 		return this;
 	}
@@ -94,7 +97,7 @@ public final class ContextGenerator
 	/**
 	 * Sets the expected value.
 	 *
-	 * @param value the actual value
+	 * @param value the object representation of the expected value
 	 * @return this
 	 */
 	public ContextGenerator expectedValue(Object value)
@@ -116,8 +119,8 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * Indicates that the expected and actual values should not be compared. This flag is set automatically
-	 * if either {@code actual} or {@code expected} are a boolean.
+	 * Indicates that the expected and actual values should not be compared. This flag is set automatically if
+	 * either {@code actual} or {@code expected} are a boolean.
 	 *
 	 * @return this
 	 */
@@ -128,48 +131,52 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * @return the list of name-value pairs to append to the exception message
+	 * @return a list of DIFF sections to append to the exception message
 	 */
-	public List<ContextLine> build()
+	public List<Map<String, Object>> build()
 	{
 		Class<?> expectedType = ContextGenerator.getClass(expectedValue);
-		Class<?> actualType = ContextGenerator.getClass(actualValue);
-		compareValues &= !(expectedType == boolean.class || expectedType == Boolean.class) &&
-			!(actualType == boolean.class || actualType == Boolean.class);
-
-		if (!config.isDiffEnabled() || !compareValues)
+		// On a line-by-line basis, "actualExists" might be false.
+		if (actualExists)
 		{
-			List<ContextLine> context = new ArrayList<>(2);
-			context.add(new ContextLine("", "", true));
-			context.add(new ContextLine(actualName, actualValue, false));
-			if (!expectedInMessage)
-				context.add(new ContextLine(expectedName, expectedValue, false));
-			return context;
+			Class<?> actualType = ContextGenerator.getClass(actualValue);
+			compareValues &= actualType != Boolean.class && expectedType != Boolean.class;
 		}
 
-		if (actualValue instanceof List && expectedValue instanceof List)
+		if (!config.includeDiff() || !compareValues)
+		{
+			Map<String, Object> context = new LinkedHashMap<>();
+			StringMappers stringMappers = config.stringMappers();
+			if (!expectedInMessage)
+				context.put(expectedName, stringMappers.toString(expectedValue));
+			if (actualExists)
+				context.put(actualName, stringMappers.toString(actualValue));
+			return List.of(context);
+		}
+
+		if ((!actualExists || actualValue instanceof List) && expectedValue instanceof List)
 			return getContextOfList();
 		return getContextOfObjects();
 	}
 
 	/**
-	 * Append context entries to indicate that duplicate lines were skipped.
-	 *
-	 * @param entries the exception context
+	 * @param value a value
+	 * @return the {@code Class} of a value or {@code null} if {@code value} is null
 	 */
-	private static void skipEqualLines(List<ContextLine> entries)
+	private static Class<?> getClass(Object value)
 	{
-		entries.add(new ContextLine("", "", true));
-		entries.add(new ContextLine("", "[...]", true));
+		if (value == null)
+			return null;
+		return value.getClass();
 	}
 
 	/**
 	 * Generates a List-specific exception context from the actual and expected values.
 	 *
-	 * @return the name-value pairs to append to the exception message
+	 * @return a list of DIFF sections to append to the exception message
 	 * @throws AssertionError if the actual or expected values do not exist.
 	 */
-	private List<ContextLine> getContextOfList()
+	private List<Map<String, Object>> getContextOfList()
 	{
 		assert (actualExists && expectedExists) :
 			"actualExists: " + actualExists + ", expectedExists: " + expectedExists;
@@ -181,7 +188,7 @@ public final class ContextGenerator
 		int expectedSize = expectedList.size();
 		int maxSize = Math.max(actualSize, expectedSize);
 
-		List<ContextLine> context = new ArrayList<>();
+		List<Map<String, Object>> context = new ArrayList<>();
 		// Indicates if the previous index was equal
 		boolean skippedEqualElements = false;
 		int actualIndex = 0;
@@ -189,8 +196,8 @@ public final class ContextGenerator
 		for (int i = 0; i < maxSize; ++i)
 		{
 			ContextGenerator elementGenerator = new ContextGenerator(config, scope);
-			boolean actualLineExists = i < actualSize;
 
+			boolean actualLineExists = i < actualSize;
 			boolean elementsAreEqual = true;
 			Object actualLineValue;
 			if (actualLineExists)
@@ -208,7 +215,6 @@ public final class ContextGenerator
 			}
 
 			boolean expectedLineExists = i < expectedSize;
-
 			Object expectedLineValue;
 			if (expectedLineExists)
 			{
@@ -242,11 +248,22 @@ public final class ContextGenerator
 	}
 
 	/**
+	 * Append context entries to indicate that duplicate lines were skipped.
+	 *
+	 * @param entries the exception context
+	 */
+	private static void skipEqualLines(List<Map<String, Object>> entries)
+	{
+		entries.add(Map.of());
+		entries.add(Map.of("", "[...]"));
+	}
+
+	/**
 	 * Generates an exception context from the actual and expected values.
 	 *
-	 * @return the list of name-value pairs to append to the exception message
+	 * @return a list of DIFF sections to append to the exception message
 	 */
-	private List<ContextLine> getContextOfObjects()
+	private List<Map<String, Object>> getContextOfObjects()
 	{
 		String actualAsString = getActualAsString();
 		String expectedAsString = getExpectedAsString();
@@ -267,7 +284,7 @@ public final class ContextGenerator
 
 		// Indicates if the previous line was equal
 		boolean skippedEqualLines = false;
-		List<ContextLine> result = new ArrayList<>(2 * numberOfLines);
+		List<Map<String, Object>> context = new ArrayList<>(2 * numberOfLines);
 		for (int i = 0; i < numberOfLines; ++i)
 		{
 			String actualLine = actualLines.get(i);
@@ -293,15 +310,9 @@ public final class ContextGenerator
 			if (skippedEqualLines)
 			{
 				skippedEqualLines = false;
-				skipEqualLines(result);
+				skipEqualLines(context);
 			}
-			result.add(new ContextLine("", "", true));
-			result.add(new ContextLine(actualNameForLine, actualLine, true));
-			if (diffLinesExist && !valuesAreEqual)
-			{
-				String diffLine = lines.getDiffLines().get(i);
-				result.add(new ContextLine("Diff", diffLine, true));
-			}
+			context.add(Map.of());
 
 			String expectedNameForLine;
 			if (diffGenerator.isEmpty(expectedLine))
@@ -312,9 +323,18 @@ public final class ContextGenerator
 				if (EOL_PATTERN.matcher(expectedLine).find())
 					++expectedLineNumber;
 			}
-			result.add(new ContextLine(expectedNameForLine, expectedLine, true));
+
+			Map<String, Object> section = new LinkedHashMap<>();
+			section.put(expectedNameForLine, expectedLine);
+			if (diffLinesExist && !valuesAreEqual)
+			{
+				String diffLine = lines.getDiffLines().get(i);
+				section.put("Diff", diffLine);
+			}
+			section.put(actualNameForLine, actualLine);
+			context.add(section);
 		}
-		return result;
+		return context;
 	}
 
 	private static String getExpectedLines(List<String> expectedLines, int i)
@@ -327,45 +347,46 @@ public final class ContextGenerator
 		return expectedLine;
 	}
 
-	private List<ContextLine> getContextForSingleLine(DiffResult lines, boolean diffLinesExist)
+	private List<Map<String, Object>> getContextForSingleLine(DiffResult lines, boolean diffLinesExist)
 	{
-		String actualLine = lines.getActualLines().get(0);
-		String expectedLine = lines.getExpectedLines().get(0);
-		boolean linesAreEqual = lines.getEqualLines().get(0);
+		String actualLine = lines.getActualLines().getFirst();
+		String expectedLine = lines.getExpectedLines().getFirst();
+		boolean linesAreEqual = lines.getEqualLines().getFirst();
 
-		List<ContextLine> result = new ArrayList<>();
-		result.add(new ContextLine("", "", true));
-		result.add(new ContextLine(actualName, actualLine, true));
+		List<Map<String, Object>> context = new ArrayList<>();
+		context.add(Map.of());
+
+		Map<String, Object> section = new LinkedHashMap<>();
+		section.put(expectedName, expectedLine);
 		if (diffLinesExist && !linesAreEqual)
-		{
-			String diffLine = lines.getDiffLines().get(0);
-			result.add(new ContextLine("Diff", diffLine, true));
-		}
-		result.add(new ContextLine(expectedName, expectedLine, true));
+			section.put("Diff", lines.getDiffLines().getFirst());
+		section.put(actualName, actualLine);
+		context.add(section);
 
 		if (compareValues && linesAreEqual)
 		{
 			// If the String representation of the values is equal, output getClass(), hashCode(),
 			// or System.identityHashCode()] that differ.
-			result.addAll(compareTypes());
+			context.addAll(compareTypes());
 		}
-		return result;
+		return context;
 	}
 
-	private List<ContextLine> getContextWithoutComparison(String actualAsString, String expectedAsString)
+	private List<Map<String, Object>> getContextWithoutComparison(String actualAsString,
+		String expectedAsString)
 	{
-		List<ContextLine> result = new ArrayList<>(2);
-		result.add(new ContextLine(actualName, actualAsString, true));
+		Map<String, Object> context = new LinkedHashMap<>();
 		if (!expectedInMessage)
-			result.add(new ContextLine(expectedName, expectedAsString, true));
-		return result;
+			context.put(expectedName, expectedAsString);
+		context.put(actualName, actualAsString);
+		return List.of(context);
 	}
 
 	private String getExpectedAsString()
 	{
 		String expectedAsString;
 		if (expectedExists)
-			expectedAsString = config.toString(expectedValue);
+			expectedAsString = config.stringMappers().toString(expectedValue);
 		else
 			expectedAsString = "";
 		return expectedAsString;
@@ -375,21 +396,58 @@ public final class ContextGenerator
 	{
 		String actualAsString;
 		if (actualExists)
-			actualAsString = config.toString(actualValue);
+			actualAsString = config.stringMappers().toString(actualValue);
 		else
 			actualAsString = "";
 		return actualAsString;
 	}
 
 	/**
-	 * @param value a value
-	 * @return the {@code Class} of a value or {@code null} if {@code value} is null
+	 * @return a list of DIFF sections to append to the exception message
+	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	private static Class<?> getClass(Object value)
+	private List<Map<String, Object>> compareTypes()
 	{
-		if (value == null)
-			return null;
-		return value.getClass();
+		assert (actualExists && expectedExists) : this;
+
+		Class<?> actualType = getClass(actualValue);
+		String actualClassName = getClassName(actualType);
+		String expectedClassName = getClassName(getClass(expectedValue));
+		if (!actualClassName.equals(expectedClassName))
+		{
+			StringMappers stringMappers = config.stringMappers();
+			return new ContextGenerator(config, scope).
+				expectedName(expectedName + ".class").
+				expectedValue(stringMappers.toString(expectedClassName)).
+				actualName(actualName + ".class").
+				actualValue(stringMappers.toString(actualClassName)).
+				doNotCompareValues().build();
+		}
+		// Do not use config.toString() for hashCode values because their exact value does not matter, just the
+		// fact that they are different.
+		int actualHashCode = Objects.hashCode(actualValue);
+		int expectedHashCode = Objects.hashCode(expectedValue);
+		if (actualHashCode != expectedHashCode)
+		{
+			return new ContextGenerator(config, scope).
+				expectedName(expectedName + ".hashCode").
+				expectedValue(expectedHashCode).
+				actualName(actualName + ".hashCode").
+				actualValue(actualHashCode).
+				doNotCompareValues().build();
+		}
+		int expectedIdentityHashCode = System.identityHashCode(expectedValue);
+		int actualIdentityHashCode = System.identityHashCode(actualValue);
+		if (actualIdentityHashCode != expectedIdentityHashCode)
+		{
+			return new ContextGenerator(config, scope).
+				expectedName(expectedName + ".identityHashCode").
+				expectedValue(expectedIdentityHashCode).
+				actualName(actualName + ".identityHashCode").
+				actualValue(actualIdentityHashCode).
+				doNotCompareValues().build();
+		}
+		return List.of();
 	}
 
 	/**
@@ -398,65 +456,16 @@ public final class ContextGenerator
 	 */
 	private static String getClassName(Class<?> type)
 	{
-		if (type == null) return "null";
+		if (type == null)
+			return "null";
 		return type.getName();
-	}
-
-	/**
-	 * @return the list of name-value pairs to append to the exception message
-	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
-	 */
-	private List<ContextLine> compareTypes()
-	{
-		assert (actualExists && expectedExists) : this;
-
-		List<ContextLine> result = new ArrayList<>();
-		Class<?> actualType = getClass(actualValue);
-		String actualClassName = getClassName(actualType);
-		String expectedClassName = getClassName(getClass(expectedValue));
-		if (!actualClassName.equals(expectedClassName))
-		{
-			result.addAll(new ContextGenerator(config, scope).
-				actualName(actualName + ".class").
-				actualValue(config.toString(actualClassName)).
-				expectedName(expectedName + ".class").
-				expectedValue(config.toString(expectedClassName)).
-				doNotCompareValues().build());
-			return result;
-		}
-		// Do not use config.toString() for hashCode values because their exact value does not matter, just the
-		// fact that they are different.
-		int actualHashCode = Objects.hashCode(actualValue);
-		int expectedHashCode = Objects.hashCode(expectedValue);
-		if (actualHashCode != expectedHashCode)
-		{
-			result.addAll(new ContextGenerator(config, scope).
-				actualName(actualName + ".hashCode").
-				actualValue(actualHashCode).
-				expectedName(expectedName + ".hashCode").
-				expectedValue(expectedHashCode).
-				doNotCompareValues().build());
-			return result;
-		}
-		int actualIdentityHashCode = System.identityHashCode(actualValue);
-		int expectedIdentityHashCode = System.identityHashCode(expectedValue);
-		if (actualIdentityHashCode != expectedIdentityHashCode)
-		{
-			result.addAll(new ContextGenerator(config, scope).
-				actualName(actualName + ".identityHashCode").
-				actualValue(actualIdentityHashCode).
-				expectedName(expectedName + ".identityHashCode").
-				expectedValue(expectedIdentityHashCode).
-				doNotCompareValues().build());
-		}
-		return result;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "actualName: " + actualName + ", actualExists: " + actualExists + ", actualValue: " + actualValue +
-			", expectedName: " + expectedName + ", actualExists: " + expectedExists + ", expectedValue: " +
-			expectedValue + ", expectedInMessage: " + expectedInMessage + ", compareValues: " + compareValues;
+		       ", expectedName: " + expectedName + ", actualExists: " + expectedExists + ", expectedValue: " +
+		       expectedValue + ", expectedInMessage: " + expectedInMessage + ", compareValues: " + compareValues;
 	}
 }

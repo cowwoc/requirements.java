@@ -4,14 +4,15 @@
  */
 package com.github.cowwoc.requirements.test.java.internal.impl;
 
-import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.ValidationFailure;
-import com.github.cowwoc.requirements.java.internal.ValidationFailureImpl;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
+
+import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class ConfigurationTest
 {
@@ -21,91 +22,146 @@ public final class ConfigurationTest
 	@Test
 	public void separateConfigurations()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Configuration first = scope.getDefaultConfiguration().get().
-				withContext("name1", "value1");
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configuration = validators.updateConfiguration())
+			{
+				configuration.includeDiff(true);
+			}
+			Configuration first = validators.configuration();
+			try (ConfigurationUpdater configuration = validators.updateConfiguration())
+			{
+				configuration.includeDiff(false);
+			}
+			Configuration second = validators.configuration();
 
-			Configuration second = scope.getDefaultConfiguration().get().
-				withContext("name2", "value2");
-
-			new Requirements(scope).requireThat(first, "first.config").isNotEqualTo(second, "second.config");
+			validators.requireThat(first.includeDiff(), "first.config").
+				isNotEqualTo(second.includeDiff(), "second.config");
 		}
 	}
 
 	/**
-	 * Ensure that modifying state inherited from GlobalConfiguration does not modify other instances.
+	 * Ensure that modifying the default configuration does not modify existing configuration instances.
 	 */
 	@Test
 	public void inheritDefaultConfiguration()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Configuration first = scope.getDefaultConfiguration().get().withDiff();
-			Configuration second = scope.getDefaultConfiguration().get().withoutDiff();
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configuration = validators.updateConfiguration())
+			{
+				configuration.includeDiff(true);
+			}
+			Configuration first = validators.configuration();
 
-			new Requirements(scope).requireThat(first, "first.config").isNotEqualTo(second, "second.config");
+			try (ConfigurationUpdater configuration = validators.updateConfiguration())
+			{
+				configuration.includeDiff(false);
+			}
+			Configuration second = validators.configuration();
+
+			validators.requireThat(first.includeDiff(), "first.config").
+				isNotEqualTo(second.includeDiff(), "second.config");
+		}
+	}
+
+	@Test
+	public void factorySeparateContext()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+
+			TestValidatorsImpl factory2 = factory1.copy();
+			factory2.putContext("factoryValue", "factoryName");
+
+			String message1 = factory1.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+			String message2 = factory2.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+
+			requireThat(message1, "message1").contains("validatorName: \"validatorValue\"").
+				doesNotContain("factoryName   : \"factoryValue\"");
+			requireThat(message2, "message2").contains("validatorName: \"validatorValue\"").
+				contains("factoryName  : \"factoryValue\"");
+		}
+	}
+
+	@Test
+	public void factoryInheritedContext()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+			factory1.putContext("factoryValue", "factoryName");
+
+			TestValidatorsImpl factory2 = factory1.copy();
+			String message = factory2.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+
+			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
+				contains("factoryName  : \"factoryValue\"");
 		}
 	}
 
 	/**
-	 * Ensure that modifying a copied configuration does not modify the original instance.
+	 * Ensure that the validator context is separate from the factory context.
 	 */
 	@Test
-	public void copyConfiguration()
+	public void validatorContextSeparateFromFactory()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Configuration first = scope.getDefaultConfiguration().get().withDiff();
-			Configuration second = first.copy().withoutDiff();
+			TestValidatorsImpl factory = new TestValidatorsImpl(scope);
 
-			new Requirements(scope).requireThat(first, "first.config").isNotEqualTo(second, "second.config");
+			String message = factory.checkIf("value", "name").
+				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+
+			// Ensure that this does not affect pre-existing validators
+			factory.putContext("factoryValue", "factoryName");
+
+			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
+				doesNotContain("factoryName  : \"factoryValue\"");
 		}
 	}
 
 	@Test
-	public void threadConfiguration()
+	public void validatorOverridesFactoryContext()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope).
-				withContext("verifierName", "verifierValue");
-			scope.getThreadConfiguration().get().withContext("threadName", "threadValue");
-			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
-				IllegalArgumentException.class, "message").
-				addContext("exceptionName", "exceptionValue");
-			requirements.requireThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
-			requirements.requireThat(failure.getMessage(), "message").contains("verifierName : \"verifierValue\"");
-			requirements.requireThat(failure.getMessage(), "message").contains("threadName   : \"threadValue\"");
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+			factory1.putContext("factoryValue", "collision");
+
+			TestValidatorsImpl factory2 = factory1.copy();
+
+			String message1 = factory1.checkIf("value", "name").
+				putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+			String message2 = factory2.checkIf("value", "name").
+				putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+
+			requireThat(message1, "message1").contains("collision: \"validatorValue\"").
+				doesNotContain("collision: \"factoryValue\"");
+			requireThat(message2, "message2").contains("collision: \"validatorValue\"").
+				doesNotContain("collision: \"factoryValue\"");
 		}
 	}
 
 	@Test
-	public void verifierOverridesThreadContext()
+	public void exceptionOverridesValidatorContext()
 	{
-		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Requirements requirements = new Requirements(scope).withContext("name", "verifierValue");
-			scope.getThreadConfiguration().get().withContext("name", "threadValue");
-			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
-				IllegalArgumentException.class, "message").
-				addContext("exceptionName", "exceptionValue");
-			requirements.requireThat(failure.getMessage(), "message").contains("exceptionName: \"exceptionValue\"");
-			requirements.requireThat(failure.getMessage(), "message").contains("name         : \"verifierValue\"");
-		}
-	}
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			validators.putContext("factoryValue", "name2");
 
-	@Test
-	public void exceptionOverridesVerifierContext()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(TerminalEncoding.NONE))
-		{
-			Requirements requirements = new Requirements(scope).withContext("name", "verifierValue");
-			scope.getThreadConfiguration().get().withContext("name", "threadValue");
-			ValidationFailure failure = new ValidationFailureImpl(scope, requirements,
-				IllegalArgumentException.class, "message").
-				addContext("name", "exceptionValue");
-			requirements.requireThat(failure.getMessage(), "message").contains("name: \"exceptionValue\"");
+			String message = validators.checkIf("value", "name").
+				putContext("validatorValue", "name2").isNull().elseGetMessages().getFirst();
+			validators.requireThat(message, "message").contains("Actual: \"value\"").
+				doesNotContain("name2: \"validatorValue\"").
+				doesNotContain("name2: \"factoryValue\"");
 		}
 	}
 }

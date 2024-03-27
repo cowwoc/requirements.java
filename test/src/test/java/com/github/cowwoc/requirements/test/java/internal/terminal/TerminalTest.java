@@ -5,41 +5,16 @@
 package com.github.cowwoc.requirements.test.java.internal.terminal;
 
 import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
-import com.github.cowwoc.requirements.java.internal.scope.JvmScope;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal;
+import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.RGB_888_COLORS;
-
 public final class TerminalTest
 {
 	/**
-	 * Ensures that none of the native methods fail.
-	 *
-	 * @throws IOException if an operation fails
-	 */
-	@Test
-	@SuppressWarnings("try")
-	public void nativeMethods() throws IOException
-	{
-		try (JvmScope ignored = DefaultJvmScope.INSTANCE)
-		{
-			NativeTerminal terminal = new NativeTerminal();
-			terminal.connect();
-			terminal.isConnectedToStdout();
-			terminal.setEncoding(NONE);
-			terminal.disconnect();
-		}
-	}
-
-	/**
-	 * Force verifiers to output using an encoding that might not be supported by the terminal.
+	 * Force validators to output using an encoding that might not be supported by the terminal.
 	 */
 	@Test
 	public void forceUnsupportedEncoding()
@@ -50,7 +25,7 @@ public final class TerminalTest
 
 			Logger log = LoggerFactory.getLogger(TerminalTest.class);
 			log.debug("*** The following exception is expected and does not denote a test failure ***");
-			terminal.setEncoding(RGB_888_COLORS);
+			terminal.setEncoding(TerminalEncoding.RGB_888_COLORS);
 		}
 	}
 }

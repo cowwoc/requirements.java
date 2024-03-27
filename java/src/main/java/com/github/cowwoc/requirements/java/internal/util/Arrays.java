@@ -5,6 +5,9 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,34 +20,6 @@ public final class Arrays
 	 */
 	private Arrays()
 	{
-	}
-
-	/**
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a list containing the array elements
-	 */
-	public static List<Boolean> asList(boolean[] array)
-	{
-		if (array == null)
-			return null;
-		List<Boolean> result = new ArrayList<>(array.length);
-		for (boolean element : array)
-			result.add(element);
-		return result;
-	}
-
-	/**
-	 * @param array an array
-	 * @return null if the array is null; otherwise, a list containing the array elements
-	 */
-	public static List<Character> asList(char[] array)
-	{
-		if (array == null)
-			return null;
-		List<Character> result = new ArrayList<>(array.length);
-		for (char element : array)
-			result.add(element);
-		return result;
 	}
 
 	/**
@@ -79,6 +54,20 @@ public final class Arrays
 	 * @param array an array
 	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
+	public static List<Integer> asList(int[] array)
+	{
+		if (array == null)
+			return null;
+		List<Integer> result = new ArrayList<>(array.length);
+		for (int element : array)
+			result.add(element);
+		return result;
+	}
+
+	/**
+	 * @param array an array
+	 * @return null if the array is null; otherwise, a list containing the array elements
+	 */
 	public static List<Long> asList(long[] array)
 	{
 		if (array == null)
@@ -93,12 +82,26 @@ public final class Arrays
 	 * @param array an array
 	 * @return null if the array is null; otherwise, a list containing the array elements
 	 */
-	public static List<Integer> asList(int[] array)
+	public static List<Boolean> asList(boolean[] array)
 	{
 		if (array == null)
 			return null;
-		List<Integer> result = new ArrayList<>(array.length);
-		for (int element : array)
+		List<Boolean> result = new ArrayList<>(array.length);
+		for (boolean element : array)
+			result.add(element);
+		return result;
+	}
+
+	/**
+	 * @param array an array
+	 * @return null if the array is null; otherwise, a list containing the array elements
+	 */
+	public static List<Character> asList(char[] array)
+	{
+		if (array == null)
+			return null;
+		List<Character> result = new ArrayList<>(array.length);
+		for (char element : array)
 			result.add(element);
 		return result;
 	}
@@ -163,8 +166,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code char[]} and
-	 * {@link java.util.Arrays#equals(char[], char[])} returns {@code true}
+	 * @return true if {@code o} is a {@code char[]} and {@link java.util.Arrays#equals(char[], char[])} returns
+	 * {@code true}
 	 */
 	public static boolean equals(char[] array, Object o)
 	{
@@ -180,8 +183,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code byte[]} and
-	 * {@link java.util.Arrays#equals(byte[], byte[])} returns {@code true}
+	 * @return true if {@code o} is a {@code byte[]} and {@link java.util.Arrays#equals(byte[], byte[])} returns
+	 * {@code true}
 	 */
 	public static boolean equals(byte[] array, Object o)
 	{
@@ -197,8 +200,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code short[]} and
-	 * {@link java.util.Arrays#equals(short[], short[])} returns {@code true}
+	 * @return true if {@code o} is a {@code short[]} and {@link java.util.Arrays#equals(short[], short[])}
+	 * returns {@code true}
 	 */
 	public static boolean equals(short[] array, Object o)
 	{
@@ -214,8 +217,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code long[]} and
-	 * {@link java.util.Arrays#equals(long[], long[])} returns {@code true}
+	 * @return true if {@code o} is a {@code long[]} and {@link java.util.Arrays#equals(long[], long[])} returns
+	 * {@code true}
 	 */
 	public static boolean equals(long[] array, Object o)
 	{
@@ -231,8 +234,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code int[]} and
-	 * {@link java.util.Arrays#equals(int[], int[])} returns {@code true}
+	 * @return true if {@code o} is a {@code int[]} and {@link java.util.Arrays#equals(int[], int[])} returns
+	 * {@code true}
 	 */
 	public static boolean equals(int[] array, Object o)
 	{
@@ -248,8 +251,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code float[]} and
-	 * {@link java.util.Arrays#equals(float[], float[])} returns {@code true}
+	 * @return true if {@code o} is a {@code float[]} and {@link java.util.Arrays#equals(float[], float[])}
+	 * returns {@code true}
 	 */
 	public static boolean equals(float[] array, Object o)
 	{
@@ -265,8 +268,8 @@ public final class Arrays
 	/**
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code double[]} and
-	 * {@link java.util.Arrays#equals(double[], double[])} returns {@code true}
+	 * @return true if {@code o} is a {@code double[]} and {@link java.util.Arrays#equals(double[], double[])}
+	 * returns {@code true}
 	 */
 	public static boolean equals(double[] array, Object o)
 	{
@@ -283,8 +286,8 @@ public final class Arrays
 	 * @param <E>   the type of elements in the array
 	 * @param array an array
 	 * @param o     an object to compare to
-	 * @return true if {@code o} is a {@code E[]} and
-	 * {@link java.util.Arrays#equals(E[], E[])} returns {@code true}
+	 * @return true if {@code o} is a {@code E[]} and {@link java.util.Arrays#equals(E[], E[])} returns
+	 * {@code true}
 	 */
 	public static <E> boolean equals(E[] array, Object o)
 	{
@@ -298,129 +301,113 @@ public final class Arrays
 	}
 
 	/**
-	 * @param array an array
-	 * @param o     the object to search for
+	 * @param array   an array
+	 * @param element the element to search for
 	 * @return true if {@code array} contains {@code o}
 	 * @throws NullPointerException if {@code array} is null
 	 */
-	public static boolean contains(boolean[] array, Object o)
+	public static boolean contains(byte[] array, byte element)
 	{
-		if (!(o instanceof Boolean other))
-			return false;
-		for (boolean value : array)
-			if (value == other)
-				return true;
-		return false;
-	}
-
-	/**
-	 * @param array an array
-	 * @param o     the object to search for
-	 * @return true if {@code array} contains {@code o}
-	 * @throws NullPointerException if {@code array} is null
-	 */
-	public static boolean contains(char[] array, Object o)
-	{
-		if (!(o instanceof Character other))
-			return false;
-		for (char value : array)
-			if (value == other)
-				return true;
-		return false;
-	}
-
-	/**
-	 * @param array an array
-	 * @param o     the object to search for
-	 * @return true if {@code array} contains {@code o}
-	 * @throws NullPointerException if {@code array} is null
-	 */
-	public static boolean contains(byte[] array, Object o)
-	{
-		if (!(o instanceof Byte other))
-			return false;
 		for (byte value : array)
-			if (value == other)
+			if (value == element)
 				return true;
 		return false;
 	}
 
 	/**
-	 * @param array an array
-	 * @param o     the object to search for
+	 * @param array   an array
+	 * @param element the element to search for
 	 * @return true if {@code array} contains {@code o}
 	 * @throws NullPointerException if {@code array} is null
 	 */
-	public static boolean contains(short[] array, Object o)
+	public static boolean contains(short[] array, short element)
 	{
-		if (!(o instanceof Short other))
-			return false;
 		for (short value : array)
-			if (value == other)
+			if (value == element)
 				return true;
 		return false;
 	}
 
 	/**
-	 * @param array an array
-	 * @param o     the object to search for
+	 * @param array   an array
+	 * @param element the element to search for
 	 * @return true if {@code array} contains {@code o}
 	 * @throws NullPointerException if {@code array} is null
 	 */
-	public static boolean contains(long[] array, Object o)
+	public static boolean contains(int[] array, int element)
 	{
-		if (!(o instanceof Long other))
-			return false;
-		for (long value : array)
-			if (value == other)
-				return true;
-		return false;
-	}
-
-	/**
-	 * @param array an array
-	 * @param o     the object to search for
-	 * @return true if {@code array} contains {@code o}
-	 * @throws NullPointerException if {@code array} is null
-	 */
-	public static boolean contains(int[] array, Object o)
-	{
-		if (!(o instanceof Integer other))
-			return false;
 		for (int value : array)
-			if (value == other)
+			if (value == element)
 				return true;
 		return false;
 	}
 
 	/**
-	 * @param array an array
-	 * @param o     the object to search for
+	 * @param array   an array
+	 * @param element the element to search for
 	 * @return true if {@code array} contains {@code o}
 	 * @throws NullPointerException if {@code array} is null
 	 */
-	public static boolean contains(float[] array, Object o)
+	public static boolean contains(long[] array, long element)
 	{
-		if (!(o instanceof Float other))
-			return false;
+		for (long value : array)
+			if (value == element)
+				return true;
+		return false;
+	}
+
+	/**
+	 * @param array   an array
+	 * @param element the element to search for
+	 * @return true if {@code array} contains {@code element}
+	 * @throws NullPointerException if {@code array} is null
+	 */
+	public static boolean contains(boolean[] array, boolean element)
+	{
+		for (boolean value : array)
+			if (value == element)
+				return true;
+		return false;
+	}
+
+	/**
+	 * @param array   an array
+	 * @param element the element to search for
+	 * @return true if {@code array} contains {@code element}
+	 * @throws NullPointerException if {@code array} is null
+	 */
+	public static boolean contains(char[] array, char element)
+	{
+		for (char value : array)
+			if (value == element)
+				return true;
+		return false;
+	}
+
+	/**
+	 * @param array   an array
+	 * @param element the element to search for
+	 * @return true if {@code array} contains {@code element}
+	 * @throws NullPointerException if {@code array} is null
+	 */
+	public static boolean contains(float[] array, float element)
+	{
 		for (float value : array)
-			if (value == other)
+			if (value == element)
 				return true;
 		return false;
 	}
 
 	/**
-	 * @param array an array
-	 * @param o     the object to search for
-	 * @return true if {@code array} contains {@code o}
+	 * @param array   an array
+	 * @param element the element to search for
+	 * @return true if {@code array} contains {@code element}
 	 * @throws NullPointerException if {@code array} is null
 	 */
-	public static boolean contains(double[] array, Object o)
+	public static boolean contains(double[] array, double element)
 	{
-		if (!(o instanceof Double other))
-			return false;
 		for (double value : array)
-			if (Double.compare(value, other) == 0)
+			if (value == element)
 				return true;
 		return false;
 	}
@@ -438,5 +425,385 @@ public final class Arrays
 			if (Objects.equals(value, o))
 				return true;
 		return false;
+	}
+
+	/**
+	 * @param collection a collection
+	 * @param <E>        the type of elements in the collection
+	 * @param comparator a comparator that indicates the expected order
+	 * @return true if the collection is in order
+	 */
+	public static <E> boolean isSorted(Collection<E> collection, Comparator<E> comparator)
+	{
+		Iterator<E> i = collection.iterator();
+		if (!i.hasNext())
+			return true;
+		E left = i.next();
+		while (i.hasNext())
+		{
+			E right = i.next();
+			if (comparator.compare(left, right) > 0)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array      an array
+	 * @param <E>        the type of elements in the array
+	 * @param comparator a comparator that indicates the expected order
+	 * @return true if the collection is in order
+	 */
+	public static <E> boolean isSorted(E[] array, Comparator<E> comparator)
+	{
+		if (array.length == 0)
+			return true;
+		E left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			E right = array[i];
+			if (comparator.compare(left, right) > 0)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(byte[] array)
+	{
+		if (array.length == 0)
+			return true;
+		byte left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			byte right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(short[] array)
+	{
+		if (array.length == 0)
+			return true;
+		short left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			short right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(int[] array)
+	{
+		if (array.length == 0)
+			return true;
+		int left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			int right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(long[] array)
+	{
+		if (array.length == 0)
+			return true;
+		long left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			long right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(boolean[] array)
+	{
+		if (array.length == 0)
+			return true;
+		boolean left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			boolean right = array[i];
+			if (Boolean.compare(left, right) > 0)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(char[] array)
+	{
+		if (array.length == 0)
+			return true;
+		char left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			char right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(float[] array)
+	{
+		if (array.length == 0)
+			return true;
+		float left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			float right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * @param array an array
+	 * @return true if the array is sorted in increasing (natural) order
+	 */
+	public static boolean isSorted(double[] array)
+	{
+		if (array.length == 0)
+			return true;
+		double left = array[0];
+		for (int i = 1; i < array.length; ++i)
+		{
+			double right = array[i];
+			if (left > right)
+				return false;
+			left = right;
+		}
+		return true;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static byte[] sorted(byte[] array)
+	{
+		byte[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static short[] sorted(short[] array)
+	{
+		short[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static int[] sorted(int[] array)
+	{
+		int[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static long[] sorted(long[] array)
+	{
+		long[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static boolean[] sorted(boolean[] array)
+	{
+		// https://cs.stackexchange.com/a/48440/122170
+		boolean[] copy = Arrays.copyOf(array);
+		int trueLength = 0;
+		for (int i = 0; i < copy.length; ++i)
+			if (copy[i])
+				++trueLength;
+		int falseLength = copy.length - trueLength;
+		for (int i = 0; i < falseLength; ++i)
+			copy[i] = false;
+		for (int i = 0; i < trueLength; ++i)
+			copy[falseLength + i] = true;
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static char[] sorted(char[] array)
+	{
+		char[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static float[] sorted(float[] array)
+	{
+		float[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * Sorts an array.
+	 *
+	 * @param array an array
+	 * @return a sorted copy of the array
+	 */
+	public static double[] sorted(double[] array)
+	{
+		double[] copy = Arrays.copyOf(array);
+		java.util.Arrays.parallelSort(array);
+		return copy;
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static byte[] copyOf(byte[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static short[] copyOf(short[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static int[] copyOf(int[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static long[] copyOf(long[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static boolean[] copyOf(boolean[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static char[] copyOf(char[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static float[] copyOf(float[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
+	}
+
+	/**
+	 * @param array an array
+	 * @return a copy of the array
+	 */
+	private static double[] copyOf(double[] array)
+	{
+		return java.util.Arrays.copyOf(array, array.length);
 	}
 }

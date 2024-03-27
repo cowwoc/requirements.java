@@ -9,5 +9,4 @@
 		<appender-ref ref="STDOUT"/>
 	</root>
 	<logger name="com.github.cowwoc.requirements.java.internal.terminal.Terminal" level="warn"/>
-	<logger name="com.github.cowwoc.requirements.natives.internal.terminal.NativeTerminal" level="warn"/>
 </configuration>

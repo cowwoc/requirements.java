@@ -4,188 +4,270 @@
  */
 package com.github.cowwoc.requirements.test.java.internal.util;
 
-import com.github.cowwoc.requirements.Requirements;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements.java.MultipleFailuresException;
+import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Exceptions;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.cowwoc.requirements.test.TestValidators;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.github.cowwoc.requirements.java.internal.util.Exceptions.LIBRARY_PACKAGE;
+import static com.github.cowwoc.requirements.java.internal.util.Exceptions.TEST_PACKAGE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 public final class ExceptionsTest
 {
-	private static final String LIBRARY_PACKAGE = Requirements.class.getPackage().getName();
-	private static final String TEST_PACKAGE = LIBRARY_PACKAGE + ".test";
-	/**
-	 * Regression test. Exceptions.createException() was throwing:
-	 * <p>
-	 * {@code java.lang.invoke.WrongMethodTypeException: expected (String,Throwable)RuntimeException but
-	 * found (String)RuntimeException}
-	 */
 	@Test
-	public void createExceptionWithCauseButNotInApi()
+	public void throwWithoutCleanStackTrace()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Exceptions exceptions = scope.getExceptions();
-			exceptions.createException(RuntimeException.class, "message", new Exception(), false);
-		}
-	}
-
-	/**
-	 * Regression test: Exceptions.createException() was caching exceptions based on whether they had a cause,
-	 * ignoring the value of cleanStackTrace. If it was invoked with cleanStackTrace = false, it would cache a
-	 * non-optimized exception. If it was then invoked on the same exception with cleanStackTrace = true, it
-	 * would return the cached value (non-optimized exception) even though an optimized exception existed.
-	 */
-	@Test
-	public void optimizedExceptionLookupIgnoredValueOfCleanStackTrace()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Exceptions exceptions = scope.getExceptions();
-
-			Requirements requirements = new Requirements(scope);
-			IllegalArgumentException unoptimizedException = exceptions.createException(
-				IllegalArgumentException.class, "message", null, false);
-			requirements.requireThat(exceptions.isOptimizedException(unoptimizedException.getClass()),
-				"exceptions.isOptimizedException(unoptimizedException.getClass())").isFalse();
-
-			IllegalArgumentException optimizedException = exceptions.createException(
-				IllegalArgumentException.class, "message", null, true);
-			requirements.requireThat(exceptions.isOptimizedException(optimizedException.getClass()),
-				"exceptions.isOptimizedException(optimizedException.getClass())").isTrue();
-		}
-	}
-
-	/**
-	 * Ensures that the library optimizes {@code NullPointerException}.
-	 */
-	@Test
-	public void nullPointerExceptionIsOptimized()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Needed to trigger the use of optimized exceptions
-			scope.getGlobalConfiguration().withCleanStackTrace();
-
-			Exceptions exceptions = scope.getExceptions();
-			RuntimeException result = exceptions.createException(NullPointerException.class, "message", null, true);
-			boolean optimizedException = exceptions.isOptimizedException(result.getClass());
-			new Requirements(scope).withContext("exception", exceptions.getClass()).
-				requireThat(optimizedException, "optimizedException").isTrue();
-		}
-	}
-
-	/**
-	 * Ensures that the library optimizes {@code IllegalArgumentException}.
-	 */
-	@Test
-	public void illegalArgumentExceptionIsOptimized()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Needed to trigger the use of optimized exceptions
-			scope.getGlobalConfiguration().withCleanStackTrace();
-
-			Exceptions exceptions = scope.getExceptions();
-			RuntimeException result = exceptions.createException(IllegalArgumentException.class, "message", null, true);
-			boolean optimizedException = exceptions.isOptimizedException(result.getClass());
-			new Requirements(scope).withContext("exception", exceptions.getClass()).
-				requireThat(optimizedException, "optimizedException").isTrue();
-		}
-	}
-
-	/**
-	 * Ensures that the library does not optimize {@code IllegalStateException}.
-	 */
-	@Test
-	public void illegalStateExceptionIsNotOptimized()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Exceptions exceptions = scope.getExceptions();
-
-			Logger log = LoggerFactory.getLogger(ExceptionsTest.class);
-			log.debug("*** The following exception is expected and does not denote a test failure ***");
-
-			RuntimeException result = exceptions.createException(IllegalStateException.class, "message", null, true);
-			boolean optimizedException = exceptions.isOptimizedException(result.getClass());
-			new Requirements(scope).withContext("exception", result.getClass()).
-				requireThat(optimizedException, "optimizedException").isFalse();
-		}
-	}
-
-	@Test
-	public void optimizedExceptionRemovesLibraryFromStackTrace()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Needed to trigger the use of optimized exceptions
-			scope.getGlobalConfiguration().withCleanStackTrace();
-
-			Requirements requirements = new Requirements(scope);
-			try
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				requirements.requireThat("value", "expected").isEqualTo("actual");
+				configurationUpdater.cleanStackTrace(false).
+					lazyExceptions(false);
 			}
-			catch (IllegalArgumentException e)
-			{
-				Exceptions exceptions = scope.getExceptions();
-				boolean optimizedException = exceptions.isOptimizedException(e.getClass());
-				new Requirements(scope).withContext("exception", exceptions.getClass()).
-					requireThat(optimizedException, "optimizedException").isTrue();
-				ensureCleanStackTrace(e, requirements);
-			}
-		}
-	}
-
-	/**
-	 * Ensure that cleanStackTrace does not remove any user-code from the stack trace.
-	 */
-	@Test
-	public void cleanStackTraceWithInterleavedUserCode()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			scope.getGlobalConfiguration().withCleanStackTrace();
-			Requirements requirements = new Requirements(scope);
 
 			try
 			{
-				requirements.assertThat(r ->
-					r.requireThat("actual", null).isNotNull());
+				validators.checkIf((Object) null, "nullActual").isNotNull().
+					and(validators.checkIf(5, "fiveActual").isLessThan(3)).
+					elseThrow();
 			}
-			catch (NullPointerException e)
+			catch (MultipleFailuresException e)
 			{
-				ensureCleanStackTrace(e, requirements);
+				validators.requireThat(isStackTraceClean(e), "isStackTraceClean").isEqualTo(false);
+			}
+		}
+	}
+
+	@Test
+	public void throwWithCleanStackTrace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.cleanStackTrace(true).
+					lazyExceptions(false);
+			}
+
+			try
+			{
+				validators.checkIf((Object) null, "nullActual").isNotNull().
+					and(validators.checkIf(5, "fiveActual").isLessThan(3)).
+					elseThrow();
+			}
+			catch (MultipleFailuresException e)
+			{
+				validators.requireThat(isStackTraceClean(e), "isStackTraceClean").isEqualTo(true);
+
+				// Ensure that stack trace is not missing any elements above the current method.
+				// Throwables are not comparable, but their stack traces are.
+				StackTraceElement[] expected = new AssertionError("\"Actual\" may not be null").
+					getStackTrace();
+				for (ValidationFailure failure : e.getFailures())
+				{
+					StackTraceElement[] actual = failure.getException().getStackTrace();
+
+					// The actual stack trace might contain more elements than the expected stack trace. Truncate it
+					// to the same length.
+					actual = Arrays.copyOfRange(actual, actual.length - expected.length, actual.length);
+
+					// The stack traces should be identical, except for the line number of the top-most element
+					copyTopLineNumber(expected, actual);
+					validators.requireThat(actual, "actual").isEqualTo(expected, "expected");
+				}
 			}
 		}
 	}
 
 	/**
-	 * @param throwable      a throwable
-	 * @param requirements   the instance to use for verifications
-	 * @throws IllegalArgumentException if {@code throwable}'s stack trace contains any elements that should
-	 *                                  have been removed by the "cleanStackTrace" feature
+	 * @param throwable a throwable
+	 * @return true if the stack trace does not contain any references to our library
 	 */
-	private void ensureCleanStackTrace(Throwable throwable, Requirements requirements)
+	private boolean isStackTraceClean(Throwable throwable)
 	{
-		boolean foundUserCode = false;
 		for (StackTraceElement element : throwable.getStackTrace())
 		{
-			if (foundUserCode)
-				continue;
 			String className = element.getClassName();
-			if (!className.startsWith(LIBRARY_PACKAGE) || className.startsWith(TEST_PACKAGE))
+			if (className.startsWith(LIBRARY_PACKAGE) && !className.startsWith(TEST_PACKAGE))
+				return false;
+		}
+		Throwable cause = throwable.getCause();
+		if (cause != null && !isStackTraceClean(cause))
+			return false;
+		for (Throwable suppressed : throwable.getSuppressed())
+			if (!isStackTraceClean(suppressed))
+				return false;
+		return true;
+	}
+
+	/**
+	 * Copies the line number from the top element of {@code first} to the top element of {@code second}.
+	 *
+	 * @param first  an exception stack trace
+	 * @param second another exception stack trace
+	 */
+	private void copyTopLineNumber(StackTraceElement[] first, StackTraceElement[] second)
+	{
+		StackTraceElement firstElement = first[0];
+		StackTraceElement secondElement = second[0];
+
+		second[0] = new StackTraceElement(secondElement.getClassLoaderName(),
+			secondElement.getModuleName(), secondElement.getModuleVersion(),
+			secondElement.getClassName(), secondElement.getMethodName(), secondElement.getFileName(),
+			firstElement.getLineNumber());
+	}
+
+	@Test
+	public void eagerExceptions()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				foundUserCode = true;
-				continue;
+				configurationUpdater.cleanStackTrace(false).
+					lazyExceptions(false);
 			}
-			requirements.requireThat(element.getClassName(), "stacktrace").
-				doesNotStartWith(LIBRARY_PACKAGE);
+
+			try
+			{
+				validators.checkIf((Object) null, "nullActual").isNotNull().
+					and(validators.checkIf(5, "fiveActual").isLessThan(3)).
+					elseThrow();
+			}
+			catch (MultipleFailuresException e)
+			{
+				boolean isNotNullFound = false;
+				for (ValidationFailure failure : e.getFailures())
+				{
+					Throwable exception = failure.getException();
+					if (Exceptions.contains(exception, "isNotNull"))
+					{
+						isNotNullFound = true;
+						break;
+					}
+				}
+				boolean isLessThanFound = false;
+				for (ValidationFailure failure : e.getFailures())
+				{
+					Throwable exception = failure.getException();
+					if (Exceptions.contains(exception, "isNotNull"))
+					{
+						isLessThanFound = true;
+						break;
+					}
+				}
+				validators.checkIf(isNotNullFound, "isNotNullFound").isTrue().and(
+					validators.checkIf(isLessThanFound, "isLessThan").isTrue()).elseThrow();
+			}
+		}
+	}
+
+	@Test
+	public void lazyExceptionsWithoutCleanStackTrace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.cleanStackTrace(false).
+					lazyExceptions(true);
+			}
+
+			try
+			{
+				validators.checkIf((Object) null, "Actual").isNotNull().
+					and(validators.checkIf(5, "Actual").isLessThan(3)).
+					elseThrow();
+			}
+			catch (MultipleFailuresException e)
+			{
+				// Ensure that stack trace is not missing any elements above the current method.
+				// Throwables are not comparable, but their stack traces are.
+				StackTraceElement[] expected = new AssertionError("\"Actual\" may not be null").
+					getStackTrace();
+				for (ValidationFailure failure : e.getFailures())
+				{
+					StackTraceElement[] actual = failure.getException().getStackTrace();
+
+					// The actual stack trace might contain more elements than the expected stack trace. Truncate it
+					// to the same length.
+					actual = Arrays.copyOfRange(actual, actual.length - expected.length, actual.length);
+
+					// The stack traces should be identical, except for the line number of the top-most element
+					copyTopLineNumber(expected, actual);
+					validators.requireThat(actual, "actual").isEqualTo(expected, "expected");
+				}
+			}
+		}
+	}
+
+	@Test
+	public void lazyExceptionsWithCleanStackTrace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.cleanStackTrace(true).
+					lazyExceptions(true);
+			}
+
+			try
+			{
+				validators.checkIf((Object) null, "Actual").isNotNull().
+					and(validators.checkIf(5, "Actual").isLessThan(3)).
+					elseThrow();
+			}
+			catch (MultipleFailuresException e)
+			{
+				// Ensure that stack trace is not missing any elements above the current method.
+				// Throwables are not comparable, but their stack traces are.
+				StackTraceElement[] expected = new AssertionError("\"Actual\" may not be null").
+					getStackTrace();
+				for (ValidationFailure failure : e.getFailures())
+				{
+					StackTraceElement[] actual = failure.getException().getStackTrace();
+
+					// The actual stack trace might contain more elements than the expected stack trace. Truncate it
+					// to the same length.
+					actual = Arrays.copyOfRange(actual, actual.length - expected.length, actual.length);
+
+					// The stack traces should be identical, except for the line number of the top-most element
+					copyTopLineNumber(expected, actual);
+					validators.requireThat(actual, "actual").isEqualTo(expected, "expected");
+				}
+			}
+		}
+	}
+
+	@Test
+	public void lazyExceptionsGetMessages()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.lazyExceptions(true);
+			}
+
+			List<String> messages = validators.checkIf((Object) null, "Actual").isNotNull().
+				and(validators.checkIf(5, "Actual").isLessThan(3)).
+				elseGetMessages();
 		}
 	}
 }

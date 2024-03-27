@@ -19,7 +19,7 @@ public final class DiffResult
 
 	/**
 	 * @param actualLines   the lines of the actual string
-	 * @param diffLines     optional lines denoting the difference between "actual" and "expected"
+	 * @param diffLines     optional lines denoting the difference between "Actual" and "Expected"
 	 * @param expectedLines the lines of the expected string
 	 * @param equalLines    indicates which lines are equal
 	 * @throws NullPointerException if any of the arguments are null
@@ -50,8 +50,8 @@ public final class DiffResult
 	}
 
 	/**
-	 * Returns the difference between "actual" and "expected".
-	 * If the list is empty, no lines should be displayed.
+	 * Returns the difference between "Actual" and "Expected". If the list is empty, no lines should be
+	 * displayed.
 	 *
 	 * @return an unmodifiable list
 	 */

@@ -4,12 +4,12 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class CharacterTest
@@ -20,7 +20,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -30,7 +30,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Requirements(scope).requireThat(actual, "");
+			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
 
@@ -42,7 +42,7 @@ public final class CharacterTest
 			char actual = '0';
 			char first = '0';
 			char last = '2';
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -54,7 +54,7 @@ public final class CharacterTest
 			char actual = '1';
 			char first = '0';
 			char last = '2';
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -66,7 +66,7 @@ public final class CharacterTest
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -78,7 +78,7 @@ public final class CharacterTest
 			char actual = '1';
 			char first = '3';
 			char last = '4';
-			new Requirements(scope).requireThat(actual, "actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
 		}
 	}
 
@@ -90,52 +90,17 @@ public final class CharacterTest
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new Requirements(scope).requireThat(actual, "actual").isBetweenClosed(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, true, last, true);
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void byteIsNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			char actual = '1';
-			new Requirements(scope).requireThat(actual, "actual").isNull();
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	public void byteIsNotNull_deprecation()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			char actual = '1';
-			new Requirements(scope).requireThat(actual, "actual").isNotNull();
-		}
-	}
-
-	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Character actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
+	@Test(expectedExceptions = AssertionError.class)
 	public void assertionsEnabled()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			new Requirements(scope).withAssertionsEnabled().requireThat(actual, "actual").
-				isGreaterThan(actual);
+			assert new TestValidatorsImpl(scope).assumeThat(actual, "Actual").isGreaterThan(actual).elseThrow();
 		}
 	}
 }

@@ -4,8 +4,6 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.GlobalConfiguration;
-
 /**
  * ApplicationScope for the main codebase.
  */
@@ -14,24 +12,25 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	/**
 	 * The singleton instance.
 	 */
-	public static final MainApplicationScope INSTANCE = new MainApplicationScope();
-	/**
-	 * The global configuration.
-	 */
-	private final GlobalConfiguration globalConfiguration;
+	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
 
 	/**
 	 * Creates a new application scope.
 	 */
 	public MainApplicationScope()
 	{
-		this.globalConfiguration = new MainGlobalConfiguration(parent.getTerminal());
+		this(DefaultJvmScope.INSTANCE);
 	}
 
-	@Override
-	public GlobalConfiguration getGlobalConfiguration()
+	/**
+	 * Creates a new application scope.
+	 *
+	 * @param parent the parent scope
+	 * @throws NullPointerException if {@code parent} is null
+	 */
+	private MainApplicationScope(JvmScope parent)
 	{
-		return globalConfiguration;
+		super(parent, new MainGlobalConfiguration(parent.getTerminal()));
 	}
 
 	@Override
