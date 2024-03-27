@@ -29,10 +29,19 @@ public interface PrimitiveByteValidator extends
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @return the value that is being validated
+	 * @return the validated value, or {@code (byte) 0} if a validation failed
 	 */
 	@CheckReturnValue
 	byte getValue();
+
+	/**
+	 * Returns the value that is being validated.
+	 *
+	 * @param defaultValue the fallback value in case of a validation failure
+	 * @return the validated value, or {@code defaultValue} if a validation failed
+	 */
+	@CheckReturnValue
+	byte getValueOrDefault(byte defaultValue);
 
 	/**
 	 * Ensures that the value is equal to {@code expected}.

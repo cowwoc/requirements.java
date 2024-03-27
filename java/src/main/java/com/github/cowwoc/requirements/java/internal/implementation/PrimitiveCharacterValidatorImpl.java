@@ -41,6 +41,14 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	}
 
 	@Override
+	public char getValueOrDefault(char defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveCharacterValidator isEqualTo(char expected)
 	{
 		return isEqualToImpl(expected, null);

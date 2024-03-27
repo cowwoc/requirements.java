@@ -29,10 +29,19 @@ public interface PrimitiveShortValidator extends
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @return the value that is being validated
+	 * @return the validated value, or {@code (short) 0} if a validation failed
 	 */
 	@CheckReturnValue
 	short getValue();
+
+	/**
+	 * Returns the value that is being validated.
+	 *
+	 * @param defaultValue the fallback value in case of a validation failure
+	 * @return the validated value, or {@code defaultValue} if a validation failed
+	 */
+	@CheckReturnValue
+	short getValueOrDefault(short defaultValue);
 
 	/**
 	 * Ensures that the value is equal to {@code expected}.

@@ -33,10 +33,19 @@ public interface PrimitiveFloatValidator extends
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @return the value that is being validated
+	 * @return the validated value, or {@code 0.0f} if a validation failed
 	 */
 	@CheckReturnValue
 	float getValue();
+
+	/**
+	 * Returns the value that is being validated.
+	 *
+	 * @param defaultValue the fallback value in case of a validation failure
+	 * @return the validated value, or {@code defaultValue} if a validation failed
+	 */
+	@CheckReturnValue
+	float getValueOrDefault(float defaultValue);
 
 	/**
 	 * Ensures that the value is equal to {@code expected}.

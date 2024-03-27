@@ -52,6 +52,14 @@ public final class PrimitiveByteValidatorImpl extends AbstractValidator<Primitiv
 	}
 
 	@Override
+	public byte getValueOrDefault(byte defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveByteValidator isEqualTo(byte expected)
 	{
 		return isEqualToImpl(expected, null);

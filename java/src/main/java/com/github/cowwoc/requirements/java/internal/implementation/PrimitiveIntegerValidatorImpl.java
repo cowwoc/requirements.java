@@ -52,6 +52,14 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	}
 
 	@Override
+	public int getValueOrDefault(int defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveIntegerValidator isEqualTo(int expected)
 	{
 		return isEqualToImpl(expected, null);

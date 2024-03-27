@@ -61,12 +61,6 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	}
 
 	@Override
-	public T getValue()
-	{
-		return value;
-	}
-
-	@Override
 	public PrimitiveByteValidatorImpl isByte()
 	{
 		if (hasFailed())
@@ -210,7 +204,7 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	public PrimitiveCharacterValidatorImpl isChar()
 	{
 		if (hasFailed())
-			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '\u0000', context, failures);
 		else if (value == null)
 		{
 			addNullPointerException(
@@ -221,7 +215,7 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Character.class).
 					toString());
-			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '-', context, failures);
+			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '\u0000', context, failures);
 		}
 		return new PrimitiveCharacterValidatorImpl(scope, configuration, name, (char) value, context, failures);
 	}

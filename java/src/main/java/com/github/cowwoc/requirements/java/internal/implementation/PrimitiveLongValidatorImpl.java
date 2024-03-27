@@ -52,6 +52,14 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	}
 
 	@Override
+	public long getValueOrDefault(long defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveLongValidator isEqualTo(long expected)
 	{
 		return isEqualToImpl(expected, null);

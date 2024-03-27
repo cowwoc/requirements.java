@@ -62,6 +62,14 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	}
 
 	@Override
+	public float getValueOrDefault(float defaultValue)
+	{
+		if (hasFailed())
+			return defaultValue;
+		return value;
+	}
+
+	@Override
 	public PrimitiveFloatValidator isEqualTo(float expected)
 	{
 		return isEqualToImpl(expected, null);

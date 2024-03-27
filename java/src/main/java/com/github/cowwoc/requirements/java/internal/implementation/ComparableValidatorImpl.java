@@ -40,12 +40,6 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	}
 
 	@Override
-	public T getValue()
-	{
-		return value;
-	}
-
-	@Override
 	public ComparableValidator<T> isLessThan(T maximumExclusive)
 	{
 		scope.getInternalValidator().requireThat(maximumExclusive, "maximumExclusive").isNotNull();
