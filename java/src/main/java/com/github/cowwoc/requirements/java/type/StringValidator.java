@@ -183,16 +183,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code byte}
 	 * @see Byte#parseByte(String)
 	 */
-	PrimitiveByteValidator asPrimitiveByte();
-
-	/**
-	 * Validates the {@code Byte} representation of the value.
-	 *
-	 * @return a validator for the {@code byte} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code Byte}
-	 * @see Byte#valueOf(String)
-	 */
-	ByteValidator asByte();
+	PrimitiveByteValidator asByte();
 
 	/**
 	 * Validates the {@code short} representation of the value.
@@ -202,16 +193,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code short}
 	 * @see Short#parseShort(String)
 	 */
-	PrimitiveShortValidator asPrimitiveShort();
-
-	/**
-	 * Validates the {@code Short} representation of the value.
-	 *
-	 * @return a validator for the {@code Short} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code short}
-	 * @see Short#valueOf(String)
-	 */
-	ShortValidator asShort();
+	PrimitiveShortValidator asShort();
 
 	/**
 	 * Validates the {@code int} representation of the value.
@@ -221,16 +203,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to an {@code int}
 	 * @see Integer#parseInt(String)
 	 */
-	PrimitiveIntegerValidator asPrimitiveInteger();
-
-	/**
-	 * Validates the {@code Integer} representation of the value.
-	 *
-	 * @return a validator for the {@code Integer} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to an {@code Integer}
-	 * @see Integer#valueOf(String)
-	 */
-	IntegerValidator asInteger();
+	PrimitiveIntegerValidator asInteger();
 
 	/**
 	 * Validates the {@code long} representation of the value.
@@ -240,16 +213,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code long}
 	 * @see Long#parseLong(String)
 	 */
-	PrimitiveLongValidator asPrimitiveLong();
-
-	/**
-	 * Validates the {@code Long} representation of the value.
-	 *
-	 * @return a validator for the {@code Long} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code Long}
-	 * @see Long#valueOf(String)
-	 */
-	LongValidator asLong();
+	PrimitiveLongValidator asLong();
 
 	/**
 	 * Validates the {@code float} representation of the value.
@@ -259,16 +223,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code float}
 	 * @see Float#parseFloat(String)
 	 */
-	PrimitiveFloatValidator asPrimitiveFloat();
-
-	/**
-	 * Validates the {@code Float} representation of the value.
-	 *
-	 * @return a validator for the {@code float} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code Float}
-	 * @see Float#valueOf(String)
-	 */
-	FloatValidator asFloat();
+	PrimitiveFloatValidator asFloat();
 
 	/**
 	 * Validates the {@code double} representation of the value.
@@ -278,16 +233,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code double}
 	 * @see Double#parseDouble(String)
 	 */
-	PrimitiveDoubleValidator asPrimitiveDouble();
-
-	/**
-	 * Validates the {@code Double} representation of the value.
-	 *
-	 * @return a validator for the {@code Double} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code Double}
-	 * @see Double#valueOf(String)
-	 */
-	DoubleValidator asDouble();
+	PrimitiveDoubleValidator asDouble();
 
 	/**
 	 * Validates the {@code boolean} representation of the value.
@@ -296,15 +242,7 @@ public interface StringValidator extends
 	 * @throws NullPointerException if the value is null
 	 * @see Boolean#parseBoolean(String)
 	 */
-	PrimitiveBooleanValidator asPrimitiveBoolean();
-
-	/**
-	 * Validates the {@code Boolean} representation of the value.
-	 *
-	 * @return a validator for the {@code Boolean} representation of the value
-	 * @see Boolean#valueOf(String)
-	 */
-	BooleanValidator asBoolean();
+	PrimitiveBooleanValidator asBoolean();
 
 	/**
 	 * Validates the {@code char} representation of the value.
@@ -314,16 +252,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code char}
 	 * @see Character#charValue()
 	 */
-	PrimitiveCharacterValidator asPrimitiveCharacter();
-
-	/**
-	 * Validates the {@code Character} representation of the value.
-	 *
-	 * @return a validator for the {@code Character} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code Character}
-	 * @see Character#valueOf(char)
-	 */
-	CharacterValidator asCharacter();
+	PrimitiveCharacterValidator asCharacter();
 
 	/**
 	 * Validates the {@code BigInteger} representation of the value.

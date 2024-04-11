@@ -175,7 +175,7 @@ public final class PrimitiveFloatArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public final class PrimitiveFloatArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override

@@ -83,7 +83,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		return isEqualToImpl(expected, name);
 	}
@@ -100,7 +100,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 			addIllegalArgumentException(
 				EqualMessages.isEqualTo(scope, this, this.name, value, true, name, expected).toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);
 	}
@@ -128,7 +128,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 			addIllegalArgumentException(
 				EqualMessages.isNotEqualTo(scope, this, this.name, name, unwanted).toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 
 	private Map<String, Object> newValidatorContext()
 	{
-		HashMap<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
+		Map<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
 		context.putAll(this.context);
 		return context;
 	}

@@ -1204,7 +1204,7 @@ public final class CollectionTest
 				"Actual" must be equal to [2, 1, 3].
 				Actual: [1, 2, 3]""";
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-			                                                   "\n\n**************** Actual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 

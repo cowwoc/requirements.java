@@ -48,19 +48,7 @@ public interface GuavaValidators
 		return new GuavaValidatorsImpl(MainApplicationScope.INSTANCE, Configuration.DEFAULT);
 	}
 
-	/**
-	 * Returns a new factory instance with an independent configuration. This method is commonly used to inherit
-	 * and update contextual information from the original factory before passing it into a nested operation.
-	 * For example:
-	 * <p>
-	 * {@snippet :
-	 * GuavaValidators copy = validators.copy();
-	 * copy.context().put(json.toString(), "json");
-	 * nestedOperation(copy);
-	 *}
-	 *
-	 * @return a copy of this factory
-	 */
+	@Override
 	@CheckReturnValue
 	GuavaValidators copy();
 }

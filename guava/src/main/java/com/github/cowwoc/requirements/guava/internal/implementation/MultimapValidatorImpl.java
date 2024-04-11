@@ -27,6 +27,7 @@ import java.util.Set;
 /**
  * @param <K> the type of keys in the {@code Multimap}
  * @param <V> the type of values in the {@code Multimap}
+ * @param <T> the type of the {@code Multimap}
  */
 public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	extends AbstractObjectValidator<MultimapValidator<K, V, T>, T>
@@ -73,7 +74,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 					CollectionMessages.isEmpty(scope, this, getName(), value, name + ".size()", size).toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 					CollectionMessages.isNotEmpty(scope, this, name).toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override

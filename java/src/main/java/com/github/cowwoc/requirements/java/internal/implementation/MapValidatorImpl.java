@@ -70,7 +70,7 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 					CollectionMessages.isEmpty(scope, this, name, value, name + ".size()", size).toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public final class MapValidatorImpl<K, V, T extends Map<K, V>>
 					CollectionMessages.isNotEmpty(scope, this, name).toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override

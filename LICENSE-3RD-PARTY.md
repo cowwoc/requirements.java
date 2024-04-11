@@ -1,9 +1,13 @@
   # Third-party dependencies
   * Apache License, Version 2.0:
     * [jcommander](https://jcommander.org)
+    * [Jackson-annotations](https://github.com/FasterXML/jackson)
+    * [Jackson-core](https://github.com/FasterXML/jackson-core)
+    * [jackson-databind](https://github.com/FasterXML/jackson)
     * [core](https://github.com/cowwoc/pouch/core/)
     * [annotation](https://github.com/cowwoc/requirements.java/annotation/)
     * [guava](https://github.com/cowwoc/requirements.java/guava/)
+    * [jackson](https://github.com/cowwoc/requirements.java/jackson/)
     * [java](https://github.com/cowwoc/requirements.java/java/)
     * [FindBugs-jsr305](http://findbugs.sourceforge.net/)
     * [error-prone annotations](https://errorprone.info/error_prone_annotations)
@@ -12,6 +16,7 @@
     * [Guava ListenableFuture only](https://github.com/google/guava/listenablefuture)
     * [J2ObjC Annotations](https://github.com/google/j2objc/)
     * [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/java-diff-utils)
+    * [Byte Buddy (without dependencies)](https://bytebuddy.net/byte-buddy)
     * [Byte Buddy (without dependencies)](https://bytebuddy.net/byte-buddy)
     * [Apache Commons Math](http://commons.apache.org/proper/commons-math/)
     * [AssertJ Core](https://assertj.github.io/doc/#assertj-core)

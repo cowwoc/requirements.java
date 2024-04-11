@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.test.java;
 
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.IntegerValidator;
 import com.github.cowwoc.requirements.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -296,6 +297,22 @@ public final class ObjectTest
 		{
 			Random actual = new Random();
 			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotInstanceOf(Random.class);
+		}
+	}
+
+	@Test
+	public void isInstanceOf_Downcast()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Object input = 25;
+			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			validators.requireThat(input, "input").isInstanceOf(Integer.class).
+				apply(v ->
+				{
+					IntegerValidator v2 = validators.requireThat(v.getValue(), v.getName());
+					v2.isMultipleOf(5);
+				});
 		}
 	}
 

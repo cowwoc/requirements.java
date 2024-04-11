@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
@@ -49,7 +50,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isLessThan(T maximumExclusive, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -76,7 +77,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 				ComparableMessages.isLessThan(scope, this, this.name, value, name, maximumExclusive).
 					toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isLessThanOrEqualTo(T maximumInclusive, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -124,7 +125,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isGreaterThanOrEqualTo(T minimumInclusive, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -151,7 +152,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 				ComparableMessages.isGreaterThanOrEqualTo(scope, this, this.name, value, name,
 					minimumInclusive).toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -164,7 +165,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isGreaterThan(T minimumExclusive, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -191,7 +192,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 				ComparableMessages.isGreaterThan(scope, this, this.name, value, name, minimumExclusive).
 					toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -204,7 +205,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	public ComparableValidator<T> isBetween(T minimum, boolean minimumInclusive, T maximum,
 		boolean maximumInclusive)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(minimum, "minimum").isNotNull();
 		internalValidator.requireThat(maximum, "maximum").isNotNull();
 		if (hasFailed())
@@ -224,7 +225,7 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 				ComparableMessages.isBetween(scope, this, this.name, value, minimum, minimumInclusive,
 					maximum, maximumInclusive, null).toString());
 		}
-		return self();
+		return this;
 	}
 
 	private boolean minimumFailed(T minimum, boolean minimumInclusive)

@@ -3,6 +3,9 @@ package com.github.cowwoc.requirements.test;
 import com.github.cowwoc.requirements.guava.GuavaAssumeThat;
 import com.github.cowwoc.requirements.guava.GuavaCheckIf;
 import com.github.cowwoc.requirements.guava.GuavaRequireThat;
+import com.github.cowwoc.requirements.jackson.JacksonAssumeThat;
+import com.github.cowwoc.requirements.jackson.JacksonCheckIf;
+import com.github.cowwoc.requirements.jackson.JacksonRequireThat;
 import com.github.cowwoc.requirements.java.JavaAssumeThat;
 import com.github.cowwoc.requirements.java.JavaCheckIf;
 import com.github.cowwoc.requirements.java.JavaRequireThat;
@@ -25,7 +28,10 @@ import com.github.cowwoc.requirements.java.type.part.Validator;
  * {@link Validator#elseGetException() validator.elseGetException()}}.
  */
 public interface TestValidators
-	extends Validators<TestValidators>, JavaRequireThat, JavaAssumeThat, JavaCheckIf, GuavaRequireThat, GuavaAssumeThat, GuavaCheckIf
+	extends Validators<TestValidators>,
+	JavaRequireThat, JavaAssumeThat, JavaCheckIf,
+	GuavaRequireThat, GuavaAssumeThat, GuavaCheckIf,
+	JacksonRequireThat, JacksonAssumeThat, JacksonCheckIf
 {
 	/**
 	 * Creates a validator factory with a custom configuration.

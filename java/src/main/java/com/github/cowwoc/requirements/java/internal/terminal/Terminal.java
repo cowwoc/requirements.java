@@ -52,10 +52,9 @@ public final class Terminal
 	 */
 	private Set<TerminalEncoding> getSupportedTypesImpl()
 	{
-		OperatingSystem os = OperatingSystem.detected();
-		return switch (os.type)
+		return switch (OperatingSystem.detected().type)
 		{
-			case WINDOWS -> getSupportedTypesForWindows(os);
+			case WINDOWS -> getSupportedTypesForWindows();
 			case LINUX, MAC -> getSupportedTypesForLinuxOrMac();
 		};
 	}
@@ -103,7 +102,7 @@ public final class Terminal
 		return result;
 	}
 
-	private Set<TerminalEncoding> getSupportedTypesForWindows(OperatingSystem os)
+	private Set<TerminalEncoding> getSupportedTypesForWindows()
 	{
 		if (System.getenv("WT_SESSION") == null)
 			return Set.of(NONE);
@@ -194,9 +193,7 @@ public final class Terminal
 	{
 		// System.console() is not as accurate as the native library in that it returns null when stdin
 		// is redirected (which we don't care about). We try using System.console() and if we need more
-		// information we send a follow-up query to the native library.
-		if (System.console() != null)
-			return true;
-		return false;
+		// information, we send a follow-up query to the native library.
+		return System.console() != null;
 	}
 }

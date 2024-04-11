@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
+import com.github.cowwoc.requirements.java.JavaValidators;
 
 /**
  * The configuration of an application. A JVM may contain multiple applications.
@@ -20,7 +20,7 @@ public interface ApplicationScope extends JvmScope
 	/**
 	 * @return creates validators used to check the arguments of validation methods
 	 */
-	JavaValidatorsImpl getInternalValidator();
+	JavaValidators getInternalValidator();
 
 	@Override
 	void close();

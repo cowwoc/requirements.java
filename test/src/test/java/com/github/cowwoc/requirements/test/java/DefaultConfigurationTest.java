@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.test.TestValidators;
 import com.github.cowwoc.requirements.test.TestValidatorsImpl;

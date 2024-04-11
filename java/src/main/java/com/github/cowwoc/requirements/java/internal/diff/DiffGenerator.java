@@ -32,7 +32,7 @@ public final class DiffGenerator
 {
 	// See https://www.regular-expressions.info/unicode.html for an explanation of \p{Zs}
 	private static final Pattern WORDS = Pattern.compile("\\p{Zs}+|\r?\n|(?:\\\\r)?\\\\n|[.\\[\\]()" +
-	                                                     "{}/\\\\*+\\-#:;]");
+		"{}/\\\\*+\\-#:;]");
 	private final TerminalEncoding encoding;
 	private final String paddingMarker;
 	private final ReduceDeltasPerWord reduceDeltasPerWord = new ReduceDeltasPerWord();
@@ -186,7 +186,7 @@ public final class DiffGenerator
 	 * For every word associated with two or more unequal deltas, replace the deltas with a single
 	 * {@code [DELETE actual, INSERT expected]} pair.
 	 */
-	private static class ReduceDeltasPerWord implements Consumer<List<AbstractDelta<Integer>>>
+	private static final class ReduceDeltasPerWord implements Consumer<List<AbstractDelta<Integer>>>
 	{
 		// Syntax: [optional] (mandatory)
 		//
@@ -293,7 +293,7 @@ public final class DiffGenerator
 				return;
 			// Improve readability by avoiding many diffs per word or short diffs in short words
 			if (numberOfUnequalDeltas(deltasInWord) <= 2 &&
-			    (shortestDelta(deltasInWord) >= 3 || longestWord(deltasInWord) >= 5))
+				(shortestDelta(deltasInWord) >= 3 || longestWord(deltasInWord) >= 5))
 			{
 				// Provide character-level granularity
 				//
@@ -503,8 +503,8 @@ public final class DiffGenerator
 				String actual = Strings.fromCodepoints(delta.getSource().getLines());
 				MatchResult result = Strings.lastIndexOf(actual, WORDS).orElseThrow(() ->
 					new AssertionError("Expecting result to be equal to " +
-					                   "indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later.\n" +
-					                   "actual: '" + actual + "'"));
+						"indexOfNextWordInEndDelta (" + indexOfNextWordInEndDelta + ") or later.\n" +
+						"actual: '" + actual + "'"));
 				indexOfWordInStartDelta = result.end();
 			}
 			return true;

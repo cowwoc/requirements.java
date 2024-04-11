@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.cowwoc.requirements</groupId>
+		<artifactId>root</artifactId>
+		<version>9.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>jackson</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerArgs>
+						<arg>-Xdiags:verbose</arg>
+						<arg>-Werror</arg>
+						<arg>-Xlint:all,-requires-automatic,-requires-transitive-automatic,-module,-try</arg>
+						<!-- WORKAROUND: https://issues.apache.org/jira/browse/MCOMPILER-368 -->
+						<arg>-Xpkginfo:always</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<show>public</show>
+							<doctitle>Requirements Jackson Plugin ${project.version} API</doctitle>
+							<windowtitle>Requirements Jackson Plugin ${project.version} API</windowtitle>
+							<additionalOptions>
+								<!-- https://stackoverflow.com/a/54468139/14731 -->
+								<option>--override-methods</option>
+								<option>summary</option>
+							</additionalOptions>
+							<links>
+								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.0/</link>
+							</links>
+							<offlineLinks>
+								<!--
+								The plugin looks for Javadoc at ${project.url}/apidocs but Github doesn't support
+								this layout
+								-->
+								<offlineLink>
+									<url>https://cowwoc.github.io/requirements.java/${project.version}/docs/api/</url>
+									<location>${project.basedir}/../java/target/apidocs</location>
+								</offlineLink>
+							</offlineLinks>
+							<excludePackageNames>
+								com.github.cowwoc.requirements.jackson.internal,
+								com.github.cowwoc.requirements.jackson.internal.*
+							</excludePackageNames>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>3rd-party-licenses</id>
+						<goals>
+							<goal>aggregate-add-third-party</goal>
+						</goals>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

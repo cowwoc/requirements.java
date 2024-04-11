@@ -59,7 +59,7 @@ public final class ContextGenerator
 		assert (name != null);
 		assert (!name.isBlank()) : "name may not be blank";
 		assert (!name.contains(":")) : "name may not contain a colon.\n" +
-		                               "Actual: " + name;
+			"Actual: " + name;
 		actualName = name;
 		return this;
 	}
@@ -89,7 +89,7 @@ public final class ContextGenerator
 		assert (name != null);
 		assert (!name.isBlank()) : "name may not be blank";
 		assert (!name.contains(":")) : "name may not contain a colon.\n" +
-		                               "Actual: " + name;
+			"Actual: " + name;
 		expectedName = name;
 		return this;
 	}
@@ -465,7 +465,7 @@ public final class ContextGenerator
 	public String toString()
 	{
 		return "actualName: " + actualName + ", actualExists: " + actualExists + ", actualValue: " + actualValue +
-		       ", expectedName: " + expectedName + ", actualExists: " + expectedExists + ", expectedValue: " +
-		       expectedValue + ", expectedInMessage: " + expectedInMessage + ", compareValues: " + compareValues;
+			", expectedName: " + expectedName + ", actualExists: " + expectedExists + ", expectedValue: " +
+			expectedValue + ", expectedInMessage: " + expectedInMessage + ", compareValues: " + compareValues;
 	}
 }

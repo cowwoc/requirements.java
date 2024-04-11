@@ -45,9 +45,9 @@ import java.util.function.Function;
  */
 public final class DefaultGuavaValidators
 {
-	private static final GuavaValidatorsImpl delegate = new GuavaValidatorsImpl(MainApplicationScope.INSTANCE,
+	private static final GuavaValidatorsImpl DELEGATE = new GuavaValidatorsImpl(MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
-	private static final ReentrantStampedLock contextLock = new ReentrantStampedLock();
+	private static final ReentrantStampedLock CONTEXT_LOCK = new ReentrantStampedLock();
 
 	/**
 	 * Validates the state of a {@code Multimap}. Any exceptions thrown due to validation failure are
@@ -64,7 +64,7 @@ public final class DefaultGuavaValidators
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public final class DefaultGuavaValidators
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public final class DefaultGuavaValidators
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public final class DefaultGuavaValidators
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public final class DefaultGuavaValidators
 	 */
 	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> requireThat(T value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -138,7 +138,7 @@ public final class DefaultGuavaValidators
 	@CheckReturnValue
 	public static Configuration configuration()
 	{
-		return delegate.configuration();
+		return DELEGATE.configuration();
 	}
 
 	/**
@@ -151,7 +151,7 @@ public final class DefaultGuavaValidators
 	@CheckReturnValue
 	public static ConfigurationUpdater updateConfiguration()
 	{
-		return delegate.updateConfiguration();
+		return DELEGATE.updateConfiguration();
 	}
 
 	/**
@@ -168,7 +168,7 @@ public final class DefaultGuavaValidators
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return contextLock.optimisticRead(delegate::getContext);
+		return CONTEXT_LOCK.optimisticRead(DELEGATE::getContext);
 	}
 
 	/**
@@ -185,9 +185,9 @@ public final class DefaultGuavaValidators
 	 */
 	public static GuavaValidators putContext(Object value, String name)
 	{
-		try (CloseableLock unused = contextLock.write())
+		try (CloseableLock unused = CONTEXT_LOCK.write())
 		{
-			return delegate.putContext(value, name);
+			return DELEGATE.putContext(value, name);
 		}
 	}
 
@@ -201,9 +201,9 @@ public final class DefaultGuavaValidators
 	 */
 	public static GuavaValidators removeContext(String name)
 	{
-		try (CloseableLock unused = contextLock.write())
+		try (CloseableLock unused = CONTEXT_LOCK.write())
 		{
-			return delegate.removeContext(name);
+			return DELEGATE.removeContext(name);
 		}
 	}
 
@@ -217,7 +217,7 @@ public final class DefaultGuavaValidators
 	@CheckReturnValue
 	public static GlobalConfiguration globalConfiguration()
 	{
-		return delegate.globalConfiguration();
+		return DELEGATE.globalConfiguration();
 	}
 
 	private DefaultGuavaValidators()

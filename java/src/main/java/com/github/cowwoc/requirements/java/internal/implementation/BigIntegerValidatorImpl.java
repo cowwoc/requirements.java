@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
@@ -45,8 +46,8 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	private static boolean isMultipleOf(BigInteger number, BigInteger factor)
 	{
 		return factor.compareTo(BigInteger.ZERO) != 0 &&
-		       (number.compareTo(BigInteger.ZERO) == 0 ||
-		        number.remainder(factor).compareTo(BigInteger.ZERO) == 0);
+			(number.compareTo(BigInteger.ZERO) == 0 ||
+				number.remainder(factor).compareTo(BigInteger.ZERO) == 0);
 	}
 
 	@Override
@@ -183,7 +184,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@Override
 	public BigIntegerValidator isMultipleOf(BigInteger factor, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(factor, "factor").isNotNull();
@@ -220,7 +221,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@Override
 	public BigIntegerValidator isNotMultipleOf(BigInteger factor, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 

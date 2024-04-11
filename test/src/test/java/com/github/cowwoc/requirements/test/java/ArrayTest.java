@@ -1456,7 +1456,7 @@ public final class ArrayTest
 				"Actual" must be equal to [2, 1, 3].
 				Actual: [1, 2, 3]""";
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-			                                                   "\n\n**************** Actual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1488,20 +1488,20 @@ public final class ArrayTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "\"Actual\" had an unexpected value.\n" +
-			                         "\n" +
-			                         "Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2, " +
-			                         DIFF_PADDING.repeat("2,".length()) +
-			                         "1, 3]]" + EOS_MARKER + "\n" +
-			                         "Diff    : " + DIFF_PADDING.repeat("[[".length()) +
-			                         DIFF_DELETE.repeat("1,".length()) +
-			                         DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL +
-			                         DIFF_DELETE.repeat("1,".length()) +
-			                         DIFF_INSERT.repeat("2,".length()) +
-			                         DIFF_EQUAL.repeat((" 3]]" + EOS_MARKER).length()) + "\n" +
-			                         "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
-			                         DIFF_PADDING.repeat("1,".length()) + " 3]]" + EOS_MARKER;
+				"\n" +
+				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2, " +
+				DIFF_PADDING.repeat("2,".length()) +
+				"1, 3]]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_PADDING.repeat("[[".length()) +
+				DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL +
+				DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) +
+				DIFF_EQUAL.repeat((" 3]]" + EOS_MARKER).length()) + "\n" +
+				"Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+				DIFF_PADDING.repeat("1,".length()) + " 3]]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-			                                                   "\n\n**************** Actual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1543,27 +1543,27 @@ public final class ArrayTest
 		{
 			String actualMessage = e.getMessage();
 			String expectedMessage = "\"Actual\" had an unexpected value.\n" +
-			                         "\n" +
-			                         "Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2," +
-			                         DIFF_PADDING.repeat(" 2,".length()) +
-			                         "1, 3], [" + DIFF_PADDING.repeat("4,".length()) + "5," +
-			                         DIFF_PADDING.repeat(" 5,".length()) + "4," +
-			                         DIFF_PADDING + "6]]" + EOS_MARKER + "\n" +
-			                         "Diff    : " + DIFF_PADDING.repeat("[[".length()) +
-			                         DIFF_DELETE.repeat("1,".length()) +
-			                         DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL +
-			                         DIFF_DELETE.repeat("1,".length()) +
-			                         DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3], [").length()) +
-			                         DIFF_DELETE.repeat("4,".length()) + DIFF_INSERT.repeat("5,".length()) +
-			                         DIFF_EQUAL +
-			                         DIFF_DELETE.repeat("5,".length()) + DIFF_INSERT.repeat("4,".length()) +
-			                         DIFF_EQUAL.repeat((" 6]]" + EOS_MARKER).length()) + "\n" +
-			                         "Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
-			                         DIFF_PADDING.repeat("1,".length()) + " 3], [4," +
-			                         DIFF_PADDING.repeat("5,".length()) + " 5," +
-			                         DIFF_PADDING.repeat("4,".length()) + " 6]]" + EOS_MARKER;
+				"\n" +
+				"Expected: [[" + DIFF_PADDING.repeat("1,".length()) + "2," +
+				DIFF_PADDING.repeat(" 2,".length()) +
+				"1, 3], [" + DIFF_PADDING.repeat("4,".length()) + "5," +
+				DIFF_PADDING.repeat(" 5,".length()) + "4," +
+				DIFF_PADDING + "6]]" + EOS_MARKER + "\n" +
+				"Diff    : " + DIFF_PADDING.repeat("[[".length()) +
+				DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL +
+				DIFF_DELETE.repeat("1,".length()) +
+				DIFF_INSERT.repeat("2,".length()) + DIFF_EQUAL.repeat((" 3], [").length()) +
+				DIFF_DELETE.repeat("4,".length()) + DIFF_INSERT.repeat("5,".length()) +
+				DIFF_EQUAL +
+				DIFF_DELETE.repeat("5,".length()) + DIFF_INSERT.repeat("4,".length()) +
+				DIFF_EQUAL.repeat((" 6]]" + EOS_MARKER).length()) + "\n" +
+				"Actual  : [[1," + DIFF_PADDING.repeat("2,".length()) + " 2," +
+				DIFF_PADDING.repeat("1,".length()) + " 3], [4," +
+				DIFF_PADDING.repeat("5,".length()) + " 5," +
+				DIFF_PADDING.repeat("4,".length()) + " 6]]" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-			                                                   "\n\n**************** Actual:\n" + actualMessage;
+				"\n\n**************** Actual:\n" + actualMessage;
 		}
 	}
 
@@ -1589,7 +1589,8 @@ public final class ArrayTest
 			String[] actual = null;
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
 				asCollection().elseGetMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEmpty();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				contains("\"Actual\" may not be null");
 		}
 	}
 }

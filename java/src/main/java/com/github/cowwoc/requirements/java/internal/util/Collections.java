@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 /**
  * Collection helper functions.
  */
-public class Collections
+public final class Collections
 {
 	private Collections()
 	{

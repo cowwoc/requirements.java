@@ -42,13 +42,13 @@ public final class ComparableMessages
 	public static MessageBuilder getExpectedVsActual(ApplicationScope scope, AbstractValidator<?> validator,
 		String nameOfValue, Object value, String operation, String nameOfOther, Object other)
 	{
-		StringBuilder message = new StringBuilder();
-		message.append(MessageBuilder.quoteName(nameOfValue)).append(" ").append(operation).append(" ");
+		StringBuilder message = new StringBuilder().
+			append(MessageBuilder.quoteName(nameOfValue)).append(' ').append(operation).append(' ');
 		if (nameOfOther == null)
 			message.append(validator.configuration().stringMappers().toString(other));
 		else
 			message.append(MessageBuilder.quoteName(nameOfOther));
-		message.append(".");
+		message.append('.');
 
 		MessageBuilder messageBuilder = new MessageBuilder(scope, validator, message.toString());
 		if (EqualMessages.isMixedNullity(nameOfOther, value))
@@ -79,15 +79,15 @@ public final class ComparableMessages
 	public static MessageBuilder getExpectedVsActual(ApplicationScope scope, AbstractValidator<?> validator,
 		String nameOfValue, Integer value, String operation, String nameOfOther, int other, Pluralizer pluralizer)
 	{
-		StringBuilder message = new StringBuilder();
-		message.append(MessageBuilder.quoteName(nameOfValue)).append(" ").append(operation).append(" ");
+		StringBuilder message = new StringBuilder().append(MessageBuilder.quoteName(nameOfValue)).append(' ').
+			append(operation).append(' ');
 		if (nameOfOther == null)
 			message.append(validator.configuration().stringMappers().toString(other));
 		else
 			message.append(MessageBuilder.quoteName(nameOfOther));
 		if (pluralizer != null)
-			message.append(" ").append(pluralizer.nameOf(other));
-		message.append(".");
+			message.append(' ').append(pluralizer.nameOf(other));
+		message.append('.');
 
 		MessageBuilder builder = new MessageBuilder(scope, validator, message.toString());
 		if (nameOfOther != null)
@@ -161,7 +161,7 @@ public final class ComparableMessages
 		String nameOfValue, Object value, Object minimum, boolean minimumInclusive, Object maximum,
 		boolean maximumInclusive, Pluralizer pluralizer)
 	{
-		StringBuilder message = new StringBuilder().append(MessageBuilder.quoteName(nameOfValue));
+		StringBuilder message = new StringBuilder(23).append(MessageBuilder.quoteName(nameOfValue));
 		if (pluralizer == null)
 			message.append(" must be between ");
 		else
@@ -179,8 +179,8 @@ public final class ComparableMessages
 		else
 			message.append(')');
 		if (pluralizer != null)
-			message.append(" ").append(pluralizer.nameOf(2));
-		message.append(".");
+			message.append(' ').append(pluralizer.nameOf(2));
+		message.append('.');
 		MessageBuilder messageBuilder = new MessageBuilder(scope, validator, message.toString());
 
 		if (value != null)

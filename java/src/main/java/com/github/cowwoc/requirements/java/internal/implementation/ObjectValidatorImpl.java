@@ -65,12 +65,13 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	{
 		if (hasFailed())
 			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
-		else if (value == null)
+		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		}
-		else if (!(value instanceof Byte))
+		if (!(value instanceof Byte))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Byte.class).
@@ -85,12 +86,13 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	{
 		if (hasFailed())
 			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
-		else if (value == null)
+		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		}
-		else if (!(value instanceof Short))
+		if (!(value instanceof Short))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Short.class).
@@ -105,12 +107,13 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	{
 		if (hasFailed())
 			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
-		else if (value == null)
+		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		}
-		else if (!(value instanceof Integer))
+		if (!(value instanceof Integer))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Integer.class).
@@ -125,12 +128,13 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	{
 		if (hasFailed())
 			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
-		else if (value == null)
+		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		}
-		else if (!(value instanceof Long))
+		if (!(value instanceof Long))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, true, Long.class).

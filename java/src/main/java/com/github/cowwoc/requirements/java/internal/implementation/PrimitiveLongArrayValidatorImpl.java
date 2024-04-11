@@ -79,7 +79,7 @@ public final class PrimitiveLongArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public final class PrimitiveLongArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override

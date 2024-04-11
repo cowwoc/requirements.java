@@ -102,7 +102,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);
 	}
@@ -300,7 +300,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 				ComparableMessages.isLessThan(scope, this, this.name, value, name, maximumExclusive).
 					toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override

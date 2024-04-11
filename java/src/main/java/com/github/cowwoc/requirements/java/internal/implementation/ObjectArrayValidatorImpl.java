@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.CollectionMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
@@ -102,7 +103,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 					CollectionMessages.containsSameNullity(scope, this, this.name, value).toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -154,7 +155,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 	@Override
 	public ObjectArrayValidator<E, E[]> doesNotContain(E unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -180,6 +181,6 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContain(scope, this, this.name, value, name, unwanted).toString());
 		}
-		return self();
+		return this;
 	}
 }

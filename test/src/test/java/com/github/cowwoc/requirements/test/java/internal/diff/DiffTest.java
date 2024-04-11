@@ -918,7 +918,7 @@ public final class DiffTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveInteger();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asInteger();
 			assert (false) : "Expected validator to throw an exception";
 		}
 		catch (IllegalArgumentException e)

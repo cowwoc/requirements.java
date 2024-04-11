@@ -44,25 +44,22 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 	{
 		if (hasFailed())
 			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
-		else if (value == null)
+		if (value == null)
 		{
 			addNullPointerException(
 				ObjectMessages.isNotNull(scope, this, this.name).toString());
 			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
-		else
+		try
 		{
-			try
-			{
-				URI uri = value.toURI();
-				return new UriValidatorImpl(scope, configuration, name, uri, context, failures);
-			}
-			catch (URISyntaxException e)
-			{
-				addFailure(new MessageBuilder(scope, this, name + " is not a valid URI.").
-					putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
-				return new UriValidatorImpl(scope, configuration, name, null, context, failures);
-			}
+			URI uri = value.toURI();
+			return new UriValidatorImpl(scope, configuration, name, uri, context, failures);
+		}
+		catch (URISyntaxException e)
+		{
+			addFailure(new MessageBuilder(scope, this, name + " is not a valid URI.").
+				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}
 }

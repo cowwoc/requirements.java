@@ -89,9 +89,9 @@ import java.util.function.Function;
  */
 public final class DefaultJavaValidators
 {
-	private static final JavaValidatorsImpl delegate = new JavaValidatorsImpl(MainApplicationScope.INSTANCE,
+	private static final JavaValidatorsImpl DELEGATE = new JavaValidatorsImpl(MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
-	private static final ReentrantStampedLock contextLock = new ReentrantStampedLock();
+	private static final ReentrantStampedLock CONTEXT_LOCK = new ReentrantStampedLock();
 
 	private DefaultJavaValidators()
 	{
@@ -108,7 +108,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator requireThat(byte value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator requireThat(Byte value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator requireThat(short value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator requireThat(Short value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator requireThat(int value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -178,7 +178,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator requireThat(Integer value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -192,7 +192,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator requireThat(long value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator requireThat(Long value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator requireThat(float value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -234,7 +234,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator requireThat(Float value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -248,7 +248,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator requireThat(double value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -262,7 +262,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator requireThat(Double value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -276,7 +276,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator requireThat(boolean value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -290,7 +290,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator requireThat(Boolean value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -304,7 +304,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator requireThat(char value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -318,7 +318,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator requireThat(Character value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -332,7 +332,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator requireThat(BigInteger value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -346,7 +346,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator requireThat(BigDecimal value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -361,7 +361,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> requireThat(T value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -376,7 +376,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> requireThat(T value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -392,7 +392,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends Collection<E>> CollectionValidator<E, T> requireThat(T value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -408,7 +408,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends List<E>> ListValidator<E, T> requireThat(T value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -422,7 +422,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator requireThat(byte[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -436,7 +436,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator requireThat(short[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -450,7 +450,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator requireThat(int[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -464,7 +464,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator requireThat(long[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -478,7 +478,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator requireThat(float[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -492,7 +492,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator requireThat(double[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -506,7 +506,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator requireThat(boolean[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -520,7 +520,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator requireThat(char[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -535,7 +535,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E, E[]> requireThat(E[] value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -552,7 +552,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> requireThat(T value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -566,7 +566,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator requireThat(Path value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -580,7 +580,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator requireThat(String value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -594,7 +594,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator requireThat(URI value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -608,7 +608,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UrlValidator requireThat(URL value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -623,7 +623,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ClassValidator<T> requireThat(Class<T> value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -639,7 +639,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> requireThat(Optional<T> value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -653,7 +653,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator requireThat(InetAddress value, String name)
 	{
-		return delegate.requireThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
@@ -668,7 +668,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator assumeThat(byte value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -680,7 +680,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator assumeThat(byte value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -695,7 +695,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator assumeThat(Byte value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -707,7 +707,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator assumeThat(Byte value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -722,7 +722,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator assumeThat(short value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -734,7 +734,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator assumeThat(short value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -749,7 +749,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator assumeThat(Short value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -761,7 +761,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator assumeThat(Short value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -776,7 +776,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator assumeThat(int value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -788,7 +788,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator assumeThat(int value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -803,7 +803,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator assumeThat(Integer value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -815,7 +815,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator assumeThat(Integer value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -830,7 +830,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator assumeThat(long value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -842,7 +842,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator assumeThat(long value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -857,7 +857,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator assumeThat(Long value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -869,7 +869,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator assumeThat(Long value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -884,7 +884,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator assumeThat(float value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -896,7 +896,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator assumeThat(float value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -911,7 +911,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator assumeThat(Float value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -923,7 +923,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator assumeThat(Float value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -938,7 +938,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator assumeThat(double value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -950,7 +950,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator assumeThat(double value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -965,7 +965,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator assumeThat(Double value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -977,7 +977,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator assumeThat(Double value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -992,7 +992,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator assumeThat(boolean value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1004,7 +1004,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator assumeThat(boolean value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1019,7 +1019,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator assumeThat(Boolean value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1031,7 +1031,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator assumeThat(Boolean value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1046,7 +1046,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator assumeThat(char value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1058,7 +1058,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator assumeThat(char value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1073,7 +1073,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator assumeThat(Character value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1085,7 +1085,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator assumeThat(Character value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1100,7 +1100,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator assumeThat(BigInteger value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1112,7 +1112,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator assumeThat(BigInteger value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1127,7 +1127,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator assumeThat(BigDecimal value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1139,7 +1139,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator assumeThat(BigDecimal value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1154,7 +1154,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1166,7 +1166,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1182,7 +1182,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> assumeThat(T value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1195,7 +1195,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> assumeThat(T value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1212,7 +1212,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends Collection<E>> CollectionValidator<E, T> assumeThat(T value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1226,7 +1226,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends Collection<E>> CollectionValidator<E, T> assumeThat(T value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1243,7 +1243,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends List<E>> ListValidator<E, T> assumeThat(T value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1257,7 +1257,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends List<E>> ListValidator<E, T> assumeThat(T value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1271,7 +1271,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator assumeThat(byte[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1282,7 +1282,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator assumeThat(byte[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1296,7 +1296,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator assumeThat(short[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1307,7 +1307,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator assumeThat(short[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1321,7 +1321,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator assumeThat(int[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1332,7 +1332,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator assumeThat(int[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1346,7 +1346,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator assumeThat(long[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1357,7 +1357,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator assumeThat(long[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1371,7 +1371,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator assumeThat(float[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1382,7 +1382,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator assumeThat(float[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1396,7 +1396,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator assumeThat(double[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1407,7 +1407,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator assumeThat(double[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1421,7 +1421,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator assumeThat(boolean[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1434,7 +1434,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator assumeThat(boolean[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1448,7 +1448,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator assumeThat(char[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1459,7 +1459,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator assumeThat(char[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1474,7 +1474,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E, E[]> assumeThat(E[] value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1486,7 +1486,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E, E[]> assumeThat(E[] value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1504,7 +1504,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> assumeThat(T value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1519,7 +1519,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> assumeThat(T value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1534,7 +1534,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator assumeThat(Path value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1546,7 +1546,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator assumeThat(Path value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1561,7 +1561,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator assumeThat(String value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1573,7 +1573,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator assumeThat(String value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1588,7 +1588,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator assumeThat(URI value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1600,7 +1600,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator assumeThat(URI value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1615,7 +1615,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UrlValidator assumeThat(URL value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1627,7 +1627,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UrlValidator assumeThat(URL value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1643,7 +1643,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ClassValidator<T> assumeThat(Class<T> value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1656,7 +1656,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ClassValidator<T> assumeThat(Class<T> value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1673,7 +1673,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> assumeThat(Optional<T> value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1687,7 +1687,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> assumeThat(Optional<T> value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1702,7 +1702,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator assumeThat(InetAddress value, String name)
 	{
-		return delegate.assumeThat(value, name);
+		return DELEGATE.assumeThat(value, name);
 	}
 
 	/**
@@ -1714,7 +1714,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator assumeThat(InetAddress value)
 	{
-		return delegate.assumeThat(value);
+		return DELEGATE.assumeThat(value);
 	}
 
 	/**
@@ -1728,7 +1728,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator checkIf(byte value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1739,7 +1739,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator checkIf(byte value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1753,7 +1753,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator checkIf(Byte value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1764,7 +1764,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator checkIf(Byte value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1778,7 +1778,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator checkIf(short value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1789,7 +1789,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator checkIf(short value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1803,7 +1803,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator checkIf(Short value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1814,7 +1814,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator checkIf(Short value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1828,7 +1828,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator checkIf(int value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1839,7 +1839,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator checkIf(int value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1853,7 +1853,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator checkIf(Integer value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1864,7 +1864,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator checkIf(Integer value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1878,7 +1878,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator checkIf(long value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1889,7 +1889,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator checkIf(long value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1903,7 +1903,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator checkIf(Long value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1914,7 +1914,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator checkIf(Long value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1928,7 +1928,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator checkIf(float value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1939,7 +1939,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator checkIf(float value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1953,7 +1953,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator checkIf(Float value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1964,7 +1964,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator checkIf(Float value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -1978,7 +1978,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator checkIf(double value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -1989,7 +1989,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator checkIf(double value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2003,7 +2003,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator checkIf(Double value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2014,7 +2014,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator checkIf(Double value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2028,7 +2028,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator checkIf(boolean value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2039,7 +2039,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator checkIf(boolean value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2053,7 +2053,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator checkIf(Boolean value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2064,7 +2064,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator checkIf(Boolean value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2078,7 +2078,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator checkIf(char value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2089,7 +2089,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator checkIf(char value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2103,7 +2103,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator checkIf(Character value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2114,7 +2114,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator checkIf(Character value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2128,7 +2128,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator checkIf(BigInteger value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2139,7 +2139,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator checkIf(BigInteger value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2153,7 +2153,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator checkIf(BigDecimal value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2164,7 +2164,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator checkIf(BigDecimal value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2179,7 +2179,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> checkIf(T value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2191,7 +2191,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> checkIf(T value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2206,7 +2206,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> checkIf(T value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2218,7 +2218,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> checkIf(T value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2234,7 +2234,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends Collection<E>> CollectionValidator<E, T> checkIf(T value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2247,7 +2247,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends Collection<E>> CollectionValidator<E, T> checkIf(T value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2263,7 +2263,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends List<E>> ListValidator<E, T> checkIf(T value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2276,7 +2276,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E, T extends List<E>> ListValidator<E, T> checkIf(T value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2290,7 +2290,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator checkIf(byte[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2301,7 +2301,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator checkIf(byte[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2316,7 +2316,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator checkIf(short[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2328,7 +2328,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator checkIf(short[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2342,7 +2342,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator checkIf(int[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2353,7 +2353,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator checkIf(int[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2367,7 +2367,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator checkIf(long[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2378,7 +2378,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator checkIf(long[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2393,7 +2393,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator checkIf(float[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2405,7 +2405,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator checkIf(float[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2420,7 +2420,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator checkIf(double[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2432,7 +2432,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator checkIf(double[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2447,7 +2447,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator checkIf(boolean[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2459,7 +2459,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator checkIf(boolean[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2473,7 +2473,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator checkIf(char[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2484,7 +2484,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator checkIf(char[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2499,7 +2499,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E, E[]> checkIf(E[] value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2511,7 +2511,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E, E[]> checkIf(E[] value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2528,7 +2528,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> checkIf(T value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2542,7 +2542,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> checkIf(T value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2556,7 +2556,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator checkIf(Path value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2567,7 +2567,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator checkIf(Path value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2581,7 +2581,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator checkIf(String value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2592,7 +2592,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator checkIf(String value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2606,7 +2606,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator checkIf(URI value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2617,7 +2617,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator checkIf(URI value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2631,7 +2631,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UrlValidator checkIf(URL value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2642,7 +2642,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UrlValidator checkIf(URL value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2657,7 +2657,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ClassValidator<T> checkIf(Class<T> value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2669,7 +2669,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ClassValidator<T> checkIf(Class<T> value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2685,7 +2685,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> checkIf(Optional<T> value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2698,7 +2698,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> checkIf(Optional<T> value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2712,7 +2712,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator checkIf(InetAddress value, String name)
 	{
-		return delegate.checkIf(value, name);
+		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
@@ -2723,7 +2723,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator checkIf(InetAddress value)
 	{
-		return delegate.checkIf(value);
+		return DELEGATE.checkIf(value);
 	}
 
 	/**
@@ -2735,7 +2735,7 @@ public final class DefaultJavaValidators
 	@CheckReturnValue
 	public static Configuration configuration()
 	{
-		return delegate.configuration();
+		return DELEGATE.configuration();
 	}
 
 	/**
@@ -2749,7 +2749,7 @@ public final class DefaultJavaValidators
 	@CheckReturnValue
 	public static ConfigurationUpdater updateConfiguration()
 	{
-		return delegate.updateConfiguration();
+		return DELEGATE.updateConfiguration();
 	}
 
 	/**
@@ -2766,7 +2766,7 @@ public final class DefaultJavaValidators
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return contextLock.optimisticRead(delegate::getContext);
+		return CONTEXT_LOCK.optimisticRead(DELEGATE::getContext);
 	}
 
 	/**
@@ -2783,9 +2783,9 @@ public final class DefaultJavaValidators
 	 */
 	public static JavaValidators putContext(Object value, String name)
 	{
-		try (CloseableLock unused = contextLock.write())
+		try (CloseableLock unused = CONTEXT_LOCK.write())
 		{
-			return delegate.putContext(value, name);
+			return DELEGATE.putContext(value, name);
 		}
 	}
 
@@ -2799,9 +2799,9 @@ public final class DefaultJavaValidators
 	 */
 	public static JavaValidators removeContext(String name)
 	{
-		try (CloseableLock unused = contextLock.write())
+		try (CloseableLock unused = CONTEXT_LOCK.write())
 		{
-			return delegate.removeContext(name);
+			return DELEGATE.removeContext(name);
 		}
 	}
 
@@ -2815,6 +2815,6 @@ public final class DefaultJavaValidators
 	@CheckReturnValue
 	public static GlobalConfiguration globalConfiguration()
 	{
-		return delegate.globalConfiguration();
+		return DELEGATE.globalConfiguration();
 	}
 }

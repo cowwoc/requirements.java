@@ -25,11 +25,11 @@ public abstract class AbstractValidator<S> implements Validator<S>
 	/**
 	 * The contextual information of this validator.
 	 */
-	public final Map<String, Object> context;
+	protected final Map<String, Object> context;
 	/**
 	 * The list of validation failures.
 	 */
-	public final List<ValidationFailure> failures;
+	protected final List<ValidationFailure> failures;
 	/**
 	 * The application configuration.
 	 */
@@ -65,7 +65,7 @@ public abstract class AbstractValidator<S> implements Validator<S>
 		if (!StringValidatorImpl.isStripped(name))
 		{
 			throw new IllegalArgumentException("name may not contain leading or trailing whitespace.\n" +
-			                                   "Actual: \"" + name + "\"");
+				"Actual: \"" + name + "\"");
 		}
 		if (name.isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
@@ -156,20 +156,6 @@ public abstract class AbstractValidator<S> implements Validator<S>
 		addFailure(message, null, IllegalArgumentException::new);
 	}
 
-	/**
-	 * Applies the exception transformer to {@code throwable}.
-	 *
-	 * @param throwable a throwable
-	 * @return the updated throwable
-	 */
-	private Throwable transformException(Throwable throwable)
-	{
-		Throwable updatedThrowable = configuration.exceptionTransformer().apply(throwable);
-		if (updatedThrowable == null)
-			return throwable;
-		return updatedThrowable;
-	}
-
 	@Override
 	public Configuration configuration()
 	{
@@ -255,7 +241,7 @@ public abstract class AbstractValidator<S> implements Validator<S>
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		if (value == null)
 			context.remove(name);

@@ -5,6 +5,7 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.ObjectValidator;
 import com.github.cowwoc.requirements.java.type.part.ObjectPart;
 
 import java.util.List;
@@ -106,7 +107,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	}
 
 	@Override
-	public S isInstanceOf(Class<?> expected)
+	public <C> ObjectValidator<C> isInstanceOf(Class<C> expected)
 	{
 		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
 		if (!expected.isInstance(value))
@@ -115,7 +116,9 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 				ObjectMessages.isInstanceOf(scope, this, this.name, value, !hasFailed(), expected).
 					toString());
 		}
-		return self();
+		@SuppressWarnings("unchecked")
+		C newValue = (C) value;
+		return new ObjectValidatorImpl<>(scope, configuration, name, newValue, context, failures);
 	}
 
 	@Override
@@ -144,7 +147,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		return isEqualToImpl(expected, name);
 	}
@@ -157,7 +160,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 				EqualMessages.isEqualTo(scope, this, this.name, null, false, name, expected).toString());
 		}
 		else if (EqualMessages.isMixedNullity(value, expected) ||
-		         (value != null && !getEqualityFunction().apply(value, expected)))
+			(value != null && !getEqualityFunction().apply(value, expected)))
 		{
 			addIllegalArgumentException(
 				EqualMessages.isEqualTo(scope, this, this.name, value, true, name, expected).toString());
@@ -178,7 +181,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);
 	}
@@ -186,7 +189,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	private S isNotEqualToImpl(Object unwanted, String name)
 	{
 		if (hasFailed() || (EqualMessages.isSameNullity(value, unwanted) &&
-		                    (value == null || getEqualityFunction().apply(value, unwanted))))
+			(value == null || getEqualityFunction().apply(value, unwanted))))
 		{
 			addIllegalArgumentException(
 				EqualMessages.isNotEqualTo(scope, this, this.name, name, unwanted).toString());

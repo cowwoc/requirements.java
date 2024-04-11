@@ -2,6 +2,7 @@ package com.github.cowwoc.requirements.java.type.part;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements.java.type.ObjectValidator;
 
 import java.util.function.Function;
 
@@ -83,14 +84,25 @@ public interface ObjectPart<S, T>
 	S isNotSameReferenceAs(Object unwanted, String name);
 
 	/**
-	 * Ensures that the object is an instance of a class.
+	 * Ensures that the object is an instance of a class. To downcast the returned validator (e.g., from
+	 * {@code ObjectValidator<Integer>} to {@code IntegerValidator}) use the following pattern:
+	 * {@snippet :
+	 * Object input = 25;
+	 * requireThat(input, "input").isInstanceOf(Integer.class).
+	 * apply(v ->
+	 * {
+	 *   IntegerValidator v2 = requireThat(v.getValue(), v.getName());
+	 *   v2.isMultipleOf(5);
+	 * });
+	 *}
 	 *
+	 * @param <C>      the desired class
 	 * @param expected the desired class
-	 * @return this
+	 * @return a validator for an object of the desired class
 	 * @throws NullPointerException     if the value or {@code expected} are null
-	 * @throws IllegalArgumentException if the value is not an instance of the expected class
+	 * @throws IllegalArgumentException if the value is not an instance of the desired class
 	 */
-	S isInstanceOf(Class<?> expected);
+	<C> ObjectValidator<C> isInstanceOf(Class<C> expected);
 
 	/**
 	 * Ensures that the object is not an instance of a class.

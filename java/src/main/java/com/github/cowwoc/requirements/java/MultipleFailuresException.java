@@ -31,11 +31,12 @@ public final class MultipleFailuresException extends RuntimeException
 			throw new NullPointerException("failures may not be null");
 		if (failures.isEmpty())
 			throw new IllegalArgumentException("failures must contain at least two elements");
-		StringBuilder result = new StringBuilder("There are " + failures.size() + " nested exceptions.\n");
+		StringBuilder result = new StringBuilder(35).append("There are ").append(failures.size()).
+			append(" nested exceptions.\n");
 		int i = 1;
 		for (ValidationFailure failure : failures)
 		{
-			result.append(i + ". " + failure.getException().getClass().getName());
+			result.append(i).append(". ").append(failure.getException().getClass().getName());
 			String message = failure.getMessage();
 			if (message != null)
 			{

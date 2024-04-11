@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
@@ -55,8 +56,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	private static boolean isMultipleOf(BigDecimal number, BigDecimal factor)
 	{
 		return factor.compareTo(BigDecimal.ZERO) != 0 &&
-		       (number.compareTo(BigDecimal.ZERO) == 0 ||
-		        number.remainder(factor).compareTo(BigDecimal.ZERO) == 0);
+			(number.compareTo(BigDecimal.ZERO) == 0 || number.remainder(factor).compareTo(BigDecimal.ZERO) == 0);
 	}
 
 	@Override
@@ -237,7 +237,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isMultipleOf(BigDecimal factor, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -275,7 +275,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isNotMultipleOf(BigDecimal factor, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(factor, "factor").isNotNull();

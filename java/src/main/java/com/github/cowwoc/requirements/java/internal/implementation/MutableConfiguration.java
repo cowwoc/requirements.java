@@ -272,16 +272,15 @@ public final class MutableConfiguration
 		if (!(o instanceof MutableConfiguration other))
 			return false;
 		return other.cleanStackTrace == cleanStackTrace && other.includeDiff == includeDiff &&
-		       other.equalityMethod == equalityMethod && other.stringMappers.equals(stringMappers) &&
-		       other.exceptionTransformer == exceptionTransformer;
+			other.equalityMethod == equalityMethod && other.stringMappers.equals(stringMappers) &&
+			other.exceptionTransformer == exceptionTransformer;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "Configuration[cleanStackTrace=" + cleanStackTrace + ", diffEnabled=" + includeDiff +
-		       ", equalityMethod=" + equalityMethod + ", stringMappers=" + stringMappers +
-		       ", exceptionTransformer=" +
-		       exceptionTransformer + "]";
+			", equalityMethod=" + equalityMethod + ", stringMappers=" + stringMappers +
+			", exceptionTransformer=" + exceptionTransformer + "]";
 	}
 }

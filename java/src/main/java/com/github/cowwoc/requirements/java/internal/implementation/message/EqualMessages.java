@@ -40,7 +40,7 @@ public final class EqualMessages
 			//    Actual must be equal to 123.
 			return new MessageBuilder(scope, validator,
 				MessageBuilder.quoteName(nameOfValue) + " must be equal to " + stringMappers.toString(expected) +
-				".");
+					".");
 		}
 		String expectedAsString = stringMappers.toString(expected);
 		String valueAsString = stringMappers.toString(value);
@@ -48,9 +48,9 @@ public final class EqualMessages
 		int lengthOfValue = valueAsString.length();
 		int lengthOfExpected = expectedAsString.length();
 		boolean expectedValueIsShort = lengthOfExpected < MAXIMUM_LENGTH_FOR_VISUAL_COMPARISON &&
-		                               !expectedAsString.contains("\n");
+			!expectedAsString.contains("\n");
 		boolean actualValueIsShort = lengthOfValue < MAXIMUM_LENGTH_FOR_VISUAL_COMPARISON &&
-		                             !valueAsString.contains("\n");
+			!valueAsString.contains("\n");
 		boolean valuesAreShort = expectedValueIsShort && actualValueIsShort;
 
 		if (valuesAreShort)

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<OptionalValidator<T>, Optional<T>>
 	implements OptionalValidator<T>
 {
@@ -32,6 +31,7 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	 * @throws AssertionError           if any of the mandatory arguments are null. If {@code name} contains
 	 *                                  leading or trailing whitespace, or is empty.
 	 */
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public OptionalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		Optional<T> value, Map<String, Object> context, List<ValidationFailure> failures)
 	{

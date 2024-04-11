@@ -175,7 +175,7 @@ public final class PrimitiveByteArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public final class PrimitiveByteArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override

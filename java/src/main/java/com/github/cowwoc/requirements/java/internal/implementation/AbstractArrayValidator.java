@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.CollectionMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.MessageBuilder;
@@ -176,7 +177,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S containsExactly(A expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -201,7 +202,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S containsAny(Collection<E> expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -240,7 +241,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S containsAny(A expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -257,7 +258,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S containsAll(Collection<E> expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -302,7 +303,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S containsAll(A expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -320,7 +321,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S doesNotContainExactly(Collection<E> unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -357,6 +358,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 		return self();
 	}
 
+	@Override
 	public S doesNotContainExactly(A unwanted)
 	{
 		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
@@ -366,7 +368,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S doesNotContainExactly(A unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -384,7 +386,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S doesNotContainAny(Collection<E> unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -429,7 +431,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S doesNotContainAny(A unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -447,7 +449,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S doesNotContainAll(Collection<E> unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 
@@ -487,7 +489,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 	@Override
 	public S doesNotContainAll(A unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the name of the value");
 		isNotEqualTo(this.name, "the name of the value");
@@ -596,6 +598,13 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 			return new CollectionValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
 				failures);
 		}
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new CollectionValidatorImpl<>(scope, configuration, name + ".asCollection()", null,
+				PLURALIZER, context, failures);
+		}
 		return new CollectionValidatorImpl<>(scope, configuration, name, asList(value), Pluralizer.ELEMENT,
 			context, failures);
 	}
@@ -607,6 +616,13 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 		{
 			return new ListValidatorImpl<>(scope, configuration, name, null, Pluralizer.ELEMENT, context,
 				failures);
+		}
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new ListValidatorImpl<>(scope, configuration, name + ".asList()", null,
+				PLURALIZER, context, failures);
 		}
 		return new ListValidatorImpl<>(scope, configuration, name, asList(value), Pluralizer.ELEMENT, context,
 			failures);

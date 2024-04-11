@@ -58,6 +58,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The default implementation of JavaValidators.
+ */
 public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	implements JavaValidators
 {
@@ -1263,7 +1266,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 
 	private Map<String, Object> newValidatorContext()
 	{
-		HashMap<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
+		Map<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
 		context.putAll(this.context);
 		return context;
 	}
@@ -1327,7 +1330,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 			newValidatorFailures());
 	}
 
-	public PrimitiveDoubleValidator newInstance(double value, String name, Configuration configuration)
+	private PrimitiveDoubleValidator newInstance(double value, String name, Configuration configuration)
 	{
 		return new PrimitiveDoubleValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
@@ -1339,168 +1342,169 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 			newValidatorFailures());
 	}
 
-	public PrimitiveBooleanValidator newInstance(boolean value, String name, Configuration configuration)
+	private PrimitiveBooleanValidator newInstance(boolean value, String name, Configuration configuration)
 	{
 		return new PrimitiveBooleanValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public BooleanValidator newInstance(Boolean value, String name, Configuration configuration)
+	private BooleanValidator newInstance(Boolean value, String name, Configuration configuration)
 	{
 		return new BooleanValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveCharacterValidator newInstance(char value, String name, Configuration configuration)
+	private PrimitiveCharacterValidator newInstance(char value, String name, Configuration configuration)
 	{
 		return new PrimitiveCharacterValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public CharacterValidator newInstance(Character value, String name, Configuration configuration)
+	private CharacterValidator newInstance(Character value, String name, Configuration configuration)
 	{
 		return new CharacterValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public BigIntegerValidator newInstance(BigInteger value, String name, Configuration configuration)
+	private BigIntegerValidator newInstance(BigInteger value, String name, Configuration configuration)
 	{
 		return new BigIntegerValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public BigDecimalValidator newInstance(BigDecimal value, String name, Configuration configuration)
+	private BigDecimalValidator newInstance(BigDecimal value, String name, Configuration configuration)
 	{
 		return new BigDecimalValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public <T extends Comparable<T>> ComparableValidator<T> newInstance(T value, String name,
+	private <T extends Comparable<T>> ComparableValidator<T> newInstance(T value, String name,
 		Configuration configuration)
 	{
 		return new ComparableValidatorImpl<>(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public <T> ObjectValidator<T> newInstance(T value, String name, Configuration configuration)
+	private <T> ObjectValidator<T> newInstance(T value, String name, Configuration configuration)
 	{
 		return new ObjectValidatorImpl<>(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public <E, T extends Collection<E>> CollectionValidator<E, T> newInstance(T value, String name,
+	private <E, T extends Collection<E>> CollectionValidator<E, T> newInstance(T value, String name,
 		Configuration configuration)
 	{
 		return new CollectionValidatorImpl<>(scope, configuration, name, value, Pluralizer.ELEMENT,
 			newValidatorContext(), newValidatorFailures());
 	}
 
-	public <E, T extends List<E>> ListValidator<E, T> newInstance(T value, String name,
+	private <E, T extends List<E>> ListValidator<E, T> newInstance(T value, String name,
 		Configuration configuration)
 	{
 		return new ListValidatorImpl<>(scope, configuration, name, value, Pluralizer.ELEMENT,
 			newValidatorContext(), newValidatorFailures());
 	}
 
-	public PrimitiveByteArrayValidator newInstance(byte[] value, String name, Configuration configuration)
+	private PrimitiveByteArrayValidator newInstance(byte[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveByteArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveShortArrayValidator newInstance(short[] value, String name, Configuration configuration)
+	private PrimitiveShortArrayValidator newInstance(short[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveShortArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveIntegerArrayValidator newInstance(int[] value, String name, Configuration configuration)
+	private PrimitiveIntegerArrayValidator newInstance(int[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveIntegerArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveLongArrayValidator newInstance(long[] value, String name, Configuration configuration)
+	private PrimitiveLongArrayValidator newInstance(long[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveLongArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveFloatArrayValidator newInstance(float[] value, String name, Configuration configuration)
+	private PrimitiveFloatArrayValidator newInstance(float[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveFloatArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveDoubleArrayValidator newInstance(double[] value, String name, Configuration configuration)
+	private PrimitiveDoubleArrayValidator newInstance(double[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveDoubleArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveBooleanArrayValidator newInstance(boolean[] value, String name, Configuration configuration)
+	private PrimitiveBooleanArrayValidator newInstance(boolean[] value, String name,
+		Configuration configuration)
 	{
 		return new PrimitiveBooleanArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PrimitiveCharacterArrayValidator newInstance(char[] value, String name, Configuration configuration)
+	private PrimitiveCharacterArrayValidator newInstance(char[] value, String name, Configuration configuration)
 	{
 		return new PrimitiveCharacterArrayValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public <E> ObjectArrayValidator<E, E[]> newInstance(E[] value, String name, Configuration configuration)
+	private <E> ObjectArrayValidator<E, E[]> newInstance(E[] value, String name, Configuration configuration)
 	{
 		return new ObjectArrayValidatorImpl<>(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public <K, V, T extends Map<K, V>> MapValidator<K, V, T> newInstance(T value, String name,
+	private <K, V, T extends Map<K, V>> MapValidator<K, V, T> newInstance(T value, String name,
 		Configuration configuration)
 	{
 		return new MapValidatorImpl<>(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public PathValidator newInstance(Path value, String name, Configuration configuration)
+	private PathValidator newInstance(Path value, String name, Configuration configuration)
 	{
 		return new PathValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public StringValidator newInstance(String value, String name, Configuration configuration)
+	private StringValidator newInstance(String value, String name, Configuration configuration)
 	{
 		return new StringValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public UriValidator newInstance(URI value, String name, Configuration configuration)
+	private UriValidator newInstance(URI value, String name, Configuration configuration)
 	{
 		return new UriValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public UrlValidator newInstance(URL value, String name, Configuration configuration)
+	private UrlValidator newInstance(URL value, String name, Configuration configuration)
 	{
 		return new UrlValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public <T> ClassValidator<T> newInstance(Class<T> value, String name, Configuration configuration)
+	private <T> ClassValidator<T> newInstance(Class<T> value, String name, Configuration configuration)
 	{
 		return new ClassValidatorImpl<>(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public <T> OptionalValidator<T> newInstance(Optional<T> value, String name, Configuration configuration)
+	private <T> OptionalValidator<T> newInstance(Optional<T> value, String name, Configuration configuration)
 	{
 		return new OptionalValidatorImpl<>(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());
 	}
 
-	public InetAddressValidator newInstance(InetAddress value, String name, Configuration configuration)
+	private InetAddressValidator newInstance(InetAddress value, String name, Configuration configuration)
 	{
 		return new InetAddressValidatorImpl(scope, configuration, name, value, newValidatorContext(),
 			newValidatorFailures());

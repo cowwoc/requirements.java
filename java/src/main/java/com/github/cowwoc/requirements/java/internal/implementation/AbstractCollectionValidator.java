@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.CollectionMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.MessageBuilder;
@@ -202,7 +203,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S containsExactly(E[] expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -219,7 +220,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S containsAny(Collection<E> expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -258,7 +259,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S containsAny(E[] expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -275,7 +276,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S containsAll(Collection<E> expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -319,7 +320,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S containsAll(E[] expected, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(expected, name).isNotNull();
@@ -335,7 +336,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContain(E unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(unwanted, name).isNotNull();
@@ -372,7 +373,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContainExactly(Collection<E> unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(unwanted, name).isNotNull();
@@ -418,7 +419,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContainExactly(E[] unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(unwanted, name).isNotNull();
@@ -435,7 +436,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContainAny(Collection<E> unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the same name as the value");
 		internalValidator.requireThat(unwanted, name).isNotNull();
@@ -479,7 +480,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContainAny(E[] unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the name of the value");
 		isNotEqualTo(this.name, "the name of the value");
@@ -497,7 +498,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContainAll(Collection<E> unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the name of the value");
 		internalValidator.requireThat(unwanted, name).isNotNull();
@@ -536,7 +537,7 @@ public abstract class AbstractCollectionValidator<S extends CollectionPart<S, E>
 	@Override
 	public S doesNotContainAll(E[] unwanted, String name)
 	{
-		JavaValidatorsImpl internalValidator = scope.getInternalValidator();
+		JavaValidators internalValidator = scope.getInternalValidator();
 		internalValidator.requireThat(name, "name").isStripped().
 			isNotEqualTo(this.name, "the name of the value");
 		isNotEqualTo(this.name, "the name of the value");

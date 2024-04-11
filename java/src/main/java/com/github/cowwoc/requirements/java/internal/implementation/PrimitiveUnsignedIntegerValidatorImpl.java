@@ -142,7 +142,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-			                                   "Actual: " + name);
+				"Actual: " + name);
 		}
 		return isNotEqualToImpl(unwanted, name);
 	}
@@ -418,7 +418,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 					putContext(value, "Actual").
 					toString());
 		}
-		return self();
+		return this;
 	}
 
 	@Override

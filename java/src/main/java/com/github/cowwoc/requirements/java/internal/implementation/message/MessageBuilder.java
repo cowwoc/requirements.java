@@ -94,7 +94,7 @@ public final class MessageBuilder
 
 		Set<String> existingKeys = new HashSet<>(failureContext.keySet());
 		Map<String, Object> section = LinkedHashMap.newLinkedHashMap(failureContext.size() +
-		                                                             validatorContext.size());
+			validatorContext.size());
 		section.putAll(failureContext);
 
 		for (Entry<String, Object> entry : validatorContext.entrySet())

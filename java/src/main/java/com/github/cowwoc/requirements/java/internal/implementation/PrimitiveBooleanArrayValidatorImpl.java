@@ -79,7 +79,7 @@ public final class PrimitiveBooleanArrayValidatorImpl
 						toString());
 			}
 		}
-		return self();
+		return this;
 	}
 
 	@Override

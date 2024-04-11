@@ -1,11 +1,15 @@
 package com.github.cowwoc.requirements.test;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.guava.MultimapValidator;
 import com.github.cowwoc.requirements.guava.internal.implementation.GuavaValidatorsImpl;
+import com.github.cowwoc.requirements.jackson.JsonNodeValidator;
+import com.github.cowwoc.requirements.jackson.internal.implementation.JacksonValidatorsImpl;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
+import com.github.cowwoc.requirements.java.internal.implementation.AbstractValidator;
 import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.type.BigDecimalValidator;
@@ -65,6 +69,7 @@ public final class TestValidatorsImpl implements TestValidators
 {
 	private final JavaValidatorsImpl javaValidators;
 	private final GuavaValidatorsImpl guavaValidators;
+	private final JacksonValidatorsImpl jacksonValidators;
 
 	/**
 	 * Creates a new instance using the default configuration.
@@ -76,6 +81,7 @@ public final class TestValidatorsImpl implements TestValidators
 	{
 		this.javaValidators = new JavaValidatorsImpl(scope, Configuration.DEFAULT);
 		this.guavaValidators = new GuavaValidatorsImpl(scope, Configuration.DEFAULT);
+		this.jacksonValidators = new JacksonValidatorsImpl(scope, Configuration.DEFAULT);
 	}
 
 	/**
@@ -102,6 +108,7 @@ public final class TestValidatorsImpl implements TestValidators
 	{
 		javaValidators.setConfiguration(configuration);
 		guavaValidators.setConfiguration(configuration);
+		jacksonValidators.setConfiguration(configuration);
 	}
 
 	@Override
@@ -1305,6 +1312,36 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
+	public <T extends JsonNode> JsonNodeValidator<T> requireThat(T value, String name)
+	{
+		return jacksonValidators.requireThat(value, name);
+	}
+
+	@Override
+	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value, String name)
+	{
+		return jacksonValidators.assumeThat(value, name);
+	}
+
+	@Override
+	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value)
+	{
+		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+	}
+
+	@Override
+	public <T extends JsonNode> JsonNodeValidator<T> checkIf(T value, String name)
+	{
+		return jacksonValidators.checkIf(value, name);
+	}
+
+	@Override
+	public <T extends JsonNode> JsonNodeValidator<T> checkIf(T value)
+	{
+		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+	}
+
+	@Override
 	@CheckReturnValue
 	public GlobalConfiguration globalConfiguration()
 	{
@@ -1340,6 +1377,7 @@ public final class TestValidatorsImpl implements TestValidators
 	{
 		javaValidators.putContext(value, name);
 		guavaValidators.putContext(value, name);
+		jacksonValidators.putContext(value, name);
 		return this;
 	}
 
@@ -1348,6 +1386,7 @@ public final class TestValidatorsImpl implements TestValidators
 	{
 		javaValidators.removeContext(name);
 		guavaValidators.removeContext(name);
+		jacksonValidators.removeContext(name);
 		return this;
 	}
 }

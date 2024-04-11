@@ -48,6 +48,7 @@
 		<module>annotation</module>
 		<module>java</module>
 		<module>guava</module>
+		<module>jackson</module>
 	</modules>
 
 	<properties>
@@ -57,12 +58,13 @@
 		<maven.version>3.9.1</maven.version>
 		<maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
 		<guava.version>33.0.0-jre</guava.version>
+		<jackson.version>2.17.0</jackson.version>
 		<slf4j.version>2.0.11</slf4j.version>
 		<logback.version>1.4.14</logback.version>
 		<testng.version>7.9.0</testng.version>
 		<pouch.version>4.3</pouch.version>
 		<jmh.version>1.37</jmh.version>
-		<pmd.version>6.55.0</pmd.version>
+		<pmd.version>7.0.0</pmd.version>
 	</properties>
 
 	<dependencyManagement>
@@ -91,6 +93,11 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.openjdk.jmh</groupId>
@@ -234,6 +241,12 @@
 					<version>3.21.2</version>
 					<dependencies>
 						<dependency>
+							<!-- WORKAROUND: https://github.com/apache/maven-pmd-plugin/pull/144 -->
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-compat6</artifactId>
+							<version>${pmd.version}</version>
+						</dependency>
+						<dependency>
 							<groupId>net.sourceforge.pmd</groupId>
 							<artifactId>pmd-core</artifactId>
 							<version>${pmd.version}</version>
@@ -341,15 +354,16 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<!-- <link>https://guava.dev/releases/${guava.version}/api/docs/</link>-->
-								<!-- WORKAROUND: https://github.com/google/guava/issues/5653 -->
-								<link>https://guava.dev/releases/29.0-jre/api/docs/</link>
+								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
+								<link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.0/</link>
 							</links>
 							<excludePackageNames>
 								com.github.cowwoc.requirements.java.internal,
 								com.github.cowwoc.requirements.java.internal.*,
 								com.github.cowwoc.requirements.guava.internal,
-								com.github.cowwoc.requirements.guava.internal.*
+								com.github.cowwoc.requirements.guava.internal.*,
+								com.github.cowwoc.requirements.jackson.internal,
+								com.github.cowwoc.requirements.jackson.internal.*
 							</excludePackageNames>
 						</configuration>
 					</execution>
@@ -406,6 +420,8 @@
 					</excludes>
 					<analysisCache>true</analysisCache>
 					<linkXRef>false</linkXRef>
+					<showPmdLog>true</showPmdLog>
+					<targetJdk>21</targetJdk>
 				</configuration>
 				<executions>
 					<execution>

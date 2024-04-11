@@ -54,4 +54,18 @@ public final class ConfigurationTest
 			}
 		}
 	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void exceptionTransformer()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = new TestValidatorsImpl(scope);
+			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
+			{
+				configurationUpdater.exceptionTransformer(IllegalStateException::new);
+			}
+			validators.requireThat(false, "false").isEqualTo(true);
+		}
+	}
 }
