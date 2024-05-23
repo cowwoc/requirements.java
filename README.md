@@ -36,65 +36,100 @@ import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeTh
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.checkIf;
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
 
-public final class MissionControl
+public final class Cake
 {
-  public static void main(String[] args)
+  private byte bitesTaken = 0;
+  private int piecesLeft;
+
+  public Cake(int piecesLeft)
   {
-    // Method preconditions
-    requireThat(args, "args").length().isPositive();
-    String message = args[0];
-    requireThat(message, "message").startsWith("Houston, we've got a ").endsWith(".");
+    requireThat(piecesLeft, "piecesLeft").isPositive();
+    this.piecesLeft = piecesLeft;
+  }
 
-    String[] words = message.replaceAll("[.,]", "").split("\\s+");
-    requireThat(words, "words").length().isEqualTo(5);
-    String subject = words[4];
+  public int eat()
+  {
+    ++bitesTaken;
+    assert assumeThat(bitesTaken, "bitesTaken").isNotNegative().elseThrow();
 
-    // Class invariants or method postconditions
-    String reply = "What sort of " + subject + "?"; // <-- good reply
-//    String reply = "What sort of " + subject + " do you see?"; // <-- bad reply
-    assert assumeThat(reply, "reply").length().
-        withContext(message, "message").
-        isLessThan(message.length(), "message.length()").
-        elseThrow();
-    System.out.println("Message: " + message);
-    System.out.println("Reply  : " + reply);
-    System.out.println();
+    piecesLeft -= ThreadLocalRandom.current().nextInt(5);
 
-    // Return multiple validation failures at once
-    List<String> messages = checkIf(message, "message").isEmpty().
-      and(checkIf(subject, "subject").isEqualTo("cupcake")).
+    assert assumeThat(piecesLeft, "piecesLeft").isNotNegative().elseThrow();
+    return piecesLeft;
+  }
+
+  public List<String> getFailures()
+  {
+    return checkIf(bitesTaken, "bitesTaken").isNotNegative().
+      and(checkIf(piecesLeft, "piecesLeft").isGreaterThan(3)).
       elseGetMessages();
-    StringJoiner joiner = new StringJoiner("\n\n");
-    for (String failureMessage : messages)
-      joiner.add(failureMessage);
-    System.out.println("Multiple failures\n-----------------\n" + joiner);
   }
 }
 ```
 
-Potential error messages look like this:
+If you violate a **precondition**:
+
+```java
+Cake cake = new Cake(-1000);
+```
+
+You'll get:
 
 ```
-java.lang.NullPointerException: "args" may not be null
+java.lang.IllegalArgumentException: "piecesLeft" must be positive.
+Actual: -1000
+```
 
-java.lang.IllegalArgumentException: words.length must contain 5 elements.
-words.length: 6
-words       : ["Houston", "we've", "got", "a", "bunny", "rabbit"]
+If you violate a **class invariant**:
 
-java.lang.AssertionError: reply.length() must contain less than message.length() characters.
-message.length(): 25
-reply.length()  : 28
-reply           : "What sort of dog do you see?"
-message         : "Houston, we've got a dog."
+```java
+Cake cake = new Cake(1_000_000);
+while (true)
+  cake.eat();
+```
 
-Multiple failures
------------------
-"message" must be empty.
-Actual        : "Houston, we've got a problem."
-message.length: 25
+You'll get:
 
-"subject" must be equal to "cupcake"
-Actual: "problem"
+```
+java.lang.AssertionError: "bitesTaken" may not be negative.
+Actual: -128
+```
+
+If you violate a **postcondition**:
+
+```java
+Cake cake = new Cake(100);
+while (true)
+  cake.eat();
+```
+
+You'll get:
+
+```
+java.lang.AssertionError: "piecesLeft" may not be negative.
+Actual: -4
+```
+
+If you violate **multiple** conditions at once:
+
+```java
+Cake cake = new Cake(1);
+cake.bitesTaken = -1;
+cake.piecesLeft = 2;
+StringJoiner failures = new StringJoiner("\n\n");
+for (String failure : cake.getFailures())
+    failures.add(failure);
+System.out.println(failures);
+```
+
+You'll get:
+
+```
+"bitesTaken" may not be negative.
+Actual: -1
+
+"piecesLeft" must be greater than 3.
+Actual: 2
 ```
 
 ## Features
@@ -125,15 +160,11 @@ The main entry points are:
 The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
 configuration.
 
-`requireThat()` and `assumeThat()` throw an exception on the first validation failure,
-while `checkIf()` collects multiple validation failures before throwing an exception at the end.
-`checkIf()` is more flexible than the others, but its syntax is more verbose.
+* `requireThat()` and `assumeThat()` throw an exception on the first validation failure.
+* `checkIf()` returns multiple validation failures at once. It is more flexible than the others, but its syntax
+is more verbose.
 
-Exceptions that are thrown in response to invalid method arguments (e.g. `isGreaterThan(null, value)`) are
-thrown by all validators and cannot be configured. Exceptions that are thrown in response to the value
-failing a validation check, e.g. `isGreaterThan(5)` on a value of 0, are thrown by `requireThat()` and
-`assumeThat()` but are recorded by `checkIf()` without being thrown. The type of thrown exceptions is
-configurable using [ConfigurationUpdater#exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
+Thrown exceptions may be configured using [ConfigurationUpdater.exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
 
@@ -142,7 +173,8 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/doc
 * Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, the checks will get removed.
 * Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
   This is the fastest validation approach, ideal for web services.
-* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
+* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional. 
+  In other words, favor `assumeThat(value, name)` to `assumeThat(value)`.
 
 ## Third-party libraries and tools
 

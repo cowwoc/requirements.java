@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java;
 
+import com.github.cowwoc.pouch.core.WrappedCheckedException;
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements.java.type.part.Validator;
 
@@ -100,7 +101,7 @@ public interface ConfigurationUpdater extends AutoCloseable
 	/**
 	 * Returns a function that transforms the validation exception into a suitable runtime exception or error.
 	 * The input and output of the function must be subclasses of {@code RuntimeException} or {@code Error}. If
-	 * the output is not, it is wrapped in a {@code WrappedCheckedException}. If the function returns
+	 * the output is not, it is wrapped in a {@link WrappedCheckedException}. If the function returns
 	 * {@code null} the input exception will be thrown.
 	 *
 	 * @return a function that transforms the validation exception

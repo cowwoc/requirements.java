@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.java;
 
+import com.github.cowwoc.pouch.core.WrappedCheckedException;
 import com.github.cowwoc.requirements.java.type.part.Validator;
 
 import java.util.function.Function;
@@ -153,7 +154,7 @@ public final class Configuration
 	/**
 	 * Returns a function that transforms the validation exception into a suitable runtime exception or error.
 	 * The input and output of the function must be subclasses of {@code RuntimeException} or {@code Error}. If
-	 * the output is not, it is wrapped in a {@code WrappedCheckedException}. If the function returns
+	 * the output is not, it is wrapped in a {@link WrappedCheckedException}. If the function returns
 	 * {@code null} the input exception will be thrown.
 	 *
 	 * @return a function that transforms the validation exception
@@ -184,17 +185,17 @@ public final class Configuration
 		if (!(o instanceof Configuration other))
 			return false;
 		return other.cleanStackTrace == cleanStackTrace && other.includeDiff == includeDiff &&
-		       other.equalityMethod == equalityMethod && other.stringMappers.equals(stringMappers) &&
-		       other.lazyExceptions == lazyExceptions() && other.throwOnFailure == throwOnFailure &&
-		       other.exceptionTransformer == exceptionTransformer;
+			other.equalityMethod == equalityMethod && other.stringMappers.equals(stringMappers) &&
+			other.lazyExceptions == lazyExceptions() && other.throwOnFailure == throwOnFailure &&
+			other.exceptionTransformer == exceptionTransformer;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "cleanStackTrace: " + cleanStackTrace + ", diffEnabled: " + includeDiff +
-		       ", equalityMethod: " + equalityMethod + ", stringMappers: " + stringMappers +
-		       ", lazyExceptions: " + lazyExceptions + ", throwOnFailure:" + throwOnFailure +
-		       ", exceptionTransformer: " + exceptionTransformer;
+			", equalityMethod: " + equalityMethod + ", stringMappers: " + stringMappers +
+			", lazyExceptions: " + lazyExceptions + ", throwOnFailure:" + throwOnFailure +
+			", exceptionTransformer: " + exceptionTransformer;
 	}
 }
