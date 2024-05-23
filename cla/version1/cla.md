@@ -14,5 +14,5 @@ from external contributors.
 
 Our CLAs are based on the Apache Software Foundation's CLAs.
 
-* [Corporate CLA](CORPORATE-CLA.md) - For entities signing on behalf of their employees.
-* [Individual CLA](INDIVIDUAL-CLA.md) - For individuals.
+* [Corporate CLA](corporate-cla.md) - For entities signing on behalf of their employees.
+* [Individual CLA](individual-cla.md) - For individuals.
