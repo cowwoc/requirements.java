@@ -159,7 +159,7 @@ nameToAge.put("Nathaniel", 1);
 To validate that `nameToAge` has the keys "Leah" and "Nathaniel" and the values 3 and 1, you can write:
 
 ```java
-requireThat("nameToAge",nameToAge).
+requireThat(nameToAge, "nameToAge").
   apply(v -> v.keySet().containsAll(Arrays.asList("Leah", "Nathaniel"))).
   apply(v -> v.values().containsAll(Arrays.asList(3, 1)));
 ```
@@ -167,10 +167,10 @@ requireThat("nameToAge",nameToAge).
 instead of:
 
 ```java
-requireThat("nameToAge", nameToAge).
+requireThat(nameToAge, "nameToAge").
   keySet().containsAll(Arrays.asList("Leah", "Nathaniel"));
 
-requireThat("nameToAge", nameToAge).
+requireThat(nameToAge, "nameToAge").
   values().containsAll(Arrays.asList(3, 1));
 ```
 

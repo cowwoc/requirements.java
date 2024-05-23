@@ -76,7 +76,7 @@ public interface Validator<S>
 	 * example:
 	 * <p>
 	 * {@snippet :
-	 * requireThat("nameToFrequency", nameToFrequency).
+	 * requireThat(nameToFrequency, "nameToFrequency").
 	 *   apply(m -> m.size().isPositive()).
 	 *   apply(m -> m.keySet().contains("John"));
 	 *}
@@ -95,8 +95,8 @@ public interface Validator<S>
 	 * Adds the validation failures from another validator to this one. For example:
 	 * <p>
 	 * {@snippet :
-	 * 	  requireThat("name", name).length().isGreaterThan(5).
-	 *      and(requireThat("nameToFrequency", nameToFrequency).keySet().contains(name));
+	 * 	  requireThat(name, "name").length().isGreaterThan(5).
+	 *      and(requireThat(nameToFrequency, "nameToFrequency").keySet().contains(name));
 	 *}
 	 *
 	 * @param other the other validator

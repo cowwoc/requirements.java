@@ -53,51 +53,70 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/doc
 ## Usage Example
 
 ```java
+import java.util.List;
+import java.util.StringJoiner;
+
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeThat;
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.checkIf;
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
 
-public final class HelloWorld
+public final class MissionControl
 {
   public static void main(String[] args)
   {
-    // Preconditions
+    // Method preconditions
     requireThat(args, "args").length().isPositive();
+    String message = args[0];
+    requireThat(message, "message").startsWith("Houston, we've got a ").endsWith(".");
+
+    String[] words = message.replaceAll("[.,]", "").split("\\s+");
+    requireThat(words, "words").length().isEqualTo(5);
+    String subject = words[4];
 
     // Class invariants or method postconditions
-    assert assumeThat("args[0]", args[0]).isEqualTo("world").elseThrow();
+//    String wrongReply = "What sort of " + subject + " do you see?";
+    String reply = "What sort of " + subject + "?";
+    assert assumeThat(reply, "reply").length().isLessThan(message.length(), "message.length()").elseThrow();
+    System.out.println("Message: " + message);
+    System.out.println("Reply  : " + reply);
+    System.out.println();
 
     // Return multiple validation failures at once
-    List<String> messages = checkIf(args, "args").isEmpty().
-      and(checkIf("args[0]", args[0]).isEqualTo("planet")).
+    List<String> messages = checkIf(message, "message").isEmpty().
+      and(checkIf(subject, "subject").isEqualTo("cupcake")).
       elseGetMessages();
     StringJoiner joiner = new StringJoiner("\n\n");
-    for (String message : messages)
-      joiner.add(message);
-    System.out.println("Multiple failures\n" + joiner.toString());
+    for (String failureMessage : messages)
+      joiner.add(failureMessage);
+    System.out.println("Multiple failures\n" +
+      "-----------------\n" +
+      joiner);
   }
 }
 ```
 
-Failure messages look like this:
+Some of the failure messages you might see look like this:
 
 ```
 java.lang.NullPointerException: "args" may not be null
 
-java.lang.IllegalArgumentException: args.length() must be positive
-Actual: 0
+java.lang.IllegalArgumentException: words.length must contain 5 elements.
+words.length: 6
+words       : ["Houston", "we've", "got", "a", "bunny", "rabbit"]
 
-java.lang.AssertionError: args[0] must be equal to "world"
-Actual: "planet"
+java.lang.AssertionError: reply.length() must contain less than message.length() characters.
+message.length(): 25
+reply.length()  : 28
+reply           : "What sort of dog do you see?"
 
 Multiple failures
 -----------------
-"args" must be empty.
-args       : ["world"]
-args.length: 1
+"message" must be empty.
+Actual        : "Houston, we've got a problem."
+message.length: 25
 
-args[0] must be equal to "planet".
-Actual: "world"
+"subject" must be equal to "cupcake"
+Actual: "problem"
 ```
 
 ## Features

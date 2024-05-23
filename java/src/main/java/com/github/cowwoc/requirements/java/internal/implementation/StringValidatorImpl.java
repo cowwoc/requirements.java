@@ -690,7 +690,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator startsWith(String prefix)
 	{
-		scope.getInternalValidators().requireThat("prefix", prefix).isNotNull();
+		scope.getInternalValidators().requireThat(prefix, "prefix").isNotNull();
 
 		if (hasFailed())
 		{
@@ -718,7 +718,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotStartWith(String prefix)
 	{
-		scope.getInternalValidators().requireThat("prefix", prefix).isNotNull();
+		scope.getInternalValidators().requireThat(prefix, "prefix").isNotNull();
 
 		if (hasFailed())
 		{
@@ -746,7 +746,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator endsWith(String suffix)
 	{
-		scope.getInternalValidators().requireThat("suffix", suffix).isNotNull();
+		scope.getInternalValidators().requireThat(suffix, "suffix").isNotNull();
 
 		if (hasFailed())
 		{
@@ -774,7 +774,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotEndWith(String suffix)
 	{
-		scope.getInternalValidators().requireThat("suffix", suffix).isNotNull();
+		scope.getInternalValidators().requireThat(suffix, "suffix").isNotNull();
 
 		if (hasFailed())
 		{
@@ -830,7 +830,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotContain(String unwanted)
 	{
-		scope.getInternalValidators().requireThat("unwanted", unwanted).isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 
 		if (hasFailed())
 		{
@@ -849,6 +849,34 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " may not contain \"" + unwanted + "\".").
+					putContext(value, "Actual").
+					toString());
+		}
+		return this;
+	}
+
+	@Override
+	public StringValidator matches(String regex)
+	{
+		scope.getInternalValidators().requireThat(regex, "regex").isNotNull();
+
+		if (hasFailed())
+		{
+			addIllegalArgumentException(
+				new MessageBuilder(scope, this,
+					name + " must match the regular expression \"" + regex + "\".").
+					toString());
+		}
+		else if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, name).toString());
+		}
+		else if (!value.matches(regex))
+		{
+			addIllegalArgumentException(
+				new MessageBuilder(scope, this,
+					name + " must match the regular expression \"" + regex + "\".").
 					putContext(value, "Actual").
 					toString());
 		}

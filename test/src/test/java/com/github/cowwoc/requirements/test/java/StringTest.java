@@ -366,6 +366,28 @@ public final class StringTest
 	}
 
 	@Test
+	public void matches()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String expected = "^.*(?:\\s)dog(?:\\s).*$";
+			String actual = "my dog is the best";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").matches(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void matches_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String expected = "^.*(?:\\s)cat(?:\\s).*$";
+			String actual = "my dog is the best";
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").matches(expected);
+		}
+	}
+
+	@Test
 	public void doesNotContain()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

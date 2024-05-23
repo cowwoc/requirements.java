@@ -108,20 +108,13 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 		else if (value != expected)
 		{
 			String operation;
-			String nameOfValue;
 			if (pluralizer == null)
-			{
 				operation = "must be equal to";
-				nameOfValue = this.name;
-			}
 			else
-			{
 				operation = "must contain";
-				nameOfValue = nameOfParent;
-			}
 			addIllegalArgumentException(
-				ComparableMessages.getExpectedVsActual(scope, this, nameOfValue, value, operation, name, expected,
-						pluralizer).
+				ComparableMessages.getExpectedVsActual(scope, this, this.name, value, operation, name,
+						expected, pluralizer).
 					putContext(parent, nameOfParent).
 					toString());
 		}
@@ -314,7 +307,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidatorImpl isMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidators().requireThat("name", name).isStripped();
+		scope.getInternalValidators().requireThat(name, "name").isStripped();
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -346,7 +339,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidatorImpl isNotMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidators().requireThat("name", name).isStripped();
+		scope.getInternalValidators().requireThat(name, "name").isStripped();
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -408,7 +401,6 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 				ComparableMessages.getExpectedVsActual(scope, this, this.name, value, operation, name,
 						maximumExclusive, pluralizer).
 					putContext(parent, nameOfParent).
-					putContext(value, "Actual").
 					toString());
 		}
 		return this;
