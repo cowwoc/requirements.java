@@ -1,0 +1,11 @@
+module:com.github.cowwoc.requirements.annotation
+com.github.cowwoc.requirements.annotation
+module:com.github.cowwoc.requirements.guava
+com.github.cowwoc.requirements.guava
+module:com.github.cowwoc.requirements.jackson
+com.github.cowwoc.requirements.jackson
+module:com.github.cowwoc.requirements.java
+com.github.cowwoc.requirements.java
+com.github.cowwoc.requirements.java.terminal
+com.github.cowwoc.requirements.java.type
+com.github.cowwoc.requirements.java.type.part
