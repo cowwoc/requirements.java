@@ -6,14 +6,14 @@ package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements.natives.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 import java.util.Set;
 
 /**
  * Default global configuration.
  */
-public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
+public final class MainGlobalConfiguration implements GlobalConfiguration
 {
 	private final Terminal terminal;
 
@@ -28,26 +28,19 @@ public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 	}
 
 	@Override
-	public Set<TerminalEncoding> listTerminalEncodings()
+	public Set<TerminalEncoding> supportedTerminalEncodings()
 	{
 		return terminal.getSupportedTypes();
 	}
 
 	@Override
-	public TerminalEncoding getTerminalEncoding()
+	public TerminalEncoding terminalEncoding()
 	{
 		return terminal.getEncoding();
 	}
 
 	@Override
-	public GlobalConfiguration withDefaultTerminalEncoding()
-	{
-		terminal.useBestEncoding();
-		return this;
-	}
-
-	@Override
-	public GlobalConfiguration withTerminalEncoding(TerminalEncoding encoding)
+	public GlobalConfiguration terminalEncoding(TerminalEncoding encoding)
 	{
 		if (encoding == null)
 			throw new NullPointerException("encoding may not be null");
@@ -56,29 +49,9 @@ public final class MainGlobalConfiguration extends AbstractGlobalConfiguration
 	}
 
 	@Override
-	public int getTerminalWidth()
-	{
-		return terminal.getWidth();
-	}
-
-	@Override
-	public GlobalConfiguration withDefaultTerminalWidth()
-	{
-		terminal.useBestWidth();
-		return this;
-	}
-
-	@Override
-	public GlobalConfiguration withTerminalWidth(int width)
-	{
-		terminal.setWidth(width);
-		return this;
-	}
-
-	@Override
 	public String toString()
 	{
-		return "MainGlobalConfiguration[terminalEncoding=" + getTerminalEncoding() +
-			", cleanStackTrace=" + isCleanStackTrace() + ", diffEnabled=" + isDiffEnabled() + "]";
+		return "MainGlobalConfiguration[supportedTerminalEncodings=" + supportedTerminalEncodings() +
+			", terminalEncoding=" + terminalEncoding() + "]";
 	}
 }

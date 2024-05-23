@@ -1,6 +1,7 @@
 package com.github.cowwoc.requirements.java.internal.util;
 
-import com.github.cowwoc.requirements.java.internal.util.WrappedCheckedException.CallableWithoutReturnValue;
+import com.github.cowwoc.pouch.core.WrappedCheckedException;
+import com.github.cowwoc.pouch.core.WrappedCheckedException.Task;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.StampedLock;
@@ -10,9 +11,14 @@ import java.util.concurrent.locks.StampedLock;
  */
 public final class ReentrantStampedLock
 {
+	private static void doNotUnlock()
+	{
+	}
+
 	// Excellent overview of StampedLock:
 	// https://www.javaspecialists.eu/talks/pdfs/2014%20JavaLand%20in%20Germany%20-%20%22Java%208%20From%20Smile%20To%20Tears%20-%20Emotional%20StampedLock%22%20by%20Heinz%20Kabutz.pdf
 	private final StampedLock lock = new StampedLock();
+
 	/**
 	 * The stamp associated with the current thread. {@code null} if none.
 	 */
@@ -26,13 +32,40 @@ public final class ReentrantStampedLock
 	}
 
 	/**
-	 * Acquires an optimistic read-lock and runs a task. If an optimistic read-lock cannot be acquired,
-	 * invokes {@link #read(Callable) readLock(task)} instead.
+	 * @return true if the caller is holding an optimistic read-lock
+	 */
+	public boolean isOptimisticRead()
+	{
+		Long existingStamp = this.stamp.get();
+		return existingStamp != null && StampedLock.isOptimisticReadStamp(existingStamp);
+	}
+
+	/**
+	 * @return true if the caller is holding a read-lock
+	 */
+	public boolean isRead()
+	{
+		Long existingStamp = this.stamp.get();
+		return existingStamp != null && StampedLock.isReadLockStamp(existingStamp);
+	}
+
+	/**
+	 * @return true if the caller is holding a write-lock
+	 */
+	public boolean isWrite()
+	{
+		Long existingStamp = this.stamp.get();
+		return existingStamp != null && StampedLock.isWriteLockStamp(existingStamp);
+	}
+
+	/**
+	 * Acquires an optimistic read-lock and runs a task. If an optimistic read-lock cannot be acquired, invokes
+	 * {@link #read(Callable) readLock(task)} instead.
 	 * <p>
-	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple
-	 * times as well. The return value must correspond to a local copy of the fields being read as there is
-	 * no guarantee that state won't change between the time the lock is released and the time that the value
-	 * is returned.
+	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple times
+	 * as well. The return value must correspond to a local copy of the fields being read as there is no
+	 * guarantee that state won't change between the time the lock is released and the time that the value is
+	 * returned.
 	 *
 	 * @param <V>  the type of value returned by the task
 	 * @param task the task to run while holding the lock
@@ -64,19 +97,19 @@ public final class ReentrantStampedLock
 	}
 
 	/**
-	 * Acquires an optimistic read-lock and runs a task. If an optimistic read-lock cannot be acquired,
-	 * invokes {@link #read(CallableWithoutReturnValue) readLock(task)} instead.
+	 * Acquires an optimistic read-lock and runs a task. If an optimistic read-lock cannot be acquired, invokes
+	 * {@link #read(Task) readLock(task)} instead.
 	 * <p>
-	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple
-	 * times as well. The return value must correspond to a local copy of the fields being read as there is
-	 * no guarantee that state won't change between the time the lock is released and the time that the value
-	 * is returned.
+	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple times
+	 * as well. The return value must correspond to a local copy of the fields being read as there is no
+	 * guarantee that state won't change between the time the lock is released and the time that the value is
+	 * returned.
 	 *
 	 * @param task the task to run while holding the lock
 	 * @throws NullPointerException    if {@code task} is null
 	 * @throws WrappedCheckedException if any checked exceptions are thrown
 	 */
-	public void optimisticRead(CallableWithoutReturnValue task)
+	public void optimisticRead(Task task)
 	{
 		optimisticRead(() ->
 		{
@@ -86,13 +119,13 @@ public final class ReentrantStampedLock
 	}
 
 	/**
-	 * Acquires an optimistic read-lock and runs a task. If an optimistic read-lock cannot be acquired,
-	 * invokes {@link #read(Callable) readLock(task)} instead.
+	 * Acquires an optimistic read-lock and runs a task. If an optimistic read-lock cannot be acquired, invokes
+	 * {@link #read(Callable) readLock(task)} instead.
 	 * <p>
-	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple
-	 * times as well. The return value must correspond to a local copy of the fields being read as there is
-	 * no guarantee that state won't change between the time the lock is released and the time that the value
-	 * is returned.
+	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple times
+	 * as well. The return value must correspond to a local copy of the fields being read as there is no
+	 * guarantee that state won't change between the time the lock is released and the time that the value is
+	 * returned.
 	 *
 	 * @param <V>   the type of value returned by the task
 	 * @param task  the task to run while holding the lock
@@ -113,8 +146,8 @@ public final class ReentrantStampedLock
 	}
 
 	/**
-	 * Acquires a read-lock, unless the caller already holds a read or write-lock. If the caller already
-	 * holds a lock, no lock is acquired or released.
+	 * Acquires a read-lock, unless the caller already holds a read or write-lock. If the caller already holds a
+	 * lock, no lock is acquired or released.
 	 *
 	 * @return a read-lock as a resource
 	 */
@@ -164,7 +197,7 @@ public final class ReentrantStampedLock
 	 * @throws NullPointerException    if {@code task} is null
 	 * @throws WrappedCheckedException if {@code task} throws a checked exception
 	 */
-	public void read(CallableWithoutReturnValue task)
+	public void read(Task task)
 	{
 		read(() ->
 		{
@@ -174,13 +207,13 @@ public final class ReentrantStampedLock
 	}
 
 	/**
-	 * Acquires a write-lock, unless the caller already holds one. If the caller already holds a lock, no
-	 * lock is acquired or released.
+	 * Acquires a write-lock, unless the caller already holds one. If the caller already holds a lock, no lock
+	 * is acquired or released.
 	 * <p>
 	 * If the caller holds a read-lock, an attempt is made to convert it into a write-lock. Conversions are not
-	 * guaranteed to be atomic; consequently, there is no guarantee that state won't change between the time
-	 * the read-lock is released and the write-lock is acquired. Callers must repeat any state checks to
-	 * ensure that they still hold.
+	 * guaranteed to be atomic; consequently, there is no guarantee that state won't change between the time the
+	 * read-lock is released and the write-lock is acquired. Callers must repeat any state checks to ensure that
+	 * they still hold.
 	 *
 	 * @return a write-lock as a resource
 	 */
@@ -235,9 +268,9 @@ public final class ReentrantStampedLock
 	 * released.
 	 * <p>
 	 * If the caller holds a read-lock, an attempt is made to convert it into a write-lock. Conversions are not
-	 * guaranteed to be atomic; consequently, there is no guarantee that state won't change between the time
-	 * the read-lock is released and the write-lock is acquired. Callers must repeat any state checks to
-	 * ensure that they still hold.
+	 * guaranteed to be atomic; consequently, there is no guarantee that state won't change between the time the
+	 * read-lock is released and the write-lock is acquired. Callers must repeat any state checks to ensure that
+	 * they still hold.
 	 *
 	 * @param <V>  the type of value returned by the task
 	 * @param task the task to run while holding the lock
@@ -258,15 +291,15 @@ public final class ReentrantStampedLock
 	 * released.
 	 * <p>
 	 * If the caller holds a read-lock, an attempt is made to convert it into a write-lock. Conversions are not
-	 * guaranteed to be atomic; consequently, there is no guarantee that state won't change between the time
-	 * the read-lock is released and the write-lock is acquired. Callers must repeat any state checks to
-	 * ensure that they still hold.
+	 * guaranteed to be atomic; consequently, there is no guarantee that state won't change between the time the
+	 * read-lock is released and the write-lock is acquired. Callers must repeat any state checks to ensure that
+	 * they still hold.
 	 *
 	 * @param task the task to run while holding the lock
 	 * @throws NullPointerException    if {@code task} is null
 	 * @throws WrappedCheckedException if {@code task} throws a checked exception
 	 */
-	public void write(CallableWithoutReturnValue task)
+	public void write(Task task)
 	{
 		write(() ->
 		{
@@ -294,9 +327,5 @@ public final class ReentrantStampedLock
 		{
 			throw WrappedCheckedException.wrap(e);
 		}
-	}
-
-	private static void doNotUnlock()
-	{
 	}
 }

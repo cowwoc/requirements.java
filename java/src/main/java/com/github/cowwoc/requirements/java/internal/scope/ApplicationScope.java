@@ -4,13 +4,8 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.JavaRequirements;
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
-
-import java.util.function.Supplier;
+import com.github.cowwoc.requirements.java.JavaValidators;
 
 /**
  * The configuration of an application. A JVM may contain multiple applications.
@@ -18,29 +13,14 @@ import java.util.function.Supplier;
 public interface ApplicationScope extends JvmScope
 {
 	/**
-	 * @return the global configuration inherited by all verifiers
+	 * @return the global configuration inherited by all validators
 	 */
 	GlobalConfiguration getGlobalConfiguration();
 
 	/**
-	 * @return the configuration shared by all verifiers invoked by the current thread
+	 * @return creates validators used to check the arguments of validation methods
 	 */
-	Supplier<ThreadConfiguration> getThreadConfiguration();
-
-	/**
-	 * @return the default configuration (value may change with every invocation)
-	 */
-	Supplier<Configuration> getDefaultConfiguration();
-
-	/**
-	 * @return a verifier that can be used to check a verifier's own parameters
-	 */
-	JavaRequirements getInternalVerifier();
-
-	/**
-	 * @return an instance of {@code Exceptions}
-	 */
-	Exceptions getExceptions();
+	JavaValidators getInternalValidators();
 
 	@Override
 	void close();

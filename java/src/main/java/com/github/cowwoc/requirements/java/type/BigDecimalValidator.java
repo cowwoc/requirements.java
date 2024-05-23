@@ -1,0 +1,94 @@
+/*
+ * Copyright (c) 2019 Gili Tzabari
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package com.github.cowwoc.requirements.java.type;
+
+import com.github.cowwoc.requirements.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements.java.type.part.ComparablePart;
+import com.github.cowwoc.requirements.java.type.part.DecimalNumber;
+import com.github.cowwoc.requirements.java.type.part.NegativeNumber;
+import com.github.cowwoc.requirements.java.type.part.ObjectPart;
+import com.github.cowwoc.requirements.java.type.part.UnsignedNumber;
+import com.github.cowwoc.requirements.java.type.part.Validator;
+
+import java.math.BigDecimal;
+import java.util.function.Function;
+
+/**
+ * Validates the state of a {@link BigDecimal} value.
+ * <p>
+ * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
+ * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
+ * Javadoc indicates, depending on the value of the
+ * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
+ * exception handling behavior of the class.
+ */
+public interface BigDecimalValidator extends
+	Validator<BigDecimalValidator>,
+	ObjectPart<BigDecimalValidator, BigDecimal>,
+	NegativeNumber<BigDecimalValidator>,
+	UnsignedNumber<BigDecimalValidator>,
+	DecimalNumber<BigDecimalValidator>,
+	ComparablePart<BigDecimalValidator, BigDecimal>
+{
+	/**
+	 * Ensures that the value is a multiple of {@code factor}.
+	 *
+	 * @param factor the number being multiplied
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code factor} are null
+	 * @throws IllegalArgumentException if the value is not a multiple of {@code factor}
+	 */
+	BigDecimalValidator isMultipleOf(BigDecimal factor);
+
+	/**
+	 * Ensures that the value is a multiple of {@code factor}.
+	 *
+	 * @param factor the number being multiplied
+	 * @param name   the name of the factor
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty. If
+	 *                                  the value is not a multiple of {@code factor}.
+	 */
+	BigDecimalValidator isMultipleOf(BigDecimal factor, String name);
+
+	/**
+	 * Ensures that the value is not a multiple of {@code factor}.
+	 *
+	 * @param factor the number being multiplied
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code factor} are null
+	 * @throws IllegalArgumentException if the value is a multiple of {@code factor}
+	 */
+	BigDecimalValidator isNotMultipleOf(BigDecimal factor);
+
+	/**
+	 * Ensures that the value is not a multiple of {@code factor}.
+	 *
+	 * @param factor the number being multiplied
+	 * @param name   the name of the factor
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty. If
+	 *                                  the value is a multiple of {@code factor}.
+	 */
+	BigDecimalValidator isNotMultipleOf(BigDecimal factor, String name);
+
+	/**
+	 * Returns a validator for {@code BigDecimal.precision()}.
+	 *
+	 * @return a validator for {@code BigDecimal.precision()}
+	 * @throws NullPointerException if the value is null
+	 */
+	PrimitiveUnsignedIntegerValidator precision();
+
+	/**
+	 * Returns a validator for {@code BigDecimal.scale()}.
+	 *
+	 * @return a validator for {@code BigDecimal.scale()}
+	 * @throws NullPointerException if the value is null
+	 */
+	PrimitiveIntegerValidator scale();
+}

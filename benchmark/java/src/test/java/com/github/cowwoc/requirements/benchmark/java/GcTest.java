@@ -4,17 +4,16 @@
  */
 package com.github.cowwoc.requirements.benchmark.java;
 
-import com.github.cowwoc.requirements.DefaultRequirements;
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.SizeVerifier;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.CompilerControl;
+import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.testng.annotations.Test;
@@ -23,16 +22,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeThat;
+
 @State(Scope.Benchmark)
-@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 @SuppressWarnings({"CanBeFinal", "LongLine", "FieldMayBeFinal"})
 public class GcTest
 {
+	private static final boolean FAST_ESTIMATE = false;
 	// Fields may not be final:
-	// http://hg.openjdk.java.net/code-tools/jmh/file/ed0a5f40acfb/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#l62
-	private String name = "actual";
+	// https://github.com/openjdk/jmh/blob/cb3c3a90137dad781a2a37fda72dc11ebf253593/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#L58
+	private String name = "Actual";
 	private Map<Integer, Integer> value;
-	private Requirements requirementsWithAssertions = new Requirements().withAssertionsEnabled();
 
 	public GcTest()
 	{
@@ -44,42 +44,68 @@ public class GcTest
 	@Test
 	public void runBenchmarks() throws RunnerException
 	{
-		Options opt = new OptionsBuilder().
+		ChainedOptionsBuilder builder = new OptionsBuilder().
 			include(GcTest.class.getSimpleName()).
 			timeUnit(TimeUnit.NANOSECONDS).
-			mode(Mode.AverageTime).
-			warmupIterations(10).
-			measurementIterations(20).
+			mode(Mode.AverageTime);
+		if (FAST_ESTIMATE)
+		{
+			builder.warmupIterations(5).
+				measurementIterations(5).
+				forks(1);
+		}
+		else
+		{
+			builder.warmupIterations(10).
+				measurementIterations(20);
+		}
+		Options options = builder.
 			addProfiler(GCProfiler.class).
 			build();
-		new Runner(opt).run();
+		new Runner(options).run();
 	}
 
 	@Benchmark
+	@Fork(jvmArgsAppend = "-da")
 	@SuppressWarnings("EmptyMethod")
 	public void emptyMethod()
 	{
 	}
 
 	@Benchmark
-	public SizeVerifier requireThat()
+	public void manualCheckIsSuccessful(Blackhole bh)
 	{
-		return DefaultRequirements.requireThat(value, name).size().isGreaterThan(3);
+		try
+		{
+			if (value.size() <= 3)
+				throw new IllegalArgumentException("value.size() must be greater than 3");
+		}
+		catch (IllegalArgumentException e)
+		{
+			bh.consume(e.getStackTrace());
+		}
 	}
 
 	@Benchmark
-	public SizeVerifier assertThatWithAssertionsDisabled()
+	@Fork(jvmArgsAppend = "-da")
+	public void assumeThatWithAssertionsDisabled(Blackhole bh)
 	{
-		return DefaultRequirements.assertThatAndReturn(r ->
-			r.requireThat(value, name).size().isGreaterThan(3));
+		assert blackholeAssert(bh, assumeThat(value, name).size().isGreaterThan(3).elseThrow());
 	}
 
-	// See http://stackoverflow.com/a/38862964/14731 for why assertThat() may be faster than requireThat() even
-	// though it delegates to it
+	// See http://stackoverflow.com/a/38862964/14731 for why asserted code may execute faster than
+	// non-asserted code, even though it theoretically does more work.
+	//@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 	@Benchmark
-	public SizeVerifier assertThatWithAssertionsEnabled()
+	@Fork(jvmArgsAppend = "-ea")
+	public void assumeThatWithAssertionsEnabled(Blackhole bh)
 	{
-		return requirementsWithAssertions.assertThatAndReturn(r ->
-			r.requireThat(value, name).size().isGreaterThan(3));
+		assert blackholeAssert(bh, assumeThat(value, name).size().isGreaterThan(3).elseThrow());
+	}
+
+	private boolean blackholeAssert(Blackhole bh, boolean resultOfAssertion)
+	{
+		bh.consume(resultOfAssertion);
+		return true;
 	}
 }

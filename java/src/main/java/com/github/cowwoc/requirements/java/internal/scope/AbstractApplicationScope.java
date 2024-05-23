@@ -4,48 +4,48 @@
  */
 package com.github.cowwoc.requirements.java.internal.scope;
 
-import com.github.cowwoc.pouch.core.LazyReference;
+import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.JavaRequirements;
-import com.github.cowwoc.requirements.java.ThreadConfiguration;
-import com.github.cowwoc.requirements.java.internal.secrets.JavaSecrets;
+import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
+import com.github.cowwoc.requirements.java.internal.implementation.MutableConfiguration;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements.java.internal.util.Exceptions;
-
-import java.util.function.Supplier;
 
 /**
  * ApplicationScope for the main and test codebases.
  */
 public abstract class AbstractApplicationScope implements ApplicationScope
 {
-	protected final JvmScope parent = DefaultJvmScope.INSTANCE;
-	// withoutCleanStacktrace() because this verifier is used to catch errors in our API, not just the user's
-	// code.
-	private final Reference<JavaRequirements> internalVerifier = LazyReference.create(() ->
-		JavaSecrets.INSTANCE.createRequirements(this).withoutCleanStackTrace());
-	private final Supplier<Configuration> defaultConfiguration;
-	private final ThreadLocal<ThreadConfiguration> threadConfiguration =
-		ThreadLocal.withInitial(DefaultThreadConfiguration::new);
-	private final Exceptions exceptions = new Exceptions();
+	private final JvmScope parent;
+	/**
+	 * The global configuration.
+	 */
+	private final GlobalConfiguration globalConfiguration;
+	@SuppressWarnings("this-escape")
+	private final Reference<JavaValidatorsImpl> internalValidator = ConcurrentLazyReference.create(() ->
+		new JavaValidatorsImpl(this, MutableConfiguration.from(Configuration.DEFAULT).cleanStackTrace(false).
+			toImmutable()));
 
 	/**
 	 * Creates a new instance.
+	 *
+	 * @param parent              the parent scope
+	 * @param globalConfiguration the global configuration
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	protected AbstractApplicationScope()
+	protected AbstractApplicationScope(JvmScope parent, GlobalConfiguration globalConfiguration)
 	{
-		this.defaultConfiguration = () ->
-		{
-			GlobalConfiguration globalConfiguration = getGlobalConfiguration();
-			Configuration result = new DefaultConfiguration();
-			if (!getGlobalConfiguration().isCleanStackTrace())
-				result.withoutCleanStackTrace();
-			if (!globalConfiguration.isDiffEnabled())
-				result.withoutDiff();
-			return result;
-		};
+		assert (parent != null);
+		assert (globalConfiguration != null);
+		this.parent = parent;
+		this.globalConfiguration = globalConfiguration;
+	}
+
+	@Override
+	public GlobalConfiguration getGlobalConfiguration()
+	{
+		return globalConfiguration;
 	}
 
 	@Override
@@ -55,26 +55,8 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	}
 
 	@Override
-	public Supplier<Configuration> getDefaultConfiguration()
+	public JavaValidatorsImpl getInternalValidators()
 	{
-		return defaultConfiguration;
-	}
-
-	@Override
-	public Exceptions getExceptions()
-	{
-		return exceptions;
-	}
-
-	@Override
-	public JavaRequirements getInternalVerifier()
-	{
-		return internalVerifier.getValue();
-	}
-
-	@Override
-	public Supplier<ThreadConfiguration> getThreadConfiguration()
-	{
-		return threadConfiguration::get;
+		return internalValidator.getValue();
 	}
 }

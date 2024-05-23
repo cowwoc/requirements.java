@@ -4,18 +4,15 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
-import com.github.cowwoc.requirements.Requirements;
-import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.test.natives.internal.util.scope.TestApplicationScope;
+import com.github.cowwoc.requirements.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import static com.github.cowwoc.requirements.natives.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class ClassTest
@@ -26,7 +23,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new Requirements(scope).requireThat(actual, null);
+			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
 
@@ -36,7 +33,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -46,7 +43,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Random.class;
-			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(Object.class);
 		}
 	}
 
@@ -56,17 +53,17 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Random.class;
-			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(null);
 		}
 	}
 
-	@Test(expectedExceptions = NullPointerException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isSupertypeOf_actualIsNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -76,7 +73,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Random.class;
-			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(Object.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(Object.class);
 		}
 	}
 
@@ -86,7 +83,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(Random.class);
 		}
 	}
 
@@ -96,54 +93,44 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(null);
 		}
 	}
 
-	@Test(expectedExceptions = NullPointerException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isSubtypeOf_actualIsNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = null;
-			new Requirements(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
-		}
-	}
-
-	@Test
-	public void assertionsDisabled()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			// Ensure that no exception is thrown if assertions are disabled
-			Class<?> actual = null;
-			new Requirements(scope).withAssertionsDisabled().assertThat(r ->
-				r.requireThat(actual, "actual").isNotNull());
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(Random.class);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void validateThatIsSupertypeOfNull()
+	public void multipleFailuresIsSupertypeOfNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Integer> actual = null;
-			new Requirements(scope).validateThat(actual, "actual").isSupertypeOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+				isSupertypeOf(null);
 		}
 	}
 
 	@Test
-	public void validateThatNullIsInstanceOf()
+	public void multipleFailuresNullIsInstanceOf()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Integer> actual = null;
-			List<String> expectedMessages = Collections.singletonList("actual may not be null");
-			List<ValidationFailure> actualFailures = new Requirements(scope).validateThat(actual, "actual").
-				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).getFailures();
-			List<String> actualMessages = actualFailures.stream().map(ValidationFailure::getMessage).
-				collect(Collectors.toList());
-			new Requirements(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			List<String> expectedMessages = List.of("""
+					Actual must be a supertype of class java.lang.Integer.
+					Actual: null""",
+				"\"Actual\" may not be equal to class java.lang.Double");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

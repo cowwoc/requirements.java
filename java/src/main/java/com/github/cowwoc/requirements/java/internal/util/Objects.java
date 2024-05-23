@@ -16,6 +16,13 @@ import java.util.stream.IntStream;
 public final class Objects
 {
 	/**
+	 * Prevent construction.
+	 */
+	private Objects()
+	{
+	}
+
+	/**
 	 * Compares two objects, wrapping arrays to implement equality.
 	 *
 	 * @param first  an object
@@ -28,8 +35,8 @@ public final class Objects
 	}
 
 	/**
-	 * If the input is an array, wraps it into an object that implements {@code equals()},
-	 * {@code hashCode()} and {@code toString()}.
+	 * If the input is an array, wraps it into an object that implements {@code equals()}, {@code hashCode()}
+	 * and {@code toString()}.
 	 *
 	 * @param o an object
 	 * @return an object that implements {@code equals()}, {@code hashCode()} and {@code toString()}
@@ -106,12 +113,5 @@ public final class Objects
 				collect(Collectors.toCollection(() -> new ArrayList<>(length)));
 		}
 		throw new AssertionError("Unexpected array type: " + type);
-	}
-
-	/**
-	 * Prevent construction.
-	 */
-	private Objects()
-	{
 	}
 }

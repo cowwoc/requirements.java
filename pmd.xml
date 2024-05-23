@@ -6,8 +6,10 @@
 	<description>cowwoc's preferred rules</description>
 	<rule ref="category/java/bestpractices.xml">
 		<exclude name="AvoidReassigningParameters"/>
+		<exclude name="AvoidReassigningLoopVariables"/>
 		<exclude name="LiteralsFirstInComparisons"/>
 		<exclude name="UseVarargs"/>
+		<exclude name="GuardLogStatement"/>
 	</rule>
 	<rule ref="category/java/codestyle.xml">
 		<exclude name="UselessParentheses"/>
@@ -22,10 +24,11 @@
 		<exclude name="EmptyControlStatement"/>
 		<exclude name="CallSuperInConstructor"/>
 		<exclude name="CommentDefaultAccessModifier"/>
-		<exclude name="AvoidUsingNativeCode"/>
+		<!--		<exclude name="AvoidUsingNativeCode"/>-->
 		<exclude name="TooManyStaticImports"/>
 		<exclude name="LinguisticNaming"/>
 		<exclude name="ShortClassName"/>
+		<exclude name="UnnecessaryLocalBeforeReturn"/>
 	</rule>
 	<rule ref="category/java/design.xml">
 		<exclude name="LawOfDemeter"/>
@@ -36,26 +39,21 @@
 		<exclude name="GodClass"/>
 		<exclude name="TooManyMethods"/>
 		<exclude name="AvoidCatchingGenericException"/>
-	</rule>
-	<rule ref="category/java/design.xml/CognitiveComplexity">
-		<properties>
-			<property name="reportLevel" value="60" />
-		</properties>
-	</rule>
-	<rule ref="category/java/design.xml/CyclomaticComplexity">
-		<properties>
-			<property name="classReportLevel" value="400"/>
-			<property name="methodReportLevel" value="50"/>
-		</properties>
-	</rule>
-	<rule ref="category/java/design.xml/NPathComplexity">
-		<properties>
-			<property name="reportLevel" value="2000"/>
-		</properties>
+		<exclude name="SignatureDeclareThrowsException"/>
+		<exclude name="ExcessiveParameterList"/>
+		<exclude name="UseObjectForClearerAPI"/>
+		<exclude name="CouplingBetweenObjects"/>
+		<exclude name="TooManyFields"/>
+		<exclude name="ExcessivePublicCount"/>
+		<!-- Too vague to tune -->
+		<exclude name="CognitiveComplexity"/>
+		<exclude name="CyclomaticComplexity"/>
+		<exclude name="NPathComplexity"/>
 	</rule>
 	<rule ref="category/java/documentation.xml">
 		<exclude name="UncommentedEmptyConstructor"/>
 		<exclude name="UncommentedEmptyMethodBody"/>
+		<exclude name="CommentSize"/>
 	</rule>
 	<rule ref="category/java/documentation.xml/CommentRequired">
 		<properties>
@@ -70,12 +68,6 @@
 			<property name="serialPersistentFieldsCommentRequired" value="Ignored"/>
 		</properties>
 	</rule>
-	<rule ref="category/java/documentation.xml/CommentSize">
-		<properties>
-			<property name="maxLines" value="20"/>
-			<property name="maxLineLength" value="110"/>
-		</properties>
-	</rule>
 	<rule ref="category/java/errorprone.xml">
 		<exclude name="AvoidFieldNameMatchingMethodName"/>
 		<exclude name="AvoidLiteralsInIfCondition"/>
@@ -86,7 +78,12 @@
 	</rule>
 	<rule ref="category/java/errorprone.xml/EmptyCatchBlock">
 		<properties>
-			<property name="allowCommentedBlocks" value="true" />
+			<property name="allowCommentedBlocks" value="true"/>
+		</properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/TestClassWithoutTestCases">
+		<properties>
+			<property name="testClassPattern" value="^^(?:.*\.)?.*Tests?$|^(?:.*\.)?.*TestCase$"/>
 		</properties>
 	</rule>
 	<rule ref="category/java/multithreading.xml">
@@ -96,6 +93,7 @@
 	<rule ref="category/java/performance.xml">
 		<exclude name="AvoidInstantiatingObjectsInLoops"/>
 		<exclude name="ConsecutiveLiteralAppends"/>
+		<exclude name="TooFewBranchesForASwitchStatement"/>
 	</rule>
 	<rule ref="category/java/security.xml"/>
 </ruleset>
