@@ -57,7 +57,7 @@ import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeTh
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.checkIf;
 import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
 
-public final class HelloWorldTest
+public final class HelloWorld
 {
   public static void main(String[] args)
   {
