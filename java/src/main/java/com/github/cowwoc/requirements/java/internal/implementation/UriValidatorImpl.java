@@ -79,7 +79,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 		catch (MalformedURLException | IllegalArgumentException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " is not a valid URL.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}

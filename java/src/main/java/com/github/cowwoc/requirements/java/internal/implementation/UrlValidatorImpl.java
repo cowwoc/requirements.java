@@ -58,7 +58,7 @@ public final class UrlValidatorImpl extends AbstractObjectValidator<UrlValidator
 		catch (URISyntaxException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " is not a valid URI.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}

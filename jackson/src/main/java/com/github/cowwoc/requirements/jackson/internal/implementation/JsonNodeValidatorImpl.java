@@ -61,7 +61,7 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 					getName() + " must contain a property named " + name + ".").
-					putContext(value, "Actual").toString(), null, IllegalArgumentException::new);
+					withContext(value, "Actual").toString(), null, IllegalArgumentException::new);
 			}
 		});
 		return this;
@@ -98,8 +98,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain a number.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -117,8 +117,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain an integral number.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -136,8 +136,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain a float or double number.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -155,8 +155,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain a BigInteger.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -174,8 +174,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain a BigDecimal.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -193,8 +193,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must reference a missing node.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -212,8 +212,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain a binary value, boolean, null, number or string.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -231,8 +231,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain an array or object.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -250,8 +250,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain an array.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -269,8 +269,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain an object.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});
@@ -288,8 +288,8 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 			{
 				addFailure(new MessageBuilder(getScope(), this,
 						getName() + " must contain a String.").
-						putContext(value, getName()).
-						putContext(value.getNodeType(), "Type").toString(),
+						withContext(value, getName()).
+						withContext(value.getNodeType(), "Type").toString(),
 					null, IllegalArgumentException::new);
 			}
 		});

@@ -48,7 +48,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		{
 			MessageBuilder message = new MessageBuilder(scope, this,
 				name + " must be a supertype of " + type + ".").
-				putContext(value, "Actual");
+				withContext(value, "Actual");
 			addIllegalArgumentException(message.toString());
 		}
 		return this;
@@ -63,14 +63,14 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		{
 			MessageBuilder message = new MessageBuilder(scope, this,
 				name + " must be a subtype of " + type + ".").
-				putContext(value, "Actual");
+				withContext(value, "Actual");
 			addIllegalArgumentException(message.toString());
 		}
 		else if (value == null || !type.isAssignableFrom(value))
 		{
 			MessageBuilder message = new MessageBuilder(scope, this,
 				name + " must be a subtype of " + type + ".").
-				putContext(value, "Actual");
+				withContext(value, "Actual");
 			addIllegalArgumentException(message.toString());
 		}
 		return this;

@@ -95,7 +95,7 @@ public final class TestValidatorsImpl implements TestValidators
 		this(other.javaValidators.getScope());
 		setConfiguration(other.configuration());
 		for (Entry<String, Object> entry : other.getContext().entrySet())
-			putContext(entry.getValue(), entry.getKey());
+			withContext(entry.getValue(), entry.getKey());
 	}
 
 	/**
@@ -1373,11 +1373,11 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public TestValidatorsImpl putContext(Object value, String name)
+	public TestValidatorsImpl withContext(Object value, String name)
 	{
-		javaValidators.putContext(value, name);
-		guavaValidators.putContext(value, name);
-		jacksonValidators.putContext(value, name);
+		javaValidators.withContext(value, name);
+		guavaValidators.withContext(value, name);
+		jacksonValidators.withContext(value, name);
 		return this;
 	}
 

@@ -235,7 +235,7 @@ public abstract class AbstractValidator<S> implements Validator<S>
 	}
 
 	@Override
-	public S putContext(Object value, String name)
+	public S withContext(Object value, String name)
 	{
 		requireThatNameIsUnique(name, false);
 		if (value == null)

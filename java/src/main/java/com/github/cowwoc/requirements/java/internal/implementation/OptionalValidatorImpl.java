@@ -78,7 +78,7 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 		{
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be empty.").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -114,9 +114,9 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 		{
 			MessageBuilder messageBuilder = ComparableMessages.getExpectedVsActual(scope, this, this.name,
 					value, "must contain", name, expected).
-				putContext(value, this.name);
+				withContext(value, this.name);
 			if (name != null)
-				messageBuilder.putContext(expected, name);
+				messageBuilder.withContext(expected, name);
 			addIllegalArgumentException(messageBuilder.toString());
 		}
 		return this;

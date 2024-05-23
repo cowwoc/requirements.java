@@ -166,18 +166,18 @@ public final class DefaultJacksonValidators
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method may be overridden by
-	 * {@link Validator#putContext(Object, String)}}.
+	 * {@link Validator#withContext(Object, String)}}.
 	 *
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
 	 * @return the underlying validator factory
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	public static JacksonValidators putContext(Object value, String name)
+	public static JacksonValidators withContext(Object value, String name)
 	{
 		try (CloseableLock unused = CONTEXT_LOCK.write())
 		{
-			return DELEGATE.putContext(value, name);
+			return DELEGATE.withContext(value, name);
 		}
 	}
 

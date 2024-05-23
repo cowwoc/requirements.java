@@ -97,7 +97,7 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	}
 
 	@Override
-	public GuavaValidatorsImpl putContext(Object value, String name)
+	public GuavaValidatorsImpl withContext(Object value, String name)
 	{
 		context.put(name, value);
 		return this;

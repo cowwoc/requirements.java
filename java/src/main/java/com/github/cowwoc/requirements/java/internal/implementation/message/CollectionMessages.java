@@ -29,8 +29,8 @@ public final class CollectionMessages
 		Object value, String nameOfSize, int size)
 	{
 		return new MessageBuilder(scope, validator, MessageBuilder.quoteName(name) + " must be empty.").
-			putContext(value, "Actual").
-			putContext(size, nameOfSize);
+			withContext(value, "Actual").
+			withContext(size, nameOfSize);
 	}
 
 	/**
@@ -196,8 +196,8 @@ public final class CollectionMessages
 			nameOfValue + " may not contain duplicate " + pluralizer.nameOf(2) + ".");
 		if (value != null)
 		{
-			message.putContext(value, "Actual").
-				putContext(duplicates, "Duplicates");
+			message.withContext(value, "Actual").
+				withContext(duplicates, "Duplicates");
 		}
 		return message;
 	}
@@ -217,8 +217,8 @@ public final class CollectionMessages
 			MessageBuilder.quoteName(name) + " must be sorted.");
 		if (value != null)
 		{
-			message.putContext(sorted, "Expected").
-				putContext(value, "Actual");
+			message.withContext(sorted, "Expected").
+				withContext(value, "Actual");
 		}
 		return message;
 	}
@@ -236,7 +236,7 @@ public final class CollectionMessages
 		MessageBuilder message = new MessageBuilder(scope, validator,
 			nameOfValue + " must contain all nulls, or no nulls.");
 		if (value != null)
-			message.putContext(value, "Actual");
+			message.withContext(value, "Actual");
 		return message;
 	}
 }

@@ -120,7 +120,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 		}
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
 			configuration, name + ".size()", value.size(), name, value, Pluralizer.ENTRY, context, failures);
-		newValidator.putContext(value, name);
+		newValidator.withContext(value, name);
 		return newValidator;
 	}
 

@@ -59,7 +59,7 @@ public interface Validator<S>
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method override any values that are set using
-	 * {@link Validators#putContext(Object, String)}.
+	 * {@link Validators#withContext(Object, String)}.
 	 * <p>
 	 * There is no way to remove contextual information from a validator. Thread-level contextual information is
 	 * removed automatically.
@@ -69,7 +69,7 @@ public interface Validator<S>
 	 * @return this
 	 * @throws NullPointerException if {@code name} is null
 	 */
-	S putContext(Object value, String name);
+	S withContext(Object value, String name);
 
 	/**
 	 * Executes a nested validation. This facilitates validating multiple properties of the same value. For

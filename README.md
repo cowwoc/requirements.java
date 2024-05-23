@@ -74,9 +74,12 @@ public final class MissionControl
     String subject = words[4];
 
     // Class invariants or method postconditions
-//    String wrongReply = "What sort of " + subject + " do you see?";
-    String reply = "What sort of " + subject + "?";
-    assert assumeThat(reply, "reply").length().isLessThan(message.length(), "message.length()").elseThrow();
+    String reply = "What sort of " + subject + "?"; // <-- good reply
+//    String reply = "What sort of " + subject + " do you see?"; // <-- bad reply
+    assert assumeThat(reply, "reply").length().
+        withContext(message, "message").
+        isLessThan(message.length(), "message.length()").
+        elseThrow();
     System.out.println("Message: " + message);
     System.out.println("Reply  : " + reply);
     System.out.println();
@@ -88,14 +91,12 @@ public final class MissionControl
     StringJoiner joiner = new StringJoiner("\n\n");
     for (String failureMessage : messages)
       joiner.add(failureMessage);
-    System.out.println("Multiple failures\n" +
-      "-----------------\n" +
-      joiner);
+    System.out.println("Multiple failures\n-----------------\n" + joiner);
   }
 }
 ```
 
-Some of the failure messages you might see look like this:
+Potential error messages look like this:
 
 ```
 java.lang.NullPointerException: "args" may not be null
@@ -108,6 +109,7 @@ java.lang.AssertionError: reply.length() must contain less than message.length()
 message.length(): 25
 reply.length()  : 28
 reply           : "What sort of dog do you see?"
+message         : "Houston, we've got a dog."
 
 Multiple failures
 -----------------

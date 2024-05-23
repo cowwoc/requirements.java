@@ -75,12 +75,12 @@ public final class ConfigurationTest
 			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
 
 			TestValidatorsImpl factory2 = factory1.copy();
-			factory2.putContext("factoryValue", "factoryName");
+			factory2.withContext("factoryValue", "factoryName");
 
 			String message1 = factory1.checkIf("value", "name").
-				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
 			String message2 = factory2.checkIf("value", "name").
-				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
 
 			requireThat(message1, "message1").contains("validatorName: \"validatorValue\"").
 				doesNotContain("factoryName   : \"factoryValue\"");
@@ -95,11 +95,11 @@ public final class ConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
-			factory1.putContext("factoryValue", "factoryName");
+			factory1.withContext("factoryValue", "factoryName");
 
 			TestValidatorsImpl factory2 = factory1.copy();
 			String message = factory2.checkIf("value", "name").
-				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
 
 			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
 				contains("factoryName  : \"factoryValue\"");
@@ -117,10 +117,10 @@ public final class ConfigurationTest
 			TestValidatorsImpl factory = new TestValidatorsImpl(scope);
 
 			String message = factory.checkIf("value", "name").
-				putContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
 
 			// Ensure that this does not affect pre-existing validators
-			factory.putContext("factoryValue", "factoryName");
+			factory.withContext("factoryValue", "factoryName");
 
 			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
 				doesNotContain("factoryName  : \"factoryValue\"");
@@ -133,14 +133,14 @@ public final class ConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
-			factory1.putContext("factoryValue", "collision");
+			factory1.withContext("factoryValue", "collision");
 
 			TestValidatorsImpl factory2 = factory1.copy();
 
 			String message1 = factory1.checkIf("value", "name").
-				putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
 			String message2 = factory2.checkIf("value", "name").
-				putContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
 
 			requireThat(message1, "message1").contains("collision: \"validatorValue\"").
 				doesNotContain("collision: \"factoryValue\"");
@@ -155,10 +155,10 @@ public final class ConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
-			validators.putContext("factoryValue", "name2");
+			validators.withContext("factoryValue", "name2");
 
 			String message = validators.checkIf("value", "name").
-				putContext("validatorValue", "name2").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "name2").isNull().elseGetMessages().getFirst();
 			validators.requireThat(message, "message").contains("Actual: \"value\"").
 				doesNotContain("name2: \"validatorValue\"").
 				doesNotContain("name2: \"factoryValue\"");

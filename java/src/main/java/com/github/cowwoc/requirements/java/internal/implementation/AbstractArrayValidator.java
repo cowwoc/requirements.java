@@ -146,8 +146,8 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 			{
 				MessageBuilder message = CollectionMessages.containsExactly(scope, this, this.name, value, name,
 						expected, PLURALIZER).
-					putContext(missing, "Missing").
-					putContext(unwanted, "Unwanted");
+					withContext(missing, "Missing").
+					withContext(unwanted, "Unwanted");
 				addIllegalArgumentException(message.toString());
 			}
 		}
@@ -276,7 +276,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 
 			MessageBuilder message = CollectionMessages.containsAll(scope, this, this.name, value, name,
 					expected, PLURALIZER).
-				putContext(missingElements, "Missing");
+				withContext(missingElements, "Missing");
 			addIllegalArgumentException(message.toString());
 		}
 		return self();
@@ -392,7 +392,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 
 			MessageBuilder message = CollectionMessages.doesNotContainAny(scope, this, this.name, value,
 					name, unwanted, PLURALIZER).
-				putContext(unwantedElements, "Unwanted");
+				withContext(unwantedElements, "Unwanted");
 			addIllegalArgumentException(message.toString());
 		}
 		return self();
@@ -553,7 +553,7 @@ public abstract class AbstractArrayValidator<S extends ArrayPart<S, E, A>, E, A>
 		}
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
 			configuration, name + ".length", getLength(value), name, value, PLURALIZER, context, failures);
-		newValidator.putContext(value, name);
+		newValidator.withContext(value, name);
 		return newValidator;
 	}
 

@@ -135,9 +135,9 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 		{
 			MessageBuilder messageBuilder = ComparableMessages.getExpectedVsActual(scope, this, this.name,
 					value, "must contain", name, expected).
-				putContext(value, this.name);
+				withContext(value, this.name);
 			if (name != null)
-				messageBuilder.putContext(expected, name);
+				messageBuilder.withContext(expected, name);
 			addIllegalArgumentException(messageBuilder.toString());
 		}
 		return this;

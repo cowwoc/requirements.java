@@ -97,7 +97,7 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	}
 
 	@Override
-	public JacksonValidatorsImpl putContext(Object value, String name)
+	public JacksonValidatorsImpl withContext(Object value, String name)
 	{
 		context.put(name, value);
 		return this;

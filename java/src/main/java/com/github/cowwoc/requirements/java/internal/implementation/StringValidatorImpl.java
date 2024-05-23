@@ -279,7 +279,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a byte.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PrimitiveByteValidatorImpl(scope, configuration, name, (byte) 0, context, failures);
 		}
 		return new PrimitiveByteValidatorImpl(scope, configuration, name, valueAsByte, context, failures);
@@ -310,7 +310,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a short.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PrimitiveShortValidatorImpl(scope, configuration, name, (short) 0, context, failures);
 		}
 		return new PrimitiveShortValidatorImpl(scope, configuration, name, valueAsShort, context, failures);
@@ -341,7 +341,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a int.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
 		}
 		return new PrimitiveIntegerValidatorImpl(scope, configuration, name, valueAsInt, context, failures);
@@ -372,7 +372,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a long.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PrimitiveLongValidatorImpl(scope, configuration, name, 0L, context, failures);
 		}
 		return new PrimitiveLongValidatorImpl(scope, configuration, name, valueAsLong, context, failures);
@@ -403,7 +403,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a float.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PrimitiveFloatValidatorImpl(scope, configuration, name, 0.0f, context, failures);
 		}
 		return new PrimitiveFloatValidatorImpl(scope, configuration, name, valueAsFloat, context, failures);
@@ -434,7 +434,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a double.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PrimitiveDoubleValidatorImpl(scope, configuration, name, 0.0, context, failures);
 		}
 		return new PrimitiveDoubleValidatorImpl(scope, configuration, name, valueAsDouble, context, failures);
@@ -475,7 +475,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this, name + " must be convertible to a char.").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '\u0000', context, failures);
 		}
@@ -507,7 +507,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a BigInteger.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new BigIntegerValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		return new BigIntegerValidatorImpl(scope, configuration, name, valueAsBigInteger, context, failures);
@@ -538,7 +538,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (NumberFormatException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a BigDecimal.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new BigDecimalValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		return new BigDecimalValidatorImpl(scope, configuration, name, valueAsBigDecimal, context, failures);
@@ -569,7 +569,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (InvalidPathException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a Path.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new PathValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 		return new PathValidatorImpl(scope, configuration, name, valueAsPath, context, failures);
@@ -600,7 +600,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (IllegalArgumentException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a URI.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new UriValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}
@@ -630,7 +630,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		catch (MalformedURLException e)
 		{
 			addFailure(new MessageBuilder(scope, this, name + " must be convertible to a URL.").
-				putContext(value, "Actual").toString(), e, IllegalArgumentException::new);
+				withContext(value, "Actual").toString(), e, IllegalArgumentException::new);
 			return new UrlValidatorImpl(scope, configuration, name, null, context, failures);
 		}
 	}
@@ -666,7 +666,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " must contain a valid IP address or hostname format.").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
@@ -680,7 +680,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		{
 			addFailure(new MessageBuilder(scope, this,
 				name + " must contain a valid IP address or hostname format.").
-				putContext(value, "Actual").
+				withContext(value, "Actual").
 				toString(), e, IllegalArgumentException::new);
 			return new InetAddressValidatorImpl(scope, configuration, name, null, context, failures);
 		}
@@ -709,7 +709,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " must start with \"" + prefix + "\".").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -737,7 +737,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " may not start with \"" + prefix + "\".").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -765,7 +765,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " must end with \"" + suffix + "\".").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -793,7 +793,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				ComparableMessages.getExpectedVsActual(scope, this,
 						name, null, "may not end with", null, "\"" + suffix + "\"").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -821,7 +821,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " must contain \"" + expected + "\".").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -849,7 +849,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " may not contain \"" + unwanted + "\".").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;
@@ -877,7 +877,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 			addIllegalArgumentException(
 				new MessageBuilder(scope, this,
 					name + " must match the regular expression \"" + regex + "\".").
-					putContext(value, "Actual").
+					withContext(value, "Actual").
 					toString());
 		}
 		return this;

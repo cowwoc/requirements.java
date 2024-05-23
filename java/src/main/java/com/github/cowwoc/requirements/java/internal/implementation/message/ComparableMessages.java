@@ -60,9 +60,9 @@ public final class ComparableMessages
 				nameOfOther = "Actual";
 		}
 		if (nameOfOther != null)
-			messageBuilder.putContext(other, nameOfOther);
+			messageBuilder.withContext(other, nameOfOther);
 		if (value != null)
-			messageBuilder.putContext(value, nameOfValue);
+			messageBuilder.withContext(value, nameOfValue);
 		return messageBuilder;
 	}
 
@@ -91,9 +91,9 @@ public final class ComparableMessages
 
 		MessageBuilder builder = new MessageBuilder(scope, validator, message.toString());
 		if (nameOfOther != null)
-			builder.putContext(other, nameOfOther);
+			builder.withContext(other, nameOfOther);
 		if (value != null)
-			builder.putContext(value, nameOfValue);
+			builder.withContext(value, nameOfValue);
 		return builder;
 	}
 
@@ -184,7 +184,7 @@ public final class ComparableMessages
 		MessageBuilder messageBuilder = new MessageBuilder(scope, validator, message.toString());
 
 		if (value != null)
-			messageBuilder.putContext(value, "Actual");
+			messageBuilder.withContext(value, "Actual");
 		return messageBuilder;
 	}
 }

@@ -55,7 +55,7 @@ public final class MessageBuilder
 	 * @return this
 	 * @throws AssertionError if the name is null, empty or contains leading or trailing whitespace, or a colon
 	 */
-	public MessageBuilder putContext(Object value, String name)
+	public MessageBuilder withContext(Object value, String name)
 	{
 		failureContext.put(name, value);
 		return this;

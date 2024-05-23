@@ -1517,7 +1517,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public JavaValidatorsImpl putContext(Object value, String name)
+	public JavaValidatorsImpl withContext(Object value, String name)
 	{
 		context.put(name, value);
 		return this;
