@@ -26,29 +26,6 @@ To get started, add this Maven dependency:
 </dependency>
 ```
 
-Designed for discovery using your favorite IDE's auto-complete feature.
-The main entry points are:
-
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
-* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/JavaValidators.html) for custom configurations.
-
-The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
-configuration.
-
-`requireThat()` and `assumeThat()` throw an exception on the first validation failure,
-while `checkIf()` collects multiple validation failures before throwing an exception at the end.
-`checkIf()` is more flexible than the others, but its syntax is more verbose.
-
-Exceptions that are thrown in response to invalid method arguments (e.g. `isGreaterThan(null, value)`) are
-thrown by all validators and cannot be configured. Exceptions that are thrown in response to the value
-failing a validation check, e.g. `isGreaterThan(5)` on a value of 0, are thrown by `requireThat()` and
-`assumeThat()` but are recorded by `checkIf()` without being thrown. The type of thrown exceptions is
-configurable using [ConfigurationUpdater#exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
-
-See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
-
 ## Usage Example
 
 ```java
@@ -134,6 +111,31 @@ This library offers the following features:
 * [Nested validations](docs/Features.md#nested-validations) that allow you to validate complex objects
 * [String diff](docs/Features.md#string-diff) that shows the differences between two strings
 * [Performant and robust](docs/Performance.md)
+
+## Entry Points
+
+Designed for discovery using your favorite IDE's auto-complete feature.
+The main entry points are:
+
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
+* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
+* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
+* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/JavaValidators.html) for custom configurations.
+
+The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
+configuration.
+
+`requireThat()` and `assumeThat()` throw an exception on the first validation failure,
+while `checkIf()` collects multiple validation failures before throwing an exception at the end.
+`checkIf()` is more flexible than the others, but its syntax is more verbose.
+
+Exceptions that are thrown in response to invalid method arguments (e.g. `isGreaterThan(null, value)`) are
+thrown by all validators and cannot be configured. Exceptions that are thrown in response to the value
+failing a validation check, e.g. `isGreaterThan(5)` on a value of 0, are thrown by `requireThat()` and
+`assumeThat()` but are recorded by `checkIf()` without being thrown. The type of thrown exceptions is
+configurable using [ConfigurationUpdater#exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
+
+See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
 
 ## Tips
 

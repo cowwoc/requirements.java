@@ -28,7 +28,7 @@ import java.util.function.Function;
  * {@code checkIf()} is more flexible than the others, but its syntax is more verbose.
  * <p>
  * Exceptions that are thrown in response to invalid method arguments (e.g.
- * {@code isGreaterThan(null, value)}) are thrown by all validators and cannot be configured. Exceptions that
+ * {@code isGreaterThan(value, null)}) are thrown by all validators and cannot be configured. Exceptions that
  * are thrown in response to the value failing a validation check, e.g. {@code isGreaterThan(5)} on a value
  * of 0, are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
  * without being thrown. The type of thrown exceptions is configurable using

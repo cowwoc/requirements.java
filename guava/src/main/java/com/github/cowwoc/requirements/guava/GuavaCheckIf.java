@@ -8,7 +8,7 @@ import com.google.common.collect.Multimap;
  * <p>
  * A validation method may throw exceptions in three scenarios:
  * <ol>
- * <li>The method arguments are invalid, e.g. {@code isGreaterThan(null, value)}.</li>
+ * <li>The method arguments are invalid, e.g. {@code isGreaterThan(value, null)}.</li>
  * <li>The method encounters a predictable but unavoidable failure that can be recovered from, e.g. an I/O
  * error.</li>
  * <li>The value fails the validation check, e.g. {@code isGreaterThan(5)} on a value of 0.</li>
