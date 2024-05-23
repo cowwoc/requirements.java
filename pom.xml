@@ -56,17 +56,14 @@
 	<properties>
 		<!--		<license.verbose>true</license.verbose>-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.version>3.9.6</maven.version>
 		<maven.compiler.release>21</maven.compiler.release>
-		<maven.version>3.9.1</maven.version>
-		<maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
-		<maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
 		<guava.version>33.2.0-jre</guava.version>
 		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
 		<jackson.version>2.17.1</jackson.version>
 		<slf4j.version>2.0.11</slf4j.version>
 		<logback.version>1.5.6</logback.version>
 		<testng.version>7.10.2</testng.version>
-		<pouch.version>4.4</pouch.version>
 		<jmh.version>1.37</jmh.version>
 		<pmd.version>7.1.0</pmd.version>
 	</properties>
@@ -94,6 +91,11 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-core</artifactId>
+				<version>3.9.6</version>
+			</dependency>
+			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
@@ -119,11 +121,6 @@
 				<version>${logback.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>${testng.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.github.javaparser</groupId>
 				<artifactId>javaparser-core</artifactId>
 				<version>3.25.2</version>
@@ -146,7 +143,7 @@
 			<dependency>
 				<groupId>com.github.cowwoc.pouch</groupId>
 				<artifactId>core</artifactId>
-				<version>${pouch.version}</version>
+				<version>4.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.twdata.maven</groupId>
@@ -154,19 +151,9 @@
 				<version>2.4.1-m2</version>
 			</dependency>
 			<dependency>
-				<groupId>aopalliance</groupId>
-				<artifactId>aopalliance</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.maven</groupId>
-				<artifactId>maven-core</artifactId>
-				<version>3.9.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.maven</groupId>
-				<artifactId>maven-model</artifactId>
-				<version>3.9.0</version>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>${testng.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -186,8 +173,49 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.3.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven-javadoc-plugin.version}</version>
+					<version>3.6.3</version>
+					<executions>
+						<execution>
+							<id>default-cli</id>
+							<goals>
+								<goal>aggregate</goal>
+							</goals>
+							<!-- Reminder: Use "-pl !test,!benchmark" to exclude test modules -->
+							<configuration>
+								<show>public</show>
+								<additionalOptions>
+									<!--
+									Maven plugins cannot be full-fledged modules due to Maven's use of split packages.
+									automatic-modules are treated as unnamed modules so we need to explicitly export packages
+									to them.
+									-->
+									<option>--add-modules</option>
+									<option>java.xml</option>
+									<!-- https://stackoverflow.com/a/54468139/14731 -->
+									<option>--override-methods</option>
+									<option>summary</option>
+								</additionalOptions>
+								<links>
+									<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
+									<link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.0/</link>
+								</links>
+								<excludePackageNames>
+									com.github.cowwoc.requirements.java.internal,
+									com.github.cowwoc.requirements.java.internal.*,
+									com.github.cowwoc.requirements.guava.internal,
+									com.github.cowwoc.requirements.guava.internal.*,
+									com.github.cowwoc.requirements.jackson.internal,
+									com.github.cowwoc.requirements.jackson.internal.*
+								</excludePackageNames>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -276,7 +304,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${maven-deploy-plugin.version}</version>
+					<version>3.1.2</version>
 					<configuration>
 						<deployAtEnd>true</deployAtEnd>
 						<altReleaseDeploymentRepository>
@@ -317,47 +345,6 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<tagNameFormat>release-@{project.version}</tagNameFormat>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default-cli</id>
-						<goals>
-							<goal>aggregate</goal>
-						</goals>
-						<!-- Reminder: Use "-pl !test,!benchmark" to exclude test modules -->
-						<configuration>
-							<show>public</show>
-							<additionalOptions>
-								<!--
-								Maven plugins cannot be full-fledged modules due to Maven's use of split packages.
-								automatic-modules are treated as unnamed modules so we need to explicitly export packages
-								to them.
-								-->
-								<option>--add-modules</option>
-								<option>java.xml</option>
-								<!-- https://stackoverflow.com/a/54468139/14731 -->
-								<option>--override-methods</option>
-								<option>summary</option>
-							</additionalOptions>
-							<links>
-								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
-								<link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.0/</link>
-							</links>
-							<excludePackageNames>
-								com.github.cowwoc.requirements.java.internal,
-								com.github.cowwoc.requirements.java.internal.*,
-								com.github.cowwoc.requirements.guava.internal,
-								com.github.cowwoc.requirements.guava.internal.*,
-								com.github.cowwoc.requirements.jackson.internal,
-								com.github.cowwoc.requirements.jackson.internal.*
-							</excludePackageNames>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
