@@ -201,11 +201,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${maven-deploy-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>3.1.2</version>
 				</plugin>
@@ -260,6 +255,35 @@
 							<version>${pmd.version}</version>
 						</dependency>
 					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>3.2.4</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+							<configuration>
+								<bestPractices>true</bestPractices>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven-deploy-plugin.version}</version>
+					<configuration>
+						<deployAtEnd>true</deployAtEnd>
+						<altReleaseDeploymentRepository>
+							<!-- Based on https://gist.github.com/cstamas/69e6365bbb70521923020d68369bf8e5 -->
+							maven-central-releases::https://${staging_host}/service/local/staging/deployByRepositoryId/${staging_repository_id}
+						</altReleaseDeploymentRepository>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -401,18 +425,12 @@
 
 	<profiles>
 		<profile>
-			<id>deploy</id>
-			<activation>
-				<property>
-					<name>deploy</name>
-				</property>
-			</activation>
+			<id>release</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.3.1</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -425,12 +443,18 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>${maven-javadoc-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.4</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -438,24 +462,8 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
-								<configuration>
-									<!-- See https://maven.apache.org/guides/mini/guide-encryption.html -->
-									<passphraseServerId>gpg.passphrase</passphraseServerId>
-								</configuration>
 							</execution>
 						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-deploy-plugin</artifactId>
-						<version>${maven-deploy-plugin.version}</version>
-						<configuration>
-							<deployAtEnd>true</deployAtEnd>
-							<altReleaseDeploymentRepository>
-								<!-- Based on https://gist.github.com/cstamas/69e6365bbb70521923020d68369bf8e5 -->
-								maven-central-releases::https://${staging_host}/service/local/staging/deployByRepositoryId/${staging_repository_id}
-							</altReleaseDeploymentRepository>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>

@@ -67,7 +67,7 @@ jobs:
         id: create-tag
         run: |
           echo "INITIAL_REF_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          ./mvnw release:prepare --batch-mode -V -e -Darguments="-Ddeploy -Dinvoker.skip=true"
+          ./mvnw release:prepare --batch-mode -V -e
           TAG=$(git describe --tag --abbrev=0)
           echo "TAG=${TAG}" >> "$GITHUB_OUTPUT"
           echo "VERSION=${TAG#"release-"}" >> "$GITHUB_OUTPUT"
@@ -101,7 +101,7 @@ jobs:
           echo "STAGING_REPOSITORY_ID=$(echo '${{ steps.open-repository.outputs.STAGING_REPOSITORY_ID }}' | jq -r '.data.stagedRepositoryId')" >> "$GITHUB_OUTPUT"
 
   deploy:
-    name: Deploy (${{ matrix.runtime }})
+    name: Deploy
     needs: open-release
     runs-on: ubuntu-latest
     steps:
@@ -129,12 +129,16 @@ jobs:
             !~/.m2/repository/com/github/cowwoc/requirements
           key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
 
+      - name: Test build
+        run: ./mvnw --batch-mode -V -e verify
+
+      # Avoid using exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
       - name: Deploy to Maven Central
         run: >
-          ./mvnw --batch-mode -V -e -Ddeploy
+          ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj'
           -Dstaging_repository_id=${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}
           -Dstaging_host="${{ env.STAGING_HOST }}"
-          deploy
+          deploy -P release
 
   close-release:
     needs: [ open-release, deploy ]
@@ -203,7 +207,7 @@ jobs:
           key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
 
       - name: Drop staging repository
-        if: needs.open-release.outputs.STAGING_REPOSITORY_ID != ''
+        if: needs.open-release.outputs.STAGING_REPOSITORY_ID != '' && needs.open-release.outputs.STAGING_PROFILE_ID != ''
         run: >
           curl -u ${{ secrets.OSSRH_USERNAME}}:${{ secrets.OSSRH_TOKEN }} -X POST
           -H "Content-Type:application/json"
@@ -214,11 +218,6 @@ jobs:
         run: |
           git config user.email "cowwoc2020@gmail.com"
           git config user.name "Gili Tzabari"
-
-      - name: Delete tag
-        if: needs.open-release.outputs.TAG != ''
-        run: |
-          git push --delete origin ${{ needs.open-release.outputs.TAG }}
 
       - name: Restore the workflow ref to its original position
         if: needs.open-release.outputs.INITIAL_REF_POSITION != ''
@@ -231,3 +230,8 @@ jobs:
             fi
             git push -f origin ${{ github.ref_name }}
           fi
+
+      - name: Delete tag
+        if: needs.open-release.outputs.TAG != ''
+        run: |
+          git push --delete origin ${{ needs.open-release.outputs.TAG }}

@@ -7,6 +7,7 @@
     * [core](https://github.com/cowwoc/pouch/core/)
     * [annotation](https://github.com/cowwoc/requirements.java/annotation/)
     * [guava](https://github.com/cowwoc/requirements.java/guava/)
+    * [jackson](https://github.com/cowwoc/requirements.java/jackson/)
     * [java](https://github.com/cowwoc/requirements.java/java/)
     * [FindBugs-jsr305](http://findbugs.sourceforge.net/)
     * [error-prone annotations](https://errorprone.info/error_prone_annotations)
