@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.CollectionMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
@@ -115,9 +114,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 	@Override
 	public ObjectArrayValidator<E, E[]> contains(E expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return containsImpl(expected, name);
 	}
 
@@ -155,12 +152,8 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 	@Override
 	public ObjectArrayValidator<E, E[]> doesNotContain(E unwanted, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-		internalValidator.requireThat(unwanted, name).isNotNull();
-
+		requireThatNameIsUnique(name).
+			requireThat(unwanted, name).isNotNull();
 		return doesNotContainImpl(unwanted, name);
 	}
 

@@ -189,4 +189,11 @@ public interface PrimitiveCharacterValidator extends Validator<PrimitiveCharacte
 	 */
 	PrimitiveCharacterValidator isBetween(char minimum, boolean minimumInclusive, char maximum,
 		boolean maximumInclusive);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	CharacterValidator asBoxed();
 }

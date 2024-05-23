@@ -10,6 +10,7 @@ module com.github.cowwoc.requirements.test
 	requires com.github.cowwoc.requirements.guava;
 	requires com.github.cowwoc.requirements.jackson;
 	requires com.fasterxml.jackson.databind;
+	requires static com.google.errorprone.annotations;
 
 	exports com.github.cowwoc.requirements.test to org.testng;
 	exports com.github.cowwoc.requirements.test.guava to org.testng;

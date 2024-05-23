@@ -427,7 +427,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = 5;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInt();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInteger();
 		}
 	}
 
@@ -437,7 +437,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = (short) 5;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInt();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isInteger();
 		}
 	}
 
@@ -527,7 +527,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = '5';
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isChar();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isCharacter();
 		}
 	}
 
@@ -537,7 +537,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = true;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isChar();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isCharacter();
 		}
 	}
 

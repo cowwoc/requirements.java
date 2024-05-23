@@ -183,7 +183,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code byte}
 	 * @see Byte#parseByte(String)
 	 */
-	PrimitiveByteValidator asByte();
+	PrimitiveByteValidator asPrimitiveByte();
 
 	/**
 	 * Validates the {@code short} representation of the value.
@@ -193,7 +193,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code short}
 	 * @see Short#parseShort(String)
 	 */
-	PrimitiveShortValidator asShort();
+	PrimitiveShortValidator asPrimitiveShort();
 
 	/**
 	 * Validates the {@code int} representation of the value.
@@ -203,7 +203,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to an {@code int}
 	 * @see Integer#parseInt(String)
 	 */
-	PrimitiveIntegerValidator asInteger();
+	PrimitiveIntegerValidator asPrimitiveInteger();
 
 	/**
 	 * Validates the {@code long} representation of the value.
@@ -213,7 +213,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code long}
 	 * @see Long#parseLong(String)
 	 */
-	PrimitiveLongValidator asLong();
+	PrimitiveLongValidator asPrimitiveLong();
 
 	/**
 	 * Validates the {@code float} representation of the value.
@@ -223,7 +223,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code float}
 	 * @see Float#parseFloat(String)
 	 */
-	PrimitiveFloatValidator asFloat();
+	PrimitiveFloatValidator asPrimitiveFloat();
 
 	/**
 	 * Validates the {@code double} representation of the value.
@@ -233,7 +233,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code double}
 	 * @see Double#parseDouble(String)
 	 */
-	PrimitiveDoubleValidator asDouble();
+	PrimitiveDoubleValidator asPrimitiveDouble();
 
 	/**
 	 * Validates the {@code boolean} representation of the value.
@@ -242,7 +242,7 @@ public interface StringValidator extends
 	 * @throws NullPointerException if the value is null
 	 * @see Boolean#parseBoolean(String)
 	 */
-	PrimitiveBooleanValidator asBoolean();
+	PrimitiveBooleanValidator asPrimitiveBoolean();
 
 	/**
 	 * Validates the {@code char} representation of the value.
@@ -252,7 +252,7 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value cannot be converted to a {@code char}
 	 * @see Character#charValue()
 	 */
-	PrimitiveCharacterValidator asCharacter();
+	PrimitiveCharacterValidator asPrimitiveCharacter();
 
 	/**
 	 * Validates the {@code BigInteger} representation of the value.

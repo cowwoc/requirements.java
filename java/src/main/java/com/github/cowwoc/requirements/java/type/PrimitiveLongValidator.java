@@ -241,4 +241,11 @@ public interface PrimitiveLongValidator extends
 	 */
 	PrimitiveLongValidator isBetween(long minimum, boolean minimumInclusive, long maximum,
 		boolean maximumInclusive);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	LongValidator asBoxed();
 }

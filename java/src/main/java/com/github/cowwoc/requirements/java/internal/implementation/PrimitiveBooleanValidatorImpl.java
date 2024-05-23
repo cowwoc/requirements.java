@@ -5,6 +5,7 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.BooleanMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.BooleanValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveBooleanValidator;
 
 import java.util.List;
@@ -79,12 +80,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveBooleanValidator isEqualTo(boolean expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -112,12 +108,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveBooleanValidator isNotEqualTo(boolean unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -136,5 +127,13 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractValidator<Primi
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public BooleanValidator asBoxed()
+	{
+		if (hasFailed())
+			return new BooleanValidatorImpl(scope, configuration, name, null, context, failures);
+		return new BooleanValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

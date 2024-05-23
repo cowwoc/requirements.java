@@ -129,6 +129,102 @@ public final class Arrays
 	}
 
 	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Byte[] asBoxed(byte[] array)
+	{
+		Byte[] result = new Byte[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Short[] asBoxed(short[] array)
+	{
+		Short[] result = new Short[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Integer[] asBoxed(int[] array)
+	{
+		Integer[] result = new Integer[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Long[] asBoxed(long[] array)
+	{
+		Long[] result = new Long[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Boolean[] asBoxed(boolean[] array)
+	{
+		Boolean[] result = new Boolean[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Character[] asBoxed(char[] array)
+	{
+		Character[] result = new Character[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Float[] asBoxed(float[] array)
+	{
+		Float[] result = new Float[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
+	 * @param array an array of primitive values
+	 * @return an array containing the boxed representation of the values
+	 */
+	public static Double[] asBoxed(double[] array)
+	{
+		Double[] result = new Double[array.length];
+		for (int i = 0; i < array.length; ++i)
+			result[i] = array[i];
+		return result;
+	}
+
+	/**
 	 * @param array an array
 	 * @param o     an object to compare to
 	 * @return true if {@code o} is a {@code boolean[]} and

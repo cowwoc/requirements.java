@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Colle
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Arrays;
+import com.github.cowwoc.requirements.java.type.ObjectArrayValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveCharacterArrayValidator;
 
 import java.util.Comparator;
@@ -51,22 +52,21 @@ public final class PrimitiveCharacterArrayValidatorImpl
 	@Override
 	public PrimitiveCharacterArrayValidator contains(Character expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((char) expected, null);
 	}
 
 	@Override
 	public PrimitiveCharacterArrayValidator contains(char expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return containsImpl(expected, name);
 	}
 
 	@Override
 	public PrimitiveCharacterArrayValidator contains(Character expected, String name)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((char) expected, name);
 	}
 
@@ -99,22 +99,21 @@ public final class PrimitiveCharacterArrayValidatorImpl
 	@Override
 	public PrimitiveCharacterArrayValidator doesNotContain(Character unwanted)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((char) unwanted, null);
 	}
 
 	@Override
 	public PrimitiveCharacterArrayValidator doesNotContain(char unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return doesNotContainImpl(unwanted, name);
 	}
 
 	@Override
 	public PrimitiveCharacterArrayValidator doesNotContain(Character unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((char) unwanted, name);
 	}
 
@@ -215,5 +214,20 @@ public final class PrimitiveCharacterArrayValidatorImpl
 		List<Character> list = Arrays.asList(array);
 		list.sort(comparator);
 		return list;
+	}
+
+	@Override
+	public ObjectArrayValidator<Character, Character[]> asBoxed()
+	{
+		if (hasFailed())
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		}
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, Arrays.asBoxed(value), context,
+			failures);
 	}
 }

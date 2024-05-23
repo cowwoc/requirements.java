@@ -245,4 +245,11 @@ public interface PrimitiveFloatValidator extends
 	 */
 	PrimitiveFloatValidator isBetween(float minimum, boolean minimumInclusive, float maximum,
 		boolean maximumInclusive);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	FloatValidator asBoxed();
 }

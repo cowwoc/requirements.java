@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Colle
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Arrays;
+import com.github.cowwoc.requirements.java.type.ObjectArrayValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveShortArrayValidator;
 
 import java.util.Comparator;
@@ -130,22 +131,21 @@ public final class PrimitiveShortArrayValidatorImpl
 	@Override
 	public PrimitiveShortArrayValidatorImpl contains(Short expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((short) expected, null);
 	}
 
 	@Override
 	public PrimitiveShortArrayValidatorImpl contains(short expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return containsImpl(expected, name);
 	}
 
 	@Override
 	public PrimitiveShortArrayValidatorImpl contains(Short expected, String name)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((short) expected, name);
 	}
 
@@ -178,22 +178,21 @@ public final class PrimitiveShortArrayValidatorImpl
 	@Override
 	public PrimitiveShortArrayValidatorImpl doesNotContain(Short unwanted)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((short) unwanted, null);
 	}
 
 	@Override
 	public PrimitiveShortArrayValidatorImpl doesNotContain(short unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return doesNotContainImpl(unwanted, name);
 	}
 
 	@Override
 	public PrimitiveShortArrayValidatorImpl doesNotContain(Short unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((short) unwanted, name);
 	}
 
@@ -215,5 +214,20 @@ public final class PrimitiveShortArrayValidatorImpl
 				CollectionMessages.doesNotContain(scope, this, this.name, value, name, unwanted).toString());
 		}
 		return this;
+	}
+
+	@Override
+	public ObjectArrayValidator<Short, Short[]> asBoxed()
+	{
+		if (hasFailed())
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		}
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, Arrays.asBoxed(value), context,
+			failures);
 	}
 }

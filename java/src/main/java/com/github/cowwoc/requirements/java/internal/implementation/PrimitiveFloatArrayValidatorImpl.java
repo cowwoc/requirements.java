@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Colle
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Arrays;
+import com.github.cowwoc.requirements.java.type.ObjectArrayValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveFloatArrayValidator;
 
 import java.util.Comparator;
@@ -66,22 +67,21 @@ public final class PrimitiveFloatArrayValidatorImpl
 	@Override
 	public PrimitiveFloatArrayValidator contains(Float expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((float) expected, null);
 	}
 
 	@Override
 	public PrimitiveFloatArrayValidator contains(float expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return containsImpl(expected, name);
 	}
 
 	@Override
 	public PrimitiveFloatArrayValidator contains(Float expected, String name)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((float) expected, name);
 	}
 
@@ -114,22 +114,21 @@ public final class PrimitiveFloatArrayValidatorImpl
 	@Override
 	public PrimitiveFloatArrayValidator doesNotContain(Float unwanted)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((float) unwanted, null);
 	}
 
 	@Override
 	public PrimitiveFloatArrayValidator doesNotContain(float unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return doesNotContainImpl(unwanted, name);
 	}
 
 	@Override
 	public PrimitiveFloatArrayValidator doesNotContain(Float unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((float) unwanted, name);
 	}
 
@@ -215,5 +214,20 @@ public final class PrimitiveFloatArrayValidatorImpl
 		List<Float> list = Arrays.asList(array);
 		list.sort(comparator);
 		return list;
+	}
+
+	@Override
+	public ObjectArrayValidator<Float, Float[]> asBoxed()
+	{
+		if (hasFailed())
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		}
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, Arrays.asBoxed(value), context,
+			failures);
 	}
 }

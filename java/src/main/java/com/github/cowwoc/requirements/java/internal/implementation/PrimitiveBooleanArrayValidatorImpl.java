@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Colle
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Arrays;
+import com.github.cowwoc.requirements.java.type.ObjectArrayValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveBooleanArrayValidator;
 
 import java.util.Comparator;
@@ -105,22 +106,21 @@ public final class PrimitiveBooleanArrayValidatorImpl
 	@Override
 	public PrimitiveBooleanArrayValidatorImpl contains(Boolean expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((boolean) expected, null);
 	}
 
 	@Override
 	public PrimitiveBooleanArrayValidatorImpl contains(boolean expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return containsImpl(expected, name);
 	}
 
 	@Override
 	public PrimitiveBooleanArrayValidatorImpl contains(Boolean expected, String name)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((boolean) expected, name);
 	}
 
@@ -153,22 +153,21 @@ public final class PrimitiveBooleanArrayValidatorImpl
 	@Override
 	public PrimitiveBooleanArrayValidatorImpl doesNotContain(Boolean unwanted)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((boolean) unwanted, null);
 	}
 
 	@Override
 	public PrimitiveBooleanArrayValidatorImpl doesNotContain(boolean unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return doesNotContainImpl(unwanted, name);
 	}
 
 	@Override
 	public PrimitiveBooleanArrayValidatorImpl doesNotContain(Boolean unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((boolean) unwanted, name);
 	}
 
@@ -190,5 +189,20 @@ public final class PrimitiveBooleanArrayValidatorImpl
 				CollectionMessages.doesNotContain(scope, this, this.name, value, name, unwanted).toString());
 		}
 		return this;
+	}
+
+	@Override
+	public ObjectArrayValidator<Boolean, Boolean[]> asBoxed()
+	{
+		if (hasFailed())
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		}
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, Arrays.asBoxed(value), context,
+			failures);
 	}
 }

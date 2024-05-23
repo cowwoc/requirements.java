@@ -17,7 +17,6 @@
     * [J2ObjC Annotations](https://github.com/google/j2objc/)
     * [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/java-diff-utils)
     * [Byte Buddy (without dependencies)](https://bytebuddy.net/byte-buddy)
-    * [Byte Buddy (without dependencies)](https://bytebuddy.net/byte-buddy)
     * [Apache Commons Math](http://commons.apache.org/proper/commons-math/)
     * [AssertJ Core](https://assertj.github.io/doc/#assertj-core)
     * [testng](https://testng.org)

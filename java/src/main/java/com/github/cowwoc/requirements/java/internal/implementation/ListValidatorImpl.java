@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.CollectionMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
@@ -47,8 +46,7 @@ public final class ListValidatorImpl<E, T extends List<E>>
 	@Override
 	public ListValidator<E, T> isSorted(Comparator<E> comparator)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(comparator, "comparator").isNotNull();
+		scope.getInternalValidators().requireThat(comparator, "comparator").isNotNull();
 
 		if (hasFailed())
 		{

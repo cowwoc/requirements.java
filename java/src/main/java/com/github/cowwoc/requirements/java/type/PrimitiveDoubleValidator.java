@@ -245,4 +245,11 @@ public interface PrimitiveDoubleValidator extends
 	 */
 	PrimitiveDoubleValidator isBetween(double minimum, boolean minimumInclusive, double maximum,
 		boolean maximumInclusive);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	DoubleValidator asBoxed();
 }

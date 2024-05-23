@@ -49,6 +49,8 @@
 		<module>java</module>
 		<module>guava</module>
 		<module>jackson</module>
+		<module>test</module>
+		<module>benchmark</module>
 	</modules>
 
 	<properties>
@@ -57,14 +59,16 @@
 		<maven.compiler.release>21</maven.compiler.release>
 		<maven.version>3.9.1</maven.version>
 		<maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
-		<guava.version>33.0.0-jre</guava.version>
-		<jackson.version>2.17.0</jackson.version>
+		<maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
+		<guava.version>33.2.0-jre</guava.version>
+		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
+		<jackson.version>2.17.1</jackson.version>
 		<slf4j.version>2.0.11</slf4j.version>
-		<logback.version>1.4.14</logback.version>
-		<testng.version>7.9.0</testng.version>
-		<pouch.version>4.3</pouch.version>
+		<logback.version>1.5.6</logback.version>
+		<testng.version>7.10.2</testng.version>
+		<pouch.version>4.4</pouch.version>
 		<jmh.version>1.37</jmh.version>
-		<pmd.version>7.0.0</pmd.version>
+		<pmd.version>7.1.0</pmd.version>
 	</properties>
 
 	<dependencyManagement>
@@ -178,7 +182,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.12.1</version>
+					<version>3.13.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -198,32 +202,27 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>${maven-deploy-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>3.1.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>4.0.0-M13</version>
+					<version>4.0.0-M14</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.4.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.3.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -238,14 +237,8 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
-					<version>3.21.2</version>
+					<version>3.22.0</version>
 					<dependencies>
-						<dependency>
-							<!-- WORKAROUND: https://github.com/apache/maven-pmd-plugin/pull/144 -->
-							<groupId>net.sourceforge.pmd</groupId>
-							<artifactId>pmd-compat6</artifactId>
-							<version>${pmd.version}</version>
-						</dependency>
 						<dependency>
 							<groupId>net.sourceforge.pmd</groupId>
 							<artifactId>pmd-core</artifactId>
@@ -299,33 +292,6 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<tagNameFormat>release-@{project.version}</tagNameFormat>
-				</configuration>
-			</plugin>
-			<plugin>
-				<!--
-				Cannot be hidden behind the "deploy" profile because we need to invoke "rc-open" and "rc-close" before
-				and after deployment.
-				-->
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.13</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>maven-central-releases</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.1</version>
-				<configuration>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation>
-					<compilerArgs>
-						<arg>-Xdiags:verbose</arg>
-						<arg>-Werror</arg>
-					</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -420,7 +386,6 @@
 					</excludes>
 					<analysisCache>true</analysisCache>
 					<linkXRef>false</linkXRef>
-					<showPmdLog>true</showPmdLog>
 					<targetJdk>21</targetJdk>
 				</configuration>
 				<executions>
@@ -437,10 +402,6 @@
 	<profiles>
 		<profile>
 			<id>deploy</id>
-			<!--
-			Must use property-based activation because there is no way to activate no-deploy profile without it.
-			See https://stackoverflow.com/a/7481347/14731
-			-->
 			<activation>
 				<property>
 					<name>deploy</name>
@@ -451,7 +412,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.3.0</version>
+						<version>3.3.1</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -469,7 +430,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.1.0</version>
+						<version>3.2.4</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -484,26 +445,20 @@
 							</execution>
 						</executions>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<version>${maven-deploy-plugin.version}</version>
+						<configuration>
+							<deployAtEnd>true</deployAtEnd>
+							<altReleaseDeploymentRepository>
+								<!-- Based on https://gist.github.com/cstamas/69e6365bbb70521923020d68369bf8e5 -->
+								maven-central-releases::https://${staging_host}/service/local/staging/deployByRepositoryId/${staging_repository_id}
+							</altReleaseDeploymentRepository>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
-		</profile>
-		<profile>
-			<id>no-deploy</id>
-			<!--
-			According to https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin
-			skipNexusStagingDeployMojo may not be set to true in the last reactor module. Because we don't
-			want to deploy our last module, nor a dummy module, we simply omit the relevant modules when
-			a deploy is in progress.
-			-->
-			<activation>
-				<property>
-					<name>!deploy</name>
-				</property>
-			</activation>
-			<modules>
-				<module>test</module>
-				<module>benchmark</module>
-			</modules>
 		</profile>
 	</profiles>
 </project>

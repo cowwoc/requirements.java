@@ -40,7 +40,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	@Override
 	public ClassValidator<T> isSupertypeOf(Class<?> type)
 	{
-		scope.getInternalValidator().requireThat(type, "type").isNotNull();
+		scope.getInternalValidators().requireThat(type, "type").isNotNull();
 
 		if (hasFailed())
 			addIllegalArgumentException(name + " must be a supertype of " + type + ".");
@@ -57,7 +57,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	@Override
 	public ClassValidator<T> isSubtypeOf(Class<?> type)
 	{
-		scope.getInternalValidator().requireThat(type, "type").isNotNull();
+		scope.getInternalValidators().requireThat(type, "type").isNotNull();
 
 		if (hasFailed())
 		{

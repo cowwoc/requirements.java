@@ -81,9 +81,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public S isSameReferenceAs(Object expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		if (value != expected)
 		{
 			addIllegalArgumentException(
@@ -95,9 +93,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public S isNotSameReferenceAs(Object unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		if (value == unwanted)
 		{
 			addIllegalArgumentException(
@@ -109,7 +105,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public <C> ObjectValidator<C> isInstanceOf(Class<C> expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		if (!expected.isInstance(value))
 		{
 			addIllegalArgumentException(
@@ -124,7 +120,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public S isNotInstanceOf(Class<?> unwanted)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		if (unwanted.isInstance(value))
 		{
 			addIllegalArgumentException(
@@ -143,12 +139,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public S isEqualTo(Object expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -177,12 +168,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S>
 	@Override
 	public S isNotEqualTo(Object unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 

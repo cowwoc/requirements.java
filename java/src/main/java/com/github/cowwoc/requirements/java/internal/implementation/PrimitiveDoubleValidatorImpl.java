@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Compa
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.DoubleValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveDoubleValidator;
 
 import java.util.List;
@@ -78,9 +79,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isEqualTo(double expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -108,12 +107,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isNotEqualTo(double unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -328,8 +322,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isMultipleOf(double factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -357,8 +350,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isNotMultipleOf(double factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -386,8 +378,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isLessThan(double maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -417,8 +408,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isLessThanOrEqualTo(double maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -448,8 +438,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isGreaterThanOrEqualTo(double minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -479,8 +468,7 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	@Override
 	public PrimitiveDoubleValidator isGreaterThan(double minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -549,5 +537,13 @@ public final class PrimitiveDoubleValidatorImpl extends AbstractValidator<Primit
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public DoubleValidator asBoxed()
+	{
+		if (hasFailed())
+			return new DoubleValidatorImpl(scope, configuration, name, null, context, failures);
+		return new DoubleValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

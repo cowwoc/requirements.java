@@ -69,4 +69,11 @@ public interface PrimitiveBooleanArrayValidator extends
 	 *                                  the array contains {@code unwanted}.
 	 */
 	PrimitiveBooleanArrayValidator doesNotContain(boolean unwanted, String name);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ObjectArrayValidator<Boolean, Boolean[]> asBoxed();
 }

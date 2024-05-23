@@ -29,78 +29,78 @@ public interface ObjectValidator<T> extends
 	ObjectPart<ObjectValidator<T>, T>
 {
 	/**
-	 * Ensures that the value is a {@code byte}.
+	 * Ensures that the value is a {@code Byte}.
 	 *
-	 * @return a validator for the {@code byte}
+	 * @return a validator for the {@code byte} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code byte}
+	 * @throws IllegalArgumentException if the value is not a {@code Byte}
 	 */
 	PrimitiveByteValidator isByte();
 
 	/**
-	 * Ensures that the value is a {@code short}.
+	 * Ensures that the value is a {@code Short}.
 	 *
-	 * @return a validator for the {@code short}
+	 * @return a validator for the {@code short} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code short}
+	 * @throws IllegalArgumentException if the value is not a {@code Short}
 	 */
 	PrimitiveShortValidator isShort();
 
 	/**
-	 * Ensures that the value is an {@code int}.
+	 * Ensures that the value is an {@code Integer}.
 	 *
-	 * @return a validator for the {@code int}
+	 * @return a validator for the {@code int} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not an {@code int}
+	 * @throws IllegalArgumentException if the value is not an {@code Integer}
 	 */
-	PrimitiveIntegerValidator isInt();
+	PrimitiveIntegerValidator isInteger();
 
 	/**
-	 * Ensures that the value is a {@code long}.
+	 * Ensures that the value is a {@code Long}.
 	 *
-	 * @return a validator for the {@code long}
+	 * @return a validator for the {@code long} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code long}
+	 * @throws IllegalArgumentException if the value is not a {@code Long}
 	 */
 	PrimitiveLongValidator isLong();
 
 	/**
-	 * Ensures that the value is a {@code float}.
+	 * Ensures that the value is a {@code Float}.
 	 *
-	 * @return a validator for the {@code float}
+	 * @return a validator for the {@code float} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code float}
+	 * @throws IllegalArgumentException if the value is not a {@code Float}
 	 */
-	Object isFloat();
+	PrimitiveFloatValidator isFloat();
 
 	/**
-	 * Ensures that the value is a {@code double}.
+	 * Ensures that the value is a {@code Double}.
 	 *
-	 * @return a validator for the {@code double}
+	 * @return a validator for the {@code double} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code double}
+	 * @throws IllegalArgumentException if the value is not a {@code Double}
 	 */
-	Object isDouble();
+	PrimitiveDoubleValidator isDouble();
 
 	/**
-	 * Ensures that the value is a {@code boolean}.
+	 * Ensures that the value is a {@code Boolean}.
 	 *
-	 * @return a validator for the {@code boolean}
+	 * @return a validator for the {@code boolean} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code boolean}
+	 * @throws IllegalArgumentException if the value is not a {@code Boolean}
 	 * @see Boolean#parseBoolean(String)
 	 */
 	PrimitiveBooleanValidator isBoolean();
 
 	/**
-	 * Ensures that the value is a {@code char}.
+	 * Ensures that the value is a {@code Character}.
 	 *
-	 * @return a validator for the {@code char}
+	 * @return a validator for the {@code char} representation of the value
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is not a {@code char}
+	 * @throws IllegalArgumentException if the value is not a {@code Character}
 	 * @see Character#valueOf(char)
 	 */
-	PrimitiveCharacterValidator isChar();
+	PrimitiveCharacterValidator isCharacter();
 
 	/**
 	 * Ensures that the value is a {@code BigInteger}.

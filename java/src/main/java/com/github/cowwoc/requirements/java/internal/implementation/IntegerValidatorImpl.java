@@ -178,9 +178,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	@Override
 	public IntegerValidator isMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -213,9 +211,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	@Override
 	public IntegerValidator isNotMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -248,9 +244,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	@Override
 	public IntegerValidator isLessThan(int maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -284,9 +278,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	@Override
 	public IntegerValidator isLessThanOrEqualTo(int maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -321,9 +313,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	@Override
 	public IntegerValidator isGreaterThanOrEqualTo(int minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -358,9 +348,7 @@ public final class IntegerValidatorImpl extends AbstractObjectValidator<IntegerV
 	@Override
 	public IntegerValidator isGreaterThan(int minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

@@ -1,6 +1,7 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
+import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.MultipleFailuresException;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.MessageBuilder;
@@ -218,7 +219,7 @@ public abstract class AbstractValidator<S> implements Validator<S>
 
 	/**
 	 * Indicates whether a past validation has failed. The value being validated can be used only if no failure
-	 * has occurred. A failure results in all subsequent validations failing.
+	 * has occurred. A failure results in all later validations failing.
 	 *
 	 * @return true if a failure occurred
 	 */
@@ -236,13 +237,7 @@ public abstract class AbstractValidator<S> implements Validator<S>
 	@Override
 	public S putContext(Object value, String name)
 	{
-		if (name == null)
-			throw new NullPointerException("name may not be null");
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name, false);
 		if (value == null)
 			context.remove(name);
 		else
@@ -254,5 +249,43 @@ public abstract class AbstractValidator<S> implements Validator<S>
 	public String getContextAsString()
 	{
 		return new MessageBuilder(scope, this, null).toString();
+	}
+
+	/**
+	 * Ensures that a name does not conflict other variable names already in use by the validator.
+	 *
+	 * @param name the name of the parameter
+	 * @return the internal validator
+	 * @throws IllegalArgumentException if {@code name} is already in use
+	 */
+	protected JavaValidators requireThatNameIsUnique(String name)
+	{
+		return requireThatNameIsUnique(name, true);
+	}
+
+	/**
+	 * Ensures that a name does not conflict other variable names already in use by the validator.
+	 *
+	 * @param name         the name of the parameter
+	 * @param checkContext {@code false} to allow the name to be used even if it conflicts with an existing name
+	 *                     in the validator context
+	 * @return the internal validator
+	 * @throws IllegalArgumentException if {@code name} is already in use
+	 */
+	protected JavaValidators requireThatNameIsUnique(String name, boolean checkContext)
+	{
+		JavaValidators internalValidators = scope.getInternalValidators();
+		internalValidators.requireThat(name, "name").isStripped();
+		if (name.equals(this.name))
+		{
+			throw new IllegalArgumentException("The name \"" + name + "\" is already in use by the value " +
+				"being validated. Choose a different name.");
+		}
+		if (checkContext && context.containsKey(name))
+		{
+			throw new IllegalArgumentException("The name \"" + name + "\" is already in use by the validator " +
+				"context. Choose a different name.");
+		}
+		return internalValidators;
 	}
 }

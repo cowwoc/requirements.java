@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Compa
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.FloatValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveFloatValidator;
 
 import java.util.List;
@@ -78,10 +79,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isEqualTo(float expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -109,12 +107,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isNotEqualTo(float unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -329,8 +322,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isMultipleOf(float factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -358,8 +350,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isNotMultipleOf(float factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -387,8 +378,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isLessThan(float maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -418,8 +408,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isLessThanOrEqualTo(float maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -449,8 +438,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isGreaterThanOrEqualTo(float minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -480,8 +468,7 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveFloatValidator isGreaterThan(float minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -550,5 +537,13 @@ public final class PrimitiveFloatValidatorImpl extends AbstractValidator<Primiti
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public FloatValidator asBoxed()
+	{
+		if (hasFailed())
+			return new FloatValidatorImpl(scope, configuration, name, null, context, failures);
+		return new FloatValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

@@ -68,7 +68,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isRegularFile(LinkOption... options) throws IOException
 	{
-		scope.getInternalValidator().requireThat(options, "options").isNotNull();
+		scope.getInternalValidators().requireThat(options, "options").isNotNull();
 		if (hasFailed())
 		{
 			addIllegalArgumentException(
@@ -105,7 +105,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isDirectory(LinkOption... options) throws IOException
 	{
-		scope.getInternalValidator().requireThat(options, "options").isNotNull();
+		scope.getInternalValidators().requireThat(options, "options").isNotNull();
 		if (hasFailed())
 		{
 			addIllegalArgumentException(

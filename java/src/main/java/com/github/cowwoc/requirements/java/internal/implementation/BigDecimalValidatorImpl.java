@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements.java.internal.implementation;
 
 import com.github.cowwoc.requirements.java.Configuration;
-import com.github.cowwoc.requirements.java.JavaValidators;
 import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
@@ -230,18 +229,15 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isMultipleOf(BigDecimal factor)
 	{
-		scope.getInternalValidator().requireThat(factor, "factor").isNotNull();
+		scope.getInternalValidators().requireThat(factor, "factor").isNotNull();
 		return isMultipleOfImpl(factor, null);
 	}
 
 	@Override
 	public BigDecimalValidator isMultipleOf(BigDecimal factor, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-		internalValidator.requireThat(factor, "factor").isNotNull();
+		requireThatNameIsUnique(name).
+			requireThat(factor, "factor").isNotNull();
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -268,17 +264,15 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isNotMultipleOf(BigDecimal factor)
 	{
-		scope.getInternalValidator().requireThat(factor, "factor").isNotNull();
+		scope.getInternalValidators().requireThat(factor, "factor").isNotNull();
 		return isNotMultipleOfImpl(factor, null);
 	}
 
 	@Override
 	public BigDecimalValidator isNotMultipleOf(BigDecimal factor, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-		internalValidator.requireThat(factor, "factor").isNotNull();
+		requireThatNameIsUnique(name).
+			requireThat(factor, "factor").isNotNull();
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -311,8 +305,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isLessThan(BigDecimal maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -347,8 +340,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isLessThanOrEqualTo(BigDecimal maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -383,8 +375,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isGreaterThanOrEqualTo(BigDecimal minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -419,8 +410,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isGreaterThan(BigDecimal minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

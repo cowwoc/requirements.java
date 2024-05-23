@@ -40,9 +40,7 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	@Override
 	public CharacterValidator isLessThan(char maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -77,9 +75,7 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	@Override
 	public CharacterValidator isLessThanOrEqualTo(char maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -114,9 +110,7 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	@Override
 	public CharacterValidator isGreaterThanOrEqualTo(char minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -151,9 +145,7 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	@Override
 	public CharacterValidator isGreaterThan(char minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

@@ -20,7 +20,7 @@ public interface ApplicationScope extends JvmScope
 	/**
 	 * @return creates validators used to check the arguments of validation methods
 	 */
-	JavaValidators getInternalValidator();
+	JavaValidators getInternalValidators();
 
 	@Override
 	void close();

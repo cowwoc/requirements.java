@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Compa
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.IntegerValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveIntegerValidator;
 
 import java.util.List;
@@ -68,9 +69,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isEqualTo(int expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -98,12 +97,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isNotEqualTo(int unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -222,8 +216,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -251,8 +244,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isNotMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -281,8 +273,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isLessThan(int maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -312,8 +303,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isLessThanOrEqualTo(int maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -343,8 +333,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isGreaterThanOrEqualTo(int minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -374,8 +363,7 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	@Override
 	public PrimitiveIntegerValidator isGreaterThan(int minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -444,5 +432,13 @@ public final class PrimitiveIntegerValidatorImpl extends AbstractValidator<Primi
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public IntegerValidator asBoxed()
+	{
+		if (hasFailed())
+			return new IntegerValidatorImpl(scope, configuration, name, null, context, failures);
+		return new IntegerValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

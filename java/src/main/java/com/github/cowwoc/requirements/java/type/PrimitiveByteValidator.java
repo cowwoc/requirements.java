@@ -241,4 +241,11 @@ public interface PrimitiveByteValidator extends
 	 */
 	PrimitiveByteValidator isBetween(byte minimum, boolean minimumInclusive, byte maximum,
 		boolean maximumInclusive);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ByteValidator asBoxed();
 }

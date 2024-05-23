@@ -317,9 +317,7 @@
 	 @Override
 	 public DoubleValidator isMultipleOf(double factor, String name)
 	 {
-		 scope.getInternalValidator().requireThat(name, "name").isStripped().
-			 isNotEqualTo(this.name, "the same name as the value");
-
+		 requireThatNameIsUnique(name);
 		 return isMultipleOfImpl(factor, name);
 	 }
 
@@ -352,9 +350,7 @@
 	 @Override
 	 public DoubleValidator isNotMultipleOf(double factor, String name)
 	 {
-		 scope.getInternalValidator().requireThat(name, "name").isStripped().
-			 isNotEqualTo(this.name, "the same name as the value");
-
+		 requireThatNameIsUnique(name);
 		 return isNotMultipleOfImpl(factor, name);
 	 }
 
@@ -387,9 +383,7 @@
 	 @Override
 	 public DoubleValidator isLessThan(double maximumExclusive, String name)
 	 {
-		 scope.getInternalValidator().requireThat(name, "name").isStripped().
-			 isNotEqualTo(this.name, "the same name as the value");
-
+		 requireThatNameIsUnique(name);
 		 return isLessThanImpl(maximumExclusive, name);
 	 }
 
@@ -424,9 +418,7 @@
 	 @Override
 	 public DoubleValidator isLessThanOrEqualTo(double maximumInclusive, String name)
 	 {
-		 scope.getInternalValidator().requireThat(name, "name").isStripped().
-			 isNotEqualTo(this.name, "the same name as the value");
-
+		 requireThatNameIsUnique(name);
 		 return isLessThanOrEqualToImpl(maximumInclusive, name);
 	 }
 
@@ -461,9 +453,7 @@
 	 @Override
 	 public DoubleValidator isGreaterThanOrEqualTo(double minimumInclusive, String name)
 	 {
-		 scope.getInternalValidator().requireThat(name, "name").isStripped().
-			 isNotEqualTo(this.name, "the same name as the value");
-
+		 requireThatNameIsUnique(name);
 		 return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	 }
 
@@ -498,9 +488,7 @@
 	 @Override
 	 public DoubleValidator isGreaterThan(double minimumExclusive, String name)
 	 {
-		 scope.getInternalValidator().requireThat(name, "name").isStripped().
-			 isNotEqualTo(this.name, "the same name as the value");
-
+		 requireThatNameIsUnique(name);
 		 return isGreaterThanImpl(minimumExclusive, name);
 	 }
 

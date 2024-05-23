@@ -78,4 +78,11 @@ public interface PrimitiveDoubleArrayValidator extends
 	 * @see Comparator#naturalOrder()
 	 */
 	PrimitiveDoubleArrayValidator isSorted();
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ObjectArrayValidator<Double, Double[]> asBoxed();
 }

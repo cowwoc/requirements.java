@@ -1,18 +1,18 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 9.0.0 - ?
+## Version 9.0.0 - 2024/05/23
 
 * Breaking changes:
     1. The library now requires JDK 21.
     2. Added a `jackson` module to validate `JsonNode`.
     3. Removed the Maven plugin and code generator.
-        * The code generator was causing a "split package" issue because code was always being generated into
-          the same package.
+        * The code generator was causing a "split package" issue because it was generating code into the same
+          package in all dependent libraries.
         * This caused a “split package” error since only one module is allowed to export a package.
     4. Removed the use of native binaries. Colored DIFFs are still supported, but Windows requires the use of
        Windows Terminal (free download in Windows 10, built-in feature in Windows 11).
-    5. Renamed `validateThat()` to `checkIf()`.
+    5. Replaced `validateThat()` with `checkIf()`.
     6. Replaced `assertThat()` with `assert assumeThat().elseThrow()`.
     7. Added support for the built-in `assert` mechanism.
         - Asserts can be used with any type of validator, but are typically used
@@ -23,8 +23,9 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
        validation results.
     10. Renamed `Validator.getActual()` to `getValue()`.
     11. Replaced `isBetweenClosed(min, max)` with `isBetween(min, true, max, true)`.
-    12. Renamed `StringValidator.isInteger()` to `isInt()` and `isCharacter()` to `isChar()`.
-    13. Improved performance by reducing memory usage and the frequency of GC runs.
+    12. Renamed `StringValidator.isInteger()` to `asPrimitiveInteger()` and `isCharacter()`
+        to `asPrimitiveCharacter()`.
+    13. Improved performance by reducing memory allocation and the frequency of GC runs.
     14. Added support for primitive types to avoid boxing when possible.
     15. Dropped the `isOneOf()` and `isNotOneOf()` functionality yet again. I haven't figured out a good
         design for this yet.

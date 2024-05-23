@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Colle
 import com.github.cowwoc.requirements.java.internal.implementation.message.ObjectMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.Arrays;
+import com.github.cowwoc.requirements.java.type.ObjectArrayValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveLongArrayValidator;
 
 import java.util.Comparator;
@@ -130,22 +131,21 @@ public final class PrimitiveLongArrayValidatorImpl
 	@Override
 	public PrimitiveLongArrayValidator contains(Long expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((long) expected);
 	}
 
 	@Override
 	public PrimitiveLongArrayValidatorImpl contains(long expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return containsImpl(expected, name);
 	}
 
 	@Override
 	public PrimitiveLongArrayValidator contains(Long expected, String name)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 		return contains((long) expected, name);
 	}
 
@@ -178,22 +178,21 @@ public final class PrimitiveLongArrayValidatorImpl
 	@Override
 	public PrimitiveLongArrayValidatorImpl doesNotContain(Long unwanted)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((long) unwanted, null);
 	}
 
 	@Override
 	public PrimitiveLongArrayValidatorImpl doesNotContain(long unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return doesNotContainImpl(unwanted, name);
 	}
 
 	@Override
 	public PrimitiveLongArrayValidatorImpl doesNotContain(Long unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(unwanted, "unwanted").isNotNull();
+		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		return doesNotContain((long) unwanted, name);
 	}
 
@@ -215,5 +214,20 @@ public final class PrimitiveLongArrayValidatorImpl
 				CollectionMessages.doesNotContain(scope, this, this.name, value, name, unwanted).toString());
 		}
 		return this;
+	}
+
+	@Override
+	public ObjectArrayValidator<Long, Long[]> asBoxed()
+	{
+		if (hasFailed())
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		if (value == null)
+		{
+			addNullPointerException(
+				ObjectMessages.isNotNull(scope, this, this.name).toString());
+			return new ObjectArrayValidatorImpl<>(scope, configuration, name, null, context, failures);
+		}
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, Arrays.asBoxed(value), context,
+			failures);
 	}
 }

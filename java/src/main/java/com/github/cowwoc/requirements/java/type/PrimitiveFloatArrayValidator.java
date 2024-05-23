@@ -78,4 +78,11 @@ public interface PrimitiveFloatArrayValidator extends
 	 * @see Comparator#naturalOrder()
 	 */
 	PrimitiveFloatArrayValidator isSorted();
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ObjectArrayValidator<Float, Float[]> asBoxed();
 }

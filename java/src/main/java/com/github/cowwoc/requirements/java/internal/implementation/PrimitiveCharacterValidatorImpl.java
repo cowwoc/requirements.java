@@ -5,6 +5,7 @@ import com.github.cowwoc.requirements.java.ValidationFailure;
 import com.github.cowwoc.requirements.java.internal.implementation.message.ComparableMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.CharacterValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveCharacterValidator;
 
 import java.util.List;
@@ -57,8 +58,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	@Override
 	public PrimitiveCharacterValidator isEqualTo(char expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -86,12 +86,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	@Override
 	public PrimitiveCharacterValidator isNotEqualTo(char unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -114,8 +109,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	@Override
 	public PrimitiveCharacterValidator isLessThan(char maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -145,8 +139,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	@Override
 	public PrimitiveCharacterValidator isLessThanOrEqualTo(char maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -176,8 +169,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	@Override
 	public PrimitiveCharacterValidator isGreaterThanOrEqualTo(char minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -207,8 +199,7 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	@Override
 	public PrimitiveCharacterValidator isGreaterThan(char minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -277,5 +268,13 @@ public final class PrimitiveCharacterValidatorImpl extends AbstractValidator<Pri
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public CharacterValidator asBoxed()
+	{
+		if (hasFailed())
+			return new CharacterValidatorImpl(scope, configuration, name, null, context, failures);
+		return new CharacterValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

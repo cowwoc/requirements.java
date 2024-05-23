@@ -241,4 +241,11 @@ public interface PrimitiveIntegerValidator extends
 	 */
 	PrimitiveIntegerValidator isBetween(int minimum, boolean minimumInclusive, int maximum,
 		boolean maximumInclusive);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	IntegerValidator asBoxed();
 }

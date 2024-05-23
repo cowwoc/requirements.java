@@ -81,8 +81,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidator isEqualTo(int expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -138,12 +137,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidator isNotEqualTo(int unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -320,7 +314,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidatorImpl isMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidator().requireThat("name", name).isStripped();
+		scope.getInternalValidators().requireThat("name", name).isStripped();
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -352,7 +346,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidatorImpl isNotMultipleOf(int factor, String name)
 	{
-		scope.getInternalValidator().requireThat("name", name).isStripped();
+		scope.getInternalValidators().requireThat("name", name).isStripped();
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -384,8 +378,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidator isLessThan(int maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -430,8 +423,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidator isLessThanOrEqualTo(int maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -475,8 +467,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidator isGreaterThanOrEqualTo(int minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -520,8 +511,7 @@ public final class PrimitiveUnsignedIntegerValidatorImpl extends AbstractValidat
 	@Override
 	public PrimitiveUnsignedIntegerValidator isGreaterThan(int minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

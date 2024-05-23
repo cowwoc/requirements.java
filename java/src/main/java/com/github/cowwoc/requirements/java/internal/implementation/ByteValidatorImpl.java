@@ -177,9 +177,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	@Override
 	public ByteValidator isMultipleOf(byte factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -212,9 +210,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	@Override
 	public ByteValidator isNotMultipleOf(byte factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(name, factor);
 	}
 
@@ -247,9 +243,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	@Override
 	public ByteValidator isLessThan(byte maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -283,9 +277,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	@Override
 	public ByteValidator isLessThanOrEqualTo(byte maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -320,9 +312,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	@Override
 	public ByteValidator isGreaterThanOrEqualTo(byte minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -357,9 +347,7 @@ public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidat
 	@Override
 	public ByteValidator isGreaterThan(byte minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

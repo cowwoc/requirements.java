@@ -662,7 +662,7 @@ public final class StringTest
 		{
 			byte expected = (byte) 1;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asByte().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveByte().isEqualTo(expected);
 		}
 	}
 
@@ -672,7 +672,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = String.valueOf(Byte.MAX_VALUE + 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asByte();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveByte();
 		}
 	}
 
@@ -682,9 +682,21 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = String.valueOf(Byte.MAX_VALUE + 1);
-			byte value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asByte().
+			byte value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveByte().
 				getValueOrDefault((byte) 5);
 			requireThat(value, "value").isEqualTo((byte) 5);
+		}
+	}
+
+	@Test
+	public void stringAsByte_getValueOrNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = String.valueOf(Byte.MAX_VALUE + 1);
+			Byte value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveByte().asBoxed().
+				getValueOrDefault(null);
+			requireThat(value, "value").isEqualTo(null);
 		}
 	}
 
@@ -694,7 +706,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asByte();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveByte();
 		}
 	}
 
@@ -704,7 +716,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asByte();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveByte();
 		}
 	}
 
@@ -715,7 +727,7 @@ public final class StringTest
 		{
 			short expected = (short) 1;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asShort().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveShort().isEqualTo(expected);
 		}
 	}
 
@@ -725,7 +737,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = String.valueOf(Short.MAX_VALUE + 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asShort();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveShort();
 		}
 	}
 
@@ -735,9 +747,21 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = String.valueOf(Short.MAX_VALUE + 1);
-			short value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asShort().
+			short value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveShort().
 				getValueOrDefault((short) 10);
 			requireThat(value, "value").isEqualTo((short) 10);
+		}
+	}
+
+	@Test
+	public void stringAsShort_getValueOrNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = String.valueOf(Short.MAX_VALUE + 1);
+			Short value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveShort().asBoxed().
+				getValueOrDefault(null);
+			requireThat(value, "value").isEqualTo(null);
 		}
 	}
 
@@ -747,7 +771,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asShort();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveShort();
 		}
 	}
 
@@ -757,7 +781,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asShort();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveShort();
 		}
 	}
 
@@ -768,7 +792,7 @@ public final class StringTest
 		{
 			Integer expected = Short.MAX_VALUE + 1;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asInteger().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveInteger().isEqualTo(expected);
 		}
 	}
 
@@ -778,7 +802,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = String.valueOf((long) Integer.MAX_VALUE + 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asInteger();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveInteger();
 		}
 	}
 
@@ -788,9 +812,21 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = String.valueOf((long) Integer.MAX_VALUE + 1);
-			int value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asInteger().
+			int value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveInteger().
 				getValueOrDefault(15);
 			requireThat(value, "value").isEqualTo(15);
+		}
+	}
+
+	@Test
+	public void stringAsInteger_getValueOrNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = String.valueOf((long) Integer.MAX_VALUE + 1);
+			Integer value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveInteger().asBoxed().
+				getValueOrDefault(null);
+			requireThat(value, "value").isEqualTo(null);
 		}
 	}
 
@@ -800,7 +836,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asInteger();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveInteger();
 		}
 	}
 
@@ -810,7 +846,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asInteger();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveInteger();
 		}
 	}
 
@@ -821,7 +857,7 @@ public final class StringTest
 		{
 			Long expected = (long) Integer.MAX_VALUE + 1;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asLong().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveLong().isEqualTo(expected);
 		}
 	}
 
@@ -831,7 +867,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asLong();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveLong();
 		}
 	}
 
@@ -841,9 +877,21 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			long value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asLong().
+			long value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveLong().
 				getValueOrDefault(20);
 			requireThat(value, "value").isEqualTo(20);
+		}
+	}
+
+	@Test
+	public void stringAsLong_getValueOrNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			Long value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveLong().asBoxed().
+				getValueOrDefault(null);
+			requireThat(value, "value").isEqualTo(null);
 		}
 	}
 
@@ -853,7 +901,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asLong();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveLong();
 		}
 	}
 
@@ -864,7 +912,7 @@ public final class StringTest
 		{
 			Float expected = 1.234f;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asFloat().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveFloat().isEqualTo(expected);
 		}
 	}
 
@@ -874,7 +922,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asFloat();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveFloat();
 		}
 	}
 
@@ -884,9 +932,21 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			float value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asFloat().
+			float value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveFloat().
 				getValueOrDefault(0.5f);
 			requireThat(value, "value").isEqualTo(0.5f);
+		}
+	}
+
+	@Test
+	public void stringAsFloat_getValueOrNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			Float value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveFloat().asBoxed().
+				getValueOrDefault(null);
+			requireThat(value, "value").isEqualTo(null);
 		}
 	}
 
@@ -896,7 +956,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asFloat();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveFloat();
 		}
 	}
 
@@ -907,7 +967,7 @@ public final class StringTest
 		{
 			Double expected = 1.234;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asDouble().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveDouble().isEqualTo(expected);
 		}
 	}
 
@@ -917,7 +977,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asDouble();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveDouble();
 		}
 	}
 
@@ -927,9 +987,21 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a number";
-			double value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asDouble().
+			double value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveDouble().
 				getValueOrDefault(0.1);
 			requireThat(value, "value").isEqualTo(0.1);
+		}
+	}
+
+	@Test
+	public void stringAsDouble_getValueOrNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "not a number";
+			Double value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveDouble().asBoxed().
+				getValueOrDefault(null);
+			requireThat(value, "value").isEqualTo(null);
 		}
 	}
 
@@ -939,7 +1011,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asDouble();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveDouble();
 		}
 	}
 
@@ -950,7 +1022,7 @@ public final class StringTest
 		{
 			Boolean expected = true;
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asBoolean().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveBoolean().isEqualTo(expected);
 		}
 	}
 
@@ -961,7 +1033,7 @@ public final class StringTest
 		{
 			String actual = "not a boolean";
 			// Boolean.parseBoolean() returns false for any string that is not equal to "true"
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asBoolean().isFalse();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveBoolean().isFalse();
 		}
 	}
 
@@ -971,7 +1043,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asBoolean();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveBoolean();
 		}
 	}
 
@@ -982,7 +1054,7 @@ public final class StringTest
 		{
 			char expected = 'c';
 			String actual = String.valueOf(expected);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asCharacter().isEqualTo(expected);
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveCharacter().isEqualTo(expected);
 		}
 	}
 
@@ -992,7 +1064,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "not a char";
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asCharacter();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveCharacter();
 		}
 	}
 
@@ -1002,7 +1074,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asCharacter();
+			new TestValidatorsImpl(scope).requireThat(actual, "Actual").asPrimitiveCharacter();
 		}
 	}
 
@@ -1012,7 +1084,7 @@ public final class StringTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "";
-			char value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asCharacter().
+			char value = new TestValidatorsImpl(scope).checkIf(actual, "Actual").asPrimitiveCharacter().
 				getValueOrDefault('/');
 			requireThat(value, "value").isEqualTo('/');
 		}

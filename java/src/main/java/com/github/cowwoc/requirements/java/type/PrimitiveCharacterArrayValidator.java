@@ -79,4 +79,11 @@ public interface PrimitiveCharacterArrayValidator extends
 	 * @see Comparator#naturalOrder()
 	 */
 	PrimitiveCharacterArrayValidator isSorted();
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ObjectArrayValidator<Character, Character[]> asBoxed();
 }

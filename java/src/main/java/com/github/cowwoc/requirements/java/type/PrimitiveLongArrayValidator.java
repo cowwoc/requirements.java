@@ -78,4 +78,11 @@ public interface PrimitiveLongArrayValidator extends
 	 * @see Comparator#naturalOrder()
 	 */
 	PrimitiveLongArrayValidator isSorted();
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ObjectArrayValidator<Long, Long[]> asBoxed();
 }

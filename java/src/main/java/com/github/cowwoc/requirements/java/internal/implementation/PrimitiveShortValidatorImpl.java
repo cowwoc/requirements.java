@@ -7,6 +7,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Equal
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.java.type.PrimitiveShortValidator;
+import com.github.cowwoc.requirements.java.type.ShortValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -68,9 +69,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isEqualTo(short expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -98,7 +97,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isNotEqualTo(short unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
+		scope.getInternalValidators().requireThat(name, "name").isStripped();
 		if (name.equals(this.name))
 		{
 			throw new IllegalArgumentException("\"name\" may not be equal to the name of the value.\n" +
@@ -211,8 +210,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isMultipleOf(short factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -239,8 +237,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isNotMultipleOf(short factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -268,8 +265,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isLessThan(short maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -299,8 +295,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isLessThanOrEqualTo(short maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -330,8 +325,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isGreaterThanOrEqualTo(short minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -361,8 +355,7 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	@Override
 	public PrimitiveShortValidator isGreaterThan(short minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -431,5 +424,13 @@ public final class PrimitiveShortValidatorImpl extends AbstractValidator<Primiti
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public ShortValidator asBoxed()
+	{
+		if (hasFailed())
+			return new ShortValidatorImpl(scope, configuration, name, null, context, failures);
+		return new ShortValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

@@ -177,10 +177,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	@Override
 	public ShortValidator isMultipleOf(short factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
-
-
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -213,10 +210,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	@Override
 	public ShortValidator isNotMultipleOf(short factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
-
-
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -249,10 +243,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	@Override
 	public ShortValidator isLessThan(short maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
-
-
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -286,10 +277,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	@Override
 	public ShortValidator isLessThanOrEqualTo(short maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
-
-
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -324,10 +312,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	@Override
 	public ShortValidator isGreaterThanOrEqualTo(short minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
-
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -362,10 +347,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	@Override
 	public ShortValidator isGreaterThan(short minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
-
-
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 

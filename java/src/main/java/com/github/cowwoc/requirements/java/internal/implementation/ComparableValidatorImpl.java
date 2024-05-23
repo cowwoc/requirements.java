@@ -43,18 +43,15 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isLessThan(T maximumExclusive)
 	{
-		scope.getInternalValidator().requireThat(maximumExclusive, "maximumExclusive").isNotNull();
+		scope.getInternalValidators().requireThat(maximumExclusive, "maximumExclusive").isNotNull();
 		return isLessThanImpl(maximumExclusive, null);
 	}
 
 	@Override
 	public ComparableValidator<T> isLessThan(T maximumExclusive, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-		internalValidator.requireThat(maximumExclusive, "maximumExclusive").isNotNull();
+		requireThatNameIsUnique(name).
+			requireThat(maximumExclusive, "maximumExclusive").isNotNull();
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -83,18 +80,15 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isLessThanOrEqualTo(T maximumInclusive)
 	{
-		scope.getInternalValidator().requireThat(maximumInclusive, "maximumInclusive").isNotNull();
+		scope.getInternalValidators().requireThat(maximumInclusive, "maximumInclusive").isNotNull();
 		return isLessThanOrEqualToImpl(maximumInclusive, null);
 	}
 
 	@Override
 	public ComparableValidator<T> isLessThanOrEqualTo(T maximumInclusive, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-		internalValidator.requireThat(maximumInclusive, "maximumInclusive").isNotNull();
+		requireThatNameIsUnique(name).
+			requireThat(maximumInclusive, "maximumInclusive").isNotNull();
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -118,18 +112,15 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isGreaterThanOrEqualTo(T minimumInclusive)
 	{
-		scope.getInternalValidator().requireThat(minimumInclusive, "minimumInclusive").isNotNull();
+		scope.getInternalValidators().requireThat(minimumInclusive, "minimumInclusive").isNotNull();
 		return isGreaterThanOrEqualToImpl(minimumInclusive, null);
 	}
 
 	@Override
 	public ComparableValidator<T> isGreaterThanOrEqualTo(T minimumInclusive, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-		internalValidator.requireThat(minimumInclusive, "minimumInclusive").isNotNull();
+		requireThatNameIsUnique(name).
+			requireThat(minimumInclusive, "minimumInclusive").isNotNull();
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -158,18 +149,15 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	@Override
 	public ComparableValidator<T> isGreaterThan(T minimumExclusive)
 	{
-		scope.getInternalValidator().requireThat(minimumExclusive, "minimumExclusive").isNotNull();
+		scope.getInternalValidators().requireThat(minimumExclusive, "minimumExclusive").isNotNull();
 		return isGreaterThanImpl(minimumExclusive, null);
 	}
 
 	@Override
 	public ComparableValidator<T> isGreaterThan(T minimumExclusive, String name)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-		internalValidator.requireThat(minimumExclusive, "minimumExclusive").isNotNull();
+		requireThatNameIsUnique(name).
+			requireThat(minimumExclusive, "minimumExclusive").isNotNull();
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -205,9 +193,9 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	public ComparableValidator<T> isBetween(T minimum, boolean minimumInclusive, T maximum,
 		boolean maximumInclusive)
 	{
-		JavaValidators internalValidator = scope.getInternalValidator();
-		internalValidator.requireThat(minimum, "minimum").isNotNull();
-		internalValidator.requireThat(maximum, "maximum").isNotNull();
+		JavaValidators internalValidators = scope.getInternalValidators();
+		internalValidators.requireThat(minimum, "minimum").isNotNull();
+		internalValidators.requireThat(maximum, "maximum").isNotNull();
 		if (hasFailed())
 		{
 			addIllegalArgumentException(

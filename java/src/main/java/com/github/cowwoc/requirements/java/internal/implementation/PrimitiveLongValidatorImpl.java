@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements.java.internal.implementation.message.Compa
 import com.github.cowwoc.requirements.java.internal.implementation.message.EqualMessages;
 import com.github.cowwoc.requirements.java.internal.implementation.message.NumberMessages;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements.java.type.LongValidator;
 import com.github.cowwoc.requirements.java.type.PrimitiveLongValidator;
 
 import java.util.List;
@@ -68,10 +69,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isEqualTo(long expected, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the same name as the value");
-
-
+		requireThatNameIsUnique(name);
 		return isEqualToImpl(expected, name);
 	}
 
@@ -99,12 +97,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isNotEqualTo(long unwanted, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped();
-		if (name.equals(this.name))
-		{
-			throw new IllegalArgumentException("\"name\" may not be equal to the same name as the value.\n" +
-				"Actual: " + name);
-		}
+		requireThatNameIsUnique(name);
 		return isNotEqualToImpl(unwanted, name);
 	}
 
@@ -212,8 +205,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isMultipleOf(long factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isMultipleOfImpl(factor, name);
 	}
 
@@ -241,8 +233,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isNotMultipleOf(long factor, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isNotMultipleOfImpl(factor, name);
 	}
 
@@ -270,8 +261,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isLessThan(long maximumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanImpl(maximumExclusive, name);
 	}
 
@@ -301,8 +291,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isLessThanOrEqualTo(long maximumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
@@ -332,8 +321,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isGreaterThanOrEqualTo(long minimumInclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
@@ -363,8 +351,7 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	@Override
 	public PrimitiveLongValidator isGreaterThan(long minimumExclusive, String name)
 	{
-		scope.getInternalValidator().requireThat(name, "name").isStripped().
-			isNotEqualTo(this.name, "the name of the value");
+		requireThatNameIsUnique(name);
 		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
@@ -433,5 +420,13 @@ public final class PrimitiveLongValidatorImpl extends AbstractValidator<Primitiv
 	{
 		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
 			String.valueOf(value), context, failures);
+	}
+
+	@Override
+	public LongValidator asBoxed()
+	{
+		if (hasFailed())
+			return new LongValidatorImpl(scope, configuration, name, null, context, failures);
+		return new LongValidatorImpl(scope, configuration, name, value, context, failures);
 	}
 }

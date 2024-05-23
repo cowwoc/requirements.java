@@ -78,4 +78,11 @@ public interface PrimitiveShortArrayValidator extends
 	 * @see Comparator#naturalOrder()
 	 */
 	PrimitiveShortArrayValidator isSorted();
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	ObjectArrayValidator<Short, Short[]> asBoxed();
 }

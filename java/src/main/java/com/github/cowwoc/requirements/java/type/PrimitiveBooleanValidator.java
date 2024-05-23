@@ -97,4 +97,11 @@ public interface PrimitiveBooleanValidator extends Validator<PrimitiveBooleanVal
 	 *                                  the value is equal to {@code unwanted}.
 	 */
 	PrimitiveBooleanValidator isNotEqualTo(boolean unwanted, String name);
+
+	/**
+	 * Returns a validator for the boxed representation of the value.
+	 *
+	 * @return a validator for the boxed representation of the value
+	 */
+	BooleanValidator asBoxed();
 }

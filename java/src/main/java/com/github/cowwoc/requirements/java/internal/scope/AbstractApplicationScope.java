@@ -55,7 +55,7 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	}
 
 	@Override
-	public JavaValidatorsImpl getInternalValidator()
+	public JavaValidatorsImpl getInternalValidators()
 	{
 		return internalValidator.getValue();
 	}

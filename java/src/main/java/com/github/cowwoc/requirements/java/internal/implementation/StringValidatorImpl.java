@@ -255,7 +255,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveByteValidator asByte()
+	public PrimitiveByteValidator asPrimitiveByte()
 	{
 		if (hasFailed())
 		{
@@ -286,7 +286,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveShortValidator asShort()
+	public PrimitiveShortValidator asPrimitiveShort()
 	{
 		if (hasFailed())
 		{
@@ -317,7 +317,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveIntegerValidator asInteger()
+	public PrimitiveIntegerValidator asPrimitiveInteger()
 	{
 		if (hasFailed())
 		{
@@ -348,7 +348,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveLongValidator asLong()
+	public PrimitiveLongValidator asPrimitiveLong()
 	{
 		if (hasFailed())
 		{
@@ -379,7 +379,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveFloatValidator asFloat()
+	public PrimitiveFloatValidator asPrimitiveFloat()
 	{
 		if (hasFailed())
 		{
@@ -410,7 +410,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveDoubleValidator asDouble()
+	public PrimitiveDoubleValidator asPrimitiveDouble()
 	{
 		if (hasFailed())
 		{
@@ -441,7 +441,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveBooleanValidator asBoolean()
+	public PrimitiveBooleanValidator asPrimitiveBoolean()
 	{
 		if (hasFailed())
 		{
@@ -455,7 +455,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
-	public PrimitiveCharacterValidator asCharacter()
+	public PrimitiveCharacterValidator asPrimitiveCharacter()
 	{
 		if (hasFailed())
 		{
@@ -690,7 +690,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator startsWith(String prefix)
 	{
-		scope.getInternalValidator().requireThat("prefix", prefix).isNotNull();
+		scope.getInternalValidators().requireThat("prefix", prefix).isNotNull();
 
 		if (hasFailed())
 		{
@@ -718,7 +718,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotStartWith(String prefix)
 	{
-		scope.getInternalValidator().requireThat("prefix", prefix).isNotNull();
+		scope.getInternalValidators().requireThat("prefix", prefix).isNotNull();
 
 		if (hasFailed())
 		{
@@ -746,7 +746,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator endsWith(String suffix)
 	{
-		scope.getInternalValidator().requireThat("suffix", suffix).isNotNull();
+		scope.getInternalValidators().requireThat("suffix", suffix).isNotNull();
 
 		if (hasFailed())
 		{
@@ -774,7 +774,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotEndWith(String suffix)
 	{
-		scope.getInternalValidator().requireThat("suffix", suffix).isNotNull();
+		scope.getInternalValidators().requireThat("suffix", suffix).isNotNull();
 
 		if (hasFailed())
 		{
@@ -802,7 +802,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator contains(String expected)
 	{
-		scope.getInternalValidator().requireThat(expected, "Expected").isNotNull();
+		scope.getInternalValidators().requireThat(expected, "Expected").isNotNull();
 
 		if (hasFailed())
 		{
@@ -830,7 +830,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator doesNotContain(String unwanted)
 	{
-		scope.getInternalValidator().requireThat("unwanted", unwanted).isNotNull();
+		scope.getInternalValidators().requireThat("unwanted", unwanted).isNotNull();
 
 		if (hasFailed())
 		{

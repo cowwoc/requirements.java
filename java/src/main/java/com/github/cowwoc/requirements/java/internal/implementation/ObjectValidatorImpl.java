@@ -103,7 +103,7 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	}
 
 	@Override
-	public PrimitiveIntegerValidatorImpl isInt()
+	public PrimitiveIntegerValidatorImpl isInteger()
 	{
 		if (hasFailed())
 			return new PrimitiveIntegerValidatorImpl(scope, configuration, name, 0, context, failures);
@@ -205,7 +205,7 @@ public final class ObjectValidatorImpl<T> extends AbstractObjectValidator<Object
 	}
 
 	@Override
-	public PrimitiveCharacterValidatorImpl isChar()
+	public PrimitiveCharacterValidatorImpl isCharacter()
 	{
 		if (hasFailed())
 			return new PrimitiveCharacterValidatorImpl(scope, configuration, name, '\u0000', context, failures);
