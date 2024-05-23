@@ -2,7 +2,6 @@
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
 
 # <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
-## Fluent API for Design Contracts
 
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/Changelog.md)
