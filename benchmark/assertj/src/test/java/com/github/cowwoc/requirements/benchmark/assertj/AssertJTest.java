@@ -64,7 +64,7 @@ public class AssertJTest
 	}
 
 	@Benchmark
-	public void requireThatIsSuccessful(Blackhole bh)
+	public void assertThatIsSuccessful(Blackhole bh)
 	{
 		bh.consume(assertThat(value).as(name + ": %s").size().
 			as("""
@@ -74,7 +74,7 @@ public class AssertJTest
 	}
 
 	@Benchmark
-	public void requireThatWithCleanStackTrace(Blackhole bh)
+	public void assertThatWithCleanStackTrace(Blackhole bh)
 	{
 		Assertions.setRemoveAssertJRelatedElementsFromStackTrace(true);
 		try
@@ -89,7 +89,7 @@ public class AssertJTest
 	}
 
 	@Benchmark
-	public void requireThatWithoutCleanStackTrace(Blackhole bh)
+	public void assertThatWithoutCleanStackTrace(Blackhole bh)
 	{
 		Assertions.setRemoveAssertJRelatedElementsFromStackTrace(false);
 		try
@@ -104,7 +104,7 @@ public class AssertJTest
 	}
 
 	@Benchmark
-	public void checkIfAndGetMessages(Blackhole bh)
+	public void softAssertionsErrorsCollected(Blackhole bh)
 	{
 		SoftAssertions softly = new SoftAssertions();
 		softly.assertThat(value).as(name).size().isLessThan(3);

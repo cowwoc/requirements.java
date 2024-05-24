@@ -129,9 +129,9 @@ public final class Configuration
 
 	/**
 	 * Returns {@code true} if exception creation may be deferred until the user invokes
-	 * {@link Validator#elseGetException()}. The exception matches the original failure, but the stack trace
-	 * points to {@code elseGetException()} as the cause. By deferring the exception creation, you can improve
-	 * the performance if only need a {@link Validator#elseGetMessages() list of failure messages} instead of a
+	 * {@link Validator#elseGetException()}. The exception type remains the same, but the stack trace points to
+	 * {@code elseGetException()} as the cause. By deferring the exception creation, you can improve the
+	 * performance if you only need a {@link Validator#elseGetMessages() list of failure messages} instead of a
 	 * full exception.
 	 *
 	 * @return {@code true} if exceptions may be created on demand instead of when a validation failure occurs
