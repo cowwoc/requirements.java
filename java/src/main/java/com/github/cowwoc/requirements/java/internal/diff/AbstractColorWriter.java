@@ -79,11 +79,11 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 			if (expectedLineNumber != actualLineNumber)
 			{
 				int length = line.length();
-				String paddingMarker = getPaddingMarker();
-				lineToExpectedLine.get(actualLineNumber).append(decoratePadding(paddingMarker.repeat(length)));
+				String padding = decoratePadding(getPaddingMarker().repeat(length));
+				lineToExpectedLine.get(actualLineNumber).append(padding);
 				lineToExpectedDecoration.put(actualLineNumber, DecorationType.EQUAL);
 
-				lineToActualLine.get(expectedLineNumber).append(decoratePadding(paddingMarker.repeat(length)));
+				lineToActualLine.get(expectedLineNumber).append(padding);
 				lineToActualDecoration.put(expectedLineNumber, DecorationType.EQUAL);
 			}
 
@@ -161,7 +161,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	}
 
 	@Override
-	protected void beforeClose()
+	protected void beforeFlush()
 	{
 		for (Entry<Integer, DecorationType> entry : lineToActualDecoration.entrySet())
 		{
@@ -185,7 +185,7 @@ abstract class AbstractColorWriter extends AbstractDiffWriter
 	public Queue<String> getDiffLines()
 	{
 		if (!flushed)
-			throw new IllegalStateException("Writer must be closed");
+			throw new IllegalStateException("Writer must be flushed");
 		return EMPTY_QUEUE;
 	}
 

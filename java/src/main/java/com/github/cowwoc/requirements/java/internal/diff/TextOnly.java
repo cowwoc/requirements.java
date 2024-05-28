@@ -70,12 +70,12 @@ public final class TextOnly extends AbstractDiffWriter
 		splitLines(text, line ->
 		{
 			lineToActualLine.get(actualLineNumber).append(line);
+			int length = line.length();
 			if (expectedLineNumber == actualLineNumber)
-				lineToDiffBuilder.get(actualLineNumber).append(DIFF_EQUAL.repeat(line.length()));
+				lineToDiffBuilder.get(actualLineNumber).append(DIFF_EQUAL.repeat(length));
 			else
 			{
 				String paddingMarker = getPaddingMarker();
-				int length = line.length();
 				lineToExpectedLine.get(actualLineNumber).append(paddingMarker.repeat(length));
 				lineToDiffBuilder.get(actualLineNumber).append(DIFF_EQUAL.repeat(length));
 
@@ -121,12 +121,12 @@ public final class TextOnly extends AbstractDiffWriter
 	}
 
 	@Override
-	protected void beforeClose()
+	protected void beforeFlush()
 	{
 	}
 
 	@Override
-	protected void afterClose()
+	protected void afterFlush()
 	{
 		this.diffLines.addAll(lineToDiffBuilder.entrySet().stream().
 			sorted(Entry.comparingByKey()).
@@ -137,7 +137,7 @@ public final class TextOnly extends AbstractDiffWriter
 	public Queue<String> getDiffLines()
 	{
 		if (!flushed)
-			throw new IllegalStateException("Writer must be closed");
+			throw new IllegalStateException("Writer must be flushed");
 		return diffLines;
 	}
 }

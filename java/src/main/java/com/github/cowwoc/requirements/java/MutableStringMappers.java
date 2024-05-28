@@ -97,7 +97,7 @@ public final class MutableStringMappers
 
 	/**
 	 * @param object a {@code List}
-	 * @return the String representation of {@code object}
+	 * @return the String representation of an {@code Object}
 	 */
 	private String listToString(Object object)
 	{
@@ -106,7 +106,7 @@ public final class MutableStringMappers
 
 	/**
 	 * @param collection a {@code Collection}
-	 * @return the String representation of {@code collection}
+	 * @return the String representation of a {@code Collection}
 	 */
 	private String orderedToString(Collection<?> collection)
 	{
@@ -131,7 +131,7 @@ public final class MutableStringMappers
 
 	/**
 	 * @param object an {@code Object}
-	 * @return the String representation of {@code object}
+	 * @return the String representation of an {@code Object}
 	 */
 	private String setToString(Object object)
 	{
@@ -157,7 +157,7 @@ public final class MutableStringMappers
 
 	/**
 	 * @param object an {@code Object}
-	 * @return the String representation of {@code map}
+	 * @return the String representation of a {@code Map}
 	 */
 	private String mapToString(Object object)
 	{
@@ -174,7 +174,7 @@ public final class MutableStringMappers
 
 	/**
 	 * @param entries map entries
-	 * @return the String representation of {@code entries}
+	 * @return the String representation of Map {@code entries}
 	 */
 	private String mapEntriesToString(Set<? extends Entry<?, ?>> entries)
 	{
@@ -246,7 +246,7 @@ public final class MutableStringMappers
 
 	/**
 	 * @param object a {@code Throwable}
-	 * @return the String representation of {@code object}
+	 * @return the String representation of a {@code Throwable}
 	 */
 	private String throwableToString(Object object)
 	{

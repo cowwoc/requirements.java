@@ -60,9 +60,9 @@ public final class Configuration
 	 *                             {@link Validator#elseGetException()}. The exception matches the original
 	 *                             failure, but the stack trace points to {@code elseGetException()} as the
 	 *                             cause.
-	 * @param throwOnFailure       {@code true} if an exception is thrown on validation failure.
-	 * @param exceptionTransformer a function that transforms the validation exception into a suitable runtime
-	 *                             exception or error
+	 * @param throwOnFailure       {@code true} if an exception is thrown on validation failure
+	 * @param exceptionTransformer a function that transforms the validation exception before it is thrown or
+	 *                             returned
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	public Configuration(boolean cleanStackTrace, boolean includeDiff, EqualityMethod equalityMethod,

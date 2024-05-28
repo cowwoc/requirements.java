@@ -51,7 +51,7 @@ public final class Writer16Colors extends AbstractColorWriter
 	}
 
 	@Override
-	protected void afterClose()
+	protected void afterFlush()
 	{
 	}
 }

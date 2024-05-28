@@ -55,6 +55,9 @@ abstract class AbstractDiffWriter implements DiffWriter
 	 * The current line number of the expected value.
 	 */
 	protected int expectedLineNumber;
+	/**
+	 * {@code true} if the writer has been flushed.
+	 */
 	protected boolean flushed;
 
 	/**
@@ -72,14 +75,14 @@ abstract class AbstractDiffWriter implements DiffWriter
 	}
 
 	/**
-	 * Invoked before closing the writer.
+	 * Invoked before flushing the writer.
 	 */
-	protected abstract void beforeClose();
+	protected abstract void beforeFlush();
 
 	/**
-	 * Invoked after closing the writer.
+	 * Invoked after flushing the writer.
 	 */
-	protected abstract void afterClose();
+	protected abstract void afterFlush();
 
 	@Override
 	public String getPaddingMarker()
@@ -176,21 +179,21 @@ abstract class AbstractDiffWriter implements DiffWriter
 		if (flushed)
 			return;
 		flushed = true;
-		beforeClose();
+		beforeFlush();
 		this.actualLines.addAll(lineToActualLine.entrySet().stream().
 			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).toList());
 		this.expectedLines.addAll(lineToExpectedLine.entrySet().stream().
 			sorted(Entry.comparingByKey()).map(Entry::getValue).map(StringBuilder::toString).toList());
 		this.equalLines.addAll(lineToEqualLine.entrySet().stream().
 			sorted(Entry.comparingByKey()).map(Entry::getValue).toList());
-		afterClose();
+		afterFlush();
 	}
 
 	@Override
 	public Queue<String> getActualLines()
 	{
 		if (!flushed)
-			throw new IllegalStateException("Writer must be closed");
+			throw new IllegalStateException("Writer must be flushed");
 		return actualLines;
 	}
 
@@ -198,7 +201,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 	public Queue<String> getExpectedLines()
 	{
 		if (!flushed)
-			throw new IllegalStateException("Writer must be closed");
+			throw new IllegalStateException("Writer must be flushed");
 		return expectedLines;
 	}
 
@@ -206,7 +209,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 	public Queue<Boolean> getEqualLines()
 	{
 		if (!flushed)
-			throw new IllegalStateException("Writer must be closed");
+			throw new IllegalStateException("Writer must be flushed");
 		return equalLines;
 	}
 }

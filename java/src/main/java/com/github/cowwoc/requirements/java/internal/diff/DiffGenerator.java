@@ -230,13 +230,12 @@ public final class DiffGenerator
 			findFirstWord();
 			if (indexOfStartDelta == numberOfDeltas)
 				return;
-			while (true)
+			do
 			{
 				findEndOfWord();
 				updateDeltas();
-				if (!findNextWord())
-					return;
 			}
+			while (findNextWord());
 		}
 
 		/**

@@ -60,7 +60,7 @@ public final class Writer8Colors extends AbstractColorWriter
 	}
 
 	@Override
-	protected void afterClose()
+	protected void afterFlush()
 	{
 	}
 }
