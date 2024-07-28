@@ -17,7 +17,7 @@ public interface GuavaRequireThat
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	<K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> requireThat(T value, String name);
+	<K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> requireThat(T value, String name);
 }

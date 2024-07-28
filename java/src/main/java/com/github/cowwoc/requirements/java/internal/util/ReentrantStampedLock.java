@@ -64,8 +64,8 @@ public final class ReentrantStampedLock
 	 * <p>
 	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple times
 	 * as well. The return value must correspond to a local copy of the fields being read as there is no
-	 * guarantee that state won't change between the time the lock is released and the time that the value is
-	 * returned.
+	 * guarantee that the state won't change between the time the lock is released and the time that the value
+	 * is returned.
 	 *
 	 * @param <V>  the type of value returned by the task
 	 * @param task the task to run while holding the lock
@@ -102,8 +102,8 @@ public final class ReentrantStampedLock
 	 * <p>
 	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple times
 	 * as well. The return value must correspond to a local copy of the fields being read as there is no
-	 * guarantee that state won't change between the time the lock is released and the time that the value is
-	 * returned.
+	 * guarantee that the state won't change between the time the lock is released and the time that the value
+	 * is returned.
 	 *
 	 * @param task the task to run while holding the lock
 	 * @throws NullPointerException    if {@code task} is null
@@ -124,8 +124,8 @@ public final class ReentrantStampedLock
 	 * <p>
 	 * {@code task} is guaranteed to be invoked <i>at least</i> once, but must be safe to invoke multiple times
 	 * as well. The return value must correspond to a local copy of the fields being read as there is no
-	 * guarantee that state won't change between the time the lock is released and the time that the value is
-	 * returned.
+	 * guarantee that the state won't change between the time the lock is released and the time that the value
+	 * is returned.
 	 *
 	 * @param <V>   the type of value returned by the task
 	 * @param task  the task to run while holding the lock

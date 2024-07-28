@@ -1,5 +1,8 @@
 package com.github.cowwoc.requirements.java;
 
+import java.util.Objects;
+import java.util.Set;
+
 /**
  * Returns the String representation of an object.
  */
@@ -7,10 +10,16 @@ package com.github.cowwoc.requirements.java;
 public interface StringMapper
 {
 	/**
-	 * Returns the String representation of an object.
-	 *
-	 * @param object an object
-	 * @return the String representation of the object
+	 * Uses {@link Objects#toString(Object)} to convert value to a string.
 	 */
-	String apply(Object object);
+	StringMapper OBJECTS_TOSTRING = (value, seen) -> Objects.toString(value);
+
+	/**
+	 * Returns the String representation of a value.
+	 *
+	 * @param value a value
+	 * @param seen  the objects that we've seen before
+	 * @return the String representation of the value
+	 */
+	String apply(Object value, Set<Object> seen);
 }

@@ -10,7 +10,8 @@ public enum EqualityMethod
 	 */
 	OBJECT,
 	/**
-	 * Uses {@link Comparable#compareTo(Object)} to determine whether two objects are equal.
+	 * Uses {@link Comparable#compareTo(Object)} to determine the equality of non-null objects. If either
+	 * argument is null, the equality operator {@code ==} is used instead.
 	 */
 	COMPARABLE
 }

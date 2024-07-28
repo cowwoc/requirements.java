@@ -12,15 +12,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	/**
 	 * The singleton instance.
 	 */
-	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultJvmScope.INSTANCE);
-
-	/**
-	 * Creates a new application scope.
-	 */
-	public MainApplicationScope()
-	{
-		this(DefaultJvmScope.INSTANCE);
-	}
+	public static final MainApplicationScope INSTANCE = new MainApplicationScope(DefaultProcessScope.INSTANCE);
 
 	/**
 	 * Creates a new application scope.
@@ -28,7 +20,7 @@ public final class MainApplicationScope extends AbstractApplicationScope
 	 * @param parent the parent scope
 	 * @throws NullPointerException if {@code parent} is null
 	 */
-	private MainApplicationScope(JvmScope parent)
+	private MainApplicationScope(ProcessScope parent)
 	{
 		super(parent, new MainGlobalConfiguration(parent.getTerminal()));
 	}

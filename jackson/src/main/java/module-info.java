@@ -17,5 +17,5 @@ module com.github.cowwoc.requirements.jackson
 	requires com.github.cowwoc.pouch.core;
 
 	exports com.github.cowwoc.requirements.jackson;
-	exports com.github.cowwoc.requirements.jackson.internal.implementation to com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.jackson.internal.validator to com.github.cowwoc.requirements.test;
 }

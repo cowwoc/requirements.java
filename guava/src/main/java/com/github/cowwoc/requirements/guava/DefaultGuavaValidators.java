@@ -5,17 +5,18 @@
 package com.github.cowwoc.requirements.guava;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.guava.internal.implementation.GuavaValidatorsImpl;
+import com.github.cowwoc.requirements.guava.internal.validator.GuavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
 import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 import com.google.common.collect.Multimap;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -60,9 +61,9 @@ public final class DefaultGuavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value, String name)
+	public static <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value, String name)
 	{
 		return DELEGATE.assumeThat(value, name);
 	}
@@ -77,7 +78,7 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value)
+	public static <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value)
 	{
 		return DELEGATE.assumeThat(value);
 	}
@@ -91,10 +92,16 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
-	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                    <li>is already in use by the value being validated or the validator
+	 *                                    context</li>
+	 *                                  </ul>
 	 */
-	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value, String name)
+	public static <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> checkIf(T value, String name)
 	{
 		return DELEGATE.checkIf(value, name);
 	}
@@ -108,7 +115,7 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value)
+	public static <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> checkIf(T value)
 	{
 		return DELEGATE.checkIf(value);
 	}
@@ -122,10 +129,16 @@ public final class DefaultGuavaValidators
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
-	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                    <li>is already in use by the value being validated or the validator
+	 *                                    context</li>
+	 *                                  </ul>
 	 */
-	public static <K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> requireThat(T value, String name)
+	public static <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> requireThat(T value, String name)
 	{
 		return DELEGATE.requireThat(value, name);
 	}
@@ -142,7 +155,7 @@ public final class DefaultGuavaValidators
 	}
 
 	/**
-	 * Updates the configuration used by new validators.
+	 * Updates the configuration that will be used by new validators.
 	 * <p>
 	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
 	 *
@@ -152,6 +165,23 @@ public final class DefaultGuavaValidators
 	public static ConfigurationUpdater updateConfiguration()
 	{
 		return DELEGATE.updateConfiguration();
+	}
+
+	/**
+	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
+	 * applies the changes on exit. For example:
+	 * {@snippet :
+	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
+	 * requireThat(value, name);
+	 *}
+	 *
+	 * @param consumer the configuration updater
+	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	public static GuavaValidators updateConfiguration(Consumer<ConfigurationUpdater> consumer)
+	{
+		return DELEGATE.updateConfiguration(consumer);
 	}
 
 	/**
@@ -176,12 +206,19 @@ public final class DefaultGuavaValidators
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method may be overridden by
-	 * {@link Validator#withContext(Object, String)}}.
+	 * {@link ValidatorComponent#withContext(Object, String)}}.
 	 *
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
 	 * @return the underlying validator factory
-	 * @throws NullPointerException if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                    <li>is already in use by the value being validated or the validator
+	 *                                    context</li>
+	 *                                  </ul>
 	 */
 	public static GuavaValidators withContext(Object value, String name)
 	{
@@ -197,7 +234,11 @@ public final class DefaultGuavaValidators
 	 * @param name the parameter name
 	 * @return the underlying validator factory
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                  </ul>
 	 */
 	public static GuavaValidators removeContext(String name)
 	{
@@ -210,7 +251,7 @@ public final class DefaultGuavaValidators
 	/**
 	 * Returns the global configuration shared by all validators.
 	 * <p>
-	 * <b>NOTE</b>: Updating This method affects existing and new validators.
+	 * <b>NOTE</b>: Updating this configuration affects existing and new validators.
 	 *
 	 * @return the global configuration updater
 	 */

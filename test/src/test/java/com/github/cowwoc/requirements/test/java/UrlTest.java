@@ -45,7 +45,7 @@ public final class UrlTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new TestValidatorsImpl(scope).requireThat(actual, "Actual").asUrl().getValue();
+			URL actualAsUrl = new TestValidatorsImpl(scope).requireThat(actual, "actual").asUrl().getValue();
 			assert (actualAsUrl.toString().equals(actual)) : "actualAsUrl: " + actualAsUrl + ", actual: " + actual;
 		}
 	}
@@ -56,7 +56,7 @@ public final class UrlTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URI actualAsUri = new TestValidatorsImpl(scope).requireThat(actual, "Actual").asUrl().asUri().
+			URI actualAsUri = new TestValidatorsImpl(scope).requireThat(actual, "actual").asUrl().asUri().
 				getValue();
 			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " + actual;
 		}
@@ -68,11 +68,10 @@ public final class UrlTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"""
-					"Actual" must be equal to "notEqual"\
-					""");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must be an absolute URI",
+				"\"actual\" must be equal to \"notEqual\"");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isAbsolute().isEqualTo("notEqual").elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -84,11 +83,11 @@ public final class UrlTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URL actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"""
-					"Actual" must be equal to "notEqual"\
-					""");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("""
+					"actual" must be a valid URI.
+					actual: null""",
+				"\"actual\" must be equal to \"notEqual\"");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				asUri().isEqualTo("notEqual").elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}

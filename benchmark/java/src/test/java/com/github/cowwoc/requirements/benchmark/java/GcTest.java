@@ -31,7 +31,7 @@ public class GcTest
 	private static final boolean FAST_ESTIMATE = false;
 	// Fields may not be final:
 	// https://github.com/openjdk/jmh/blob/cb3c3a90137dad781a2a37fda72dc11ebf253593/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#L58
-	private String name = "Actual";
+	private String name = "actual";
 	private Map<Integer, Integer> value;
 
 	public GcTest()
@@ -105,6 +105,8 @@ public class GcTest
 
 	private boolean blackholeAssert(Blackhole bh, boolean resultOfAssertion)
 	{
+		// blackholeAssert() prevents assumeThat() from being optimized away.
+		// assert blackholeAssert() only executes the statement if assertions are enabled.
 		bh.consume(resultOfAssertion);
 		return true;
 	}

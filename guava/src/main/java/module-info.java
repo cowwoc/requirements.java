@@ -16,5 +16,5 @@ module com.github.cowwoc.requirements.guava
 	requires transitive com.github.cowwoc.requirements.java;
 
 	exports com.github.cowwoc.requirements.guava;
-	exports com.github.cowwoc.requirements.guava.internal.implementation to com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.guava.internal.validator to com.github.cowwoc.requirements.test;
 }

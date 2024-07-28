@@ -77,7 +77,7 @@ You'll get:
 
 ```
 java.lang.IllegalArgumentException: "piecesLeft" must be positive.
-Actual: -1000
+actual: -1000
 ```
 
 If you violate a **class invariant**:
@@ -92,7 +92,7 @@ You'll get:
 
 ```
 java.lang.AssertionError: "bitesTaken" may not be negative.
-Actual: -128
+actual: -128
 ```
 
 If you violate a **postcondition**:
@@ -107,7 +107,7 @@ You'll get:
 
 ```
 java.lang.AssertionError: "piecesLeft" may not be negative.
-Actual: -4
+actual: -4
 ```
 
 If you violate **multiple** conditions at once:
@@ -126,10 +126,10 @@ You'll get:
 
 ```
 "bitesTaken" may not be negative.
-Actual: -1
+actual: -1
 
 "piecesLeft" must be greater than 3.
-Actual: 2
+actual: 2
 ```
 
 ## Features

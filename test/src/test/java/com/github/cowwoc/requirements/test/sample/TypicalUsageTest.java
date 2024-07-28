@@ -12,7 +12,6 @@ import com.google.common.collect.Multimap;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -65,7 +64,7 @@ public final class TypicalUsageTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Duration duration = Duration.ofDays(1);
-			Set<Duration> bucket = Collections.emptySet();
+			Set<Duration> bucket = Set.of();
 
 			TestValidators validators = new TestValidatorsImpl(scope);
 			validators.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
@@ -92,7 +91,7 @@ public final class TypicalUsageTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
-			Map<Integer, Integer> map = Collections.singletonMap(1, 5);
+			Map<Integer, Integer> map = Map.of(1, 5);
 			Multimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5, 1, 6);
 
 			// Java will invoke JavaValidators.requireThat() or GuavaValidators.requireThat() depending on the

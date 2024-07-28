@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements.test.java.internal.terminal;
 
-import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
+import com.github.cowwoc.requirements.java.internal.scope.DefaultProcessScope;
 import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
 import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 import org.slf4j.Logger;
@@ -19,9 +19,9 @@ public final class TerminalTest
 	@Test
 	public void forceUnsupportedEncoding()
 	{
-		try (DefaultJvmScope jvm = DefaultJvmScope.INSTANCE)
+		try (DefaultProcessScope process = DefaultProcessScope.INSTANCE)
 		{
-			Terminal terminal = jvm.getTerminal();
+			Terminal terminal = process.getTerminal();
 
 			Logger log = LoggerFactory.getLogger(TerminalTest.class);
 			log.debug("*** The following exception is expected and does not denote a test failure ***");

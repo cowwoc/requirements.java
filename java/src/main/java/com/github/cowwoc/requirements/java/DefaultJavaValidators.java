@@ -5,50 +5,50 @@
 package com.github.cowwoc.requirements.java;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
 import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
-import com.github.cowwoc.requirements.java.type.BigDecimalValidator;
-import com.github.cowwoc.requirements.java.type.BigIntegerValidator;
-import com.github.cowwoc.requirements.java.type.BooleanValidator;
-import com.github.cowwoc.requirements.java.type.ByteValidator;
-import com.github.cowwoc.requirements.java.type.CharacterValidator;
-import com.github.cowwoc.requirements.java.type.ClassValidator;
-import com.github.cowwoc.requirements.java.type.CollectionValidator;
-import com.github.cowwoc.requirements.java.type.ComparableValidator;
-import com.github.cowwoc.requirements.java.type.DoubleValidator;
-import com.github.cowwoc.requirements.java.type.FloatValidator;
-import com.github.cowwoc.requirements.java.type.InetAddressValidator;
-import com.github.cowwoc.requirements.java.type.IntegerValidator;
-import com.github.cowwoc.requirements.java.type.ListValidator;
-import com.github.cowwoc.requirements.java.type.LongValidator;
-import com.github.cowwoc.requirements.java.type.MapValidator;
-import com.github.cowwoc.requirements.java.type.ObjectArrayValidator;
-import com.github.cowwoc.requirements.java.type.ObjectValidator;
-import com.github.cowwoc.requirements.java.type.OptionalValidator;
-import com.github.cowwoc.requirements.java.type.PathValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveBooleanArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveBooleanValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveByteArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveByteValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveCharacterArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveCharacterValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveDoubleArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveDoubleValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveFloatArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveFloatValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveIntegerArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveIntegerValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveLongArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveLongValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveShortArrayValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveShortValidator;
-import com.github.cowwoc.requirements.java.type.ShortValidator;
-import com.github.cowwoc.requirements.java.type.StringValidator;
-import com.github.cowwoc.requirements.java.type.UriValidator;
-import com.github.cowwoc.requirements.java.type.UrlValidator;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.internal.validator.JavaValidatorsImpl;
+import com.github.cowwoc.requirements.java.validator.BigDecimalValidator;
+import com.github.cowwoc.requirements.java.validator.BigIntegerValidator;
+import com.github.cowwoc.requirements.java.validator.BooleanValidator;
+import com.github.cowwoc.requirements.java.validator.ByteValidator;
+import com.github.cowwoc.requirements.java.validator.CharacterValidator;
+import com.github.cowwoc.requirements.java.validator.ClassValidator;
+import com.github.cowwoc.requirements.java.validator.CollectionValidator;
+import com.github.cowwoc.requirements.java.validator.ComparableValidator;
+import com.github.cowwoc.requirements.java.validator.DoubleValidator;
+import com.github.cowwoc.requirements.java.validator.FloatValidator;
+import com.github.cowwoc.requirements.java.validator.InetAddressValidator;
+import com.github.cowwoc.requirements.java.validator.IntegerValidator;
+import com.github.cowwoc.requirements.java.validator.ListValidator;
+import com.github.cowwoc.requirements.java.validator.LongValidator;
+import com.github.cowwoc.requirements.java.validator.MapValidator;
+import com.github.cowwoc.requirements.java.validator.ObjectArrayValidator;
+import com.github.cowwoc.requirements.java.validator.ObjectValidator;
+import com.github.cowwoc.requirements.java.validator.OptionalValidator;
+import com.github.cowwoc.requirements.java.validator.PathValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveBooleanArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveBooleanValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveByteArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveByteValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveCharacterArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveCharacterValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveDoubleArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveDoubleValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveFloatArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveFloatValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveIntegerArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveLongArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveLongValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveShortArrayValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveShortValidator;
+import com.github.cowwoc.requirements.java.validator.ShortValidator;
+import com.github.cowwoc.requirements.java.validator.StringValidator;
+import com.github.cowwoc.requirements.java.validator.UriValidator;
+import com.github.cowwoc.requirements.java.validator.UrlValidator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
+import com.github.cowwoc.requirements.java.validator.PrimitiveIntegerValidator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -60,6 +60,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -104,7 +105,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveByteValidator requireThat(byte value, String name)
 	{
@@ -118,7 +119,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static ByteValidator requireThat(Byte value, String name)
 	{
@@ -132,7 +133,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveShortValidator requireThat(short value, String name)
 	{
@@ -146,7 +147,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static ShortValidator requireThat(Short value, String name)
 	{
@@ -160,7 +161,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveIntegerValidator requireThat(int value, String name)
 	{
@@ -174,7 +175,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static IntegerValidator requireThat(Integer value, String name)
 	{
@@ -188,7 +189,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveLongValidator requireThat(long value, String name)
 	{
@@ -202,7 +203,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static LongValidator requireThat(Long value, String name)
 	{
@@ -216,7 +217,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveFloatValidator requireThat(float value, String name)
 	{
@@ -230,7 +231,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static FloatValidator requireThat(Float value, String name)
 	{
@@ -244,7 +245,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveDoubleValidator requireThat(double value, String name)
 	{
@@ -258,7 +259,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static DoubleValidator requireThat(Double value, String name)
 	{
@@ -272,7 +273,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanValidator requireThat(boolean value, String name)
 	{
@@ -286,7 +287,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BooleanValidator requireThat(Boolean value, String name)
 	{
@@ -300,7 +301,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveCharacterValidator requireThat(char value, String name)
 	{
@@ -314,7 +315,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static CharacterValidator requireThat(Character value, String name)
 	{
@@ -328,7 +329,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BigIntegerValidator requireThat(BigInteger value, String name)
 	{
@@ -342,7 +343,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BigDecimalValidator requireThat(BigDecimal value, String name)
 	{
@@ -357,7 +358,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> requireThat(T value, String name)
 	{
@@ -372,7 +373,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T> ObjectValidator<T> requireThat(T value, String name)
 	{
@@ -382,15 +383,15 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code Collection}, throwing an exception on failure.
 	 *
-	 * @param <E>   the type of elements in the collection
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the collection
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E, T extends Collection<E>> CollectionValidator<E, T> requireThat(T value, String name)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> requireThat(T value, String name)
 	{
 		return DELEGATE.requireThat(value, name);
 	}
@@ -398,15 +399,15 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code List}, throwing an exception on failure.
 	 *
-	 * @param <E>   the type of elements in the list
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the list
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E, T extends List<E>> ListValidator<E, T> requireThat(T value, String name)
+	public static <T extends List<E>, E> ListValidator<T, E> requireThat(T value, String name)
 	{
 		return DELEGATE.requireThat(value, name);
 	}
@@ -418,7 +419,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveByteArrayValidator requireThat(byte[] value, String name)
 	{
@@ -432,7 +433,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveShortArrayValidator requireThat(short[] value, String name)
 	{
@@ -446,7 +447,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveIntegerArrayValidator requireThat(int[] value, String name)
 	{
@@ -460,7 +461,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveLongArrayValidator requireThat(long[] value, String name)
 	{
@@ -474,7 +475,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveFloatArrayValidator requireThat(float[] value, String name)
 	{
@@ -488,7 +489,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveDoubleArrayValidator requireThat(double[] value, String name)
 	{
@@ -502,7 +503,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanArrayValidator requireThat(boolean[] value, String name)
 	{
@@ -516,7 +517,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveCharacterArrayValidator requireThat(char[] value, String name)
 	{
@@ -531,9 +532,9 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E> ObjectArrayValidator<E, E[]> requireThat(E[] value, String name)
+	public static <E> ObjectArrayValidator<E[], E> requireThat(E[] value, String name)
 	{
 		return DELEGATE.requireThat(value, name);
 	}
@@ -548,9 +549,9 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> requireThat(T value, String name)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> requireThat(T value, String name)
 	{
 		return DELEGATE.requireThat(value, name);
 	}
@@ -562,7 +563,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PathValidator requireThat(Path value, String name)
 	{
@@ -576,7 +577,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static StringValidator requireThat(String value, String name)
 	{
@@ -590,7 +591,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static UriValidator requireThat(URI value, String name)
 	{
@@ -604,7 +605,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static UrlValidator requireThat(URL value, String name)
 	{
@@ -614,12 +615,12 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code Class}, throwing an exception on failure
 	 *
-	 * @param <T>   the type of class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T> ClassValidator<T> requireThat(Class<T> value, String name)
 	{
@@ -634,7 +635,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> requireThat(Optional<T> value, String name)
@@ -649,7 +650,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static InetAddressValidator requireThat(InetAddress value, String name)
 	{
@@ -664,7 +665,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveByteValidator assumeThat(byte value, String name)
 	{
@@ -691,7 +692,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static ByteValidator assumeThat(Byte value, String name)
 	{
@@ -718,7 +719,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveShortValidator assumeThat(short value, String name)
 	{
@@ -745,7 +746,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static ShortValidator assumeThat(Short value, String name)
 	{
@@ -772,7 +773,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveIntegerValidator assumeThat(int value, String name)
 	{
@@ -799,7 +800,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static IntegerValidator assumeThat(Integer value, String name)
 	{
@@ -826,7 +827,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveLongValidator assumeThat(long value, String name)
 	{
@@ -853,7 +854,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static LongValidator assumeThat(Long value, String name)
 	{
@@ -880,7 +881,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveFloatValidator assumeThat(float value, String name)
 	{
@@ -907,7 +908,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static FloatValidator assumeThat(Float value, String name)
 	{
@@ -934,7 +935,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveDoubleValidator assumeThat(double value, String name)
 	{
@@ -961,7 +962,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static DoubleValidator assumeThat(Double value, String name)
 	{
@@ -988,7 +989,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanValidator assumeThat(boolean value, String name)
 	{
@@ -1015,7 +1016,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BooleanValidator assumeThat(Boolean value, String name)
 	{
@@ -1042,7 +1043,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveCharacterValidator assumeThat(char value, String name)
 	{
@@ -1069,7 +1070,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static CharacterValidator assumeThat(Character value, String name)
 	{
@@ -1096,7 +1097,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BigIntegerValidator assumeThat(BigInteger value, String name)
 	{
@@ -1123,7 +1124,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BigDecimalValidator assumeThat(BigDecimal value, String name)
 	{
@@ -1150,7 +1151,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value, String name)
 	{
@@ -1178,7 +1179,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T> ObjectValidator<T> assumeThat(T value, String name)
 	{
@@ -1202,15 +1203,15 @@ public final class DefaultJavaValidators
 	 * Validates the state of a {@code Collection}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
-	 * @param <E>   the type of elements in the collection
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the collection
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E, T extends Collection<E>> CollectionValidator<E, T> assumeThat(T value, String name)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value, String name)
 	{
 		return DELEGATE.assumeThat(value, name);
 	}
@@ -1219,12 +1220,12 @@ public final class DefaultJavaValidators
 	 * Validates the state of a {@code Collection}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
-	 * @param <E>   the type of elements in the collection
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the collection
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E, T extends Collection<E>> CollectionValidator<E, T> assumeThat(T value)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value)
 	{
 		return DELEGATE.assumeThat(value);
 	}
@@ -1233,15 +1234,15 @@ public final class DefaultJavaValidators
 	 * Validates the state of a {@code List}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
-	 * @param <E>   the type of elements in the list
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the list
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E, T extends List<E>> ListValidator<E, T> assumeThat(T value, String name)
+	public static <T extends List<E>, E> ListValidator<T, E> assumeThat(T value, String name)
 	{
 		return DELEGATE.assumeThat(value, name);
 	}
@@ -1250,12 +1251,12 @@ public final class DefaultJavaValidators
 	 * Validates the state of a {@code List}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
-	 * @param <E>   the type of elements in the list
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the list
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E, T extends List<E>> ListValidator<E, T> assumeThat(T value)
+	public static <T extends List<E>, E> ListValidator<T, E> assumeThat(T value)
 	{
 		return DELEGATE.assumeThat(value);
 	}
@@ -1267,7 +1268,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveByteArrayValidator assumeThat(byte[] value, String name)
 	{
@@ -1292,7 +1293,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveShortArrayValidator assumeThat(short[] value, String name)
 	{
@@ -1317,7 +1318,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveIntegerArrayValidator assumeThat(int[] value, String name)
 	{
@@ -1342,7 +1343,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveLongArrayValidator assumeThat(long[] value, String name)
 	{
@@ -1367,7 +1368,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveFloatArrayValidator assumeThat(float[] value, String name)
 	{
@@ -1392,7 +1393,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveDoubleArrayValidator assumeThat(double[] value, String name)
 	{
@@ -1417,7 +1418,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanArrayValidator assumeThat(boolean[] value, String name)
 	{
@@ -1430,7 +1431,7 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanArrayValidator assumeThat(boolean[] value)
 	{
@@ -1444,7 +1445,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveCharacterArrayValidator assumeThat(char[] value, String name)
 	{
@@ -1470,9 +1471,9 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E> ObjectArrayValidator<E, E[]> assumeThat(E[] value, String name)
+	public static <E> ObjectArrayValidator<E[], E> assumeThat(E[] value, String name)
 	{
 		return DELEGATE.assumeThat(value, name);
 	}
@@ -1484,7 +1485,7 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E> ObjectArrayValidator<E, E[]> assumeThat(E[] value)
+	public static <E> ObjectArrayValidator<E[], E> assumeThat(E[] value)
 	{
 		return DELEGATE.assumeThat(value);
 	}
@@ -1500,9 +1501,9 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> assumeThat(T value, String name)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value, String name)
 	{
 		return DELEGATE.assumeThat(value, name);
 	}
@@ -1517,7 +1518,7 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> assumeThat(T value)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value)
 	{
 		return DELEGATE.assumeThat(value);
 	}
@@ -1530,7 +1531,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PathValidator assumeThat(Path value, String name)
 	{
@@ -1557,7 +1558,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static StringValidator assumeThat(String value, String name)
 	{
@@ -1584,7 +1585,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static UriValidator assumeThat(URI value, String name)
 	{
@@ -1611,7 +1612,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static UrlValidator assumeThat(URL value, String name)
 	{
@@ -1634,12 +1635,12 @@ public final class DefaultJavaValidators
 	 * Validates the state of a {@code Class}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
-	 * @param <T>   the type of class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T> ClassValidator<T> assumeThat(Class<T> value, String name)
 	{
@@ -1650,7 +1651,7 @@ public final class DefaultJavaValidators
 	 * Validates the state of a {@code Class}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
-	 * @param <T>   the type of class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @return a validator for the value
 	 */
@@ -1668,7 +1669,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> assumeThat(Optional<T> value, String name)
@@ -1698,7 +1699,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static InetAddressValidator assumeThat(InetAddress value, String name)
 	{
@@ -1724,7 +1725,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveByteValidator checkIf(byte value, String name)
 	{
@@ -1749,7 +1750,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static ByteValidator checkIf(Byte value, String name)
 	{
@@ -1774,7 +1775,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static PrimitiveShortValidator checkIf(short value, String name)
 	{
@@ -1799,7 +1800,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static ShortValidator checkIf(Short value, String name)
 	{
@@ -1824,7 +1825,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveIntegerValidator checkIf(int value, String name)
 	{
@@ -1849,7 +1850,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static IntegerValidator checkIf(Integer value, String name)
 	{
@@ -1874,7 +1875,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveLongValidator checkIf(long value, String name)
 	{
@@ -1899,7 +1900,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static LongValidator checkIf(Long value, String name)
 	{
@@ -1924,7 +1925,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveFloatValidator checkIf(float value, String name)
 	{
@@ -1949,7 +1950,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static FloatValidator checkIf(Float value, String name)
 	{
@@ -1974,7 +1975,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveDoubleValidator checkIf(double value, String name)
 	{
@@ -1999,7 +2000,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static DoubleValidator checkIf(Double value, String name)
 	{
@@ -2024,7 +2025,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanValidator checkIf(boolean value, String name)
 	{
@@ -2049,7 +2050,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BooleanValidator checkIf(Boolean value, String name)
 	{
@@ -2074,7 +2075,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveCharacterValidator checkIf(char value, String name)
 	{
@@ -2099,7 +2100,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static CharacterValidator checkIf(Character value, String name)
 	{
@@ -2124,7 +2125,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BigIntegerValidator checkIf(BigInteger value, String name)
 	{
@@ -2149,7 +2150,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static BigDecimalValidator checkIf(BigDecimal value, String name)
 	{
@@ -2175,7 +2176,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> checkIf(T value, String name)
 	{
@@ -2202,7 +2203,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T> ObjectValidator<T> checkIf(T value, String name)
 	{
@@ -2224,15 +2225,15 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code Collection}, recording any failures.
 	 *
-	 * @param <E>   the type of elements in the collection
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the collection
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E, T extends Collection<E>> CollectionValidator<E, T> checkIf(T value, String name)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> checkIf(T value, String name)
 	{
 		return DELEGATE.checkIf(value, name);
 	}
@@ -2240,12 +2241,12 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code Collection}, recording any failures.
 	 *
-	 * @param <E>   the type of elements in the collection
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the collection
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E, T extends Collection<E>> CollectionValidator<E, T> checkIf(T value)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> checkIf(T value)
 	{
 		return DELEGATE.checkIf(value);
 	}
@@ -2253,15 +2254,15 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code List}, recording any failures.
 	 *
-	 * @param <E>   the type of elements in the list
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the list
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E, T extends List<E>> ListValidator<E, T> checkIf(T value, String name)
+	public static <T extends List<E>, E> ListValidator<T, E> checkIf(T value, String name)
 	{
 		return DELEGATE.checkIf(value, name);
 	}
@@ -2269,12 +2270,12 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code List}, recording any failures.
 	 *
-	 * @param <E>   the type of elements in the list
 	 * @param <T>   the type of the value
+	 * @param <E>   the type of elements in the list
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E, T extends List<E>> ListValidator<E, T> checkIf(T value)
+	public static <T extends List<E>, E> ListValidator<T, E> checkIf(T value)
 	{
 		return DELEGATE.checkIf(value);
 	}
@@ -2286,7 +2287,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveByteArrayValidator checkIf(byte[] value, String name)
 	{
@@ -2312,7 +2313,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveShortArrayValidator checkIf(short[] value, String name)
 	{
@@ -2338,7 +2339,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveIntegerArrayValidator checkIf(int[] value, String name)
 	{
@@ -2363,7 +2364,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveLongArrayValidator checkIf(long[] value, String name)
 	{
@@ -2389,7 +2390,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveFloatArrayValidator checkIf(float[] value, String name)
 	{
@@ -2416,7 +2417,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveDoubleArrayValidator checkIf(double[] value, String name)
 	{
@@ -2443,7 +2444,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveBooleanArrayValidator checkIf(boolean[] value, String name)
 	{
@@ -2469,7 +2470,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PrimitiveCharacterArrayValidator checkIf(char[] value, String name)
 	{
@@ -2495,9 +2496,9 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E> ObjectArrayValidator<E, E[]> checkIf(E[] value, String name)
+	public static <E> ObjectArrayValidator<E[], E> checkIf(E[] value, String name)
 	{
 		return DELEGATE.checkIf(value, name);
 	}
@@ -2509,7 +2510,7 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E> ObjectArrayValidator<E, E[]> checkIf(E[] value)
+	public static <E> ObjectArrayValidator<E[], E> checkIf(E[] value)
 	{
 		return DELEGATE.checkIf(value);
 	}
@@ -2524,9 +2525,9 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> checkIf(T value, String name)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> checkIf(T value, String name)
 	{
 		return DELEGATE.checkIf(value, name);
 	}
@@ -2540,7 +2541,7 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <K, V, T extends Map<K, V>> MapValidator<K, V, T> checkIf(T value)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> checkIf(T value)
 	{
 		return DELEGATE.checkIf(value);
 	}
@@ -2552,7 +2553,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static PathValidator checkIf(Path value, String name)
 	{
@@ -2577,7 +2578,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static StringValidator checkIf(String value, String name)
 	{
@@ -2602,7 +2603,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static UriValidator checkIf(URI value, String name)
 	{
@@ -2627,7 +2628,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static UrlValidator checkIf(URL value, String name)
 	{
@@ -2648,12 +2649,12 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code Class}, recording failures without throwing an exception.
 	 *
-	 * @param <T>   the type of the class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static <T> ClassValidator<T> checkIf(Class<T> value, String name)
 	{
@@ -2663,7 +2664,7 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of a {@code Class}, recording failures without throwing an exception.
 	 *
-	 * @param <T>   the type of the class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @return a validator for the value
 	 */
@@ -2675,12 +2676,12 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of an {@code Optional}, recording failures without throwing an exception.
 	 *
-	 * @param <T>   the type of the class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> checkIf(Optional<T> value, String name)
@@ -2691,7 +2692,7 @@ public final class DefaultJavaValidators
 	/**
 	 * Validates the state of an {@code Optional}, recording failures without throwing an exception.
 	 *
-	 * @param <T>   the type of the class
+	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @return a validator for the value
 	 */
@@ -2708,7 +2709,7 @@ public final class DefaultJavaValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	public static InetAddressValidator checkIf(InetAddress value, String name)
 	{
@@ -2739,7 +2740,7 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Updates the configuration used by new validators.
+	 * Updates the configuration that will be used by new validators.
 	 * <p>
 	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
 	 *
@@ -2750,6 +2751,23 @@ public final class DefaultJavaValidators
 	public static ConfigurationUpdater updateConfiguration()
 	{
 		return DELEGATE.updateConfiguration();
+	}
+
+	/**
+	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
+	 * applies the changes on exit. For example:
+	 * {@snippet :
+	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
+	 * requireThat(value, name);
+	 *}
+	 *
+	 * @param consumer the configuration updater
+	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	public static JavaValidators updateConfiguration(Consumer<ConfigurationUpdater> consumer)
+	{
+		return DELEGATE.updateConfiguration(consumer);
 	}
 
 	/**
@@ -2774,12 +2792,19 @@ public final class DefaultJavaValidators
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method may be overridden by
-	 * {@link Validator#withContext(Object, String)}}.
+	 * {@link ValidatorComponent#withContext(Object, String)}}.
 	 *
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
 	 * @return the underlying validator factory
-	 * @throws NullPointerException if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                    <li>is already in use by the value being validated or the validator
+	 *                                    context</li>
+	 *                                  </ul>
 	 */
 	public static JavaValidators withContext(Object value, String name)
 	{
@@ -2795,7 +2820,11 @@ public final class DefaultJavaValidators
 	 * @param name the parameter name
 	 * @return the underlying validator factory
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                  </ul>
 	 */
 	public static JavaValidators removeContext(String name)
 	{
@@ -2808,7 +2837,7 @@ public final class DefaultJavaValidators
 	/**
 	 * Returns the global configuration shared by all validators.
 	 * <p>
-	 * <b>NOTE</b>: Updating This method affects existing and new validators.
+	 * <b>NOTE</b>: Updating this configuration affects existing and new validators.
 	 *
 	 * @return the global configuration updater
 	 */

@@ -7,7 +7,6 @@ package com.github.cowwoc.requirements.test.scope;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 
-import java.util.Collections;
 import java.util.Set;
 
 public final class TestGlobalConfiguration implements GlobalConfiguration
@@ -28,7 +27,7 @@ public final class TestGlobalConfiguration implements GlobalConfiguration
 	@Override
 	public Set<TerminalEncoding> supportedTerminalEncodings()
 	{
-		return Collections.singleton(terminalEncoding);
+		return Set.of(terminalEncoding);
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public final class TestGlobalConfiguration implements GlobalConfiguration
 		if (encoding != terminalEncoding)
 		{
 			throw new UnsupportedOperationException("Test only supports one encoding: " + terminalEncoding + ".\n" +
-				"Actual: " + encoding);
+				"actual: " + encoding);
 		}
 		return this;
 	}

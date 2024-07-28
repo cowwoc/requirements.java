@@ -15,8 +15,8 @@ import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
-import com.github.cowwoc.requirements.java.type.part.ObjectPart;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ObjectComponent;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 
 /**
  * Validates the state of a JsonNode, throwing an exception on the first failure.
@@ -24,18 +24,18 @@ import com.github.cowwoc.requirements.java.type.part.Validator;
  * @param <T> the type of the {@code JsonNode}
  */
 public interface JsonNodeValidator<T extends JsonNode> extends
-	Validator<JsonNodeValidator<T>>,
-	ObjectPart<JsonNodeValidator<T>, T>
+	ValidatorComponent<JsonNodeValidator<T>, T>,
+	ObjectComponent<JsonNodeValidator<T>, T>
 {
 	/**
 	 * Returns a validator for the node's property.
 	 *
 	 * @param name the name of a property
 	 * @return a validator for the property
-	 * @throws NullPointerException     if the name or value is null
+	 * @throws NullPointerException     if {@code name} or the value are null
 	 * @throws IllegalArgumentException if the node does not contain the property
 	 */
-	JsonNodeValidator<T> property(String name);
+	JsonNodeValidator<JsonNode> property(String name);
 
 	/**
 	 * Ensures that the node contains a {@code Number}.

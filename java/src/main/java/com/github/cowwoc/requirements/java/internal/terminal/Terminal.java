@@ -9,7 +9,6 @@ import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +21,7 @@ import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.XTER
 import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.XTERM_8_COLORS;
 
 /**
- * The terminal associated with the JVM.
+ * The terminal associated with the process.
  */
 public final class Terminal
 {
@@ -63,7 +62,7 @@ public final class Terminal
 	{
 		String term = System.getenv("TERM");
 		if (term == null)
-			return Collections.singleton(NONE);
+			return Set.of(NONE);
 		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
 		// support all possible terminal types. Instead, we support mainstream types and require the terminal
 		// to support or emulate them.
@@ -129,9 +128,9 @@ public final class Terminal
 			this.encoding.set(NONE);
 			return;
 		}
-		if (!getSupportedTypes().contains(encoding))
+		if (!getSupportedTypes().contains(encoding) && !force)
 		{
-			this.encoding.set(encoding);
+			this.encoding.set(NONE);
 			return;
 		}
 		this.encoding.set(encoding);

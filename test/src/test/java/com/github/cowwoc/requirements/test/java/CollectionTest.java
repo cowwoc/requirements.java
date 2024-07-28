@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.emptyList();
+			Collection<String> actual = List.of();
 			new TestValidatorsImpl(scope).requireThat(actual, null);
 		}
 	}
@@ -38,7 +37,7 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.emptyList();
+			Collection<String> actual = List.of();
 			new TestValidatorsImpl(scope).requireThat(actual, "");
 		}
 	}
@@ -48,8 +47,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.emptyList();
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEmpty();
+			Collection<String> actual = List.of();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -58,8 +57,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singleton("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEmpty();
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -68,8 +67,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singleton("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEmpty();
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -78,8 +77,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.emptyList();
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isNotEmpty();
+			Collection<String> actual = List.of();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -88,8 +87,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains("element");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains("element");
 		}
 	}
 
@@ -98,8 +97,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("notElement");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").contains("element");
+			Collection<String> actual = List.of("notElement");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains("element");
 		}
 	}
 
@@ -108,9 +107,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				contains("element", "nameOfExpected");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				contains("element", "expectedName");
 		}
 	}
 
@@ -119,9 +118,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("notElement");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				contains("element", "nameOfExpected");
+			Collection<String> actual = List.of("notElement");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				contains("element", "expectedName");
 		}
 	}
 
@@ -131,7 +130,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -142,7 +141,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -153,7 +152,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -164,8 +163,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsExactly(Arrays.asList("one", "two", "three"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two", "three"), "expectedName");
 		}
 	}
 
@@ -175,8 +174,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsExactly(Arrays.asList("one", "two"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two"), "expectedName");
 		}
 	}
 
@@ -186,8 +185,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsExactly(Arrays.asList("one", "two", "three"), "Expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsExactly(Arrays.asList("one", "two", "three"), "expected");
 		}
 	}
 
@@ -197,7 +196,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"), " ");
 		}
 	}
@@ -208,7 +207,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAny(Arrays.asList("two", "four"));
 		}
 	}
@@ -219,7 +218,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAny(Arrays.asList("four", "five"));
 		}
 	}
@@ -230,8 +229,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsAny(Arrays.asList("two", "four"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsAny(Arrays.asList("two", "four"), "expectedName");
 		}
 	}
 
@@ -241,8 +240,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsAny(Arrays.asList("four", "five"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsAny(Arrays.asList("four", "five"), "expectedName");
 		}
 	}
 
@@ -252,7 +251,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAny(Arrays.asList("two", "four"), " ");
 		}
 	}
@@ -263,7 +262,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "three"));
 		}
 	}
@@ -274,7 +273,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "four"));
 		}
 	}
@@ -285,8 +284,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsAll(Arrays.asList("two", "three"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsAll(Arrays.asList("two", "three"), "expectedName");
 		}
 	}
 
@@ -296,8 +295,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				containsAll(Arrays.asList("two", "four"), "nameOfExpected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				containsAll(Arrays.asList("two", "four"), "expectedName");
 		}
 	}
 
@@ -307,7 +306,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "three"), " ");
 		}
 	}
@@ -317,8 +316,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("notElement");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContain("element");
+			Collection<String> actual = List.of("notElement");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContain("element");
 		}
 	}
 
@@ -327,8 +326,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContain("element");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContain("element");
 		}
 	}
 
@@ -337,9 +336,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("notElement");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContain("element", "nameOfUnwanted");
+			Collection<String> actual = List.of("notElement");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContain("element", "unwantedName");
 		}
 	}
 
@@ -348,9 +347,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContain("element", "nameOfUnwanted");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContain("element", "unwantedName");
 		}
 	}
 
@@ -359,8 +358,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("notElement");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			Collection<String> actual = List.of("notElement");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContain("element", " ");
 		}
 	}
@@ -371,7 +370,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -382,7 +381,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -393,7 +392,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -404,8 +403,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContainExactly(Arrays.asList("one", "two"), "nameOfUnwanted");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContainExactly(Arrays.asList("one", "two"), "unwantedName");
 		}
 	}
 
@@ -415,7 +414,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"), "unwanted");
 		}
 	}
@@ -426,8 +425,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContainExactly(Arrays.asList("one", "two", "three"), "nameOfUnwanted");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContainExactly(Arrays.asList("one", "two", "three"), "unwantedName");
 		}
 	}
 
@@ -437,7 +436,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"));
 		}
 	}
@@ -448,7 +447,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("three", "four", "five"));
 		}
 	}
@@ -459,8 +458,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContainAny(Arrays.asList("four", "five", "six"), "nameOfUnwanted");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContainAny(Arrays.asList("four", "five", "six"), "unwantedName");
 		}
 	}
 
@@ -470,8 +469,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContainAny(Arrays.asList("three", "four", "five"), "nameOfUnwanted");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContainAny(Arrays.asList("three", "four", "five"), "unwantedName");
 		}
 	}
 
@@ -481,7 +480,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"), " ");
 		}
 	}
@@ -492,7 +491,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"));
 		}
 	}
@@ -503,7 +502,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three", "four");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -514,8 +513,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContainAll(Arrays.asList("one", "two", "four"), "nameOfUnwanted");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContainAll(Arrays.asList("one", "two", "four"), "unwantedName");
 		}
 	}
 
@@ -525,8 +524,8 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three", "four");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				doesNotContainAll(Arrays.asList("one", "two", "three"), "nameOfUnwanted");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContainAll(Arrays.asList("one", "two", "three"), "unwantedName");
 		}
 	}
 
@@ -536,7 +535,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"), " ");
 		}
 	}
@@ -547,7 +546,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContainDuplicates();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -557,7 +556,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<String> actual = Arrays.asList("one", "two", "three", "two", "four");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").doesNotContainDuplicates();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -566,8 +565,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isEqualTo(1);
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -576,8 +575,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isEqualTo(2);
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -586,9 +585,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().
-				isEqualTo(1, "nameOfExpected");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().
+				isEqualTo(1, "expectedName");
 		}
 	}
 
@@ -597,9 +596,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().
-				isEqualTo(2, "nameOfExpected");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().
+				isEqualTo(2, "expectedName");
 		}
 	}
 
@@ -608,8 +607,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isEqualTo(1, " ");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(1, " ");
 		}
 	}
 
@@ -618,8 +617,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isNotEqualTo(2);
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -628,8 +627,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isNotEqualTo(1);
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -638,9 +637,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().
-				isNotEqualTo(2, "nameOfExpected");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().
+				isNotEqualTo(2, "expectedName");
 		}
 	}
 
@@ -649,9 +648,9 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().
-				isNotEqualTo(1, "nameOfExpected");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().
+				isNotEqualTo(1, "expectedName");
 		}
 	}
 
@@ -660,8 +659,8 @@ public final class CollectionTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Collection<String> actual = Collections.singletonList("element");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isNotEqualTo(2, " ");
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(2, " ");
 		}
 	}
 
@@ -671,7 +670,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -681,7 +680,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -691,7 +690,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -701,7 +700,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isBetween(3, 5);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isBetween(3, 5);
 		}
 	}
 
@@ -711,7 +710,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").size().isBetween(3, true, 5, true);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isBetween(3, true, 5, true);
 		}
 	}
 
@@ -722,8 +721,8 @@ public final class CollectionTest
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
 			List<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
-			List<Integer> expected = validators.requireThat(actual, "Actual").getValue();
-			validators.requireThat(actual, "Actual").isEqualTo(expected, "Expected");
+			List<Integer> expected = validators.requireThat(actual, "actual").getValue();
+			validators.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 
@@ -734,8 +733,8 @@ public final class CollectionTest
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
 			Iterable<Integer> actual = ImmutableList.of(1, 2, 3, 4, 5);
-			Iterable<Integer> expected = validators.requireThat(actual, "Actual").getValue();
-			validators.requireThat(actual, "Actual").isEqualTo(expected, "Expected");
+			Iterable<Integer> expected = validators.requireThat(actual, "actual").getValue();
+			validators.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 
@@ -750,7 +749,7 @@ public final class CollectionTest
 					1, 2, 3, 4, 5
 				};
 			Collection<Integer> actual = Arrays.asList(array);
-			Integer[] output = validators.requireThat(actual, "Actual").
+			Integer[] output = validators.requireThat(actual, "actual").
 				asArray(Integer.class).getValue();
 			validators.requireThat(array, "Input").isEqualTo(output, "Output");
 		}
@@ -767,7 +766,7 @@ public final class CollectionTest
 				{
 					5, 4, 3, 2, 1
 				};
-			Integer[] actualOutput = validators.requireThat(actual, "Actual").
+			Integer[] actualOutput = validators.requireThat(actual, "actual").
 				asArray(Integer.class).getValue();
 			validators.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
 		}
@@ -779,7 +778,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsExactly((Collection<Integer>) null);
 		}
 	}
@@ -790,7 +789,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsExactly((Collection<Integer>) null, "name");
 		}
 	}
@@ -801,7 +800,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAny((Collection<Integer>) null);
 		}
 	}
@@ -812,7 +811,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAny((Collection<Integer>) null, "name");
 		}
 	}
@@ -823,7 +822,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAll((Collection<Integer>) null);
 		}
 	}
@@ -834,7 +833,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				containsAll((Collection<Integer>) null, "name");
 		}
 	}
@@ -845,7 +844,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainExactly((Collection<Integer>) null);
 		}
 	}
@@ -856,7 +855,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainExactly((Collection<Integer>) null, "name");
 		}
 	}
@@ -867,7 +866,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAny((Collection<Integer>) null);
 		}
 	}
@@ -878,7 +877,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAny((Collection<Integer>) null, "name");
 		}
 	}
@@ -889,7 +888,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAll((Collection<Integer>) null);
 		}
 	}
@@ -900,7 +899,7 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				doesNotContainAll((Collection<Integer>) null, "name");
 		}
 	}
@@ -911,9 +910,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				isEmpty().isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must be empty",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				isEmpty().isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -924,9 +925,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				isNotEmpty().isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" may not be empty",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				isNotEmpty().isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -937,9 +940,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				contains(5).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must contain 5",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				contains(5).isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -950,9 +955,12 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				contains(5, "name").isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" must contain the same value as "expected".
+					expected: 5""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				contains(5, "expected").isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -963,9 +971,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				containsExactly(Collections.singletonList(5)).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must consist of the elements [5], regardless of their order.",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				containsExactly(List.of(5)).isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -976,10 +986,13 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				containsExactly(Collections.singletonList(5), "name").
-				isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" must consist of the same elements as "expected", regardless of their order.
+					expected: [5]""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				containsExactly(List.of(5), "expected").
+				isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -990,9 +1003,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				containsAny(Collections.singletonList(5)).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must contain any of the elements present in the set [5]",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				containsAny(List.of(5)).isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1003,10 +1018,13 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				containsAny(Collections.singletonList(5), "name").
-				isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" must contain any of the elements present in "expected".
+					expected: [5]""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				containsAny(List.of(5), "expected").
+				isNotEqualTo(List.of()).elseGetMessages();
 
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -1018,9 +1036,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				containsAll(Collections.singletonList(5)).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must contain all the elements present in the set [5]",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				containsAll(List.of(5)).isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1031,10 +1051,13 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				containsAll(Collections.singletonList(5), "name").
-				isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" must contain all the elements present in "expected".
+					expected: [5]""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				containsAll(List.of(5), "expected").
+				isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1045,9 +1068,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContain(5).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" may not contain 5",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContain(5).isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1058,9 +1083,12 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContain(5, "name").isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" may not contain the same value as "unwanted".
+					unwanted: 5""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContain(5, "unwanted").isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1071,9 +1099,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainExactly(Collections.singletonList(5)).isNotEqualTo(Collections.emptyList()).
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" may not consist of the elements [5], regardless of their order.",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainExactly(List.of(5)).isNotEqualTo(List.of()).
 				elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -1085,10 +1115,13 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainExactly(Collections.singletonList(5), "name").
-				isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" may not consist of the same elements as "expected", regardless of their order.
+					expected: [5]""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainExactly(List.of(5), "expected").
+				isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1099,9 +1132,12 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainAny(Collections.singletonList(5)).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" may not contain any of the elements present in the set [5]",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainAny(List.of(5)).isNotEqualTo(List.of())
+				.elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1112,10 +1148,13 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainAny(Collections.singletonList(5), "name").
-				isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" may not contain any of the elements present in "expected".
+					expected: [5]""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainAny(List.of(5), "expected").
+				isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1126,9 +1165,12 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainAll(Collections.singletonList(5)).isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" may contain some, but not all, the elements present in the set [5].",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainAll(List.of(5)).isNotEqualTo(List.of())
+				.elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1139,10 +1181,13 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainAll(Collections.singletonList(5), "name").
-				isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null", """
+					"actual" may contain some, but not all, the elements present in "expected".
+					expected: [5]""",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainAll(List.of(5), "expected").
+				isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1153,9 +1198,11 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" may not be equal to []");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
-				doesNotContainDuplicates().isNotEqualTo(Collections.emptyList()).elseGetMessages();
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" may not contain any duplicate elements",
+				"\"actual\" may not be equal to []");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				doesNotContainDuplicates().isNotEqualTo(List.of()).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1166,8 +1213,9 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null", "\"Actual\" must contain 5 elements");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must contain 5 elements");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				size().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -1179,9 +1227,9 @@ public final class CollectionTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"Actual.asArray() must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"actual.asArray() must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				asArray(Integer.class).isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -1194,17 +1242,12 @@ public final class CollectionTest
 		{
 			Collection<Integer> actual = List.of(1, 2, 3);
 			Collection<Integer> expected = List.of(2, 1, 3);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(expected);
-			assert (false) : "Exception was never thrown";
-		}
-		catch (IllegalArgumentException e)
-		{
-			String actualMessage = e.getMessage();
-			String expectedMessage = """
-				"Actual" must be equal to [2, 1, 3].
-				Actual: [1, 2, 3]""";
-			assert (actualMessage.contains(expectedMessage)) : "Expected:\n" + expectedMessage +
-				"\n\n**************** Actual:\n" + actualMessage;
+			List<String> expectedMessages = List.of("""
+				"actual" must be equal to [2, 1, 3].
+				actual: [1, 2, 3]""");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				isEqualTo(expected).elseGetMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 

@@ -114,4 +114,24 @@ public final class Objects
 		}
 		throw new AssertionError("Unexpected array type: " + type);
 	}
+
+	/**
+	 * @param first  a value
+	 * @param second a value
+	 * @return true if one value is null but the other is not
+	 */
+	public static boolean isMixedNullity(Object first, Object second)
+	{
+		return (first == null) != (second == null);
+	}
+
+	/**
+	 * @param first  a value
+	 * @param second a value
+	 * @return true if both values are null or not null
+	 */
+	public static boolean isSameNullity(Object first, Object second)
+	{
+		return (first == null) == (second == null);
+	}
 }

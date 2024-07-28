@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.jackson;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.jackson.internal.implementation.JacksonValidatorsImpl;
+import com.github.cowwoc.requirements.jackson.internal.validator.JacksonValidatorsImpl;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.Validators;

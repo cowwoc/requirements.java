@@ -1,9 +1,10 @@
 package com.github.cowwoc.requirements.java;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -23,11 +24,11 @@ import java.util.function.Function;
  * Exceptions that are thrown in response to invalid method arguments (e.g.
  * {@code isGreaterThan(value, null)}) are thrown by all validators and cannot be configured. Exceptions that
  * are thrown in response to the value failing a validation check, e.g. {@code isGreaterThan(5)} on a value
- * of 0, are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
+ * of 0 are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
  * without being thrown. The type of thrown exceptions is configurable using
  * {@link ConfigurationUpdater#exceptionTransformer(Function)}.
  *
- * @param <S> the type of the factory
+ * @param <S> the type of the validator factory
  */
 public interface Validators<S>
 {
@@ -40,7 +41,7 @@ public interface Validators<S>
 	Configuration configuration();
 
 	/**
-	 * Updates the configuration used by new validators.
+	 * Updates the configuration that will be used by new validators.
 	 * <p>
 	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
 	 *
@@ -50,13 +51,26 @@ public interface Validators<S>
 	ConfigurationUpdater updateConfiguration();
 
 	/**
+	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
+	 * applies the changes on exit. For example:
+	 * {@snippet :
+	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
+	 * requireThat(value, name);
+	 *}
+	 *
+	 * @param consumer the configuration updater
+	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	S updateConfiguration(Consumer<ConfigurationUpdater> consumer);
+
+	/**
 	 * Returns a new factory instance with an independent configuration. This method is commonly used to inherit
 	 * and update contextual information from the original factory before passing it into a nested operation.
-	 * For example:
-	 * <p>
+	 * For example,
 	 * {@snippet :
 	 * JavaValidators copy = validators.copy();
-	 * copy.context().put(json.toString(), "json");
+	 * copy.getContext().put(json.toString(), "json");
 	 * nestedOperation(copy);
 	 *}
 	 *
@@ -70,7 +84,6 @@ public interface Validators<S>
 	 * information is a map of key-value pairs that can provide more details about validation failures. For
 	 * example, if the message is "Password may not be empty" and the map contains the key-value pair
 	 * {@code {"username": "john.smith"}}, the exception message would be:
-	 * <p>
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
@@ -84,12 +97,20 @@ public interface Validators<S>
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method may be overridden by
-	 * {@link Validator#withContext(Object, String)}}.
+	 * {@link ValidatorComponent#withContext(Object, String)}}.
 	 *
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
 	 * @return this
-	 * @throws NullPointerException if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if:
+	 *                                  <ul>
+	 *                                    <li>{@code name} is empty</li>
+	 *                                    <li>{@code name} contains whitespace</li>
+	 *                                    <li>{@code name} is already in use by the value being validated or
+	 *                                    the validator context</li>
+	 *                                    <li>the value is not a multiple of {@code factor}</li>
+	 *                                  </ul>
 	 */
 	S withContext(Object value, String name);
 
@@ -99,14 +120,18 @@ public interface Validators<S>
 	 * @param name the parameter name
 	 * @return this
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                  </ul>
 	 */
 	S removeContext(String name);
 
 	/**
 	 * Returns the global configuration shared by all validators.
 	 * <p>
-	 * <b>NOTE</b>: Updating This method affects existing and new validators.
+	 * <b>NOTE</b>: Updating this configuration affects existing and new validators.
 	 *
 	 * @return the global configuration updater
 	 */

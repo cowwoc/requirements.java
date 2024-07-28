@@ -26,7 +26,7 @@ public interface ValidationFailure
 	/**
 	 * Returns the exception corresponding to the validation failure.
 	 *
-	 * @return the exception corresponding to the validation failure
+	 * @return a {@code RuntimeException} or {@code Error}
 	 */
 	Throwable getException();
 }

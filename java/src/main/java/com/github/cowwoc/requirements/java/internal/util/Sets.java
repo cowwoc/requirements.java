@@ -25,15 +25,15 @@ public final class Sets
 	 * @param <E>        the type of elements held by the collection
 	 * @param collection a collection
 	 * @return {@code collection} if it is already a {@code Set}; otherwise, a new {@code Set} containing
-	 * {@code collection}'s elements
+	 * {@code collection}'s elements, retaining the iteration order
 	 * @throws AssertionError if {@code collection} is null
 	 */
-	public static <E> Set<E> fromCollection(Collection<E> collection)
+	public static <E> Set<E> asSet(Collection<E> collection)
 	{
 		assert (collection != null) : "collection may not be null";
 		if (collection instanceof Set<E> result)
 			return result;
-		return new HashSet<>(collection);
+		return new LinkedHashSet<>(collection);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public final class Sets
 	 * @return a set containing the elements present in the first set but not in the second set
 	 * @throws AssertionError if any of the arguments are null
 	 */
-	public static <E> Set<E> difference(Set<E> first, Set<E> second)
+	public static <E> Set<E> firstMinusSecond(Set<E> first, Set<E> second)
 	{
 		assert (first != null) : "first may not be null";
 		assert (second != null) : "second may not be null";

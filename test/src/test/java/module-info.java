@@ -17,7 +17,6 @@ module com.github.cowwoc.requirements.test
 	exports com.github.cowwoc.requirements.test.jackson to org.testng;
 	exports com.github.cowwoc.requirements.test.java to org.testng;
 	exports com.github.cowwoc.requirements.test.java.internal.diff to org.testng;
-	exports com.github.cowwoc.requirements.test.java.internal.impl to org.testng;
 	exports com.github.cowwoc.requirements.test.java.internal.terminal to org.testng;
 	exports com.github.cowwoc.requirements.test.java.internal.util to org.testng;
 	exports com.github.cowwoc.requirements.test.java.terminal to org.testng;

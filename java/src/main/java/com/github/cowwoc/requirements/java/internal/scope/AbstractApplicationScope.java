@@ -6,24 +6,25 @@ package com.github.cowwoc.requirements.java.internal.scope;
 
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
+import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
+import com.github.cowwoc.requirements.java.internal.validator.JavaValidatorsImpl;
+import com.github.cowwoc.requirements.java.internal.validator.MutableConfiguration;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
-import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
-import com.github.cowwoc.requirements.java.internal.implementation.MutableConfiguration;
-import com.github.cowwoc.requirements.java.internal.terminal.Terminal;
+import com.github.cowwoc.requirements.java.JavaValidators;
 
 /**
  * ApplicationScope for the main and test codebases.
  */
 public abstract class AbstractApplicationScope implements ApplicationScope
 {
-	private final JvmScope parent;
+	private final ProcessScope parent;
 	/**
 	 * The global configuration.
 	 */
 	private final GlobalConfiguration globalConfiguration;
 	@SuppressWarnings("this-escape")
-	private final Reference<JavaValidatorsImpl> internalValidator = ConcurrentLazyReference.create(() ->
+	private final Reference<JavaValidatorsImpl> internalValidators = ConcurrentLazyReference.create(() ->
 		new JavaValidatorsImpl(this, MutableConfiguration.from(Configuration.DEFAULT).cleanStackTrace(false).
 			toImmutable()));
 
@@ -34,7 +35,7 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	 * @param globalConfiguration the global configuration
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	protected AbstractApplicationScope(JvmScope parent, GlobalConfiguration globalConfiguration)
+	protected AbstractApplicationScope(ProcessScope parent, GlobalConfiguration globalConfiguration)
 	{
 		assert (parent != null);
 		assert (globalConfiguration != null);
@@ -55,8 +56,8 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	}
 
 	@Override
-	public JavaValidatorsImpl getInternalValidators()
+	public JavaValidators getInternalValidators()
 	{
-		return internalValidator.getValue();
+		return internalValidators.getValue();
 	}
 }

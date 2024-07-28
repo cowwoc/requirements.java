@@ -14,7 +14,7 @@ The following table lists validators for third-party libraries:
 |---------------------------------------------------------------|------------|
 | [Guava API](https://guava.dev/releases/28.0-jre/api/docs/)    | [com.github.cowwoc.requirements:guava](https://search.maven.org/search?q=g:com.github.cowwoc.requirements%20AND%20a:guava) |
 
-For example:
+For example,
 
 ```
 <dependency>

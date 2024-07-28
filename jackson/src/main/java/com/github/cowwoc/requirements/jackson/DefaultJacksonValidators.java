@@ -6,16 +6,17 @@ package com.github.cowwoc.requirements.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.jackson.internal.implementation.JacksonValidatorsImpl;
+import com.github.cowwoc.requirements.jackson.internal.validator.JacksonValidatorsImpl;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements.java.internal.util.CloseableLock;
 import com.github.cowwoc.requirements.java.internal.util.ReentrantStampedLock;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -45,12 +46,13 @@ import java.util.function.Function;
  */
 public final class DefaultJacksonValidators
 {
-	private static final JacksonValidatorsImpl DELEGATE = new JacksonValidatorsImpl(MainApplicationScope.INSTANCE,
+	private static final JacksonValidatorsImpl DELEGATE = new JacksonValidatorsImpl(
+		MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
 	private static final ReentrantStampedLock CONTEXT_LOCK = new ReentrantStampedLock();
 
 	/**
-	 * Validates the state of a {@code JsonNod e}. Any exceptions thrown due to validation failure are
+	 * Validates the state of a {@code JsonNode}. Any exceptions thrown due to validation failure are
 	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
 	 *
 	 * @param <T>   the type of the {@code JsonNode}
@@ -58,7 +60,7 @@ public final class DefaultJacksonValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value, String name)
 	{
@@ -86,7 +88,7 @@ public final class DefaultJacksonValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static <T extends JsonNode> JsonNodeValidator<T> checkIf(T value, String name)
 	{
@@ -113,7 +115,7 @@ public final class DefaultJacksonValidators
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public static <T extends JsonNode> JsonNodeValidator<T> requireThat(T value, String name)
 	{
@@ -132,7 +134,7 @@ public final class DefaultJacksonValidators
 	}
 
 	/**
-	 * Updates the configuration used by new validators.
+	 * Updates the configuration that will be used by new validators.
 	 * <p>
 	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
 	 *
@@ -142,6 +144,23 @@ public final class DefaultJacksonValidators
 	public static ConfigurationUpdater updateConfiguration()
 	{
 		return DELEGATE.updateConfiguration();
+	}
+
+	/**
+	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
+	 * applies the changes on exit. For example:
+	 * {@snippet :
+	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
+	 * requireThat(value, name);
+	 *}
+	 *
+	 * @param consumer the configuration updater
+	 * @return this
+	 * @throws NullPointerException if {@code consumer} is null
+	 */
+	public static JacksonValidators updateConfiguration(Consumer<ConfigurationUpdater> consumer)
+	{
+		return DELEGATE.updateConfiguration(consumer);
 	}
 
 	/**
@@ -166,7 +185,7 @@ public final class DefaultJacksonValidators
 	 * <p>
 	 * This method adds contextual information to exception messages. The contextual information is stored as
 	 * key-value pairs in a map. Values set by this method may be overridden by
-	 * {@link Validator#withContext(Object, String)}}.
+	 * {@link ValidatorComponent#withContext(Object, String)}}.
 	 *
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
@@ -187,7 +206,11 @@ public final class DefaultJacksonValidators
 	 * @param name the parameter name
 	 * @return the underlying validator factory
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                  </ul>
 	 */
 	public static JacksonValidators removeContext(String name)
 	{
@@ -200,7 +223,7 @@ public final class DefaultJacksonValidators
 	/**
 	 * Returns the global configuration shared by all validators.
 	 * <p>
-	 * <b>NOTE</b>: Updating This method affects existing and new validators.
+	 * <b>NOTE</b>: Updating this configuration affects existing and new validators.
 	 *
 	 * @return the global configuration updater
 	 */

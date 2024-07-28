@@ -50,7 +50,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(actual, "Actual").exists();
+				new TestValidatorsImpl(scope).requireThat(actual, "actual").exists();
 			}
 			finally
 			{
@@ -66,7 +66,7 @@ public final class PathTest
 		{
 			Path actual = Files.createTempFile(null, null);
 			Files.delete(actual);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").exists();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").exists();
 		}
 	}
 
@@ -78,7 +78,7 @@ public final class PathTest
 			Path actual = Files.createTempDirectory(null);
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
+				new TestValidatorsImpl(scope).requireThat(actual, "actual").isDirectory();
 			}
 			finally
 			{
@@ -93,18 +93,18 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory((LinkOption[]) null);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isDirectory((LinkOption[]) null);
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
+	@Test(expectedExceptions = IOException.class)
 	public void isDirectory_actualIsMissing() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempDirectory(null);
 			Files.delete(actual);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isDirectory();
 		}
 	}
 
@@ -116,7 +116,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isDirectory();
+				new TestValidatorsImpl(scope).requireThat(actual, "actual").isDirectory();
 			}
 			finally
 			{
@@ -133,7 +133,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile();
+				new TestValidatorsImpl(scope).requireThat(actual, "actual").isRegularFile();
 			}
 			finally
 			{
@@ -148,18 +148,18 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile((LinkOption[]) null);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isRegularFile((LinkOption[]) null);
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
+	@Test(expectedExceptions = IOException.class)
 	public void isRegularFile_actualIsMissing() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
 			Files.delete(actual);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isRegularFile();
 		}
 	}
 
@@ -171,7 +171,7 @@ public final class PathTest
 			Path actual = Files.createTempDirectory(null);
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRegularFile();
+				new TestValidatorsImpl(scope).requireThat(actual, "actual").isRegularFile();
 			}
 			finally
 			{
@@ -186,7 +186,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("path1/path2");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRelative();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isRelative();
 		}
 	}
 
@@ -196,7 +196,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isRelative();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isRelative();
 		}
 	}
 
@@ -206,7 +206,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isAbsolute();
 		}
 	}
 
@@ -216,7 +216,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Paths.get("path1/path2");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isAbsolute();
 		}
 	}
 
@@ -226,7 +226,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				isDirectory((LinkOption[]) null);
 		}
 	}
@@ -237,7 +237,7 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = Files.createTempFile(null, null);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
 				isRegularFile((LinkOption[]) null);
 		}
 	}
@@ -248,9 +248,10 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must exist",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				exists().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
@@ -263,9 +264,10 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must reference an absolute path",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isAbsolute().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
@@ -278,9 +280,10 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must reference an existing directory",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isDirectory().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -292,9 +295,10 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must reference an existing file",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isRegularFile().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
@@ -307,9 +311,10 @@ public final class PathTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Path actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must reference a relative path",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isRelative().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);

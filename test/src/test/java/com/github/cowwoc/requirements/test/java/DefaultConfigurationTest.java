@@ -69,29 +69,29 @@ public final class DefaultConfigurationTest
 	}
 
 	@Test
-	public void isDiffEnabled()
+	public void allowDiff()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
-			validators.requireThat(validators.configuration().includeDiff(), "configuration.diffEnabled()").
+			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()").
 				isTrue();
 		}
 	}
 
 	@Test
-	public void withoutDiff()
+	public void disallowDiff()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
-			validators.requireThat(validators.configuration().includeDiff(), "configuration.diffEnabled()"
+			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isTrue();
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				configurationUpdater.includeDiff(false);
+				configurationUpdater.allowDiff(false);
 			}
-			validators.requireThat(validators.configuration().includeDiff(), "configuration.diffEnabled()"
+			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isFalse();
 		}
 	}
@@ -102,19 +102,19 @@ public final class DefaultConfigurationTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
-			validators.requireThat(validators.configuration().includeDiff(), "configuration.diffEnabled()"
+			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isTrue();
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				configurationUpdater.includeDiff(false);
+				configurationUpdater.allowDiff(false);
 			}
-			validators.requireThat(validators.configuration().includeDiff(), "configuration.diffEnabled()"
+			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isFalse();
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				configurationUpdater.includeDiff(true);
+				configurationUpdater.allowDiff(true);
 			}
-			validators.requireThat(validators.configuration().includeDiff(), "configuration.diffEnabled()"
+			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isTrue();
 		}
 	}

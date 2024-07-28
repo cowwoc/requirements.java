@@ -6,12 +6,12 @@ package com.github.cowwoc.requirements.java;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 
 import java.util.function.Function;
 
 /**
- * Updates the configuration used by new validators.
+ * Updates the configuration that will be used by new validators.
  */
 public interface ConfigurationUpdater extends AutoCloseable
 {
@@ -34,22 +34,20 @@ public interface ConfigurationUpdater extends AutoCloseable
 	ConfigurationUpdater cleanStackTrace(boolean cleanStackTrace);
 
 	/**
-	 * Returns {@code true} if exception messages should include a diff that compares actual and expected values
-	 * if they are too long. The threshold for "too long" is not specified.
+	 * Returns {@code true} if exception messages may include a diff that compares actual and expected values.
 	 *
 	 * @return {@code true} by default
 	 */
 	@CheckReturnValue
-	boolean includeDiff();
+	boolean allowDiff();
 
 	/**
-	 * Specifies whether exception messages should include a diff that compares actual and expected values if
-	 * they are too long. The threshold for "too long" is not specified.
+	 * Specifies whether exception messages may include a diff that compares actual and expected values.
 	 *
-	 * @param includeDiff {@code true} if exception messages should include a diff, {@code false} otherwise
+	 * @param allowDiff {@code true} if exception messages may include a diff, {@code false} otherwise
 	 * @return this
 	 */
-	ConfigurationUpdater includeDiff(boolean includeDiff);
+	ConfigurationUpdater allowDiff(boolean allowDiff);
 
 	/**
 	 * Returns the equality method that determines whether two values are equivalent.
@@ -60,8 +58,7 @@ public interface ConfigurationUpdater extends AutoCloseable
 	EqualityMethod equalityMethod();
 
 	/**
-	 * Sets the equality method that determines whether two values are equivalent. The equality method is only
-	 * used when both arguments are not null.
+	 * Sets the equality method that determines whether two values are equivalent.
 	 *
 	 * @param equalityMethod the equality method to use
 	 * @return this
@@ -79,10 +76,10 @@ public interface ConfigurationUpdater extends AutoCloseable
 
 	/**
 	 * Returns {@code true} if exception creation may be deferred until the user invokes
-	 * {@link Validator#elseGetException()}. The exception type remains the same, but the stack trace points to
-	 * {@code elseGetException()} as the cause. By deferring the exception creation, you can improve the
-	 * performance if you only need a {@link Validator#elseGetMessages() list of failure messages} instead of a
-	 * full exception.
+	 * {@link ValidatorComponent#elseGetException()}. The exception type remains the same, but the stack trace
+	 * points to {@code elseGetException()} as the cause. By deferring the exception creation, you can improve
+	 * the performance if you only need a {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * instead of a full exception.
 	 *
 	 * @return {@code true} if exceptions may be created on demand instead of when a validation failure occurs
 	 */
@@ -90,7 +87,7 @@ public interface ConfigurationUpdater extends AutoCloseable
 
 	/**
 	 * Specifies whether exception creation may be deferred until the user invokes
-	 * {@link Validator#elseGetException()}.
+	 * {@link ValidatorComponent#elseGetException()}.
 	 *
 	 * @param lazyExceptions {@code true} if exceptions may be created on demand instead of when a validation
 	 *                       failure occurs
@@ -110,10 +107,14 @@ public interface ConfigurationUpdater extends AutoCloseable
 	Function<Throwable, ? extends Throwable> exceptionTransformer();
 
 	/**
-	 * Transform the validation exception into a suitable runtime exception or error. The input and output of
-	 * the function must be subclasses of {@code RuntimeException} or {@code Error}. If the output is not, it is
-	 * wrapped in a {@code WrappedCheckedException}. If the function returns {@code null} the input exception
-	 * will be thrown.
+	 * Transforms validation exceptions before they are thrown or recorded.
+	 * <p>
+	 * The input and output of the function must be subclasses of {@code RuntimeException} or {@code Error}. If
+	 * the output isn’t a subclass of these, it gets wrapped in a {@code WrappedCheckedException}.
+	 * <p>
+	 * If the function returns {@code null}, it’s treated as if it returned the input exception. Additionally,
+	 * if the returned exception wraps a checked exception thrown by the validation method, it’s unwrapped and
+	 * thrown or recorded as a checked exception.
 	 *
 	 * @param transformer a function that transforms the validation exception
 	 * @return this
@@ -121,6 +122,9 @@ public interface ConfigurationUpdater extends AutoCloseable
 	 */
 	ConfigurationUpdater exceptionTransformer(Function<Throwable, ? extends Throwable> transformer);
 
+	/**
+	 * Applies the changes to the configuration.
+	 */
 	@Override
 	void close();
 }

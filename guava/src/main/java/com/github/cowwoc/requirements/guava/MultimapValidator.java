@@ -4,10 +4,10 @@
  */
 package com.github.cowwoc.requirements.guava;
 
-import com.github.cowwoc.requirements.java.type.CollectionValidator;
-import com.github.cowwoc.requirements.java.type.PrimitiveUnsignedIntegerValidator;
-import com.github.cowwoc.requirements.java.type.part.ObjectPart;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.CollectionValidator;
+import com.github.cowwoc.requirements.java.validator.PrimitiveUnsignedIntegerValidator;
+import com.github.cowwoc.requirements.java.validator.component.ObjectComponent;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 import com.google.common.collect.Multimap;
 
 import java.util.Collection;
@@ -21,9 +21,9 @@ import java.util.Set;
  * @param <V> the type of values in the {@code Multimap}
  * @param <T> the type of the {@code Multimap}
  */
-public interface MultimapValidator<K, V, T extends Multimap<K, V>> extends
-	Validator<MultimapValidator<K, V, T>>,
-	ObjectPart<MultimapValidator<K, V, T>, T>
+public interface MultimapValidator<T extends Multimap<K, V>, K, V> extends
+	ValidatorComponent<MultimapValidator<T, K, V>, T>,
+	ObjectComponent<MultimapValidator<T, K, V>, T>
 {
 	/**
 	 * Ensures that the Multimap is empty.
@@ -32,7 +32,7 @@ public interface MultimapValidator<K, V, T extends Multimap<K, V>> extends
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the Multimap is not empty
 	 */
-	MultimapValidator<K, V, T> isEmpty();
+	MultimapValidator<T, K, V> isEmpty();
 
 	/**
 	 * Ensures that the Multimap is not empty.
@@ -41,7 +41,7 @@ public interface MultimapValidator<K, V, T extends Multimap<K, V>> extends
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the Multimap is empty
 	 */
-	MultimapValidator<K, V, T> isNotEmpty();
+	MultimapValidator<T, K, V> isNotEmpty();
 
 	/**
 	 * Returns a validator over the Multimap's {@link Multimap#keySet() keys}.
@@ -49,7 +49,7 @@ public interface MultimapValidator<K, V, T extends Multimap<K, V>> extends
 	 * @return a validator over the Multimap's {@link Multimap#keySet() keys}
 	 * @throws NullPointerException if the value is null
 	 */
-	CollectionValidator<K, Set<K>> keySet();
+	CollectionValidator<Set<K>, K> keySet();
 
 	/**
 	 * Returns a validator over the Multimap's {@link Multimap#values() values}.
@@ -57,7 +57,7 @@ public interface MultimapValidator<K, V, T extends Multimap<K, V>> extends
 	 * @return a validator over the Multimap's {@link Multimap#values() values}
 	 * @throws NullPointerException if the value is null
 	 */
-	CollectionValidator<V, Collection<V>> values();
+	CollectionValidator<Collection<V>, V> values();
 
 	/**
 	 * Returns a validator over the Multimap's {@link Multimap#entries() entries}.
@@ -65,7 +65,7 @@ public interface MultimapValidator<K, V, T extends Multimap<K, V>> extends
 	 * @return a validator over the Multimap's {@link Multimap#entries() entries}
 	 * @throws NullPointerException if the value is null
 	 */
-	CollectionValidator<Entry<K, V>, Collection<Entry<K, V>>> entries();
+	CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries();
 
 	/**
 	 * Returns a validator over the Multimap's {@link Multimap#size() size}.

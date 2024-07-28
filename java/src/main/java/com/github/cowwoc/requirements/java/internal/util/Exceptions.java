@@ -36,7 +36,12 @@ public final class Exceptions
 	 * @param name  the name of a Java package
 	 * @param count the number of times to walk up the hierarchy
 	 * @return the parent of the package
-	 * @throws AssertionError if {@code name} is null or has no parent. If {@code count} is negative.
+	 * @throws AssertionError if:
+	 *                        <ul>
+	 *                          <li>{@code name} is null</li>
+	 *                          <li>{@code name} has no parent</li>
+	 *                          <li>{@code count} is negative</li>
+	 *                        </ul>
 	 */
 	private static String getParentPackage(String name, int count)
 	{

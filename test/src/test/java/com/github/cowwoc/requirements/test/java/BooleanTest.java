@@ -21,7 +21,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isTrue();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isTrue();
 		}
 	}
 
@@ -31,7 +31,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFalse();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFalse();
 		}
 	}
 
@@ -41,7 +41,7 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = true;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isFalse();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFalse();
 		}
 	}
 
@@ -51,15 +51,15 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean actual = false;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isEqualTo(true);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(true);
 			assert (false) : "Expected validator to throw an exception";
 		}
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			assert (!actualMessage.contains("Diff")) :
+			assert (!actualMessage.contains("diff")) :
 				"Wasn't expecting boolean equals() to return diff.\n" +
-					" Actual:\n" + actualMessage;
+					"actual:\n" + actualMessage;
 		}
 	}
 
@@ -69,9 +69,10 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Boolean actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must be true",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isTrue().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -83,9 +84,10 @@ public final class BooleanTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Boolean actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"\"Actual\" must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must be false",
+				"\"actual\" must be equal to 5");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isFalse().isEqualTo(5).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}

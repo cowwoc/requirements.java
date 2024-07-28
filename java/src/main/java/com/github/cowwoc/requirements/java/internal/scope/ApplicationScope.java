@@ -8,9 +8,9 @@ import com.github.cowwoc.requirements.java.GlobalConfiguration;
 import com.github.cowwoc.requirements.java.JavaValidators;
 
 /**
- * The configuration of an application. A JVM may contain multiple applications.
+ * The configuration of an application. A process may contain multiple applications.
  */
-public interface ApplicationScope extends JvmScope
+public interface ApplicationScope extends ProcessScope
 {
 	/**
 	 * @return the global configuration inherited by all validators
@@ -18,10 +18,7 @@ public interface ApplicationScope extends JvmScope
 	GlobalConfiguration getGlobalConfiguration();
 
 	/**
-	 * @return creates validators used to check the arguments of validation methods
+	 * @return a validator factory that creates validators to check the arguments of validation methods
 	 */
 	JavaValidators getInternalValidators();
-
-	@Override
-	void close();
 }

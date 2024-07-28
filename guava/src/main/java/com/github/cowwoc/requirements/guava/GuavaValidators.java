@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.guava;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.guava.internal.implementation.GuavaValidatorsImpl;
+import com.github.cowwoc.requirements.guava.internal.validator.GuavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.Configuration;
 import com.github.cowwoc.requirements.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements.java.Validators;

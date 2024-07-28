@@ -119,112 +119,6 @@ public final class Arrays
 	}
 
 	/**
-	 * @param <E>   the type of elements in the array
-	 * @param array an array
-	 * @return a list containing the array elements
-	 */
-	public static <E> List<E> asList(E[] array)
-	{
-		return java.util.Arrays.asList(array);
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Byte[] asBoxed(byte[] array)
-	{
-		Byte[] result = new Byte[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Short[] asBoxed(short[] array)
-	{
-		Short[] result = new Short[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Integer[] asBoxed(int[] array)
-	{
-		Integer[] result = new Integer[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Long[] asBoxed(long[] array)
-	{
-		Long[] result = new Long[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Boolean[] asBoxed(boolean[] array)
-	{
-		Boolean[] result = new Boolean[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Character[] asBoxed(char[] array)
-	{
-		Character[] result = new Character[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Float[] asBoxed(float[] array)
-	{
-		Float[] result = new Float[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
-	 * @param array an array of primitive values
-	 * @return an array containing the boxed representation of the values
-	 */
-	public static Double[] asBoxed(double[] array)
-	{
-		Double[] result = new Double[array.length];
-		for (int i = 0; i < array.length; ++i)
-			result[i] = array[i];
-		return result;
-	}
-
-	/**
 	 * @param array an array
 	 * @param o     an object to compare to
 	 * @return true if {@code o} is a {@code boolean[]} and
@@ -654,7 +548,7 @@ public final class Arrays
 	 */
 	public static byte[] sorted(byte[] array)
 	{
-		byte[] copy = copyOf(array);
+		byte[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
 	}
@@ -667,7 +561,7 @@ public final class Arrays
 	 */
 	public static short[] sorted(short[] array)
 	{
-		short[] copy = copyOf(array);
+		short[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
 	}
@@ -680,7 +574,7 @@ public final class Arrays
 	 */
 	public static int[] sorted(int[] array)
 	{
-		int[] copy = copyOf(array);
+		int[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
 	}
@@ -693,7 +587,7 @@ public final class Arrays
 	 */
 	public static long[] sorted(long[] array)
 	{
-		long[] copy = copyOf(array);
+		long[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
 	}
@@ -707,7 +601,7 @@ public final class Arrays
 	public static boolean[] sorted(boolean[] array)
 	{
 		// https://cs.stackexchange.com/a/48440/122170
-		boolean[] copy = copyOf(array);
+		boolean[] copy = java.util.Arrays.copyOf(array, array.length);
 		int trueLength = 0;
 		for (boolean value : copy)
 			if (value)
@@ -728,7 +622,7 @@ public final class Arrays
 	 */
 	public static char[] sorted(char[] array)
 	{
-		char[] copy = copyOf(array);
+		char[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
 	}
@@ -741,7 +635,7 @@ public final class Arrays
 	 */
 	public static float[] sorted(float[] array)
 	{
-		float[] copy = copyOf(array);
+		float[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
 	}
@@ -754,80 +648,8 @@ public final class Arrays
 	 */
 	public static double[] sorted(double[] array)
 	{
-		double[] copy = copyOf(array);
+		double[] copy = java.util.Arrays.copyOf(array, array.length);
 		java.util.Arrays.parallelSort(array);
 		return copy;
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static byte[] copyOf(byte[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static short[] copyOf(short[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static int[] copyOf(int[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static long[] copyOf(long[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static boolean[] copyOf(boolean[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static char[] copyOf(char[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static float[] copyOf(float[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
-	}
-
-	/**
-	 * @param array an array
-	 * @return a copy of the array
-	 */
-	private static double[] copyOf(double[] array)
-	{
-		return java.util.Arrays.copyOf(array, array.length);
 	}
 }

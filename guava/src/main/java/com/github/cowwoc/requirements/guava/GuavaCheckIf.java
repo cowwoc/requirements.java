@@ -1,6 +1,6 @@
 package com.github.cowwoc.requirements.guava;
 
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 import com.google.common.collect.Multimap;
 
 /**
@@ -15,7 +15,7 @@ import com.google.common.collect.Multimap;
  * </ol>
  * {@code requireThat()} throws an exception in all scenarios. {@code checkIf()} only throws exceptions in
  * scenarios 1 and 2. For scenario 3, the exception is available via
- * {@link Validator#elseGetException() validator.elseGetException()}}.
+ * {@link ValidatorComponent#elseGetException() validator.elseGetException()}}.
  */
 public interface GuavaCheckIf
 {
@@ -29,9 +29,9 @@ public interface GuavaCheckIf
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	<K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value, String name);
+	<K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> checkIf(T value, String name);
 
 	/**
 	 * Validates the state of a {@code Multimap}.
@@ -42,5 +42,5 @@ public interface GuavaCheckIf
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> checkIf(T value);
+	<K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> checkIf(T value);
 }

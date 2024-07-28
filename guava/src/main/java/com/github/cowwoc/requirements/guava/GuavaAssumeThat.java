@@ -21,9 +21,9 @@ public interface GuavaAssumeThat
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	<K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value, String name);
+	<K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value, String name);
 
 	/**
 	 * Validates the state of a {@code Multimap}. Any exceptions thrown due to validation failure are
@@ -35,5 +35,5 @@ public interface GuavaAssumeThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<K, V, T extends Multimap<K, V>> MultimapValidator<K, V, T> assumeThat(T value);
+	<K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value);
 }

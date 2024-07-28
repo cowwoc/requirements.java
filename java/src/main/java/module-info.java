@@ -14,19 +14,23 @@ module com.github.cowwoc.requirements.java
 	requires transitive com.github.cowwoc.requirements.annotation;
 	requires io.github.javadiffutils;
 	requires com.github.cowwoc.pouch.core;
+	requires java.desktop;
+	requires java.compiler;
+	requires jdk.dynalink;
 
 	exports com.github.cowwoc.requirements.java;
 	exports com.github.cowwoc.requirements.java.terminal;
-	exports com.github.cowwoc.requirements.java.type;
-	exports com.github.cowwoc.requirements.java.type.part;
+	exports com.github.cowwoc.requirements.java.validator;
+	exports com.github.cowwoc.requirements.java.validator.component;
 
-	exports com.github.cowwoc.requirements.java.internal.implementation.message to
-		com.github.cowwoc.requirements.guava, com.github.cowwoc.requirements.jackson;
+	exports com.github.cowwoc.requirements.java.internal.message to
+		com.github.cowwoc.requirements.guava, com.github.cowwoc.requirements.jackson,
+		com.github.cowwoc.requirements.test;
 	exports com.github.cowwoc.requirements.java.internal.scope to com.github.cowwoc.requirements.guava,
 		com.github.cowwoc.requirements.jackson,
 		com.github.cowwoc.requirements.test, com.github.cowwoc.requirements.benchmark.java,
 		com.github.cowwoc.requirements.benchmark.guava, com.github.cowwoc.requirements.benchmark.jackson;
-	exports com.github.cowwoc.requirements.java.internal.diff to com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.java.internal.message.diff to com.github.cowwoc.requirements.test;
 	exports com.github.cowwoc.requirements.java.internal.util to com.github.cowwoc.requirements.guava,
 		com.github.cowwoc.requirements.jackson, com.github.cowwoc.requirements.test,
 		com.github.cowwoc.requirements.benchmark.java;
@@ -34,6 +38,9 @@ module com.github.cowwoc.requirements.java
 		com.github.cowwoc.requirements.guava, com.github.cowwoc.requirements.jackson,
 		com.github.cowwoc.requirements.test, com.github.cowwoc.requirements.benchmark.java,
 		com.github.cowwoc.requirements.benchmark.guava, com.github.cowwoc.requirements.benchmark.jackson;
-	exports com.github.cowwoc.requirements.java.internal.implementation to com.github.cowwoc.requirements.guava,
+	exports com.github.cowwoc.requirements.java.internal.validator to com.github.cowwoc.requirements.guava,
 		com.github.cowwoc.requirements.jackson, com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements.java.internal.message.section to
+		com.github.cowwoc.requirements.guava, com.github.cowwoc.requirements.jackson,
+		com.github.cowwoc.requirements.test;
 }

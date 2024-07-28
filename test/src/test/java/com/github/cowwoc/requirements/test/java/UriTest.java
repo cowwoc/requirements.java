@@ -44,7 +44,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("http://host.com/index.html");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isAbsolute();
 		}
 	}
 
@@ -54,7 +54,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = URI.create("./index.html");
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isAbsolute();
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isAbsolute();
 		}
 	}
 
@@ -64,7 +64,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "./index.html";
-			URI actualAsUri = new TestValidatorsImpl(scope).requireThat(actual, "Actual").asUri().getValue();
+			URI actualAsUri = new TestValidatorsImpl(scope).requireThat(actual, "actual").asUri().getValue();
 			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " +
 				actual;
 		}
@@ -76,7 +76,7 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new TestValidatorsImpl(scope).requireThat(actual, "Actual").asUri().asUrl().
+			URL actualAsUrl = new TestValidatorsImpl(scope).requireThat(actual, "actual").asUri().asUrl().
 				getValue();
 			assert (actualAsUrl.toString().equals(actual)) : "actualAsUri: " + actualAsUrl + ", actual: " +
 				actual;
@@ -89,8 +89,10 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("""
+				"actual" must be a valid URL.
+				actual: null""");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				asUrl().elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
@@ -103,11 +105,10 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"""
-					"Actual" must be equal to "notEqual"\
-					""");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("\"actual\" may not be null",
+				"\"actual\" must be an absolute URI",
+				"\"actual\" must be equal to \"notEqual\"");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isAbsolute().isEqualTo("notEqual").elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -119,11 +120,11 @@ public final class UriTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			URI actual = null;
-			List<String> expectedMessages = List.of("\"Actual\" may not be null",
-				"""
-					"Actual" must be equal to "notEqual"\
-					""");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+			List<String> expectedMessages = List.of("""
+					"actual" must be a valid URL.
+					actual: null""",
+				"\"actual\" must be equal to \"notEqual\"");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				asUrl().isEqualTo("notEqual").elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}

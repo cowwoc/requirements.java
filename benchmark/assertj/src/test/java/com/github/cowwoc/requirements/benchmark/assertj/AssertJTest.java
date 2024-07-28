@@ -69,8 +69,8 @@ public class AssertJTest
 		bh.consume(assertThat(value).as(name + ": %s").size().
 			as("""
 				%s must be greater than %s.
-				Actual: %s
-				Actual.size: %s""", name, 3, value, value.size()).isGreaterThan(3));
+				actual: %s
+				actual.size: %s""", name, 3, value, value.size()).isGreaterThan(3));
 	}
 
 	@Benchmark

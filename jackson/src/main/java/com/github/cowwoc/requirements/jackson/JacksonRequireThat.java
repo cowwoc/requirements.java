@@ -15,7 +15,7 @@ public interface JacksonRequireThat
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	<T extends JsonNode> JsonNodeValidator<T> requireThat(T value, String name);
 }

@@ -11,7 +11,7 @@ import com.github.cowwoc.requirements.java.JavaCheckIf;
 import com.github.cowwoc.requirements.java.JavaRequireThat;
 import com.github.cowwoc.requirements.java.Validators;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 
 /**
  * Validators for automated tests.
@@ -25,7 +25,7 @@ import com.github.cowwoc.requirements.java.type.part.Validator;
  * </ol>
  * {@code requireThat()} throws an exception in all scenarios. {@code checkIf()} only throws exceptions in
  * scenarios 1 and 2. For scenario 3, the exception is available via
- * {@link Validator#elseGetException() validator.elseGetException()}}.
+ * {@link ValidatorComponent#elseGetException() validator.elseGetException()}}.
  */
 public interface TestValidators
 	extends Validators<TestValidators>,

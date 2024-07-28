@@ -22,7 +22,7 @@ public final class ListTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			List<Integer> actual = List.of(1, 2, 3);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSorted(Comparator.naturalOrder());
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 
@@ -32,7 +32,7 @@ public final class ListTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			List<Integer> actual = List.of(3, 2, 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSorted(Comparator.naturalOrder());
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 }

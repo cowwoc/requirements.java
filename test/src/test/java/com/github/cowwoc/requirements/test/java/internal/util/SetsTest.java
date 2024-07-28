@@ -20,12 +20,12 @@ import static com.github.cowwoc.requirements.java.terminal.TerminalEncoding.NONE
 public final class SetsTest
 {
 	@Test
-	public void fromCollection()
+	public void asSet()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> input = ImmutableList.of(1, 2, 3);
-			Set<Integer> output = Sets.fromCollection(input);
+			Set<Integer> output = Sets.asSet(input);
 			new TestValidatorsImpl(scope).requireThat(input, "Input").isNotSameReferenceAs(output, "output");
 		}
 	}
@@ -36,19 +36,19 @@ public final class SetsTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Collection<Integer> input = ImmutableSet.of(1, 2, 3);
-			Set<Integer> output = Sets.fromCollection(input);
+			Set<Integer> output = Sets.asSet(input);
 			new TestValidatorsImpl(scope).requireThat(input, "Input").isSameReferenceAs(output, "output");
 		}
 	}
 
 	@Test
-	public void difference()
+	public void firstMinusSecond()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Set<Integer> first = ImmutableSet.of(1, 2, 3);
 			Set<Integer> second = ImmutableSet.of(2, 3, 4);
-			Set<Integer> difference = Sets.difference(first, second);
+			Set<Integer> difference = Sets.firstMinusSecond(first, second);
 			new TestValidatorsImpl(scope).requireThat(difference, "difference").
 				containsExactly(ImmutableSet.of(1));
 		}

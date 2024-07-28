@@ -10,6 +10,11 @@
 	<artifactId>benchmark</artifactId>
 	<packaging>pom</packaging>
 
+	<properties>
+		<rootBaseDir>${project.basedir}/..</rootBaseDir>
+		<skipBenchmarks>true</skipBenchmarks>
+	</properties>
+
 	<modules>
 		<module>java</module>
 		<module>guava</module>
@@ -117,9 +122,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<properties>
-		<skipBenchmarks>true</skipBenchmarks>
-	</properties>
 	<profiles>
 		<profile>
 			<id>run-benchmarks</id>

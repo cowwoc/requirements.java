@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements.test.java;
 
+import com.github.cowwoc.requirements.java.GenericType;
 import com.github.cowwoc.requirements.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements.test.scope.TestApplicationScope;
@@ -33,7 +34,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -43,17 +44,27 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(Object.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isSupertypeOf_expectedIsNull()
+	public void isSupertypeOf_expectedClassIsNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf((Class<?>) null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void isSupertypeOf_expectedGenericTypeIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = Random.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf((GenericType<?>) null);
 		}
 	}
 
@@ -63,7 +74,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSupertypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -73,7 +84,7 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(Object.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf(Object.class);
 		}
 	}
 
@@ -83,17 +94,27 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void isSubtypeOf_expectedIsNull()
+	public void isSubtypeOf_expectedClassIsNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf((Class<?>) null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void isSubtypeOf_expectedGenericTypeIsNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = Object.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf((GenericType<?>) null);
 		}
 	}
 
@@ -103,18 +124,29 @@ public final class ClassTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<?> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isSubtypeOf(Random.class);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
 		}
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
-	public void multipleFailuresIsSupertypeOfNull()
+	public void multipleFailuresIsSupertypeOfClassNull()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Class<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").
-				isSupertypeOf(null);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				isSupertypeOf((Class<?>) null);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void multipleFailuresIsSupertypeOfGenericTypeNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<Integer> actual = null;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				isSupertypeOf((GenericType<?>) null);
 		}
 	}
 
@@ -125,10 +157,10 @@ public final class ClassTest
 		{
 			Class<Integer> actual = null;
 			List<String> expectedMessages = List.of("""
-					Actual must be a supertype of class java.lang.Integer.
-					Actual: null""",
-				"\"Actual\" may not be equal to class java.lang.Double");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "Actual").
+					"actual" must be a supertype of java.lang.Integer.
+					actual: null""",
+				"\"actual\" may not be equal to class java.lang.Double");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).elseGetMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}

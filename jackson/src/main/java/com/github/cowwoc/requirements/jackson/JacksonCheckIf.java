@@ -1,7 +1,7 @@
 package com.github.cowwoc.requirements.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.cowwoc.requirements.java.type.part.Validator;
+import com.github.cowwoc.requirements.java.validator.component.ValidatorComponent;
 
 /**
  * Creates validators for the Jackson API, recording any failures that occur.
@@ -15,7 +15,7 @@ import com.github.cowwoc.requirements.java.type.part.Validator;
  * </ol>
  * {@code requireThat()} throws an exception in all scenarios. {@code checkIf()} only throws exceptions in
  * scenarios 1 and 2. For scenario 3, the exception is available via
- * {@link Validator#elseGetException() validator.elseGetException()}}.
+ * {@link ValidatorComponent#elseGetException() validator.elseGetException()}}.
  */
 public interface JacksonCheckIf
 {
@@ -27,7 +27,7 @@ public interface JacksonCheckIf
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains leading or trailing whitespace, or is empty
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	<T extends JsonNode> JsonNodeValidator<T> checkIf(T value, String name);
 

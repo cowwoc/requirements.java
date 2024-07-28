@@ -42,7 +42,7 @@ public final class CharacterTest
 			char actual = '0';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -54,7 +54,7 @@ public final class CharacterTest
 			char actual = '1';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -66,7 +66,7 @@ public final class CharacterTest
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -78,7 +78,7 @@ public final class CharacterTest
 			char actual = '1';
 			char first = '3';
 			char last = '4';
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, last);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -90,7 +90,7 @@ public final class CharacterTest
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "Actual").isBetween(first, true, last, true);
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, true, last, true);
 		}
 	}
 
@@ -100,7 +100,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			assert new TestValidatorsImpl(scope).assumeThat(actual, "Actual").isGreaterThan(actual).elseThrow();
+			assert new TestValidatorsImpl(scope).assumeThat(actual, "actual").isGreaterThan(actual).elseThrow();
 		}
 	}
 }

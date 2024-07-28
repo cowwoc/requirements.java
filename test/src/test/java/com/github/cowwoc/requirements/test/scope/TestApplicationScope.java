@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements.test.scope;
 
 import com.github.cowwoc.requirements.java.internal.scope.AbstractApplicationScope;
-import com.github.cowwoc.requirements.java.internal.scope.DefaultJvmScope;
+import com.github.cowwoc.requirements.java.internal.scope.DefaultProcessScope;
 import com.github.cowwoc.requirements.java.terminal.TerminalEncoding;
 
 /**
@@ -20,7 +20,7 @@ public final class TestApplicationScope extends AbstractApplicationScope
 	public TestApplicationScope(TerminalEncoding terminalEncoding)
 	{
 		// Show the full stack trace in case of failure
-		super(DefaultJvmScope.INSTANCE, new TestGlobalConfiguration(terminalEncoding));
+		super(DefaultProcessScope.INSTANCE, new TestGlobalConfiguration(terminalEncoding));
 	}
 
 	@Override

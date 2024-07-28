@@ -23,7 +23,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("", "Actual").isEqualTo("text");
+				new TestValidatorsImpl(scope).requireThat("", "actual").isEqualTo("text");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -41,7 +41,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("text", "Actual").isEqualTo("");
+				new TestValidatorsImpl(scope).requireThat("text", "actual").isEqualTo("");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -59,7 +59,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("foo", "Actual").isEqualTo("   foo");
+				new TestValidatorsImpl(scope).requireThat("foo", "actual").isEqualTo("   foo");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -77,7 +77,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("foosball", "Actual").isEqualTo("ballroom");
+				new TestValidatorsImpl(scope).requireThat("foosball", "actual").isEqualTo("ballroom");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -95,7 +95,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("null", "Actual").isEqualTo(null);
+				new TestValidatorsImpl(scope).requireThat("null", "actual").isEqualTo(null);
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -113,7 +113,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("first\nsecond\nfoo\nforth\nfifth", "Actual").
+				new TestValidatorsImpl(scope).requireThat("first\nsecond\nfoo\nforth\nfifth", "actual").
 					isEqualTo("first\nsecond\nbar\nforth\nfifth");
 			}
 			catch (IllegalArgumentException e)
@@ -132,7 +132,7 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("Foo\nBar", "Actual").isEqualTo("Bar");
+				new TestValidatorsImpl(scope).requireThat("Foo\nBar", "actual").isEqualTo("Bar");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -150,8 +150,8 @@ public final class ColoredDiffTest
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(List.of("1", "foo\nbar", "3"), "Actual").
-					isEqualTo(List.of("1", "bar\nfoo"), "Expected");
+				new TestValidatorsImpl(scope).requireThat(List.of("1", "foo\nbar", "3"), "actual").
+					isEqualTo(List.of("1", "bar\nfoo"), "expected");
 			}
 			catch (IllegalArgumentException e)
 			{

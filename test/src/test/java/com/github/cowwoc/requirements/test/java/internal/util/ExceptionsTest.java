@@ -72,7 +72,7 @@ public final class ExceptionsTest
 
 				// Ensure that stack trace is not missing any elements above the current method.
 				// Throwables are not comparable, but their stack traces are.
-				StackTraceElement[] expected = new AssertionError("\"Actual\" may not be null").
+				StackTraceElement[] expected = new AssertionError("\"actual\" may not be null").
 					getStackTrace();
 				for (ValidationFailure failure : e.getFailures())
 				{
@@ -188,15 +188,15 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "Actual").isNotNull().
-					and(validators.checkIf(5, "Actual").isLessThan(3)).
+				validators.checkIf((Object) null, "actual").isNotNull().
+					and(validators.checkIf(5, "actual").isLessThan(3)).
 					elseThrow();
 			}
 			catch (MultipleFailuresException e)
 			{
 				// Ensure that stack trace is not missing any elements above the current method.
 				// Throwables are not comparable, but their stack traces are.
-				StackTraceElement[] expected = new AssertionError("\"Actual\" may not be null").
+				StackTraceElement[] expected = new AssertionError("\"actual\" may not be null").
 					getStackTrace();
 				for (ValidationFailure failure : e.getFailures())
 				{
@@ -228,15 +228,15 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "Actual").isNotNull().
-					and(validators.checkIf(5, "Actual").isLessThan(3)).
+				validators.checkIf((Object) null, "actual").isNotNull().
+					and(validators.checkIf(5, "actual").isLessThan(3)).
 					elseThrow();
 			}
 			catch (MultipleFailuresException e)
 			{
 				// Ensure that stack trace is not missing any elements above the current method.
 				// Throwables are not comparable, but their stack traces are.
-				StackTraceElement[] expected = new AssertionError("\"Actual\" may not be null").
+				StackTraceElement[] expected = new AssertionError("\"actual\" may not be null").
 					getStackTrace();
 				for (ValidationFailure failure : e.getFailures())
 				{
@@ -265,8 +265,8 @@ public final class ExceptionsTest
 				configurationUpdater.lazyExceptions(true);
 			}
 
-			List<String> messages = validators.checkIf((Object) null, "Actual").isNotNull().
-				and(validators.checkIf(5, "Actual").isLessThan(3)).
+			List<String> messages = validators.checkIf((Object) null, "actual").isNotNull().
+				and(validators.checkIf(5, "actual").isLessThan(3)).
 				elseGetMessages();
 		}
 	}

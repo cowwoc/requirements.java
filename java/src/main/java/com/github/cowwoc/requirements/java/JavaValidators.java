@@ -5,8 +5,8 @@
 package com.github.cowwoc.requirements.java;
 
 import com.github.cowwoc.requirements.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements.java.internal.implementation.JavaValidatorsImpl;
 import com.github.cowwoc.requirements.java.internal.scope.MainApplicationScope;
+import com.github.cowwoc.requirements.java.internal.validator.JavaValidatorsImpl;
 
 import java.util.function.Function;
 
@@ -48,11 +48,11 @@ public interface JavaValidators
 	/**
 	 * Returns a new factory instance with an independent configuration. This method is commonly used to inherit
 	 * and update contextual information from the original factory before passing it into a nested operation.
-	 * For example:
+	 * For example,
 	 * <p>
 	 * {@snippet :
 	 * JavaValidators copy = validators.copy();
-	 * copy.context().put(json.toString(), "json");
+	 * copy.getContext().put(json.toString(), "json");
 	 * nestedOperation(copy);
 	 *}
 	 *

@@ -61,7 +61,7 @@ This API:
 ```
 List<Integer> actual = Arrays.asList(2, 3, 4, 6);
 List<Integer> expected = Arrays.asList(1, 3, 5);
-requireThat(actual, "Actual").containsAll(expected);
+requireThat(actual, "actual").containsAll(expected);
 ```
 
 Output:
@@ -191,7 +191,7 @@ terminal.
 
 The use of colors is disabled by default if stdin or stdout are redirected, even if ANSI colors are supported.
 To enable colors,
-invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements.java.terminal.TerminalEncoding)).
+invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalConfiguration.html#terminalEncoding(terminal.com.github.cowwoc.requirements10.java.TerminalEncoding)).
 
 ## Returning the value after validation
 
