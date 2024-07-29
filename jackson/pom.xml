@@ -69,8 +69,8 @@
 								</offlineLink>
 							</offlineLinks>
 							<excludePackageNames>
-								com.github.cowwoc.requirements.jackson.internal,
-								com.github.cowwoc.requirements.jackson.internal.*
+								com.github.cowwoc.requirements10.jackson.internal,
+								com.github.cowwoc.requirements10.jackson.internal.*
 							</excludePackageNames>
 						</configuration>
 					</execution>

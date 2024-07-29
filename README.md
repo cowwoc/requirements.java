@@ -3,7 +3,7 @@
 
 # <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
 
-[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/)
+[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/10.0/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/Changelog.md)
 [![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
@@ -22,7 +22,7 @@ To get started, add this Maven dependency:
 <dependency>
   <groupId>com.github.cowwoc.requirements</groupId>
   <artifactId>java</artifactId>
-  <version>9.0.0</version>
+  <version>10.0</version>
 </dependency>
 ```
 
@@ -32,9 +32,9 @@ To get started, add this Maven dependency:
 import java.util.List;
 import java.util.StringJoiner;
 
-import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeThat;
-import static com.github.cowwoc.requirements.java.DefaultJavaValidators.checkIf;
-import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.assumeThat;
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 
 public final class Cake
 {
@@ -152,10 +152,10 @@ This library offers the following features:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
-* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/JavaValidators.html) for custom configurations.
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
+* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
+* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
+* [JavaValidators](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/JavaValidators.html) for custom configurations.
 
 The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
 configuration.
@@ -164,9 +164,9 @@ configuration.
 * `checkIf()` returns multiple validation failures at once. It is more flexible than the others, but its syntax
 is more verbose.
 
-Thrown exceptions may be configured using [ConfigurationUpdater.exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
+Thrown exceptions may be configured using [ConfigurationUpdater.exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
 
-See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
+See the [API documentation](https://cowwoc.github.io/requirements.java/10.0/docs/api/) for more details.
 
 ## Tips
 

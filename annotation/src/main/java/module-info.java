@@ -5,7 +5,8 @@
 /**
  * Annotations used by the library.
  */
-module com.github.cowwoc.requirements.annotation
+@SuppressWarnings("JavaModuleNaming")
+module com.github.cowwoc.requirements10.annotation
 {
-	exports com.github.cowwoc.requirements.annotation;
+	exports com.github.cowwoc.requirements10.annotation;
 }

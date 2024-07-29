@@ -1,7 +1,7 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 9.1.0 - ?
+## Version 10.0 - ?
 
 * Breaking changes:
     * Module and package names now contain a major version number

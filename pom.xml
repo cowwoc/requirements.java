@@ -208,12 +208,12 @@
 									<link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.0/</link>
 								</links>
 								<excludePackageNames>
-									com.github.cowwoc.requirements.java.internal,
-									com.github.cowwoc.requirements.java.internal.*,
-									com.github.cowwoc.requirements.guava.internal,
-									com.github.cowwoc.requirements.guava.internal.*,
-									com.github.cowwoc.requirements.jackson.internal,
-									com.github.cowwoc.requirements.jackson.internal.*
+									com.github.cowwoc.requirements10.java.internal,
+									com.github.cowwoc.requirements10.java.internal.*,
+									com.github.cowwoc.requirements10.guava.internal,
+									com.github.cowwoc.requirements10.guava.internal.*,
+									com.github.cowwoc.requirements10.jackson.internal,
+									com.github.cowwoc.requirements10.jackson.internal.*
 								</excludePackageNames>
 							</configuration>
 						</execution>
@@ -391,7 +391,7 @@
 						${rootBaseDir}/build/src/main/resources/pmd-file-exclusions.properties
 					</excludeFromFailureFile>
 					<excludes>
-						<exclude>com/github/cowwoc/requirements/java/internal/scope/ColorTest.java</exclude>
+						<exclude>com/github/cowwoc/requirements10/java/internal/scope/ColorTest.java</exclude>
 					</excludes>
 					<analysisCache>true</analysisCache>
 					<linkXRef>false</linkXRef>

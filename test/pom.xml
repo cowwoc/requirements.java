@@ -65,7 +65,7 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:all,-requires-automatic,-try</arg>
+						<arg>-Xlint:all,-requires-automatic,-try,-module</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>
@@ -77,7 +77,7 @@
 					<useModulePath>false</useModulePath>
 					<argLine>
 						${argLine} -Dfile.encoding=UTF-8 "-Djava.library.path=${project.build.directory}" -ea
-						-da:com.github.cowwoc.requirements.test.java.AssertionsDisabledTest
+						-da:com.github.cowwoc.requirements10.test.java.AssertionsDisabledTest
 					</argLine>
 					<!--
 					Tests run faster sequentially than in parallel for me, but they are fast regardless.

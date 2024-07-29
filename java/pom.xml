@@ -54,8 +54,8 @@
 								<option>summary</option>
 							</additionalOptions>
 							<excludePackageNames>
-								com.github.cowwoc.requirements.java.internal,
-								com.github.cowwoc.requirements.java.internal.*
+								com.github.cowwoc.requirements10.java.internal,
+								com.github.cowwoc.requirements10.java.internal.*
 							</excludePackageNames>
 						</configuration>
 					</execution>
