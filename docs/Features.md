@@ -148,30 +148,46 @@ Actual: [Ontario, Quebec, Nova Scotia, New Brunswick, Manitoba, British Columbia
 
 ## Nested validations
 
-Nested validations facilitate checking multiple properties of a value. For example, given
+Nested validations facilitate checking multiple properties of a value. For example,
 
 ```java
 Map<String, Integer> nameToAge = new HashMap<>();
 nameToAge.put("Leah", 3);
 nameToAge.put("Nathaniel", 1);
+
+requireThat(nameToAge, "nameToAge").
+keySet().containsAll(Arrays.asList("Leah", "Nathaniel"));
+
+requireThat(nameToAge, "nameToAge").
+values().containsAll(Arrays.asList(3, 1));
 ```
 
-To validate that `nameToAge` has the keys "Leah" and "Nathaniel" and the values 3 and 1, you can write:
+can be converted to:
 
 ```java
 requireThat(nameToAge, "nameToAge").
-  apply(v -> v.keySet().containsAll(Arrays.asList("Leah", "Nathaniel"))).
-  apply(v -> v.values().containsAll(Arrays.asList(3, 1)));
+  and(v -> v.keySet().containsAll(Arrays.asList("Leah", "Nathaniel"))).
+  and(v -> v.values().containsAll(Arrays.asList(3, 1)));
 ```
 
-instead of:
+## Logical operators
+
+Logical operators combine the validation of unrelated values. For example,
 
 ```java
-requireThat(nameToAge, "nameToAge").
-  keySet().containsAll(Arrays.asList("Leah", "Nathaniel"));
+Set<String> activeUsers = Set.of("Alice", "Bob");
+Set<String> suspendedUsers = Set.of("Charlie");
 
-requireThat(nameToAge, "nameToAge").
-  values().containsAll(Arrays.asList(3, 1));
+String currentUser = "Alice";
+var userCheck = checkIf(currentUser, "currentUser");
+for (String user : activeUsers)
+{
+  var yetAnotherUserCheck = checkIf(currentUser, "currentUser").isEqualTo(user);
+  userCheck.or(yetAnotherUserCheck);
+}
+var userNotSuspended = checkIf(suspendedUsers, "suspendedUsers").
+  doesNotContain(currentUser, "currentUser");
+userCheck.and(userNotSuspended).elseThrow();
 ```
 
 ## String diff
@@ -191,7 +207,7 @@ terminal.
 
 The use of colors is disabled by default if stdin or stdout are redirected, even if ANSI colors are supported.
 To enable colors,
-invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.terminal.TerminalEncoding)).
+invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.TerminalEncoding)).
 
 ## Returning the value after validation
 

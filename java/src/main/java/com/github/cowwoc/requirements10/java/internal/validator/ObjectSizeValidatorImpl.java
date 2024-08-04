@@ -1,17 +1,17 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
-import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
+import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
+import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.Numbers;
+import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 
@@ -25,8 +25,8 @@ import java.util.function.Function;
  * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
  * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
  * Javadoc indicates, depending on the value of the
- * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting.
- * This allows users to customize the exception handling behavior of the class.
+ * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
+ * exception handling behavior of the class.
  */
 public final class ObjectSizeValidatorImpl
 	extends AbstractPrimitiveValidator<PrimitiveUnsignedIntegerValidator, Integer>
@@ -94,8 +94,8 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> value != null && value == expected))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSize(scope, this, objectName, objectAndSize,
-					"must contain", name, expected, pluralizer).toString());
+				CollectionMessages.containsSize(this, objectName, objectAndSize, "must contain", name, expected,
+					pluralizer).toString());
 		}
 		return this;
 	}
@@ -118,8 +118,8 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> value != unwanted))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSize(scope, this, objectName, objectAndSize, "may not contain", name,
-					unwanted, pluralizer).toString());
+				CollectionMessages.containsSize(this, objectName, objectAndSize, "may not contain", name, unwanted,
+					pluralizer).toString());
 		}
 		return this;
 	}
@@ -133,7 +133,7 @@ public final class ObjectSizeValidatorImpl
 		{
 			case UNDEFINED, FALSE ->
 			{
-				MessageBuilder messageBuilder = ObjectMessages.isEmpty(scope, this);
+				MessageBuilder messageBuilder = ObjectMessages.isEmpty(this);
 				objectAndSize.ifDefined(value -> messageBuilder.withContext(value.object(), objectName));
 				addIllegalArgumentException(messageBuilder.toString());
 			}
@@ -150,7 +150,7 @@ public final class ObjectSizeValidatorImpl
 		{
 			case UNDEFINED, FALSE ->
 			{
-				MessageBuilder messageBuilder = ObjectMessages.isNotEmpty(scope, this);
+				MessageBuilder messageBuilder = ObjectMessages.isNotEmpty(this);
 				objectAndSize.ifDefined(value ->
 					messageBuilder.withContext(value.object(), objectName));
 				addIllegalArgumentException(messageBuilder.toString());
@@ -193,8 +193,8 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> value < maximumExclusive))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSize(scope, this, objectName, objectAndSize, "must contain less than",
-					name, maximumExclusive, pluralizer).toString());
+				CollectionMessages.containsSize(this, objectName, objectAndSize, "must contain less than", name,
+					maximumExclusive, pluralizer).toString());
 		}
 		return self();
 	}
@@ -222,8 +222,8 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> value <= maximumInclusive))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSize(scope, this, objectName, objectAndSize, "may not contain more than",
-					name, maximumInclusive, pluralizer).toString());
+				CollectionMessages.containsSize(this, objectName, objectAndSize, "may not contain more than", name,
+					maximumInclusive, pluralizer).toString());
 		}
 		return self();
 	}
@@ -251,7 +251,7 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> value >= minimumInclusive))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSize(scope, this, objectName, objectAndSize, "must contain at least", name,
+				CollectionMessages.containsSize(this, objectName, objectAndSize, "must contain at least", name,
 					minimumInclusive, pluralizer).toString());
 		}
 		return self();
@@ -280,8 +280,8 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> value > minimumExclusive))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSize(scope, this, objectName, objectAndSize, "must contain more than",
-					name, minimumExclusive, pluralizer).toString());
+				CollectionMessages.containsSize(this, objectName, objectAndSize, "must contain more than", name,
+					minimumExclusive, pluralizer).toString());
 		}
 		return self();
 	}
@@ -314,8 +314,8 @@ public final class ObjectSizeValidatorImpl
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.sizeIsBetween(scope, this, objectName, objectAndSize, minimum, minimumInclusive,
-					maximum, maximumInclusive, pluralizer).toString());
+				CollectionMessages.sizeIsBetween(this, objectName, objectAndSize, minimum, minimumInclusive, maximum,
+					maximumInclusive, pluralizer).toString());
 		}
 		return self();
 	}
@@ -341,7 +341,7 @@ public final class ObjectSizeValidatorImpl
 		{
 			case UNDEFINED, FALSE ->
 			{
-				MessageBuilder messageBuilder = NumberMessages.isMultipleOf(scope, this, name, factor);
+				MessageBuilder messageBuilder = NumberMessages.isMultipleOf(this, name, factor);
 				objectAndSize.ifDefined(value -> messageBuilder.withContext(value.object(), objectName));
 				addIllegalArgumentException(messageBuilder.toString());
 			}
@@ -370,7 +370,7 @@ public final class ObjectSizeValidatorImpl
 		{
 			case UNDEFINED, FALSE ->
 			{
-				MessageBuilder messageBuilder = NumberMessages.isNotMultipleOf(scope, this, name, factor);
+				MessageBuilder messageBuilder = NumberMessages.isNotMultipleOf(this, name, factor);
 				objectAndSize.ifDefined(value -> messageBuilder.withContext(value.object(), objectName));
 				addIllegalArgumentException(messageBuilder.toString());
 			}
@@ -446,8 +446,7 @@ public final class ObjectSizeValidatorImpl
 		switch (value.test(value -> isBetween(value, minimum, minimumInclusive, maximum, maximumInclusive)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ComparableMessages.isBetween(scope, this, minimum, minimumInclusive, maximum, maximumInclusive).
-					toString());
+				ComparableMessages.isBetween(this, minimum, minimumInclusive, maximum, maximumInclusive).toString());
 		}
 		return this;
 	}

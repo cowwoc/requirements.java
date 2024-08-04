@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements10.test.java.terminal;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements10.java.TerminalEncoding;
 import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_16_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_16_COLORS;
 
 public final class TerminalEncodingTest
 {

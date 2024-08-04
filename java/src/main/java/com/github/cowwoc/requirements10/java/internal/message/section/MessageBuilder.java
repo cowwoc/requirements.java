@@ -2,8 +2,7 @@ package com.github.cowwoc.requirements10.java.internal.message.section;
 
 import com.github.cowwoc.requirements10.java.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.diff.ContextGenerator;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
+import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,8 +26,7 @@ public final class MessageBuilder
 		[index]     : Refers to the index of a collection element
 		@line-number: Refers to the line number of a multiline string
 		""";
-	private final ApplicationScope scope;
-	private final ValidatorComponent<?, ?> validator;
+	private final AbstractValidator<?, ?> validator;
 	private final String message;
 	private final Map<String, Object> failureContext = LinkedHashMap.newLinkedHashMap(2);
 	/**
@@ -37,7 +35,6 @@ public final class MessageBuilder
 	private final List<MessageSection> diff = new ArrayList<>();
 
 	/**
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @param message   (optional) the exception message (empty string when absent)
 	 * @throws AssertionError if:
@@ -46,14 +43,12 @@ public final class MessageBuilder
 	 *                          <li>{@code message} is blank or does not end with a dot</li>
 	 *                        </ul>
 	 */
-	public MessageBuilder(ApplicationScope scope, ValidatorComponent<?, ?> validator, String message)
+	public MessageBuilder(AbstractValidator<?, ?> validator, String message)
 	{
-		assert (scope != null);
 		assert (validator != null);
 		assert (message != null);
 		assert (message.isEmpty() || message.endsWith(".")) : "Message must end with a dot: " + message;
 		assert (!message.isBlank()) : "message may not be blank";
-		this.scope = scope;
 		this.validator = validator;
 		this.message = message;
 	}
@@ -116,8 +111,8 @@ public final class MessageBuilder
 	public MessageBuilder addDiff(String actualName, Object actualValue, String expectedName,
 		Object expectedValue)
 	{
-		ContextGenerator contextGenerator = new ContextGenerator(scope, validator.configuration(), actualName,
-			expectedName).
+		ContextGenerator contextGenerator = new ContextGenerator(validator.getScope(), validator.configuration(),
+			actualName, expectedName).
 			actualValue(actualValue).
 			expectedValue(expectedValue);
 		diff.addAll(contextGenerator.build());

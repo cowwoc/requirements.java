@@ -4,13 +4,13 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.OptionalValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.OptionalValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 		switch (value.test(Optional::isPresent))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(scope, this).toString());
+				ObjectMessages.isNotEmpty(this).toString());
 		}
 		return this;
 	}
@@ -58,7 +58,7 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 		switch (value.test(Optional::isEmpty))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(scope, this).toString());
+				ObjectMessages.isEmpty(this).toString());
 		}
 		return this;
 	}
@@ -83,7 +83,7 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 		switch (value.test(value -> value.equals(Optional.ofNullable(expected))))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsValue(scope, this, name, expected).toString());
+				CollectionMessages.containsValue(this, name, expected).toString());
 		}
 		return this;
 	}

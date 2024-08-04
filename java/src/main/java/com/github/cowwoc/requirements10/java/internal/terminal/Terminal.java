@@ -6,19 +6,19 @@ package com.github.cowwoc.requirements10.java.internal.terminal;
 
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements10.java.TerminalEncoding;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.RGB_888_COLORS;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_16_COLORS;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_256_COLORS;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_8_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.RGB_888_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_16_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_256_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_8_COLORS;
 
 /**
  * The terminal associated with the process.
@@ -66,9 +66,7 @@ public final class Terminal
 		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
 		// support all possible terminal types. Instead, we support mainstream types and require the terminal
 		// to support or emulate them.
-		Set<TerminalEncoding> result = new HashSet<>((int) Math.ceil(
-			TerminalEncoding.values().length / 0.75));
-		result.add(NONE);
+		Set<TerminalEncoding> result = EnumSet.of(NONE);
 		switch (term)
 		{
 			case "term", "xterm" ->

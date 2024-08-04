@@ -4,13 +4,10 @@
  */
 package com.github.cowwoc.requirements10.java.validator;
 
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
+import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.InetAddress;
 import java.util.function.Function;
 
 /**
@@ -184,141 +181,4 @@ public interface StringValidator extends
 	 * @see #isBlank()
 	 */
 	StringValidator isStripped();
-
-	/**
-	 * Validates the {@code byte} representation of the value.
-	 *
-	 * @return a validator for the {@code byte} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code byte}
-	 * @see Byte#parseByte(String)
-	 */
-	PrimitiveByteValidator asPrimitiveByte();
-
-	/**
-	 * Validates the {@code short} representation of the value.
-	 *
-	 * @return a validator for the {@code short} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code short}
-	 * @see Short#parseShort(String)
-	 */
-	PrimitiveShortValidator asPrimitiveShort();
-
-	/**
-	 * Validates the {@code int} representation of the value.
-	 *
-	 * @return a validator for the {@code int} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to an {@code int}
-	 * @see Integer#parseInt(String)
-	 */
-	PrimitiveIntegerValidator asPrimitiveInteger();
-
-	/**
-	 * Validates the {@code long} representation of the value.
-	 *
-	 * @return a validator for the {@code long} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code long}
-	 * @see Long#parseLong(String)
-	 */
-	PrimitiveLongValidator asPrimitiveLong();
-
-	/**
-	 * Validates the {@code float} representation of the value.
-	 *
-	 * @return a validator for the {@code float} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code float}
-	 * @see Float#parseFloat(String)
-	 */
-	PrimitiveFloatValidator asPrimitiveFloat();
-
-	/**
-	 * Validates the {@code double} representation of the value.
-	 *
-	 * @return a validator for the {@code double} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code double}
-	 * @see Double#parseDouble(String)
-	 */
-	PrimitiveDoubleValidator asPrimitiveDouble();
-
-	/**
-	 * Validates the {@code boolean} representation of the value.
-	 *
-	 * @return a validator for the {@code boolean} representation of the value
-	 * @throws NullPointerException if the value is null
-	 * @see Boolean#parseBoolean(String)
-	 */
-	PrimitiveBooleanValidator asPrimitiveBoolean();
-
-	/**
-	 * Validates the {@code char} representation of the value.
-	 *
-	 * @return a validator for the {@code char} representation of the value
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code char}
-	 * @see Character#charValue()
-	 */
-	PrimitiveCharacterValidator asPrimitiveCharacter();
-
-	/**
-	 * Validates the {@code BigInteger} representation of the value.
-	 *
-	 * @return a validator for the {@code BigInteger} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code BigInteger}
-	 * @see BigInteger#BigInteger(String)
-	 */
-	BigIntegerValidator asBigInteger();
-
-	/**
-	 * Validates the {@code BigDecimal} representation of the value.
-	 *
-	 * @return a validator for the {@code BigDecimal} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code BigDecimal}
-	 * @see BigDecimal#BigDecimal(String)
-	 */
-	BigDecimalValidator asBigDecimal();
-
-	/**
-	 * Validates the {@code Path} representation of the value.
-	 *
-	 * @return a validator for the {@code Path} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code Path}
-	 */
-	PathValidator asPath();
-
-	/**
-	 * Validates the {@code URI} representation of the value.
-	 * <p>
-	 * Technically-speaking, there is no such thing as an invalid URI format. Per
-	 * <a href="https://tools.ietf.org/html/rfc3986#appendix-A">RFC3986</a>, any String can be
-	 * represented as a relative URI, but Java's implementation is based on an
-	 * <a href="https://tools.ietf.org/html/rfc2396">older specification</a> where this was not the
-	 * case.
-	 *
-	 * @return a validator for the {@code URI} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code URI}
-	 * @see <a href="http://stackoverflow.com/a/27644491/14731">Discussion of Java URI vs RFC3986</a>
-	 */
-	UriValidator asUri();
-
-	/**
-	 * Validates the {@code URL} representation of the value.
-	 *
-	 * @return a validator for the {@code URL} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to a {@code URL}
-	 */
-	UrlValidator asUrl();
-
-	/**
-	 * Validates the {@code InetAddress} representation of the value.
-	 *
-	 * @return a validator for the {@code InetAddress} representation of the value
-	 * @throws IllegalArgumentException if the value cannot be converted to an {@code InetAddress}
-	 * @see InetAddress#getHostAddress()
-	 */
-	InetAddressValidator asInetAddress();
 }

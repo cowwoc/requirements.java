@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements10.java.internal.message.diff;
 
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements10.java.TerminalEncoding;
 import com.github.difflib.DiffUtils;
 import com.github.difflib.patch.AbstractDelta;
 import com.github.difflib.patch.Chunk;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 public final class DiffGenerator
 {
-	// A "word" is defined as a one or more characters that are surrounded by word delimiters.
+	// A "word" is defined as one or more characters that are surrounded by word delimiters.
 	//
 	// \p{Zs} matches any unicode whitespace: https://www.regular-expressions.info/unicode.html
 	private static final Pattern WORD_DELIMITER = getWordDelimiter();

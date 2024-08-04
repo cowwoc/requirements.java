@@ -36,17 +36,17 @@ public final class TextOnly extends AbstractDiffWriter
 	protected void addActualLine(int number)
 	{
 		super.addActualLine(number);
-		initDiffLine(number);
+		addDiffLine(number);
 	}
 
 	@Override
 	protected void addExpectedLine(int number)
 	{
 		super.addExpectedLine(number);
-		initDiffLine(number);
+		addDiffLine(number);
 	}
 
-	private void initDiffLine(int number)
+	private void addDiffLine(int number)
 	{
 		lineToDiffLine.compute(number, (key, value) ->
 		{

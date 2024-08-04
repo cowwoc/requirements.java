@@ -1,8 +1,8 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.Numbers;
 
@@ -68,7 +68,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value != null && value == expected))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isEqualTo(validator.scope, validator, name, expected).toString());
+				ComparableMessages.isEqualTo(validator, name, expected).toString());
 		}
 		return self();
 	}
@@ -114,7 +114,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value != unwanted))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(validator.scope, validator, name, unwanted).toString());
+				ComparableMessages.isNotEqualTo(validator, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -133,7 +133,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value < 0L))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNegative(validator.scope, validator).toString());
+				NumberMessages.isNegative(validator).toString());
 		}
 		return self();
 	}
@@ -152,7 +152,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value >= 0L))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotNegative(validator.scope, validator).toString());
+				NumberMessages.isNotNegative(validator).toString());
 		}
 		return self();
 	}
@@ -171,7 +171,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value == 0L))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isZero(validator.scope, validator).toString());
+				NumberMessages.isZero(validator).toString());
 		}
 		return self();
 	}
@@ -190,7 +190,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value != 0L))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotZero(validator.scope, validator).toString());
+				NumberMessages.isNotZero(validator).toString());
 		}
 		return self();
 	}
@@ -209,7 +209,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value > 0L))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isPositive(validator.scope, validator).toString());
+				NumberMessages.isPositive(validator).toString());
 		}
 		return self();
 	}
@@ -228,7 +228,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> value <= 0L))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotPositive(validator.scope, validator).toString());
+				NumberMessages.isNotPositive(validator).toString());
 		}
 		return self();
 	}
@@ -638,7 +638,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> Numbers.isMultipleOf(value, factor)))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isMultipleOf(validator.scope, validator, name, factor).toString());
+				NumberMessages.isMultipleOf(validator, name, factor).toString());
 		}
 		return self();
 	}
@@ -684,7 +684,7 @@ final class Longs<S>
 		switch (validator.value.test(value -> !Numbers.isMultipleOf(value, factor)))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotMultipleOf(validator.scope, validator, name, factor).toString());
+				NumberMessages.isNotMultipleOf(validator, name, factor).toString());
 		}
 		return self();
 	}

@@ -6,7 +6,7 @@ package com.github.cowwoc.requirements10.test.java.internal.terminal;
 
 import com.github.cowwoc.requirements10.java.internal.scope.DefaultProcessScope;
 import com.github.cowwoc.requirements10.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements10.java.TerminalEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;

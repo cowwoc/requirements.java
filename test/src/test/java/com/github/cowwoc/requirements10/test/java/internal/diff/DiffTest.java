@@ -20,17 +20,17 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.RGB_888_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_16_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_256_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_8_COLORS;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_DELETE;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_EQUAL;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_INSERT;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.NEWLINE_MARKER;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.TextOnly.DIFF_PADDING;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.RGB_888_COLORS;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_16_COLORS;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_256_COLORS;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_8_COLORS;
 import static org.testng.Assert.fail;
 
 public final class DiffTest
@@ -906,24 +906,6 @@ public final class DiffTest
 				"expected@0: " + scheme.decorateEqualText("bar\"" + EOS_MARKER) + scheme.stopDecoration();
 			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
 				"\n**************** Expected:\n" + expectedMessage;
-		}
-	}
-
-	@Test
-	public void stringAsInteger_NoDiff()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "not a number";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").asPrimitiveInteger();
-			assert (false) : "Expected validator to throw an exception";
-		}
-		catch (IllegalArgumentException e)
-		{
-			String actualMessage = e.getMessage();
-			assert (!actualMessage.contains("diff")) :
-				"Wasn't expecting integer equals() to return diff.\n" +
-					"actual:\n" + actualMessage;
 		}
 	}
 }

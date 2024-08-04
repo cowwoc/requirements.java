@@ -1,7 +1,7 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 
 /**
@@ -66,7 +66,7 @@ final class Characters<S>
 		switch (validator.value.test(value -> value != null && value == expected))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isEqualTo(validator.scope, validator, name, expected).toString());
+				ComparableMessages.isEqualTo(validator, name, expected).toString());
 		}
 		return self();
 	}
@@ -112,7 +112,7 @@ final class Characters<S>
 		switch (validator.value.test(value -> value != unwanted))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(validator.scope, validator, name, unwanted).toString());
+				ComparableMessages.isNotEqualTo(validator, name, unwanted).toString());
 		}
 		return self();
 	}

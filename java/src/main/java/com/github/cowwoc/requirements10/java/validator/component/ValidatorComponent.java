@@ -90,38 +90,54 @@ public interface ValidatorComponent<S, T>
 	S withContext(Object value, String name);
 
 	/**
-	 * Executes a nested validation. This facilitates validating multiple properties of the same value. For
-	 * example:
+	 * Facilitates the validation of related properties. For example:
 	 * <p>
 	 * {@snippet :
 	 * requireThat(nameToFrequency, "nameToFrequency").
-	 *   apply(m -> m.size().isPositive()).
-	 *   apply(m -> m.keySet().contains("John"));
+	 *   and(m -> m.size().isPositive()).
+	 *   and(m -> m.keySet().contains("John"));
 	 *}
 	 * <p>
-	 * This validator is shared by nested validations, so any mutations by nested validations affect the
-	 * original validator.
+	 * Any changes made during the validation process will impact this validator.
 	 *
-	 * @param consumer the nested validation
+	 * @param validation the nested validation
 	 * @return this
-	 * @throws NullPointerException if {@code consumer} is null
-	 * @see #and(ValidatorComponent)
+	 * @throws NullPointerException if {@code validation} is null
 	 */
-	S apply(Consumer<? super S> consumer);
+	S and(Consumer<? super S> validation);
 
 	/**
-	 * Appends the validation failures from another validator to this one. For example,
+	 * Merges validations from other validators into this validator. For example:
 	 * <p>
 	 * {@snippet :
-	 * 	  requireThat(name, "name").length().isGreaterThan(5).
-	 *      and(requireThat(nameToFrequency, "nameToFrequency").keySet().contains(name));
+	 * requireThat(nameToFrequency, "nameToFrequency").
+	 *   and(requireIf(name, "name").isEqualTo("John")).
+	 *   and(requireIf(permission, "permission").isEqualTo("granted"));
 	 *}
 	 *
-	 * @param other the other validator
+	 * @param others the other validators whose failures are to be appended to this validator
 	 * @return this
-	 * @see #apply(Consumer)
+	 * @throws NullPointerException if {@code other} is null
+	 * @see #or(ValidatorComponent...)
 	 */
-	S and(ValidatorComponent<?, ?> other);
+	S and(ValidatorComponent<?, ?>... others);
+
+	/**
+	 * Merges validations from other validators into this validator.
+	 * <ul>
+	 *   <li>If all previous validations have passed, no action is taken.</li>
+	 *   <li>If any of the provided validators have passed all their validations, all previous failures are
+	 *   cleared from this validator.</li>
+	 *   <li>Otherwise, failures from the provided validators are appended to this validator,
+	 *  maintaining their iteration order.</li>
+	 * </ul>
+	 *
+	 * @param others the other validators whose failures are to be combined into this validator
+	 * @return this
+	 * @throws NullPointerException if {@code others} is null
+	 * @see #and(ValidatorComponent...)
+	 */
+	S or(ValidatorComponent<?, ?>... others);
 
 	/**
 	 * Checks if any validation has failed.

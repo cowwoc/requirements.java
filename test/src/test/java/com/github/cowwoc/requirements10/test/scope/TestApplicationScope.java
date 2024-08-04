@@ -6,7 +6,7 @@ package com.github.cowwoc.requirements10.test.scope;
 
 import com.github.cowwoc.requirements10.java.internal.scope.AbstractApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.scope.DefaultProcessScope;
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements10.java.TerminalEncoding;
 
 /**
  * ApplicationScope for the test codebase.

@@ -6,7 +6,6 @@ import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
 import com.google.common.collect.Multimap;
 
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl.DEFAULT_NAME;
 
 public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	implements GuavaValidators
@@ -57,7 +58,7 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	@Override
 	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	@Override
 	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	private <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> newInstance(T value, String name,

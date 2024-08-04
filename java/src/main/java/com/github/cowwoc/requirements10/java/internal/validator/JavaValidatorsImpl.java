@@ -1,6 +1,12 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.GenericType;
+import com.github.cowwoc.requirements10.java.JavaValidators;
+import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
@@ -31,6 +37,7 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveDoubleValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveFloatArrayValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveFloatValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerArrayValidator;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveLongArrayValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveLongValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveShortArrayValidator;
@@ -39,13 +46,6 @@ import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
 import com.github.cowwoc.requirements10.java.validator.UrlValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.JavaValidators;
-import com.github.cowwoc.requirements10.java.ValidationFailure;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
-import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerValidator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -66,6 +66,8 @@ import java.util.Optional;
 public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	implements JavaValidators
 {
+	public static final String DEFAULT_NAME = "value";
+
 	/**
 	 * Creates a new instance of this validator with an independent configuration.
 	 *
@@ -339,7 +341,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveByteValidator assumeThat(byte value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -351,7 +353,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public ByteValidator assumeThat(Byte value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -363,7 +365,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveShortValidator assumeThat(short value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -375,7 +377,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public ShortValidator assumeThat(Short value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -387,7 +389,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveIntegerValidator assumeThat(int value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -399,7 +401,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public IntegerValidator assumeThat(Integer value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -411,7 +413,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveLongValidator assumeThat(long value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -423,7 +425,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public LongValidator assumeThat(Long value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -435,7 +437,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveFloatValidator assumeThat(float value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -447,7 +449,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public FloatValidator assumeThat(Float value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -459,7 +461,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveDoubleValidator assumeThat(double value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -471,7 +473,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public DoubleValidator assumeThat(Double value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -483,7 +485,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveBooleanValidator assumeThat(boolean value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -495,7 +497,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public BooleanValidator assumeThat(Boolean value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -507,7 +509,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveCharacterValidator assumeThat(char value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -519,7 +521,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public CharacterValidator assumeThat(Character value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -531,7 +533,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public BigIntegerValidator assumeThat(BigInteger value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -543,7 +545,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public BigDecimalValidator assumeThat(BigDecimal value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -555,7 +557,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -567,7 +569,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T> ObjectValidator<T> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -579,7 +581,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -591,7 +593,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends List<E>, E> ListValidator<T, E> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -603,7 +605,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveByteArrayValidator assumeThat(byte[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -615,7 +617,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveShortArrayValidator assumeThat(short[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -627,7 +629,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveIntegerArrayValidator assumeThat(int[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -639,7 +641,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveLongArrayValidator assumeThat(long[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -651,7 +653,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveFloatArrayValidator assumeThat(float[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -663,7 +665,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveDoubleArrayValidator assumeThat(double[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -675,7 +677,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveBooleanArrayValidator assumeThat(boolean[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -687,7 +689,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveCharacterArrayValidator assumeThat(char[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -699,7 +701,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <E> ObjectArrayValidator<E[], E> assumeThat(E[] value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -711,7 +713,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -723,7 +725,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PathValidator assumeThat(Path value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -735,7 +737,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public StringValidator assumeThat(String value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -747,7 +749,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public UriValidator assumeThat(URI value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -759,7 +761,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public UrlValidator assumeThat(URL value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -777,13 +779,13 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T> ClassValidator<T> assumeThat(Class<T> value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
 	public <T> ClassValidator<T> assumeThat(GenericType<T> value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -795,7 +797,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T> OptionalValidator<T> assumeThat(Optional<T> value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -807,7 +809,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public InetAddressValidator assumeThat(InetAddress value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -819,7 +821,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveByteValidator checkIf(byte value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -831,7 +833,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public ByteValidator checkIf(Byte value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -843,7 +845,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveShortValidator checkIf(short value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -855,7 +857,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public ShortValidator checkIf(Short value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -867,7 +869,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveIntegerValidator checkIf(int value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -879,7 +881,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public IntegerValidator checkIf(Integer value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -891,7 +893,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveLongValidator checkIf(long value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -903,7 +905,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public LongValidator checkIf(Long value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -915,7 +917,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveFloatValidator checkIf(float value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -927,7 +929,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public FloatValidator checkIf(Float value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -939,7 +941,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveDoubleValidator checkIf(double value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -951,7 +953,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public DoubleValidator checkIf(Double value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -963,7 +965,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveBooleanValidator checkIf(boolean value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -975,7 +977,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public BooleanValidator checkIf(Boolean value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -987,7 +989,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveCharacterValidator checkIf(char value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -999,7 +1001,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public CharacterValidator checkIf(Character value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1011,7 +1013,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public BigIntegerValidator checkIf(BigInteger value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1023,7 +1025,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public BigDecimalValidator checkIf(BigDecimal value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1035,7 +1037,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends Comparable<T>> ComparableValidator<T> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1047,7 +1049,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T> ObjectValidator<T> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1059,7 +1061,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends Collection<E>, E> CollectionValidator<T, E> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1071,7 +1073,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends List<E>, E> ListValidator<T, E> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1083,7 +1085,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveByteArrayValidator checkIf(byte[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1095,7 +1097,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveShortArrayValidator checkIf(short[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1107,7 +1109,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveIntegerArrayValidator checkIf(int[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1119,7 +1121,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveLongArrayValidator checkIf(long[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1131,7 +1133,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveFloatArrayValidator checkIf(float[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1143,7 +1145,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveDoubleArrayValidator checkIf(double[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1155,7 +1157,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveBooleanArrayValidator checkIf(boolean[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1167,7 +1169,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PrimitiveCharacterArrayValidator checkIf(char[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1179,7 +1181,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <E> ObjectArrayValidator<E[], E> checkIf(E[] value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1191,7 +1193,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1203,7 +1205,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public PathValidator checkIf(Path value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1215,7 +1217,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public StringValidator checkIf(String value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1227,7 +1229,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public UriValidator checkIf(URI value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1239,7 +1241,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public UrlValidator checkIf(URL value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1257,13 +1259,13 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T> ClassValidator<T> checkIf(Class<T> value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
 	public <T> ClassValidator<T> checkIf(GenericType<T> value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1275,7 +1277,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public <T> OptionalValidator<T> checkIf(Optional<T> value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1287,7 +1289,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public InetAddressValidator checkIf(InetAddress value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	private PrimitiveByteValidator newInstance(byte value, String name, Configuration configuration)

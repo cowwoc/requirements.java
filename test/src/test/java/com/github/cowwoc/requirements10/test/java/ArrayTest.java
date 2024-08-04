@@ -22,7 +22,7 @@ import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffCo
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.TextOnly.DIFF_PADDING;
 import static com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder.DIFF_LEGEND;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class ArrayTest

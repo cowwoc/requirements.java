@@ -4,13 +4,13 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.ObjectArrayValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Arrays;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.ObjectArrayValidator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -85,7 +85,7 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSameNullity(scope, this).toString());
+				CollectionMessages.containsSameNullity(this).toString());
 		}
 		return this;
 	}

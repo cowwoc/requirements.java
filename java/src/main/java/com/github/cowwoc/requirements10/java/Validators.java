@@ -58,11 +58,11 @@ public interface Validators<S>
 	 * requireThat(value, name);
 	 *}
 	 *
-	 * @param consumer the configuration updater
+	 * @param updater the configuration updater
 	 * @return this
-	 * @throws NullPointerException if {@code consumer} is null
+	 * @throws NullPointerException if {@code updater} is null
 	 */
-	S updateConfiguration(Consumer<ConfigurationUpdater> consumer);
+	S updateConfiguration(Consumer<ConfigurationUpdater> updater);
 
 	/**
 	 * Returns a new factory instance with an independent configuration. This method is commonly used to inherit
@@ -109,7 +109,6 @@ public interface Validators<S>
 	 *                                    <li>{@code name} contains whitespace</li>
 	 *                                    <li>{@code name} is already in use by the value being validated or
 	 *                                    the validator context</li>
-	 *                                    <li>the value is not a multiple of {@code factor}</li>
 	 *                                  </ul>
 	 */
 	S withContext(Object value, String name);

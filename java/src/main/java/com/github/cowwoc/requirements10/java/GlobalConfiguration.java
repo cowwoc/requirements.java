@@ -4,8 +4,6 @@
  */
 package com.github.cowwoc.requirements10.java;
 
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
-
 import java.util.Set;
 
 /**

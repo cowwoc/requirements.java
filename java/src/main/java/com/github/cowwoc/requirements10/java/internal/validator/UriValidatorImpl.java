@@ -5,13 +5,13 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
-import com.github.cowwoc.requirements10.java.internal.message.UriMessages;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.UriValidator;
-import com.github.cowwoc.requirements10.java.validator.UrlValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.UriMessages;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.UriValidator;
+import com.github.cowwoc.requirements10.java.validator.UrlValidator;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -48,7 +48,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 		switch (value.test(URI::isAbsolute))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				UriMessages.isAbsolute(scope, this).toString());
+				UriMessages.isAbsolute(this).toString());
 		}
 		return this;
 	}
@@ -79,7 +79,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 			cause = e.getCause();
 		}
 		if (newValue.isUndefined())
-			addIllegalArgumentException(UriMessages.asUrl(scope, this).toString(), cause);
+			addIllegalArgumentException(UriMessages.asUrl(this).toString(), cause);
 		return new UrlValidatorImpl(scope, configuration, name, newValue, context, failures);
 	}
 }

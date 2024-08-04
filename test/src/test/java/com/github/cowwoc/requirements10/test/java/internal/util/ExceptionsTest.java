@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.github.cowwoc.requirements10.java.internal.util.Exceptions.LIBRARY_PACKAGE;
 import static com.github.cowwoc.requirements10.java.internal.util.Exceptions.TEST_PACKAGE;
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class ExceptionsTest
 {

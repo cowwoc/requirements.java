@@ -4,13 +4,13 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.InetAddressMessages;
-import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
-import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.InetAddressMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
+import com.github.cowwoc.requirements10.java.validator.StringValidator;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -47,7 +47,7 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 		switch (value.test(value -> value instanceof Inet4Address))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				InetAddressMessages.isIpAddress(scope, this, "IP v4").toString());
+				InetAddressMessages.isIpAddress(this, "IP v4").toString());
 		}
 		return this;
 	}
@@ -60,7 +60,7 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 		switch (value.test(value -> value instanceof Inet6Address))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				InetAddressMessages.isIpAddress(scope, this, "IP v6").toString());
+				InetAddressMessages.isIpAddress(this, "IP v6").toString());
 		}
 		return this;
 	}

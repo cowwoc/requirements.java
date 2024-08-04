@@ -34,6 +34,7 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveDoubleValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveFloatArrayValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveFloatValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerArrayValidator;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveLongArrayValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveLongValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveShortArrayValidator;
@@ -42,7 +43,6 @@ import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
 import com.github.cowwoc.requirements10.java.validator.UrlValidator;
-import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerValidator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

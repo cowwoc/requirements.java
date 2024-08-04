@@ -1,15 +1,15 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
-import com.github.cowwoc.requirements10.java.validator.StringValidator;
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.StringValidator;
+import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 /**
  * Validates the state of a value, recording failures without throwing an exception.
@@ -27,9 +28,10 @@ import java.util.function.Supplier;
  */
 public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T>
 {
-	public static final String DEFAULT_NAME = "value";
 	public static final Supplier<IllegalStateException> VALUE_IS_UNDEFINED = () ->
 		new IllegalStateException("value is undefined");
+	private static final Pattern CONTAINS_WHITESPACE = Pattern.compile(".*\\s.*",
+		Pattern.UNICODE_CHARACTER_CLASS);
 	/**
 	 * The application configuration.
 	 */
@@ -71,13 +73,13 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		MaybeUndefined<T> value, Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		assert (scope != null) : "scope may not be null";
-		assert (configuration != null) : "config may not be null";
+		assert (configuration != null) : "configuration may not be null";
 
 		if (name == null)
 			throw new NullPointerException("name may not be null");
 		if (name.isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
-		if (containsWhitespace(name))
+		if (CONTAINS_WHITESPACE.matcher(name).matches())
 		{
 			throw new IllegalArgumentException("name may not contain whitespace.\n" +
 				"actual: \"" + name + "\"");
@@ -92,21 +94,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		this.value = value;
 		this.context = context;
 		this.failures = failures;
-	}
-
-	/**
-	 * @param value the value
-	 * @return {@code true} if the value contains whitespace
-	 */
-	private static boolean containsWhitespace(String value)
-	{
-		for (int i = 0; i < value.length(); ++i)
-		{
-			int codepoint = value.codePointAt(i);
-			if (Character.isWhitespace(codepoint))
-				return true;
-		}
-		return false;
 	}
 
 	/**
@@ -146,24 +133,47 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	}
 
 	@Override
-	public S apply(Consumer<? super S> consumer)
+	public S and(Consumer<? super S> validation)
 	{
-		if (consumer == null)
-			throw new NullPointerException("consumer may not be null");
-		consumer.accept(self());
+		if (validation == null)
+			throw new NullPointerException("validation may not be null");
+		validation.accept(self());
 		return self();
 	}
 
 	@Override
-	public S and(ValidatorComponent<?, ?> other)
+	public S and(ValidatorComponent<?, ?>... others)
 	{
-		failures.addAll(other.elseGetFailures());
+		if (others == null)
+			throw new NullPointerException("others may not be null");
+		for (ValidatorComponent<?, ?> other : others)
+			failures.addAll(other.elseGetFailures());
+		return self();
+	}
+
+	@Override
+	public S or(ValidatorComponent<?, ?>... others)
+	{
+		if (others == null)
+			throw new NullPointerException("others may not be null");
+		List<ValidationFailure> newFailures = new ArrayList<>();
+		for (ValidatorComponent<?, ?> other : others)
+		{
+			List<ValidationFailure> otherFailures = other.elseGetFailures();
+			if (otherFailures.isEmpty())
+			{
+				failures.clear();
+				return self();
+			}
+			newFailures.addAll(otherFailures);
+		}
+		failures.addAll(newFailures);
 		return self();
 	}
 
 	/**
 	 * Adds a validation failure and throws an exception if the validator is configured to throw an exception on
-	 * failure.
+	 * failure. The value is set to undefined.
 	 *
 	 * @param message          a message that explains what went wrong
 	 * @param cause            the underlying cause of the exception
@@ -330,15 +340,17 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	{
 		if (failures.isEmpty())
 			return null;
+		Throwable throwable;
 		if (failures.size() == 1)
 		{
 			ValidationFailure failure = failures.getFirst();
-			return failure.getException();
+			throwable = failure.getException();
 		}
-		MultipleFailuresException multipleFailuresException = new MultipleFailuresException(failures);
+		else
+			throwable = new MultipleFailuresException(failures);
 		if (configuration.cleanStackTrace())
-			Exceptions.removeLibraryFromStackTrace(multipleFailuresException);
-		return multipleFailuresException;
+			Exceptions.removeLibraryFromStackTrace(throwable);
+		return throwable;
 	}
 
 	@Override
@@ -358,34 +370,10 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		return self();
 	}
 
-	/**
-	 * Appends context to the exception message. If the context previously contained a mapping for the name, the
-	 * old value is replaced.
-	 *
-	 * @param context the exception context
-	 * @return this
-	 * @throws AssertionError if:
-	 *                        <ul>
-	 *                          <li>{@code context} is null</li>
-	 *                          <li>one of {@code context}'s keys are empty</li>
-	 *                          <li>one of {@code context}'s keys contains whitespace or a colon</li>
-	 *                        </ul>
-	 */
-	public S withContext(Map<String, Object> context)
-	{
-		for (String name : context.keySet())
-		{
-			assert (name != null) : context;
-			assert (!name.isEmpty()) : context;
-		}
-		this.context.putAll(context);
-		return self();
-	}
-
 	@Override
 	public String getContextAsString()
 	{
-		return new MessageBuilder(scope, this, "").toString();
+		return new MessageBuilder(this, "").toString();
 	}
 
 	@Override
@@ -438,7 +426,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	{
 		JavaValidators internalValidators = scope.getInternalValidators();
 		internalValidators.requireThat(name, "name").isNotEmpty();
-		if (name.matches(".*\\s.*"))
+		if (CONTAINS_WHITESPACE.matcher(name).matches())
 			throw new IllegalArgumentException("name may not contain whitespace");
 
 		if (name.equals(this.name))
@@ -467,7 +455,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	}
 
 	/**
-	 * Invoked by a validation if the value is null.
+	 * Invoked by a validation if the value is null. Sets the value to {@code undefined}.
 	 */
 	protected abstract void onNull();
 

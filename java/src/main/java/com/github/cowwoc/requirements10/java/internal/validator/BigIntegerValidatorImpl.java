@@ -4,12 +4,12 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
-import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -57,7 +57,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> value.compareTo(BigInteger.ZERO) < 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNegative(scope, this).toString());
+				NumberMessages.isNegative(this).toString());
 		}
 		return this;
 	}
@@ -70,7 +70,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> value.compareTo(BigInteger.ZERO) >= 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotNegative(scope, this).toString());
+				NumberMessages.isNotNegative(this).toString());
 		}
 		return this;
 	}
@@ -83,7 +83,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> value.compareTo(BigInteger.ZERO) == 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isZero(scope, this).toString());
+				NumberMessages.isZero(this).toString());
 		}
 		return this;
 	}
@@ -96,7 +96,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> value.compareTo(BigInteger.ZERO) != 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotZero(scope, this).toString());
+				NumberMessages.isNotZero(this).toString());
 		}
 		return this;
 	}
@@ -109,7 +109,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> value.compareTo(BigInteger.ZERO) > 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isPositive(scope, this).toString());
+				NumberMessages.isPositive(this).toString());
 		}
 		return this;
 	}
@@ -122,7 +122,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> value.compareTo(BigInteger.ZERO) <= 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotPositive(scope, this).toString());
+				NumberMessages.isNotPositive(this).toString());
 		}
 		return this;
 	}
@@ -149,7 +149,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> isMultipleOf(value, factor)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isMultipleOf(scope, this, name, factor).toString());
+				NumberMessages.isMultipleOf(this, name, factor).toString());
 		}
 		return this;
 	}
@@ -176,7 +176,7 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 		switch (value.test(value -> !isMultipleOf(value, factor)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotMultipleOf(scope, this, name, factor).toString());
+				NumberMessages.isNotMultipleOf(this, name, factor).toString());
 		}
 		return this;
 	}

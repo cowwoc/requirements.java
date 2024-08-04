@@ -1,14 +1,12 @@
 package com.github.cowwoc.requirements10.java.internal.message;
 
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
-import com.github.cowwoc.requirements10.java.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.CollectionAndDifference;
 import com.github.cowwoc.requirements10.java.internal.util.CollectionAndDuplicates;
 import com.github.cowwoc.requirements10.java.internal.util.Difference;
 import com.github.cowwoc.requirements10.java.internal.util.ListAndSorted;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
@@ -26,7 +24,6 @@ public final class CollectionMessages
 	}
 
 	/**
-	 * @param scope            the application configuration
 	 * @param validator        the validator
 	 * @param objectName       the name of the object
 	 * @param objectAndSize    the object and its size
@@ -37,9 +34,9 @@ public final class CollectionMessages
 	 * @param pluralizer       the type of items in the collection
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder containsSize(ApplicationScope scope, AbstractValidator<?, Integer> validator,
-		String objectName, MaybeUndefined<ObjectAndSize> objectAndSize, String relationship,
-		MaybeUndefined<String> expectedSizeName, int expectedSize, Pluralizer pluralizer)
+	public static MessageBuilder containsSize(AbstractValidator<?, Integer> validator, String objectName,
+		MaybeUndefined<ObjectAndSize> objectAndSize, String relationship, MaybeUndefined<String> expectedSizeName,
+		int expectedSize, Pluralizer pluralizer)
 	{
 		assert (expectedSize != 0) : "Invoke ObjectMessages.isEmpty() instead";
 
@@ -48,9 +45,9 @@ public final class CollectionMessages
 		// actual.size()  : 11
 		// expected.size(): 15
 		String expectedNameOrSize = expectedSizeName.mapDefined(MessageBuilder::quoteName).
-			orDefault(String.valueOf(expectedSize));
+			orSuppliedDefault(() -> validator.configuration().stringMappers().toString(expectedSize));
 
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(objectName) + " " + relationship + " " + expectedNameOrSize + " " +
 				pluralizer.nameOf(expectedSize) + ".");
 
@@ -62,7 +59,6 @@ public final class CollectionMessages
 	}
 
 	/**
-	 * @param scope             the application configuration
 	 * @param validator         the validator
 	 * @param collectionName    the name of the collection
 	 * @param collectionAndSize the collection and its size
@@ -72,41 +68,15 @@ public final class CollectionMessages
 	 * @param maximumInclusive  {@code true} if maximum size is inclusive
 	 * @param pluralizer        the type of items in the collection
 	 */
-	public static MessageBuilder sizeIsBetween(ApplicationScope scope, AbstractValidator<?, ?> validator,
-		String collectionName, MaybeUndefined<ObjectAndSize> collectionAndSize, int minimum,
-		boolean minimumInclusive, int maximum, boolean maximumInclusive, Pluralizer pluralizer)
+	public static MessageBuilder sizeIsBetween(AbstractValidator<?, ?> validator, String collectionName,
+		MaybeUndefined<ObjectAndSize> collectionAndSize, int minimum, boolean minimumInclusive, int maximum,
+		boolean maximumInclusive, Pluralizer pluralizer)
 	{
 		assert (maximum >= minimum) : "minimum: " + minimum + ", maximum: " + maximum;
 		StringBuilder message = new StringBuilder(quoteName(collectionName));
 
-		StringBuilder bounds = new StringBuilder();
-		int inclusiveMinimum;
-		int exclusiveMaximum;
-
-		if (minimumInclusive)
-		{
-			bounds.append('[');
-			inclusiveMinimum = minimum;
-		}
-		else
-		{
-			bounds.append('(');
-			inclusiveMinimum = minimum + 1;
-		}
-		StringMappers stringMappers = validator.configuration().stringMappers();
-		String minimumAsString = stringMappers.toString(minimum);
-		String maximumAsString = stringMappers.toString(maximum);
-		bounds.append(minimumAsString).append(", ").append(maximumAsString);
-		if (maximumInclusive)
-		{
-			bounds.append(']');
-			exclusiveMaximum = maximum - 1;
-		}
-		else
-		{
-			bounds.append(')');
-			exclusiveMaximum = maximum;
-		}
+		UnquotedStringValue bounds = ComparableMessages.getBounds(minimum, minimumInclusive, maximum,
+			maximumInclusive, validator.configuration().stringMappers());
 
 		ObjectAndSize resolved = collectionAndSize.orDefault(null);
 		if (resolved == null)
@@ -114,14 +84,26 @@ public final class CollectionMessages
 			// The actual value is not available (a previous validation failed)
 			//
 			//  "actual" must contain [1, 3] elements
-			message.append(" must contain ").append(bounds).append(pluralizer.nameOf(2)).append('.');
-			return new MessageBuilder(scope, validator, message.toString());
+			message.append(" must contain ").append(bounds).append(' ').append(pluralizer.nameOf(2)).append('.');
+			return new MessageBuilder(validator, message.toString());
 		}
 
 		// actual must contain at least 4 characters.
 		// actual         : "hey"
 		// actual.length(): 3
 		// Bounds         : [4, 6]
+		int inclusiveMinimum;
+		if (minimumInclusive)
+			inclusiveMinimum = minimum;
+		else
+			inclusiveMinimum = minimum + 1;
+
+		int exclusiveMaximum;
+		if (maximumInclusive)
+			exclusiveMaximum = maximum - 1;
+		else
+			exclusiveMaximum = maximum;
+
 		message.append(" must contain ");
 		int actualSize = resolved.size();
 		if (actualSize < inclusiveMinimum)
@@ -132,10 +114,10 @@ public final class CollectionMessages
 		{
 			throw new AssertionError("Value should have been out of bounds.\n" +
 				"actual: " + resolved + "\n" +
-				bounds);
+				"bounds: " + bounds);
 		}
 		message.append(pluralizer.nameOf(2)).append('.');
-		return new MessageBuilder(scope, validator, message.toString()).
+		return new MessageBuilder(validator, message.toString()).
 			withContext(resolved.object(), collectionName).
 			withContext(actualSize, validator.getName()).
 			withContext(bounds, "bounds");
@@ -143,50 +125,46 @@ public final class CollectionMessages
 
 	/**
 	 * @param <T>          the type of the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param expectedName the name of the expected value
 	 * @param expected     the expected value
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder containsValue(ApplicationScope scope, AbstractValidator<?, T> validator,
+	public static <T> MessageBuilder containsValue(AbstractValidator<?, T> validator,
 		MaybeUndefined<String> expectedName, Object expected)
 	{
 		// "actual" must contain the same value as "expected".
 		// actual  : 5
 		// expected: 2
-		return containsValue(scope, validator, "must contain", expectedName, expected);
+		return containsValue(validator, "must contain", expectedName, expected);
 	}
 
 	/**
 	 * @param <T>          the type of the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param unwantedName the name of the unwanted value
 	 * @param unwanted     the unwanted value
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder doesNotContainValue(ApplicationScope scope,
-		AbstractValidator<?, T> validator,
+	public static <T> MessageBuilder doesNotContainValue(AbstractValidator<?, T> validator,
 		MaybeUndefined<String> unwantedName, Object unwanted)
 	{
 		// "actual" may not contain the same value as "unwanted".
 		// actual  : 5
 		// unwanted: 2
-		return containsValue(scope, validator, "may not contain", unwantedName, unwanted);
+		return containsValue(validator, "may not contain", unwantedName, unwanted);
 	}
 
 	/**
 	 * @param <T>          the type of the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param relationship the relationship between the actual and other value (e.g. "must contain")
 	 * @param otherName    the name of the other value
 	 * @param other        the other value
 	 * @return a message for the validation failure
 	 */
-	private static <T> MessageBuilder containsValue(ApplicationScope scope, AbstractValidator<?, T> validator,
-		String relationship, MaybeUndefined<String> otherName, Object other)
+	private static <T> MessageBuilder containsValue(AbstractValidator<?, T> validator, String relationship,
+		MaybeUndefined<String> otherName, Object other)
 	{
 		// "actual" must contain the same value as "expected".
 		// actual: 5
@@ -196,7 +174,7 @@ public final class CollectionMessages
 			orDefault(validator.configuration().stringMappers().toString(other));
 
 		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(actualName) + " " + relationship + " " + otherNameOrValue + ".");
 		otherName.ifDefined(name -> messageBuilder.withContext(other, name));
 		return messageBuilder;
@@ -204,7 +182,6 @@ public final class CollectionMessages
 
 	/**
 	 * @param <T>          the type of the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param value        the value being validated, and the difference between the actual and expected values
 	 * @param expectedName the name of the collection
@@ -212,7 +189,7 @@ public final class CollectionMessages
 	 * @param pluralizer   the type of items in the value
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder containsExactly(ApplicationScope scope, AbstractValidator<?, T> validator,
+	public static <T> MessageBuilder containsExactly(AbstractValidator<?, T> validator,
 		MaybeUndefined<? extends CollectionAndDifference<T, ?>> value, MaybeUndefined<String> expectedName,
 		Object expected, Pluralizer pluralizer)
 	{
@@ -235,7 +212,7 @@ public final class CollectionMessages
 			orSuppliedDefault(() -> validator.configuration().stringMappers().toString(expected));
 		message.append(expectedNameOrValue).append(", regardless of their order.");
 
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator, message.toString());
+		MessageBuilder messageBuilder = new MessageBuilder(validator, message.toString());
 		value.ifDefined(actualValue -> messageBuilder.withContext(actualValue.value(), actualName));
 		expectedName.ifDefined(name -> messageBuilder.withContext(expected, name));
 		value.ifDefined(actualValue ->
@@ -251,16 +228,14 @@ public final class CollectionMessages
 	 * @param <T>          the type of the value
 	 * @param <E>          the type of elements in the value
 	 * @param <C>          the type of the unwanted value's collection
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param unwantedName the name of the collection
 	 * @param unwanted     the collection
 	 * @param pluralizer   the type of items in the value
 	 * @return a message for the validation failure
 	 */
-	public static <T, E, C extends Collection<E>> MessageBuilder doesNotContainExactly(ApplicationScope scope,
-		AbstractValidator<?, T> validator, MaybeUndefined<String> unwantedName, C unwanted,
-		Pluralizer pluralizer)
+	public static <T, E, C extends Collection<E>> MessageBuilder doesNotContainExactly(
+		AbstractValidator<?, T> validator, MaybeUndefined<String> unwantedName, C unwanted, Pluralizer pluralizer)
 	{
 		// "actual" may not consist of the elements [2, 3, 4], regardless of their order.
 		//
@@ -278,7 +253,7 @@ public final class CollectionMessages
 			orSuppliedDefault(() -> validator.configuration().stringMappers().toString(unwanted));
 		message.append(unwantedStringNameOrValue).append(", regardless of their order.");
 
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator, message.toString());
+		MessageBuilder messageBuilder = new MessageBuilder(validator, message.toString());
 		unwantedName.ifDefined(name -> messageBuilder.withContext(unwanted, name));
 		return messageBuilder;
 	}
@@ -287,7 +262,6 @@ public final class CollectionMessages
 	 * @param <T>          the type of the value
 	 * @param <E>          the type of elements in the value
 	 * @param <C>          the type of the expected value's collection
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param value        the value being validated
 	 * @param expectedName the name of the expected collection
@@ -295,9 +269,8 @@ public final class CollectionMessages
 	 * @param pluralizer   the type of items in the collections
 	 * @return a message for the validation failure
 	 */
-	public static <T, C extends Collection<E>, E> MessageBuilder containsAny(
-		ApplicationScope scope, AbstractValidator<?, T> validator, MaybeUndefined<?> value,
-		MaybeUndefined<String> expectedName, C expected, Pluralizer pluralizer)
+	public static <T, C extends Collection<E>, E> MessageBuilder containsAny(AbstractValidator<?, T> validator,
+		MaybeUndefined<?> value, MaybeUndefined<String> expectedName, C expected, Pluralizer pluralizer)
 	{
 		// "actual" must contain any of the elements present in "expected".
 		// actual  : [1, 2, 3]
@@ -306,7 +279,7 @@ public final class CollectionMessages
 			orSuppliedDefault(() -> "the set " + validator.configuration().stringMappers().toString(expected));
 
 		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(actualName) + " must contain any of the " + pluralizer.nameOf(2) +
 				" present in " + expectedNameOrValue + ".");
 
@@ -319,7 +292,6 @@ public final class CollectionMessages
 	 * @param <T>          the type of the value
 	 * @param <C>          the type of the unwanted value's collection
 	 * @param <E>          the type of elements in the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param value        the value being validated, and the difference between the actual and unwanted values
 	 * @param unwantedName the name of the unwanted collection
@@ -328,9 +300,8 @@ public final class CollectionMessages
 	 * @return a message for the validation failure
 	 */
 	public static <T, C extends Collection<E>, E> MessageBuilder doesNotContainAny(
-		ApplicationScope scope, AbstractValidator<?, ?> validator,
-		MaybeUndefined<CollectionAndDifference<T, E>> value, MaybeUndefined<String> unwantedName, C unwanted,
-		Pluralizer pluralizer)
+		AbstractValidator<?, ?> validator, MaybeUndefined<CollectionAndDifference<T, E>> value,
+		MaybeUndefined<String> unwantedName, C unwanted, Pluralizer pluralizer)
 	{
 		// "actual" may not contain any of the elements present in "unwanted".
 		// actual  : [1, 2, 3]
@@ -340,7 +311,7 @@ public final class CollectionMessages
 			orSuppliedDefault(() -> "the set " + validator.configuration().stringMappers().toString(unwanted));
 
 		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(actualName) + " may not contain any of the " + pluralizer.nameOf(2) +
 				" present in " + expectedNameOrValue + ".");
 
@@ -355,7 +326,6 @@ public final class CollectionMessages
 	 * @param <T>          the type of the value
 	 * @param <C>          the type of the expected value's collection
 	 * @param <E>          the type of elements in the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param value        the value being validated, and the difference between the actual and expected values
 	 * @param expectedName the name of the expected collection
@@ -363,9 +333,9 @@ public final class CollectionMessages
 	 * @param pluralizer   the type of items in the value
 	 * @return a message for the validation failure
 	 */
-	public static <T, C extends Collection<E>, E> MessageBuilder containsAll(ApplicationScope scope,
-		AbstractValidator<?, T> validator, MaybeUndefined<CollectionAndDifference<T, E>> value,
-		MaybeUndefined<String> expectedName, C expected, Pluralizer pluralizer)
+	public static <T, C extends Collection<E>, E> MessageBuilder containsAll(AbstractValidator<?, T> validator,
+		MaybeUndefined<CollectionAndDifference<T, E>> value, MaybeUndefined<String> expectedName, C expected,
+		Pluralizer pluralizer)
 	{
 		// "actual" must contain all the elements present in "expected".
 		// actual  : [1, 2, 3]
@@ -375,7 +345,7 @@ public final class CollectionMessages
 			orSuppliedDefault(() -> "the set " + validator.configuration().stringMappers().toString(expected));
 
 		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(actualName) + " must contain all the " + pluralizer.nameOf(2) +
 				" present in " + expectedNameOrValue + ".");
 
@@ -390,7 +360,6 @@ public final class CollectionMessages
 	 * @param <T>          the type of the value
 	 * @param <C>          the type of the unwanted value's collection
 	 * @param <E>          the type of elements in the value
-	 * @param scope        the application configuration
 	 * @param validator    the validator
 	 * @param value        the value being validated, and the difference between the actual and unwanted values
 	 * @param unwantedName the name of the unwanted collection
@@ -398,7 +367,7 @@ public final class CollectionMessages
 	 * @param pluralizer   the type of items in the value
 	 * @return a message for the validation failure
 	 */
-	public static <T, C extends Collection<E>, E> MessageBuilder doesNotContainAll(ApplicationScope scope,
+	public static <T, C extends Collection<E>, E> MessageBuilder doesNotContainAll(
 		AbstractValidator<?, T> validator, MaybeUndefined<?> value, MaybeUndefined<String> unwantedName,
 		C unwanted, Pluralizer pluralizer)
 	{
@@ -409,7 +378,7 @@ public final class CollectionMessages
 			orSuppliedDefault(() -> "the set " + validator.configuration().stringMappers().toString(unwanted));
 
 		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(actualName) + " may contain some, but not all, the " + pluralizer.nameOf(2) +
 				" present in " + unwantedNameOrValue + ".");
 
@@ -420,55 +389,50 @@ public final class CollectionMessages
 
 	/**
 	 * @param <T>                the type of the value
-	 * @param scope              the application configuration
 	 * @param validator          the validator
 	 * @param valueAndDuplicates the value being validated
 	 * @param pluralizer         the type of items in the value
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder doesNotContainDuplicates(ApplicationScope scope,
-		AbstractValidator<?, T> validator,
+	public static <T> MessageBuilder doesNotContainDuplicates(AbstractValidator<?, T> validator,
 		MaybeUndefined<? extends CollectionAndDuplicates<T, ?>> valueAndDuplicates, Pluralizer pluralizer)
 	{
-		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
-			quoteName(actualName) + " may not contain any duplicate " + pluralizer.nameOf(2) + ".");
-		validator.ifDefined(actualValue -> messageBuilder.withContext(actualValue, actualName));
+		String name = validator.getName();
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
+			quoteName(name) + " may not contain any duplicate " + pluralizer.nameOf(2) + ".");
+		validator.ifDefined(actualValue -> messageBuilder.withContext(actualValue, name));
 		valueAndDuplicates.ifDefined(value -> messageBuilder.
-			withContext(value.value(), actualName).
+			withContext(value.value(), name).
 			withContext(value.duplicates(), "duplicates"));
 		return messageBuilder;
 	}
 
 	/**
-	 * @param scope          the application configuration
 	 * @param validator      the validator
 	 * @param valueAndSorted the value being validated and its sorted representation
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isSorted(ApplicationScope scope, AbstractValidator<?, ?> validator,
+	public static MessageBuilder isSorted(AbstractValidator<?, ?> validator,
 		MaybeUndefined<? extends ListAndSorted<?>> valueAndSorted)
 	{
-		String actualName = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
-			quoteName(actualName) + " must be sorted.");
+		String name = validator.getName();
+		MessageBuilder messageBuilder = new MessageBuilder(validator, quoteName(name) + " must be sorted.");
 		valueAndSorted.ifDefined(value -> messageBuilder.
-			withContext(value.value(), actualName).
+			withContext(value.value(), name).
 			withContext(value.sorted(), "expected"));
 		return messageBuilder;
 	}
 
 	/**
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder containsSameNullity(ApplicationScope scope, AbstractValidator<?, ?> validator)
+	public static MessageBuilder containsSameNullity(AbstractValidator<?, ?> validator)
 	{
-		String actualName = validator.getName();
-		MessageBuilder message = new MessageBuilder(scope, validator,
-			actualName + " must contain all nulls, or no nulls.");
-		validator.ifDefined(value -> message.withContext(value, actualName));
-		return message;
+		String name = validator.getName();
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
+			name + " must contain all nulls, or no nulls.");
+		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		return messageBuilder;
 	}
 }

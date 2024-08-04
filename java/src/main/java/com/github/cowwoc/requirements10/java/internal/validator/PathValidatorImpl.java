@@ -5,12 +5,12 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
-import com.github.cowwoc.requirements10.java.internal.message.PathMessages;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.PathValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.PathMessages;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.PathValidator;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,7 +50,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		switch (value.test(Files::exists))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				PathMessages.exists(scope, this).toString());
+				PathMessages.exists(this).toString());
 		}
 		return this;
 	}
@@ -84,7 +84,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			switch (value.test(value -> isType(value, attributesMatchExpectation, options)))
 			{
 				case UNDEFINED, FALSE -> addIllegalArgumentException(
-					PathMessages.exists(scope, this, type, options).toString());
+					PathMessages.exists(this, type, options).toString());
 			}
 		}
 		catch (WrappedCheckedException e)
@@ -93,7 +93,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			if (!(cause instanceof IOException ioe))
 				throw e;
 			addIOException(
-				PathMessages.readAttributes(scope, this, type, options, cause).toString(), ioe);
+				PathMessages.readAttributes(this, type, options, cause).toString(), ioe);
 		}
 	}
 
@@ -136,7 +136,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		switch (value.test(value -> !value.isAbsolute()))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				PathMessages.isRelative(scope, this).toString());
+				PathMessages.isRelative(this).toString());
 		}
 		return this;
 	}
@@ -149,7 +149,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		switch (value.test(Path::isAbsolute))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				PathMessages.isAbsolute(scope, this).toString());
+				PathMessages.isAbsolute(this).toString());
 		}
 		return this;
 	}

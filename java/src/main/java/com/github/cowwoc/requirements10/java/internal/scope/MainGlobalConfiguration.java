@@ -6,7 +6,7 @@ package com.github.cowwoc.requirements10.java.internal.scope;
 
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
 import com.github.cowwoc.requirements10.java.internal.terminal.Terminal;
-import com.github.cowwoc.requirements10.java.terminal.TerminalEncoding;
+import com.github.cowwoc.requirements10.java.TerminalEncoding;
 
 import java.util.Set;
 

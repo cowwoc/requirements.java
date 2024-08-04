@@ -4,14 +4,14 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
-import com.github.cowwoc.requirements10.java.validator.ListValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.ListAndSorted;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements10.java.validator.ListValidator;
 
 import java.util.Comparator;
 import java.util.List;
@@ -62,7 +62,7 @@ public final class ListValidatorImpl<T extends List<E>, E>
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.isSorted(scope, this, listAndSorted.getPlain()).toString());
+				CollectionMessages.isSorted(this, listAndSorted.getPlain()).toString());
 		}
 		return this;
 	}

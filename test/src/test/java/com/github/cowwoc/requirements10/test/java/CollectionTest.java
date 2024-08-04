@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class CollectionTest

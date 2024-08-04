@@ -148,40 +148,6 @@ public class MaybeUndefined<T>
 	}
 
 	/**
-	 * Applies a function to the value if it is defined. If the value is undefined, no action is taken.
-	 *
-	 * @param <U>    the type of value returned by the mapper
-	 * @param mapper the function to apply to the value if it is defined
-	 * @return {@code this} if the value is undefined; otherwise, the result of applying the mapper to the value
-	 */
-	@SuppressWarnings("unchecked")
-	public <U> MaybeUndefined<U> flatMapDefined(
-		Function<? super T, ? extends MaybeUndefined<? extends U>> mapper)
-	{
-		if (!defined)
-			return self();
-		return (MaybeUndefined<U>) mapper.apply(value);
-	}
-
-	/**
-	 * Applies a function to the value if it is defined and not null. If the value is undefined or null, no
-	 * action is taken.
-	 *
-	 * @param <U>    the type of value returned by the mapper
-	 * @param mapper the function to apply to the value if it is defined
-	 * @return {@code this} if the value is undefined or null; otherwise, the result of applying the mapper to
-	 * the value
-	 */
-	@SuppressWarnings("unchecked")
-	public <U> MaybeUndefined<U> flatMapNotNull(
-		Function<? super T, ? extends MaybeUndefined<? extends U>> mapper)
-	{
-		if (!defined || value == null)
-			return self();
-		return (MaybeUndefined<U>) mapper.apply(value);
-	}
-
-	/**
 	 * @param <U> the type to cast {@code this} to
 	 * @return this
 	 */
@@ -195,16 +161,16 @@ public class MaybeUndefined<T>
 	/**
 	 * Returns the value or throws an exception if undefined.
 	 *
-	 * @param <U>       the type of exception to throw
-	 * @param exception the exception to throw if the value is undefined
+	 * @param <U>               the type of exception to throw
+	 * @param exceptionSupplier returns the exception to throw if the value is undefined
 	 * @return the value
 	 * @throws U if the value is undefined
 	 */
-	public <U extends Throwable> T orThrow(Supplier<? extends U> exception) throws U
+	public <U extends Throwable> T orThrow(Supplier<? extends U> exceptionSupplier) throws U
 	{
 		if (defined)
 			return value;
-		throw exception.get();
+		throw exceptionSupplier.get();
 	}
 
 	/**

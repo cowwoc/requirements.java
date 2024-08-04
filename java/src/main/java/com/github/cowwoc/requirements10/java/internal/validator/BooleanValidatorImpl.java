@@ -1,11 +1,11 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.BooleanMessages;
-import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.BooleanMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 		switch (value.test(value -> value))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				BooleanMessages.isTrue(scope, this).toString());
+				BooleanMessages.isTrue(this).toString());
 		}
 		return this;
 	}
@@ -52,7 +52,7 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 		switch (value.test(value -> !value))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				BooleanMessages.isFalse(scope, this).toString());
+				BooleanMessages.isFalse(this).toString());
 		}
 		return this;
 	}

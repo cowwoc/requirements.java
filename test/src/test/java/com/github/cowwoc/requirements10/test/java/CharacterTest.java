@@ -9,7 +9,7 @@ import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class CharacterTest

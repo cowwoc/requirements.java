@@ -11,7 +11,6 @@ import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 import com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
@@ -1358,7 +1357,7 @@ public final class TestValidatorsImpl implements TestValidators
 	@Override
 	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return jacksonValidators.assumeThat(value);
 	}
 
 	@Override
@@ -1370,7 +1369,7 @@ public final class TestValidatorsImpl implements TestValidators
 	@Override
 	public <T extends JsonNode> JsonNodeValidator<T> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return jacksonValidators.checkIf(value);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package com.github.cowwoc.requirements10.java.internal.message;
 
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
 /**
@@ -16,27 +15,25 @@ public final class ClassMessages
 
 	/**
 	 * @param <T>       the type of the value
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isPrimitive(ApplicationScope scope, AbstractValidator<?, T> validator)
+	public static <T> MessageBuilder isPrimitive(AbstractValidator<?, T> validator)
 	{
-		return Messages.constraint(scope, validator, "must be a primitive type");
+		return Messages.constraint(validator, "must be a primitive type");
 	}
 
 	/**
 	 * @param <U>       the type to compare to
 	 * @param <T>       the type of the value
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <U, T> MessageBuilder isSupertypeOf(ApplicationScope scope, AbstractValidator<?, T> validator,
+	public static <U, T> MessageBuilder isSupertypeOf(AbstractValidator<?, T> validator,
 		GenericType<? extends U> type)
 	{
 		String name = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			MessageBuilder.quoteName(name) + " must be a supertype of " + type + ".");
 		validator.ifDefined(value -> messageBuilder.withContext(value, name));
 		return messageBuilder;
@@ -45,15 +42,14 @@ public final class ClassMessages
 	/**
 	 * @param <U>       the type to compare to
 	 * @param <T>       the type of the value
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <U, T> MessageBuilder isSubtypeOf(ApplicationScope scope, AbstractValidator<?, T> validator,
+	public static <U, T> MessageBuilder isSubtypeOf(AbstractValidator<?, T> validator,
 		GenericType<? super U> type)
 	{
 		String name = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(scope, validator,
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			MessageBuilder.quoteName(name) + " must be a subtype of " + type + ".");
 		validator.ifDefined(value -> messageBuilder.withContext(value, name));
 		return messageBuilder;

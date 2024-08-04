@@ -1,8 +1,8 @@
 package com.github.cowwoc.requirements10.java.validator.component;
 
+import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 import com.github.cowwoc.requirements10.java.validator.ListValidator;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 
 import java.util.Collection;
@@ -75,6 +75,34 @@ public interface ArrayComponent<S extends ArrayComponent<S, T, E>, T, E>
 	 *                                  </ul>
 	 */
 	S contains(E expected, String name);
+
+	/**
+	 * Ensures that the array does not contain {@code unwanted}.
+	 *
+	 * @param unwanted the unwanted element
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if the array contains {@code unwanted}
+	 */
+	S doesNotContain(E unwanted);
+
+	/**
+	 * Ensures that the array does not contain {@code unwanted}.
+	 *
+	 * @param unwanted the unwanted element
+	 * @param name     the name of the element
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if:
+	 *                                  <ul>
+	 *                                    <li>{@code name} is empty</li>
+	 *                                    <li>{@code name} contains whitespace</li>
+	 *                                    <li>{@code name} is already in use by the value being validated or
+	 *                                    the validator context</li>
+	 *                                    <li>the array contains {@code unwanted}</li>
+	 *                                  </ul>
+	 */
+	S doesNotContain(E unwanted, String name);
 
 	/**
 	 * Ensures that the array consists of the same elements as {@code expected}, irrespective of their order.
@@ -155,151 +183,6 @@ public interface ArrayComponent<S extends ArrayComponent<S, T, E>, T, E>
 	<C extends Collection<E>> S containsExactly(C expected, String name);
 
 	/**
-	 * Ensures that the array contains any elements in {@code expected}.
-	 *
-	 * @param expected the desired elements
-	 * @return this
-	 * @throws NullPointerException     if the value or {@code expected} are null
-	 * @throws IllegalArgumentException if the array does not contain any element in {@code expected}
-	 */
-	S containsAny(T expected);
-
-	/**
-	 * Ensures that the array contains any elements in {@code expected}.
-	 *
-	 * @param <C>      the type of collection to compare against
-	 * @param expected the desired elements
-	 * @return this
-	 * @throws NullPointerException     if the value or {@code expected} are null
-	 * @throws IllegalArgumentException if the array does not contain any element in {@code expected}
-	 */
-	<C extends Collection<E>> S containsAny(C expected);
-
-	/**
-	 * Ensures that the array contains at least one element in {@code expected}.
-	 *
-	 * @param expected the desired elements
-	 * @param name     the name of the expected collection
-	 * @return this
-	 * @throws NullPointerException     if the value or any of the arguments are null
-	 * @throws IllegalArgumentException if:
-	 *                                  <ul>
-	 *                                    <li>{@code name} is empty</li>
-	 *                                    <li>{@code name} contains whitespace</li>
-	 *                                    <li>{@code name} is already in use by the value being validated or
-	 *                                    the validator context</li>
-	 *                                    <li>the array does not contain any element in {@code expected}</li>
-	 *                                  </ul>
-	 */
-	S containsAny(T expected, String name);
-
-	/**
-	 * Ensures that the array contains at least one element in {@code expected}.
-	 *
-	 * @param <C>      the type of collection to compare against
-	 * @param expected the desired elements
-	 * @param name     the name of the expected collection
-	 * @return this
-	 * @throws NullPointerException     if the value or any of the arguments are null
-	 * @throws IllegalArgumentException if:
-	 *                                  <ul>
-	 *                                    <li>{@code name} is empty</li>
-	 *                                    <li>{@code name} contains whitespace</li>
-	 *                                    <li>{@code name} is already in use by the value being validated or
-	 *                                    the validator context</li>
-	 *                                    <li>the array does not contain any element in {@code expected}/li>
-	 *                                  </ul>
-	 */
-	<C extends Collection<E>> S containsAny(C expected, String name);
-
-	/**
-	 * Ensures that the array contains all the elements in {@code expected}.
-	 *
-	 * @param expected the desired elements
-	 * @return this
-	 * @throws NullPointerException     if the value or {@code expected} are null
-	 * @throws IllegalArgumentException if the array does not contain all the elements in {@code expected}
-	 */
-	S containsAll(T expected);
-
-	/**
-	 * Ensures that the array contains all the elements in {@code expected}.
-	 *
-	 * @param <C>      the type of collection to compare against
-	 * @param expected the desired elements
-	 * @return this
-	 * @throws NullPointerException     if the value or {@code expected} are null
-	 * @throws IllegalArgumentException if the array does not contain all the elements in {@code expected}
-	 */
-	<C extends Collection<E>> S containsAll(C expected);
-
-	/**
-	 * Ensures that the array contains all the elements in {@code expected}.
-	 *
-	 * @param expected the desired elements
-	 * @param name     the name of the expected collection
-	 * @return this
-	 * @throws NullPointerException     if the value or any of the arguments are null
-	 * @throws IllegalArgumentException if:
-	 *                                  <ul>
-	 *                                    <li>{@code name} is empty</li>
-	 *                                    <li>{@code name} contains whitespace</li>
-	 *                                    <li>{@code name} is already in use by the value being validated or
-	 *                                    the validator context</li>
-	 *                                    <li>the array does not contain all the elements in
-	 *                                    {@code expected}/li>
-	 *                                  </ul>
-	 */
-	S containsAll(T expected, String name);
-
-	/**
-	 * Ensures that the array contains all the elements in {@code expected}.
-	 *
-	 * @param <C>      the type of collection to compare against
-	 * @param expected the desired elements
-	 * @param name     the name of the expected collection
-	 * @return this
-	 * @throws NullPointerException     if the value or any of the arguments are null
-	 * @throws IllegalArgumentException if:
-	 *                                  <ul>
-	 *                                    <li>{@code name} is empty</li>
-	 *                                    <li>{@code name} contains whitespace</li>
-	 *                                    <li>{@code name} is already in use by the value being validated or
-	 *                                    the validator context</li>
-	 *                                    <li>the array does not contain all elements in {@code expected}</li>
-	 *                                  </ul>
-	 */
-	<C extends Collection<E>> S containsAll(C expected, String name);
-
-	/**
-	 * Ensures that the array does not contain {@code unwanted}.
-	 *
-	 * @param unwanted the unwanted element
-	 * @return this
-	 * @throws NullPointerException     if the value or any of the arguments are null
-	 * @throws IllegalArgumentException if the array contains {@code unwanted}
-	 */
-	S doesNotContain(E unwanted);
-
-	/**
-	 * Ensures that the array does not contain {@code unwanted}.
-	 *
-	 * @param unwanted the unwanted element
-	 * @param name     the name of the element
-	 * @return this
-	 * @throws NullPointerException     if the value or any of the arguments are null
-	 * @throws IllegalArgumentException if:
-	 *                                  <ul>
-	 *                                    <li>{@code name} is empty</li>
-	 *                                    <li>{@code name} contains whitespace</li>
-	 *                                    <li>{@code name} is already in use by the value being validated or
-	 *                                    the validator context</li>
-	 *                                    <li>the array contains {@code unwanted}</li>
-	 *                                  </ul>
-	 */
-	S doesNotContain(E unwanted, String name);
-
-	/**
 	 * Ensures that the array and {@code unwanted} consist of different elements, irrespective of their order.
 	 *
 	 * @param unwanted the unwanted elements
@@ -362,6 +245,64 @@ public interface ArrayComponent<S extends ArrayComponent<S, T, E>, T, E>
 	<C extends Collection<E>> S doesNotContainExactly(C unwanted, String name);
 
 	/**
+	 * Ensures that the array contains any elements in {@code expected}.
+	 *
+	 * @param expected the desired elements
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code expected} are null
+	 * @throws IllegalArgumentException if the array does not contain any element in {@code expected}
+	 */
+	S containsAny(T expected);
+
+	/**
+	 * Ensures that the array contains any elements in {@code expected}.
+	 *
+	 * @param <C>      the type of collection to compare against
+	 * @param expected the desired elements
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code expected} are null
+	 * @throws IllegalArgumentException if the array does not contain any element in {@code expected}
+	 */
+	<C extends Collection<E>> S containsAny(C expected);
+
+	/**
+	 * Ensures that the array contains at least one element in {@code expected}.
+	 *
+	 * @param expected the desired elements
+	 * @param name     the name of the expected collection
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if:
+	 *                                  <ul>
+	 *                                    <li>{@code name} is empty</li>
+	 *                                    <li>{@code name} contains whitespace</li>
+	 *                                    <li>{@code name} is already in use by the value being validated or
+	 *                                    the validator context</li>
+	 *                                    <li>the array does not contain any element in {@code expected}</li>
+	 *                                  </ul>
+	 */
+	S containsAny(T expected, String name);
+
+	/**
+	 * Ensures that the array contains at least one element in {@code expected}.
+	 *
+	 * @param <C>      the type of collection to compare against
+	 * @param expected the desired elements
+	 * @param name     the name of the expected collection
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if:
+	 *                                  <ul>
+	 *                                    <li>{@code name} is empty</li>
+	 *                                    <li>{@code name} contains whitespace</li>
+	 *                                    <li>{@code name} is already in use by the value being validated or
+	 *                                    the validator context</li>
+	 *                                    <li>the array does not contain any element in {@code expected}/li>
+	 *                                  </ul>
+	 */
+	<C extends Collection<E>> S containsAny(C expected, String name);
+
+	/**
 	 * Ensures that the array does not contain any of the elements in {@code unwanted}.
 	 *
 	 * @param unwanted the unwanted elements
@@ -418,6 +359,65 @@ public interface ArrayComponent<S extends ArrayComponent<S, T, E>, T, E>
 	 *                                  </ul>
 	 */
 	<C extends Collection<E>> S doesNotContainAny(C unwanted, String name);
+
+	/**
+	 * Ensures that the array contains all the elements in {@code expected}.
+	 *
+	 * @param expected the desired elements
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code expected} are null
+	 * @throws IllegalArgumentException if the array does not contain all the elements in {@code expected}
+	 */
+	S containsAll(T expected);
+
+	/**
+	 * Ensures that the array contains all the elements in {@code expected}.
+	 *
+	 * @param <C>      the type of collection to compare against
+	 * @param expected the desired elements
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code expected} are null
+	 * @throws IllegalArgumentException if the array does not contain all the elements in {@code expected}
+	 */
+	<C extends Collection<E>> S containsAll(C expected);
+
+	/**
+	 * Ensures that the array contains all the elements in {@code expected}.
+	 *
+	 * @param expected the desired elements
+	 * @param name     the name of the expected collection
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if:
+	 *                                  <ul>
+	 *                                    <li>{@code name} is empty</li>
+	 *                                    <li>{@code name} contains whitespace</li>
+	 *                                    <li>{@code name} is already in use by the value being validated or
+	 *                                    the validator context</li>
+	 *                                    <li>the array does not contain all the elements in
+	 *                                    {@code expected}/li>
+	 *                                  </ul>
+	 */
+	S containsAll(T expected, String name);
+
+	/**
+	 * Ensures that the array contains all the elements in {@code expected}.
+	 *
+	 * @param <C>      the type of collection to compare against
+	 * @param expected the desired elements
+	 * @param name     the name of the expected collection
+	 * @return this
+	 * @throws NullPointerException     if the value or any of the arguments are null
+	 * @throws IllegalArgumentException if:
+	 *                                  <ul>
+	 *                                    <li>{@code name} is empty</li>
+	 *                                    <li>{@code name} contains whitespace</li>
+	 *                                    <li>{@code name} is already in use by the value being validated or
+	 *                                    the validator context</li>
+	 *                                    <li>the array does not contain all elements in {@code expected}</li>
+	 *                                  </ul>
+	 */
+	<C extends Collection<E>> S containsAll(C expected, String name);
 
 	/**
 	 * Allows the array to contain some, but not all, elements from a collection.

@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.java.internal.message;
 
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
 /**
@@ -18,22 +17,20 @@ public final class BooleanMessages
 	}
 
 	/**
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isTrue(ApplicationScope scope, AbstractValidator<?, Boolean> validator)
+	public static MessageBuilder isTrue(AbstractValidator<?, Boolean> validator)
 	{
-		return Messages.constraint(scope, validator, "must be true");
+		return Messages.constraint(validator, "must be true");
 	}
 
 	/**
-	 * @param scope     the application configuration
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isFalse(ApplicationScope scope, AbstractValidator<?, Boolean> validator)
+	public static MessageBuilder isFalse(AbstractValidator<?, Boolean> validator)
 	{
-		return Messages.constraint(scope, validator, "must be false");
+		return Messages.constraint(validator, "must be false");
 	}
 }

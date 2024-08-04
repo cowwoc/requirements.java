@@ -58,7 +58,7 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 		if (newValue.isUndefined())
 		{
 			addIllegalArgumentException(
-				JsonNodeMessages.property(scope, this, value, name).toString());
+				JsonNodeMessages.property(this, value, name).toString());
 		}
 		return new JsonNodeValidatorImpl<>(scope, configuration, this.name + "." + name, newValue, context,
 			failures);
@@ -84,7 +84,7 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 		switch (value.test(predicate))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				JsonNodeMessages.isType(scope, this, value, type).toString());
+				JsonNodeMessages.isType(this, value, type).toString());
 		}
 	}
 

@@ -4,15 +4,15 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
-import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
-import com.github.cowwoc.requirements10.java.validator.MapValidator;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
+import com.github.cowwoc.requirements10.java.validator.MapValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 
 import java.util.Collection;
@@ -56,7 +56,7 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 		switch (value.test(Map::isEmpty))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(scope, this).toString());
+				ObjectMessages.isEmpty(this).toString());
 		}
 		return self();
 	}
@@ -69,7 +69,7 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 		switch (value.test(value -> !value.isEmpty()))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(scope, this).toString());
+				ObjectMessages.isNotEmpty(this).toString());
 		}
 		return self();
 	}

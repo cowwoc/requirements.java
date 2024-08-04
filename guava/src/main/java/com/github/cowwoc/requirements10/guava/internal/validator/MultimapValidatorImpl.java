@@ -60,7 +60,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 		switch (value.test(Multimap::isEmpty))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(scope, this).toString());
+				ObjectMessages.isEmpty(this).toString());
 		}
 		return self();
 	}
@@ -73,7 +73,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 		switch (value.test(value -> !value.isEmpty()))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(scope, this).toString());
+				ObjectMessages.isNotEmpty(this).toString());
 		}
 		return self();
 	}

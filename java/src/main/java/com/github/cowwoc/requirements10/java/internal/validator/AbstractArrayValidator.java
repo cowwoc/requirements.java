@@ -4,23 +4,23 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
-import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
-import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
-import com.github.cowwoc.requirements10.java.validator.ListValidator;
-import com.github.cowwoc.requirements10.java.validator.component.ArrayComponent;
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.util.CollectionAndDifference;
 import com.github.cowwoc.requirements10.java.internal.util.CollectionAndDuplicates;
 import com.github.cowwoc.requirements10.java.internal.util.Difference;
 import com.github.cowwoc.requirements10.java.internal.util.ListAndSorted;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
+import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
+import com.github.cowwoc.requirements10.java.validator.ListValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
+import com.github.cowwoc.requirements10.java.validator.component.ArrayComponent;
+import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +71,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		switch (value.test(value -> getLength(value) == 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(scope, this).toString());
+				ObjectMessages.isEmpty(this).toString());
 		}
 		return self();
 	}
@@ -109,7 +109,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		switch (value.test(value -> getLength(value) != 0))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(scope, this).toString());
+				ObjectMessages.isNotEmpty(this).toString());
 		}
 		return self();
 	}
@@ -134,7 +134,33 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		switch (value.test(value -> contains(value, expected)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsValue(scope, this, name, expected).toString());
+				CollectionMessages.containsValue(this, name, expected).toString());
+		}
+		return self();
+	}
+
+	@Override
+	public S doesNotContain(E unwanted)
+	{
+		return doesNotContainImpl(unwanted, MaybeUndefined.undefined());
+	}
+
+	@Override
+	public S doesNotContain(E unwanted, String name)
+	{
+		requireThatNameIsUnique(name).
+			requireThat(unwanted, name).isNotNull();
+		return doesNotContainImpl(unwanted, MaybeUndefined.defined(name));
+	}
+
+	private S doesNotContainImpl(E unwanted, MaybeUndefined<String> name)
+	{
+		if (value.isNull())
+			onNull();
+		switch (value.test(value -> !this.contains(value, unwanted)))
+		{
+			case UNDEFINED, FALSE -> addIllegalArgumentException(
+				CollectionMessages.doesNotContainValue(this, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -168,7 +194,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsExactly(scope, this, valueAndDifference.getPlain(), name, expected,
+				CollectionMessages.containsExactly(this, valueAndDifference.getPlain(), name, expected,
 					Pluralizer.ELEMENT).toString());
 		}
 		return self();
@@ -202,128 +228,6 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 	}
 
 	@Override
-	public <C extends Collection<E>> S containsAny(C expected)
-	{
-		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAnyImpl(expected, MaybeUndefined.undefined());
-	}
-
-	@Override
-	public <C extends Collection<E>> S containsAny(C expected, String name)
-	{
-		requireThatNameIsUnique(name).
-			requireThat(expected, name).isNotNull();
-		return containsAnyImpl(expected, MaybeUndefined.defined(name));
-	}
-
-	private <C extends Collection<E>> S containsAnyImpl(C expected, MaybeUndefined<String> name)
-	{
-		if (value.isNull())
-			onNull();
-		switch (value.test(value -> !Collections.disjoint(getValueAsSet(value), expected)))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsAny(scope, this, value.mapNotNull(this::asList), name, expected,
-					Pluralizer.ELEMENT).toString());
-		}
-		return self();
-	}
-
-	@Override
-	public S containsAny(T expected)
-	{
-		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAny(asList(expected));
-	}
-
-	@Override
-	public S containsAny(T expected, String name)
-	{
-		requireThatNameIsUnique(name).
-			requireThat(expected, name).isNotNull();
-		return containsAny(asList(expected), name);
-	}
-
-	@Override
-	public <C extends Collection<E>> S containsAll(C expected)
-	{
-		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAllImpl(expected, MaybeUndefined.undefined());
-	}
-
-	@Override
-	public <C extends Collection<E>> S containsAll(C expected, String name)
-	{
-		requireThatNameIsUnique(name).
-			requireThat(expected, name).isNotNull();
-		return containsAllImpl(expected, MaybeUndefined.defined(name));
-	}
-
-	private <C extends Collection<E>> S containsAllImpl(C expected, MaybeUndefined<String> name)
-	{
-		if (value.isNull())
-			onNull();
-		AtomicReference<MaybeUndefined<CollectionAndDifference<T, E>>> valueAndDifference = new AtomicReference<>(
-			MaybeUndefined.undefined());
-		switch (value.test(value ->
-		{
-			Difference<E> difference = Difference.actualVsOther(asList(value), expected);
-			if (difference.onlyInOther().isEmpty())
-				return true;
-			valueAndDifference.setPlain(MaybeUndefined.defined(
-				new CollectionAndDifference<>(value, difference)));
-			return false;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsAll(scope, this, valueAndDifference.getPlain(), name, expected,
-					Pluralizer.ELEMENT).toString());
-		}
-		return self();
-	}
-
-	@Override
-	public S containsAll(T expected)
-	{
-		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAll(asList(expected), null);
-	}
-
-	@Override
-	public S containsAll(T expected, String name)
-	{
-		requireThatNameIsUnique(name).
-			requireThat(expected, name).isNotNull();
-		return containsAll(asList(expected), name);
-	}
-
-	@Override
-	public S doesNotContain(E unwanted)
-	{
-		return doesNotContainImpl(unwanted, MaybeUndefined.undefined());
-	}
-
-	@Override
-	public S doesNotContain(E unwanted, String name)
-	{
-		requireThatNameIsUnique(name).
-			requireThat(unwanted, name).isNotNull();
-		return doesNotContainImpl(unwanted, MaybeUndefined.defined(name));
-	}
-
-	private S doesNotContainImpl(E unwanted, MaybeUndefined<String> name)
-	{
-		if (value.isNull())
-			onNull();
-		switch (value.test(value -> !this.contains(value, unwanted)))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainValue(scope, this, name, unwanted).toString());
-		}
-		return self();
-	}
-
-	@Override
 	public <C extends Collection<E>> S doesNotContainExactly(C unwanted)
 	{
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
@@ -345,8 +249,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		switch (value.test(value -> Difference.actualVsOther(asList(value), unwanted).areDifferent()))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainExactly(scope, this, name, unwanted, Pluralizer.ELEMENT).
-					toString());
+				CollectionMessages.doesNotContainExactly(this, name, unwanted, Pluralizer.ELEMENT).toString());
 		}
 		return self();
 	}
@@ -364,6 +267,49 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		requireThatNameIsUnique(name).
 			requireThat(unwanted, name).isNotNull();
 		return doesNotContainExactly(asList(unwanted), name);
+	}
+
+	@Override
+	public <C extends Collection<E>> S containsAny(C expected)
+	{
+		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
+		return containsAnyImpl(expected, MaybeUndefined.undefined());
+	}
+
+	@Override
+	public <C extends Collection<E>> S containsAny(C expected, String name)
+	{
+		requireThatNameIsUnique(name).
+			requireThat(expected, name).isNotNull();
+		return containsAnyImpl(expected, MaybeUndefined.defined(name));
+	}
+
+	private <C extends Collection<E>> S containsAnyImpl(C expected, MaybeUndefined<String> name)
+	{
+		if (value.isNull())
+			onNull();
+		switch (value.test(value -> !Collections.disjoint(getValueAsSet(value), expected)))
+		{
+			case UNDEFINED, FALSE -> addIllegalArgumentException(
+				CollectionMessages.containsAny(this, value.mapNotNull(this::asList), name, expected,
+					Pluralizer.ELEMENT).toString());
+		}
+		return self();
+	}
+
+	@Override
+	public S containsAny(T expected)
+	{
+		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
+		return containsAny(asList(expected));
+	}
+
+	@Override
+	public S containsAny(T expected, String name)
+	{
+		requireThatNameIsUnique(name).
+			requireThat(expected, name).isNotNull();
+		return containsAny(asList(expected), name);
 	}
 
 	@Override
@@ -398,7 +344,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainAny(scope, this, valueAndDifference.getPlain(), name, unwanted,
+				CollectionMessages.doesNotContainAny(this, valueAndDifference.getPlain(), name, unwanted,
 					Pluralizer.ELEMENT).toString());
 		}
 		return self();
@@ -417,6 +363,59 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		requireThatNameIsUnique(name).
 			requireThat(unwanted, name).isNotNull();
 		return doesNotContainAny(asList(unwanted), name);
+	}
+
+	@Override
+	public <C extends Collection<E>> S containsAll(C expected)
+	{
+		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
+		return containsAllImpl(expected, MaybeUndefined.undefined());
+	}
+
+	@Override
+	public <C extends Collection<E>> S containsAll(C expected, String name)
+	{
+		requireThatNameIsUnique(name).
+			requireThat(expected, name).isNotNull();
+		return containsAllImpl(expected, MaybeUndefined.defined(name));
+	}
+
+	private <C extends Collection<E>> S containsAllImpl(C expected, MaybeUndefined<String> name)
+	{
+		if (value.isNull())
+			onNull();
+		AtomicReference<MaybeUndefined<CollectionAndDifference<T, E>>> valueAndDifference = new AtomicReference<>(
+			MaybeUndefined.undefined());
+		switch (value.test(value ->
+		{
+			Difference<E> difference = Difference.actualVsOther(asList(value), expected);
+			if (difference.onlyInOther().isEmpty())
+				return true;
+			valueAndDifference.setPlain(MaybeUndefined.defined(
+				new CollectionAndDifference<>(value, difference)));
+			return false;
+		}))
+		{
+			case UNDEFINED, FALSE -> addIllegalArgumentException(
+				CollectionMessages.containsAll(this, valueAndDifference.getPlain(), name, expected,
+					Pluralizer.ELEMENT).toString());
+		}
+		return self();
+	}
+
+	@Override
+	public S containsAll(T expected)
+	{
+		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
+		return containsAll(asList(expected), null);
+	}
+
+	@Override
+	public S containsAll(T expected, String name)
+	{
+		requireThatNameIsUnique(name).
+			requireThat(expected, name).isNotNull();
+		return containsAll(asList(expected), name);
 	}
 
 	@Override
@@ -441,8 +440,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		switch (value.test(value -> !getValueAsSet(value).containsAll(unwanted)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainAll(scope, this, value, name, unwanted, Pluralizer.ELEMENT).
-					toString());
+				CollectionMessages.doesNotContainAll(this, value, name, unwanted, Pluralizer.ELEMENT).toString());
 		}
 		return self();
 	}
@@ -479,8 +477,8 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainDuplicates(scope, this, valueAndDuplicates.getPlain(),
-					Pluralizer.ELEMENT).toString());
+				CollectionMessages.doesNotContainDuplicates(this, valueAndDuplicates.getPlain(), Pluralizer.ELEMENT).
+					toString());
 		}
 		return self();
 	}
@@ -502,7 +500,7 @@ public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, 
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.isSorted(scope, this, valueAndSorted.getPlain()).toString());
+				CollectionMessages.isSorted(this, valueAndSorted.getPlain()).toString());
 		}
 		return self();
 	}

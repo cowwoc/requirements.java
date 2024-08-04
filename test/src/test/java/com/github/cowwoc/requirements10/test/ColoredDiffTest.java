@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.XTERM_16_COLORS;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_16_COLORS;
 
 public final class ColoredDiffTest
 {

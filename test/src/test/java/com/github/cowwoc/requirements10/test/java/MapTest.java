@@ -19,7 +19,7 @@ import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class MapTest
@@ -259,8 +259,8 @@ public final class MapTest
 		{
 			Map<String, String> actual = Map.of("key", "value");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").
-				apply(v -> v.keySet().contains("key")).
-				apply(v -> v.values().contains("value"));
+				and(v -> v.keySet().contains("key")).
+				and(v -> v.values().contains("value"));
 		}
 	}
 
@@ -271,8 +271,8 @@ public final class MapTest
 		{
 			Map<String, String> actual = Map.of("key", "value");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").
-				apply(v -> v.keySet().contains("notTheKey")).
-				apply(v -> v.values().contains("value"));
+				and(v -> v.keySet().contains("notTheKey")).
+				and(v -> v.values().contains("value"));
 		}
 	}
 
@@ -283,8 +283,8 @@ public final class MapTest
 		{
 			Map<String, String> actual = Map.of("key", "value");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").
-				apply(v -> v.keySet().contains("key")).
-				apply(v -> v.values().contains("notTheValue"));
+				and(v -> v.keySet().contains("key")).
+				and(v -> v.values().contains("notTheValue"));
 		}
 	}
 

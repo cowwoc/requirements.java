@@ -1,8 +1,6 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.ReentrantStampedLock;
 import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.EqualityMethod;
@@ -10,7 +8,9 @@ import com.github.cowwoc.requirements10.java.GlobalConfiguration;
 import com.github.cowwoc.requirements10.java.MutableStringMappers;
 import com.github.cowwoc.requirements10.java.StringMappers;
 import com.github.cowwoc.requirements10.java.Validators;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.CloseableLock;
+import com.github.cowwoc.requirements10.java.internal.util.ReentrantStampedLock;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +22,16 @@ import java.util.function.Function;
  */
 public abstract class AbstractValidators<S> implements Validators<S>
 {
+	/**
+	 * A function that converts the thrown exception to {@code AssertionError}.
+	 */
+	private static final Function<Throwable, Throwable> CONVERT_TO_ASSERTION_ERROR = t ->
+	{
+		AssertionError replacement = new AssertionError(t.getMessage(), t.getCause());
+		for (Throwable suppressed : t.getSuppressed())
+			replacement.addSuppressed(suppressed);
+		return replacement;
+	};
 	private final ReentrantStampedLock requireThatLock = new ReentrantStampedLock();
 	private final ReentrantStampedLock assumeThatLock = new ReentrantStampedLock();
 	private final ReentrantStampedLock checkIfLock = new ReentrantStampedLock();
@@ -52,22 +62,6 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	public ApplicationScope getScope()
 	{
 		return scope;
-	}
-
-	/**
-	 * Returns a function that converts the thrown exception to {@code AssertionError}.
-	 *
-	 * @return a function that converts the thrown exception to {@code AssertionError}
-	 */
-	private static Function<Throwable, Throwable> convertToAssertionError()
-	{
-		return t ->
-		{
-			AssertionError replacement = new AssertionError(t.getMessage(), t.getCause());
-			for (Throwable suppressed : t.getSuppressed())
-				replacement.addSuppressed(suppressed);
-			return replacement;
-		};
 	}
 
 	/**
@@ -152,7 +146,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 		try (CloseableLock unused = assumeThatLock.write())
 		{
 			this.assumeThatConfiguration = MutableConfiguration.from(configuration).
-				exceptionTransformer(convertToAssertionError()).toImmutable();
+				exceptionTransformer(CONVERT_TO_ASSERTION_ERROR).toImmutable();
 		}
 		try (CloseableLock unused = checkIfLock.write())
 		{

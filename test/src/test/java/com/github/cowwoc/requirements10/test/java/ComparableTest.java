@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.Year;
 import java.util.List;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class ComparableTest

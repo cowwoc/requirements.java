@@ -20,9 +20,9 @@ To get started, add this Maven dependency:
 ```xml
 
 <dependency>
-  <groupId>com.github.cowwoc.requirements</groupId>
-  <artifactId>java</artifactId>
-  <version>10.0</version>
+	<groupId>com.github.cowwoc.requirements</groupId>
+	<artifactId>java</artifactId>
+	<version>10.0</version>
 </dependency>
 ```
 
@@ -38,32 +38,32 @@ import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requir
 
 public final class Cake
 {
-  private byte bitesTaken = 0;
-  private int piecesLeft;
+	private byte bitesTaken = 0;
+	private int piecesLeft;
 
-  public Cake(int piecesLeft)
-  {
-    requireThat(piecesLeft, "piecesLeft").isPositive();
-    this.piecesLeft = piecesLeft;
-  }
+	public Cake(int piecesLeft)
+	{
+		requireThat(piecesLeft, "piecesLeft").isPositive();
+		this.piecesLeft = piecesLeft;
+	}
 
-  public int eat()
-  {
-    ++bitesTaken;
-    assert assumeThat(bitesTaken, "bitesTaken").isNotNegative().elseThrow();
+	public int eat()
+	{
+		++bitesTaken;
+		assert assumeThat(bitesTaken, "bitesTaken").isNotNegative().elseThrow();
 
-    piecesLeft -= ThreadLocalRandom.current().nextInt(5);
+		piecesLeft -= ThreadLocalRandom.current().nextInt(5);
 
-    assert assumeThat(piecesLeft, "piecesLeft").isNotNegative().elseThrow();
-    return piecesLeft;
-  }
+		assert assumeThat(piecesLeft, "piecesLeft").isNotNegative().elseThrow();
+		return piecesLeft;
+	}
 
-  public List<String> getFailures()
-  {
-    return checkIf(bitesTaken, "bitesTaken").isNotNegative().
-      and(checkIf(piecesLeft, "piecesLeft").isGreaterThan(3)).
-      elseGetMessages();
-  }
+	public List<String> getFailures()
+	{
+		return checkIf(bitesTaken, "bitesTaken").isNotNegative().
+			and(checkIf(piecesLeft, "piecesLeft").isGreaterThan(3)).
+			elseGetMessages();
+	}
 }
 ```
 
@@ -84,8 +84,10 @@ If you violate a **class invariant**:
 
 ```java
 Cake cake = new Cake(1_000_000);
-while (true)
-  cake.eat();
+while(true)
+	cake.
+
+eat();
 ```
 
 You'll get:
@@ -99,8 +101,10 @@ If you violate a **postcondition**:
 
 ```java
 Cake cake = new Cake(100);
-while (true)
-  cake.eat();
+while(true)
+	cake.
+
+eat();
 ```
 
 You'll get:
@@ -114,12 +118,19 @@ If you violate **multiple** conditions at once:
 
 ```java
 Cake cake = new Cake(1);
-cake.bitesTaken = -1;
-cake.piecesLeft = 2;
+cake.bitesTaken =-1;
+cake.piecesLeft =2;
 StringJoiner failures = new StringJoiner("\n\n");
-for (String failure : cake.getFailures())
-    failures.add(failure);
-System.out.println(failures);
+for(
+String failure :cake.
+
+getFailures())
+	failures.
+
+add(failure);
+System.out.
+
+println(failures);
 ```
 
 You'll get:
@@ -144,6 +155,8 @@ This library offers the following features:
 * [Multiple validation failures](docs/Features.md#multiple-validation-failures) that report all the errors at
   once
 * [Nested validations](docs/Features.md#nested-validations) that allow you to validate complex objects
+* [Logical operators](docs/Features.md#logical-operators) that allow you to combine the validation of
+  unrelated values
 * [String diff](docs/Features.md#string-diff) that shows the differences between two strings
 * [Performant and robust](docs/Performance.md)
 
@@ -152,28 +165,35 @@ This library offers the following features:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
-* [JavaValidators](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/JavaValidators.html) for custom configurations.
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
+  for method preconditions.
+* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String))
+  for class invariants, method postconditions and private methods.
+* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
+  for multiple failures and customized error handling.
+* [JavaValidators](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/JavaValidators.html)
+  for custom configurations.
 
 The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
 configuration.
 
 * `requireThat()` and `assumeThat()` throw an exception on the first validation failure.
-* `checkIf()` returns multiple validation failures at once. It is more flexible than the others, but its syntax
-is more verbose.
+* `checkIf()` returns multiple validation failures at once. It is more flexible than the others, but its
+  syntax
+  is more verbose.
 
-Thrown exceptions may be configured using [ConfigurationUpdater.exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
+Thrown exceptions may be configured
+using [ConfigurationUpdater.exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/10.0/docs/api/) for more details.
 
 ## Tips
 
-* Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, the checks will get removed.
+* Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, the checks
+  will get removed.
 * Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
   This is the fastest validation approach, ideal for web services.
-* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional. 
+* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
   In other words, favor `assumeThat(value, name)` to `assumeThat(value)`.
 
 ## Third-party libraries and tools

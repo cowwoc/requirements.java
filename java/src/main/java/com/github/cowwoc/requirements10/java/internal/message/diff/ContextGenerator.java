@@ -12,11 +12,9 @@ import com.github.cowwoc.requirements10.java.internal.message.section.StringSect
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.SequencedMap;
 import java.util.function.Function;
@@ -48,10 +46,10 @@ public final class ContextGenerator
 	/**
 	 * {@code true} if exception messages may include a diff that compares actual and expected values.
 	 */
-	private boolean includeDiff;
+	private boolean allowDiff;
 
 	/**
-	 * Creates a ContextGenerator using a custom StringMapper implementation.
+	 * Creates a ContextGenerator.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
@@ -72,18 +70,18 @@ public final class ContextGenerator
 
 		assert (actualName != null) : "actualName may not be null";
 		assert (!actualName.isBlank()) : "name may not be blank";
-		assert (!actualName.contains(":")) : "name may not contain a colon.\n" +
+		assert (!actualName.contains(":")) : "actualName may not contain a colon.\n" +
 			"actualName: " + actualName;
 
 		assert (expectedName != null) : "expectedName may not be null";
 		assert (!expectedName.isBlank()) : "name may not be blank";
-		assert (!expectedName.contains(":")) : "name may not contain a colon.\n" +
+		assert (!expectedName.contains(":")) : "expectedName may not contain a colon.\n" +
 			"expectedName: " + expectedName;
 
 		this.scope = scope;
 		this.configuration = configuration;
 		this.diffGenerator = new DiffGenerator(scope.getGlobalConfiguration().terminalEncoding());
-		this.includeDiff = this.configuration.allowDiff();
+		this.allowDiff = this.configuration.allowDiff();
 		this.actualName = actualName;
 		this.expectedName = expectedName;
 	}
@@ -93,7 +91,6 @@ public final class ContextGenerator
 	 *
 	 * @param value the object representation of the actual value
 	 * @return this
-	 * @throws AssertionError if {@code name} contains whitespace, or is empty
 	 */
 	public ContextGenerator actualValue(Object value)
 	{
@@ -106,7 +103,6 @@ public final class ContextGenerator
 	 *
 	 * @param value the object representation of the expected value
 	 * @return this
-	 * @throws AssertionError if {@code name} contains whitespace, or is empty
 	 */
 	public ContextGenerator expectedValue(Object value)
 	{
@@ -123,7 +119,7 @@ public final class ContextGenerator
 	 */
 	public ContextGenerator allowDiff(boolean allowDiff)
 	{
-		this.includeDiff = allowDiff;
+		this.allowDiff = allowDiff;
 		return this;
 	}
 
@@ -133,10 +129,10 @@ public final class ContextGenerator
 	public List<MessageSection> build()
 	{
 		assert actualValue.isDefined() || expectedValue.isDefined() :
-			"actualValue: " + actualValue + ", expectedValue: " + expectedValue;
+			"actualValue and expectedValue were both undefined";
 
-		if (actualValue.mapDefined(ContextGenerator::isList).orDefault(false) ||
-			(expectedValue.mapDefined(ContextGenerator::isList).orDefault(false)))
+		if (actualValue.mapDefined(v -> v instanceof List).orDefault(false) ||
+			(expectedValue.mapDefined(v -> v instanceof List).orDefault(false)))
 		{
 			return getContextOfList();
 		}
@@ -144,38 +140,22 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * @param value a value
-	 * @return {@code true} if the value is a boolean
-	 */
-	private static boolean isBoolean(Object value)
-	{
-		return value instanceof Boolean;
-	}
-
-	/**
-	 * @param value a value
-	 * @return {@code true} if the value is a list
-	 */
-	private static boolean isList(Object value)
-	{
-		return value instanceof List;
-	}
-
-	/**
-	 * @param actualNameAndValue   the name and value of the actual value
-	 * @param diff                 the difference between the two values (empty if absent)
-	 * @param expectedNameAndValue the name and value of the expected value
+	 * @param actualName    the name of the actual value
+	 * @param actualValue   the value of the actual value
+	 * @param diff          the difference between the two values (empty if absent)
+	 * @param expectedName  the name of the expected value
+	 * @param expectedValue the value of the expected value
 	 * @return the difference between the expected and actual values
 	 */
-	private MessageSection getDiffSection(Entry<String, String> actualNameAndValue, String diff,
-		Entry<String, String> expectedNameAndValue)
+	private MessageSection getDiffSection(String actualName, String actualValue, String diff,
+		String expectedName, String expectedValue)
 	{
 		SequencedMap<String, String> value = LinkedHashMap.newLinkedHashMap(3);
 
-		value.put(actualNameAndValue.getKey(), actualNameAndValue.getValue());
+		value.put(actualName, actualValue);
 		if (!diff.isEmpty())
 			value.put("diff", diff);
-		value.put(expectedNameAndValue.getKey(), expectedNameAndValue.getValue());
+		value.put(expectedName, expectedValue);
 		return new ContextSection(value);
 	}
 
@@ -198,8 +178,6 @@ public final class ContextGenerator
 	 */
 	public List<MessageSection> getContextOfList()
 	{
-		assert actualValue.isDefined() || expectedValue.isDefined() :
-			"actualNameAndValue: " + actualValue + ", expectedNameAndValue: " + expectedValue;
 		Function<Object, List<?>> valueToList = value ->
 		{
 			@SuppressWarnings("unchecked")
@@ -220,8 +198,8 @@ public final class ContextGenerator
 		for (int i = 0; i < maxSize; ++i)
 		{
 			boolean elementsAreEqual = true;
-
 			boolean actualLineExists = i < actualSize;
+
 			String actualNameLine;
 			MaybeUndefined<Object> actualValueLine;
 			if (actualLineExists)
@@ -299,7 +277,7 @@ public final class ContextGenerator
 	private List<MessageSection> getContextOfObjects()
 	{
 		assert actualValue.isDefined() || expectedValue.isDefined() :
-			"actualNameAndValue: " + actualValue + ", expectedNameAndValue: " + expectedValue;
+			"actualValue and expectedValue were both undefined";
 
 		StringMappers stringMappers = configuration.stringMappers();
 		String actualAsString = actualValue.mapDefined(stringMappers::toString).orDefault("");
@@ -312,9 +290,9 @@ public final class ContextGenerator
 		// with fewer lines will be considered undefined on a per-line basis.
 		int numberOfLines = Math.max(lines.getActualLines().size(), lines.getExpectedLines().size());
 		// Don't diff boolean values
-		if (!includeDiff || numberOfLines == 1 ||
-			actualValue.mapDefined(ContextGenerator::isBoolean).orDefault(false) ||
-			expectedValue.mapDefined(ContextGenerator::isBoolean).orDefault(false))
+		if (!allowDiff || numberOfLines == 1 ||
+			actualValue.mapDefined(v -> v instanceof Boolean).orDefault(false) ||
+			expectedValue.mapDefined(v -> v instanceof Boolean).orDefault(false))
 		{
 			return getContextForSingleLine(lines);
 		}
@@ -339,7 +317,7 @@ public final class ContextGenerator
 				continue;
 			}
 
-			String actualValueLine = actualLines.get(i);
+			String actualValueLine = getElementOrEmptyString(actualLines, i);
 			String actualNameLine;
 			if (diffGenerator.isEmpty(actualValueLine))
 				actualNameLine = actualName;
@@ -349,7 +327,6 @@ public final class ContextGenerator
 				if (DiffConstants.EOL_PATTERN.matcher(actualValueLine).find())
 					++actualLineNumber;
 			}
-			Entry<String, String> actualLine = new SimpleImmutableEntry<>(actualNameLine, actualValueLine);
 
 			String diffLine;
 			if (diffLinesExist && !valuesAreEqual)
@@ -357,7 +334,7 @@ public final class ContextGenerator
 			else
 				diffLine = "";
 
-			String expectedValueLine = getExpectedLines(expectedLines, i);
+			String expectedValueLine = getElementOrEmptyString(expectedLines, i);
 			String expectedNameLine;
 			if (diffGenerator.isEmpty(expectedValueLine))
 				expectedNameLine = expectedName;
@@ -372,7 +349,6 @@ public final class ContextGenerator
 				skippedEqualLines = false;
 				context.add(skipEqualLines());
 			}
-			Entry<String, String> expectedLine = new SimpleImmutableEntry<>(expectedNameLine, expectedValueLine);
 
 			if (!context.isEmpty())
 				context.add(new StringSection(""));
@@ -380,19 +356,22 @@ public final class ContextGenerator
 				expectedNameLine).
 				actualValue(actualValueLine).
 				expectedValue(expectedValueLine);
-			context.add(elementGenerator.getDiffSection(actualLine, diffLine, expectedLine));
+			context.add(elementGenerator.getDiffSection(actualNameLine, actualValueLine, diffLine, expectedNameLine,
+				expectedValueLine));
 		}
 		return context;
 	}
 
-	private static String getExpectedLines(List<String> expectedLines, int i)
+	/**
+	 * @param list a list
+	 * @param i    an index
+	 * @return the element at the specified index, or {@code ""} if the index is out of bounds
+	 */
+	private static String getElementOrEmptyString(List<String> list, int i)
 	{
-		String expectedLine;
-		if (expectedLines.size() > i)
-			expectedLine = expectedLines.get(i);
-		else
-			expectedLine = "";
-		return expectedLine;
+		if (list.size() > i)
+			return list.get(i);
+		return "";
 	}
 
 	private List<MessageSection> getContextForSingleLine(DiffResult lines)
@@ -410,8 +389,6 @@ public final class ContextGenerator
 			actualAsString = lines.getActualLines().getFirst();
 			expectedAsString = lines.getExpectedLines().getFirst();
 		}
-		Entry<String, String> actualLine = new SimpleImmutableEntry<>(actualName, actualAsString);
-		Entry<String, String> expectedLine = new SimpleImmutableEntry<>(expectedName, expectedAsString);
 
 		boolean diffLinesExist = !lines.getDiffLines().isEmpty();
 		boolean valuesAreEqual = lines.getEqualLines().getFirst();
@@ -423,13 +400,13 @@ public final class ContextGenerator
 			diffLine = "";
 
 		List<MessageSection> context = new ArrayList<>();
-		context.add(getDiffSection(actualLine, diffLine, expectedLine));
+		context.add(getDiffSection(actualName, actualAsString, diffLine, expectedName, expectedAsString));
 
 		if (!actualValue.equals(expectedValue) && stringRepresentationsAreEqual(lines))
 		{
 			// If the String representation of the values is equal, output getClass(), hashCode(),
 			// or System.identityHashCode() to figure out why they differ.
-			List<MessageSection> optionalContext = new ArrayList<>(compareTypes());
+			List<MessageSection> optionalContext = compareTypes();
 			if (!optionalContext.isEmpty())
 			{
 				context.add(new StringSection(""));
@@ -455,7 +432,7 @@ public final class ContextGenerator
 	private List<MessageSection> compareTypes()
 	{
 		assert actualValue.isDefined() || expectedValue.isDefined() :
-			"actualNameAndValue: " + actualValue + ", expectedNameAndValue: " + expectedValue;
+			"actualValue and expectedValue were both undefined";
 		Object actualValue = this.actualValue.orThrow(AssertionError::new);
 		String actualClassName = getClassName(getClass(actualValue));
 
@@ -515,7 +492,7 @@ public final class ContextGenerator
 		actualValue.ifDefined(value -> result.append(", actualValue: ").append(value));
 		result.append("expectedName: ").append(expectedName);
 		expectedValue.ifDefined(value -> result.append(", expectedValue: ").append(value));
-		result.append(", allowDiff: ").append(includeDiff);
+		result.append(", allowDiff: ").append(allowDiff);
 		return result.toString();
 	}
 }

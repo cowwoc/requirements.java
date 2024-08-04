@@ -4,13 +4,13 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.GenericType;
+import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.ClassMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.ClassValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.ClassValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		switch (value.test(GenericType::isPrimitive))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ClassMessages.isPrimitive(scope, this).toString());
+				ClassMessages.isPrimitive(this).toString());
 		}
 		return this;
 	}
@@ -65,7 +65,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		switch (value.test(value -> value != null && type.isSubtypeOf(value)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ClassMessages.isSupertypeOf(scope, this, type).toString());
+				ClassMessages.isSupertypeOf(this, type).toString());
 		}
 		return assumeExpectedType();
 	}
@@ -83,7 +83,7 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 		switch (value.test(value -> value != null && type.isSupertypeOf(value)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ClassMessages.isSubtypeOf(scope, this, type).toString());
+				ClassMessages.isSubtypeOf(this, type).toString());
 		}
 		return assumeExpectedType();
 	}

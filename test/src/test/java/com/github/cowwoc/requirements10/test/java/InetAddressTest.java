@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.test.java;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -14,7 +13,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class InetAddressTest
 {
@@ -55,60 +54,6 @@ public final class InetAddressTest
 		{
 			InetAddress actual = InetAddress.getByName("1.2.3.4");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isIpV6();
-		}
-	}
-
-	@Test
-	public void asIpAddress_actualIsIpV4()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "1.2.3.4";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").asInetAddress();
-		}
-	}
-
-	@Test
-	public void asIpAddress_actualIsIpV6()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").asInetAddress();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asIpAddress_actualIsInvalidIpV4()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "1.256.3.4";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").asInetAddress();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asIpAddress_actualIsInvalidIpV6()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "0000:0000:0000:0000:0000:0000:192.168.0.1:";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").asInetAddress();
-		}
-	}
-
-	@Test
-	public void fromString()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			String actual = "1.2.3.4";
-			InetAddress actualAsInetAddress = validators.requireThat(actual, "actual").asInetAddress().
-				getValue();
-			validators.requireThat(actualAsInetAddress.toString(), "actualAsInetAddress").
-				isEqualTo("/" + actual);
 		}
 	}
 

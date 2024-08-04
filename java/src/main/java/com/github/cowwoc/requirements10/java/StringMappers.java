@@ -118,7 +118,7 @@ public final class StringMappers
 	 * @param value a {@code String}
 	 * @return the quoted string
 	 */
-	private String quoteString(String value)
+	public static String quoteString(String value)
 	{
 		StringBuilder result = new StringBuilder(value.length() + 16);
 
@@ -130,7 +130,7 @@ public final class StringMappers
 				result.appendCodePoint(codepoint);
 		}
 		result.insert(0, '"');
-		result.insert(result.length(), '"');
+		result.append('"');
 		return result.toString();
 	}
 

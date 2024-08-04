@@ -1,13 +1,13 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.GenericType;
+import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.ObjectValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.ObjectValidator;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		if (!value.isNull())
 		{
 			addIllegalArgumentException(
-				ObjectMessages.isNull(scope, this, name).toString());
+				ObjectMessages.isNull(this).toString());
 		}
 		return self();
 	}
@@ -73,7 +73,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		switch (value.test(value -> value == expected))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isSameReferenceAs(scope, this, MaybeUndefined.defined(name), expected).toString());
+				ObjectMessages.isSameReferenceAs(this, MaybeUndefined.defined(name), expected).toString());
 		}
 		return self();
 	}
@@ -85,7 +85,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		switch (value.test(value -> value != unwanted))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotSameReferenceAs(scope, this, MaybeUndefined.defined(name), unwanted).toString());
+				ObjectMessages.isNotSameReferenceAs(this, MaybeUndefined.defined(name), unwanted).toString());
 		}
 		return self();
 	}
@@ -103,7 +103,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		switch (value.test(expected::isTypeOf))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isInstanceOf(scope, this, expected).toString());
+				ObjectMessages.isInstanceOf(this, expected).toString());
 		}
 		return assumeExpectedType();
 	}
@@ -121,7 +121,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		switch (value.test(v -> !unwanted.isTypeOf(v)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotInstanceOf(scope, this, unwanted).toString());
+				ObjectMessages.isNotInstanceOf(this, unwanted).toString());
 		}
 		return self();
 	}
@@ -144,7 +144,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		switch (value.test(value -> getEqualityFunction().apply(value, expected)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.compareValues(scope, this, "must be equal to", name, expected).toString());
+				ObjectMessages.compareValues(this, "must be equal to", name, expected).toString());
 		}
 		return self();
 	}
@@ -167,7 +167,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		switch (value.test(value -> !getEqualityFunction().apply(value, unwanted)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(scope, this, name, unwanted).toString());
+				ComparableMessages.isNotEqualTo(this, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -187,6 +187,6 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	@Override
 	protected void onNull()
 	{
-		addNullPointerException(ObjectMessages.isNotNull(scope, this).toString());
+		addNullPointerException(ObjectMessages.isNotNull(this).toString());
 	}
 }

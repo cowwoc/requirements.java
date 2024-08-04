@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class MultimapTest
@@ -254,8 +254,8 @@ public final class MultimapTest
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").
-				apply(v -> v.keySet().contains("key")).
-				apply(v -> v.values().contains("value"));
+				and(v -> v.keySet().contains("key")).
+				and(v -> v.values().contains("value"));
 		}
 	}
 
@@ -266,8 +266,8 @@ public final class MultimapTest
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").
-				apply(v -> v.keySet().contains("notTheKey")).
-				apply(v -> v.values().contains("value"));
+				and(v -> v.keySet().contains("notTheKey")).
+				and(v -> v.values().contains("value"));
 		}
 	}
 
@@ -278,8 +278,8 @@ public final class MultimapTest
 		{
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").
-				apply(v -> v.keySet().contains("key")).
-				apply(v -> v.values().contains("notTheValue"));
+				and(v -> v.keySet().contains("key")).
+				and(v -> v.values().contains("notTheValue"));
 		}
 	}
 }

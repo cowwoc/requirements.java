@@ -7,13 +7,14 @@ import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl.DEFAULT_NAME;
 
 public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	implements JacksonValidators
@@ -57,7 +58,7 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	@Override
 	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value)
 	{
-		return assumeThat(value, AbstractValidator.DEFAULT_NAME);
+		return assumeThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	@Override
 	public <T extends JsonNode> JsonNodeValidator<T> checkIf(T value)
 	{
-		return checkIf(value, AbstractValidator.DEFAULT_NAME);
+		return checkIf(value, DEFAULT_NAME);
 	}
 
 	private <T extends JsonNode> JsonNodeValidator<T> newInstance(T value, String name,

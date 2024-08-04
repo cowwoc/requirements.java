@@ -12,6 +12,9 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
     * Renamed `Configuration.mayDiff()` to `allowDiff()`.
     * Parameter names may not contain whitespace (previously only leading or trailing whitespace was
       disallowed).
+    * Moved `com.github.cowwoc.requirements10.java.terminal.TerminalEncoding`
+      to `com.github.cowwoc.requirements10.java.TerminalEncoding`.
+    * Renamed `Validator.apply()` to `Validator.validate()`.
 * New features:
     * Added `GenericType` to represent types with type parameters.
     * Added `ClassValidator.isPrimitive()`.

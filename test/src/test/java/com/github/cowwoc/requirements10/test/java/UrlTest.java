@@ -14,7 +14,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import static com.github.cowwoc.requirements10.java.terminal.TerminalEncoding.NONE;
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class UrlTest
@@ -36,29 +36,6 @@ public final class UrlTest
 		{
 			URL actual = URI.create("http://host.com/").toURL();
 			new TestValidatorsImpl(scope).requireThat(actual, "");
-		}
-	}
-
-	@Test
-	public void fromString()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "http://host.com/index.html";
-			URL actualAsUrl = new TestValidatorsImpl(scope).requireThat(actual, "actual").asUrl().getValue();
-			assert (actualAsUrl.toString().equals(actual)) : "actualAsUrl: " + actualAsUrl + ", actual: " + actual;
-		}
-	}
-
-	@Test
-	public void asUrl()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "http://host.com/index.html";
-			URI actualAsUri = new TestValidatorsImpl(scope).requireThat(actual, "actual").asUrl().asUri().
-				getValue();
-			assert (actualAsUri.toString().equals(actual)) : "actualAsUri: " + actualAsUri + ", actual: " + actual;
 		}
 	}
 
