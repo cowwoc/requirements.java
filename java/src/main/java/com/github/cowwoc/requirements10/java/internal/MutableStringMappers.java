@@ -1,4 +1,4 @@
-package com.github.cowwoc.requirements10.java;
+package com.github.cowwoc.requirements10.java.internal;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
 

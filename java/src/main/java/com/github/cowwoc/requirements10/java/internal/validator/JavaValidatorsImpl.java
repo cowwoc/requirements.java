@@ -1,9 +1,9 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.GenericType;
-import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
@@ -12,11 +12,11 @@ import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
 import com.github.cowwoc.requirements10.java.validator.ByteValidator;
 import com.github.cowwoc.requirements10.java.validator.CharacterValidator;
-import com.github.cowwoc.requirements10.java.validator.ClassValidator;
 import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 import com.github.cowwoc.requirements10.java.validator.ComparableValidator;
 import com.github.cowwoc.requirements10.java.validator.DoubleValidator;
 import com.github.cowwoc.requirements10.java.validator.FloatValidator;
+import com.github.cowwoc.requirements10.java.validator.GenericTypeValidator;
 import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
 import com.github.cowwoc.requirements10.java.validator.IntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.ListValidator;
@@ -309,13 +309,13 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public <T> ClassValidator<T> requireThat(Class<T> value, String name)
+	public <T> GenericTypeValidator<T> requireThat(Class<T> value, String name)
 	{
 		return newInstance(value, name, configuration());
 	}
 
 	@Override
-	public <T> ClassValidator<T> requireThat(GenericType<T> value, String name)
+	public <T> GenericTypeValidator<T> requireThat(GenericType<T> value, String name)
 	{
 		return newInstance(value, name, configuration());
 	}
@@ -333,483 +333,483 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public PrimitiveByteValidator assumeThat(byte value, String name)
+	public PrimitiveByteValidator assertThat(byte value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveByteValidator assumeThat(byte value)
+	public PrimitiveByteValidator assertThat(byte value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public ByteValidator assumeThat(Byte value, String name)
+	public ByteValidator assertThat(Byte value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public ByteValidator assumeThat(Byte value)
+	public ByteValidator assertThat(Byte value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveShortValidator assumeThat(short value, String name)
+	public PrimitiveShortValidator assertThat(short value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveShortValidator assumeThat(short value)
+	public PrimitiveShortValidator assertThat(short value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public ShortValidator assumeThat(Short value, String name)
+	public ShortValidator assertThat(Short value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public ShortValidator assumeThat(Short value)
+	public ShortValidator assertThat(Short value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveIntegerValidator assumeThat(int value, String name)
+	public PrimitiveIntegerValidator assertThat(int value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveIntegerValidator assumeThat(int value)
+	public PrimitiveIntegerValidator assertThat(int value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public IntegerValidator assumeThat(Integer value, String name)
+	public IntegerValidator assertThat(Integer value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public IntegerValidator assumeThat(Integer value)
+	public IntegerValidator assertThat(Integer value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveLongValidator assumeThat(long value, String name)
+	public PrimitiveLongValidator assertThat(long value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveLongValidator assumeThat(long value)
+	public PrimitiveLongValidator assertThat(long value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public LongValidator assumeThat(Long value, String name)
+	public LongValidator assertThat(Long value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public LongValidator assumeThat(Long value)
+	public LongValidator assertThat(Long value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveFloatValidator assumeThat(float value, String name)
+	public PrimitiveFloatValidator assertThat(float value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveFloatValidator assumeThat(float value)
+	public PrimitiveFloatValidator assertThat(float value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public FloatValidator assumeThat(Float value, String name)
+	public FloatValidator assertThat(Float value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public FloatValidator assumeThat(Float value)
+	public FloatValidator assertThat(Float value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveDoubleValidator assumeThat(double value, String name)
+	public PrimitiveDoubleValidator assertThat(double value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveDoubleValidator assumeThat(double value)
+	public PrimitiveDoubleValidator assertThat(double value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public DoubleValidator assumeThat(Double value, String name)
+	public DoubleValidator assertThat(Double value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public DoubleValidator assumeThat(Double value)
+	public DoubleValidator assertThat(Double value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveBooleanValidator assumeThat(boolean value, String name)
+	public PrimitiveBooleanValidator assertThat(boolean value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveBooleanValidator assumeThat(boolean value)
+	public PrimitiveBooleanValidator assertThat(boolean value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public BooleanValidator assumeThat(Boolean value, String name)
+	public BooleanValidator assertThat(Boolean value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public BooleanValidator assumeThat(Boolean value)
+	public BooleanValidator assertThat(Boolean value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveCharacterValidator assumeThat(char value, String name)
+	public PrimitiveCharacterValidator assertThat(char value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveCharacterValidator assumeThat(char value)
+	public PrimitiveCharacterValidator assertThat(char value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public CharacterValidator assumeThat(Character value, String name)
+	public CharacterValidator assertThat(Character value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public CharacterValidator assumeThat(Character value)
+	public CharacterValidator assertThat(Character value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public BigIntegerValidator assumeThat(BigInteger value, String name)
+	public BigIntegerValidator assertThat(BigInteger value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public BigIntegerValidator assumeThat(BigInteger value)
+	public BigIntegerValidator assertThat(BigInteger value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public BigDecimalValidator assumeThat(BigDecimal value, String name)
+	public BigDecimalValidator assertThat(BigDecimal value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public BigDecimalValidator assumeThat(BigDecimal value)
+	public BigDecimalValidator assertThat(BigDecimal value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value, String name)
+	public <T extends Comparable<T>> ComparableValidator<T> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value)
+	public <T extends Comparable<T>> ComparableValidator<T> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> ObjectValidator<T> assumeThat(T value, String name)
+	public <T> ObjectValidator<T> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> ObjectValidator<T> assumeThat(T value)
+	public <T> ObjectValidator<T> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value, String name)
+	public <T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value)
+	public <T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends List<E>, E> ListValidator<T, E> assumeThat(T value, String name)
+	public <T extends List<E>, E> ListValidator<T, E> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends List<E>, E> ListValidator<T, E> assumeThat(T value)
+	public <T extends List<E>, E> ListValidator<T, E> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator assumeThat(byte[] value, String name)
+	public PrimitiveByteArrayValidator assertThat(byte[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator assumeThat(byte[] value)
+	public PrimitiveByteArrayValidator assertThat(byte[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator assumeThat(short[] value, String name)
+	public PrimitiveShortArrayValidator assertThat(short[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator assumeThat(short[] value)
+	public PrimitiveShortArrayValidator assertThat(short[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator assumeThat(int[] value, String name)
+	public PrimitiveIntegerArrayValidator assertThat(int[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator assumeThat(int[] value)
+	public PrimitiveIntegerArrayValidator assertThat(int[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator assumeThat(long[] value, String name)
+	public PrimitiveLongArrayValidator assertThat(long[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator assumeThat(long[] value)
+	public PrimitiveLongArrayValidator assertThat(long[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator assumeThat(float[] value, String name)
+	public PrimitiveFloatArrayValidator assertThat(float[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator assumeThat(float[] value)
+	public PrimitiveFloatArrayValidator assertThat(float[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator assumeThat(double[] value, String name)
+	public PrimitiveDoubleArrayValidator assertThat(double[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator assumeThat(double[] value)
+	public PrimitiveDoubleArrayValidator assertThat(double[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator assumeThat(boolean[] value, String name)
+	public PrimitiveBooleanArrayValidator assertThat(boolean[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator assumeThat(boolean[] value)
+	public PrimitiveBooleanArrayValidator assertThat(boolean[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator assumeThat(char[] value, String name)
+	public PrimitiveCharacterArrayValidator assertThat(char[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator assumeThat(char[] value)
+	public PrimitiveCharacterArrayValidator assertThat(char[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <E> ObjectArrayValidator<E[], E> assumeThat(E[] value, String name)
+	public <E> ObjectArrayValidator<E[], E> assertThat(E[] value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <E> ObjectArrayValidator<E[], E> assumeThat(E[] value)
+	public <E> ObjectArrayValidator<E[], E> assertThat(E[] value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value, String name)
+	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value)
+	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PathValidator assumeThat(Path value, String name)
+	public PathValidator assertThat(Path value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PathValidator assumeThat(Path value)
+	public PathValidator assertThat(Path value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public StringValidator assumeThat(String value, String name)
+	public StringValidator assertThat(String value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public StringValidator assumeThat(String value)
+	public StringValidator assertThat(String value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public UriValidator assumeThat(URI value, String name)
+	public UriValidator assertThat(URI value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public UriValidator assumeThat(URI value)
+	public UriValidator assertThat(URI value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public UrlValidator assumeThat(URL value, String name)
+	public UrlValidator assertThat(URL value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public UrlValidator assumeThat(URL value)
+	public UrlValidator assertThat(URL value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(Class<T> value, String name)
+	public <T> GenericTypeValidator<T> assertThat(Class<T> value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(GenericType<T> value, String name)
+	public <T> GenericTypeValidator<T> assertThat(GenericType<T> value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(Class<T> value)
+	public <T> GenericTypeValidator<T> assertThat(Class<T> value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(GenericType<T> value)
+	public <T> GenericTypeValidator<T> assertThat(GenericType<T> value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> OptionalValidator<T> assumeThat(Optional<T> value, String name)
+	public <T> OptionalValidator<T> assertThat(Optional<T> value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> OptionalValidator<T> assumeThat(Optional<T> value)
+	public <T> OptionalValidator<T> assertThat(Optional<T> value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public InetAddressValidator assumeThat(InetAddress value, String name)
+	public InetAddressValidator assertThat(InetAddress value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public InetAddressValidator assumeThat(InetAddress value)
+	public InetAddressValidator assertThat(InetAddress value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1245,25 +1245,25 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(Class<T> value, String name)
+	public <T> GenericTypeValidator<T> checkIf(Class<T> value, String name)
 	{
 		return newInstance(value, name, getCheckIfConfiguration());
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(GenericType<T> value, String name)
+	public <T> GenericTypeValidator<T> checkIf(GenericType<T> value, String name)
 	{
 		return newInstance(value, name, getCheckIfConfiguration());
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(Class<T> value)
+	public <T> GenericTypeValidator<T> checkIf(Class<T> value)
 	{
 		return checkIf(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(GenericType<T> value)
+	public <T> GenericTypeValidator<T> checkIf(GenericType<T> value)
 	{
 		return checkIf(value, DEFAULT_NAME);
 	}
@@ -1525,14 +1525,15 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 			newValidatorContext(), newValidatorFailures());
 	}
 
-	private <T> ClassValidator<T> newInstance(Class<T> value, String name, Configuration configuration)
+	private <T> GenericTypeValidator<T> newInstance(Class<T> value, String name, Configuration configuration)
 	{
 		return newInstance(GenericType.from(value), name, configuration);
 	}
 
-	private <T> ClassValidator<T> newInstance(GenericType<T> value, String name, Configuration configuration)
+	private <T> GenericTypeValidator<T> newInstance(GenericType<T> value, String name,
+		Configuration configuration)
 	{
-		return new ClassValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new GenericTypeValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 

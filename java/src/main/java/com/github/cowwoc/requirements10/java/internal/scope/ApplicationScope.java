@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements10.java.internal.scope;
 
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
-import com.github.cowwoc.requirements10.java.JavaValidators;
+import com.github.cowwoc.requirements10.java.internal.JavaValidators;
 
 /**
  * The configuration of an application. A process may contain multiple applications.

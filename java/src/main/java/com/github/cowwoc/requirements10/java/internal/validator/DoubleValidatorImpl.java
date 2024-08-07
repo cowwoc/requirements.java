@@ -5,7 +5,7 @@
  package com.github.cowwoc.requirements10.java.internal.validator;
 
  import com.github.cowwoc.requirements10.java.validator.DoubleValidator;
- import com.github.cowwoc.requirements10.java.Configuration;
+ import com.github.cowwoc.requirements10.java.internal.Configuration;
  import com.github.cowwoc.requirements10.java.ValidationFailure;
  import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
  import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;

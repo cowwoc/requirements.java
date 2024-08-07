@@ -4,9 +4,9 @@
  */
 package com.github.cowwoc.requirements10.test.java.internal.util;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
 import com.github.cowwoc.requirements10.test.TestValidators;
@@ -17,9 +17,9 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 import static com.github.cowwoc.requirements10.java.internal.util.Exceptions.LIBRARY_PACKAGE;
 import static com.github.cowwoc.requirements10.java.internal.util.Exceptions.TEST_PACKAGE;
-import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class ExceptionsTest
 {
@@ -32,7 +32,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
-					lazyExceptions(false);
+					recordStacktrace(false);
 			}
 
 			try
@@ -57,7 +57,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(true).
-					lazyExceptions(false);
+					recordStacktrace(false);
 			}
 
 			try
@@ -129,7 +129,7 @@ public final class ExceptionsTest
 	}
 
 	@Test
-	public void eagerExceptions()
+	public void recordStacktrace()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -137,7 +137,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
-					lazyExceptions(false);
+					recordStacktrace(true);
 			}
 
 			try
@@ -152,7 +152,7 @@ public final class ExceptionsTest
 				for (ValidationFailure failure : e.getFailures())
 				{
 					Throwable exception = failure.getException();
-					if (Exceptions.contains(exception, "isNotNull"))
+					if (Exceptions.stacktraceContains(exception, "isNotNull"))
 					{
 						isNotNullFound = true;
 						break;
@@ -162,7 +162,7 @@ public final class ExceptionsTest
 				for (ValidationFailure failure : e.getFailures())
 				{
 					Throwable exception = failure.getException();
-					if (Exceptions.contains(exception, "isNotNull"))
+					if (Exceptions.stacktraceContains(exception, "isNotNull"))
 					{
 						isLessThanFound = true;
 						break;
@@ -183,7 +183,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
-					lazyExceptions(true);
+					recordStacktrace(true);
 			}
 
 			try
@@ -223,7 +223,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(true).
-					lazyExceptions(true);
+					recordStacktrace(true);
 			}
 
 			try
@@ -262,7 +262,7 @@ public final class ExceptionsTest
 			TestValidators validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				configurationUpdater.lazyExceptions(true);
+				configurationUpdater.recordStacktrace(true);
 			}
 
 			List<String> messages = validators.checkIf((Object) null, "actual").isNotNull().

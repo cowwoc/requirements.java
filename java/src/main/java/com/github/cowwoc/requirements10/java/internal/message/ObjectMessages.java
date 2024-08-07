@@ -1,7 +1,7 @@
 package com.github.cowwoc.requirements10.java.internal.message;
 
 import com.github.cowwoc.requirements10.java.GenericType;
-import com.github.cowwoc.requirements10.java.StringMappers;
+import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;

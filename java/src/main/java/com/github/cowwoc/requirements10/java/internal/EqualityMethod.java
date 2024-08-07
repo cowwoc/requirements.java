@@ -1,4 +1,4 @@
-package com.github.cowwoc.requirements10.java;
+package com.github.cowwoc.requirements10.java.internal;
 
 /**
  * The method used to check whether two values are equal.

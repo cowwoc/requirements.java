@@ -1,14 +1,17 @@
-package com.github.cowwoc.requirements10.guava;
+package com.github.cowwoc.requirements10.guava.internal;
 
+import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.google.common.collect.Multimap;
 
 /**
- * Creates validators for the Guava API, throwing an exception if a failure occurs.
+ * Creates validators for the Guava API that throw exceptions immediately on validation failure.
  */
 public interface GuavaRequireThat
 {
 	/**
 	 * Validates the state of a {@code Multimap}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <K>   the type of keys in the {@code Multimap}
 	 * @param <V>   the type of values in the {@code Multimap}

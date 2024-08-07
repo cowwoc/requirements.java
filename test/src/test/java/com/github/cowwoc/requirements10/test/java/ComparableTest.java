@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements10.test.java;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.EqualityMethod;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.EqualityMethod;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;

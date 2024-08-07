@@ -1,6 +1,6 @@
 package com.github.cowwoc.requirements10.java.validator;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.util.Exceptions;

@@ -1,9 +1,9 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 /**
  * Validates the state of a value, recording failures without throwing an exception.
@@ -30,8 +29,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 {
 	public static final Supplier<IllegalStateException> VALUE_IS_UNDEFINED = () ->
 		new IllegalStateException("value is undefined");
-	private static final Pattern CONTAINS_WHITESPACE = Pattern.compile(".*\\s.*",
-		Pattern.UNICODE_CHARACTER_CLASS);
 	/**
 	 * The application configuration.
 	 */
@@ -79,7 +76,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 			throw new NullPointerException("name may not be null");
 		if (name.isEmpty())
 			throw new IllegalArgumentException("name may not be empty");
-		if (CONTAINS_WHITESPACE.matcher(name).matches())
+		if (containsWhitespace(name))
 		{
 			throw new IllegalArgumentException("name may not contain whitespace.\n" +
 				"actual: \"" + name + "\"");
@@ -94,6 +91,24 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		this.value = value;
 		this.context = context;
 		this.failures = failures;
+	}
+
+	/**
+	 * @param value a string
+	 * @return {@code true} if the value contains any whitespace characters
+	 */
+	private static boolean containsWhitespace(String value)
+	{
+		int length = value.length();
+		if (length == 0)
+			return true;
+		for (int i = 0; i < length; ++i)
+		{
+			int codepoint = value.codePointAt(i);
+			if (Character.isWhitespace(codepoint))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -426,7 +441,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	{
 		JavaValidators internalValidators = scope.getInternalValidators();
 		internalValidators.requireThat(name, "name").isNotEmpty();
-		if (CONTAINS_WHITESPACE.matcher(name).matches())
+		if (containsWhitespace(name))
 			throw new IllegalArgumentException("name may not contain whitespace");
 
 		if (name.equals(this.name))
@@ -458,21 +473,4 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	 * Invoked by a validation if the value is null. Sets the value to {@code undefined}.
 	 */
 	protected abstract void onNull();
-
-	/**
-	 * Creates a new validator.
-	 *
-	 * @param <T> the type of value to validate
-	 * @param <S> the type of validator to create
-	 */
-	protected interface ValidatorFactory<T, S>
-	{
-		/**
-		 * Creates a new validator.
-		 *
-		 * @param value the value to validate
-		 * @return the new validator
-		 */
-		S apply(MaybeUndefined<T> value);
-	}
 }

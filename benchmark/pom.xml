@@ -53,6 +53,9 @@
 							<key>false</key>
 						</property>
 					</properties>
+					<systemPropertyVariables>
+						<!--						<FAST_ESTIMATE>true</FAST_ESTIMATE>-->
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<!-- Tests don't publish artifacts -->

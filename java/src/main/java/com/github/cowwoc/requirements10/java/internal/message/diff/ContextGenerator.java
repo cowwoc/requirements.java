@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements10.java.internal.message.diff;
 
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.StringMappers;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.ContextSection;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageSection;
 import com.github.cowwoc.requirements10.java.internal.message.section.StringSection;

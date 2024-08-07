@@ -1,11 +1,12 @@
 package com.github.cowwoc.requirements10.java;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * A factory that creates different types of validators.
@@ -13,20 +14,9 @@ import java.util.function.Function;
  * There are three kinds of validators:
  * <ul>
  *   <li>{@code requireThat()} for method preconditions.</li>
- *   <li>{@code assumeThat()} for class invariants, and method postconditions.</li>
- *   <li>{@code checkIf()} for method preconditions, class invariants and method postconditions.</li>
+ *   <li>{@code assertThat()} for class invariants, and method postconditions.</li>
+ *   <li>{@code checkIf()} for returning multiple validation failures.</li>
  * </ul>
- * <p>
- * {@code requireThat()} and {@code assumeThat()} throw an exception on the first validation failure,
- * while {@code checkIf()} collects multiple validation failures before throwing an exception at the end.
- * {@code checkIf()} is more flexible than the others, but its syntax is more verbose.
- * <p>
- * Exceptions that are thrown in response to invalid method arguments (e.g.
- * {@code isGreaterThan(value, null)}) are thrown by all validators and cannot be configured. Exceptions that
- * are thrown in response to the value failing a validation check, e.g. {@code isGreaterThan(5)} on a value
- * of 0 are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
- * without being thrown. The type of thrown exceptions is configurable using
- * {@link ConfigurationUpdater#exceptionTransformer(Function)}.
  *
  * @param <S> the type of the validator factory
  */

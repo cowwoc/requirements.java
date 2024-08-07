@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements10.java;
+package com.github.cowwoc.requirements10.java.internal;
 
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
@@ -21,7 +21,7 @@ public final class Configuration
 	private final boolean cleanStackTrace;
 	private final boolean allowDiff;
 	private final EqualityMethod equalityMethod;
-	private final boolean lazyExceptions;
+	private final boolean recordStacktrace;
 	private final boolean throwOnFailure;
 	private final Function<Throwable, ? extends Throwable> exceptionTransformer;
 
@@ -31,8 +31,9 @@ public final class Configuration
 	 * <li>Has an empty context.</li>
 	 * <li>Throws an exception on failure.</li>
 	 * <li>Uses {@link Object#equals(Object)} to determine whether two objects are equal.</li>
+	 * <li>Records the exception stack trace when a validation failure occurs.</li>
 	 * <li>Excludes this library from exception stack traces.</li>
-	 * <li>Constructs exceptions lazily.</li>
+	 * <li>Record a stack trace when a failure occurs.</li>
 	 * <li>May include a diff that compares the actual and expected values.</li>
 	 * </ul>
 	 */
@@ -42,7 +43,7 @@ public final class Configuration
 		this.allowDiff = true;
 		this.equalityMethod = EqualityMethod.OBJECT;
 		this.throwOnFailure = true;
-		this.lazyExceptions = true;
+		this.recordStacktrace = true;
 		this.exceptionTransformer = t -> t;
 		this.stringMappers = StringMappers.DEFAULT;
 	}
@@ -55,16 +56,19 @@ public final class Configuration
 	 *                             and expected values
 	 * @param equalityMethod       the equality method that determines whether two values are equivalent
 	 * @param stringMappers        the configuration used to map contextual values to a String
-	 * @param lazyExceptions       {@code true} if exception creation may be deferred until the user invokes
-	 *                             {@link ValidatorComponent#elseGetException()}. The exception matches the
-	 *                             original failure, but the stack trace points to {@code elseGetException()} as
-	 *                             the cause.
+	 * @param recordStacktrace     {@code true} if the exception stack trace must be recorded when a validation
+	 *                             failure occurs. If * {@code false}, the exception type remains the same, but
+	 *                             the stack trace points to the invocation of * {@code elseGetException()}.
+	 *                             Users who only plan to
+	 *                             {@link ValidatorComponent#elseGetMessages() list of failure messages} instead
+	 *                             of retrieving an exception * may see a performance improvement if this value
+	 *                             is set to {@code false}.
 	 * @param throwOnFailure       {@code true} if an exception is thrown on validation failure
 	 * @param exceptionTransformer a function that transforms the validation exception before it is thrown or
 	 *                             returned
 	 */
 	public Configuration(boolean cleanStackTrace, boolean allowDiff, EqualityMethod equalityMethod,
-		StringMappers stringMappers, boolean lazyExceptions, boolean throwOnFailure,
+		StringMappers stringMappers, boolean recordStacktrace, boolean throwOnFailure,
 		Function<Throwable, ? extends Throwable> exceptionTransformer)
 	{
 		if (equalityMethod == null)
@@ -77,7 +81,7 @@ public final class Configuration
 		this.allowDiff = allowDiff;
 		this.equalityMethod = equalityMethod;
 		this.stringMappers = stringMappers;
-		this.lazyExceptions = lazyExceptions;
+		this.recordStacktrace = recordStacktrace;
 		this.throwOnFailure = throwOnFailure;
 		this.exceptionTransformer = exceptionTransformer;
 	}
@@ -125,17 +129,16 @@ public final class Configuration
 	}
 
 	/**
-	 * Returns {@code true} if exception creation may be deferred until the user invokes
-	 * {@link ValidatorComponent#elseGetException()}. The exception type remains the same, but the stack trace
-	 * points to {@code elseGetException()} as the cause. By deferring the exception creation, you can improve
-	 * the performance if you only need a {@link ValidatorComponent#elseGetMessages() list of failure messages}
-	 * instead of a full exception.
+	 * Returns {@code true} if exception stack traces should reference the code that triggers a validation
+	 * failure. When set to {@code false}, the exception type remains unchanged, but the stack trace location is
+	 * undefined. Users who only plan to {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * instead of exceptions may experience a performance improvement if this value is set to {@code false}.
 	 *
-	 * @return {@code true} if exceptions may be created on demand instead of when a validation failure occurs
+	 * @return {@code true} if exceptions must be recorded when a validation failure occurs
 	 */
-	public boolean lazyExceptions()
+	public boolean recordStacktrace()
 	{
-		return lazyExceptions;
+		return recordStacktrace;
 	}
 
 	/**
@@ -173,7 +176,7 @@ public final class Configuration
 		hash = 23 * hash + Boolean.hashCode(allowDiff);
 		hash = 23 * hash + equalityMethod.hashCode();
 		hash = 23 * hash + stringMappers.hashCode();
-		hash = 23 * hash + Boolean.hashCode(lazyExceptions);
+		hash = 23 * hash + Boolean.hashCode(recordStacktrace);
 		hash = 23 * hash + Boolean.hashCode(throwOnFailure);
 		return 23 * hash + exceptionTransformer.hashCode();
 	}
@@ -187,7 +190,7 @@ public final class Configuration
 			return false;
 		return other.cleanStackTrace == cleanStackTrace && other.allowDiff == allowDiff &&
 			other.equalityMethod == equalityMethod && other.stringMappers.equals(stringMappers) &&
-			other.lazyExceptions == lazyExceptions() && other.throwOnFailure == throwOnFailure &&
+			other.recordStacktrace == recordStacktrace() && other.throwOnFailure == throwOnFailure &&
 			other.exceptionTransformer == exceptionTransformer;
 	}
 
@@ -196,7 +199,7 @@ public final class Configuration
 	{
 		return "cleanStackTrace: " + cleanStackTrace + ", allowDiff: " + allowDiff +
 			", equalityMethod: " + equalityMethod + ", stringMappers: " + stringMappers +
-			", lazyExceptions: " + lazyExceptions + ", throwOnFailure:" + throwOnFailure +
+			", recordStacktrace: " + recordStacktrace + ", throwOnFailure:" + throwOnFailure +
 			", exceptionTransformer: " + exceptionTransformer;
 	}
 }

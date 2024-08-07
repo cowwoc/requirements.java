@@ -1,10 +1,10 @@
 package com.github.cowwoc.requirements10.jackson.internal.validator;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.cowwoc.requirements10.jackson.JacksonValidators;
-import com.github.cowwoc.requirements10.jackson.JsonNodeValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.jackson.internal.JacksonValidators;
+import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
@@ -50,15 +50,15 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	}
 
 	@Override
-	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value, String name)
+	public <T extends JsonNode> JsonNodeValidator<T> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value)
+	public <T extends JsonNode> JsonNodeValidator<T> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override

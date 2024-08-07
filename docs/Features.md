@@ -97,7 +97,7 @@ java.lang.NullPointerException: Actual may not be null
 
 ## Assertion support
 
-This library is compatible with the `assert` keyword.
+This library is compatible with Java assertions.
 
 If you need to run in a high performance, zero allocation environment (to reduce latency and jitter) look no
 further than the following design pattern:
@@ -107,11 +107,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.that;
+
 public class Person
 {
   public void eatLunch()
   {
-    assert assumeThat("time", LocalDateTime.now().getHour()).isAfter("noon", 12).elseThrow();
+    assert that("time", LocalDateTime.now().getHour()).isAfter("noon", 12).elseThrow();
   }
 }
 ```

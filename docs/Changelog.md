@@ -6,23 +6,18 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 * Breaking changes:
     * Module and package names now contain a major version number
       per: https://www.reddit.com/r/java/comments/1dxbag2/comment/lc63gz1/
-    * Removed `MutableStringMappers.toString(Object)`. Use `StringMappers.toString(Object)` instead.
-    * `StringMapper.apply(object)` now takes a second parameter: `StringMapper.apply(object, seen)`.
-    * Moved `com.github.cowwoc.requirements.java.type` to `com.github.cowwoc.requirements.java.validator`.
-    * Renamed `Configuration.mayDiff()` to `allowDiff()`.
     * Parameter names may not contain whitespace (previously only leading or trailing whitespace was
       disallowed).
+    * Validators are no longer configurable. This functionality can be restored on demand.
     * Moved `com.github.cowwoc.requirements10.java.terminal.TerminalEncoding`
       to `com.github.cowwoc.requirements10.java.TerminalEncoding`.
-    * Renamed `Validator.apply()` to `Validator.validate()`.
+    * Added `GenericType` to represent types with type parameters. `ClassValidator` was replaced
+      by `GenericTypeValidator`.
 * New features:
-    * Added `GenericType` to represent types with type parameters.
-    * Added `ClassValidator.isPrimitive()`.
+    * Added `GenerictypeValidator.isPrimitive()`.
     * Added `validationFailed()` and `getValueOrDefault()` to all validators.
-    * Added `Validators.updateConfiguration(Consumer<ConfigurationUpdater>)` to update the configuration
-      fluently: `validators.updateConfiguration(c -> c.withDiff())`.
 * Improvements
-    * If `checkIf()` fails due to a null value, the validation that could not be run is also reported.
+    * If `checkIf()` cannot run validations due to a null value, the expected conditions are still reported.
 
 ## Version 9.0.0 - 2024/05/23
 

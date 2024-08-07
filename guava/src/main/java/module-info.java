@@ -18,4 +18,6 @@ module com.github.cowwoc.requirements10.guava
 
 	exports com.github.cowwoc.requirements10.guava;
 	exports com.github.cowwoc.requirements10.guava.internal.validator to com.github.cowwoc.requirements10.test;
+	exports com.github.cowwoc.requirements10.guava.internal;
+	exports com.github.cowwoc.requirements10.guava.validator;
 }

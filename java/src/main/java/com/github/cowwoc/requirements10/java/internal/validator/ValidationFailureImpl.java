@@ -5,8 +5,8 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
-import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
 
 import java.util.Set;
@@ -47,18 +47,18 @@ public final class ValidationFailureImpl implements ValidationFailure
 
 		this.exceptionTransformer = configuration.exceptionTransformer();
 		this.needToCleanStackTrace = configuration.cleanStackTrace();
-		if (configuration.lazyExceptions())
-		{
-			this.message = message;
-			this.cause = cause;
-			this.exceptionBuilder = exceptionBuilder;
-		}
-		else
+		if (configuration.recordStacktrace())
 		{
 			this.message = null;
 			this.cause = null;
 			this.exceptionBuilder = null;
 			this.throwable = exceptionBuilder.apply(message, cause);
+		}
+		else
+		{
+			this.message = message;
+			this.cause = cause;
+			this.exceptionBuilder = exceptionBuilder;
 		}
 		this.checkedExceptions = Set.copyOf(checkedExceptions);
 	}
@@ -66,6 +66,8 @@ public final class ValidationFailureImpl implements ValidationFailure
 	@Override
 	public String getMessage()
 	{
+		if (throwable != null)
+			return throwable.getMessage();
 		return message;
 	}
 

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "LongLine"})
 public class GuavaTest
 {
-	private static final boolean FAST_ESTIMATE = false;
+	private static final boolean FAST_ESTIMATE = Boolean.getBoolean("FAST_ESTIMATE");
 	// Fields may not be final:
 	// https://github.com/openjdk/jmh/blob/cb3c3a90137dad781a2a37fda72dc11ebf253593/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#L58
 	private String name = "multimap";

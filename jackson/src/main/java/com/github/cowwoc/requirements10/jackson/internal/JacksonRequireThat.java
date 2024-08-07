@@ -1,14 +1,17 @@
-package com.github.cowwoc.requirements10.jackson;
+package com.github.cowwoc.requirements10.jackson.internal;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 
 /**
- * Creates validators for the Jackson API, throwing an exception if a failure occurs.
+ * Creates validators for the Jackson API that throw exceptions immediately on validation failure.
  */
 public interface JacksonRequireThat
 {
 	/**
 	 * Validates the state of a {@code JsonNode}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the {@code JsonNode}
 	 * @param value the value

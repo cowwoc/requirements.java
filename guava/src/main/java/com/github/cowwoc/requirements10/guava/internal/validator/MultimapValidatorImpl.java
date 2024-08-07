@@ -4,9 +4,9 @@
  */
 package com.github.cowwoc.requirements10.guava.internal.validator;
 
-import com.github.cowwoc.requirements10.guava.MultimapValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;

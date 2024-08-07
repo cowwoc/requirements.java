@@ -26,12 +26,12 @@ public final class AssertionsEnabledTest
 	}
 
 	@Test(expectedExceptions = AssertionError.class)
-	public void assertAssumeThat()
+	public void assertassertThat()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean value = true;
-			assert new TestValidatorsImpl(scope).assumeThat(value, "value").isFalse().elseThrow();
+			assert new TestValidatorsImpl(scope).assertThat(value, "value").isFalse().elseThrow();
 		}
 	}
 

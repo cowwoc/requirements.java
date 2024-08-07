@@ -1,9 +1,9 @@
 package com.github.cowwoc.requirements10.test.sample;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.JavaValidators;
+import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.JavaValidators;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.assumeThat;
 import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 
 /**
@@ -55,7 +55,8 @@ public final class BankAccount
 		if (invariantEnabled)
 			checkInvariant();
 		if (postconditionEnabled)
-			assert assumeThat(balance, "balance").isEqualTo(oldBalance - amount, "expected").elseThrow();
+			assert DefaultJavaValidators.that(balance, "balance").isEqualTo(oldBalance - amount, "expected")
+				.elseThrow();
 		if (oldBalance >= ONE_MILLION)
 		{
 			// Special restrictions for millionaires:
@@ -69,6 +70,6 @@ public final class BankAccount
 
 	private void checkInvariant()
 	{
-		assert assumeThat(balance, "balance").isNotNegative().elseThrow();
+		assert DefaultJavaValidators.that(balance, "balance").isNotNegative().elseThrow();
 	}
 }

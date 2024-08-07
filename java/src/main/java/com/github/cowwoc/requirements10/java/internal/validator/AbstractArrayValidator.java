@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Validates the state of a primitive value.
  */
-public abstract class AbstractArrayValidator<S extends ArrayComponent<S, T, E>, T, E>
+public abstract class AbstractArrayValidator<S, T, E>
 	extends AbstractObjectValidator<S, T>
 	implements ValidatorComponent<S, T>,
 	ArrayComponent<S, T, E>

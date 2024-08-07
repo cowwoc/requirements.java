@@ -1,6 +1,5 @@
 package com.github.cowwoc.requirements10.java.validator.component;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 import com.github.cowwoc.requirements10.java.validator.ListValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
@@ -8,22 +7,15 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerV
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Methods that all array validators must contain.
- * <p>
- * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
- * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
- * Javadoc indicates, depending on the value of the
- * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
- * exception handling behavior of the class.
  *
  * @param <S> the type this validator
  * @param <T> the type of the array
  * @param <E> the type of elements in the array
  */
-public interface ArrayComponent<S extends ArrayComponent<S, T, E>, T, E>
+public interface ArrayComponent<S, T, E>
 {
 	// REMINDERS:
 	// * <A> cannot be derived from <E>. Example, for long[], E = Long, A = long[].

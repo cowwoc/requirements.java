@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @param <T> the type of the collection
  * @param <E> the type of elements in the collection
  */
-public abstract class AbstractCollectionValidator<S extends CollectionComponent<S, E>, T extends Collection<E>, E>
+public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	extends AbstractObjectValidator<S, T>
 	implements CollectionComponent<S, E>
 {

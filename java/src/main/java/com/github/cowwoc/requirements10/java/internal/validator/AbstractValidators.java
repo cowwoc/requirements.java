@@ -1,19 +1,19 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.EqualityMethod;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
-import com.github.cowwoc.requirements10.java.MutableStringMappers;
-import com.github.cowwoc.requirements10.java.StringMappers;
 import com.github.cowwoc.requirements10.java.Validators;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.EqualityMethod;
+import com.github.cowwoc.requirements10.java.internal.MutableStringMappers;
+import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.CloseableLock;
-import com.github.cowwoc.requirements10.java.internal.util.ReentrantStampedLock;
+import com.github.cowwoc.requirements10.java.internal.util.StampedLocks;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.StampedLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -32,12 +32,12 @@ public abstract class AbstractValidators<S> implements Validators<S>
 			replacement.addSuppressed(suppressed);
 		return replacement;
 	};
-	private final ReentrantStampedLock requireThatLock = new ReentrantStampedLock();
-	private final ReentrantStampedLock assumeThatLock = new ReentrantStampedLock();
-	private final ReentrantStampedLock checkIfLock = new ReentrantStampedLock();
+	private final StampedLock requireThatLock = new StampedLock();
+	private final StampedLock assertThatLock = new StampedLock();
+	private final StampedLock checkIfLock = new StampedLock();
 	protected final ApplicationScope scope;
 	private Configuration requireThatConfiguration;
-	private Configuration assumeThatConfiguration;
+	private Configuration assertThatConfiguration;
 	private Configuration checkIfConfiguration;
 	protected final Map<String, Object> context = new HashMap<>();
 
@@ -77,17 +77,17 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	@Override
 	public Configuration configuration()
 	{
-		return requireThatLock.optimisticRead(() -> this.requireThatConfiguration);
+		return StampedLocks.optimisticRead(requireThatLock, () -> this.requireThatConfiguration);
 	}
 
 	/**
-	 * Returns the configuration for {@code assumeThat()} factory methods.
+	 * Returns the configuration for {@code assertThat()} factory methods.
 	 *
-	 * @return the configuration for {@code assumeThat()} factory methods
+	 * @return the configuration for {@code assertThat()} factory methods
 	 */
-	protected Configuration getAssumeThatConfiguration()
+	protected Configuration getAssertThatConfiguration()
 	{
-		return assumeThatLock.optimisticRead(() -> this.assumeThatConfiguration);
+		return StampedLocks.optimisticRead(assertThatLock, () -> this.assertThatConfiguration);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	 */
 	protected Configuration getCheckIfConfiguration()
 	{
-		return checkIfLock.optimisticRead(() -> this.checkIfConfiguration);
+		return StampedLocks.optimisticRead(checkIfLock, () -> this.checkIfConfiguration);
 	}
 
 	@Override
@@ -139,20 +139,17 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	{
 		if (configuration == null)
 			throw new NullPointerException("configuration may not be null");
-		try (CloseableLock unused = requireThatLock.write())
+		StampedLocks.write(requireThatLock, () -> this.requireThatConfiguration = configuration);
+		StampedLocks.write(assertThatLock, () ->
 		{
-			this.requireThatConfiguration = configuration;
-		}
-		try (CloseableLock unused = assumeThatLock.write())
-		{
-			this.assumeThatConfiguration = MutableConfiguration.from(configuration).
+			this.assertThatConfiguration = MutableConfiguration.from(configuration).
 				exceptionTransformer(CONVERT_TO_ASSERTION_ERROR).toImmutable();
-		}
-		try (CloseableLock unused = checkIfLock.write())
+		});
+		StampedLocks.write(checkIfLock, () ->
 		{
 			this.checkIfConfiguration = MutableConfiguration.from(configuration).
 				throwOnFailure(false).toImmutable();
-		}
+		});
 	}
 
 	@Override
@@ -179,7 +176,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 		private boolean cleanStackTrace;
 		private boolean allowDiff;
 		private EqualityMethod equalityMethod;
-		private boolean lazyExceptions;
+		private boolean recordStacktrace;
 		private Function<Throwable, ? extends Throwable> exceptionTransformer;
 		private boolean changed;
 		private boolean closed;
@@ -200,7 +197,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 			this.allowDiff = configuration.allowDiff();
 			this.equalityMethod = configuration.equalityMethod();
 			this.mutableStringMappers = MutableStringMappers.from(configuration.stringMappers());
-			this.lazyExceptions = configuration.lazyExceptions();
+			this.recordStacktrace = configuration.recordStacktrace();
 			this.exceptionTransformer = configuration.exceptionTransformer();
 		}
 
@@ -269,19 +266,19 @@ public abstract class AbstractValidators<S> implements Validators<S>
 		}
 
 		@Override
-		public boolean lazyExceptions()
+		public boolean recordStacktrace()
 		{
 			ensureOpen();
-			return lazyExceptions;
+			return recordStacktrace;
 		}
 
 		@Override
-		public ConfigurationUpdater lazyExceptions(boolean lazyExceptions)
+		public ConfigurationUpdater recordStacktrace(boolean recordStacktrace)
 		{
 			ensureOpen();
-			if (lazyExceptions != this.lazyExceptions)
+			if (recordStacktrace != this.recordStacktrace)
 			{
-				this.lazyExceptions = lazyExceptions;
+				this.recordStacktrace = recordStacktrace;
 				changed = true;
 			}
 			return this;
@@ -328,15 +325,15 @@ public abstract class AbstractValidators<S> implements Validators<S>
 			if (!changed)
 				return;
 			this.setConfiguration.accept(new Configuration(cleanStackTrace, allowDiff, equalityMethod,
-				immutableStringMappers, lazyExceptions, oldConfiguration.throwOnFailure(), exceptionTransformer));
+				immutableStringMappers, recordStacktrace, oldConfiguration.throwOnFailure(), exceptionTransformer));
 		}
 
 		@Override
 		public String toString()
 		{
 			return "cleanStackTrace: " + cleanStackTrace + ", allowDiff: " + allowDiff + ", equalityMethod: " +
-				equalityMethod + ", stringMappers: " + mutableStringMappers + ", lazyExceptions: " + lazyExceptions +
-				", exceptionTransformer: " + exceptionTransformer;
+				equalityMethod + ", stringMappers: " + mutableStringMappers + ", recordStacktrace: " +
+				recordStacktrace + ", exceptionTransformer: " + exceptionTransformer;
 		}
 	}
 }

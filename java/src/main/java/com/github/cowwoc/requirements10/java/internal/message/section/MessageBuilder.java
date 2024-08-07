@@ -1,6 +1,6 @@
 package com.github.cowwoc.requirements10.java.internal.message.section;
 
-import com.github.cowwoc.requirements10.java.StringMappers;
+import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.diff.ContextGenerator;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 

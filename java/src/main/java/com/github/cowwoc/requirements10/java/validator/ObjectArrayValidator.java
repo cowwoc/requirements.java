@@ -4,21 +4,12 @@
  */
 package com.github.cowwoc.requirements10.java.validator;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ArrayComponent;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
-import java.util.function.Function;
-
 /**
  * Validates the state of an {@code Object[]}.
- * <p>
- * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
- * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
- * Javadoc indicates, depending on the value of the
- * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
- * exception handling behavior of the class.
  *
  * @param <T> the type of the array
  * @param <E> the type of elements in the array

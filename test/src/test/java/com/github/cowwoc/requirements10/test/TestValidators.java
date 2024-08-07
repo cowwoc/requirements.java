@@ -1,15 +1,15 @@
 package com.github.cowwoc.requirements10.test;
 
-import com.github.cowwoc.requirements10.guava.GuavaAssumeThat;
-import com.github.cowwoc.requirements10.guava.GuavaCheckIf;
-import com.github.cowwoc.requirements10.guava.GuavaRequireThat;
-import com.github.cowwoc.requirements10.jackson.JacksonAssumeThat;
-import com.github.cowwoc.requirements10.jackson.JacksonCheckIf;
-import com.github.cowwoc.requirements10.jackson.JacksonRequireThat;
-import com.github.cowwoc.requirements10.java.JavaAssumeThat;
-import com.github.cowwoc.requirements10.java.JavaCheckIf;
-import com.github.cowwoc.requirements10.java.JavaRequireThat;
+import com.github.cowwoc.requirements10.guava.internal.GuavaAssertThat;
+import com.github.cowwoc.requirements10.guava.internal.GuavaCheckIf;
+import com.github.cowwoc.requirements10.guava.internal.GuavaRequireThat;
+import com.github.cowwoc.requirements10.jackson.internal.JacksonAssertThat;
+import com.github.cowwoc.requirements10.jackson.internal.JacksonCheckIf;
+import com.github.cowwoc.requirements10.jackson.internal.JacksonRequireThat;
 import com.github.cowwoc.requirements10.java.Validators;
+import com.github.cowwoc.requirements10.java.internal.JavaAssertThat;
+import com.github.cowwoc.requirements10.java.internal.JavaCheckIf;
+import com.github.cowwoc.requirements10.java.internal.JavaRequireThat;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
@@ -29,9 +29,9 @@ import com.github.cowwoc.requirements10.java.validator.component.ValidatorCompon
  */
 public interface TestValidators
 	extends Validators<TestValidators>,
-	JavaRequireThat, JavaAssumeThat, JavaCheckIf,
-	GuavaRequireThat, GuavaAssumeThat, GuavaCheckIf,
-	JacksonRequireThat, JacksonAssumeThat, JacksonCheckIf
+	JavaRequireThat, JavaAssertThat, JavaCheckIf,
+	GuavaRequireThat, GuavaAssertThat, GuavaCheckIf,
+	JacksonRequireThat, JacksonAssertThat, JacksonCheckIf
 {
 	/**
 	 * Creates a validator factory with a custom configuration.

@@ -1,12 +1,12 @@
 package com.github.cowwoc.requirements10.java.validator.component;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
-import com.github.cowwoc.requirements10.java.StringMappers;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.Validators;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 
 import java.util.List;
@@ -16,11 +16,6 @@ import java.util.function.Function;
 
 /**
  * Methods that all validators must contain.
- * <p>
- * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
- * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
- * Javadoc indicates, depending on the value of the {@link Configuration#exceptionTransformer()} setting. This
- * allows users to customize the exception handling behavior of the class.
  *
  * @param <S> the type of validator
  * @param <T> the type of the value that is being validated

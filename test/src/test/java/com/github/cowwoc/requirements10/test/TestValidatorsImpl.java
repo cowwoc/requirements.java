@@ -2,14 +2,14 @@ package com.github.cowwoc.requirements10.test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.guava.MultimapValidator;
 import com.github.cowwoc.requirements10.guava.internal.validator.GuavaValidatorsImpl;
-import com.github.cowwoc.requirements10.jackson.JsonNodeValidator;
+import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.github.cowwoc.requirements10.jackson.internal.validator.JacksonValidatorsImpl;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
@@ -17,11 +17,11 @@ import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
 import com.github.cowwoc.requirements10.java.validator.ByteValidator;
 import com.github.cowwoc.requirements10.java.validator.CharacterValidator;
-import com.github.cowwoc.requirements10.java.validator.ClassValidator;
 import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 import com.github.cowwoc.requirements10.java.validator.ComparableValidator;
 import com.github.cowwoc.requirements10.java.validator.DoubleValidator;
 import com.github.cowwoc.requirements10.java.validator.FloatValidator;
+import com.github.cowwoc.requirements10.java.validator.GenericTypeValidator;
 import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
 import com.github.cowwoc.requirements10.java.validator.IntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.ListValidator;
@@ -329,13 +329,13 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public <T> ClassValidator<T> requireThat(Class<T> value, String name)
+	public <T> GenericTypeValidator<T> requireThat(Class<T> value, String name)
 	{
 		return javaValidators.requireThat(value, name);
 	}
 
 	@Override
-	public <T> ClassValidator<T> requireThat(GenericType<T> value, String name)
+	public <T> GenericTypeValidator<T> requireThat(GenericType<T> value, String name)
 	{
 		return javaValidators.requireThat(value, name);
 	}
@@ -353,483 +353,483 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public PrimitiveByteValidator assumeThat(byte value, String name)
+	public PrimitiveByteValidator assertThat(byte value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveByteValidator assumeThat(byte value)
+	public PrimitiveByteValidator assertThat(byte value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public ByteValidator assumeThat(Byte value, String name)
+	public ByteValidator assertThat(Byte value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public ByteValidator assumeThat(Byte value)
+	public ByteValidator assertThat(Byte value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveShortValidator assumeThat(short value, String name)
+	public PrimitiveShortValidator assertThat(short value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveShortValidator assumeThat(short value)
+	public PrimitiveShortValidator assertThat(short value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public ShortValidator assumeThat(Short value, String name)
+	public ShortValidator assertThat(Short value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public ShortValidator assumeThat(Short value)
+	public ShortValidator assertThat(Short value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveIntegerValidator assumeThat(int value, String name)
+	public PrimitiveIntegerValidator assertThat(int value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveIntegerValidator assumeThat(int value)
+	public PrimitiveIntegerValidator assertThat(int value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public IntegerValidator assumeThat(Integer value, String name)
+	public IntegerValidator assertThat(Integer value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public IntegerValidator assumeThat(Integer value)
+	public IntegerValidator assertThat(Integer value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveLongValidator assumeThat(long value, String name)
+	public PrimitiveLongValidator assertThat(long value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveLongValidator assumeThat(long value)
+	public PrimitiveLongValidator assertThat(long value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public LongValidator assumeThat(Long value, String name)
+	public LongValidator assertThat(Long value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public LongValidator assumeThat(Long value)
+	public LongValidator assertThat(Long value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveFloatValidator assumeThat(float value, String name)
+	public PrimitiveFloatValidator assertThat(float value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveFloatValidator assumeThat(float value)
+	public PrimitiveFloatValidator assertThat(float value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public FloatValidator assumeThat(Float value, String name)
+	public FloatValidator assertThat(Float value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public FloatValidator assumeThat(Float value)
+	public FloatValidator assertThat(Float value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveDoubleValidator assumeThat(double value, String name)
+	public PrimitiveDoubleValidator assertThat(double value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveDoubleValidator assumeThat(double value)
+	public PrimitiveDoubleValidator assertThat(double value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public DoubleValidator assumeThat(Double value, String name)
+	public DoubleValidator assertThat(Double value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public DoubleValidator assumeThat(Double value)
+	public DoubleValidator assertThat(Double value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveBooleanValidator assumeThat(boolean value, String name)
+	public PrimitiveBooleanValidator assertThat(boolean value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveBooleanValidator assumeThat(boolean value)
+	public PrimitiveBooleanValidator assertThat(boolean value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public BooleanValidator assumeThat(Boolean value, String name)
+	public BooleanValidator assertThat(Boolean value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public BooleanValidator assumeThat(Boolean value)
+	public BooleanValidator assertThat(Boolean value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveCharacterValidator assumeThat(char value, String name)
+	public PrimitiveCharacterValidator assertThat(char value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveCharacterValidator assumeThat(char value)
+	public PrimitiveCharacterValidator assertThat(char value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public CharacterValidator assumeThat(Character value, String name)
+	public CharacterValidator assertThat(Character value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public CharacterValidator assumeThat(Character value)
+	public CharacterValidator assertThat(Character value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public BigIntegerValidator assumeThat(BigInteger value, String name)
+	public BigIntegerValidator assertThat(BigInteger value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public BigIntegerValidator assumeThat(BigInteger value)
+	public BigIntegerValidator assertThat(BigInteger value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public BigDecimalValidator assumeThat(BigDecimal value, String name)
+	public BigDecimalValidator assertThat(BigDecimal value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public BigDecimalValidator assumeThat(BigDecimal value)
+	public BigDecimalValidator assertThat(BigDecimal value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value, String name)
+	public <T extends Comparable<T>> ComparableValidator<T> assertThat(T value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value)
+	public <T extends Comparable<T>> ComparableValidator<T> assertThat(T value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T> ObjectValidator<T> assumeThat(T value, String name)
+	public <T> ObjectValidator<T> assertThat(T value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T> ObjectValidator<T> assumeThat(T value)
+	public <T> ObjectValidator<T> assertThat(T value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value, String name)
+	public <T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value)
+	public <T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T extends List<E>, E> ListValidator<T, E> assumeThat(T value, String name)
+	public <T extends List<E>, E> ListValidator<T, E> assertThat(T value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T extends List<E>, E> ListValidator<T, E> assumeThat(T value)
+	public <T extends List<E>, E> ListValidator<T, E> assertThat(T value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator assumeThat(byte[] value, String name)
+	public PrimitiveByteArrayValidator assertThat(byte[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator assumeThat(byte[] value)
+	public PrimitiveByteArrayValidator assertThat(byte[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator assumeThat(short[] value, String name)
+	public PrimitiveShortArrayValidator assertThat(short[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator assumeThat(short[] value)
+	public PrimitiveShortArrayValidator assertThat(short[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator assumeThat(int[] value, String name)
+	public PrimitiveIntegerArrayValidator assertThat(int[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator assumeThat(int[] value)
+	public PrimitiveIntegerArrayValidator assertThat(int[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator assumeThat(long[] value, String name)
+	public PrimitiveLongArrayValidator assertThat(long[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator assumeThat(long[] value)
+	public PrimitiveLongArrayValidator assertThat(long[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator assumeThat(float[] value, String name)
+	public PrimitiveFloatArrayValidator assertThat(float[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator assumeThat(float[] value)
+	public PrimitiveFloatArrayValidator assertThat(float[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator assumeThat(double[] value, String name)
+	public PrimitiveDoubleArrayValidator assertThat(double[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator assumeThat(double[] value)
+	public PrimitiveDoubleArrayValidator assertThat(double[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator assumeThat(boolean[] value, String name)
+	public PrimitiveBooleanArrayValidator assertThat(boolean[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator assumeThat(boolean[] value)
+	public PrimitiveBooleanArrayValidator assertThat(boolean[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator assumeThat(char[] value, String name)
+	public PrimitiveCharacterArrayValidator assertThat(char[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator assumeThat(char[] value)
+	public PrimitiveCharacterArrayValidator assertThat(char[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <E> ObjectArrayValidator<E[], E> assumeThat(E[] value, String name)
+	public <E> ObjectArrayValidator<E[], E> assertThat(E[] value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <E> ObjectArrayValidator<E[], E> assumeThat(E[] value)
+	public <E> ObjectArrayValidator<E[], E> assertThat(E[] value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value, String name)
+	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value)
+	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public PathValidator assumeThat(Path value, String name)
+	public PathValidator assertThat(Path value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public PathValidator assumeThat(Path value)
+	public PathValidator assertThat(Path value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public StringValidator assumeThat(String value, String name)
+	public StringValidator assertThat(String value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public StringValidator assumeThat(String value)
+	public StringValidator assertThat(String value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public UriValidator assumeThat(URI value, String name)
+	public UriValidator assertThat(URI value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public UriValidator assumeThat(URI value)
+	public UriValidator assertThat(URI value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public UrlValidator assumeThat(URL value, String name)
+	public UrlValidator assertThat(URL value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public UrlValidator assumeThat(URL value)
+	public UrlValidator assertThat(URL value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(Class<T> value, String name)
+	public <T> GenericTypeValidator<T> assertThat(Class<T> value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(GenericType<T> value, String name)
+	public <T> GenericTypeValidator<T> assertThat(GenericType<T> value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(Class<T> value)
+	public <T> GenericTypeValidator<T> assertThat(Class<T> value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T> ClassValidator<T> assumeThat(GenericType<T> value)
+	public <T> GenericTypeValidator<T> assertThat(GenericType<T> value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public <T> OptionalValidator<T> assumeThat(Optional<T> value, String name)
+	public <T> OptionalValidator<T> assertThat(Optional<T> value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T> OptionalValidator<T> assumeThat(Optional<T> value)
+	public <T> OptionalValidator<T> assertThat(Optional<T> value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
-	public InetAddressValidator assumeThat(InetAddress value, String name)
+	public InetAddressValidator assertThat(InetAddress value, String name)
 	{
-		return javaValidators.assumeThat(value, name);
+		return javaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public InetAddressValidator assumeThat(InetAddress value)
+	public InetAddressValidator assertThat(InetAddress value)
 	{
-		return javaValidators.assumeThat(value);
+		return javaValidators.assertThat(value);
 	}
 
 	@Override
@@ -1265,25 +1265,25 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(Class<T> value, String name)
+	public <T> GenericTypeValidator<T> checkIf(Class<T> value, String name)
 	{
 		return javaValidators.checkIf(value, name);
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(GenericType<T> value, String name)
+	public <T> GenericTypeValidator<T> checkIf(GenericType<T> value, String name)
 	{
 		return javaValidators.checkIf(value, name);
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(Class<T> value)
+	public <T> GenericTypeValidator<T> checkIf(Class<T> value)
 	{
 		return javaValidators.checkIf(value);
 	}
 
 	@Override
-	public <T> ClassValidator<T> checkIf(GenericType<T> value)
+	public <T> GenericTypeValidator<T> checkIf(GenericType<T> value)
 	{
 		return javaValidators.checkIf(value);
 	}
@@ -1319,15 +1319,15 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value, String name)
+	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assertThat(T value, String name)
 	{
-		return guavaValidators.assumeThat(value, name);
+		return guavaValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value)
+	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assertThat(T value)
 	{
-		return guavaValidators.assumeThat(value);
+		return guavaValidators.assertThat(value);
 	}
 
 	@Override
@@ -1349,15 +1349,15 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value, String name)
+	public <T extends JsonNode> JsonNodeValidator<T> assertThat(T value, String name)
 	{
-		return jacksonValidators.assumeThat(value, name);
+		return jacksonValidators.assertThat(value, name);
 	}
 
 	@Override
-	public <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value)
+	public <T extends JsonNode> JsonNodeValidator<T> assertThat(T value)
 	{
-		return jacksonValidators.assumeThat(value);
+		return jacksonValidators.assertThat(value);
 	}
 
 	@Override

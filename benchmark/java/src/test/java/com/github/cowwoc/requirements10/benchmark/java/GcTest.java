@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements10.benchmark.java;
 
+import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Mode;
@@ -16,19 +17,16 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.assumeThat;
-
 @State(Scope.Benchmark)
 @SuppressWarnings({"CanBeFinal", "LongLine", "FieldMayBeFinal"})
 public class GcTest
 {
-	private static final boolean FAST_ESTIMATE = false;
+	private static final boolean FAST_ESTIMATE = Boolean.getBoolean("FAST_ESTIMATE");
 	// Fields may not be final:
 	// https://github.com/openjdk/jmh/blob/cb3c3a90137dad781a2a37fda72dc11ebf253593/jmh-samples/src/main/java/org/openjdk/jmh/samples/JMHSample_10_ConstantFold.java#L58
 	private String name = "actual";
@@ -41,7 +39,7 @@ public class GcTest
 			value.put(i, 5 - i);
 	}
 
-	@Test
+	//	@Test
 	public void runBenchmarks() throws RunnerException
 	{
 		ChainedOptionsBuilder builder = new OptionsBuilder().
@@ -88,9 +86,9 @@ public class GcTest
 
 	@Benchmark
 	@Fork(jvmArgsAppend = "-da")
-	public void assumeThatWithAssertionsDisabled(Blackhole bh)
+	public void assertThatWithAssertionsDisabled(Blackhole bh)
 	{
-		assert blackholeAssert(bh, assumeThat(value, name).size().isGreaterThan(3).elseThrow());
+		assert blackholeAssert(bh, DefaultJavaValidators.that(value, name).size().isGreaterThan(3).elseThrow());
 	}
 
 	// See http://stackoverflow.com/a/38862964/14731 for why asserted code may execute faster than
@@ -98,14 +96,14 @@ public class GcTest
 	//@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 	@Benchmark
 	@Fork(jvmArgsAppend = "-ea")
-	public void assumeThatWithAssertionsEnabled(Blackhole bh)
+	public void assertThatWithAssertionsEnabled(Blackhole bh)
 	{
-		assert blackholeAssert(bh, assumeThat(value, name).size().isGreaterThan(3).elseThrow());
+		assert blackholeAssert(bh, DefaultJavaValidators.that(value, name).size().isGreaterThan(3).elseThrow());
 	}
 
 	private boolean blackholeAssert(Blackhole bh, boolean resultOfAssertion)
 	{
-		// blackholeAssert() prevents assumeThat() from being optimized away.
+		// blackholeAssert() prevents assertThat() from being optimized away.
 		// assert blackholeAssert() only executes the statement if assertions are enabled.
 		bh.consume(resultOfAssertion);
 		return true;

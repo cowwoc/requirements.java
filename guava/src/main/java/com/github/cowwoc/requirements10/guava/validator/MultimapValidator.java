@@ -2,7 +2,7 @@
  * Copyright (c) 2014 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements10.guava;
+package com.github.cowwoc.requirements10.guava.validator;
 
 import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;

@@ -4,18 +4,8 @@
  */
 package com.github.cowwoc.requirements10.java.validator.component;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
-
-import java.util.function.Function;
-
 /**
  * Validates the state of an {@code Integer} or {@code int}.
- * <p>
- * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
- * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
- * Javadoc indicates, depending on the value of the
- * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
- * exception handling behavior of the class.
  *
  * @param <S> the type of validator
  */

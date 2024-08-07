@@ -4,22 +4,23 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.Configuration;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.ClassMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.validator.ClassValidator;
+import com.github.cowwoc.requirements10.java.validator.GenericTypeValidator;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @param <T> the type of the class modelled by the {@code Class} object
+ * @param <T> the type of the class modelled by the {@code GenericType} object
  */
-public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassValidator<T>, GenericType<T>>
-	implements ClassValidator<T>
+public final class GenericTypeValidatorImpl<T>
+	extends AbstractObjectValidator<GenericTypeValidator<T>, GenericType<T>>
+	implements GenericTypeValidator<T>
 {
 	/**
 	 * @param scope         the application configuration
@@ -33,14 +34,14 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	 * @throws AssertionError           if {@code scope}, {@code configuration}, {@code value}, {@code context}
 	 *                                  or {@code failures} are null
 	 */
-	public ClassValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
+	public GenericTypeValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
 		MaybeUndefined<GenericType<T>> value, Map<String, Object> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
 
 	@Override
-	public ClassValidator<T> isPrimitive()
+	public GenericTypeValidator<T> isPrimitive()
 	{
 		if (value.isNull())
 			onNull();
@@ -53,13 +54,13 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	}
 
 	@Override
-	public <U> ClassValidator<U> isSupertypeOf(Class<? extends U> type)
+	public <U> GenericTypeValidator<U> isSupertypeOf(Class<? extends U> type)
 	{
 		return isSupertypeOf(GenericType.from(type));
 	}
 
 	@Override
-	public <U> ClassValidator<U> isSupertypeOf(GenericType<? extends U> type)
+	public <U> GenericTypeValidator<U> isSupertypeOf(GenericType<? extends U> type)
 	{
 		scope.getInternalValidators().requireThat(type, "type").isNotNull();
 		switch (value.test(value -> value != null && type.isSubtypeOf(value)))
@@ -71,13 +72,13 @@ public final class ClassValidatorImpl<T> extends AbstractObjectValidator<ClassVa
 	}
 
 	@Override
-	public <U> ClassValidator<U> isSubtypeOf(Class<? super U> type)
+	public <U> GenericTypeValidator<U> isSubtypeOf(Class<? super U> type)
 	{
 		return isSubtypeOf(GenericType.from(type));
 	}
 
 	@Override
-	public <U> ClassValidator<U> isSubtypeOf(GenericType<? super U> type)
+	public <U> GenericTypeValidator<U> isSubtypeOf(GenericType<? super U> type)
 	{
 		scope.getInternalValidators().requireThat(type, "type").isNotNull();
 		switch (value.test(value -> value != null && type.isSupertypeOf(value)))

@@ -1,9 +1,9 @@
 package com.github.cowwoc.requirements10.guava.internal.validator;
 
-import com.github.cowwoc.requirements10.guava.GuavaValidators;
-import com.github.cowwoc.requirements10.guava.MultimapValidator;
-import com.github.cowwoc.requirements10.java.Configuration;
+import com.github.cowwoc.requirements10.guava.internal.GuavaValidators;
+import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
@@ -50,15 +50,15 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	}
 
 	@Override
-	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value, String name)
+	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assertThat(T value, String name)
 	{
-		return newInstance(value, name, getAssumeThatConfiguration());
+		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assumeThat(T value)
+	public <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> assertThat(T value)
 	{
-		return assumeThat(value, DEFAULT_NAME);
+		return assertThat(value, DEFAULT_NAME);
 	}
 
 	@Override

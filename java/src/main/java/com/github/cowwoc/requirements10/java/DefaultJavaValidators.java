@@ -5,20 +5,21 @@
 package com.github.cowwoc.requirements10.java;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.scope.MainApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.CloseableLock;
-import com.github.cowwoc.requirements10.java.internal.util.ReentrantStampedLock;
+import com.github.cowwoc.requirements10.java.internal.util.StampedLocks;
 import com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
 import com.github.cowwoc.requirements10.java.validator.ByteValidator;
 import com.github.cowwoc.requirements10.java.validator.CharacterValidator;
-import com.github.cowwoc.requirements10.java.validator.ClassValidator;
 import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 import com.github.cowwoc.requirements10.java.validator.ComparableValidator;
 import com.github.cowwoc.requirements10.java.validator.DoubleValidator;
 import com.github.cowwoc.requirements10.java.validator.FloatValidator;
+import com.github.cowwoc.requirements10.java.validator.GenericTypeValidator;
 import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
 import com.github.cowwoc.requirements10.java.validator.IntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.ListValidator;
@@ -60,46 +61,30 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.concurrent.locks.StampedLock;
 
 /**
- * Creates validators for the Java API, using the default configuration.
+ * Creates validators for the Java API.
  * <p>
  * There are three kinds of validators:
  * <ul>
  *   <li>{@code requireThat()} for method preconditions.</li>
- *   <li>{@code assumeThat()} for class invariants, and method postconditions.</li>
- *   <li>{@code checkIf()} for method preconditions, class invariants and method postconditions.</li>
+ *   <li>{@code assert that()} for class invariants, and method postconditions.</li>
+ *   <li>{@code checkIf()} for returning multiple validation failures.</li>
  * </ul>
  * <p>
- * {@code requireThat()} and {@code assumeThat()} throw an exception on the first validation failure,
- * while {@code checkIf()} collects multiple validation failures before throwing an exception at the end.
- * {@code checkIf()} is more flexible than the others, but its syntax is more verbose.
- * <p>
- * Exceptions that are thrown in response to invalid method arguments (e.g.
- * {@code isGreaterThan(value, null)}) are thrown by all validators and cannot be configured. Exceptions that
- * are thrown in response to the value failing a validation check, e.g. {@code isGreaterThan(5)} on a value
- * of 0, are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
- * without being thrown. The type of thrown exceptions is configurable using
- * {@link ConfigurationUpdater#exceptionTransformer(Function)}.
- * <p>
  * <b>Thread Safety</b>: This class is thread-safe.
- *
- * @see JavaValidators#newInstance() Creating an independent configuration
  */
 public final class DefaultJavaValidators
 {
 	private static final JavaValidatorsImpl DELEGATE = new JavaValidatorsImpl(MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
-	private static final ReentrantStampedLock CONTEXT_LOCK = new ReentrantStampedLock();
-
-	private DefaultJavaValidators()
-	{
-	}
+	private static final StampedLock CONTEXT_LOCK = new StampedLock();
 
 	/**
-	 * Validates the state of a {@code byte}, throwing an exception on failure
+	 * Validates the state of a {@code byte}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -113,7 +98,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Byte}, throwing an exception on failure
+	 * Validates the state of a {@code Byte}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -127,7 +114,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code short}, throwing an exception on failure
+	 * Validates the state of a {@code short}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -141,7 +130,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Short}, throwing an exception on failure
+	 * Validates the state of a {@code Short}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -155,7 +146,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code int}, throwing an exception on failure
+	 * Validates the state of an {@code int}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -169,7 +162,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Integer}, throwing an exception on failure
+	 * Validates the state of an {@code Integer}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -183,7 +178,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code long}, throwing an exception on failure
+	 * Validates the state of a {@code long}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -197,7 +194,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Long}, throwing an exception on failure
+	 * Validates the state of a {@code Long}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -211,7 +210,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code float}, throwing an exception on failure
+	 * Validates the state of a {@code float}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -225,7 +226,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Float}, throwing an exception on failure
+	 * Validates the state of a {@code Float}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -239,7 +242,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code double}, throwing an exception on failure
+	 * Validates the state of a {@code double}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -253,7 +258,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Double}, throwing an exception on failure
+	 * Validates the state of a {@code Double}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -267,7 +274,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code boolean}, throwing an exception on failure
+	 * Validates the state of a {@code boolean}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -281,7 +290,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Boolean}, throwing an exception on failure
+	 * Validates the state of a {@code Boolean}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -295,7 +306,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code char}, throwing an exception on failure.
+	 * Validates the state of a {@code char}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -309,7 +322,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Character}, throwing an exception on failure.
+	 * Validates the state of a {@code Character}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -323,7 +338,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code BigInteger}, throwing an exception on failure.
+	 * Validates the state of a {@code BigInteger}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -337,7 +354,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code BigDecimal}, throwing an exception on failure.
+	 * Validates the state of a {@code BigDecimal}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -352,6 +371,8 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a {@code Comparable} object.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the value
 	 * @param value the value
@@ -366,7 +387,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Object}, throwing an exception on failure.
+	 * Validates the state of an {@code Object}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the value
 	 * @param value the value
@@ -381,7 +404,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Collection}, throwing an exception on failure.
+	 * Validates the state of a {@code Collection}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the collection
@@ -397,7 +422,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code List}, throwing an exception on failure.
+	 * Validates the state of a {@code List}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the list
@@ -413,7 +440,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code byte} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code byte} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -427,7 +456,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code short} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code short} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -441,7 +472,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code int} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code int} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -455,7 +488,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code long} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code long} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -469,7 +504,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code float} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code float} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -483,7 +520,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code double} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code double} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -497,7 +536,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code boolean} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code boolean} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -511,7 +552,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code char} array, throwing an exception on failure.
+	 * Validates the state of a primitive {@code char} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -525,7 +568,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Object} array, throwing an exception on failure.
+	 * Validates the state of an {@code Object} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <E>   the type of elements in the array
 	 * @param value the value
@@ -540,7 +585,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Map}, throwing an exception on failure
+	 * Validates the state of a {@code Map}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <K>   the type of keys in the map
 	 * @param <V>   the type of values in the map
@@ -557,7 +604,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Path}, throwing an exception on failure
+	 * Validates the state of a {@code Path}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -571,7 +620,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code String}, throwing an exception on failure
+	 * Validates the state of a {@code String}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -585,7 +636,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URI}, throwing an exception on failure
+	 * Validates the state of a {@code URI}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -599,7 +652,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URL}, throwing an exception on failure
+	 * Validates the state of a {@code URL}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -613,7 +668,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Class}, throwing an exception on failure
+	 * Validates the state of a {@code Class}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
@@ -622,13 +679,15 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T> ClassValidator<T> requireThat(Class<T> value, String name)
+	public static <T> GenericTypeValidator<T> requireThat(Class<T> value, String name)
 	{
 		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
-	 * Validates the state of an {@code Optional}, throwing an exception on failure.
+	 * Validates the state of an {@code Optional}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of optional
 	 * @param value the value
@@ -644,7 +703,9 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code InetAddress}, throwing an exception on failure.
+	 * Validates the state of an {@code InetAddress}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -658,8 +719,13 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code byte}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code byte}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -667,53 +733,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveByteValidator assumeThat(byte value, String name)
+	public static PrimitiveByteValidator that(byte value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code byte}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code byte}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveByteValidator assumeThat(byte value)
+	public static PrimitiveByteValidator that(byte value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Byte}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static ByteValidator assumeThat(Byte value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Byte}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static ByteValidator assumeThat(Byte value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code short}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Byte}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -721,53 +770,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveShortValidator assumeThat(short value, String name)
+	public static ByteValidator that(Byte value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code short}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Byte}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveShortValidator assumeThat(short value)
+	public static ByteValidator that(Byte value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Short}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static ShortValidator assumeThat(Short value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Short}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static ShortValidator assumeThat(Short value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of an {@code int}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code short}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -775,53 +807,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveIntegerValidator assumeThat(int value, String name)
+	public static PrimitiveShortValidator that(short value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of an {@code int}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code short}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveIntegerValidator assumeThat(int value)
+	public static PrimitiveShortValidator that(short value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of an {@code Integer}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static IntegerValidator assumeThat(Integer value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of an {@code Integer}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static IntegerValidator assumeThat(Integer value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code long}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Short}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -829,53 +844,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveLongValidator assumeThat(long value, String name)
+	public static ShortValidator that(Short value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code long}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Short}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveLongValidator assumeThat(long value)
+	public static ShortValidator that(Short value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Long}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static LongValidator assumeThat(Long value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Long}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static LongValidator assumeThat(Long value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code float}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code int}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -883,53 +881,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveFloatValidator assumeThat(float value, String name)
+	public static PrimitiveIntegerValidator that(int value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code float}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code int}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveFloatValidator assumeThat(float value)
+	public static PrimitiveIntegerValidator that(int value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Float}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static FloatValidator assumeThat(Float value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Float}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static FloatValidator assumeThat(Float value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code double}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code Integer}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -937,53 +918,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveDoubleValidator assumeThat(double value, String name)
+	public static IntegerValidator that(Integer value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code double}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code Integer}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveDoubleValidator assumeThat(double value)
+	public static IntegerValidator that(Integer value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Double}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static DoubleValidator assumeThat(Double value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Double}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static DoubleValidator assumeThat(Double value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code boolean}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code long}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -991,53 +955,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveBooleanValidator assumeThat(boolean value, String name)
+	public static PrimitiveLongValidator that(long value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code boolean}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code long}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveBooleanValidator assumeThat(boolean value)
+	public static PrimitiveLongValidator that(long value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Boolean}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static BooleanValidator assumeThat(Boolean value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Boolean}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static BooleanValidator assumeThat(Boolean value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code char}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Long}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1045,53 +992,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveCharacterValidator assumeThat(char value, String name)
+	public static LongValidator that(Long value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code char}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Long}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveCharacterValidator assumeThat(char value)
+	public static LongValidator that(Long value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Character}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static CharacterValidator assumeThat(Character value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code Character}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static CharacterValidator assumeThat(Character value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code BigInteger}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code float}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1099,26 +1029,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static BigIntegerValidator assumeThat(BigInteger value, String name)
+	public static PrimitiveFloatValidator that(float value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code BigInteger}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code float}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static BigIntegerValidator assumeThat(BigInteger value)
+	public static PrimitiveFloatValidator that(float value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code BigDecimal}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Float}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1126,21 +1066,322 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static BigDecimalValidator assumeThat(BigDecimal value, String name)
+	public static FloatValidator that(Float value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code BigDecimal}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Float}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static BigDecimalValidator assumeThat(BigDecimal value)
+	public static FloatValidator that(Float value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code double}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static PrimitiveDoubleValidator that(double value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code double}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static PrimitiveDoubleValidator that(double value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code Double}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static DoubleValidator that(Double value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code Double}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static DoubleValidator that(Double value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code boolean}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static PrimitiveBooleanValidator that(boolean value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code boolean}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static PrimitiveBooleanValidator that(boolean value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code Boolean}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static BooleanValidator that(Boolean value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code Boolean}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static BooleanValidator that(Boolean value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code char}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static PrimitiveCharacterValidator that(char value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code char}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static PrimitiveCharacterValidator that(char value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code Character}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static CharacterValidator that(Character value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code Character}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static CharacterValidator that(Character value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code BigInteger}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static BigIntegerValidator that(BigInteger value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code BigInteger}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static BigIntegerValidator that(BigInteger value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code BigDecimal}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static BigDecimalValidator that(BigDecimal value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code BigDecimal}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static BigDecimalValidator that(BigDecimal value)
+	{
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
@@ -1153,9 +1394,9 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value, String name)
+	public static <T extends Comparable<T>> ComparableValidator<T> that(T value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
@@ -1165,14 +1406,19 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T extends Comparable<T>> ComparableValidator<T> assumeThat(T value)
+	public static <T extends Comparable<T>> ComparableValidator<T> that(T value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of an {@code Object}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code Object}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of value
 	 * @param value the value
@@ -1181,27 +1427,37 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T> ObjectValidator<T> assumeThat(T value, String name)
+	public static <T> ObjectValidator<T> that(T value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of an {@code Object}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code Object}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of value
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T> ObjectValidator<T> assumeThat(T value)
+	public static <T> ObjectValidator<T> that(T value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Collection}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Collection}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the collection
@@ -1211,28 +1467,38 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value, String name)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> that(T value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code Collection}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Collection}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the collection
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T extends Collection<E>, E> CollectionValidator<T, E> assumeThat(T value)
+	public static <T extends Collection<E>, E> CollectionValidator<T, E> that(T value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code List}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code List}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the list
@@ -1242,27 +1508,38 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T extends List<E>, E> ListValidator<T, E> assumeThat(T value, String name)
+	public static <T extends List<E>, E> ListValidator<T, E> that(T value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code List}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code List}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the list
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T extends List<E>, E> ListValidator<T, E> assumeThat(T value)
+	public static <T extends List<E>, E> ListValidator<T, E> that(T value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code byte} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1270,24 +1547,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveByteArrayValidator assumeThat(byte[] value, String name)
+	public static PrimitiveByteArrayValidator that(byte[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code byte} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveByteArrayValidator assumeThat(byte[] value)
+	public static PrimitiveByteArrayValidator that(byte[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code short} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1295,24 +1584,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveShortArrayValidator assumeThat(short[] value, String name)
+	public static PrimitiveShortArrayValidator that(short[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code short} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveShortArrayValidator assumeThat(short[] value)
+	public static PrimitiveShortArrayValidator that(short[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code int} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1320,24 +1621,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveIntegerArrayValidator assumeThat(int[] value, String name)
+	public static PrimitiveIntegerArrayValidator that(int[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code int} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveIntegerArrayValidator assumeThat(int[] value)
+	public static PrimitiveIntegerArrayValidator that(int[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code long} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1345,24 +1658,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveLongArrayValidator assumeThat(long[] value, String name)
+	public static PrimitiveLongArrayValidator that(long[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code long} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveLongArrayValidator assumeThat(long[] value)
+	public static PrimitiveLongArrayValidator that(long[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code float} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1370,24 +1695,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveFloatArrayValidator assumeThat(float[] value, String name)
+	public static PrimitiveFloatArrayValidator that(float[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code float} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveFloatArrayValidator assumeThat(float[] value)
+	public static PrimitiveFloatArrayValidator that(float[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code double} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1395,24 +1732,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveDoubleArrayValidator assumeThat(double[] value, String name)
+	public static PrimitiveDoubleArrayValidator that(double[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code double} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveDoubleArrayValidator assumeThat(double[] value)
+	public static PrimitiveDoubleArrayValidator that(double[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code boolean} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1420,26 +1769,38 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveBooleanArrayValidator assumeThat(boolean[] value, String name)
+	public static PrimitiveBooleanArrayValidator that(boolean[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code boolean} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveBooleanArrayValidator assumeThat(boolean[] value)
+	public static PrimitiveBooleanArrayValidator that(boolean[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code char} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1447,24 +1808,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PrimitiveCharacterArrayValidator assumeThat(char[] value, String name)
+	public static PrimitiveCharacterArrayValidator that(char[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of a primitive {@code char} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PrimitiveCharacterArrayValidator assumeThat(char[] value)
+	public static PrimitiveCharacterArrayValidator that(char[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of an {@code Object} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <E>   the type of elements in the array
 	 * @param value the value
@@ -1473,26 +1846,37 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <E> ObjectArrayValidator<E[], E> assumeThat(E[] value, String name)
+	public static <E> ObjectArrayValidator<E[], E> that(E[] value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
 	 * Validates the state of an {@code Object} array.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <E>   the type of elements in the array
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <E> ObjectArrayValidator<E[], E> assumeThat(E[] value)
+	public static <E> ObjectArrayValidator<E[], E> that(E[] value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Map}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Map}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <K>   the type of keys in the map
 	 * @param <V>   the type of values in the map
@@ -1503,14 +1887,19 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value, String name)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code Map}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Map}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <K>   the type of keys in the map
 	 * @param <V>   the type of values in the map
@@ -1518,14 +1907,19 @@ public final class DefaultJavaValidators
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> assumeThat(T value)
+	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Path}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Path}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1533,53 +1927,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static PathValidator assumeThat(Path value, String name)
+	public static PathValidator that(Path value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code Path}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Path}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static PathValidator assumeThat(Path value)
+	public static PathValidator that(Path value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code String}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static StringValidator assumeThat(String value, String name)
-	{
-		return DELEGATE.assumeThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code String}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static StringValidator assumeThat(String value)
-	{
-		return DELEGATE.assumeThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code URI}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code String}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1587,26 +1964,36 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static UriValidator assumeThat(URI value, String name)
+	public static StringValidator that(String value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code URI}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code String}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static UriValidator assumeThat(URI value)
+	public static StringValidator that(String value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code URL}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code URI}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1614,26 +2001,73 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static UrlValidator assumeThat(URL value, String name)
+	public static UriValidator that(URI value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code URL}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code URI}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static UrlValidator assumeThat(URL value)
+	public static UriValidator that(URI value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code Class}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code URL}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static UrlValidator that(URL value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code URL}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param value the value
+	 * @return a validator for the value
+	 */
+	public static UrlValidator that(URL value)
+	{
+		return DELEGATE.assertThat(value);
+	}
+
+	/**
+	 * Validates the state of a {@code Class}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
@@ -1642,27 +2076,37 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T> ClassValidator<T> assumeThat(Class<T> value, String name)
+	public static <T> GenericTypeValidator<T> that(Class<T> value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code Class}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code Class}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T> ClassValidator<T> assumeThat(Class<T> value)
+	public static <T> GenericTypeValidator<T> that(Class<T> value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of an {@code Optional}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code Optional}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of optional
 	 * @param value the value
@@ -1672,28 +2116,38 @@ public final class DefaultJavaValidators
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public static <T> OptionalValidator<T> assumeThat(Optional<T> value, String name)
+	public static <T> OptionalValidator<T> that(Optional<T> value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of an {@code Optional}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code Optional}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of optional
 	 * @param value the value
 	 * @return a validator for the value
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public static <T> OptionalValidator<T> assumeThat(Optional<T> value)
+	public static <T> OptionalValidator<T> that(Optional<T> value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of an {@code InetAddress}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code InetAddress}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1701,25 +2155,34 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static InetAddressValidator assumeThat(InetAddress value, String name)
+	public static InetAddressValidator that(InetAddress value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.assertThat(value, name);
 	}
 
 	/**
-	 * Validates the state of an {@code InetAddress}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of an {@code InetAddress}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static InetAddressValidator assumeThat(InetAddress value)
+	public static InetAddressValidator that(InetAddress value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
-	 * Validates the state of a {@code byte}, recording any failures.
+	 * Validates the state of a {@code byte}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1733,7 +2196,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code byte}, recording any failures.
+	 * Validates the state of a {@code byte}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1744,7 +2211,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Byte}, recording any failures.
+	 * Validates the state of a {@code Byte}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1758,7 +2229,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Byte}, recording any failures.
+	 * Validates the state of a {@code Byte}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1769,7 +2244,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code short}, recording any failures.
+	 * Validates the state of a {@code short}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1783,7 +2262,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code short}, recording any failures.
+	 * Validates the state of a {@code short}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1794,7 +2277,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Short}, recording any failures.
+	 * Validates the state of a {@code Short}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1808,7 +2295,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Short}, recording any failures.
+	 * Validates the state of a {@code Short}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1819,7 +2310,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code int}, recording any failures.
+	 * Validates the state of an {@code int}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1833,7 +2328,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code int}, recording any failures.
+	 * Validates the state of an {@code int}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1844,7 +2343,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Integer}, recording any failures.
+	 * Validates the state of an {@code Integer}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1858,7 +2361,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Integer}, recording any failures.
+	 * Validates the state of an {@code Integer}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1869,7 +2376,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code long}, recording any failures.
+	 * Validates the state of a {@code long}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1883,7 +2394,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code long}, recording any failures.
+	 * Validates the state of a {@code long}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1894,7 +2409,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Long}, recording any failures.
+	 * Validates the state of a {@code Long}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1908,7 +2427,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Long}, recording any failures.
+	 * Validates the state of a {@code Long}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1919,7 +2442,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code float}, recording any failures.
+	 * Validates the state of a {@code float}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1933,7 +2460,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code float}, recording any failures.
+	 * Validates the state of a {@code float}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1944,7 +2475,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Float}, recording any failures.
+	 * Validates the state of a {@code Float}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1958,7 +2493,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Float}, recording any failures.
+	 * Validates the state of a {@code Float}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1969,7 +2508,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code double}, recording any failures.
+	 * Validates the state of a {@code double}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -1983,7 +2526,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code double}, recording any failures.
+	 * Validates the state of a {@code double}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -1994,7 +2541,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Double}, recording any failures.
+	 * Validates the state of a {@code Double}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2008,7 +2559,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Double}, recording any failures.
+	 * Validates the state of a {@code Double}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2019,7 +2574,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code boolean}, recording any failures.
+	 * Validates the state of a {@code boolean}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2033,7 +2592,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code boolean}, recording any failures.
+	 * Validates the state of a {@code boolean}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2044,7 +2607,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Boolean}, recording any failures.
+	 * Validates the state of a {@code Boolean}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2058,7 +2625,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Boolean}, recording any failures.
+	 * Validates the state of a {@code Boolean}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2069,7 +2640,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code char}, recording any failures.
+	 * Validates the state of a {@code char}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2083,7 +2658,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code char}, recording any failures.
+	 * Validates the state of a {@code char}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2094,7 +2673,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Character}, recording any failures.
+	 * Validates the state of a {@code Character}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2108,7 +2691,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Character}, recording any failures.
+	 * Validates the state of a {@code Character}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2119,7 +2706,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code BigInteger}, recording any failures.
+	 * Validates the state of a {@code BigInteger}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2133,7 +2724,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code BigInteger}, recording any failures.
+	 * Validates the state of a {@code BigInteger}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2144,7 +2739,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code BigDecimal}, recording any failures.
+	 * Validates the state of a {@code BigDecimal}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2158,7 +2757,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code BigDecimal}, recording any failures.
+	 * Validates the state of a {@code BigDecimal}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2170,6 +2773,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a {@code Comparable} object.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param value the value
@@ -2185,6 +2792,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a {@code Comparable} object.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param value the value
@@ -2196,7 +2807,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Object}, recording any failures.
+	 * Validates the state of an {@code Object}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param value the value
@@ -2211,7 +2826,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Object}, recording any failures.
+	 * Validates the state of an {@code Object}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param value the value
@@ -2223,7 +2842,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Collection}, recording any failures.
+	 * Validates the state of a {@code Collection}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the collection
@@ -2239,7 +2862,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Collection}, recording any failures.
+	 * Validates the state of a {@code Collection}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the collection
@@ -2252,7 +2879,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code List}, recording any failures.
+	 * Validates the state of a {@code List}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the list
@@ -2268,7 +2899,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code List}, recording any failures.
+	 * Validates the state of a {@code List}
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the value
 	 * @param <E>   the type of elements in the list
@@ -2282,6 +2917,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a primitive {@code byte} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2296,6 +2935,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a primitive {@code byte} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2306,8 +2949,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code short} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code short} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2321,8 +2967,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code short} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code short} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2334,6 +2983,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a primitive {@code int} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2348,6 +3001,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a primitive {@code int} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2359,6 +3016,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a primitive {@code long} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2373,6 +3034,10 @@ public final class DefaultJavaValidators
 
 	/**
 	 * Validates the state of a primitive {@code long} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2383,8 +3048,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code float} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code float} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2398,8 +3066,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code float} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code float} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2410,8 +3081,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code double} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code double} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2425,8 +3099,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code double} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code double} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2437,8 +3114,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code boolean} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code boolean} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2452,8 +3132,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code boolean} array, recording failures without throwing an
-	 * exception.
+	 * Validates the state of a primitive {@code boolean} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2464,7 +3147,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code char} array, recording failures without throwing an exception.
+	 * Validates the state of a primitive {@code char} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2478,7 +3165,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a primitive {@code char} array, recording failures without throwing an exception.
+	 * Validates the state of a primitive {@code char} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2489,7 +3180,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Object} array, recording failures without throwing an exception.
+	 * Validates the state of an {@code Object} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <E>   the type of elements in the array
 	 * @param value the value
@@ -2504,7 +3199,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Object} array, recording failures without throwing an exception.
+	 * Validates the state of an {@code Object} array.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <E>   the type of elements in the array
 	 * @param value the value
@@ -2516,7 +3215,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Map}, recording failures without throwing an exception.
+	 * Validates the state of a {@code Map}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <K>   the type of keys in the map
 	 * @param <V>   the type of values in the map
@@ -2533,7 +3236,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Map}, recording failures without throwing an exception.
+	 * Validates the state of a {@code Map}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <K>   the type of keys in the map
 	 * @param <V>   the type of values in the map
@@ -2547,7 +3254,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Path}, recording failures without throwing an exception.
+	 * Validates the state of a {@code Path}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2561,7 +3272,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Path}, recording failures without throwing an exception.
+	 * Validates the state of a {@code Path}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2572,7 +3287,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code String}, recording failures without throwing an exception.
+	 * Validates the state of a {@code String}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2586,7 +3305,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code String}, recording failures without throwing an exception.
+	 * Validates the state of a {@code String}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2597,7 +3320,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URI}, recording failures without throwing an exception.
+	 * Validates the state of a {@code URI}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2611,7 +3338,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URI}, recording failures without throwing an exception.
+	 * Validates the state of a {@code URI}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2622,7 +3353,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URL}, recording failures without throwing an exception.
+	 * Validates the state of a {@code URL}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2636,7 +3371,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URL}, recording failures without throwing an exception.
+	 * Validates the state of a {@code URL}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2647,7 +3386,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code Class}, recording failures without throwing an exception.
+	 * Validates the state of a {@code Class}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
@@ -2656,25 +3399,33 @@ public final class DefaultJavaValidators
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	public static <T> ClassValidator<T> checkIf(Class<T> value, String name)
+	public static <T> GenericTypeValidator<T> checkIf(Class<T> value, String name)
 	{
 		return DELEGATE.checkIf(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code Class}, recording failures without throwing an exception.
+	 * Validates the state of a {@code Class}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T> ClassValidator<T> checkIf(Class<T> value)
+	public static <T> GenericTypeValidator<T> checkIf(Class<T> value)
 	{
 		return DELEGATE.checkIf(value);
 	}
 
 	/**
-	 * Validates the state of an {@code Optional}, recording failures without throwing an exception.
+	 * Validates the state of an {@code Optional}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
@@ -2690,7 +3441,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code Optional}, recording failures without throwing an exception.
+	 * Validates the state of an {@code Optional}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object
 	 * @param value the value
@@ -2703,7 +3458,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code InetAddress}, recording failures without throwing an exception.
+	 * Validates the state of an {@code InetAddress}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @param name  the name of the value
@@ -2717,7 +3476,11 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of an {@code InetAddress}, recording failures without throwing an exception.
+	 * Validates the state of an {@code InetAddress}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param value the value
 	 * @return a validator for the value
@@ -2725,49 +3488,6 @@ public final class DefaultJavaValidators
 	public static InetAddressValidator checkIf(InetAddress value)
 	{
 		return DELEGATE.checkIf(value);
-	}
-
-	/**
-	 * Returns the configuration used by new validators.
-	 *
-	 * @return the configuration used by new validators
-	 * @see JavaValidators#newInstance() Creating an independent configuration
-	 */
-	@CheckReturnValue
-	public static Configuration configuration()
-	{
-		return DELEGATE.configuration();
-	}
-
-	/**
-	 * Updates the configuration that will be used by new validators.
-	 * <p>
-	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
-	 *
-	 * @return the configuration updater
-	 * @see JavaValidators#newInstance() Creating an independent configuration
-	 */
-	@CheckReturnValue
-	public static ConfigurationUpdater updateConfiguration()
-	{
-		return DELEGATE.updateConfiguration();
-	}
-
-	/**
-	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
-	 * applies the changes on exit. For example:
-	 * {@snippet :
-	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
-	 * requireThat(value, name);
-	 *}
-	 *
-	 * @param consumer the configuration updater
-	 * @return this
-	 * @throws NullPointerException if {@code consumer} is null
-	 */
-	public static JavaValidators updateConfiguration(Consumer<ConfigurationUpdater> consumer)
-	{
-		return DELEGATE.updateConfiguration(consumer);
 	}
 
 	/**
@@ -2784,7 +3504,7 @@ public final class DefaultJavaValidators
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return CONTEXT_LOCK.optimisticRead(DELEGATE::getContext);
+		return StampedLocks.optimisticRead(CONTEXT_LOCK, DELEGATE::getContext);
 	}
 
 	/**
@@ -2808,10 +3528,7 @@ public final class DefaultJavaValidators
 	 */
 	public static JavaValidators withContext(Object value, String name)
 	{
-		try (CloseableLock unused = CONTEXT_LOCK.write())
-		{
-			return DELEGATE.withContext(value, name);
-		}
+		return StampedLocks.write(CONTEXT_LOCK, () -> DELEGATE.withContext(value, name));
 	}
 
 	/**
@@ -2828,10 +3545,7 @@ public final class DefaultJavaValidators
 	 */
 	public static JavaValidators removeContext(String name)
 	{
-		try (CloseableLock unused = CONTEXT_LOCK.write())
-		{
-			return DELEGATE.removeContext(name);
-		}
+		return StampedLocks.write(CONTEXT_LOCK, () -> DELEGATE.removeContext(name));
 	}
 
 	/**
@@ -2845,5 +3559,9 @@ public final class DefaultJavaValidators
 	public static GlobalConfiguration globalConfiguration()
 	{
 		return DELEGATE.globalConfiguration();
+	}
+
+	private DefaultJavaValidators()
+	{
 	}
 }

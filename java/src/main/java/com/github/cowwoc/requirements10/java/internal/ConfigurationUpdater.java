@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements10.java;
+package com.github.cowwoc.requirements10.java.internal;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
@@ -83,17 +83,18 @@ public interface ConfigurationUpdater extends AutoCloseable
 	 *
 	 * @return {@code true} if exceptions may be created on demand instead of when a validation failure occurs
 	 */
-	boolean lazyExceptions();
+	boolean recordStacktrace();
 
 	/**
-	 * Specifies whether exception creation may be deferred until the user invokes
-	 * {@link ValidatorComponent#elseGetException()}.
+	 * Specifies whether exception stack traces should reference the code that triggers a validation failure.
+	 * When set to {@code false}, the exception type remains unchanged, but the stack trace location is
+	 * undefined. Users who only plan to {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * instead of exceptions may experience a performance improvement if this value is set to {@code false}.
 	 *
-	 * @param lazyExceptions {@code true} if exceptions may be created on demand instead of when a validation
-	 *                       failure occurs
+	 * @param recordStacktrace {@code true} if exceptions must be recorded when a validation failure occurs
 	 * @return this
 	 */
-	ConfigurationUpdater lazyExceptions(boolean lazyExceptions);
+	ConfigurationUpdater recordStacktrace(boolean recordStacktrace);
 
 	/**
 	 * Returns a function that transforms the validation exception into a suitable runtime exception or error.

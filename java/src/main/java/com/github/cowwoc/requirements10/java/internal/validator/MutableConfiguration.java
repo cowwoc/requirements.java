@@ -6,10 +6,10 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.EqualityMethod;
+import com.github.cowwoc.requirements10.java.internal.MutableStringMappers;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.EqualityMethod;
-import com.github.cowwoc.requirements10.java.MutableStringMappers;
 
 import java.util.function.Function;
 
@@ -66,7 +66,7 @@ public final class MutableConfiguration
 	{
 		return new MutableConfiguration(configuration.cleanStackTrace(), configuration.allowDiff(),
 			configuration.equalityMethod(), MutableStringMappers.from(configuration.stringMappers()),
-			configuration.lazyExceptions(), configuration.throwOnFailure(), configuration.exceptionTransformer());
+			configuration.recordStacktrace(), configuration.throwOnFailure(), configuration.exceptionTransformer());
 	}
 
 	/**

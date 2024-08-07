@@ -6,82 +6,99 @@ package com.github.cowwoc.requirements10.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
+import com.github.cowwoc.requirements10.jackson.internal.JacksonValidators;
 import com.github.cowwoc.requirements10.jackson.internal.validator.JacksonValidatorsImpl;
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.MainApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.CloseableLock;
-import com.github.cowwoc.requirements10.java.internal.util.ReentrantStampedLock;
+import com.github.cowwoc.requirements10.java.internal.util.StampedLocks;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.concurrent.locks.StampedLock;
 
 /**
- * Creates validators for the Jackson API, using the default configuration.
+ * Creates validators for the Jackson API.
  * <p>
  * There are three kinds of validators:
  * <ul>
  *   <li>{@code requireThat()} for method preconditions.</li>
- *   <li>{@code assumeThat()} for class invariants, and method postconditions.</li>
- *   <li>{@code checkIf()} for method preconditions, class invariants and method postconditions.</li>
+ *   <li>{@code assert that()} for class invariants, and method postconditions.</li>
+ *   <li>{@code checkIf()} for returning multiple validation failures.</li>
  * </ul>
  * <p>
- * {@code requireThat()} and {@code assumeThat()} throw an exception on the first validation failure,
- * while {@code checkIf()} collects multiple validation failures before throwing an exception at the end.
- * {@code checkIf()} is more flexible than the others, but its syntax is more verbose.
- * <p>
- * Exceptions that are thrown in response to invalid method arguments (e.g.
- * {@code isGreaterThan(value, null)} are thrown by all validators and cannot be configured. Exceptions that
- * are thrown in response to the value failing a validation check, e.g. {@code isGreaterThan(5)} on a value
- * of 0, are thrown by {@code requireThat()} and {@code assumeThat()} but are recorded by {@code checkIf()}
- * without being thrown. The type of thrown exceptions is configurable using
- * {@link ConfigurationUpdater#exceptionTransformer(Function)}.
- * <p>
  * <b>Thread Safety</b>: This class is thread-safe.
- *
- * @see JacksonValidators#newInstance() Creating a new instance with an independent configuration
  */
 public final class DefaultJacksonValidators
 {
 	private static final JacksonValidatorsImpl DELEGATE = new JacksonValidatorsImpl(
 		MainApplicationScope.INSTANCE,
 		Configuration.DEFAULT);
-	private static final ReentrantStampedLock CONTEXT_LOCK = new ReentrantStampedLock();
+	private static final StampedLock CONTEXT_LOCK = new StampedLock();
 
 	/**
-	 * Validates the state of a {@code JsonNode}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code JsonNode}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails.
 	 *
 	 * @param <T>   the type of the {@code JsonNode}
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
-	 * @throws NullPointerException     if any of the mandatory arguments are null
+	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	public static <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value, String name)
+	public static <T extends JsonNode> JsonNodeValidator<T> requireThat(T value, String name)
 	{
-		return DELEGATE.assumeThat(value, name);
+		return DELEGATE.requireThat(value, name);
 	}
 
 	/**
-	 * Validates the state of a {@code JsonNode}. Any exceptions thrown due to validation failure are
-	 * {@link ConfigurationUpdater#exceptionTransformer(Function) transformed} into an {@code AssertionError}.
+	 * Validates the state of a {@code JsonNode}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
+	 *
+	 * @param <T>   the type of the {@code JsonNode}
+	 * @param value the value
+	 * @param name  the name of the value
+	 * @return a validator for the value
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
+	 */
+	public static <T extends JsonNode> JsonNodeValidator<T> that(T value, String name)
+	{
+		return DELEGATE.assertThat(value, name);
+	}
+
+	/**
+	 * Validates the state of a {@code JsonNode}.
+	 * <p>
+	 * The returned validator throws an exception immediately if a validation fails. This exception is then
+	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * <p>
+	 * This method is intended to be used with the {@code assert} keyword, like so:
+	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the {@code JsonNode}
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	public static <T extends JsonNode> JsonNodeValidator<T> assumeThat(T value)
+	public static <T extends JsonNode> JsonNodeValidator<T> that(T value)
 	{
-		return DELEGATE.assumeThat(value);
+		return DELEGATE.assertThat(value);
 	}
 
 	/**
 	 * Validates the state of a {@code JsonNode}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the {@code JsonNode}
 	 * @param value the value
@@ -97,6 +114,10 @@ public final class DefaultJacksonValidators
 
 	/**
 	 * Validates the state of a {@code JsonNode}.
+	 * <p>
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
+	 * validation failures are thrown immediately.
 	 *
 	 * @param <T>   the type of the {@code JsonNode}
 	 * @param value the value
@@ -105,62 +126,6 @@ public final class DefaultJacksonValidators
 	public static <T extends JsonNode> JsonNodeValidator<T> checkIf(T value)
 	{
 		return DELEGATE.checkIf(value);
-	}
-
-	/**
-	 * Validates the state of a {@code JsonNode}.
-	 *
-	 * @param <T>   the type of the {@code JsonNode}
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if any of the mandatory arguments are null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
-	 */
-	public static <T extends JsonNode> JsonNodeValidator<T> requireThat(T value, String name)
-	{
-		return DELEGATE.requireThat(value, name);
-	}
-
-	/**
-	 * Returns the configuration used by new validators.
-	 *
-	 * @return the configuration used by new validators
-	 */
-	@CheckReturnValue
-	public static Configuration configuration()
-	{
-		return DELEGATE.configuration();
-	}
-
-	/**
-	 * Updates the configuration that will be used by new validators.
-	 * <p>
-	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
-	 *
-	 * @return the configuration updater
-	 */
-	@CheckReturnValue
-	public static ConfigurationUpdater updateConfiguration()
-	{
-		return DELEGATE.updateConfiguration();
-	}
-
-	/**
-	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
-	 * applies the changes on exit. For example:
-	 * {@snippet :
-	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
-	 * requireThat(value, name);
-	 *}
-	 *
-	 * @param consumer the configuration updater
-	 * @return this
-	 * @throws NullPointerException if {@code consumer} is null
-	 */
-	public static JacksonValidators updateConfiguration(Consumer<ConfigurationUpdater> consumer)
-	{
-		return DELEGATE.updateConfiguration(consumer);
 	}
 
 	/**
@@ -177,7 +142,7 @@ public final class DefaultJacksonValidators
 	 */
 	public static Map<String, Object> getContext()
 	{
-		return CONTEXT_LOCK.optimisticRead(DELEGATE::getContext);
+		return StampedLocks.optimisticRead(CONTEXT_LOCK, DELEGATE::getContext);
 	}
 
 	/**
@@ -190,14 +155,18 @@ public final class DefaultJacksonValidators
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
 	 * @return the underlying validator factory
-	 * @throws NullPointerException if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name}:
+	 *                                  <ul>
+	 *                                    <li>contains whitespace</li>
+	 *                                    <li>is empty</li>
+	 *                                    <li>is already in use by the value being validated or the validator
+	 *                                    context</li>
+	 *                                  </ul>
 	 */
 	public static JacksonValidators withContext(Object value, String name)
 	{
-		try (CloseableLock unused = CONTEXT_LOCK.write())
-		{
-			return DELEGATE.withContext(value, name);
-		}
+		return StampedLocks.write(CONTEXT_LOCK, () -> DELEGATE.withContext(value, name));
 	}
 
 	/**
@@ -214,10 +183,7 @@ public final class DefaultJacksonValidators
 	 */
 	public static JacksonValidators removeContext(String name)
 	{
-		try (CloseableLock unused = CONTEXT_LOCK.write())
-		{
-			return DELEGATE.removeContext(name);
-		}
+		return StampedLocks.write(CONTEXT_LOCK, () -> DELEGATE.removeContext(name));
 	}
 
 	/**

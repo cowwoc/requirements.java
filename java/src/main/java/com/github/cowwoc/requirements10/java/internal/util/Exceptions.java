@@ -129,7 +129,7 @@ public final class Exceptions
 	 * @param text      some text
 	 * @return {@code true} if any of the exception's stack trace elements contain {@code text}
 	 */
-	public static boolean contains(Throwable exception, String text)
+	public static boolean stacktraceContains(Throwable exception, String text)
 	{
 		return getStackTraceAsString(exception).contains(text);
 	}

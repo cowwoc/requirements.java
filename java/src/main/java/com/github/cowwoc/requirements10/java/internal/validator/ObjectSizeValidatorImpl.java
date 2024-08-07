@@ -1,8 +1,7 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.Configuration;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
@@ -17,16 +16,9 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerV
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Validates the state of an object's size.
- * <p>
- * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
- * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
- * Javadoc indicates, depending on the value of the
- * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
- * exception handling behavior of the class.
  */
 public final class ObjectSizeValidatorImpl
 	extends AbstractPrimitiveValidator<PrimitiveUnsignedIntegerValidator, Integer>

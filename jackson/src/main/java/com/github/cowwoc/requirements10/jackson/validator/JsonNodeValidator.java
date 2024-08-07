@@ -2,7 +2,7 @@
  * Copyright (c) 2014 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements10.jackson;
+package com.github.cowwoc.requirements10.jackson.validator;
 
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,7 +19,7 @@ import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 /**
- * Validates the state of a JsonNode, throwing an exception on the first failure.
+ * Validates the state of a JsonNode.
  *
  * @param <T> the type of the {@code JsonNode}
  */
@@ -32,7 +32,7 @@ public interface JsonNodeValidator<T extends JsonNode> extends
 	 *
 	 * @param name the name of a property
 	 * @return a validator for the property
-	 * @throws NullPointerException     if {@code name} or the value are null
+	 * @throws NullPointerException     if the value or {@code name} are null
 	 * @throws IllegalArgumentException if the node does not contain the property
 	 */
 	JsonNodeValidator<JsonNode> property(String name);

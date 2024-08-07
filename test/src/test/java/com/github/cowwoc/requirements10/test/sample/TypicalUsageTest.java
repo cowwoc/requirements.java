@@ -1,5 +1,6 @@
 package com.github.cowwoc.requirements10.test.sample;
 
+import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.test.TestValidators;
@@ -15,7 +16,6 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.assumeThat;
 import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
 import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
@@ -38,7 +38,7 @@ public final class TypicalUsageTest
 		requireThat(args, "args").length().isPositive();
 
 		// Class invariant or method postcondition
-		assert assumeThat(args[0], "args[0]").isEqualTo("world").elseThrow();
+		assert DefaultJavaValidators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
 	}
 
 	@Test(expectedExceptions = MultipleFailuresException.class)
@@ -50,7 +50,7 @@ public final class TypicalUsageTest
 		requireThat(args, "args").length().isPositive();
 
 		// Class invariant or method postcondition
-		assert assumeThat(args[0], "args[0]").isEqualTo("world").elseThrow();
+		assert DefaultJavaValidators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
 
 		// Throwing multiple validation failures at once
 		checkIf(args, "args").isEmpty().
@@ -109,6 +109,6 @@ public final class TypicalUsageTest
 	public void namelessValidation()
 	{
 		int actual = 5;
-		assumeThat(actual).isEqualTo(6);
+		DefaultJavaValidators.that(actual).isEqualTo(6);
 	}
 }

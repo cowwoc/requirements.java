@@ -4,21 +4,13 @@
  */
 package com.github.cowwoc.requirements10.java.validator;
 
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
+import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.net.URI;
-import java.util.function.Function;
 
 /**
  * Validates the state of a {@link URI}.
- * <p>
- * <b>NOTE</b>: Methods in this class throw or record exceptions under the conditions specified in their
- * Javadoc. However, the actual exception type that is thrown or recorded may be different from what the
- * Javadoc indicates, depending on the value of the
- * {@link ConfigurationUpdater#exceptionTransformer(Function)} setting. This allows users to customize the
- * exception handling behavior of the class.
  */
 public interface UriValidator extends
 	ValidatorComponent<UriValidator, URI>,

@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements10.test.java.internal.diff;
 
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.message.diff.TextOnly;
 import com.github.cowwoc.requirements10.java.internal.message.diff.Writer16Colors;

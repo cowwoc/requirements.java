@@ -2,7 +2,7 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
-import com.github.cowwoc.requirements10.java.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.Numbers;
 
