@@ -61,7 +61,7 @@ This API:
 ```
 List<Integer> actual = Arrays.asList(2, 3, 4, 6);
 List<Integer> expected = Arrays.asList(1, 3, 5);
-requireThat(actual, "Actual").containsAll(expected);
+requireThat(actual, "actual").containsAll(expected);
 ```
 
 Output:
@@ -97,7 +97,7 @@ java.lang.NullPointerException: Actual may not be null
 
 ## Assertion support
 
-This library is compatible with the `assert` keyword.
+This library is compatible with Java assertions.
 
 If you need to run in a high performance, zero allocation environment (to reduce latency and jitter) look no
 further than the following design pattern:
@@ -107,11 +107,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.that;
+
 public class Person
 {
   public void eatLunch()
   {
-    assert assumeThat("time", LocalDateTime.now().getHour()).isAfter("noon", 12).elseThrow();
+    assert that("time", LocalDateTime.now().getHour()).isAfter("noon", 12).elseThrow();
   }
 }
 ```
@@ -148,36 +150,52 @@ Actual: [Ontario, Quebec, Nova Scotia, New Brunswick, Manitoba, British Columbia
 
 ## Nested validations
 
-Nested validations facilitate checking multiple properties of a value. For example, given
+Nested validations facilitate checking multiple properties of a value. For example,
 
 ```java
 Map<String, Integer> nameToAge = new HashMap<>();
 nameToAge.put("Leah", 3);
 nameToAge.put("Nathaniel", 1);
+
+requireThat(nameToAge, "nameToAge").
+keySet().containsAll(Arrays.asList("Leah", "Nathaniel"));
+
+requireThat(nameToAge, "nameToAge").
+values().containsAll(Arrays.asList(3, 1));
 ```
 
-To validate that `nameToAge` has the keys "Leah" and "Nathaniel" and the values 3 and 1, you can write:
+can be converted to:
 
 ```java
 requireThat(nameToAge, "nameToAge").
-  apply(v -> v.keySet().containsAll(Arrays.asList("Leah", "Nathaniel"))).
-  apply(v -> v.values().containsAll(Arrays.asList(3, 1)));
+  and(v -> v.keySet().containsAll(Arrays.asList("Leah", "Nathaniel"))).
+  and(v -> v.values().containsAll(Arrays.asList(3, 1)));
 ```
 
-instead of:
+## Logical operators
+
+Logical operators combine the validation of unrelated values. For example,
 
 ```java
-requireThat(nameToAge, "nameToAge").
-  keySet().containsAll(Arrays.asList("Leah", "Nathaniel"));
+Set<String> activeUsers = Set.of("Alice", "Bob");
+Set<String> suspendedUsers = Set.of("Charlie");
 
-requireThat(nameToAge, "nameToAge").
-  values().containsAll(Arrays.asList(3, 1));
+String currentUser = "Alice";
+var userCheck = checkIf(currentUser, "currentUser");
+for (String user : activeUsers)
+{
+  var yetAnotherUserCheck = checkIf(currentUser, "currentUser").isEqualTo(user);
+  userCheck.or(yetAnotherUserCheck);
+}
+var userNotSuspended = checkIf(suspendedUsers, "suspendedUsers").
+  doesNotContain(currentUser, "currentUser");
+userCheck.and(userNotSuspended).elseThrow();
 ```
 
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
 fails, the library outputs a diff of the values being compared.
 
 Depending on the terminal capability, you will see a [Textual](Textual_Diff.md) or a colored diff.
@@ -191,7 +209,7 @@ terminal.
 
 The use of colors is disabled by default if stdin or stdout are redirected, even if ANSI colors are supported.
 To enable colors,
-invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements.java.terminal.TerminalEncoding)).
+invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.TerminalEncoding)).
 
 ## Returning the value after validation
 

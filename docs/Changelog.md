@@ -1,6 +1,24 @@
 Minor updates involving cosmetic changes have been omitted from this list.
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 10.0 - ?
+
+* Breaking changes:
+    * Module and package names now contain a major version number
+      per: https://www.reddit.com/r/java/comments/1dxbag2/comment/lc63gz1/
+    * Parameter names may not contain whitespace (previously only leading or trailing whitespace was
+      disallowed).
+    * Validators are no longer configurable. This functionality can be restored on demand.
+    * Moved `com.github.cowwoc.requirements10.java.terminal.TerminalEncoding`
+      to `com.github.cowwoc.requirements10.java.TerminalEncoding`.
+    * Added `GenericType` to represent types with type parameters. `ClassValidator` was replaced
+      by `GenericTypeValidator`.
+* New features:
+    * Added `GenerictypeValidator.isPrimitive()`.
+    * Added `validationFailed()` and `getValueOrDefault()` to all validators.
+* Improvements
+    * If `checkIf()` cannot run validations due to a null value, the expected conditions are still reported.
+
 ## Version 9.0.0 - 2024/05/23
 
 * Breaking changes:

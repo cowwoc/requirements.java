@@ -100,7 +100,7 @@ Meaning, we need to:
 * If the `toString()` values are equal, but their types differ, we output the string representation of `Actual` followed by the two types (i.e. `Actual.class` vs `Expected.class`).
 * If their classes are equal, but their `hashCode()` values differ, we output the string representation of `Actual` followed by the two hashcodes (i.e. `Actual.hashCode()` vs `Expected.hashCode()`).
 
-For example:
+For example,
 
 ```text
 Actual   = "null"
@@ -124,7 +124,7 @@ When comparing multi-line strings:
 * `Actual` and `Expected` are followed by a 0-based line number.
 * Lines that are identical (with the exception of the first and last line) are omitted.
 
-For example:
+For example,
 
 ```text
 Actual   = "first\nsecond\nfoo\nforth\nfifth"
@@ -190,7 +190,7 @@ When comparing lists or arrays:
 * `Actual` and `Expected` are followed by the element's index number.
 * Indexes that are identical (with the exception of the first and last line) are omitted.
 
-For example:
+For example,
 
 ```java
 
