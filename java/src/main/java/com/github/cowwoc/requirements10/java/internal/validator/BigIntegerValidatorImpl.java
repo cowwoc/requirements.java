@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
@@ -236,9 +236,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	}
 
 	@Override
-	public BigIntegerValidator isBetween(BigInteger minimum, boolean minimumInclusive, BigInteger maximum,
-		boolean maximumInclusive)
+	public BigIntegerValidator isBetween(BigInteger minimum, boolean minimumIsInclusive, BigInteger maximum,
+		boolean maximumIsInclusive)
 	{
-		return comparables.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return comparables.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

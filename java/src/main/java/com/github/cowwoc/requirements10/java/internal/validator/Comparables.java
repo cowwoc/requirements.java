@@ -248,26 +248,26 @@ final class Comparables<S, T extends Comparable<T>>
 	/**
 	 * Ensures that the value is within a range.
 	 *
-	 * @param minimum          the lower bound of the range
-	 * @param minimumInclusive {@code true} if the lower bound of the range is inclusive
-	 * @param maximum          the upper bound of the range
-	 * @param maximumInclusive {@code true} if the upper bound of the range is inclusive
+	 * @param minimum            the lower bound of the range
+	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
+	 * @param maximum            the upper bound of the range
+	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
 	 * @return this
 	 * @throws NullPointerException     if the value or any of the arguments are null
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code minimum} is greater than {@code maximum}</li>
-	 *                                    <li>{@code minimumInclusive} is {@code true} and the value is less
+	 *                                    <li>{@code minimumIsInclusive} is {@code true} and the value is less
 	 *                                    than {@code minimum}</li>
-	 *                                    <li>{@code minimumInclusive} is {@code false} and the value is less
+	 *                                    <li>{@code minimumIsInclusive} is {@code false} and the value is less
 	 *                                    than or equal to {@code minimum}</li>
-	 *                                    <li>{@code maximumInclusive} is {@code true} and the value is greater
-	 *                                    than {@code maximum}</li>
-	 *                                    <li>{@code maximumInclusive} is {@code false} and the value is greater
-	 *                                    than or equal to {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code true} and the value is
+	 *                                    greater than {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code false} and the value is
+	 *                                    greater than or equal to {@code maximum}</li>
 	 *                                  </ul>
 	 */
-	public S isBetween(T minimum, boolean minimumInclusive, T maximum, boolean maximumInclusive)
+	public S isBetween(T minimum, boolean minimumIsInclusive, T maximum, boolean maximumIsInclusive)
 	{
 		validator.scope.getInternalValidators().requireThat(minimum, "minimum").
 			isLessThanOrEqualTo(maximum, "maximum");
@@ -275,20 +275,20 @@ final class Comparables<S, T extends Comparable<T>>
 			validator.onNull();
 		switch (validator.value.test(value ->
 		{
-			if (minimumInclusive)
+			if (minimumIsInclusive)
 			{
 				if (value.compareTo(minimum) < 0)
 					return false;
 			}
 			else if (value.compareTo(minimum) <= 0)
 				return false;
-			if (maximumInclusive)
+			if (maximumIsInclusive)
 				return value.compareTo(maximum) <= 0;
 			return value.compareTo(maximum) < 0;
 		}))
 		{
 			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isBetween(validator, minimum, minimumInclusive, maximum, maximumInclusive).
+				ComparableMessages.isBetween(validator, minimum, minimumIsInclusive, maximum, maximumIsInclusive).
 					toString());
 		}
 		return self();

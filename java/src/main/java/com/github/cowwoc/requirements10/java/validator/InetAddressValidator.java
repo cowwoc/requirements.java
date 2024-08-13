@@ -21,7 +21,7 @@ public interface InetAddressValidator extends
 	 *
 	 * @return this
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if value is not an IP v4 address
+	 * @throws IllegalArgumentException if the value is not an IP v4 address
 	 */
 	InetAddressValidator isIpV4();
 
@@ -30,7 +30,7 @@ public interface InetAddressValidator extends
 	 *
 	 * @return this
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if value is not an IP v6 address
+	 * @throws IllegalArgumentException if the value is not an IP v6 address
 	 */
 	InetAddressValidator isIpV6();
 }

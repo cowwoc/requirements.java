@@ -12,7 +12,7 @@ package com.github.cowwoc.requirements10.java.validator.component;
 public interface NegativeNumberComponent<S>
 {
 	/**
-	 * Ensures that the value is negative. {@code -0.0} is considered to be zero *and* negative.
+	 * Ensures that the value is a negative number. {@code -0.0} is considered to be zero *and* negative.
 	 *
 	 * @return this
 	 * @throws NullPointerException     if the value is null
@@ -29,7 +29,7 @@ public interface NegativeNumberComponent<S>
 	 *
 	 * @return this
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is negative
+	 * @throws IllegalArgumentException if the value is a negative number
 	 */
 	S isNotNegative();
 }

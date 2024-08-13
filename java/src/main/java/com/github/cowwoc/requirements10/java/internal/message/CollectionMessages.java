@@ -59,24 +59,24 @@ public final class CollectionMessages
 	}
 
 	/**
-	 * @param validator         the validator
-	 * @param collectionName    the name of the collection
-	 * @param collectionAndSize the collection and its size
-	 * @param minimum           the collection's minimum size
-	 * @param minimumInclusive  {@code true} if minimum size is inclusive
-	 * @param maximum           the collection's maximum size
-	 * @param maximumInclusive  {@code true} if maximum size is inclusive
-	 * @param pluralizer        the type of items in the collection
+	 * @param validator          the validator
+	 * @param collectionName     the name of the collection
+	 * @param collectionAndSize  the collection and its size
+	 * @param minimum            the collection's minimum size
+	 * @param minimumIsInclusive {@code true} if minimum size is inclusive
+	 * @param maximum            the collection's maximum size
+	 * @param maximumIsInclusive {@code true} if maximum size is inclusive
+	 * @param pluralizer         the type of items in the collection
 	 */
 	public static MessageBuilder sizeIsBetween(AbstractValidator<?, ?> validator, String collectionName,
-		MaybeUndefined<ObjectAndSize> collectionAndSize, int minimum, boolean minimumInclusive, int maximum,
-		boolean maximumInclusive, Pluralizer pluralizer)
+		MaybeUndefined<ObjectAndSize> collectionAndSize, int minimum, boolean minimumIsInclusive, int maximum,
+		boolean maximumIsInclusive, Pluralizer pluralizer)
 	{
 		assert (maximum >= minimum) : "minimum: " + minimum + ", maximum: " + maximum;
 		StringBuilder message = new StringBuilder(quoteName(collectionName));
 
-		UnquotedStringValue bounds = ComparableMessages.getBounds(minimum, minimumInclusive, maximum,
-			maximumInclusive, validator.configuration().stringMappers());
+		UnquotedStringValue bounds = ComparableMessages.getBounds(minimum, minimumIsInclusive, maximum,
+			maximumIsInclusive, validator.configuration().stringMappers());
 
 		ObjectAndSize resolved = collectionAndSize.orDefault(null);
 		if (resolved == null)
@@ -93,13 +93,13 @@ public final class CollectionMessages
 		// actual.length(): 3
 		// Bounds         : [4, 6]
 		int inclusiveMinimum;
-		if (minimumInclusive)
+		if (minimumIsInclusive)
 			inclusiveMinimum = minimum;
 		else
 			inclusiveMinimum = minimum + 1;
 
 		int exclusiveMaximum;
-		if (maximumInclusive)
+		if (maximumIsInclusive)
 			exclusiveMaximum = maximum - 1;
 		else
 			exclusiveMaximum = maximum;

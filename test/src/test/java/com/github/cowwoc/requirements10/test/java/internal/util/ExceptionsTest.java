@@ -57,7 +57,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(true).
-					recordStacktrace(false);
+					recordStacktrace(true);
 			}
 
 			try
@@ -175,7 +175,7 @@ public final class ExceptionsTest
 	}
 
 	@Test
-	public void lazyExceptionsWithoutCleanStackTrace()
+	public void withoutRecordStacktraceAndCleanStackTrace()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -183,7 +183,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
-					recordStacktrace(true);
+					recordStacktrace(false);
 			}
 
 			try
@@ -215,7 +215,7 @@ public final class ExceptionsTest
 	}
 
 	@Test
-	public void lazyExceptionsWithCleanStackTrace()
+	public void cleanStackTraceWithoutRecordStacktrace()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -223,7 +223,7 @@ public final class ExceptionsTest
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(true).
-					recordStacktrace(true);
+					recordStacktrace(false);
 			}
 
 			try
@@ -255,14 +255,14 @@ public final class ExceptionsTest
 	}
 
 	@Test
-	public void lazyExceptionsGetMessages()
+	public void getMessagesWithoutRecordStacktrace()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
-				configurationUpdater.recordStacktrace(true);
+				configurationUpdater.recordStacktrace(false);
 			}
 
 			List<String> messages = validators.checkIf((Object) null, "actual").isNotNull().

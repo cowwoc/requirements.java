@@ -1,7 +1,7 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerValidator;
@@ -160,10 +160,10 @@ public final class PrimitiveIntegerValidatorImpl
 	}
 
 	@Override
-	public PrimitiveIntegerValidator isBetween(int minimum, boolean minimumInclusive, int maximum,
-		boolean maximumInclusive)
+	public PrimitiveIntegerValidator isBetween(int minimum, boolean minimumIsInclusive, int maximum,
+		boolean maximumIsInclusive)
 	{
-		return integers.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return integers.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override
@@ -245,9 +245,9 @@ public final class PrimitiveIntegerValidatorImpl
 	}
 
 	@Override
-	public PrimitiveIntegerValidator isBetween(Integer minimum, boolean minimumInclusive, Integer maximum,
-		boolean maximumInclusive)
+	public PrimitiveIntegerValidator isBetween(Integer minimum, boolean minimumIsInclusive, Integer maximum,
+		boolean maximumIsInclusive)
 	{
-		return integers.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return integers.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

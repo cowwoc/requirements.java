@@ -1,10 +1,10 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.validator.PrimitiveDoubleValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveDoubleValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -160,10 +160,10 @@ public final class PrimitiveDoubleValidatorImpl
 	}
 
 	@Override
-	public PrimitiveDoubleValidator isBetween(double minimum, boolean minimumInclusive, double maximum,
-		boolean maximumInclusive)
+	public PrimitiveDoubleValidator isBetween(double minimum, boolean minimumIsInclusive, double maximum,
+		boolean maximumIsInclusive)
 	{
-		return doubles.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return doubles.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override
@@ -245,10 +245,10 @@ public final class PrimitiveDoubleValidatorImpl
 	}
 
 	@Override
-	public PrimitiveDoubleValidator isBetween(Double minimum, boolean minimumInclusive, Double maximum,
-		boolean maximumInclusive)
+	public PrimitiveDoubleValidator isBetween(Double minimum, boolean minimumIsInclusive, Double maximum,
+		boolean maximumIsInclusive)
 	{
-		return doubles.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return doubles.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override

@@ -139,47 +139,47 @@ public final class ComparableMessages
 	}
 
 	/**
-	 * @param <T>              the type of the value
-	 * @param validator        the validator
-	 * @param minimum          the Object representation of the lower limit
-	 * @param minimumInclusive {@code true} if the lower bound of the range is inclusive
-	 * @param maximum          the Object representation of the upper limit
-	 * @param maximumInclusive {@code true} if the upper bound of the range is inclusive
+	 * @param <T>                the type of the value
+	 * @param validator          the validator
+	 * @param minimum            the Object representation of the lower limit
+	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
+	 * @param maximum            the Object representation of the upper limit
+	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
 	 * @return a message for the validation failure
 	 */
 	public static <T> MessageBuilder isBetween(AbstractValidator<?, T> validator, Object minimum,
-		boolean minimumInclusive, Object maximum, boolean maximumInclusive)
+		boolean minimumIsInclusive, Object maximum, boolean maximumIsInclusive)
 	{
 		String name = validator.getName();
 		MessageBuilder builder = new MessageBuilder(validator, quoteName(name) + " is out of bounds.");
 		validator.ifDefined(value -> builder.withContext(value, name));
 
-		UnquotedStringValue bounds = getBounds(minimum, minimumInclusive, maximum, maximumInclusive,
+		UnquotedStringValue bounds = getBounds(minimum, minimumIsInclusive, maximum, maximumIsInclusive,
 			validator.configuration().stringMappers());
 		builder.withContext(bounds, "bounds");
 		return builder;
 	}
 
 	/**
-	 * @param minimum          the Object representation of the lower limit
-	 * @param minimumInclusive {@code true} if the lower bound of the range is inclusive
-	 * @param maximum          the Object representation of the upper limit
-	 * @param maximumInclusive {@code true} if the upper bound of the range is inclusive
-	 * @param stringMappers    the configuration used to map contextual values to a String
+	 * @param minimum            the Object representation of the lower limit
+	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
+	 * @param maximum            the Object representation of the upper limit
+	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
+	 * @param stringMappers      the configuration used to map contextual values to a String
 	 * @return a message for the validation failure
 	 */
-	public static UnquotedStringValue getBounds(Object minimum, boolean minimumInclusive, Object maximum,
-		boolean maximumInclusive, StringMappers stringMappers)
+	public static UnquotedStringValue getBounds(Object minimum, boolean minimumIsInclusive, Object maximum,
+		boolean maximumIsInclusive, StringMappers stringMappers)
 	{
 		StringBuilder bounds = new StringBuilder();
-		if (minimumInclusive)
+		if (minimumIsInclusive)
 			bounds.append('[');
 		else
 			bounds.append('(');
 		String minimumAsString = stringMappers.toString(minimum);
 		String maximumAsString = stringMappers.toString(maximum);
 		bounds.append(minimumAsString).append(", ").append(maximumAsString);
-		if (maximumInclusive)
+		if (maximumIsInclusive)
 			bounds.append(']');
 		else
 			bounds.append(')');

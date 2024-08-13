@@ -75,13 +75,12 @@ public interface ConfigurationUpdater extends AutoCloseable
 	MutableStringMappers stringMappers();
 
 	/**
-	 * Returns {@code true} if exception creation may be deferred until the user invokes
-	 * {@link ValidatorComponent#elseGetException()}. The exception type remains the same, but the stack trace
-	 * points to {@code elseGetException()} as the cause. By deferring the exception creation, you can improve
-	 * the performance if you only need a {@link ValidatorComponent#elseGetMessages() list of failure messages}
-	 * instead of a full exception.
+	 * Returns {@code true} if exception stack traces should reference the code that triggers a validation
+	 * failure. When set to {@code false}, the exception type remains unchanged, but the stack trace location is
+	 * undefined. Users who only plan to {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * instead of exceptions may experience a performance improvement if this value is set to {@code false}.
 	 *
-	 * @return {@code true} if exceptions may be created on demand instead of when a validation failure occurs
+	 * @return {@code true} if exceptions must be recorded when a validation failure occurs
 	 */
 	boolean recordStacktrace();
 

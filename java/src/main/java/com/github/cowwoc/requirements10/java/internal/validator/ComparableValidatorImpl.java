@@ -4,11 +4,11 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.ComparableValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.ComparableValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -95,9 +95,9 @@ public final class ComparableValidatorImpl<T extends Comparable<T>>
 	}
 
 	@Override
-	public ComparableValidator<T> isBetween(T minimum, boolean minimumInclusive, T maximum,
-		boolean maximumInclusive)
+	public ComparableValidator<T> isBetween(T minimum, boolean minimumIsInclusive, T maximum,
+		boolean maximumIsInclusive)
 	{
-		return comparables.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return comparables.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

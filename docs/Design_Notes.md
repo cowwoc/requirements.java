@@ -1,9 +1,25 @@
+Scope
+-----
+
+**In Scope:**
+
+- Validating the state of values
+- Navigating across class properties (e.g., `ListValidator.length()`)
+
+**Out of Scope:**
+
+- Type conversion (e.g., converting a `String` to an `InetAddress`)
+- Validation of nested types (e.g., checking if a `String` contains an email address)
+
+**Reasoning:** Common classes like `Object` or `String` would include numerous type-conversion methods, making
+it impractical to divide the functionality into multiple modules.
+
 Library name
 ------------
 
 * Requirements
-  * Con
-    * Virtually impossible to find in Google search results due to the keyword's popularity.
+    * Con
+        * Virtually impossible to find in Google search results due to the keyword's popularity.
 
 Preconditions
 -------------
@@ -79,12 +95,13 @@ Providing separate validators for primitives
 
 requireThat(value, name).isNotNull().isGreaterThan(3);
 assertThat(value, name).isNotNull().isGreaterThan(3);
-    assertThat(v -> v.requireThat(value, name).isNotNull().isGreaterThan(3));
-    checkIf(v -> v.requireThat(value, name).isNotNull().isGreaterThan(3)));
+assertThat(v -> v.requireThat(value, name).isNotNull().isGreaterThan(3));
+checkIf(v -> v.requireThat(value, name).isNotNull().isGreaterThan(3)));
 
     assertThat(value, name, v -> v.isNotNull().isGreaterThan(3));
     checkIf(value, name, v -> v.isNotNull().isGreaterThan(3));
 
     assertThat(value, name).isNotNull().isGreaterThan(3));
     checkIf(value, name).isNotNull().isGreaterThan(3));
+
 checkIf(value, name).isNotNull().isGreaterThan(3);

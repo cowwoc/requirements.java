@@ -1,10 +1,10 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.validator.PrimitiveShortValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveShortValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -160,10 +160,10 @@ public final class PrimitiveShortValidatorImpl
 	}
 
 	@Override
-	public PrimitiveShortValidator isBetween(short minimum, boolean minimumInclusive, short maximum,
-		boolean maximumInclusive)
+	public PrimitiveShortValidator isBetween(short minimum, boolean minimumIsInclusive, short maximum,
+		boolean maximumIsInclusive)
 	{
-		return shorts.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return shorts.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override
@@ -245,9 +245,9 @@ public final class PrimitiveShortValidatorImpl
 	}
 
 	@Override
-	public PrimitiveShortValidator isBetween(Short minimum, boolean minimumInclusive, Short maximum,
-		boolean maximumInclusive)
+	public PrimitiveShortValidator isBetween(Short minimum, boolean minimumIsInclusive, Short maximum,
+		boolean maximumIsInclusive)
 	{
-		return shorts.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return shorts.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

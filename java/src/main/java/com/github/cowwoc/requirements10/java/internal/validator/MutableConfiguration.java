@@ -24,7 +24,7 @@ public final class MutableConfiguration
 	private boolean cleanStackTrace;
 	private boolean allowDiff;
 	private EqualityMethod equalityMethod;
-	private boolean lazyExceptions;
+	private boolean recordStacktrace;
 	private boolean throwOnFailure;
 	private Function<Throwable, ? extends Throwable> exceptionTransformer;
 
@@ -36,24 +36,27 @@ public final class MutableConfiguration
 	 *                             and expected values
 	 * @param equalityMethod       the equality method that determines whether two values are equivalent
 	 * @param stringMappers        the configuration used to map contextual values to a String
-	 * @param lazyExceptions       {@code true} if exception creation may be deferred until the user invokes
-	 *                             {@link ValidatorComponent#elseGetException()}. The exception matches the
-	 *                             original failure, but the stack trace points to {@code elseGetException()} as
-	 *                             the cause.
+	 * @param recordStacktrace     {@code true} if the exception stack trace must be recorded when a validation
+	 *                             failure occurs. If {@code false}, the exception type remains the same, but
+	 *                             the stack trace points to the invocation of * {@code elseGetException()}.
+	 *                             Users who only plan to
+	 *                             {@link ValidatorComponent#elseGetMessages() list of failure messages} instead
+	 *                             of retrieving an exception * may see a performance improvement if this value
+	 *                             is set to {@code false}.
 	 * @param throwOnFailure       {@code true} if an exception is thrown on validation failure.
 	 * @param exceptionTransformer a function that transforms the validation exception into a suitable runtime
 	 *                             exception or error
 	 * @throws NullPointerException if any of the arguments are null
 	 */
 	private MutableConfiguration(boolean cleanStackTrace, boolean allowDiff,
-		EqualityMethod equalityMethod, MutableStringMappers stringMappers, boolean lazyExceptions,
+		EqualityMethod equalityMethod, MutableStringMappers stringMappers, boolean recordStacktrace,
 		boolean throwOnFailure, Function<Throwable, ? extends Throwable> exceptionTransformer)
 	{
 		this.cleanStackTrace = cleanStackTrace;
 		this.allowDiff = allowDiff;
 		this.equalityMethod = equalityMethod;
 		this.stringMappers = stringMappers;
-		this.lazyExceptions = lazyExceptions;
+		this.recordStacktrace = recordStacktrace;
 		this.throwOnFailure = throwOnFailure;
 		this.exceptionTransformer = exceptionTransformer;
 	}
@@ -78,7 +81,7 @@ public final class MutableConfiguration
 	public Configuration toImmutable()
 	{
 		return new Configuration(cleanStackTrace, allowDiff, equalityMethod, stringMappers.toImmutable(),
-			lazyExceptions, throwOnFailure, exceptionTransformer);
+			recordStacktrace, throwOnFailure, exceptionTransformer);
 	}
 
 	/**
@@ -168,30 +171,30 @@ public final class MutableConfiguration
 	}
 
 	/**
-	 * Returns {@code true} if exception creation may be deferred until the user invokes
-	 * {@link ValidatorComponent#elseGetException()}. The exception type remains the same, but the stack trace
-	 * points to {@code elseGetException()} as the cause. By deferring the exception creation, you can improve
-	 * the performance if you only need a {@link ValidatorComponent#elseGetMessages() list of failure messages}
-	 * instead of a full exception.
+	 * Returns {@code true} if exception stack traces should reference the code that triggers a validation
+	 * failure. When set to {@code false}, the exception type remains unchanged, but the stack trace location is
+	 * undefined. Users who only plan to {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * instead of exceptions may experience a performance improvement if this value is set to {@code false}.
 	 *
-	 * @return {@code true} if exceptions may be created on demand instead of when a validation failure occurs
+	 * @return {@code true} if exceptions must be recorded when a validation failure occurs
 	 */
-	public boolean lazyExceptions()
+	public boolean recordStacktrace()
 	{
-		return lazyExceptions;
+		return recordStacktrace;
 	}
 
 	/**
-	 * Specifies whether exception creation may be deferred until the user invokes
-	 * {@link ValidatorComponent#elseGetException()}.
+	 * Specifies whether exception stack traces should reference the code that triggers a validation failure.
+	 * When set to {@code false}, the exception type remains unchanged, but the stack trace location is
+	 * undefined. Users who only plan to {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * instead of exceptions may experience a performance improvement if this value is set to {@code false}.
 	 *
-	 * @param lazyExceptions {@code true} if exceptions may be created on demand instead of when a validation
-	 *                       failure occurs
+	 * @param recordStacktrace {@code true} if exceptions must be recorded when a validation failure occurs
 	 * @return this
 	 */
-	public MutableConfiguration lazyExceptions(boolean lazyExceptions)
+	public MutableConfiguration recordStacktrace(boolean recordStacktrace)
 	{
-		this.lazyExceptions = lazyExceptions;
+		this.recordStacktrace = recordStacktrace;
 		return this;
 	}
 
@@ -263,6 +266,8 @@ public final class MutableConfiguration
 		hash = 23 * hash + Boolean.hashCode(allowDiff);
 		hash = 23 * hash + equalityMethod.hashCode();
 		hash = 23 * hash + stringMappers.hashCode();
+		hash = 23 * hash + Boolean.hashCode(recordStacktrace);
+		hash = 23 * hash + Boolean.hashCode(throwOnFailure);
 		return 23 * hash + exceptionTransformer.hashCode();
 	}
 
@@ -275,6 +280,7 @@ public final class MutableConfiguration
 			return false;
 		return other.cleanStackTrace == cleanStackTrace && other.allowDiff == allowDiff &&
 			other.equalityMethod == equalityMethod && other.stringMappers.equals(stringMappers) &&
+			other.recordStacktrace == recordStacktrace() && other.throwOnFailure == throwOnFailure &&
 			other.exceptionTransformer == exceptionTransformer;
 	}
 
@@ -283,6 +289,7 @@ public final class MutableConfiguration
 	{
 		return "cleanStackTrace: " + cleanStackTrace + ", allowDiff: " + allowDiff +
 			", equalityMethod: " + equalityMethod + ", stringMappers: " + stringMappers +
+			", recordStacktrace: " + recordStacktrace + ", throwOnFailure:" + throwOnFailure +
 			", exceptionTransformer: " + exceptionTransformer;
 	}
 }

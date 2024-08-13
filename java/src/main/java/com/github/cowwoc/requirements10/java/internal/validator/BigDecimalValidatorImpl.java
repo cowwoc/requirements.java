@@ -297,9 +297,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	}
 
 	@Override
-	public BigDecimalValidator isBetween(BigDecimal minimum, boolean minimumInclusive, BigDecimal maximum,
-		boolean maximumInclusive)
+	public BigDecimalValidator isBetween(BigDecimal minimum, boolean minimumIsInclusive, BigDecimal maximum,
+		boolean maximumIsInclusive)
 	{
-		return comparables.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return comparables.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

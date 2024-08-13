@@ -1,4 +1,5 @@
-Minor updates involving cosmetic changes have been omitted from this list.
+    Minor updates involving cosmetic changes have been omitted from this list.
+
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
 ## Version 10.0 - ?
@@ -13,6 +14,8 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
       to `com.github.cowwoc.requirements10.java.TerminalEncoding`.
     * Added `GenericType` to represent types with type parameters. `ClassValidator` was replaced
       by `GenericTypeValidator`.
+    * Made the decision to exclude type-conversion methods from the library scope. Methods removed from
+      `ObjectValidator` and `StringValidator`.
 * New features:
     * Added `GenerictypeValidator.isPrimitive()`.
     * Added `validationFailed()` and `getValueOrDefault()` to all validators.

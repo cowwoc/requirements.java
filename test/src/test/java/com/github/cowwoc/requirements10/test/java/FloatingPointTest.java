@@ -20,7 +20,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = 1.0f;
+			float actual = 1.0f;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
@@ -30,7 +30,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = Float.NaN;
+			float actual = Float.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
@@ -40,7 +40,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 1.0;
+			double actual = 1.0;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
@@ -50,7 +50,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNumber();
 		}
 	}
@@ -60,7 +60,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = Float.NaN;
+			float actual = Float.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
@@ -70,7 +70,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = 1.0f;
+			float actual = 1.0f;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
@@ -80,7 +80,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
@@ -90,7 +90,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 1.0;
+			double actual = 1.0;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNumber();
 		}
 	}
@@ -100,7 +100,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = 1.0f;
+			float actual = 1.0f;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
@@ -111,7 +111,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = 1.0f / 0.0f;
+			float actual = 1.0f / 0.0f;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
@@ -121,7 +121,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 1.0;
+			double actual = 1.0;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
@@ -132,7 +132,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 1.0 / 0.0;
+			double actual = 1.0 / 0.0;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFinite();
 		}
 	}
@@ -143,7 +143,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = 1.0f / 0.0f;
+			float actual = 1.0f / 0.0f;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInfinite();
 		}
 	}
@@ -153,18 +153,18 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Float actual = 1.0f;
+			float actual = 1.0f;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInfinite();
 		}
 	}
 
 	@Test
 	@SuppressWarnings({"divzero", "NumericOverflow"})
-	public void doubleisInfinite()
+	public void doubleIsInfinite()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 1.0 / 0.0;
+			double actual = 1.0 / 0.0;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInfinite();
 		}
 	}
@@ -174,8 +174,28 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = 1.0;
+			double actual = 1.0;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInfinite();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void floatIsNegative_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = Float.NaN;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
+		}
+	}
+
+	@Test
+	public void floatIsNotNegative_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = Float.NaN;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNegative();
 		}
 	}
 
@@ -184,7 +204,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
 		}
 	}
@@ -194,8 +214,28 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNegative();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void floatIsZero_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = Float.NaN;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
+		}
+	}
+
+	@Test
+	public void floatIsNotZero_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = Float.NaN;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotZero();
 		}
 	}
 
@@ -204,7 +244,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
 		}
 	}
@@ -214,8 +254,28 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotZero();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void floatIsPositive_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = Float.NaN;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPositive();
+		}
+	}
+
+	@Test
+	public void floatIsNotPositive_NaN()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = Float.NaN;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotPositive();
 		}
 	}
 
@@ -224,7 +284,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPositive();
 		}
 	}
@@ -234,8 +294,28 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = Double.NaN;
+			double actual = Double.NaN;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotPositive();
+		}
+	}
+
+	@Test
+	public void floatIsNegative_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = -0.0f;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void floatIsNotNegative_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = -0.0f;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNegative();
 		}
 	}
 
@@ -244,7 +324,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = -0.0d;
+			double actual = -0.0d;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
 		}
 	}
@@ -254,8 +334,28 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = -0.0d;
+			double actual = -0.0d;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNegative();
+		}
+	}
+
+	@Test
+	public void floatIsZero_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = -0.0f;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void floatIsNotZero_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = -0.0f;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotZero();
 		}
 	}
 
@@ -264,7 +364,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = -0.0d;
+			double actual = -0.0d;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
 		}
 	}
@@ -274,8 +374,18 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = -0.0d;
+			double actual = -0.0d;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotZero();
+		}
+	}
+
+	@Test
+	public void floatIsNotPositive_NegativeZero()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			float actual = -0.0f;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotPositive();
 		}
 	}
 
@@ -284,7 +394,7 @@ public final class FloatingPointTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			Double actual = -0.0d;
+			double actual = -0.0d;
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotPositive();
 		}
 	}

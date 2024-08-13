@@ -1,10 +1,10 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.CharacterValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.CharacterValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -87,10 +87,10 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	}
 
 	@Override
-	public CharacterValidator isBetween(char minimum, boolean minimumInclusive, char maximum,
-		boolean maximumInclusive)
+	public CharacterValidator isBetween(char minimum, boolean minimumIsInclusive, char maximum,
+		boolean maximumIsInclusive)
 	{
-		return characters.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return characters.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override
@@ -148,9 +148,9 @@ public final class CharacterValidatorImpl extends AbstractObjectValidator<Charac
 	}
 
 	@Override
-	public CharacterValidator isBetween(Character minimum, boolean minimumInclusive, Character maximum,
-		boolean maximumInclusive)
+	public CharacterValidator isBetween(Character minimum, boolean minimumIsInclusive, Character maximum,
+		boolean maximumIsInclusive)
 	{
-		return characters.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return characters.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

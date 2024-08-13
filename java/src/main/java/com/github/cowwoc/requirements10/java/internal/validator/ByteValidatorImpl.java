@@ -4,11 +4,11 @@
   */
  package com.github.cowwoc.requirements10.java.internal.validator;
 
- import com.github.cowwoc.requirements10.java.validator.ByteValidator;
- import com.github.cowwoc.requirements10.java.internal.Configuration;
  import com.github.cowwoc.requirements10.java.ValidationFailure;
+ import com.github.cowwoc.requirements10.java.internal.Configuration;
  import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
  import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+ import com.github.cowwoc.requirements10.java.validator.ByteValidator;
 
  import java.util.List;
  import java.util.Map;
@@ -127,10 +127,10 @@
 	 }
 
 	 @Override
-	 public ByteValidator isBetween(byte minimum, boolean minimumInclusive, byte maximum,
-		 boolean maximumInclusive)
+	 public ByteValidator isBetween(byte minimum, boolean minimumIsInclusive, byte maximum,
+		 boolean maximumIsInclusive)
 	 {
-		 return bytes.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		 return bytes.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	 }
 
 	 @Override
@@ -212,9 +212,9 @@
 	 }
 
 	 @Override
-	 public ByteValidator isBetween(Byte minimum, boolean minimumInclusive, Byte maximum,
-		 boolean maximumInclusive)
+	 public ByteValidator isBetween(Byte minimum, boolean minimumIsInclusive, Byte maximum,
+		 boolean maximumIsInclusive)
 	 {
-		 return bytes.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		 return bytes.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	 }
  }

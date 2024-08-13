@@ -1,10 +1,10 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.validator.PrimitiveFloatValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveFloatValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -160,10 +160,10 @@ public final class PrimitiveFloatValidatorImpl
 	}
 
 	@Override
-	public PrimitiveFloatValidator isBetween(float minimum, boolean minimumInclusive, float maximum,
-		boolean maximumInclusive)
+	public PrimitiveFloatValidator isBetween(float minimum, boolean minimumIsInclusive, float maximum,
+		boolean maximumIsInclusive)
 	{
-		return floats.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return floats.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override
@@ -245,10 +245,10 @@ public final class PrimitiveFloatValidatorImpl
 	}
 
 	@Override
-	public PrimitiveFloatValidator isBetween(Float minimum, boolean minimumInclusive, Float maximum,
-		boolean maximumInclusive)
+	public PrimitiveFloatValidator isBetween(Float minimum, boolean minimumIsInclusive, Float maximum,
+		boolean maximumIsInclusive)
 	{
-		return floats.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return floats.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override

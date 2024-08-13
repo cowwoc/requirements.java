@@ -16,7 +16,7 @@ public interface FixedPrecisionDecimalNumberComponent<S>
 	 *
 	 * @return this
 	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if value is not a number
+	 * @throws IllegalArgumentException if value is not a well-defined number
 	 * @see #isNotNumber()
 	 * @see Double#isNaN()
 	 */

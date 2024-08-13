@@ -1,10 +1,10 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.LongValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.validator.LongValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -123,10 +123,10 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	}
 
 	@Override
-	public LongValidator isBetween(long minimum, boolean minimumInclusive, long maximum,
-		boolean maximumInclusive)
+	public LongValidator isBetween(long minimum, boolean minimumIsInclusive, long maximum,
+		boolean maximumIsInclusive)
 	{
-		return longs.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return longs.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	@Override
@@ -208,9 +208,9 @@ public final class LongValidatorImpl extends AbstractObjectValidator<LongValidat
 	}
 
 	@Override
-	public LongValidator isBetween(Long minimum, boolean minimumInclusive, Long maximum,
-		boolean maximumInclusive)
+	public LongValidator isBetween(Long minimum, boolean minimumIsInclusive, Long maximum,
+		boolean maximumIsInclusive)
 	{
-		return longs.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return longs.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 }

@@ -57,7 +57,7 @@ public final class Configuration
 	 * @param equalityMethod       the equality method that determines whether two values are equivalent
 	 * @param stringMappers        the configuration used to map contextual values to a String
 	 * @param recordStacktrace     {@code true} if the exception stack trace must be recorded when a validation
-	 *                             failure occurs. If * {@code false}, the exception type remains the same, but
+	 *                             failure occurs. If {@code false}, the exception type remains the same, but
 	 *                             the stack trace points to the invocation of * {@code elseGetException()}.
 	 *                             Users who only plan to
 	 *                             {@link ValidatorComponent#elseGetMessages() list of failure messages} instead

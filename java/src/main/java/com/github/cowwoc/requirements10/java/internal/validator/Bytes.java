@@ -387,27 +387,27 @@ final class Bytes<S>
 	/**
 	 * Ensures that the value is within a range.
 	 *
-	 * @param minimum          the lower bound of the range
-	 * @param minimumInclusive {@code true} if the lower bound of the range is inclusive
-	 * @param maximum          the upper bound of the range
-	 * @param maximumInclusive {@code true} if the upper bound of the range is inclusive
+	 * @param minimum            the lower bound of the range
+	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
+	 * @param maximum            the upper bound of the range
+	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
 	 * @return this
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code minimum} is greater than {@code maximum}</li>
-	 *                                    <li>{@code minimumInclusive} is {@code true} and the value is less
+	 *                                    <li>{@code minimumIsInclusive} is {@code true} and the value is less
 	 *                                    than {@code minimum}</li>
-	 *                                    <li>{@code minimumInclusive} is {@code false} and the value is less
+	 *                                    <li>{@code minimumIsInclusive} is {@code false} and the value is less
 	 *                                    than or equal to {@code minimum}</li>
-	 *                                    <li>{@code maximumInclusive} is {@code true} and the value is greater
-	 *                                    than {@code maximum}</li>
-	 *                                    <li>{@code maximumInclusive} is {@code false} and the value is greater
-	 *                                    than or equal to {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code true} and the value is
+	 *                                    greater than {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code false} and the value is
+	 *                                    greater than or equal to {@code maximum}</li>
 	 *                                  </ul>
 	 */
-	public S isBetween(byte minimum, boolean minimumInclusive, byte maximum, boolean maximumInclusive)
+	public S isBetween(byte minimum, boolean minimumIsInclusive, byte maximum, boolean maximumIsInclusive)
 	{
-		return isBetween((Byte) minimum, minimumInclusive, (Byte) maximum, maximumInclusive);
+		return isBetween((Byte) minimum, minimumIsInclusive, (Byte) maximum, maximumIsInclusive);
 	}
 
 	/**
@@ -572,28 +572,28 @@ final class Bytes<S>
 	/**
 	 * Ensures that the value is within a range.
 	 *
-	 * @param minimum          the lower bound of the range
-	 * @param minimumInclusive {@code true} if the lower bound of the range is inclusive
-	 * @param maximum          the upper bound of the range
-	 * @param maximumInclusive {@code true} if the upper bound of the range is inclusive
+	 * @param minimum            the lower bound of the range
+	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
+	 * @param maximum            the upper bound of the range
+	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
 	 * @return this
 	 * @throws NullPointerException     if the value or any of the arguments are null
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code minimum} is greater than {@code maximum}</li>
-	 *                                    <li>{@code minimumInclusive} is {@code true} and the value is less
+	 *                                    <li>{@code minimumIsInclusive} is {@code true} and the value is less
 	 *                                    than {@code minimum}</li>
-	 *                                    <li>{@code minimumInclusive} is {@code false} and the value is less
+	 *                                    <li>{@code minimumIsInclusive} is {@code false} and the value is less
 	 *                                    than or equal to {@code minimum}</li>
-	 *                                    <li>{@code maximumInclusive} is {@code true} and the value is greater
-	 *                                    than {@code maximum}</li>
-	 *                                    <li>{@code maximumInclusive} is {@code false} and the value is greater
-	 *                                    than or equal to {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code true} and the value is
+	 *                                    greater than {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code false} and the value is
+	 *                                    greater than or equal to {@code maximum}</li>
 	 *                                  </ul>
 	 */
-	public S isBetween(Byte minimum, boolean minimumInclusive, Byte maximum, boolean maximumInclusive)
+	public S isBetween(Byte minimum, boolean minimumIsInclusive, Byte maximum, boolean maximumIsInclusive)
 	{
-		return comparables.isBetween(minimum, minimumInclusive, maximum, maximumInclusive);
+		return comparables.isBetween(minimum, minimumIsInclusive, maximum, maximumIsInclusive);
 	}
 
 	/**

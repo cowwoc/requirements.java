@@ -140,13 +140,8 @@ public final class ObjectSizeValidatorImpl
 			onNull();
 		switch (value.test(value -> value != 0))
 		{
-			case UNDEFINED, FALSE ->
-			{
-				MessageBuilder messageBuilder = ObjectMessages.isNotEmpty(this);
-				objectAndSize.ifDefined(value ->
-					messageBuilder.withContext(value.object(), objectName));
-				addIllegalArgumentException(messageBuilder.toString());
-			}
+			case UNDEFINED, FALSE -> addIllegalArgumentException(
+				ObjectMessages.isNotEmpty(this).toString());
 		}
 		return this;
 	}
@@ -285,29 +280,29 @@ public final class ObjectSizeValidatorImpl
 	}
 
 	@Override
-	public PrimitiveUnsignedIntegerValidator isBetween(Integer minimum, boolean minimumInclusive,
-		Integer maximum, boolean maximumInclusive)
+	public PrimitiveUnsignedIntegerValidator isBetween(Integer minimum, boolean minimumIsInclusive,
+		Integer maximum, boolean maximumIsInclusive)
 	{
 		scope.getInternalValidators().requireThat(minimum, "minimum").isLessThanOrEqualTo(maximum, "maximum");
 		if (value.isNull())
 			onNull();
 		switch (value.test(value ->
 		{
-			if (minimumInclusive)
+			if (minimumIsInclusive)
 			{
 				if (value.compareTo(minimum) < 0)
 					return false;
 			}
 			else if (value.compareTo(minimum) <= 0)
 				return false;
-			if (maximumInclusive)
+			if (maximumIsInclusive)
 				return value.compareTo(maximum) <= 0;
 			return value.compareTo(maximum) < 0;
 		}))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.sizeIsBetween(this, objectName, objectAndSize, minimum, minimumInclusive, maximum,
-					maximumInclusive, pluralizer).toString());
+				CollectionMessages.sizeIsBetween(this, objectName, objectAndSize, minimum, minimumIsInclusive,
+					maximum, maximumIsInclusive, pluralizer).toString());
 		}
 		return self();
 	}
@@ -429,31 +424,32 @@ public final class ObjectSizeValidatorImpl
 	}
 
 	@Override
-	public PrimitiveUnsignedIntegerValidator isBetween(int minimum, boolean minimumInclusive, int maximum,
-		boolean maximumInclusive)
+	public PrimitiveUnsignedIntegerValidator isBetween(int minimum, boolean minimumIsInclusive, int maximum,
+		boolean maximumIsInclusive)
 	{
 		scope.getInternalValidators().requireThat(minimum, "minimum").isLessThanOrEqualTo(maximum, "maximum");
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> isBetween(value, minimum, minimumInclusive, maximum, maximumInclusive)))
+		switch (value.test(value -> isBetween(value, minimum, minimumIsInclusive, maximum, maximumIsInclusive)))
 		{
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ComparableMessages.isBetween(this, minimum, minimumInclusive, maximum, maximumInclusive).toString());
+				ComparableMessages.isBetween(this, minimum, minimumIsInclusive, maximum, maximumIsInclusive).
+					toString());
 		}
 		return this;
 	}
 
-	private boolean isBetween(int value, int minimum, boolean minimumInclusive, int maximum,
-		boolean maximumInclusive)
+	private boolean isBetween(int value, int minimum, boolean minimumIsInclusive, int maximum,
+		boolean maximumIsInclusive)
 	{
-		if (minimumInclusive)
+		if (minimumIsInclusive)
 		{
 			if (value < minimum)
 				return false;
 		}
 		else if (value <= minimum)
 			return false;
-		if (maximumInclusive)
+		if (maximumIsInclusive)
 			return value <= maximum;
 		return value < maximum;
 	}
