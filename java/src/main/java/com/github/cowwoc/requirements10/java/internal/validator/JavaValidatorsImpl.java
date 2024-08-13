@@ -3,7 +3,7 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.JavaValidators;
+import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
@@ -45,13 +45,11 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveShortValidator;
 import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
-import com.github.cowwoc.requirements10.java.validator.UrlValidator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -303,12 +301,6 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public UrlValidator requireThat(URL value, String name)
-	{
-		return newInstance(value, name, configuration());
-	}
-
-	@Override
 	public <T> GenericTypeValidator<T> requireThat(Class<T> value, String name)
 	{
 		return newInstance(value, name, configuration());
@@ -333,483 +325,471 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public PrimitiveByteValidator assertThat(byte value, String name)
+	public PrimitiveByteValidator that(byte value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveByteValidator assertThat(byte value)
+	public PrimitiveByteValidator that(byte value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public ByteValidator assertThat(Byte value, String name)
-	{
-		return newInstance(value, name, getAssertThatConfiguration());
-	}
-
-	@Override
-	public ByteValidator assertThat(Byte value)
-	{
-		return assertThat(value, DEFAULT_NAME);
-	}
-
-	@Override
-	public PrimitiveShortValidator assertThat(short value, String name)
+	public ByteValidator that(Byte value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveShortValidator assertThat(short value)
+	public ByteValidator that(Byte value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public ShortValidator assertThat(Short value, String name)
-	{
-		return newInstance(value, name, getAssertThatConfiguration());
-	}
-
-	@Override
-	public ShortValidator assertThat(Short value)
-	{
-		return assertThat(value, DEFAULT_NAME);
-	}
-
-	@Override
-	public PrimitiveIntegerValidator assertThat(int value, String name)
+	public PrimitiveShortValidator that(short value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveIntegerValidator assertThat(int value)
+	public PrimitiveShortValidator that(short value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public IntegerValidator assertThat(Integer value, String name)
-	{
-		return newInstance(value, name, getAssertThatConfiguration());
-	}
-
-	@Override
-	public IntegerValidator assertThat(Integer value)
-	{
-		return assertThat(value, DEFAULT_NAME);
-	}
-
-	@Override
-	public PrimitiveLongValidator assertThat(long value, String name)
+	public ShortValidator that(Short value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveLongValidator assertThat(long value)
+	public ShortValidator that(Short value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public LongValidator assertThat(Long value, String name)
-	{
-		return newInstance(value, name, getAssertThatConfiguration());
-	}
-
-	@Override
-	public LongValidator assertThat(Long value)
-	{
-		return assertThat(value, DEFAULT_NAME);
-	}
-
-	@Override
-	public PrimitiveFloatValidator assertThat(float value, String name)
+	public PrimitiveIntegerValidator that(int value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveFloatValidator assertThat(float value)
+	public PrimitiveIntegerValidator that(int value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public FloatValidator assertThat(Float value, String name)
+	public IntegerValidator that(Integer value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public FloatValidator assertThat(Float value)
+	public IntegerValidator that(Integer value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveDoubleValidator assertThat(double value, String name)
+	public PrimitiveLongValidator that(long value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveDoubleValidator assertThat(double value)
+	public PrimitiveLongValidator that(long value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public DoubleValidator assertThat(Double value, String name)
+	public LongValidator that(Long value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public DoubleValidator assertThat(Double value)
+	public LongValidator that(Long value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveBooleanValidator assertThat(boolean value, String name)
+	public PrimitiveFloatValidator that(float value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveBooleanValidator assertThat(boolean value)
+	public PrimitiveFloatValidator that(float value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public BooleanValidator assertThat(Boolean value, String name)
+	public FloatValidator that(Float value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public BooleanValidator assertThat(Boolean value)
+	public FloatValidator that(Float value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveCharacterValidator assertThat(char value, String name)
+	public PrimitiveDoubleValidator that(double value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveCharacterValidator assertThat(char value)
+	public PrimitiveDoubleValidator that(double value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public CharacterValidator assertThat(Character value, String name)
+	public DoubleValidator that(Double value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public CharacterValidator assertThat(Character value)
+	public DoubleValidator that(Double value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public BigIntegerValidator assertThat(BigInteger value, String name)
+	public PrimitiveBooleanValidator that(boolean value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public BigIntegerValidator assertThat(BigInteger value)
+	public PrimitiveBooleanValidator that(boolean value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public BigDecimalValidator assertThat(BigDecimal value, String name)
+	public BooleanValidator that(Boolean value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public BigDecimalValidator assertThat(BigDecimal value)
+	public BooleanValidator that(Boolean value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends Comparable<T>> ComparableValidator<T> assertThat(T value, String name)
+	public PrimitiveCharacterValidator that(char value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends Comparable<T>> ComparableValidator<T> assertThat(T value)
+	public PrimitiveCharacterValidator that(char value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> ObjectValidator<T> assertThat(T value, String name)
+	public CharacterValidator that(Character value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> ObjectValidator<T> assertThat(T value)
+	public CharacterValidator that(Character value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value, String name)
+	public BigIntegerValidator that(BigInteger value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value)
+	public BigIntegerValidator that(BigInteger value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends List<E>, E> ListValidator<T, E> assertThat(T value, String name)
+	public BigDecimalValidator that(BigDecimal value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends List<E>, E> ListValidator<T, E> assertThat(T value)
+	public BigDecimalValidator that(BigDecimal value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator assertThat(byte[] value, String name)
+	public <T extends Comparable<T>> ComparableValidator<T> that(T value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveByteArrayValidator assertThat(byte[] value)
+	public <T extends Comparable<T>> ComparableValidator<T> that(T value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator assertThat(short[] value, String name)
+	public <T> ObjectValidator<T> that(T value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveShortArrayValidator assertThat(short[] value)
+	public <T> ObjectValidator<T> that(T value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator assertThat(int[] value, String name)
+	public <T extends Collection<E>, E> CollectionValidator<T, E> that(T value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveIntegerArrayValidator assertThat(int[] value)
+	public <T extends Collection<E>, E> CollectionValidator<T, E> that(T value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator assertThat(long[] value, String name)
+	public <T extends List<E>, E> ListValidator<T, E> that(T value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveLongArrayValidator assertThat(long[] value)
+	public <T extends List<E>, E> ListValidator<T, E> that(T value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator assertThat(float[] value, String name)
+	public PrimitiveByteArrayValidator that(byte[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveFloatArrayValidator assertThat(float[] value)
+	public PrimitiveByteArrayValidator that(byte[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator assertThat(double[] value, String name)
+	public PrimitiveShortArrayValidator that(short[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveDoubleArrayValidator assertThat(double[] value)
+	public PrimitiveShortArrayValidator that(short[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator assertThat(boolean[] value, String name)
+	public PrimitiveIntegerArrayValidator that(int[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveBooleanArrayValidator assertThat(boolean[] value)
+	public PrimitiveIntegerArrayValidator that(int[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator assertThat(char[] value, String name)
+	public PrimitiveLongArrayValidator that(long[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PrimitiveCharacterArrayValidator assertThat(char[] value)
+	public PrimitiveLongArrayValidator that(long[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <E> ObjectArrayValidator<E[], E> assertThat(E[] value, String name)
+	public PrimitiveFloatArrayValidator that(float[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <E> ObjectArrayValidator<E[], E> assertThat(E[] value)
+	public PrimitiveFloatArrayValidator that(float[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value, String name)
+	public PrimitiveDoubleArrayValidator that(double[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value)
+	public PrimitiveDoubleArrayValidator that(double[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public PathValidator assertThat(Path value, String name)
+	public PrimitiveBooleanArrayValidator that(boolean[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public PathValidator assertThat(Path value)
+	public PrimitiveBooleanArrayValidator that(boolean[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public StringValidator assertThat(String value, String name)
+	public PrimitiveCharacterArrayValidator that(char[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public StringValidator assertThat(String value)
+	public PrimitiveCharacterArrayValidator that(char[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public UriValidator assertThat(URI value, String name)
+	public <E> ObjectArrayValidator<E[], E> that(E[] value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public UriValidator assertThat(URI value)
+	public <E> ObjectArrayValidator<E[], E> that(E[] value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public UrlValidator assertThat(URL value, String name)
+	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public UrlValidator assertThat(URL value)
+	public <T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> GenericTypeValidator<T> assertThat(Class<T> value, String name)
+	public PathValidator that(Path value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> GenericTypeValidator<T> assertThat(GenericType<T> value, String name)
+	public PathValidator that(Path value)
+	{
+		return that(value, DEFAULT_NAME);
+	}
+
+	@Override
+	public StringValidator that(String value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> GenericTypeValidator<T> assertThat(Class<T> value)
+	public StringValidator that(String value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public <T> GenericTypeValidator<T> assertThat(GenericType<T> value)
-	{
-		return assertThat(value, DEFAULT_NAME);
-	}
-
-	@Override
-	public <T> OptionalValidator<T> assertThat(Optional<T> value, String name)
+	public UriValidator that(URI value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public <T> OptionalValidator<T> assertThat(Optional<T> value)
+	public UriValidator that(URI value)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
-	public InetAddressValidator assertThat(InetAddress value, String name)
+	public <T> GenericTypeValidator<T> that(Class<T> value, String name)
 	{
 		return newInstance(value, name, getAssertThatConfiguration());
 	}
 
 	@Override
-	public InetAddressValidator assertThat(InetAddress value)
+	public <T> GenericTypeValidator<T> that(GenericType<T> value, String name)
 	{
-		return assertThat(value, DEFAULT_NAME);
+		return newInstance(value, name, getAssertThatConfiguration());
+	}
+
+	@Override
+	public <T> GenericTypeValidator<T> that(Class<T> value)
+	{
+		return that(value, DEFAULT_NAME);
+	}
+
+	@Override
+	public <T> GenericTypeValidator<T> that(GenericType<T> value)
+	{
+		return that(value, DEFAULT_NAME);
+	}
+
+	@Override
+	public <T> OptionalValidator<T> that(Optional<T> value, String name)
+	{
+		return newInstance(value, name, getAssertThatConfiguration());
+	}
+
+	@Override
+	public <T> OptionalValidator<T> that(Optional<T> value)
+	{
+		return that(value, DEFAULT_NAME);
+	}
+
+	@Override
+	public InetAddressValidator that(InetAddress value, String name)
+	{
+		return newInstance(value, name, getAssertThatConfiguration());
+	}
+
+	@Override
+	public InetAddressValidator that(InetAddress value)
+	{
+		return that(value, DEFAULT_NAME);
 	}
 
 	@Override
@@ -1233,18 +1213,6 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	}
 
 	@Override
-	public UrlValidator checkIf(URL value, String name)
-	{
-		return newInstance(value, name, getCheckIfConfiguration());
-	}
-
-	@Override
-	public UrlValidator checkIf(URL value)
-	{
-		return checkIf(value, DEFAULT_NAME);
-	}
-
-	@Override
 	public <T> GenericTypeValidator<T> checkIf(Class<T> value, String name)
 	{
 		return newInstance(value, name, getCheckIfConfiguration());
@@ -1516,12 +1484,6 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	private UriValidator newInstance(URI value, String name, Configuration configuration)
 	{
 		return new UriValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
-			newValidatorContext(), newValidatorFailures());
-	}
-
-	private UrlValidator newInstance(URL value, String name, Configuration configuration)
-	{
-		return new UrlValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 

@@ -172,26 +172,6 @@ requireThat(nameToAge, "nameToAge").
   and(v -> v.values().containsAll(Arrays.asList(3, 1)));
 ```
 
-## Logical operators
-
-Logical operators combine the validation of unrelated values. For example,
-
-```java
-Set<String> activeUsers = Set.of("Alice", "Bob");
-Set<String> suspendedUsers = Set.of("Charlie");
-
-String currentUser = "Alice";
-var userCheck = checkIf(currentUser, "currentUser");
-for (String user : activeUsers)
-{
-  var yetAnotherUserCheck = checkIf(currentUser, "currentUser").isEqualTo(user);
-  userCheck.or(yetAnotherUserCheck);
-}
-var userNotSuspended = checkIf(suspendedUsers, "suspendedUsers").
-  doesNotContain(currentUser, "currentUser");
-userCheck.and(userNotSuspended).elseThrow();
-```
-
 ## String diff
 
 When

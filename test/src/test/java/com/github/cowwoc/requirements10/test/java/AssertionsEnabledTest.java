@@ -31,7 +31,7 @@ public final class AssertionsEnabledTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			boolean value = true;
-			assert new TestValidatorsImpl(scope).assertThat(value, "value").isFalse().elseThrow();
+			assert new TestValidatorsImpl(scope).that(value, "value").isFalse().elseThrow();
 		}
 	}
 

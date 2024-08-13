@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.java.validator.component;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 
 /**
  * Validates the state of an {@code int}.
@@ -38,7 +37,6 @@ public interface PrimitiveIntegerComponent<S>
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected}
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	S isEqualTo(int expected);
 
@@ -57,7 +55,6 @@ public interface PrimitiveIntegerComponent<S>
 	 *                                    the validator context</li>
 	 *                                    <li>the value is not equal to {@code expected}</li>
 	 *                                  </ul>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	S isEqualTo(int expected, String name);
 

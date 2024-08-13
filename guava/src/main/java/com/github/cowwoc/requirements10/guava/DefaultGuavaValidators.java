@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.guava;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.guava.internal.GuavaValidators;
 import com.github.cowwoc.requirements10.guava.internal.validator.GuavaValidatorsImpl;
 import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;

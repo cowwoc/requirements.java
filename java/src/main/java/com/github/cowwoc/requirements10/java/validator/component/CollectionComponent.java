@@ -1,11 +1,8 @@
 package com.github.cowwoc.requirements10.java.validator.component;
 
-import com.github.cowwoc.requirements10.java.validator.ListValidator;
-import com.github.cowwoc.requirements10.java.validator.ObjectArrayValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Methods that all {@code Collection} validators must contain.
@@ -521,21 +518,4 @@ public interface CollectionComponent<S, E>
 	 * @throws NullPointerException if the value is null
 	 */
 	PrimitiveUnsignedIntegerValidator size();
-
-	/**
-	 * Returns a validator for an array that contains the collection's elements.
-	 *
-	 * @param type the type of elements in the collection
-	 * @return a validator for the array
-	 * @throws NullPointerException if the value or {@code type} are null
-	 */
-	ObjectArrayValidator<E[], E> asArray(Class<E> type);
-
-	/**
-	 * Returns a validator for the collection as a list.
-	 *
-	 * @return a validator for the collection as a list
-	 * @throws NullPointerException if the value is null
-	 */
-	ListValidator<List<E>, E> asList();
 }

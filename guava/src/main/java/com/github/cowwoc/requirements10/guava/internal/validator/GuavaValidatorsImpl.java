@@ -1,6 +1,6 @@
 package com.github.cowwoc.requirements10.guava.internal.validator;
 
-import com.github.cowwoc.requirements10.guava.internal.GuavaValidators;
+import com.github.cowwoc.requirements10.guava.GuavaValidators;
 import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;

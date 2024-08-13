@@ -2,9 +2,8 @@
  * Copyright (c) 2017 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements10.java.internal;
+package com.github.cowwoc.requirements10.java;
 
-import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
@@ -43,13 +42,11 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveShortValidator;
 import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
-import com.github.cowwoc.requirements10.java.validator.UrlValidator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -76,7 +73,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	PrimitiveByteValidator assertThat(byte value, String name);
+	PrimitiveByteValidator that(byte value, String name);
 
 	/**
 	 * Validates the state of a {@code byte}.
@@ -90,7 +87,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveByteValidator assertThat(byte value);
+	PrimitiveByteValidator that(byte value);
 
 	/**
 	 * Validates the state of a {@code Byte}.
@@ -107,7 +104,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	ByteValidator assertThat(Byte value, String name);
+	ByteValidator that(Byte value, String name);
 
 	/**
 	 * Validates the state of a {@code Byte}.
@@ -121,7 +118,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	ByteValidator assertThat(Byte value);
+	ByteValidator that(Byte value);
 
 	/**
 	 * Validates the state of a {@code short}.
@@ -138,7 +135,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	PrimitiveShortValidator assertThat(short value, String name);
+	PrimitiveShortValidator that(short value, String name);
 
 	/**
 	 * Validates the state of a {@code short}.
@@ -152,7 +149,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveShortValidator assertThat(short value);
+	PrimitiveShortValidator that(short value);
 
 	/**
 	 * Validates the state of a {@code Short}.
@@ -169,7 +166,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
-	ShortValidator assertThat(Short value, String name);
+	ShortValidator that(Short value, String name);
 
 	/**
 	 * Validates the state of a {@code Short}.
@@ -183,7 +180,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	ShortValidator assertThat(Short value);
+	ShortValidator that(Short value);
 
 	/**
 	 * Validates the state of an {@code int}.
@@ -200,7 +197,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveIntegerValidator assertThat(int value, String name);
+	PrimitiveIntegerValidator that(int value, String name);
 
 	/**
 	 * Validates the state of an {@code int}.
@@ -214,7 +211,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveIntegerValidator assertThat(int value);
+	PrimitiveIntegerValidator that(int value);
 
 	/**
 	 * Validates the state of an {@code Integer}.
@@ -231,7 +228,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	IntegerValidator assertThat(Integer value, String name);
+	IntegerValidator that(Integer value, String name);
 
 	/**
 	 * Validates the state of an {@code Integer}.
@@ -245,7 +242,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	IntegerValidator assertThat(Integer value);
+	IntegerValidator that(Integer value);
 
 	/**
 	 * Validates the state of a {@code long}.
@@ -262,7 +259,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveLongValidator assertThat(long value, String name);
+	PrimitiveLongValidator that(long value, String name);
 
 	/**
 	 * Validates the state of a {@code long}.
@@ -276,7 +273,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveLongValidator assertThat(long value);
+	PrimitiveLongValidator that(long value);
 
 	/**
 	 * Validates the state of a {@code Long}.
@@ -293,7 +290,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	LongValidator assertThat(Long value, String name);
+	LongValidator that(Long value, String name);
 
 	/**
 	 * Validates the state of a {@code Long}.
@@ -307,7 +304,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	LongValidator assertThat(Long value);
+	LongValidator that(Long value);
 
 	/**
 	 * Validates the state of a {@code float}.
@@ -324,7 +321,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveFloatValidator assertThat(float value, String name);
+	PrimitiveFloatValidator that(float value, String name);
 
 	/**
 	 * Validates the state of a {@code float}.
@@ -338,7 +335,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveFloatValidator assertThat(float value);
+	PrimitiveFloatValidator that(float value);
 
 	/**
 	 * Validates the state of a {@code Float}.
@@ -355,7 +352,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	FloatValidator assertThat(Float value, String name);
+	FloatValidator that(Float value, String name);
 
 	/**
 	 * Validates the state of a {@code Float}.
@@ -369,7 +366,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	FloatValidator assertThat(Float value);
+	FloatValidator that(Float value);
 
 	/**
 	 * Validates the state of a {@code double}.
@@ -386,7 +383,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveDoubleValidator assertThat(double value, String name);
+	PrimitiveDoubleValidator that(double value, String name);
 
 	/**
 	 * Validates the state of a {@code double}.
@@ -400,7 +397,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveDoubleValidator assertThat(double value);
+	PrimitiveDoubleValidator that(double value);
 
 	/**
 	 * Validates the state of a {@code Double}.
@@ -417,7 +414,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	DoubleValidator assertThat(Double value, String name);
+	DoubleValidator that(Double value, String name);
 
 	/**
 	 * Validates the state of a {@code Double}.
@@ -431,7 +428,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	DoubleValidator assertThat(Double value);
+	DoubleValidator that(Double value);
 
 	/**
 	 * Validates the state of a {@code boolean}.
@@ -448,7 +445,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveBooleanValidator assertThat(boolean value, String name);
+	PrimitiveBooleanValidator that(boolean value, String name);
 
 	/**
 	 * Validates the state of a {@code boolean}.
@@ -462,7 +459,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveBooleanValidator assertThat(boolean value);
+	PrimitiveBooleanValidator that(boolean value);
 
 	/**
 	 * Validates the state of a {@code Boolean}.
@@ -479,7 +476,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	BooleanValidator assertThat(Boolean value, String name);
+	BooleanValidator that(Boolean value, String name);
 
 	/**
 	 * Validates the state of a {@code Boolean}.
@@ -493,7 +490,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	BooleanValidator assertThat(Boolean value);
+	BooleanValidator that(Boolean value);
 
 	/**
 	 * Validates the state of a {@code char}.
@@ -510,7 +507,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveCharacterValidator assertThat(char value, String name);
+	PrimitiveCharacterValidator that(char value, String name);
 
 	/**
 	 * Validates the state of a {@code char}.
@@ -524,7 +521,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveCharacterValidator assertThat(char value);
+	PrimitiveCharacterValidator that(char value);
 
 	/**
 	 * Validates the state of a {@code Character}.
@@ -541,7 +538,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	CharacterValidator assertThat(Character value, String name);
+	CharacterValidator that(Character value, String name);
 
 	/**
 	 * Validates the state of a {@code Character}.
@@ -555,7 +552,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	CharacterValidator assertThat(Character value);
+	CharacterValidator that(Character value);
 
 	/**
 	 * Validates the state of a {@code BigInteger}.
@@ -572,7 +569,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	BigIntegerValidator assertThat(BigInteger value, String name);
+	BigIntegerValidator that(BigInteger value, String name);
 
 	/**
 	 * Validates the state of a {@code BigInteger}.
@@ -586,7 +583,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	BigIntegerValidator assertThat(BigInteger value);
+	BigIntegerValidator that(BigInteger value);
 
 	/**
 	 * Validates the state of a {@code BigDecimal}.
@@ -603,7 +600,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	BigDecimalValidator assertThat(BigDecimal value, String name);
+	BigDecimalValidator that(BigDecimal value, String name);
 
 	/**
 	 * Validates the state of a {@code BigDecimal}.
@@ -617,7 +614,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	BigDecimalValidator assertThat(BigDecimal value);
+	BigDecimalValidator that(BigDecimal value);
 
 	/**
 	 * Validates the state of a {@code Comparable} object.
@@ -629,7 +626,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T extends Comparable<T>> ComparableValidator<T> assertThat(T value, String name);
+	<T extends Comparable<T>> ComparableValidator<T> that(T value, String name);
 
 	/**
 	 * Validates the state of a {@code Comparable} object.
@@ -638,7 +635,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T extends Comparable<T>> ComparableValidator<T> assertThat(T value);
+	<T extends Comparable<T>> ComparableValidator<T> that(T value);
 
 	/**
 	 * Validates the state of an {@code Object}.
@@ -656,7 +653,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T> ObjectValidator<T> assertThat(T value, String name);
+	<T> ObjectValidator<T> that(T value, String name);
 
 	/**
 	 * Validates the state of an {@code Object}.
@@ -671,7 +668,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T> ObjectValidator<T> assertThat(T value);
+	<T> ObjectValidator<T> that(T value);
 
 	/**
 	 * Validates the state of a {@code Collection}.
@@ -690,7 +687,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value, String name);
+	<T extends Collection<E>, E> CollectionValidator<T, E> that(T value, String name);
 
 	/**
 	 * Validates the state of a {@code Collection}.
@@ -706,7 +703,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T extends Collection<E>, E> CollectionValidator<T, E> assertThat(T value);
+	<T extends Collection<E>, E> CollectionValidator<T, E> that(T value);
 
 	/**
 	 * Validates the state of a {@code List}.
@@ -725,7 +722,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T extends List<E>, E> ListValidator<T, E> assertThat(T value, String name);
+	<T extends List<E>, E> ListValidator<T, E> that(T value, String name);
 
 	/**
 	 * Validates the state of a {@code List}.
@@ -741,7 +738,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T extends List<E>, E> ListValidator<T, E> assertThat(T value);
+	<T extends List<E>, E> ListValidator<T, E> that(T value);
 
 	/**
 	 * Validates the state of a primitive {@code byte} array.
@@ -758,7 +755,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveByteArrayValidator assertThat(byte[] value, String name);
+	PrimitiveByteArrayValidator that(byte[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code byte} array.
@@ -772,7 +769,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveByteArrayValidator assertThat(byte[] value);
+	PrimitiveByteArrayValidator that(byte[] value);
 
 	/**
 	 * Validates the state of a primitive {@code short} array.
@@ -789,7 +786,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveShortArrayValidator assertThat(short[] value, String name);
+	PrimitiveShortArrayValidator that(short[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code short} array.
@@ -803,7 +800,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveShortArrayValidator assertThat(short[] value);
+	PrimitiveShortArrayValidator that(short[] value);
 
 	/**
 	 * Validates the state of a primitive {@code int} array.
@@ -820,7 +817,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveIntegerArrayValidator assertThat(int[] value, String name);
+	PrimitiveIntegerArrayValidator that(int[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code int} array.
@@ -834,7 +831,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveIntegerArrayValidator assertThat(int[] value);
+	PrimitiveIntegerArrayValidator that(int[] value);
 
 	/**
 	 * Validates the state of a primitive {@code long} array.
@@ -851,7 +848,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveLongArrayValidator assertThat(long[] value, String name);
+	PrimitiveLongArrayValidator that(long[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code long} array.
@@ -865,7 +862,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveLongArrayValidator assertThat(long[] value);
+	PrimitiveLongArrayValidator that(long[] value);
 
 	/**
 	 * Validates the state of a primitive {@code float} array.
@@ -882,7 +879,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveFloatArrayValidator assertThat(float[] value, String name);
+	PrimitiveFloatArrayValidator that(float[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code float} array.
@@ -896,7 +893,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveFloatArrayValidator assertThat(float[] value);
+	PrimitiveFloatArrayValidator that(float[] value);
 
 	/**
 	 * Validates the state of a primitive {@code double} array.
@@ -913,7 +910,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveDoubleArrayValidator assertThat(double[] value, String name);
+	PrimitiveDoubleArrayValidator that(double[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code double} array.
@@ -927,7 +924,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveDoubleArrayValidator assertThat(double[] value);
+	PrimitiveDoubleArrayValidator that(double[] value);
 
 	/**
 	 * Validates the state of a primitive {@code boolean} array.
@@ -944,7 +941,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveBooleanArrayValidator assertThat(boolean[] value, String name);
+	PrimitiveBooleanArrayValidator that(boolean[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code boolean} array.
@@ -960,7 +957,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveBooleanArrayValidator assertThat(boolean[] value);
+	PrimitiveBooleanArrayValidator that(boolean[] value);
 
 	/**
 	 * Validates the state of a primitive {@code char} array.
@@ -977,7 +974,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PrimitiveCharacterArrayValidator assertThat(char[] value, String name);
+	PrimitiveCharacterArrayValidator that(char[] value, String name);
 
 	/**
 	 * Validates the state of a primitive {@code char} array.
@@ -991,7 +988,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PrimitiveCharacterArrayValidator assertThat(char[] value);
+	PrimitiveCharacterArrayValidator that(char[] value);
 
 	/**
 	 * Validates the state of an {@code Object} array.
@@ -1009,7 +1006,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<E> ObjectArrayValidator<E[], E> assertThat(E[] value, String name);
+	<E> ObjectArrayValidator<E[], E> that(E[] value, String name);
 
 	/**
 	 * Validates the state of an {@code Object} array.
@@ -1024,7 +1021,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<E> ObjectArrayValidator<E[], E> assertThat(E[] value);
+	<E> ObjectArrayValidator<E[], E> that(E[] value);
 
 	/**
 	 * Validates the state of a {@code Map}.
@@ -1044,7 +1041,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value, String name);
+	<T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value, String name);
 
 	/**
 	 * Validates the state of a {@code Map}.
@@ -1061,7 +1058,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T extends Map<K, V>, K, V> MapValidator<T, K, V> assertThat(T value);
+	<T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value);
 
 	/**
 	 * Validates the state of a {@code Path}.
@@ -1078,7 +1075,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	PathValidator assertThat(Path value, String name);
+	PathValidator that(Path value, String name);
 
 	/**
 	 * Validates the state of a {@code Path}.
@@ -1092,7 +1089,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	PathValidator assertThat(Path value);
+	PathValidator that(Path value);
 
 	/**
 	 * Validates the state of a {@code String}.
@@ -1109,7 +1106,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	StringValidator assertThat(String value, String name);
+	StringValidator that(String value, String name);
 
 	/**
 	 * Validates the state of a {@code String}.
@@ -1123,7 +1120,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	StringValidator assertThat(String value);
+	StringValidator that(String value);
 
 	/**
 	 * Validates the state of a {@code URI}.
@@ -1140,7 +1137,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	UriValidator assertThat(URI value, String name);
+	UriValidator that(URI value, String name);
 
 	/**
 	 * Validates the state of a {@code URI}.
@@ -1154,38 +1151,7 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	UriValidator assertThat(URI value);
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
-	 * <p>
-	 * This method is intended to be used with the {@code assert} keyword, like so:
-	 * {@code assert that(value, name)}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	UrlValidator assertThat(URL value, String name);
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
-	 * <p>
-	 * This method is intended to be used with the {@code assert} keyword, like so:
-	 * {@code assert that(value, name)}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	UrlValidator assertThat(URL value);
+	UriValidator that(URI value);
 
 	/**
 	 * Validates the state of a {@code Class}.
@@ -1197,11 +1163,11 @@ public interface JavaAssertThat
 	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object. For types that contain
-	 *              type-parameters, use the {@link #assertThat(GenericType) TypeToken} overload.
+	 *              type-parameters, use the {@link #that(GenericType) TypeToken} overload.
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T> GenericTypeValidator<T> assertThat(Class<T> value);
+	<T> GenericTypeValidator<T> that(Class<T> value);
 
 	/**
 	 * Validates the state of a {@code Class}.
@@ -1213,11 +1179,11 @@ public interface JavaAssertThat
 	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object. For types without
-	 *              type-parameters, prefer the {@link #assertThat(Class) Class} overload.
+	 *              type-parameters, prefer the {@link #that(Class) Class} overload.
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	<T> GenericTypeValidator<T> assertThat(GenericType<T> value);
+	<T> GenericTypeValidator<T> that(GenericType<T> value);
 
 	/**
 	 * Validates the state of a {@code Class}.
@@ -1229,14 +1195,14 @@ public interface JavaAssertThat
 	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object. For types that contain
-	 *              type-parameters, use the {@link #assertThat(GenericType) TypeToken} overload.
+	 *              type-parameters, use the {@link #that(GenericType) TypeToken} overload.
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T> GenericTypeValidator<T> assertThat(Class<T> value, String name);
+	<T> GenericTypeValidator<T> that(Class<T> value, String name);
 
 	/**
 	 * Validates the state of a {@code Class}.
@@ -1248,14 +1214,14 @@ public interface JavaAssertThat
 	 * {@code assert that(value, name)}.
 	 *
 	 * @param <T>   the type of the class modelled by the {@code Class} object. For types without
-	 *              type-parameters, prefer the {@link #assertThat(Class) Class} overload.
+	 *              type-parameters, prefer the {@link #that(Class) Class} overload.
 	 * @param value the value
 	 * @param name  the name of the value
 	 * @return a validator for the value
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	<T> GenericTypeValidator<T> assertThat(GenericType<T> value, String name);
+	<T> GenericTypeValidator<T> that(GenericType<T> value, String name);
 
 	/**
 	 * Validates the state of an {@code Optional}.
@@ -1274,7 +1240,7 @@ public interface JavaAssertThat
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	<T> OptionalValidator<T> assertThat(Optional<T> value, String name);
+	<T> OptionalValidator<T> that(Optional<T> value, String name);
 
 	/**
 	 * Validates the state of an {@code Optional}.
@@ -1290,7 +1256,7 @@ public interface JavaAssertThat
 	 * @return a validator for the value
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	<T> OptionalValidator<T> assertThat(Optional<T> value);
+	<T> OptionalValidator<T> that(Optional<T> value);
 
 	/**
 	 * Validates the state of an {@code InetAddress}.
@@ -1307,7 +1273,7 @@ public interface JavaAssertThat
 	 * @throws NullPointerException     if {@code name} is null
 	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
 	 */
-	InetAddressValidator assertThat(InetAddress value, String name);
+	InetAddressValidator that(InetAddress value, String name);
 
 	/**
 	 * Validates the state of an {@code InetAddress}.
@@ -1321,5 +1287,5 @@ public interface JavaAssertThat
 	 * @param value the value
 	 * @return a validator for the value
 	 */
-	InetAddressValidator assertThat(InetAddress value);
+	InetAddressValidator that(InetAddress value);
 }

@@ -8,7 +8,7 @@ import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.JavaValidators;
+import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.terminal.Terminal;
 import com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl;
 import com.github.cowwoc.requirements10.java.internal.validator.MutableConfiguration;

@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
@@ -16,8 +16,6 @@ import com.github.cowwoc.requirements10.java.internal.util.ListAndSorted;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
-import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
-import com.github.cowwoc.requirements10.java.validator.ListValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.component.ArrayComponent;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
@@ -513,23 +511,5 @@ public abstract class AbstractArrayValidator<S, T, E>
 		return new ObjectSizeValidatorImpl(scope, configuration, name,
 			value.nullToUndefined().mapDefined(value -> new ObjectAndSize(value, getLength(value))),
 			name + ".length()", Pluralizer.ELEMENT, context, failures);
-	}
-
-	@Override
-	public CollectionValidator<Collection<E>, E> asCollection()
-	{
-		if (value.isNull())
-			onNull();
-		return new CollectionValidatorImpl<>(scope, configuration, name + ".asCollection()",
-			value.nullToUndefined().mapDefined(this::asList), Pluralizer.ELEMENT, context, failures);
-	}
-
-	@Override
-	public ListValidator<List<E>, E> asList()
-	{
-		if (value.isNull())
-			onNull();
-		return new ListValidatorImpl<>(scope, configuration, name + ".asList()",
-			value.nullToUndefined().mapDefined(this::asList), Pluralizer.ELEMENT, context, failures);
 	}
 }

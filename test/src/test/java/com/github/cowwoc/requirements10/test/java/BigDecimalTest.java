@@ -336,8 +336,8 @@ public final class BigDecimalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual")
-				.isLessThanOrEqualTo(BigDecimal.ONE, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				isLessThanOrEqualTo(BigDecimal.ONE, "expected");
 		}
 	}
 
@@ -431,8 +431,8 @@ public final class BigDecimalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual")
-				.isGreaterThan(BigDecimal.valueOf(2), "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				isGreaterThan(BigDecimal.valueOf(2), "expected");
 		}
 	}
 
@@ -453,8 +453,8 @@ public final class BigDecimalTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual")
-				.isGreaterThanOrEqualTo(BigDecimal.ONE, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				isGreaterThanOrEqualTo(BigDecimal.ONE, "expected");
 		}
 	}
 
@@ -802,7 +802,7 @@ public final class BigDecimalTest
 				"\"actual\" must be zero",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isZero().isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isZero().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -817,7 +817,7 @@ public final class BigDecimalTest
 				"\"actual\" may not be zero",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotZero().isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isNotZero().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -831,7 +831,7 @@ public final class BigDecimalTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.precision() may not be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				precision().isNotEqualTo(5).elseGetMessages();
+				precision().isNotEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -845,7 +845,7 @@ public final class BigDecimalTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.scale() may not be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				scale().isNotEqualTo(5).elseGetMessages();
+				scale().isNotEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -860,7 +860,7 @@ public final class BigDecimalTest
 				"\"actual\" must be a whole number",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -875,7 +875,7 @@ public final class BigDecimalTest
 				"\"actual\" may not be a whole number",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isNotWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -890,7 +890,7 @@ public final class BigDecimalTest
 				"\"actual\" must be a multiple of 10",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isMultipleOf(BigDecimal.TEN).isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isMultipleOf(BigDecimal.TEN).isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -906,7 +906,7 @@ public final class BigDecimalTest
 					other: 10""",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isMultipleOf(BigDecimal.TEN, "other").isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isMultipleOf(BigDecimal.TEN, "other").isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -921,7 +921,7 @@ public final class BigDecimalTest
 				"\"actual\" may not be a multiple of 1",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotMultipleOf(BigDecimal.ONE).isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isNotMultipleOf(BigDecimal.ONE).isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -937,7 +937,7 @@ public final class BigDecimalTest
 					other: 1""",
 				"\"actual\" may not be equal to 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotMultipleOf(BigDecimal.ONE, "other").isNotEqualTo(BigDecimal.ONE).elseGetMessages();
+				isNotMultipleOf(BigDecimal.ONE, "other").isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

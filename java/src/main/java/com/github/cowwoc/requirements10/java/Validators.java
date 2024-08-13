@@ -1,12 +1,9 @@
 package com.github.cowwoc.requirements10.java;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * A factory that creates different types of validators.
@@ -22,38 +19,6 @@ import java.util.function.Consumer;
  */
 public interface Validators<S>
 {
-	/**
-	 * Returns the configuration used by new validators.
-	 *
-	 * @return the configuration used by new validators
-	 */
-	@CheckReturnValue
-	Configuration configuration();
-
-	/**
-	 * Updates the configuration that will be used by new validators.
-	 * <p>
-	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
-	 *
-	 * @return the configuration updater
-	 */
-	@CheckReturnValue
-	ConfigurationUpdater updateConfiguration();
-
-	/**
-	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
-	 * applies the changes on exit. For example:
-	 * {@snippet :
-	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
-	 * requireThat(value, name);
-	 *}
-	 *
-	 * @param updater the configuration updater
-	 * @return this
-	 * @throws NullPointerException if {@code updater} is null
-	 */
-	S updateConfiguration(Consumer<ConfigurationUpdater> updater);
-
 	/**
 	 * Returns a new factory instance with an independent configuration. This method is commonly used to inherit
 	 * and update contextual information from the original factory before passing it into a nested operation.

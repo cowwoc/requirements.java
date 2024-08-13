@@ -100,7 +100,7 @@ public final class CharacterTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			char actual = '1';
-			assert new TestValidatorsImpl(scope).assertThat(actual, "actual").isGreaterThan(actual).elseThrow();
+			assert new TestValidatorsImpl(scope).that(actual, "actual").isGreaterThan(actual).elseThrow();
 		}
 	}
 }

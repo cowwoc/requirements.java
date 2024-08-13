@@ -1,18 +1,15 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.JavaValidators;
+import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -156,36 +153,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		return self();
 	}
 
-	@Override
-	public S and(ValidatorComponent<?, ?>... others)
-	{
-		if (others == null)
-			throw new NullPointerException("others may not be null");
-		for (ValidatorComponent<?, ?> other : others)
-			failures.addAll(other.elseGetFailures());
-		return self();
-	}
-
-	@Override
-	public S or(ValidatorComponent<?, ?>... others)
-	{
-		if (others == null)
-			throw new NullPointerException("others may not be null");
-		List<ValidationFailure> newFailures = new ArrayList<>();
-		for (ValidatorComponent<?, ?> other : others)
-		{
-			List<ValidationFailure> otherFailures = other.elseGetFailures();
-			if (otherFailures.isEmpty())
-			{
-				failures.clear();
-				return self();
-			}
-			newFailures.addAll(otherFailures);
-		}
-		failures.addAll(newFailures);
-		return self();
-	}
-
 	/**
 	 * Adds a validation failure and throws an exception if the validator is configured to throw an exception on
 	 * failure. The value is set to undefined.
@@ -306,32 +273,38 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		addFailure(message, cause, IOException::new, IOException.class);
 	}
 
-	@Override
+	/**
+	 * Returns the validator's configuration.
+	 *
+	 * @return the validator's configuration
+	 */
 	public Configuration configuration()
 	{
 		return configuration;
 	}
 
 	/**
+	 * Returns this validator as the expected type.
+	 *
+	 * @param <U> the expected return type
 	 * @return this
 	 */
-	protected S self()
+	@SuppressWarnings("unchecked")
+	protected <U> U self()
 	{
-		@SuppressWarnings("unchecked")
-		S self = (S) this;
-		return self;
+		return (U) this;
 	}
 
 	@Override
-	public List<ValidationFailure> elseGetFailures()
+	public ValidationFailures elseGetFailures()
 	{
-		return List.copyOf(failures);
+		return new ValidationFailures(configuration().cleanStackTrace(), failures);
 	}
 
 	@Override
 	public boolean elseThrow()
 	{
-		Throwable throwable = elseGetException();
+		Throwable throwable = elseGetFailures().getException();
 		return switch (throwable)
 		{
 			case null -> true;
@@ -339,33 +312,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 			case Error e -> throw e;
 			default -> throw new AssertionError("Unexpected exception type: " + throwable);
 		};
-	}
-
-	@Override
-	public List<String> elseGetMessages()
-	{
-		List<String> messages = new ArrayList<>(failures.size());
-		for (ValidationFailure failure : failures)
-			messages.add(failure.getMessage());
-		return messages;
-	}
-
-	@Override
-	public Throwable elseGetException()
-	{
-		if (failures.isEmpty())
-			return null;
-		Throwable throwable;
-		if (failures.size() == 1)
-		{
-			ValidationFailure failure = failures.getFirst();
-			throwable = failure.getException();
-		}
-		else
-			throwable = new MultipleFailuresException(failures);
-		if (configuration.cleanStackTrace())
-			Exceptions.removeLibraryFromStackTrace(throwable);
-		return throwable;
 	}
 
 	@Override
@@ -389,15 +335,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	public String getContextAsString()
 	{
 		return new MessageBuilder(this, "").toString();
-	}
-
-	@Override
-	public StringValidator asString()
-	{
-		if (value.isNull())
-			onNull();
-		return new StringValidatorImpl(scope, configuration, "String.valueOf(" + name + ")",
-			value.mapDefined(String::valueOf), context, failures);
 	}
 
 	/**
@@ -455,18 +392,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 				"context. Choose a different name.");
 		}
 		return internalValidators;
-	}
-
-	/**
-	 * Returns a validator that assumes that the value has the expected type.
-	 *
-	 * @return the updated validator
-	 */
-	protected <U> U assumeExpectedType()
-	{
-		@SuppressWarnings("unchecked")
-		U newType = (U) this;
-		return newType;
 	}
 
 	/**

@@ -2,6 +2,7 @@ package com.github.cowwoc.requirements10.test.sample;
 
 import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
+import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
@@ -53,9 +54,9 @@ public final class TypicalUsageTest
 		assert DefaultJavaValidators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
 
 		// Throwing multiple validation failures at once
-		checkIf(args, "args").isEmpty().
-			and(checkIf(args[0], "args[0]").isEqualTo("planet")).
-			elseThrow();
+		ValidationFailures failures = checkIf(args, "args").isEmpty().elseGetFailures();
+		failures.addAll(checkIf(args[0], "args[0]").isEqualTo("planet").elseGetFailures());
+		failures.throwOnFailure();
 	}
 
 	@Test

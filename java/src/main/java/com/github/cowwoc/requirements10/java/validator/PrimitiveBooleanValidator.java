@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.java.validator;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 /**
@@ -54,7 +53,6 @@ public interface PrimitiveBooleanValidator extends
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected}
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	PrimitiveBooleanValidator isEqualTo(boolean expected);
 
@@ -73,7 +71,6 @@ public interface PrimitiveBooleanValidator extends
 	 *                                    the validator context</li>
 	 *                                    <li>the value is not equal to {@code expected}</li>
 	 *                                  </ul>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	PrimitiveBooleanValidator isEqualTo(boolean expected, String name);
 

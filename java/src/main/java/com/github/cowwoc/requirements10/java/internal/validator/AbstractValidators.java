@@ -74,8 +74,23 @@ public abstract class AbstractValidators<S> implements Validators<S>
 		return self;
 	}
 
-	@Override
+	/**
+	 * Returns the configuration used by new validators.
+	 *
+	 * @return the configuration used by new validators
+	 */
+	@CheckReturnValue
 	public Configuration configuration()
+	{
+		return getRequireThatConfiguration();
+	}
+
+	/**
+	 * Returns the configuration for {@code requireThat()} factory methods.
+	 *
+	 * @return the configuration for {@code requireThat()} factory methods
+	 */
+	public Configuration getRequireThatConfiguration()
 	{
 		return StampedLocks.optimisticRead(requireThatLock, () -> this.requireThatConfiguration);
 	}
@@ -100,13 +115,31 @@ public abstract class AbstractValidators<S> implements Validators<S>
 		return StampedLocks.optimisticRead(checkIfLock, () -> this.checkIfConfiguration);
 	}
 
-	@Override
+	/**
+	 * Updates the configuration that will be used by new validators.
+	 * <p>
+	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
+	 *
+	 * @return the configuration updater
+	 */
+	@CheckReturnValue
 	public ConfigurationUpdater updateConfiguration()
 	{
 		return new ConfigurationUpdaterImpl(this::setConfiguration);
 	}
 
-	@Override
+	/**
+	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
+	 * applies the changes on exit. For example:
+	 * {@snippet :
+	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
+	 * requireThat(value, name);
+	 *}
+	 *
+	 * @param consumer consumes the configuration updater
+	 * @return this
+	 * @throws NullPointerException if {@code updater} is null
+	 */
 	public S updateConfiguration(Consumer<ConfigurationUpdater> consumer)
 	{
 		try (ConfigurationUpdater updater = updateConfiguration())

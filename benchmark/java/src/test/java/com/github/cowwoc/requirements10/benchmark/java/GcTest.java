@@ -17,6 +17,7 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class GcTest
 			value.put(i, 5 - i);
 	}
 
-	//	@Test
+	@Test
 	public void runBenchmarks() throws RunnerException
 	{
 		ChainedOptionsBuilder builder = new OptionsBuilder().

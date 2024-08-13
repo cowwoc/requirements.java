@@ -1,9 +1,9 @@
 package com.github.cowwoc.requirements10.test.sample;
 
 import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.internal.JavaValidators;
+import com.github.cowwoc.requirements10.java.ValidationFailures;
 
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
 import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 
 /**
@@ -16,7 +16,6 @@ public final class BankAccount
 	public boolean preconditionEnabled = true;
 	public boolean postconditionEnabled = true;
 	public boolean invariantEnabled = true;
-	private final JavaValidators multipleAsserts = JavaValidators.newInstance();
 
 	/**
 	 * @param initialBalance the account balance
@@ -27,17 +26,6 @@ public final class BankAccount
 		balance = initialBalance;
 		if (invariantEnabled)
 			checkInvariant();
-
-		try (ConfigurationUpdater config = multipleAsserts.updateConfiguration())
-		{
-			config.exceptionTransformer(t ->
-			{
-				AssertionError replacement = new AssertionError(t.getMessage(), t.getCause());
-				for (Throwable suppressed : t.getSuppressed())
-					replacement.addSuppressed(suppressed);
-				return replacement;
-			});
-		}
 	}
 
 	/**
@@ -45,25 +33,35 @@ public final class BankAccount
 	 */
 	public void withdraw(double amount)
 	{
+		ValidationFailures failures;
 		if (preconditionEnabled)
-			requireThat(amount, "amount").isPositive().isLessThanOrEqualTo(balance, "balance");
+		{
+			failures = checkIf(amount, "amount").isPositive().isLessThanOrEqualTo(balance, "balance").
+				elseGetFailures();
+		}
+		else
+			failures = ValidationFailures.EMPTY;
 		double oldBalance = balance;
 		if (preconditionEnabled)
+		{
 			balance -= amount;
+			if (oldBalance >= ONE_MILLION)
+			{
+				// Special restrictions for millionaires:
+				// * Minimum withdrawal of $1000
+				// * The account balance may not drop below $1,000,000
+				failures.addAll(checkIf(amount, "amount").isGreaterThan(1000).elseGetFailures());
+				failures.addAll(checkIf(balance, "balance").isGreaterThanOrEqualTo(ONE_MILLION).elseGetFailures());
+			}
+			failures.throwOnFailure();
+		}
 		else
 			balance = Math.max(0, balance - amount);
 		if (invariantEnabled)
 			checkInvariant();
 		if (postconditionEnabled)
-			assert DefaultJavaValidators.that(balance, "balance").isEqualTo(oldBalance - amount, "expected")
-				.elseThrow();
-		if (oldBalance >= ONE_MILLION)
 		{
-			// Special restrictions for millionaires:
-			// * Minimum withdrawal of $1000
-			// * Account balance may not less than $1,000,000
-			assert multipleAsserts.checkIf(amount, "amount").isGreaterThan(1000).
-				and(multipleAsserts.checkIf(balance, "balance").isGreaterThanOrEqualTo(ONE_MILLION)).
+			assert DefaultJavaValidators.that(balance, "balance").isEqualTo(oldBalance - amount, "expected").
 				elseThrow();
 		}
 	}

@@ -49,23 +49,7 @@ public final class UrlTest
 				"\"actual\" must be an absolute URI",
 				"\"actual\" must be equal to \"notEqual\"");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isAbsolute().isEqualTo("notEqual").elseGetMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void multipleFailuresNullAsUri()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			URL actual = null;
-			List<String> expectedMessages = List.of("""
-					"actual" must be a valid URI.
-					actual: null""",
-				"\"actual\" must be equal to \"notEqual\"");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				asUri().isEqualTo("notEqual").elseGetMessages();
+				isAbsolute().isEqualTo("notEqual").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

@@ -167,7 +167,7 @@ public final class OptionalTest
 				"\"actual\" may not be empty",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isPresent().isEqualTo(5).elseGetMessages();
+				isPresent().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -182,7 +182,7 @@ public final class OptionalTest
 				"\"actual\" must be empty",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEmpty().isEqualTo(5).elseGetMessages();
+				isEmpty().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -197,7 +197,7 @@ public final class OptionalTest
 				"\"actual\" must contain 5",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				contains(5).isEqualTo(5).elseGetMessages();
+				contains(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -213,7 +213,7 @@ public final class OptionalTest
 					expected: 5""",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				contains(5, "expected").isEqualTo(5).elseGetMessages();
+				contains(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

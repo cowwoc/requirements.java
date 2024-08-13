@@ -19,6 +19,5 @@ module com.github.cowwoc.requirements10.jackson
 
 	exports com.github.cowwoc.requirements10.jackson;
 	exports com.github.cowwoc.requirements10.jackson.internal.validator to com.github.cowwoc.requirements10.test;
-	exports com.github.cowwoc.requirements10.jackson.internal;
 	exports com.github.cowwoc.requirements10.jackson.validator;
 }

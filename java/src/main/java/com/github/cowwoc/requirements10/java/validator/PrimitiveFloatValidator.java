@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.java.validator;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ComparableComponent;
 import com.github.cowwoc.requirements10.java.validator.component.DecimalNumberComponent;
 import com.github.cowwoc.requirements10.java.validator.component.FixedPrecisionDecimalNumberComponent;
@@ -51,7 +50,6 @@ public interface PrimitiveFloatValidator extends
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected} per
 	 *                                  {@link Float#equals(Object)}
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	PrimitiveFloatValidator isEqualTo(float expected);
 
@@ -71,7 +69,6 @@ public interface PrimitiveFloatValidator extends
 	 *                                    <li>the value is not equal to {@code expected} per
 	 *                                    {@link Float#equals(Object)}</li>
 	 *                                  </ul>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	PrimitiveFloatValidator isEqualTo(float expected, String name);
 

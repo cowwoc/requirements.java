@@ -143,9 +143,9 @@ public final class ConfigurationTest
 			factory2.withContext("factoryValue", "factoryName");
 
 			String message1 = factory1.checkIf("value", "name").
-				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 			String message2 = factory2.checkIf("value", "name").
-				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 
 			requireThat(message1, "message1").contains("validatorName: \"validatorValue\"").
 				doesNotContain("factoryName   : \"factoryValue\"");
@@ -164,7 +164,7 @@ public final class ConfigurationTest
 
 			TestValidators factory2 = factory1.copy();
 			String message = factory2.checkIf("value", "name").
-				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 
 			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
 				contains("factoryName  : \"factoryValue\"");
@@ -182,7 +182,7 @@ public final class ConfigurationTest
 			TestValidatorsImpl factory = new TestValidatorsImpl(scope);
 
 			String message = factory.checkIf("value", "name").
-				withContext("validatorValue", "validatorName").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 
 			// Ensure that this does not affect pre-existing validators
 			factory.withContext("factoryValue", "factoryName");
@@ -205,9 +205,9 @@ public final class ConfigurationTest
 
 			TestValidators factory2 = factory1.copy();
 			String message1 = factory1.checkIf("value", "name").
-				withContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "collision").isNull().elseGetFailures().getMessages().getFirst();
 			String message2 = factory2.checkIf("value", "name").
-				withContext("validatorValue", "collision").isNull().elseGetMessages().getFirst();
+				withContext("validatorValue", "collision").isNull().elseGetFailures().getMessages().getFirst();
 
 			requireThat(message1, "message1").contains("collision: \"validatorValue\"").
 				doesNotContain("collision: \"factoryValue\"");
@@ -232,7 +232,7 @@ public final class ConfigurationTest
 
 			String message = validators.checkIf(actual, "actual").
 				withContext("validatorValue", "missing").containsAll(expected, "expected").
-				elseGetMessages().getFirst();
+				elseGetFailures().getMessages().getFirst();
 			validators.requireThat(message, "message").contains("missing : [4]").
 				doesNotContain("missing: \"validatorValue\"").
 				doesNotContain("missing: \"factoryValue\"");

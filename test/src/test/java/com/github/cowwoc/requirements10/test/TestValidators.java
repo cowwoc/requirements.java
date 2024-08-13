@@ -1,31 +1,24 @@
 package com.github.cowwoc.requirements10.test;
 
-import com.github.cowwoc.requirements10.guava.internal.GuavaAssertThat;
-import com.github.cowwoc.requirements10.guava.internal.GuavaCheckIf;
-import com.github.cowwoc.requirements10.guava.internal.GuavaRequireThat;
-import com.github.cowwoc.requirements10.jackson.internal.JacksonAssertThat;
-import com.github.cowwoc.requirements10.jackson.internal.JacksonCheckIf;
-import com.github.cowwoc.requirements10.jackson.internal.JacksonRequireThat;
+import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
+import com.github.cowwoc.requirements10.guava.GuavaAssertThat;
+import com.github.cowwoc.requirements10.guava.GuavaCheckIf;
+import com.github.cowwoc.requirements10.guava.GuavaRequireThat;
+import com.github.cowwoc.requirements10.jackson.JacksonAssertThat;
+import com.github.cowwoc.requirements10.jackson.JacksonCheckIf;
+import com.github.cowwoc.requirements10.jackson.JacksonRequireThat;
+import com.github.cowwoc.requirements10.java.JavaAssertThat;
+import com.github.cowwoc.requirements10.java.JavaCheckIf;
+import com.github.cowwoc.requirements10.java.JavaRequireThat;
 import com.github.cowwoc.requirements10.java.Validators;
-import com.github.cowwoc.requirements10.java.internal.JavaAssertThat;
-import com.github.cowwoc.requirements10.java.internal.JavaCheckIf;
-import com.github.cowwoc.requirements10.java.internal.JavaRequireThat;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
+
+import java.util.function.Consumer;
 
 /**
  * Validators for automated tests.
- * <p>
- * A validation method may throw exceptions in three scenarios:
- * <ol>
- * <li>The method arguments are invalid, e.g. {@code isGreaterThan(value, null)}.</li>
- * <li>The method encounters a predictable but unavoidable failure that can be recovered from, e.g. an I/O
- * error.</li>
- * <li>The value fails the validation check, e.g. {@code isGreaterThan(5)} on a value of 0.</li>
- * </ol>
- * {@code requireThat()} throws an exception in all scenarios. {@code checkIf()} only throws exceptions in
- * scenarios 1 and 2. For scenario 3, the exception is available via
- * {@link ValidatorComponent#elseGetException() validator.elseGetException()}}.
  */
 public interface TestValidators
 	extends Validators<TestValidators>,
@@ -44,4 +37,36 @@ public interface TestValidators
 	{
 		return new TestValidatorsImpl(scope);
 	}
+
+	/**
+	 * Returns the configuration used by new validators.
+	 *
+	 * @return the configuration used by new validators
+	 */
+	@CheckReturnValue
+	Configuration configuration();
+
+	/**
+	 * Updates the configuration that will be used by new validators.
+	 * <p>
+	 * <b>NOTE</b>: Changes are only applied when {@link ConfigurationUpdater#close()} is invoked.
+	 *
+	 * @return the configuration updater
+	 */
+	@CheckReturnValue
+	ConfigurationUpdater updateConfiguration();
+
+	/**
+	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
+	 * applies the changes on exit. For example:
+	 * {@snippet :
+	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
+	 * requireThat(value, name);
+	 *}
+	 *
+	 * @param consumer consumes the configuration updater
+	 * @return this
+	 * @throws NullPointerException if {@code updater} is null
+	 */
+	TestValidators updateConfiguration(Consumer<ConfigurationUpdater> consumer);
 }

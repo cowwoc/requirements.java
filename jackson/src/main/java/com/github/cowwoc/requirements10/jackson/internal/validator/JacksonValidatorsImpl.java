@@ -1,7 +1,7 @@
 package com.github.cowwoc.requirements10.jackson.internal.validator;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.cowwoc.requirements10.jackson.internal.JacksonValidators;
+import com.github.cowwoc.requirements10.jackson.JacksonValidators;
 import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;

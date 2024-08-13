@@ -6,7 +6,6 @@ package com.github.cowwoc.requirements10.java;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.scope.MainApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.StampedLocks;
 import com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl;
@@ -48,14 +47,12 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveShortValidator;
 import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
-import com.github.cowwoc.requirements10.java.validator.UrlValidator;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -652,22 +649,6 @@ public final class DefaultJavaValidators
 	}
 
 	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static UrlValidator requireThat(URL value, String name)
-	{
-		return DELEGATE.requireThat(value, name);
-	}
-
-	/**
 	 * Validates the state of a {@code Class}.
 	 * <p>
 	 * The returned validator throws an exception immediately if a validation fails.
@@ -735,7 +716,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator that(byte value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -752,7 +733,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteValidator that(byte value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -772,7 +753,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator that(Byte value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -789,7 +770,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ByteValidator that(Byte value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -809,7 +790,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator that(short value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -826,7 +807,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortValidator that(short value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -846,7 +827,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator that(Short value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -863,7 +844,7 @@ public final class DefaultJavaValidators
 	 */
 	public static ShortValidator that(Short value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -883,7 +864,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator that(int value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -900,7 +881,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerValidator that(int value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -920,7 +901,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator that(Integer value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -937,7 +918,7 @@ public final class DefaultJavaValidators
 	 */
 	public static IntegerValidator that(Integer value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -957,7 +938,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator that(long value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -974,7 +955,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongValidator that(long value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -994,7 +975,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator that(Long value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1011,7 +992,7 @@ public final class DefaultJavaValidators
 	 */
 	public static LongValidator that(Long value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1031,7 +1012,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator that(float value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1048,7 +1029,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatValidator that(float value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1068,7 +1049,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator that(Float value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1085,7 +1066,7 @@ public final class DefaultJavaValidators
 	 */
 	public static FloatValidator that(Float value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1105,7 +1086,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator that(double value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1122,7 +1103,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleValidator that(double value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1142,7 +1123,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator that(Double value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1159,7 +1140,7 @@ public final class DefaultJavaValidators
 	 */
 	public static DoubleValidator that(Double value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1179,7 +1160,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator that(boolean value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1196,7 +1177,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanValidator that(boolean value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1216,7 +1197,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator that(Boolean value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1233,7 +1214,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BooleanValidator that(Boolean value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1253,7 +1234,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator that(char value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1270,7 +1251,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterValidator that(char value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1290,7 +1271,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator that(Character value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1307,7 +1288,7 @@ public final class DefaultJavaValidators
 	 */
 	public static CharacterValidator that(Character value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1327,7 +1308,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator that(BigInteger value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1344,7 +1325,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigIntegerValidator that(BigInteger value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1364,7 +1345,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator that(BigDecimal value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1381,7 +1362,7 @@ public final class DefaultJavaValidators
 	 */
 	public static BigDecimalValidator that(BigDecimal value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1396,7 +1377,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> that(T value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1408,7 +1389,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Comparable<T>> ComparableValidator<T> that(T value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1429,7 +1410,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> that(T value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1447,7 +1428,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> ObjectValidator<T> that(T value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1469,7 +1450,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Collection<E>, E> CollectionValidator<T, E> that(T value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1488,7 +1469,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Collection<E>, E> CollectionValidator<T, E> that(T value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1510,7 +1491,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends List<E>, E> ListValidator<T, E> that(T value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1529,7 +1510,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends List<E>, E> ListValidator<T, E> that(T value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1549,7 +1530,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator that(byte[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1566,7 +1547,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveByteArrayValidator that(byte[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1586,7 +1567,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator that(short[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1603,7 +1584,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveShortArrayValidator that(short[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1623,7 +1604,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator that(int[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1640,7 +1621,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveIntegerArrayValidator that(int[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1660,7 +1641,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator that(long[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1677,7 +1658,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveLongArrayValidator that(long[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1697,7 +1678,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator that(float[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1714,7 +1695,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveFloatArrayValidator that(float[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1734,7 +1715,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator that(double[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1751,7 +1732,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveDoubleArrayValidator that(double[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1771,7 +1752,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator that(boolean[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1790,7 +1771,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveBooleanArrayValidator that(boolean[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1810,7 +1791,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator that(char[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1827,7 +1808,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PrimitiveCharacterArrayValidator that(char[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1848,7 +1829,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E[], E> that(E[] value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1866,7 +1847,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <E> ObjectArrayValidator<E[], E> that(E[] value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1889,7 +1870,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1909,7 +1890,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T extends Map<K, V>, K, V> MapValidator<T, K, V> that(T value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1929,7 +1910,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator that(Path value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1946,7 +1927,7 @@ public final class DefaultJavaValidators
 	 */
 	public static PathValidator that(Path value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -1966,7 +1947,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator that(String value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -1983,7 +1964,7 @@ public final class DefaultJavaValidators
 	 */
 	public static StringValidator that(String value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -2003,7 +1984,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator that(URI value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -2020,44 +2001,7 @@ public final class DefaultJavaValidators
 	 */
 	public static UriValidator that(URI value)
 	{
-		return DELEGATE.assertThat(value);
-	}
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
-	 * <p>
-	 * This method is intended to be used with the {@code assert} keyword, like so:
-	 * {@code assert that(value, name)}.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static UrlValidator that(URL value, String name)
-	{
-		return DELEGATE.assertThat(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
-	 * <p>
-	 * This method is intended to be used with the {@code assert} keyword, like so:
-	 * {@code assert that(value, name)}.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static UrlValidator that(URL value)
-	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -2078,7 +2022,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> GenericTypeValidator<T> that(Class<T> value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -2096,7 +2040,7 @@ public final class DefaultJavaValidators
 	 */
 	public static <T> GenericTypeValidator<T> that(Class<T> value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -2118,7 +2062,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> that(Optional<T> value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -2137,7 +2081,7 @@ public final class DefaultJavaValidators
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static <T> OptionalValidator<T> that(Optional<T> value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -2157,7 +2101,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator that(InetAddress value, String name)
 	{
-		return DELEGATE.assertThat(value, name);
+		return DELEGATE.that(value, name);
 	}
 
 	/**
@@ -2174,7 +2118,7 @@ public final class DefaultJavaValidators
 	 */
 	public static InetAddressValidator that(InetAddress value)
 	{
-		return DELEGATE.assertThat(value);
+		return DELEGATE.that(value);
 	}
 
 	/**
@@ -3348,39 +3292,6 @@ public final class DefaultJavaValidators
 	 * @return a validator for the value
 	 */
 	public static UriValidator checkIf(URI value)
-	{
-		return DELEGATE.checkIf(value);
-	}
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
-	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
-	 * validation failures are thrown immediately.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	public static UrlValidator checkIf(URL value, String name)
-	{
-		return DELEGATE.checkIf(value, name);
-	}
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
-	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
-	 * validation failures are thrown immediately.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	public static UrlValidator checkIf(URL value)
 	{
 		return DELEGATE.checkIf(value);
 	}

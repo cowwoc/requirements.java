@@ -10,7 +10,6 @@ import com.github.cowwoc.requirements10.java.internal.message.InetAddressMessage
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
-import com.github.cowwoc.requirements10.java.validator.StringValidator;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -63,17 +62,5 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 				InetAddressMessages.isIpAddress(this, "IP v6").toString());
 		}
 		return this;
-	}
-
-	@Override
-	public StringValidator asString()
-	{
-		if (value.isNull())
-			onNull();
-		// InetAddress.toString() returns "<hostname>/<ip-address>", but this cannot be fed back into
-		// InetAddress.getByName(String). Instead, we use InetAddress.getHostName() which returns the desired
-		// format.
-		return new StringValidatorImpl(scope, configuration, name,
-			value.nullToUndefined().mapDefined(InetAddress::getHostName), context, failures);
 	}
 }

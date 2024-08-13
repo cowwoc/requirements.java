@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
@@ -380,33 +379,6 @@ public final class ObjectTest
 		{
 			Path actual = Paths.get("non-existing-path");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isDirectory();
-		}
-	}
-
-	@Test
-	public void logicalOperators()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
-			Set<String> activeUsers = Set.of("Alice", "Bob");
-			Set<String> suspendedUsers = Set.of("Charlie");
-
-			String currentUser = "Alice";
-			var userCheck = validators.checkIf(currentUser, "currentUser");
-			for (String user : activeUsers)
-			{
-				var newUserCheck = validators.checkIf(currentUser, "currentUser").isEqualTo(user);
-				userCheck.or(newUserCheck);
-				if (!userCheck.validationFailed())
-				{
-					// the remaining validations are guaranteed to succeed
-					break;
-				}
-			}
-			var userNotSuspended = validators.checkIf(suspendedUsers, "suspendedUsers").
-				doesNotContain(currentUser, "currentUser");
-			userCheck.and(userNotSuspended).elseThrow();
 		}
 	}
 }

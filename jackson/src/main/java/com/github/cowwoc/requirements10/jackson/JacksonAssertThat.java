@@ -1,4 +1,4 @@
-package com.github.cowwoc.requirements10.jackson.internal;
+package com.github.cowwoc.requirements10.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;

@@ -1,7 +1,5 @@
 package com.github.cowwoc.requirements10.java;
 
-import com.github.cowwoc.requirements10.java.internal.reflect.GenericArrayTypeImpl;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -228,9 +226,6 @@ public abstract class GenericType<T>
 		return switch (type)
 		{
 			case GenericArrayType array -> this.equals(from(object.getClass()));
-//				Type componentType = array.getGenericComponentType();
-//				yield from(componentType).isTypeOf(object);
-
 			case ParameterizedType parameterizedType -> from(parameterizedType.getRawType()).
 				isTypeOf(object);
 			case Class<?> aClass -> aClass.isInstance(object);
@@ -246,12 +241,7 @@ public abstract class GenericType<T>
 	 */
 	public boolean isPrimitive()
 	{
-		return switch (type)
-		{
-//			case boolean.class, byte.class, char.class, short.class, int.class, long.class, float.class,
-//			     double.class -> true;
-			default -> false;
-		};
+		return type instanceof Class<?> c && c.isPrimitive();
 	}
 
 	/**
@@ -265,46 +255,7 @@ public abstract class GenericType<T>
 		// The raw type of Types with bounds (e.g. wildcards) is equal to their first bound.
 		return getRawTypes().iterator().next();
 	}
-
-	/**
-	 * Returns the type of an array with elements of this type.
-	 *
-	 * @return the type of an array with elements of this type
-	 */
-	public GenericType<T[]> asArrayComponent()
-	{
-		if (type instanceof Class<?> aClass)
-		{
-			@SuppressWarnings("unchecked")
-			Class<T> temp = (Class<T>) aClass;
-			return from(getClassOfArray(temp));
-		}
-		return from(new GenericArrayTypeImpl(type));
-	}
-//
-//	/**
-//	 * Returns the component type of an array.  If this class does not represent an array this method returns
-//	 * null.
-//	 *
-//	 * @return the component type if this class is an array, or {@code null} if it is not
-//	 */
-//	public GenericType<?> getComponentType()
-//	{
-//		return switch (type)
-//		{
-//			case GenericArrayType array ->
-//			{
-//				Type componentType = array.getGenericComponentType();
-//				yield from(componentType);
-//			}
-//			case ParameterizedType ignored -> null;
-//			case TypeVariable<?> ignored -> null;
-//			case WildcardType ignored -> null;
-//			case Class<?> aClass -> from(aClass.getComponentType());
-//			default -> throw new AssertionError(unexpectedType(type));
-//		};
-//	}
-
+	
 	@Override
 	public int hashCode()
 	{

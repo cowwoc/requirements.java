@@ -58,22 +58,6 @@ public final class UriTest
 	}
 
 	@Test
-	public void multipleFailuresAsUrlNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			URI actual = null;
-			List<String> expectedMessages = List.of("""
-				"actual" must be a valid URL.
-				actual: null""");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				asUrl().elseGetMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
-				isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
 	public void multipleFailuresNullIsAbsolute()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -83,23 +67,7 @@ public final class UriTest
 				"\"actual\" must be an absolute URI",
 				"\"actual\" must be equal to \"notEqual\"");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isAbsolute().isEqualTo("notEqual").elseGetMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void multipleFailuresNullAsUrl()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			URI actual = null;
-			List<String> expectedMessages = List.of("""
-					"actual" must be a valid URL.
-					actual: null""",
-				"\"actual\" must be equal to \"notEqual\"");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				asUrl().isEqualTo("notEqual").elseGetMessages();
+				isAbsolute().isEqualTo("notEqual").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

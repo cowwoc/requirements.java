@@ -504,7 +504,7 @@ public final class ComparableTest
 				"\"actual\" must be less than 5",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isLessThan(5).isEqualTo(5).elseGetMessages();
+				isLessThan(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -520,7 +520,7 @@ public final class ComparableTest
 					expected: 5""",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isLessThan(5, "expected").isEqualTo(5).elseGetMessages();
+				isLessThan(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -535,7 +535,7 @@ public final class ComparableTest
 				"\"actual\" must be less than or equal to 5",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isLessThanOrEqualTo(5).isEqualTo(5).elseGetMessages();
+				isLessThanOrEqualTo(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -551,7 +551,7 @@ public final class ComparableTest
 					expected: 5""",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isLessThanOrEqualTo(5, "expected").isEqualTo(5).elseGetMessages();
+				isLessThanOrEqualTo(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -566,7 +566,7 @@ public final class ComparableTest
 				"\"actual\" must be greater than 5",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isGreaterThan(5).isEqualTo(5).elseGetMessages();
+				isGreaterThan(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -582,7 +582,7 @@ public final class ComparableTest
 					expected: 5""",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isGreaterThan(5, "expected").isEqualTo(5).elseGetMessages();
+				isGreaterThan(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -597,7 +597,7 @@ public final class ComparableTest
 				"\"actual\" must be greater than or equal to 5",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isGreaterThanOrEqualTo(5).isEqualTo(5).elseGetMessages();
+				isGreaterThanOrEqualTo(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -613,7 +613,7 @@ public final class ComparableTest
 					expected: 5""",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isGreaterThanOrEqualTo(5, "expected").isEqualTo(5).elseGetMessages();
+				isGreaterThanOrEqualTo(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -634,7 +634,7 @@ public final class ComparableTest
 				configurationUpdater.equalityMethod(EqualityMethod.COMPARABLE);
 			}
 			List<String> actualMessages = validators.checkIf(actual, "actual").isEqualTo(5).isEqualTo(5).
-				elseGetMessages();
+				elseGetFailures().getMessages();
 
 			validators = new TestValidatorsImpl(scope);
 			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -657,9 +657,8 @@ public final class ComparableTest
 			{
 				configurationUpdater.equalityMethod(EqualityMethod.COMPARABLE);
 			}
-			List<String> actualMessages = validators.checkIf(actual, "actual").isEqualTo(5, "expected")
-				.isEqualTo(5).
-				elseGetMessages();
+			List<String> actualMessages = validators.checkIf(actual, "actual").isEqualTo(5, "expected").
+				isEqualTo(5).elseGetFailures().getMessages();
 
 			validators = new TestValidatorsImpl(scope);
 			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -681,7 +680,7 @@ public final class ComparableTest
 				configurationUpdater.equalityMethod(EqualityMethod.COMPARABLE);
 			}
 			List<String> actualMessages = validators.checkIf(actual, "actual").isNotEqualTo(5).isEqualTo(5).
-				elseGetMessages();
+				elseGetFailures().getMessages();
 
 			validators = new TestValidatorsImpl(scope);
 			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -703,7 +702,7 @@ public final class ComparableTest
 				configurationUpdater.equalityMethod(EqualityMethod.COMPARABLE);
 			}
 			List<String> actualMessages = validators.checkIf(actual, "actual").isNotEqualTo(5, "name").
-				isEqualTo(5).elseGetMessages();
+				isEqualTo(5).elseGetFailures().getMessages();
 
 			validators = new TestValidatorsImpl(scope);
 			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -721,7 +720,7 @@ public final class ComparableTest
 					bounds: [1, 3)""",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isBetween(1, 3).isEqualTo(5).elseGetMessages();
+				isBetween(1, 3).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -742,7 +741,7 @@ public final class ComparableTest
 				configurationUpdater.equalityMethod(EqualityMethod.COMPARABLE);
 			}
 			List<String> actualMessages = validators.checkIf(actual, "actual").
-				isBetween(1, true, 2, true).isEqualTo(5).elseGetMessages();
+				isBetween(1, true, 2, true).isEqualTo(5).elseGetFailures().getMessages();
 
 			validators = new TestValidatorsImpl(scope);
 			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

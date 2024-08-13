@@ -6,7 +6,6 @@ package com.github.cowwoc.requirements10.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.jackson.internal.JacksonValidators;
 import com.github.cowwoc.requirements10.jackson.internal.validator.JacksonValidatorsImpl;
 import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;

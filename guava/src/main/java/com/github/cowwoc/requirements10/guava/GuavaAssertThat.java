@@ -1,4 +1,4 @@
-package com.github.cowwoc.requirements10.guava.internal;
+package com.github.cowwoc.requirements10.guava;
 
 import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.google.common.collect.Multimap;

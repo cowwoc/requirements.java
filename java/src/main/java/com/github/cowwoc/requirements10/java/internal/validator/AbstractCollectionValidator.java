@@ -4,8 +4,8 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
@@ -15,13 +15,9 @@ import com.github.cowwoc.requirements10.java.internal.util.Difference;
 import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
-import com.github.cowwoc.requirements10.java.validator.ListValidator;
-import com.github.cowwoc.requirements10.java.validator.ObjectArrayValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.component.CollectionComponent;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -485,29 +481,5 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 		return new ObjectSizeValidatorImpl(scope, configuration, name,
 			value.nullToUndefined().mapDefined(value -> new ObjectAndSize(value, value.size())),
 			name + ".size()", Pluralizer.ELEMENT, context, failures);
-	}
-
-	@Override
-	public ObjectArrayValidator<E[], E> asArray(Class<E> type)
-	{
-		if (value.isNull())
-			onNull();
-		MaybeUndefined<E[]> array = value.nullToUndefined().mapDefined(v ->
-		{
-			@SuppressWarnings("unchecked")
-			E[] target = (E[]) Array.newInstance(type, v.size());
-			return v.toArray(target);
-		});
-		return new ObjectArrayValidatorImpl<>(scope, configuration, name + ".asArray()", array, context,
-			failures);
-	}
-
-	@Override
-	public ListValidator<List<E>, E> asList()
-	{
-		if (value.isNull())
-			onNull();
-		return new ListValidatorImpl<>(scope, configuration, name + ".asList()",
-			value.nullToUndefined().mapDefined(ArrayList::new), pluralizer, context, failures);
 	}
 }

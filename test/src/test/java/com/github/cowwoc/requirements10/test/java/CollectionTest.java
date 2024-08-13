@@ -738,40 +738,6 @@ public final class CollectionTest
 		}
 	}
 
-	@Test
-	public void asArray()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Integer[] array =
-				{
-					1, 2, 3, 4, 5
-				};
-			Collection<Integer> actual = Arrays.asList(array);
-			Integer[] output = validators.requireThat(actual, "actual").
-				asArray(Integer.class).getValue();
-			validators.requireThat(array, "Input").isEqualTo(output, "Output");
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asArray_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Collection<Integer> actual = Arrays.asList(1, 2, 3, 4, 5);
-			Integer[] wrongOutput =
-				{
-					5, 4, 3, 2, 1
-				};
-			Integer[] actualOutput = validators.requireThat(actual, "actual").
-				asArray(Integer.class).getValue();
-			validators.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
-		}
-	}
-
 	@Test(expectedExceptions = NullPointerException.class)
 	public void multipleFailuresContainsExactlyNull()
 	{
@@ -914,7 +880,7 @@ public final class CollectionTest
 				"\"actual\" must be empty",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEmpty().isNotEqualTo(List.of()).elseGetMessages();
+				isEmpty().isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -929,7 +895,7 @@ public final class CollectionTest
 				"\"actual\" may not be empty",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotEmpty().isNotEqualTo(List.of()).elseGetMessages();
+				isNotEmpty().isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -944,7 +910,7 @@ public final class CollectionTest
 				"\"actual\" must contain 5",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				contains(5).isNotEqualTo(List.of()).elseGetMessages();
+				contains(5).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -960,7 +926,7 @@ public final class CollectionTest
 					expected: 5""",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				contains(5, "expected").isNotEqualTo(List.of()).elseGetMessages();
+				contains(5, "expected").isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -975,7 +941,7 @@ public final class CollectionTest
 				"\"actual\" must consist of the elements [5], regardless of their order.",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				containsExactly(List.of(5)).isNotEqualTo(List.of()).elseGetMessages();
+				containsExactly(List.of(5)).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -992,7 +958,7 @@ public final class CollectionTest
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				containsExactly(List.of(5), "expected").
-				isNotEqualTo(List.of()).elseGetMessages();
+				isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1007,7 +973,7 @@ public final class CollectionTest
 				"\"actual\" must contain any of the elements present in the set [5]",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				containsAny(List.of(5)).isNotEqualTo(List.of()).elseGetMessages();
+				containsAny(List.of(5)).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1024,7 +990,7 @@ public final class CollectionTest
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				containsAny(List.of(5), "expected").
-				isNotEqualTo(List.of()).elseGetMessages();
+				isNotEqualTo(List.of()).elseGetFailures().getMessages();
 
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
@@ -1040,7 +1006,7 @@ public final class CollectionTest
 				"\"actual\" must contain all the elements present in the set [5]",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				containsAll(List.of(5)).isNotEqualTo(List.of()).elseGetMessages();
+				containsAll(List.of(5)).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1057,7 +1023,7 @@ public final class CollectionTest
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				containsAll(List.of(5), "expected").
-				isNotEqualTo(List.of()).elseGetMessages();
+				isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1072,7 +1038,7 @@ public final class CollectionTest
 				"\"actual\" may not contain 5",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContain(5).isNotEqualTo(List.of()).elseGetMessages();
+				doesNotContain(5).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1088,7 +1054,7 @@ public final class CollectionTest
 					unwanted: 5""",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContain(5, "unwanted").isNotEqualTo(List.of()).elseGetMessages();
+				doesNotContain(5, "unwanted").isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1103,8 +1069,7 @@ public final class CollectionTest
 				"\"actual\" may not consist of the elements [5], regardless of their order.",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContainExactly(List.of(5)).isNotEqualTo(List.of()).
-				elseGetMessages();
+				doesNotContainExactly(List.of(5)).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1121,7 +1086,7 @@ public final class CollectionTest
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				doesNotContainExactly(List.of(5), "expected").
-				isNotEqualTo(List.of()).elseGetMessages();
+				isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1136,8 +1101,7 @@ public final class CollectionTest
 				"\"actual\" may not contain any of the elements present in the set [5]",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContainAny(List.of(5)).isNotEqualTo(List.of())
-				.elseGetMessages();
+				doesNotContainAny(List.of(5)).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1154,7 +1118,7 @@ public final class CollectionTest
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				doesNotContainAny(List.of(5), "expected").
-				isNotEqualTo(List.of()).elseGetMessages();
+				isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1169,8 +1133,7 @@ public final class CollectionTest
 				"\"actual\" may contain some, but not all, the elements present in the set [5].",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContainAll(List.of(5)).isNotEqualTo(List.of())
-				.elseGetMessages();
+				doesNotContainAll(List.of(5)).isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1187,7 +1150,7 @@ public final class CollectionTest
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				doesNotContainAll(List.of(5), "expected").
-				isNotEqualTo(List.of()).elseGetMessages();
+				isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1202,7 +1165,7 @@ public final class CollectionTest
 				"\"actual\" may not contain any duplicate elements",
 				"\"actual\" may not be equal to []");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContainDuplicates().isNotEqualTo(List.of()).elseGetMessages();
+				doesNotContainDuplicates().isNotEqualTo(List.of()).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1216,21 +1179,7 @@ public final class CollectionTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must contain 5 elements");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				size().isEqualTo(5).elseGetMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void multipleFailuresNullAsArray()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			Collection<Integer> actual = null;
-			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"actual.asArray() must be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				asArray(Integer.class).isEqualTo(5).elseGetMessages();
+				size().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -1246,7 +1195,7 @@ public final class CollectionTest
 				"actual" must be equal to [2, 1, 3].
 				actual: [1, 2, 3]""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEqualTo(expected).elseGetMessages();
+				isEqualTo(expected).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

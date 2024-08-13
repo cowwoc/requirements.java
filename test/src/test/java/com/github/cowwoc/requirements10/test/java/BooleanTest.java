@@ -73,7 +73,7 @@ public final class BooleanTest
 				"\"actual\" must be true",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isTrue().isEqualTo(5).elseGetMessages();
+				isTrue().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -88,7 +88,7 @@ public final class BooleanTest
 				"\"actual\" must be false",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isFalse().isEqualTo(5).elseGetMessages();
+				isFalse().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

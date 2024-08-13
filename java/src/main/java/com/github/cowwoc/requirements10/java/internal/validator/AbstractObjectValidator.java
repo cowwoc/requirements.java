@@ -1,8 +1,8 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
@@ -105,7 +105,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
 				ObjectMessages.isInstanceOf(this, expected).toString());
 		}
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override

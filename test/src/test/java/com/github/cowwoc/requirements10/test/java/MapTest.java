@@ -297,7 +297,7 @@ public final class MapTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.keySet() must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				keySet().isEqualTo(5).elseGetMessages();
+				keySet().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -311,7 +311,7 @@ public final class MapTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.values() must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				values().isEqualTo(5).elseGetMessages();
+				values().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -325,7 +325,7 @@ public final class MapTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.entrySet() must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				entrySet().isEqualTo(5).elseGetMessages();
+				entrySet().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -340,7 +340,7 @@ public final class MapTest
 				"\"actual\" must be empty",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEmpty().isEqualTo(5).elseGetMessages();
+				isEmpty().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -355,7 +355,7 @@ public final class MapTest
 				"\"actual\" may not be empty",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotEmpty().isEqualTo(5).elseGetMessages();
+				isNotEmpty().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -369,7 +369,7 @@ public final class MapTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must contain 5 entries");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").size().
-				isEqualTo(5).elseGetMessages();
+				isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}

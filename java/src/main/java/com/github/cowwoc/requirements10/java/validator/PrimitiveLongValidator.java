@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.java.validator;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.component.ComparableComponent;
 import com.github.cowwoc.requirements10.java.validator.component.NegativeNumberComponent;
 import com.github.cowwoc.requirements10.java.validator.component.PositiveNumberComponent;
@@ -46,7 +45,6 @@ public interface PrimitiveLongValidator extends
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected}
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	PrimitiveLongValidator isEqualTo(long expected);
 
@@ -65,7 +63,6 @@ public interface PrimitiveLongValidator extends
 	 *                                    the validator context</li>
 	 *                                    <li>the value is not equal to {@code expected}</li>
 	 *                                  </ul>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	PrimitiveLongValidator isEqualTo(long expected, String name);
 

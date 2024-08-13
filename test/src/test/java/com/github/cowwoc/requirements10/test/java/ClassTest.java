@@ -29,6 +29,96 @@ public final class ClassTest
 	}
 
 	@Test
+	public void isPrimitive_boolean()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = boolean.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_byte()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = byte.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_char()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = char.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_short()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = short.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_int()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = int.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_long()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = long.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_float()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = float.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
+	public void isPrimitive_double()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = double.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isPrimitive_object()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Class<?> actual = Object.class;
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+		}
+	}
+
+	@Test
 	public void isSupertypeOf()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -161,7 +251,7 @@ public final class ClassTest
 					actual: null""",
 				"\"actual\" may not be equal to class java.lang.Double");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).elseGetMessages();
+				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

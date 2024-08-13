@@ -24,13 +24,4 @@ public interface UriValidator extends
 	 * @throws IllegalArgumentException if the URI is relative
 	 */
 	UriValidator isAbsolute();
-
-	/**
-	 * Ensures that the URI is a valid URL.
-	 *
-	 * @return a validator for the URL representation of the URI
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the URI cannot be converted to a URL
-	 */
-	UrlValidator asUrl();
 }

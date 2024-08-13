@@ -35,7 +35,8 @@ module com.github.cowwoc.requirements10.java
 		com.github.cowwoc.requirements10.test, com.github.cowwoc.requirements10.benchmark.java,
 		com.github.cowwoc.requirements10.benchmark.guava, com.github.cowwoc.requirements10.benchmark.jackson;
 	exports com.github.cowwoc.requirements10.java.internal.validator to com.github.cowwoc.requirements10.guava,
-		com.github.cowwoc.requirements10.jackson, com.github.cowwoc.requirements10.test;
+		com.github.cowwoc.requirements10.jackson, com.github.cowwoc.requirements10.test,
+		com.github.cowwoc.requirements10.benchmark.java;
 	exports com.github.cowwoc.requirements10.java.internal.message to
 		com.github.cowwoc.requirements10.guava, com.github.cowwoc.requirements10.jackson,
 		com.github.cowwoc.requirements10.test;

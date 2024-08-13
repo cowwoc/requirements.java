@@ -4,7 +4,7 @@
  */
 package com.github.cowwoc.requirements10.java.internal;
 
-import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
+import com.github.cowwoc.requirements10.java.ValidationFailures;
 
 import java.util.function.Function;
 
@@ -58,11 +58,11 @@ public final class Configuration
 	 * @param stringMappers        the configuration used to map contextual values to a String
 	 * @param recordStacktrace     {@code true} if the exception stack trace must be recorded when a validation
 	 *                             failure occurs. If {@code false}, the exception type remains the same, but
-	 *                             the stack trace points to the invocation of * {@code elseGetException()}.
-	 *                             Users who only plan to
-	 *                             {@link ValidatorComponent#elseGetMessages() list of failure messages} instead
-	 *                             of retrieving an exception * may see a performance improvement if this value
-	 *                             is set to {@code false}.
+	 *                             the stack trace points to the invocation of {@code elseGetException()}. Users
+	 *                             who only plan to
+	 *                             {@link ValidationFailures#getMessages() list of failure messages} instead of
+	 *                             retrieving an exception may see a performance improvement if this value is
+	 *                             set to {@code false}.
 	 * @param throwOnFailure       {@code true} if an exception is thrown on validation failure
 	 * @param exceptionTransformer a function that transforms the validation exception before it is thrown or
 	 *                             returned
@@ -131,7 +131,7 @@ public final class Configuration
 	/**
 	 * Returns {@code true} if exception stack traces should reference the code that triggers a validation
 	 * failure. When set to {@code false}, the exception type remains unchanged, but the stack trace location is
-	 * undefined. Users who only plan to {@link ValidatorComponent#elseGetMessages() list of failure messages}
+	 * undefined. Users who only plan to {@link ValidationFailures#getMessages() list of failure messages}
 	 * instead of exceptions may experience a performance improvement if this value is set to {@code false}.
 	 *
 	 * @return {@code true} if exceptions must be recorded when a validation failure occurs

@@ -11,18 +11,17 @@ import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_DELETE;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_EQUAL;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_INSERT;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.EOS_MARKER;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.TextOnly.DIFF_PADDING;
 import static com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder.DIFF_LEGEND;
-import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 @SuppressWarnings("ConstantConditions")
 public final class ArrayTest
@@ -1028,72 +1027,6 @@ public final class ArrayTest
 	}
 
 	@Test
-	public void asCollection()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidatorsImpl validator = new TestValidatorsImpl(scope);
-			Integer[] actual =
-				{
-					1, 2, 3, 4, 5
-				};
-			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
-			List<Integer> output = new ArrayList<>(validator.requireThat(actual, "actual").
-				asCollection().getValue());
-			validator.requireThat(input, "Input").isEqualTo(output, "Output");
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asCollection_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Integer[] actual =
-				{
-					1, 2, 3, 4, 5
-				};
-			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
-			List<Integer> actualOutput = new ArrayList<>(validators.requireThat(actual, "actual").
-				asCollection().getValue());
-			validators.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
-		}
-	}
-
-	@Test
-	public void asList()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Integer[] actual =
-				{
-					1, 2, 3, 4, 5
-				};
-			List<Integer> input = new ArrayList<>(Arrays.asList(actual));
-			List<Integer> output = validators.requireThat(actual, "actual").asList().getValue();
-			validators.requireThat(input, "Input").isEqualTo(output, "Output");
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void asList_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Integer[] actual =
-				{
-					1, 2, 3, 4, 5
-				};
-			List<Integer> wrongOutput = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1));
-			List<Integer> actualOutput = validators.requireThat(actual, "actual").asList().getValue();
-			validators.requireThat(actualOutput, "actualOutput").isEqualTo(wrongOutput, "wrongOutput");
-		}
-	}
-
-	@Test
 	public void objectIsEqualToArray()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -1451,7 +1384,7 @@ public final class ArrayTest
 				"actual" must be equal to [2, 1, 3].
 				actual: [1, 2, 3]""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEqualTo(expected).elseGetMessages();
+				isEqualTo(expected).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
@@ -1493,7 +1426,7 @@ public final class ArrayTest
 				"1, 3]]" + EOS_MARKER + "\n" +
 				DIFF_LEGEND);
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEqualTo(expected).elseGetMessages();
+				isEqualTo(expected).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
@@ -1552,7 +1485,7 @@ public final class ArrayTest
 				DIFF_PADDING + "6]]" + EOS_MARKER + "\n" +
 				DIFF_LEGEND);
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEqualTo(expected).elseGetMessages();
+				isEqualTo(expected).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
@@ -1567,21 +1500,8 @@ public final class ArrayTest
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" may not contain 5 elements");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				length().isNotEqualTo(5).elseGetMessages();
+				length().isNotEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void multipleFailuresNullAsCollection()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String[] actual = null;
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				asCollection().elseGetMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
-				contains("\"actual\" may not be null");
 		}
 	}
 }

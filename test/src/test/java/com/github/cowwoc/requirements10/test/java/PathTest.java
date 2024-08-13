@@ -252,7 +252,7 @@ public final class PathTest
 				"\"actual\" must exist",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				exists().isEqualTo(5).elseGetMessages();
+				exists().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
@@ -268,7 +268,7 @@ public final class PathTest
 				"\"actual\" must reference an absolute path",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isAbsolute().isEqualTo(5).elseGetMessages();
+				isAbsolute().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
@@ -284,7 +284,7 @@ public final class PathTest
 				"\"actual\" must reference an existing directory",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isDirectory().isEqualTo(5).elseGetMessages();
+				isDirectory().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -299,7 +299,7 @@ public final class PathTest
 				"\"actual\" must reference an existing file",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isRegularFile().isEqualTo(5).elseGetMessages();
+				isRegularFile().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
@@ -315,7 +315,7 @@ public final class PathTest
 				"\"actual\" must reference a relative path",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isRelative().isEqualTo(5).elseGetMessages();
+				isRelative().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}

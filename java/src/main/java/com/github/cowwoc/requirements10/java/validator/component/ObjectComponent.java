@@ -2,7 +2,6 @@ package com.github.cowwoc.requirements10.java.validator.component;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements10.java.GenericType;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.validator.ObjectValidator;
 
 /**
@@ -135,7 +134,6 @@ public interface ObjectComponent<S, T>
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected}
 	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
 	 * format</a>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	S isEqualTo(Object expected);
 
@@ -156,7 +154,6 @@ public interface ObjectComponent<S, T>
 	 *                                  </ul>
 	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
 	 * format</a>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	S isEqualTo(Object expected, String name);
 
@@ -168,7 +165,6 @@ public interface ObjectComponent<S, T>
 	 * @throws IllegalArgumentException if the value is equal to {@code expected}
 	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
 	 * format</a>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	S isNotEqualTo(Object unwanted);
 
@@ -189,7 +185,6 @@ public interface ObjectComponent<S, T>
 	 *                                  </ul>
 	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
 	 * format</a>
-	 * @see ConfigurationUpdater#equalityMethod() The method used to compare objects
 	 */
 	S isNotEqualTo(Object unwanted, String name);
 }

@@ -409,7 +409,7 @@ public final class FloatingPointTest
 				"\"actual\" must be a well-defined number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNumber().isEqualTo(5).elseGetMessages();
+				isNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -424,7 +424,7 @@ public final class FloatingPointTest
 				"\"actual\" must be a well-defined number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNumber().isEqualTo(5).elseGetMessages();
+				isNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -439,7 +439,7 @@ public final class FloatingPointTest
 				"\"actual\" may not be a well-defined number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotNumber().isEqualTo(5).elseGetMessages();
+				isNotNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -454,7 +454,7 @@ public final class FloatingPointTest
 				"\"actual\" may not be a well-defined number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotNumber().isEqualTo(5).elseGetMessages();
+				isNotNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -469,7 +469,7 @@ public final class FloatingPointTest
 				"\"actual\" must be a finite number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isFinite().isEqualTo(5).elseGetMessages();
+				isFinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -484,7 +484,7 @@ public final class FloatingPointTest
 				"\"actual\" must be a finite number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isFinite().isEqualTo(5).elseGetMessages();
+				isFinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -499,7 +499,7 @@ public final class FloatingPointTest
 				"\"actual\" must be an infinite number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isInfinite().isEqualTo(5).elseGetMessages();
+				isInfinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -514,7 +514,7 @@ public final class FloatingPointTest
 				"\"actual\" must be an infinite number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isInfinite().isEqualTo(5).elseGetMessages();
+				isInfinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

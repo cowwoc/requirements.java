@@ -5,19 +5,22 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 ## Version 10.0 - ?
 
 * Breaking changes:
-    * Module and package names now contain a major version number
+    * The module and package names now contain the major version number of the library,
       per: https://www.reddit.com/r/java/comments/1dxbag2/comment/lc63gz1/
     * Parameter names may not contain whitespace (previously only leading or trailing whitespace was
       disallowed).
-    * Validators are no longer configurable. This functionality can be restored on demand.
+    * Validators are no longer configurable. I'm open to reversing this on demand.
+    * Reduced the library scope by removing all type-conversion methods, such as `asString()` or `asList()`.
+    * Replaced `assumeThat()` with `assert that()`.
+    * Removed `UrlValidator`.
     * Moved `com.github.cowwoc.requirements10.java.terminal.TerminalEncoding`
       to `com.github.cowwoc.requirements10.java.TerminalEncoding`.
     * Added `GenericType` to represent types with type parameters. `ClassValidator` was replaced
       by `GenericTypeValidator`.
-    * Made the decision to exclude type-conversion methods from the library scope. Methods removed from
-      `ObjectValidator` and `StringValidator`.
+    * Replaced `Validator.elseGetMessages()` with `Validator.getFailures().getMessages()`. 
+    * Replaced `Validator.elseGetException()` with `Validator.getFailures().getException()`. 
 * New features:
-    * Added `GenerictypeValidator.isPrimitive()`.
+    * Added `GenericTypeValidator.isPrimitive()`.
     * Added `validationFailed()` and `getValueOrDefault()` to all validators.
 * Improvements
     * If `checkIf()` cannot run validations due to a null value, the expected conditions are still reported.

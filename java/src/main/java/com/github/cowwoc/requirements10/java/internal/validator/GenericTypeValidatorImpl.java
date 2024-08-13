@@ -68,7 +68,7 @@ public final class GenericTypeValidatorImpl<T>
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
 				ClassMessages.isSupertypeOf(this, type).toString());
 		}
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
@@ -86,6 +86,6 @@ public final class GenericTypeValidatorImpl<T>
 			case UNDEFINED, FALSE -> addIllegalArgumentException(
 				ClassMessages.isSubtypeOf(this, type).toString());
 		}
-		return assumeExpectedType();
+		return self();
 	}
 }

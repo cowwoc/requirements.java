@@ -68,7 +68,7 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	public JsonNodeValidator<NumericNode> isNumber()
 	{
 		isType(JsonNode::isNumber, "a number");
-		return assumeExpectedType();
+		return self();
 	}
 
 	/**
@@ -92,69 +92,69 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	public JsonNodeValidator<NumericNode> isIntegralNumber()
 	{
 		isType(JsonNode::isIntegralNumber, "an integral number");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<NumericNode> isFloatingPointNumber()
 	{
 		isType(JsonNode::isFloatingPointNumber, "a float or double number");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<BigIntegerNode> isBigInteger()
 	{
 		isType(JsonNode::isBigInteger, "a whole number");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<DecimalNode> isBigDecimal()
 	{
 		isType(JsonNode::isBigDecimal, "a floating-point number");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<MissingNode> isMissing()
 	{
 		isType(JsonNode::isMissingNode, "a missing node");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<ValueNode> isValue()
 	{
 		isType(JsonNode::isValueNode, "a binary value, boolean, null, number or string");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<ContainerNode<?>> isContainer()
 	{
 		isType(JsonNode::isContainerNode, "an array or object");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<ArrayNode> isArray()
 	{
 		isType(JsonNode::isArray, "an array");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<ObjectNode> isObject()
 	{
 		isType(JsonNode::isObject, "an object");
-		return assumeExpectedType();
+		return self();
 	}
 
 	@Override
 	public JsonNodeValidator<TextNode> isString()
 	{
 		isType(JsonNode::isTextual, "a String");
-		return assumeExpectedType();
+		return self();
 	}
 }

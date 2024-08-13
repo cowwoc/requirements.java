@@ -1,6 +1,5 @@
 package com.github.cowwoc.requirements10.java.internal;
 
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -9,11 +8,6 @@ import java.util.Set;
 @FunctionalInterface
 public interface StringMapper
 {
-	/**
-	 * Uses {@link Objects#toString(Object)} to convert value to a string.
-	 */
-	StringMapper OBJECTS_TOSTRING = (value, seen) -> Objects.toString(value);
-
 	/**
 	 * Returns the String representation of a value.
 	 *

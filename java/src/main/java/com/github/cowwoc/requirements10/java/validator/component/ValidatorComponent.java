@@ -2,17 +2,11 @@ package com.github.cowwoc.requirements10.java.validator.component;
 
 import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
-import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.Validators;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.internal.StringMappers;
-import com.github.cowwoc.requirements10.java.validator.StringValidator;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Methods that all validators must contain.
@@ -37,13 +31,6 @@ public interface ValidatorComponent<S, T>
 	 */
 	@CheckReturnValue
 	T getValueOrDefault(T defaultValue);
-
-	/**
-	 * Returns the validator's configuration.
-	 *
-	 * @return the validator's configuration
-	 */
-	Configuration configuration();
 
 	/**
 	 * Returns the contextual information for upcoming validations carried out by this validator. The contextual
@@ -102,39 +89,6 @@ public interface ValidatorComponent<S, T>
 	S and(Consumer<? super S> validation);
 
 	/**
-	 * Merges validations from other validators into this validator. For example:
-	 * <p>
-	 * {@snippet :
-	 * requireThat(nameToFrequency, "nameToFrequency").
-	 *   and(requireIf(name, "name").isEqualTo("John")).
-	 *   and(requireIf(permission, "permission").isEqualTo("granted"));
-	 *}
-	 *
-	 * @param others the other validators whose failures are to be appended to this validator
-	 * @return this
-	 * @throws NullPointerException if {@code other} is null
-	 * @see #or(ValidatorComponent...)
-	 */
-	S and(ValidatorComponent<?, ?>... others);
-
-	/**
-	 * Merges validations from other validators into this validator.
-	 * <ul>
-	 *   <li>If all previous validations have passed, no action is taken.</li>
-	 *   <li>If any of the provided validators have passed all their validations, all previous failures are
-	 *   cleared from this validator.</li>
-	 *   <li>Otherwise, failures from the provided validators are appended to this validator,
-	 *  maintaining their iteration order.</li>
-	 * </ul>
-	 *
-	 * @param others the other validators whose failures are to be combined into this validator
-	 * @return this
-	 * @throws NullPointerException if {@code others} is null
-	 * @see #and(ValidatorComponent...)
-	 */
-	S or(ValidatorComponent<?, ?>... others);
-
-	/**
 	 * Checks if any validation has failed.
 	 *
 	 * @return {@code true} if at least one validation has failed
@@ -146,7 +100,7 @@ public interface ValidatorComponent<S, T>
 	 *
 	 * @return an unmodifiable list of failed validations
 	 */
-	List<ValidationFailure> elseGetFailures();
+	ValidationFailures elseGetFailures();
 
 	/**
 	 * Throws an exception if a validation failed; otherwise, returns {@code true}.
@@ -156,29 +110,8 @@ public interface ValidatorComponent<S, T>
 	 * @throws Error                     if a class invariant or method postcondition was violated
 	 * @throws MultipleFailuresException if more than one validation failed. This exception contains a list of
 	 *                                   the failures.
-	 * @see ConfigurationUpdater#exceptionTransformer(Function) Changing the type of exception that is thrown
 	 */
 	boolean elseThrow();
-
-	/**
-	 * Returns the validation failure messages.
-	 *
-	 * @return an empty list if the validation was successful
-	 */
-	List<String> elseGetMessages();
-
-	/**
-	 * Returns the exception for the validation failures, if any.
-	 *
-	 * <ol>
-	 *   <li>Returns {@code null} if no validation has failed.</li>
-	 *   <li>Returns {@code MultipleFailuresException} if there were multiple failures.</li>
-	 *   <li>Returns {@code Throwable} if there was one failure.</li>
-	 * </ol>
-	 *
-	 * @return the exception or {@code null} if no validation has failed
-	 */
-	Throwable elseGetException();
 
 	/**
 	 * Returns the contextual information associated with this validator.
@@ -186,14 +119,4 @@ public interface ValidatorComponent<S, T>
 	 * @return the contextual information associated with this validator
 	 */
 	String getContextAsString();
-
-	/**
-	 * Returns a validator for the String representation of the value.
-	 * <p>
-	 * <b>NOTE</b>: This method uses {@link String#valueOf(Object)} for conversion, not
-	 * {@link StringMappers#toString(Object)}.
-	 *
-	 * @return a validator for the String representation of the value
-	 */
-	StringValidator asString();
 }

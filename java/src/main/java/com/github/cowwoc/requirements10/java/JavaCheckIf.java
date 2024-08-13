@@ -2,9 +2,8 @@
  * Copyright (c) 2017 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.github.cowwoc.requirements10.java.internal;
+package com.github.cowwoc.requirements10.java;
 
-import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
@@ -43,13 +42,11 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveShortValidator;
 import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
-import com.github.cowwoc.requirements10.java.validator.UrlValidator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -1026,33 +1023,6 @@ public interface JavaCheckIf
 	 * @return a validator for the value
 	 */
 	UriValidator checkIf(URI value);
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
-	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
-	 * validation failures are thrown immediately.
-	 *
-	 * @param value the value
-	 * @param name  the name of the value
-	 * @return a validator for the value
-	 * @throws NullPointerException     if {@code name} is null
-	 * @throws IllegalArgumentException if {@code name} contains whitespace or is empty
-	 */
-	UrlValidator checkIf(URL value, String name);
-
-	/**
-	 * Validates the state of a {@code URL}.
-	 * <p>
-	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
-	 * These exceptions can be retrieved or thrown once the validation completes. Exceptions unrelated to
-	 * validation failures are thrown immediately.
-	 *
-	 * @param value the value
-	 * @return a validator for the value
-	 */
-	UrlValidator checkIf(URL value);
 
 	/**
 	 * Validates the state of a {@code Class}.

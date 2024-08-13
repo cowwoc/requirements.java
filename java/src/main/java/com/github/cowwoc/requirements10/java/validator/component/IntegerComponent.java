@@ -206,10 +206,14 @@ public interface IntegerComponent<S>
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code minimum} is greater than {@code maximum}</li>
-	 *                                    <li>{@code minimumIsInclusive} is {@code true} and the value is less than {@code minimum}</li>
-	 *                                    <li>{@code minimumIsInclusive} is {@code false} and the value is less than or equal to {@code minimum}</li>
-	 *                                    <li>{@code maximumIsInclusive} is {@code true} and the value is greater than {@code maximum}</li>
-	 *                                    <li>{@code maximumIsInclusive} is {@code false} and the value is greater than or equal to {@code maximum}</li>
+	 *                                    <li>{@code minimumIsInclusive} is {@code true} and the value is less
+	 *                                    than {@code minimum}</li>
+	 *                                    <li>{@code minimumIsInclusive} is {@code false} and the value is less
+	 *                                    than or equal to {@code minimum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code true} and the value is
+	 *                                    greater than {@code maximum}</li>
+	 *                                    <li>{@code maximumIsInclusive} is {@code false} and the value is
+	 *                                    greater than or equal to {@code maximum}</li>
 	 *                                  </ul>
 	 */
 	S isBetween(int minimum, boolean minimumIsInclusive, int maximum, boolean maximumIsInclusive);

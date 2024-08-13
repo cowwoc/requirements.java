@@ -643,7 +643,7 @@ public final class NumberTest
 				"\"actual\" must be negative",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNegative().isEqualTo(5).elseGetMessages();
+				isNegative().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -658,7 +658,7 @@ public final class NumberTest
 				"\"actual\" may not be negative",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotNegative().isEqualTo(5).elseGetMessages();
+				isNotNegative().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -673,7 +673,7 @@ public final class NumberTest
 				"\"actual\" must be zero",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isZero().isEqualTo(5).elseGetMessages();
+				isZero().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -688,7 +688,7 @@ public final class NumberTest
 				"\"actual\" may not be zero",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotZero().isEqualTo(5).elseGetMessages();
+				isNotZero().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -703,7 +703,7 @@ public final class NumberTest
 				"\"actual\" must be positive",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isPositive().isEqualTo(5).elseGetMessages();
+				isPositive().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -718,7 +718,7 @@ public final class NumberTest
 				"\"actual\" may not be positive",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotPositive().isEqualTo(5).elseGetMessages();
+				isNotPositive().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -733,7 +733,7 @@ public final class NumberTest
 				"\"actual\" must be a whole number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isWholeNumber().isEqualTo(5).elseGetMessages();
+				isWholeNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -748,7 +748,7 @@ public final class NumberTest
 				"\"actual\" may not be a whole number",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotWholeNumber().isEqualTo(5).elseGetMessages();
+				isNotWholeNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -763,7 +763,7 @@ public final class NumberTest
 				"\"actual\" must be a multiple of 5.0",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isMultipleOf(5.0).isEqualTo(5).elseGetMessages();
+				isMultipleOf(5.0).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -778,7 +778,7 @@ public final class NumberTest
 				"\"actual\" may not be a multiple of 5.0",
 				"\"actual\" must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isNotMultipleOf(5.0).isEqualTo(5).elseGetMessages();
+				isNotMultipleOf(5.0).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -794,7 +794,7 @@ public final class NumberTest
 				"actual" must be equal to 5.
 				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isEqualTo(expected).elseGetMessages();
+				isEqualTo(expected).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

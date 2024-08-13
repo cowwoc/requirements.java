@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements10.test.java.internal.util;
 
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
@@ -15,7 +16,6 @@ import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 import static com.github.cowwoc.requirements10.java.internal.util.Exceptions.LIBRARY_PACKAGE;
@@ -37,9 +37,10 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "nullActual").isNotNull().
-					and(validators.checkIf(5, "fiveActual").isLessThan(3)).
-					elseThrow();
+				ValidationFailures failures = validators.checkIf((Object) null, "nullActual").isNotNull().
+					elseGetFailures();
+				failures.addAll(validators.checkIf(5, "fiveActual").isLessThan(3).elseGetFailures());
+				failures.throwOnFailure();
 			}
 			catch (MultipleFailuresException e)
 			{
@@ -62,9 +63,10 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "nullActual").isNotNull().
-					and(validators.checkIf(5, "fiveActual").isLessThan(3)).
-					elseThrow();
+				ValidationFailures failures = validators.checkIf((Object) null, "nullActual").isNotNull().
+					elseGetFailures();
+				failures.addAll(validators.checkIf(5, "fiveActual").isLessThan(3).elseGetFailures());
+				failures.throwOnFailure();
 			}
 			catch (MultipleFailuresException e)
 			{
@@ -142,9 +144,10 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "nullActual").isNotNull().
-					and(validators.checkIf(5, "fiveActual").isLessThan(3)).
-					elseThrow();
+				ValidationFailures failures = validators.checkIf((Object) null, "nullActual").isNotNull().
+					elseGetFailures();
+				failures.addAll(validators.checkIf(5, "fiveActual").isLessThan(3).elseGetFailures());
+				failures.throwOnFailure();
 			}
 			catch (MultipleFailuresException e)
 			{
@@ -168,8 +171,10 @@ public final class ExceptionsTest
 						break;
 					}
 				}
-				validators.checkIf(isNotNullFound, "isNotNullFound").isTrue().and(
-					validators.checkIf(isLessThanFound, "isLessThan").isTrue()).elseThrow();
+				ValidationFailures failures = validators.checkIf(isNotNullFound, "isNotNullFound").isTrue().
+					elseGetFailures();
+				failures.addAll(validators.checkIf(isLessThanFound, "isLessThan").isTrue().elseGetFailures());
+				failures.throwOnFailure();
 			}
 		}
 	}
@@ -188,9 +193,10 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "actual").isNotNull().
-					and(validators.checkIf(5, "actual").isLessThan(3)).
-					elseThrow();
+				ValidationFailures failures = validators.checkIf((Object) null, "actual").isNotNull().
+					elseGetFailures();
+				failures.addAll(validators.checkIf(5, "actual").isLessThan(3).elseGetFailures());
+				failures.throwOnFailure();
 			}
 			catch (MultipleFailuresException e)
 			{
@@ -228,9 +234,10 @@ public final class ExceptionsTest
 
 			try
 			{
-				validators.checkIf((Object) null, "actual").isNotNull().
-					and(validators.checkIf(5, "actual").isLessThan(3)).
-					elseThrow();
+				ValidationFailures failures = validators.checkIf((Object) null, "actual").isNotNull().
+					elseGetFailures();
+				failures.addAll(validators.checkIf(5, "actual").isLessThan(3).elseGetFailures());
+				failures.throwOnFailure();
 			}
 			catch (MultipleFailuresException e)
 			{
@@ -265,9 +272,9 @@ public final class ExceptionsTest
 				configurationUpdater.recordStacktrace(false);
 			}
 
-			List<String> messages = validators.checkIf((Object) null, "actual").isNotNull().
-				and(validators.checkIf(5, "actual").isLessThan(3)).
-				elseGetMessages();
+			ValidationFailures failures = validators.checkIf((Object) null, "actual").isNotNull().elseGetFailures();
+			failures.addAll(validators.checkIf(5, "actual").isLessThan(3).elseGetFailures());
+			validators.requireThat(failures.getMessages(), "messages").size().isEqualTo(2);
 		}
 	}
 }

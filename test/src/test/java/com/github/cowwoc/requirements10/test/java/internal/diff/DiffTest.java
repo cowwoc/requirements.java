@@ -57,7 +57,7 @@ public final class DiffTest
 				configurationUpdater.allowDiff(false);
 			}
 			List<String> actualMessages = validators.checkIf(actual, "actual").isEqualTo(expected).
-				elseGetMessages();
+				elseGetFailures().getMessages();
 			assert actualMessages.size() == expectedMessages.size() : "**************** actual.size:\n" +
 				actualMessages.size() + "\n**************** expected.size:\n" + expectedMessages.size();
 			for (int i = 0; i < actualMessages.size(); ++i)
@@ -500,7 +500,7 @@ public final class DiffTest
 	{
 		String actual = """
 			one
-
+			
 			three
 			""";
 		String expected = """
