@@ -799,8 +799,7 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be zero",
-				"\"actual\" may not be equal to 1");
+				"\"actual\" must be zero");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isZero().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -814,8 +813,7 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be zero",
-				"\"actual\" may not be equal to 1");
+				"\"actual\" may not be zero");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotZero().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -857,8 +855,7 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be a whole number",
-				"\"actual\" may not be equal to 1");
+				"\"actual\" must be a whole number");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -872,8 +869,7 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be a whole number",
-				"\"actual\" may not be equal to 1");
+				"\"actual\" may not be a whole number");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -887,8 +883,7 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be a multiple of 10",
-				"\"actual\" may not be equal to 1");
+				"\"actual\" must be a multiple of 10");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isMultipleOf(BigDecimal.TEN).isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -902,9 +897,8 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" must be a multiple of "other".
-					other: 10""",
-				"\"actual\" may not be equal to 1");
+				"actual" must be a multiple of "other".
+				other: 10""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isMultipleOf(BigDecimal.TEN, "other").isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -918,8 +912,7 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be a multiple of 1",
-				"\"actual\" may not be equal to 1");
+				"\"actual\" may not be a multiple of 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotMultipleOf(BigDecimal.ONE).isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -933,9 +926,8 @@ public final class BigDecimalTest
 		{
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" may not be a multiple of "other".
-					other: 1""",
-				"\"actual\" may not be equal to 1");
+				"actual" may not be a multiple of "other".
+				other: 1""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotMultipleOf(BigDecimal.ONE, "other").isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

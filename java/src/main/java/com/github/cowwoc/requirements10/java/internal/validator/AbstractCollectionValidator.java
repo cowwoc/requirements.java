@@ -9,11 +9,8 @@ import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.CollectionAndDifference;
-import com.github.cowwoc.requirements10.java.internal.util.CollectionAndDuplicates;
 import com.github.cowwoc.requirements10.java.internal.util.Difference;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.component.CollectionComponent;
@@ -21,11 +18,10 @@ import com.github.cowwoc.requirements10.java.validator.component.CollectionCompo
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Validates the state of a collection.
@@ -44,7 +40,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param pluralizer    the type of items in the collection
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
@@ -54,7 +50,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	 *                                  or {@code failures} are null
 	 */
 	public AbstractCollectionValidator(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Pluralizer pluralizer, Map<String, Object> context,
+		ValidationTarget<T> value, Pluralizer pluralizer, Map<String, Optional<Object>> context,
 		List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
@@ -67,10 +63,10 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(Collection::isEmpty))
+		if (value.validationFailed(v -> v != null && v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isEmptyFailed(this).toString());
 		}
 		return self();
 	}
@@ -80,10 +76,10 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.isEmpty()))
+		if (value.validationFailed(v -> v != null && !v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
 		return self();
 	}
@@ -91,32 +87,29 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S contains(E expected)
 	{
-		return containsImpl(expected, MaybeUndefined.undefined());
+		return containsImpl(expected, null);
 	}
 
 	@Override
 	public S contains(E expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		return containsImpl(expected, MaybeUndefined.defined(name));
+		return containsImpl(expected, name);
 	}
 
-	private S containsImpl(E expected, MaybeUndefined<String> name)
+	private S containsImpl(E expected, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.contains(expected)))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsValue(this, name, expected).toString());
-		}
+		if (value.validationFailed(v -> v != null && v.contains(expected)))
+			addIllegalArgumentException(CollectionMessages.containsFailed(this, name, expected).toString());
 		return self();
 	}
 
 	@Override
 	public S doesNotContain(E unwanted)
 	{
-		return doesNotContainImpl(unwanted, MaybeUndefined.undefined());
+		return doesNotContainImpl(unwanted, null);
 	}
 
 	@Override
@@ -124,17 +117,17 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		requireThatNameIsUnique(name).
 			requireThat(unwanted, name).isNotNull();
-		return doesNotContainImpl(unwanted, MaybeUndefined.defined(name));
+		return doesNotContainImpl(unwanted, name);
 	}
 
-	private S doesNotContainImpl(E unwanted, MaybeUndefined<String> name)
+	private S doesNotContainImpl(E unwanted, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.contains(unwanted)))
+		if (value.validationFailed(v -> v != null && !v.contains(unwanted)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainValue(this, name, unwanted).toString());
+			addIllegalArgumentException(
+				CollectionMessages.doesNotContainFailed(this, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -142,34 +135,26 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S containsExactly(Collection<E> expected)
 	{
-		return containsExactlyImpl(expected, MaybeUndefined.undefined());
+		return containsExactlyImpl(expected, null);
 	}
 
 	@Override
 	public S containsExactly(Collection<E> expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		return containsExactlyImpl(expected, MaybeUndefined.defined(name));
+		return containsExactlyImpl(expected, name);
 	}
 
-	private S containsExactlyImpl(Collection<E> expected, MaybeUndefined<String> name)
+	private S containsExactlyImpl(Collection<E> expected, String name)
 	{
 		if (value.isNull())
 			onNull();
-		AtomicReference<MaybeUndefined<CollectionAndDifference<T, E>>> valueAndDifference = new AtomicReference<>(
-			MaybeUndefined.undefined());
-		switch (value.test(value ->
+		Difference<E> difference = value.nullToInvalid().
+			map(v -> Difference.actualVsOther(v, expected)).or(null);
+		if (difference == null || difference.areDifferent())
 		{
-			Difference<E> difference = Difference.actualVsOther(value, expected);
-			if (difference.areTheSame())
-				return true;
-			valueAndDifference.setPlain(MaybeUndefined.defined(new CollectionAndDifference<>(value, difference)));
-			return false;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsExactly(this, valueAndDifference.getPlain(), name, expected, pluralizer).
-					toString());
+			addIllegalArgumentException(
+				CollectionMessages.containsExactlyFailed(this, difference, name, expected, pluralizer).toString());
 		}
 		return self();
 	}
@@ -193,7 +178,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	public S doesNotContainExactly(Collection<E> unwanted)
 	{
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
-		return doesNotContainExactlyImpl(unwanted, MaybeUndefined.undefined());
+		return doesNotContainExactlyImpl(unwanted, null);
 	}
 
 	@Override
@@ -201,17 +186,19 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		requireThatNameIsUnique(name).
 			requireThat(unwanted, name).isNotNull();
-		return doesNotContainExactlyImpl(unwanted, MaybeUndefined.defined(name));
+		return doesNotContainExactlyImpl(unwanted, name);
 	}
 
-	private S doesNotContainExactlyImpl(Collection<E> unwanted, MaybeUndefined<String> name)
+	private S doesNotContainExactlyImpl(Collection<E> unwanted, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> Difference.actualVsOther(value, unwanted).areDifferent()))
+		Difference<E> difference = value.nullToInvalid().
+			map(v -> Difference.actualVsOther(v, unwanted)).or(null);
+		if (difference == null || difference.areTheSame())
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainExactly(this, name, unwanted, pluralizer).toString());
+			addIllegalArgumentException(
+				CollectionMessages.doesNotContainExactlyFailed(this, name, unwanted, pluralizer).toString());
 		}
 		return self();
 	}
@@ -235,7 +222,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	public S containsAny(Collection<E> expected)
 	{
 		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAnyImpl(expected, MaybeUndefined.undefined());
+		return containsAnyImpl(expected, null);
 	}
 
 	@Override
@@ -243,17 +230,18 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		requireThatNameIsUnique(name).
 			requireThat(expected, name).isNotNull();
-		return containsAnyImpl(expected, MaybeUndefined.defined(name));
+		return containsAnyImpl(expected, name);
 	}
 
-	private S containsAnyImpl(Collection<E> expected, MaybeUndefined<String> name)
+	private S containsAnyImpl(Collection<E> expected, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !Collections.disjoint(value, expected)))
+		T validOrNull = value.or(null);
+		if (validOrNull == null || Collections.disjoint(validOrNull, expected))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsAny(this, value, name, expected, pluralizer).toString());
+			addIllegalArgumentException(
+				CollectionMessages.containsAnyFailed(this, name, expected, pluralizer).toString());
 		}
 		return self();
 	}
@@ -277,7 +265,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	public S doesNotContainAny(Collection<E> unwanted)
 	{
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
-		return doesNotContainAnyImpl(unwanted, MaybeUndefined.undefined());
+		return doesNotContainAnyImpl(unwanted, null);
 	}
 
 	@Override
@@ -285,28 +273,20 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		requireThatNameIsUnique(name).
 			requireThat(unwanted, name).isNotNull();
-		return doesNotContainAnyImpl(unwanted, MaybeUndefined.defined(name));
+		return doesNotContainAnyImpl(unwanted, name);
 	}
 
-	private S doesNotContainAnyImpl(Collection<E> unwanted, MaybeUndefined<String> name)
+	private S doesNotContainAnyImpl(Collection<E> unwanted, String name)
 	{
 		if (value.isNull())
 			onNull();
-		AtomicReference<MaybeUndefined<CollectionAndDifference<T, E>>> valueAndDifference = new AtomicReference<>(
-			MaybeUndefined.undefined());
-		switch (value.test(value ->
+		Difference<E> difference = value.nullToInvalid().
+			map(v -> Difference.actualVsOther(v, unwanted)).or(null);
+		if (difference == null || !difference.common().isEmpty())
 		{
-			Difference<E> difference = Difference.actualVsOther(value, unwanted);
-			if (difference.common().isEmpty())
-				return true;
-			valueAndDifference.setPlain(MaybeUndefined.defined(
-				new CollectionAndDifference<>(value, difference)));
-			return false;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainAny(this, valueAndDifference.getPlain(), name, unwanted,
-					pluralizer).toString());
+			addIllegalArgumentException(
+				CollectionMessages.doesNotContainAnyFailed(this, difference, name, unwanted, pluralizer).
+					toString());
 		}
 		return self();
 	}
@@ -330,7 +310,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	public S containsAll(Collection<E> expected)
 	{
 		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAllImpl(expected, MaybeUndefined.undefined());
+		return containsAllImpl(expected, null);
 	}
 
 	@Override
@@ -338,27 +318,19 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		requireThatNameIsUnique(name).
 			requireThat(expected, name).isNotNull();
-		return containsAllImpl(expected, MaybeUndefined.defined(name));
+		return containsAllImpl(expected, name);
 	}
 
-	private S containsAllImpl(Collection<E> expected, MaybeUndefined<String> name)
+	private S containsAllImpl(Collection<E> expected, String name)
 	{
 		if (value.isNull())
 			onNull();
-		AtomicReference<MaybeUndefined<CollectionAndDifference<T, E>>> valueAndDifference = new AtomicReference<>(
-			MaybeUndefined.undefined());
-		switch (value.test(value ->
+		Difference<E> difference = value.nullToInvalid().
+			map(v -> Difference.actualVsOther(v, expected)).or(null);
+		if (difference == null || !difference.onlyInOther().isEmpty())
 		{
-			Difference<E> difference = Difference.actualVsOther(value, expected);
-			if (difference.onlyInOther().isEmpty())
-				return true;
-			valueAndDifference.setPlain(MaybeUndefined.defined(
-				new CollectionAndDifference<>(value, difference)));
-			return false;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsAll(this, valueAndDifference.getPlain(), name, expected, pluralizer).
+			addIllegalArgumentException(
+				CollectionMessages.containsAllFailed(this, difference, name, expected, pluralizer).
 					toString());
 		}
 		return self();
@@ -368,7 +340,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	public S containsAll(E[] expected)
 	{
 		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		return containsAll(Arrays.asList(expected), "expected");
+		return containsAll(Arrays.asList(expected));
 	}
 
 	@Override
@@ -383,7 +355,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	public S doesNotContainAll(Collection<E> unwanted)
 	{
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
-		return doesNotContainAllImpl(unwanted, MaybeUndefined.undefined());
+		return doesNotContainAllImpl(unwanted, null);
 	}
 
 	@Override
@@ -391,17 +363,17 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		requireThatNameIsUnique(name).
 			requireThat(unwanted, name).isNotNull();
-		return doesNotContainAllImpl(unwanted, MaybeUndefined.defined(name));
+		return doesNotContainAllImpl(unwanted, name);
 	}
 
-	private S doesNotContainAllImpl(Collection<E> unwanted, MaybeUndefined<String> name)
+	private S doesNotContainAllImpl(Collection<E> unwanted, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.containsAll(unwanted)))
+		if (value.validationFailed(v -> v != null && !v.containsAll(unwanted)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainAll(this, value, name, unwanted, pluralizer).toString());
+			addIllegalArgumentException(
+				CollectionMessages.doesNotContainAllFailed(this, name, unwanted, pluralizer).toString());
 		}
 		return self();
 	}
@@ -426,28 +398,12 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		if (value.isNull())
 			onNull();
-		AtomicReference<MaybeUndefined<CollectionAndDuplicates<T, E>>> valueAndDuplicates = new AtomicReference<>(
-			MaybeUndefined.undefined());
-		switch (value.test(value ->
+		ValidationTarget<Set<E>> duplicates = value.nullToInvalid().
+			map(com.github.cowwoc.requirements10.java.internal.util.Collections::getDuplicates);
+		if (duplicates.validationFailed(Set::isEmpty))
 		{
-			if (value instanceof Set<?>)
-				return true;
-			int size = value.size();
-			Set<E> unique = new HashSet<>(size);
-			Set<E> duplicates = new HashSet<>(size);
-			for (E element : value)
-			{
-				if (!unique.add(element))
-					duplicates.add(element);
-			}
-			if (duplicates.isEmpty())
-				return true;
-			valueAndDuplicates.setPlain(MaybeUndefined.defined(new CollectionAndDuplicates<>(value, duplicates)));
-			return false;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.doesNotContainDuplicates(this, valueAndDuplicates.getPlain(), Pluralizer.ELEMENT).
+			addIllegalArgumentException(
+				CollectionMessages.doesNotContainDuplicatesFailed(this, duplicates.or(null), pluralizer).
 					toString());
 		}
 		return self();
@@ -458,19 +414,30 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value ->
+
+		if (containsSameNullityValidationFailed())
 		{
-			int numberOfNulls = 0;
-			for (E element : value)
-				if (element == null)
-					++numberOfNulls;
-			return (numberOfNulls == value.size());
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsSameNullity(this).toString());
+			addIllegalArgumentException(
+				CollectionMessages.containsSameNullityFailed(this).toString());
 		}
 		return self();
+	}
+
+	/**
+	 * @return {@code true} if the elements in the value are all {@code null} or all not {@code null}, or
+	 * {@code false} if the value is undefined, {@code null}, or contains a mix of {@code null} and not
+	 * {@code null} elements
+	 */
+	private boolean containsSameNullityValidationFailed()
+	{
+		T invalidToNull = getValueOrDefault(null);
+		if (invalidToNull == null)
+			return true;
+		int numberOfNulls = 0;
+		for (E element : invalidToNull)
+			if (element == null)
+				++numberOfNulls;
+		return numberOfNulls != invalidToNull.size();
 	}
 
 	@Override
@@ -478,8 +445,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	{
 		if (value.isNull())
 			onNull();
-		return new ObjectSizeValidatorImpl(scope, configuration, name,
-			value.nullToUndefined().mapDefined(value -> new ObjectAndSize(value, value.size())),
-			name + ".size()", Pluralizer.ELEMENT, context, failures);
+		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
+			value.nullToInvalid().map(Collection::size), pluralizer, context, failures);
 	}
 }

@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.Validators;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -26,8 +27,9 @@ public interface ValidatorComponent<S, T>
 	/**
 	 * Returns the value that is being validated.
 	 *
-	 * @param defaultValue the fallback value in case of a validation failure
-	 * @return the value, or {@code defaultValue} if a previous validation failed
+	 * @param defaultValue the fallback value to use if the value is invalid
+	 * @return the value, or {@code defaultValue} if the value is invalid (e.g. due to dereferencing a
+	 * property of a {@code null} object)
 	 */
 	@CheckReturnValue
 	T getValueOrDefault(T defaultValue);
@@ -41,11 +43,14 @@ public interface ValidatorComponent<S, T>
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
+	 * <p>
+	 * Note that values are wrapped in an {@code Optional} because modern maps do not support {@code null}
+	 * values.
 	 *
 	 * @return an unmodifiable map from each entry's name to its value
 	 * @see Validators#getContext()
 	 */
-	Map<String, Object> getContext();
+	Map<String, Optional<Object>> getContext();
 
 	/**
 	 * Sets the contextual information for upcoming validations.
@@ -60,7 +65,7 @@ public interface ValidatorComponent<S, T>
 	 * @param value the value of the entry
 	 * @param name  the name of an entry
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if {@code name}:
 	 *                                  <ul>
 	 *                                    <li>contains whitespace</li>
@@ -84,7 +89,7 @@ public interface ValidatorComponent<S, T>
 	 *
 	 * @param validation the nested validation
 	 * @return this
-	 * @throws NullPointerException if {@code validation} is null
+	 * @throws NullPointerException if {@code validation} is {@code null}
 	 */
 	S and(Consumer<? super S> validation);
 

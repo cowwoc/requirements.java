@@ -9,8 +9,7 @@ import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractObjectValidator;
 import com.github.cowwoc.requirements10.java.internal.validator.CollectionValidatorImpl;
@@ -23,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -38,7 +38,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -47,7 +47,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	 *                                  or {@code failures} are null
 	 */
 	public MultimapValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<T> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -57,10 +57,10 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(Multimap::isEmpty))
+		if (value.validationFailed(v -> v != null && v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isEmptyFailed(this).toString());
 		}
 		return self();
 	}
@@ -70,10 +70,10 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.isEmpty()))
+		if (value.validationFailed(v -> v != null && !v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
 		return self();
 	}
@@ -83,10 +83,10 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (value.isNull())
 			onNull();
+		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Set<K>, K> newValidator = new CollectionValidatorImpl<>(scope, configuration,
-			name + ".keySet()", value.nullToUndefined().mapDefined(Multimap::keySet), Pluralizer.KEY, context,
-			failures);
-		value.ifDefined(value -> newValidator.withContext(value, name));
+			name + ".keySet()", nullToInvalid.map(Multimap::keySet), Pluralizer.KEY, context, failures);
+		nullToInvalid.ifValid(v -> newValidator.withContext(v, name));
 		return newValidator;
 	}
 
@@ -95,10 +95,11 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (value.isNull())
 			onNull();
+		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Collection<V>, V> newValidator = new CollectionValidatorImpl<>(scope,
-			configuration, name + ".values()", value.nullToUndefined().mapDefined(Multimap::values),
-			Pluralizer.VALUE, context, failures);
-		value.ifDefined(value -> newValidator.withContext(value, name));
+			configuration, name + ".values()", nullToInvalid.map(Multimap::values), Pluralizer.VALUE,
+			context, failures);
+		nullToInvalid.ifValid(v -> newValidator.withContext(v, name));
 		return newValidator;
 	}
 
@@ -107,10 +108,11 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (value.isNull())
 			onNull();
+		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Collection<Entry<K, V>>, Entry<K, V>> newValidator =
 			new CollectionValidatorImpl<>(scope, configuration, name + ".entrySet()",
-				value.nullToUndefined().mapDefined(Multimap::entries), Pluralizer.ENTRY, context, failures);
-		value.ifDefined(value -> newValidator.withContext(value, name));
+				nullToInvalid.map(Multimap::entries), Pluralizer.ENTRY, context, failures);
+		nullToInvalid.ifValid(v -> newValidator.withContext(v, name));
 		return newValidator;
 	}
 
@@ -119,9 +121,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	{
 		if (value.isNull())
 			onNull();
-		return new ObjectSizeValidatorImpl(scope, configuration, name,
-			value.nullToUndefined().mapDefined(value -> new ObjectAndSize(value, value.size())),
-			name + ".size()",
-			Pluralizer.ELEMENT, context, failures);
+		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
+			value.nullToInvalid().map(Multimap::size), Pluralizer.ELEMENT, context, failures);
 	}
 }

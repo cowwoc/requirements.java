@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements10.test.java.internal.diff;
 
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
+import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
 import com.github.cowwoc.requirements10.java.internal.message.diff.TextOnly;
 import com.github.cowwoc.requirements10.java.internal.message.diff.Writer16Colors;
 import com.github.cowwoc.requirements10.java.internal.message.diff.Writer16MillionColors;
@@ -108,7 +108,7 @@ public final class DiffTest
 	private String EXTEND_LENGTH(String text)
 	{
 		StringBuilder padded = new StringBuilder(text);
-		while (padded.length() < ObjectMessages.MINIMUM_LENGTH_FOR_DIFF)
+		while (padded.length() < ValidatorMessages.MINIMUM_LENGTH_FOR_DIFF)
 			padded.append(text);
 		return padded.toString();
 	}
@@ -220,18 +220,17 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage =
-				"actual@0  : \"" + EXTEND_LENGTH("prefix") + NEWLINE_MARKER + "\n" +
-					"diff      : " + DIFF_EQUAL.repeat(("\"" + EXTEND_LENGTH("prefix")).length()) +
-					DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"expected@0: \"" + EXTEND_LENGTH("prefix") + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"\n" +
-					"actual@1  : " + NEWLINE_MARKER + "\n" +
-					"diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"expected  : " + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"\n" +
-					"actual@2  : value\"" + EOS_MARKER + "\n" +
-					"expected@0: value\"" + EOS_MARKER;
+			String expectedMessage = "actual@0  : \"" + EXTEND_LENGTH("prefix") + NEWLINE_MARKER + "\n" +
+				"diff      : " + DIFF_EQUAL.repeat(("\"" + EXTEND_LENGTH("prefix")).length()) +
+				DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"expected@0: \"" + EXTEND_LENGTH("prefix") + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"\n" +
+				"actual@1  : " + NEWLINE_MARKER + "\n" +
+				"diff      : " + DIFF_DELETE.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"expected  : " + DIFF_PADDING.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"\n" +
+				"actual@2  : value\"" + EOS_MARKER + "\n" +
+				"expected@0: value\"" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
 				"\n**************** Expected:\n" + expectedMessage;
 		}
@@ -288,18 +287,17 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage =
-				"actual  : \"The dog" +
-					DIFF_PADDING.repeat("fox".length()) + " is br" +
-					DIFF_PADDING.repeat("d".length()) + "own\"" +
-					EOS_MARKER + "\n" +
-					"diff    : " + DIFF_EQUAL.repeat("\"The ".length()) +
-					DIFF_DELETE.repeat("dog".length()) +
-					DIFF_INSERT.repeat("fox".length()) + DIFF_EQUAL.repeat(" is ".length()) +
-					DIFF_DELETE.repeat("br".length()) + DIFF_INSERT.repeat("d".length()) +
-					DIFF_EQUAL.repeat("own\"".length() + EOS_MARKER.length()) + "\n" +
-					"expected: \"The " + DIFF_PADDING.repeat("dog".length()) + "fox is " +
-					DIFF_PADDING.repeat("br".length()) + "down\"" + EOS_MARKER;
+			String expectedMessage = "actual  : \"The dog" +
+				DIFF_PADDING.repeat("fox".length()) + " is br" +
+				DIFF_PADDING.repeat("d".length()) + "own\"" +
+				EOS_MARKER + "\n" +
+				"diff    : " + DIFF_EQUAL.repeat("\"The ".length()) +
+				DIFF_DELETE.repeat("dog".length()) +
+				DIFF_INSERT.repeat("fox".length()) + DIFF_EQUAL.repeat(" is ".length()) +
+				DIFF_DELETE.repeat("br".length()) + DIFF_INSERT.repeat("d".length()) +
+				DIFF_EQUAL.repeat(("own\"" + EOS_MARKER).length()) + "\n" +
+				"expected: \"The " + DIFF_PADDING.repeat("dog".length()) + "fox is " +
+				DIFF_PADDING.repeat("br".length()) + "down\"" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
 				"\n**************** Expected:\n" + expectedMessage;
 		}
@@ -691,17 +689,16 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage =
-				"actual  : \"different" + DIFF_PADDING.repeat("\"maybe".length()) +
-					"-same-different\"" + DIFF_PADDING.repeat("maybe\"".length()) + EOS_MARKER + "\n" +
-					"diff    : " + DIFF_DELETE.repeat("\"different".length()) +
-					DIFF_INSERT.repeat("\"maybe".length()) +
-					DIFF_EQUAL.repeat("-same-".length()) +
-					DIFF_DELETE.repeat("different\"".length()) +
-					DIFF_INSERT.repeat("maybe\"".length()) +
-					DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"expected: " + DIFF_PADDING.repeat("\"different".length()) + "\"maybe-same-" +
-					DIFF_PADDING.repeat("different\"".length()) + "maybe\"" + EOS_MARKER;
+			String expectedMessage = "actual  : \"different" + DIFF_PADDING.repeat("\"maybe".length()) +
+				"-same-different\"" + DIFF_PADDING.repeat("maybe\"".length()) + EOS_MARKER + "\n" +
+				"diff    : " + DIFF_DELETE.repeat("\"different".length()) +
+				DIFF_INSERT.repeat("\"maybe".length()) +
+				DIFF_EQUAL.repeat("-same-".length()) +
+				DIFF_DELETE.repeat("different\"".length()) +
+				DIFF_INSERT.repeat("maybe\"".length()) +
+				DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"expected: " + DIFF_PADDING.repeat("\"different".length()) + "\"maybe-same-" +
+				DIFF_PADDING.repeat("different\"".length()) + "maybe\"" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
 				"\n**************** Expected:\n" + expectedMessage;
 		}
@@ -725,7 +722,7 @@ public final class DiffTest
 	 * instead of:
 	 *
 	 * <pre><code>
-	 * Actual    : same\n
+	 * actual    : same\n
 	 * expected  : same\n
 	 * </code></pre>
 	 */
@@ -742,23 +739,23 @@ public final class DiffTest
 		catch (IllegalArgumentException e)
 		{
 			String actualMessage = e.getMessage();
-			String expectedMessage =
-				"actual@0  : \"actual" + DIFF_PADDING.repeat("\"expected".length()) + NEWLINE_MARKER + "\n" +
-					"diff      : " + DIFF_DELETE.repeat("\"actual".length()) +
-					DIFF_INSERT.repeat("\"expected".length()) + DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"expected@0: " + DIFF_PADDING.repeat("\"actual".length()) + "\"expected" + NEWLINE_MARKER + "\n" +
-					"\n" +
-					"[...]\n" +
-					"\n" +
-					"actual@2  : actual" + DIFF_PADDING.repeat("expected".length()) + DIFF_EQUAL + "actual\"" +
-					DIFF_PADDING.repeat(("expected\"").length()) +
-					EOS_MARKER + "\n" +
-					"diff      : " + DIFF_DELETE.repeat("actual".length()) + DIFF_INSERT.repeat("expected".length()) +
-					DIFF_EQUAL + DIFF_DELETE.repeat(("actual\"").length()) +
-					DIFF_INSERT.repeat("expected\"".length()) +
-					DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
-					"expected@2: " + DIFF_PADDING.repeat("actual".length()) + "expected" + DIFF_PADDING +
-					DIFF_PADDING.repeat(("actual\"").length()) + "expected\"" + EOS_MARKER;
+			String expectedMessage = "actual@0  : \"actual" + DIFF_PADDING.repeat("\"expected".length()) +
+				NEWLINE_MARKER + "\n" +
+				"diff      : " + DIFF_DELETE.repeat("\"actual".length()) +
+				DIFF_INSERT.repeat("\"expected".length()) + DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"expected@0: " + DIFF_PADDING.repeat("\"actual".length()) + "\"expected" + NEWLINE_MARKER + "\n" +
+				"\n" +
+				"[...]\n" +
+				"\n" +
+				"actual@2  : actual" + DIFF_PADDING.repeat("expected".length()) + DIFF_EQUAL + "actual\"" +
+				DIFF_PADDING.repeat(("expected\"").length()) +
+				EOS_MARKER + "\n" +
+				"diff      : " + DIFF_DELETE.repeat("actual".length()) + DIFF_INSERT.repeat("expected".length()) +
+				DIFF_EQUAL + DIFF_DELETE.repeat(("actual\"").length()) +
+				DIFF_INSERT.repeat("expected\"".length()) +
+				DIFF_EQUAL.repeat(NEWLINE_MARKER.length()) + "\n" +
+				"expected@2: " + DIFF_PADDING.repeat("actual".length()) + "expected" +
+				DIFF_PADDING.repeat((" actual\"").length()) + "expected\"" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
 				"\n**************** Expected:\n" + expectedMessage;
 		}

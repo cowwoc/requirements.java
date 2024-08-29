@@ -10,14 +10,16 @@ import com.github.cowwoc.requirements10.java.internal.message.section.ContextSec
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageSection;
 import com.github.cowwoc.requirements10.java.internal.message.section.StringSection;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.SequencedMap;
-import java.util.function.Function;
+
+import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.valid;
+import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.invalid;
 
 /**
  * Generates the contextual information to add to the exception message.
@@ -34,7 +36,7 @@ public final class ContextGenerator
 	/**
 	 * The actual value.
 	 */
-	private MaybeUndefined<Object> actualValue = MaybeUndefined.undefined();
+	private ValidationTarget<Object> actualValue = invalid();
 	/**
 	 * The name of the expected value.
 	 */
@@ -42,7 +44,7 @@ public final class ContextGenerator
 	/**
 	 * The expected value.
 	 */
-	private MaybeUndefined<Object> expectedValue = MaybeUndefined.undefined();
+	private ValidationTarget<Object> expectedValue = invalid();
 	/**
 	 * {@code true} if exception messages may include a diff that compares actual and expected values.
 	 */
@@ -81,7 +83,7 @@ public final class ContextGenerator
 		this.scope = scope;
 		this.configuration = configuration;
 		this.diffGenerator = new DiffGenerator(scope.getGlobalConfiguration().terminalEncoding());
-		this.allowDiff = this.configuration.allowDiff();
+		this.allowDiff = configuration.allowDiff();
 		this.actualName = actualName;
 		this.expectedName = expectedName;
 	}
@@ -94,7 +96,7 @@ public final class ContextGenerator
 	 */
 	public ContextGenerator actualValue(Object value)
 	{
-		actualValue = MaybeUndefined.defined(value);
+		actualValue = valid(value);
 		return this;
 	}
 
@@ -106,7 +108,7 @@ public final class ContextGenerator
 	 */
 	public ContextGenerator expectedValue(Object value)
 	{
-		expectedValue = MaybeUndefined.defined(value);
+		expectedValue = valid(value);
 		return this;
 	}
 
@@ -128,11 +130,11 @@ public final class ContextGenerator
 	 */
 	public List<MessageSection> build()
 	{
-		assert actualValue.isDefined() || expectedValue.isDefined() :
+		assert actualValue.isValid() || expectedValue.isValid() :
 			"actualValue and expectedValue were both undefined";
 
-		if (actualValue.mapDefined(v -> v instanceof List).orDefault(false) ||
-			(expectedValue.mapDefined(v -> v instanceof List).orDefault(false)))
+		if (actualValue.map(v -> v instanceof List).or(false) &&
+			expectedValue.map(v -> v instanceof List).or(false))
 		{
 			return getContextOfList();
 		}
@@ -178,14 +180,8 @@ public final class ContextGenerator
 	 */
 	public List<MessageSection> getContextOfList()
 	{
-		Function<Object, List<?>> valueToList = value ->
-		{
-			@SuppressWarnings("unchecked")
-			List<?> temp = (List<Object>) value;
-			return temp;
-		};
-		List<?> actualAsList = actualValue.mapDefined(valueToList).orThrow(AssertionError::new);
-		List<?> expectedAsList = expectedValue.mapDefined(valueToList).orThrow(AssertionError::new);
+		List<?> actualAsList = valueToList(actualValue.or(null));
+		List<?> expectedAsList = valueToList(expectedValue.or(null));
 		int actualSize = actualAsList.size();
 		int expectedSize = expectedAsList.size();
 		int maxSize = Math.max(actualSize, expectedSize);
@@ -201,41 +197,41 @@ public final class ContextGenerator
 			boolean actualLineExists = i < actualSize;
 
 			String actualNameLine;
-			MaybeUndefined<Object> actualValueLine;
+			ValidationTarget<Object> actualValueLine;
 			if (actualLineExists)
 			{
 				actualNameLine = actualName + "[" + actualIndex + "]";
-				actualValueLine = MaybeUndefined.defined(actualAsList.get(i));
+				actualValueLine = valid(actualAsList.get(i));
 				++actualIndex;
 			}
 			else
 			{
 				actualNameLine = actualName;
-				actualValueLine = MaybeUndefined.undefined();
+				actualValueLine = invalid();
 				elementsAreEqual = false;
 			}
 
 			boolean expectedLineExists = i < expectedSize;
 			String expectedNameLine;
-			MaybeUndefined<Object> expectedValueLine;
+			ValidationTarget<Object> expectedValueLine;
 			if (expectedLineExists)
 			{
 				expectedNameLine = expectedName + "[" + expectedIndex + "]";
-				expectedValueLine = MaybeUndefined.defined(expectedAsList.get(i));
+				expectedValueLine = valid(expectedAsList.get(i));
 				++expectedIndex;
 			}
 			else
 			{
 				expectedNameLine = expectedName;
-				expectedValueLine = MaybeUndefined.undefined();
+				expectedValueLine = invalid();
 				elementsAreEqual = false;
 			}
 			ContextGenerator elementGenerator = new ContextGenerator(scope, configuration, actualNameLine,
 				expectedNameLine);
-			actualValueLine.ifDefined(elementGenerator::actualValue);
-			expectedValueLine.ifDefined(elementGenerator::expectedValue);
+			actualValueLine.ifValid(elementGenerator::actualValue);
+			expectedValueLine.ifValid(elementGenerator::expectedValue);
 
-			elementsAreEqual &= actualValueLine.equals(expectedValueLine);
+			elementsAreEqual = elementsAreEqual && actualValueLine.equals(expectedValueLine);
 			if (i != 0 && i != maxSize - 1 && elementsAreEqual)
 			{
 				// Skip identical elements, unless they are the first or last element.
@@ -257,6 +253,12 @@ public final class ContextGenerator
 		return components;
 	}
 
+	@SuppressWarnings("unchecked")
+	private static List<?> valueToList(Object value)
+	{
+		return (List<Object>) value;
+	}
+
 	/**
 	 * Returns context entries to indicate that duplicate lines were skipped.
 	 *
@@ -265,7 +267,7 @@ public final class ContextGenerator
 	private static MessageSection skipEqualLines()
 	{
 		return new StringSection("""
-
+			
 			[...]""");
 	}
 
@@ -276,23 +278,23 @@ public final class ContextGenerator
 	 */
 	private List<MessageSection> getContextOfObjects()
 	{
-		assert actualValue.isDefined() || expectedValue.isDefined() :
+		assert actualValue.isValid() || expectedValue.isValid() :
 			"actualValue and expectedValue were both undefined";
 
 		StringMappers stringMappers = configuration.stringMappers();
-		String actualAsString = actualValue.mapDefined(stringMappers::toString).orDefault("");
-		String expectedAsString = expectedValue.mapDefined(stringMappers::toString).orDefault("");
+		String actualAsString = actualValue.map(stringMappers::toString).or("");
+		String expectedAsString = expectedValue.map(stringMappers::toString).or("");
 		DiffResult lines = diffGenerator.diff(actualAsString, expectedAsString);
 		boolean diffLinesExist = !lines.getDiffLines().isEmpty();
 
 		// When comparing multiline strings, this method is invoked one line at a time. If the actual or expected
-		// value is undefined, it indicates that one of the values contains more lines than the other. The value
-		// with fewer lines will be considered undefined on a per-line basis.
+		// value is invalid, it indicates that one of the values contains more lines than the other. The value
+		// with fewer lines will be considered invalid on a per-line basis.
 		int numberOfLines = Math.max(lines.getActualLines().size(), lines.getExpectedLines().size());
 		// Don't diff boolean values
 		if (!allowDiff || numberOfLines == 1 ||
-			actualValue.mapDefined(v -> v instanceof Boolean).orDefault(false) ||
-			expectedValue.mapDefined(v -> v instanceof Boolean).orDefault(false))
+			actualValue.map(v -> v instanceof Boolean).or(false) ||
+			expectedValue.map(v -> v instanceof Boolean).or(false))
 		{
 			return getContextForSingleLine(lines);
 		}
@@ -381,8 +383,8 @@ public final class ContextGenerator
 		if (lines.getActualLines().size() > 1 || lines.getExpectedLines().size() > 1)
 		{
 			StringMappers stringMappers = configuration.stringMappers();
-			actualAsString = actualValue.mapDefined(stringMappers::toString).orDefault("");
-			expectedAsString = expectedValue.mapDefined(stringMappers::toString).orDefault("");
+			actualAsString = actualValue.map(stringMappers::toString).or("");
+			expectedAsString = expectedValue.map(stringMappers::toString).or("");
 		}
 		else
 		{
@@ -431,13 +433,13 @@ public final class ContextGenerator
 	 */
 	private List<MessageSection> compareTypes()
 	{
-		assert actualValue.isDefined() || expectedValue.isDefined() :
-			"actualValue and expectedValue were both undefined";
-		Object actualValue = this.actualValue.orThrow(AssertionError::new);
-		String actualClassName = getClassName(getClass(actualValue));
+		assert actualValue.isValid() : "actualValue was undefined";
+		assert expectedValue.isValid() : "expectedValue was undefined";
+		Object actualValueOrNull = actualValue.orThrow(AssertionError::new);
+		Object expectedValueOrNull = expectedValue.orThrow(AssertionError::new);
 
-		Object expectedValue = this.expectedValue.orThrow(AssertionError::new);
-		String expectedClassName = getClassName(getClass(expectedValue));
+		String actualClassName = getClassName(getClass(actualValueOrNull));
+		String expectedClassName = getClassName(getClass(actualValueOrNull));
 		if (!actualClassName.equals(expectedClassName))
 		{
 			return new ContextGenerator(scope, configuration, actualName + ".class", expectedName + ".class").
@@ -448,8 +450,8 @@ public final class ContextGenerator
 		}
 		// Do not use config.toString() for hashCode values because their exact value does not matter, just the
 		// fact that they are different.
-		int actualHashCode = Objects.hashCode(actualValue);
-		int expectedHashCode = Objects.hashCode(expectedValue);
+		int actualHashCode = Objects.hashCode(actualValueOrNull);
+		int expectedHashCode = Objects.hashCode(expectedValueOrNull);
 		if (actualHashCode != expectedHashCode)
 		{
 			return new ContextGenerator(scope, configuration, actualName + ".hashCode",
@@ -459,8 +461,8 @@ public final class ContextGenerator
 				allowDiff(false).
 				build();
 		}
-		int expectedIdentityHashCode = System.identityHashCode(expectedValue);
-		int actualIdentityHashCode = System.identityHashCode(actualValue);
+		int actualIdentityHashCode = System.identityHashCode(actualValueOrNull);
+		int expectedIdentityHashCode = System.identityHashCode(expectedValueOrNull);
 		if (actualIdentityHashCode != expectedIdentityHashCode)
 		{
 			return new ContextGenerator(scope, configuration, actualName + ".identityHashCode",
@@ -489,9 +491,9 @@ public final class ContextGenerator
 	{
 		StringBuilder result = new StringBuilder(77).
 			append("actualName: ").append(actualName);
-		actualValue.ifDefined(value -> result.append(", actualValue: ").append(value));
+		actualValue.ifValid(v -> result.append(", actualValue: ").append(v));
 		result.append("expectedName: ").append(expectedName);
-		expectedValue.ifDefined(value -> result.append(", expectedValue: ").append(value));
+		expectedValue.ifValid(v -> result.append(", expectedValue: ").append(v));
 		result.append(", allowDiff: ").append(allowDiff);
 		return result.toString();
 	}

@@ -8,12 +8,13 @@ import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.UriMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.UriValidator;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator, URI>
 	implements UriValidator
@@ -22,7 +23,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -31,7 +32,7 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	 *                                  or {@code failures} are null
 	 */
 	public UriValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<URI> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<URI> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -41,9 +42,9 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(URI::isAbsolute))
+		if (value.validationFailed(v -> v != null && v.isAbsolute()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				UriMessages.isAbsolute(this).toString());
 		}
 		return this;

@@ -5,11 +5,11 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.pouch.core.WrappedCheckedException;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.PathMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.PathValidator;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 public final class PathValidatorImpl extends AbstractObjectValidator<PathValidator, Path>
@@ -28,7 +29,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -37,7 +38,7 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	 *                                  or {@code failures} are null
 	 */
 	public PathValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<Path> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<Path> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -47,9 +48,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(Files::exists))
+		if (value.validationFailed(v -> v != null && Files.exists(v)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				PathMessages.exists(this).toString());
 		}
 		return this;
@@ -81,9 +82,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 			onNull();
 		try
 		{
-			switch (value.test(value -> isType(value, attributesMatchExpectation, options)))
+			if (value.validationFailed(v -> v != null && isType(v, attributesMatchExpectation, options)))
 			{
-				case UNDEFINED, FALSE -> addIllegalArgumentException(
+				addIllegalArgumentException(
 					PathMessages.exists(this, type, options).toString());
 			}
 		}
@@ -133,9 +134,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.isAbsolute()))
+		if (value.validationFailed(v -> v != null && !v.isAbsolute()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				PathMessages.isRelative(this).toString());
 		}
 		return this;
@@ -146,9 +147,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(Path::isAbsolute))
+		if (value.validationFailed(v -> v != null && v.isAbsolute()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				PathMessages.isAbsolute(this).toString());
 		}
 		return this;

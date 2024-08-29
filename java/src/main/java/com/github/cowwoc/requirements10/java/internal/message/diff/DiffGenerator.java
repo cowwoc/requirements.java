@@ -29,7 +29,7 @@ public final class DiffGenerator
 {
 	// A "word" is defined as one or more characters that are surrounded by word delimiters.
 	//
-	// \p{Zs} matches any unicode whitespace: https://www.regular-expressions.info/unicode.html
+	// \p{Zs} matches any Unicode whitespace: https://www.regular-expressions.info/unicode.html
 	private static final Pattern WORD_DELIMITER = getWordDelimiter();
 
 	private static Pattern getWordDelimiter()

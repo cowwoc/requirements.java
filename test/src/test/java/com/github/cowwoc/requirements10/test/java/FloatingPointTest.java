@@ -406,8 +406,9 @@ public final class FloatingPointTest
 		{
 			Float actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be a well-defined number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be a well-defined number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -421,8 +422,9 @@ public final class FloatingPointTest
 		{
 			Double actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be a well-defined number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be a well-defined number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -436,8 +438,9 @@ public final class FloatingPointTest
 		{
 			Float actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be a well-defined number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" may not be a well-defined number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -451,8 +454,9 @@ public final class FloatingPointTest
 		{
 			Double actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be a well-defined number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" may not be a well-defined number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotNumber().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -466,8 +470,9 @@ public final class FloatingPointTest
 		{
 			Float actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be a finite number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be a finite number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isFinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -481,8 +486,9 @@ public final class FloatingPointTest
 		{
 			Double actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be a finite number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be a finite number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isFinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -496,8 +502,9 @@ public final class FloatingPointTest
 		{
 			Float actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be an infinite number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be an infinite number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isInfinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -511,8 +518,9 @@ public final class FloatingPointTest
 		{
 			Double actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be an infinite number",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be an infinite number", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isInfinite().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

@@ -3,15 +3,16 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
+import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.ObjectValidator;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 /**
@@ -27,7 +28,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -36,7 +37,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	 *                                  or {@code failures} are null
 	 */
 	public AbstractObjectValidator(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<T> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -53,7 +54,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 		if (!value.isNull())
 		{
 			addIllegalArgumentException(
-				ObjectMessages.isNull(this).toString());
+				ObjectMessages.isNullFailed(this).toString());
 		}
 		return self();
 	}
@@ -61,31 +62,32 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	@Override
 	public S isNotNull()
 	{
-		if (value.isNull())
+		T validOrNull = value.or(null);
+		if (validOrNull == null)
 			onNull();
 		return self();
 	}
 
 	@Override
-	public S isSameReferenceAs(Object expected, String name)
+	public S isReferenceEqualTo(Object expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		switch (value.test(value -> value == expected))
+		if (value.validationFailed(v -> v == expected))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isSameReferenceAs(this, MaybeUndefined.defined(name), expected).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isReferenceEqualToFailed(this, name, expected).toString());
 		}
 		return self();
 	}
 
 	@Override
-	public S isNotSameReferenceAs(Object unwanted, String name)
+	public S isReferenceNotEqualTo(Object unwanted, String name)
 	{
 		requireThatNameIsUnique(name);
-		switch (value.test(value -> value != unwanted))
+		if (value.validationFailed(v -> v != unwanted))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotSameReferenceAs(this, MaybeUndefined.defined(name), unwanted).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isReferenceNotEqualToFailed(this, name).toString());
 		}
 		return self();
 	}
@@ -100,10 +102,10 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	public <U> ObjectValidator<U> isInstanceOf(GenericType<U> expected)
 	{
 		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
-		switch (value.test(expected::isTypeOf))
+		if (value.validationFailed(expected::isTypeOf))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isInstanceOf(this, expected).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isInstanceOfFailed(this, expected).toString());
 		}
 		return self();
 	}
@@ -118,10 +120,10 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	public S isNotInstanceOf(GenericType<?> unwanted)
 	{
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
-		switch (value.test(v -> !unwanted.isTypeOf(v)))
+		if (value.validationFailed(v -> !unwanted.isTypeOf(v)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotInstanceOf(this, unwanted).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isNotInstanceOfFailed(this, unwanted).toString());
 		}
 		return self();
 	}
@@ -129,22 +131,22 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	@Override
 	public S isEqualTo(Object expected)
 	{
-		return isEqualToImpl(expected, MaybeUndefined.undefined());
+		return isEqualToImpl(expected, null);
 	}
 
 	@Override
 	public S isEqualTo(Object expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		return isEqualToImpl(expected, MaybeUndefined.defined(name));
+		return isEqualToImpl(expected, name);
 	}
 
-	protected S isEqualToImpl(Object expected, MaybeUndefined<String> name)
+	protected S isEqualToImpl(Object expected, String name)
 	{
-		switch (value.test(value -> getEqualityFunction().apply(value, expected)))
+		if (value.validationFailed(v -> getEqualityFunction().apply(v, expected)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.compareValues(this, "must be equal to", name, expected).toString());
+			addIllegalArgumentException(
+				ValidatorMessages.isEqualToFailed(this, name, expected).toString());
 		}
 		return self();
 	}
@@ -152,22 +154,22 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	@Override
 	public S isNotEqualTo(Object unwanted)
 	{
-		return isNotEqualToImpl(unwanted, MaybeUndefined.undefined());
+		return isNotEqualToImpl(unwanted, null);
 	}
 
 	@Override
 	public S isNotEqualTo(Object unwanted, String name)
 	{
 		requireThatNameIsUnique(name);
-		return isNotEqualToImpl(unwanted, MaybeUndefined.defined(name));
+		return isNotEqualToImpl(unwanted, name);
 	}
 
-	private S isNotEqualToImpl(Object unwanted, MaybeUndefined<String> name)
+	private S isNotEqualToImpl(Object unwanted, String name)
 	{
-		switch (value.test(value -> !getEqualityFunction().apply(value, unwanted)))
+		if (value.validationFailed(v -> !getEqualityFunction().apply(v, unwanted)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(this, name, unwanted).toString());
+			addIllegalArgumentException(
+				ValidatorMessages.isNotEqualToFailed(this, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -187,6 +189,6 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	@Override
 	protected void onNull()
 	{
-		addNullPointerException(ObjectMessages.isNotNull(this).toString());
+		addNullPointerException(ObjectMessages.isNotNullFailed(this).toString());
 	}
 }

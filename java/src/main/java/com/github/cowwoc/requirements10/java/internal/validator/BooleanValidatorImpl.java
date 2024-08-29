@@ -1,14 +1,15 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.BooleanMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.BooleanValidator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanValidator, Boolean>
 	implements BooleanValidator
@@ -17,7 +18,7 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -26,7 +27,7 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 	 *                                  or {@code failures} are null
 	 */
 	public BooleanValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<Boolean> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<Boolean> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -36,10 +37,10 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value))
+		if (value.validationFailed(v -> v != null && v))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				BooleanMessages.isTrue(this).toString());
+			addIllegalArgumentException(
+				BooleanMessages.isTrueFailed(this).toString());
 		}
 		return this;
 	}
@@ -49,10 +50,10 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value))
+		if (value.validationFailed(v -> v != null && !v))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				BooleanMessages.isFalse(this).toString());
+			addIllegalArgumentException(
+				BooleanMessages.isFalseFailed(this).toString());
 		}
 		return this;
 	}

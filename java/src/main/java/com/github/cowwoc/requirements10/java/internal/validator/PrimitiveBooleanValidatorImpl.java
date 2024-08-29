@@ -1,15 +1,16 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.BooleanMessages;
-import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
+import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveBooleanValidator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValidator<PrimitiveBooleanValidator, Boolean>
 	implements PrimitiveBooleanValidator
@@ -18,7 +19,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -27,7 +28,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	 *                                  or {@code failures} are null
 	 */
 	public PrimitiveBooleanValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<Boolean> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<Boolean> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -41,7 +42,7 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	@Override
 	public boolean getValueOrDefault(boolean defaultValue)
 	{
-		return value.orDefault(defaultValue);
+		return value.or(defaultValue);
 	}
 
 	@Override
@@ -49,10 +50,10 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value))
+		if (value.validationFailed(v -> v != null && v))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				BooleanMessages.isTrue(this).toString());
+			addIllegalArgumentException(
+				BooleanMessages.isTrueFailed(this).toString());
 		}
 		return this;
 	}
@@ -62,10 +63,10 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value))
+		if (value.validationFailed(v -> v != null && !v))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				BooleanMessages.isFalse(this).toString());
+			addIllegalArgumentException(
+				BooleanMessages.isFalseFailed(this).toString());
 		}
 		return this;
 	}
@@ -73,22 +74,22 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	@Override
 	public PrimitiveBooleanValidator isEqualTo(boolean expected)
 	{
-		return isEqualToImpl(expected, MaybeUndefined.undefined());
+		return isEqualToImpl(expected, null);
 	}
 
 	@Override
 	public PrimitiveBooleanValidator isEqualTo(boolean expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		return isEqualToImpl(expected, MaybeUndefined.defined(name));
+		return isEqualToImpl(expected, name);
 	}
 
-	private PrimitiveBooleanValidator isEqualToImpl(boolean expected, MaybeUndefined<String> name)
+	private PrimitiveBooleanValidator isEqualToImpl(boolean expected, String name)
 	{
-		switch (value.test(value -> value != null && value == expected))
+		if (value.validationFailed(v -> v == expected))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ComparableMessages.isEqualTo(this, name, expected).toString());
+			addIllegalArgumentException(
+				ValidatorMessages.isEqualToFailed(this, name, expected).toString());
 		}
 		return this;
 	}
@@ -96,22 +97,22 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	@Override
 	public PrimitiveBooleanValidator isNotEqualTo(boolean unwanted)
 	{
-		return isNotEqualToImpl(unwanted, MaybeUndefined.undefined());
+		return isNotEqualToImpl(unwanted, null);
 	}
 
 	@Override
 	public PrimitiveBooleanValidator isNotEqualTo(boolean unwanted, String name)
 	{
 		requireThatNameIsUnique(name);
-		return isNotEqualToImpl(unwanted, MaybeUndefined.defined(name));
+		return isNotEqualToImpl(unwanted, name);
 	}
 
-	private PrimitiveBooleanValidator isNotEqualToImpl(boolean unwanted, MaybeUndefined<String> name)
+	private PrimitiveBooleanValidator isNotEqualToImpl(boolean unwanted, String name)
 	{
-		switch (value.test(value -> value != unwanted))
+		if (value.validationFailed(v -> v != unwanted))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(this, name, unwanted).toString());
+			addIllegalArgumentException(
+				ValidatorMessages.isNotEqualToFailed(this, name, unwanted).toString());
 		}
 		return this;
 	}

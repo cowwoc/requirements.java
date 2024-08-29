@@ -16,7 +16,7 @@ public interface IntegerComponent<S>
 	 *
 	 * @param factor the number being multiplied
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is not a multiple of {@code factor}
 	 */
 	S isMultipleOf(int factor);
@@ -44,7 +44,7 @@ public interface IntegerComponent<S>
 	 *
 	 * @param factor the number being multiplied
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is a multiple of {@code factor}
 	 */
 	S isNotMultipleOf(int factor);
@@ -72,7 +72,7 @@ public interface IntegerComponent<S>
 	 *
 	 * @param maximumExclusive the exclusive upper bound
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is greater than or equal to {@code maximumExclusive}
 	 */
 	S isLessThan(int maximumExclusive);
@@ -100,7 +100,7 @@ public interface IntegerComponent<S>
 	 *
 	 * @param maximumInclusive the inclusive upper value
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is greater than {@code maximumInclusive}
 	 */
 	S isLessThanOrEqualTo(int maximumInclusive);
@@ -128,7 +128,7 @@ public interface IntegerComponent<S>
 	 *
 	 * @param minimumInclusive the minimum value
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is less than {@code minimumInclusive}
 	 */
 	S isGreaterThanOrEqualTo(int minimumInclusive);
@@ -156,7 +156,7 @@ public interface IntegerComponent<S>
 	 *
 	 * @param minimumExclusive the exclusive lower bound
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is less than or equal to {@code minimumExclusive}
 	 */
 	S isGreaterThan(int minimumExclusive);
@@ -185,7 +185,7 @@ public interface IntegerComponent<S>
 	 * @param minimumInclusive the lower bound of the range (inclusive)
 	 * @param maximumExclusive the upper bound of the range (exclusive)
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code minimumInclusive} is greater than {@code maximumExclusive}</li>
@@ -202,7 +202,7 @@ public interface IntegerComponent<S>
 	 * @param maximum            the upper bound of the range
 	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code minimum} is greater than {@code maximum}</li>

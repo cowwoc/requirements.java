@@ -2,7 +2,6 @@ package com.github.cowwoc.requirements10.java.internal.message;
 
 import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
 import static com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder.quoteName;
@@ -17,129 +16,83 @@ public final class ComparableMessages
 	}
 
 	/**
-	 * @param <T>          the type of the value
-	 * @param validator    the validator
-	 * @param expectedName the name of the expected value
-	 * @param expected     the expected value
-	 * @return a message for the validation failure
-	 */
-	public static <T> MessageBuilder isEqualTo(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> expectedName, Object expected)
-	{
-		return compareValues(validator, "must be equal to", expectedName, expected);
-	}
-
-	/**
-	 * @param <T>          the type of the value
-	 * @param validator    the validator
-	 * @param unwantedName the name of the unwanted element
-	 * @param unwanted     the unwanted element
-	 * @return a message for the validation failure
-	 */
-	public static <T> MessageBuilder isNotEqualTo(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> unwantedName, Object unwanted)
-	{
-		String actualName = validator.getName();
-		Object resolvedActual = validator.getValueOrDefault(null);
-		//     "actual" may not be equal to "expected".
-		//     actual  : 123
-		//     expected: 456
-		String unwantedNameOrValue = unwantedName.mapDefined(MessageBuilder::quoteName).
-			orSuppliedDefault(() -> validator.configuration().stringMappers().toString(unwanted));
-
-		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(actualName) + " may not be equal to " + unwantedNameOrValue + ".");
-
-		if (resolvedActual != null)
-			messageBuilder.withContext(resolvedActual, actualName);
-		unwantedName.ifDefined(name -> messageBuilder.withContext(unwanted, name));
-		return messageBuilder;
-	}
-
-	/**
-	 * @param <T>              the type of the value
 	 * @param validator        the validator
-	 * @param limitName        the name of the value's bound
+	 * @param limitName        the name of the value's bound ({@code null} if undefined)
 	 * @param maximumExclusive the exclusive upper bound
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isLessThan(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> limitName, Object maximumExclusive)
+	public static MessageBuilder isLessThanFailed(AbstractValidator<?, ?> validator, String limitName,
+		Object maximumExclusive)
 	{
 		return compareValues(validator, "must be less than", limitName, maximumExclusive);
 	}
 
 	/**
-	 * @param <T>              the type of the value
 	 * @param validator        the validator
-	 * @param limitName        the name of the value's bound
+	 * @param limitName        the name of the value's bound ({@code null} if undefined)
 	 * @param maximumInclusive the inclusive upper bound
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isLessThanOrEqualTo(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> limitName, Object maximumInclusive)
+	public static MessageBuilder isLessThanOrEqualToFailed(AbstractValidator<?, ?> validator, String limitName,
+		Object maximumInclusive)
 	{
 		return compareValues(validator, "must be less than or equal to", limitName, maximumInclusive);
 	}
 
 	/**
-	 * @param <T>              the type of the value
 	 * @param validator        the validator
-	 * @param limitName        the name of the value's bound
+	 * @param limitName        the name of the value's bound ({@code null} if undefined)
 	 * @param minimumInclusive the inclusive lower bound
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isGreaterThanOrEqualTo(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> limitName, Object minimumInclusive)
+	public static MessageBuilder isGreaterThanOrEqualToFailed(AbstractValidator<?, ?> validator,
+		String limitName, Object minimumInclusive)
 	{
 		return compareValues(validator, "must be greater than or equal to", limitName, minimumInclusive);
 	}
 
 	/**
-	 * @param <T>              the type of the value
 	 * @param validator        the validator
-	 * @param limitName        the name of the value's bound
+	 * @param limitName        the name of the value's bound ({@code null} if undefined)
 	 * @param minimumExclusive the exclusive lower bound
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isGreaterThan(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> limitName, Object minimumExclusive)
+	public static MessageBuilder isGreaterThanFailed(AbstractValidator<?, ?> validator, String limitName,
+		Object minimumExclusive)
 	{
 		return compareValues(validator, "must be greater than", limitName, minimumExclusive);
 	}
 
 	/**
-	 * @param <T>          the type of the value
 	 * @param validator    the validator
 	 * @param relationship a description of the relationship between the actual and expected value (e.g. "must
 	 *                     be equal to")
-	 * @param expectedName the name of the expected value
+	 * @param expectedName the name of the expected value ({@code null} if undefined)
 	 * @param expected     the expected value
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder compareValues(AbstractValidator<?, T> validator, String relationship,
-		MaybeUndefined<String> expectedName, Object expected)
+	public static MessageBuilder compareValues(AbstractValidator<?, ?> validator, String relationship,
+		String expectedName, Object expected)
 	{
 		String actualName = validator.getName();
-		Object resolvedActual = validator.getValueOrDefault(null);
 
 		//     "actual" must be equal to "expected".
 		//     actual  : 123
 		//     expected: 456
-		String expectedNameOrValue = expectedName.mapDefined(MessageBuilder::quoteName).
-			orSuppliedDefault(() -> validator.configuration().stringMappers().toString(expected));
+		String expectedNameOrValue = validator.getNameOrValue("", expectedName, "", expected);
 
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(actualName) + " " + relationship + " " + expectedNameOrValue + ".");
 
-		if (resolvedActual != null)
-			messageBuilder.withContext(resolvedActual, actualName);
-		expectedName.ifDefined(name -> messageBuilder.withContext(expected, name));
+		Object value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, actualName);
+		if (expectedName != null)
+			messageBuilder.withContext(expected, expectedName);
 		return messageBuilder;
 	}
 
 	/**
-	 * @param <T>                the type of the value
 	 * @param validator          the validator
 	 * @param minimum            the Object representation of the lower limit
 	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
@@ -147,12 +100,15 @@ public final class ComparableMessages
 	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isBetween(AbstractValidator<?, T> validator, Object minimum,
+	public static MessageBuilder isBetweenFailed(AbstractValidator<?, ?> validator, Object minimum,
 		boolean minimumIsInclusive, Object maximum, boolean maximumIsInclusive)
 	{
 		String name = validator.getName();
 		MessageBuilder builder = new MessageBuilder(validator, quoteName(name) + " is out of bounds.");
-		validator.ifDefined(value -> builder.withContext(value, name));
+
+		Object value = validator.getValueOrDefault(null);
+		if (value != null)
+			builder.withContext(value, name);
 
 		UnquotedStringValue bounds = getBounds(minimum, minimumIsInclusive, maximum, maximumIsInclusive,
 			validator.configuration().stringMappers());

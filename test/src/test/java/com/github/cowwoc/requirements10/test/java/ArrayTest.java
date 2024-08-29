@@ -1186,7 +1186,7 @@ public final class ArrayTest
 					2,
 					3
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSameReferenceAs(actual, "itself");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
 		}
 	}
 
@@ -1204,7 +1204,7 @@ public final class ArrayTest
 			int[] other = new int[actual.length];
 			System.arraycopy(actual, 0, other, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSameReferenceAs(other, "other");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(other, "other");
 		}
 	}
 
@@ -1222,7 +1222,7 @@ public final class ArrayTest
 			int[] other = new int[actual.length];
 			System.arraycopy(actual, 0, other, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotSameReferenceAs(other, "other");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(other, "other");
 		}
 	}
 
@@ -1238,7 +1238,7 @@ public final class ArrayTest
 					3
 				};
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotSameReferenceAs(actual, "actual");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(actual, "actual");
 		}
 	}
 

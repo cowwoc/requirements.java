@@ -98,7 +98,7 @@ public interface ComparableComponent<S, T extends Comparable<T>>
 	 *
 	 * @param minimumExclusive the exclusive lower bound
 	 * @return this
-	 * @throws NullPointerException     if the value or {@code minimumExclusive} is null
+	 * @throws NullPointerException     if the value or {@code minimumExclusive} are null
 	 * @throws IllegalArgumentException if the value is less than or equal to {@code minimumExclusive}
 	 */
 	S isGreaterThan(T minimumExclusive);

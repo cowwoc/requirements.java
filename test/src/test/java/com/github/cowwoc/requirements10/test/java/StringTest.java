@@ -57,26 +57,6 @@ public final class StringTest
 	}
 
 	@Test
-	public void trimIsEmpty()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "   ";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").trim().isEmpty();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void trimIsEmpty_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "value";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").trim().isEmpty();
-		}
-	}
-
-	@Test
 	public void isNotEmpty()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -93,26 +73,6 @@ public final class StringTest
 		{
 			String actual = "";
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
-		}
-	}
-
-	@Test
-	public void trimIsNotEmpty()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "value";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").trim().isNotEmpty();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void trimIsNotEmpty_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "   ";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").trim().isNotEmpty();
 		}
 	}
 
@@ -143,16 +103,6 @@ public final class StringTest
 		{
 			String actual = "abc ";
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").isTrimmed();
-		}
-	}
-
-	@Test
-	public void stripIsEmpty()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = "   ";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").strip().isEmpty();
 		}
 	}
 
@@ -491,8 +441,7 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be empty",
-				"\"actual\" may not be equal to \"someValue\"");
+				"\"actual\" must be empty");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isEmpty().isNotEqualTo("someValue").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -506,24 +455,9 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be empty",
-				"\"actual\" may not be equal to \"someValue\"");
+				"\"actual\" may not be empty");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotEmpty().isNotEqualTo("someValue").elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void multipleFailuresNullTrim()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = null;
-			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				trim().isNotEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -535,24 +469,9 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not contain leading or trailing whitespace",
-				"\"actual\" may not be equal to 5");
+				"\"actual\" may not contain leading or trailing whitespace");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isTrimmed().isNotEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
-		}
-	}
-
-	@Test
-	public void multipleFailuresNullStrip()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			String actual = null;
-			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be equal to 5");
-			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				strip().isNotEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -578,10 +497,11 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must start with \"prefix\"",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" must start with \"prefix\"", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				startsWith("prefix").isEqualTo("notEqual").elseGetFailures().getMessages();
+				startsWith("prefix").isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -593,10 +513,11 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not start with \"prefix\"",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" may not start with \"prefix\"", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotStartWith("prefix").isEqualTo("notEqual").elseGetFailures().getMessages();
+				doesNotStartWith("prefix").isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -608,10 +529,11 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must end with \"suffix\"",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" must end with \"suffix\"", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				endsWith("suffix").isEqualTo("notEqual").elseGetFailures().getMessages();
+				endsWith("suffix").isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -623,10 +545,11 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not end with \"suffix\"",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" may not end with \"suffix\"", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotEndWith("suffix").isEqualTo("notEqual").elseGetFailures().getMessages();
+				doesNotEndWith("suffix").isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -638,10 +561,11 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must contain \"value\"",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" must contain \"value\"", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				contains("value").isEqualTo("notEqual").elseGetFailures().getMessages();
+				contains("value").isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
@@ -653,10 +577,11 @@ public final class StringTest
 		{
 			String actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not contain \"value\"",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" may not contain \"value\"", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				doesNotContain("value").isEqualTo("notEqual").elseGetFailures().getMessages();
+				doesNotContain("value").isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

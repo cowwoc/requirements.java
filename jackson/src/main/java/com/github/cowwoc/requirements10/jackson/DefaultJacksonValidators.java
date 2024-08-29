@@ -15,6 +15,7 @@ import com.github.cowwoc.requirements10.java.internal.util.StampedLocks;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.locks.StampedLock;
 
 /**
@@ -136,10 +137,13 @@ public final class DefaultJacksonValidators
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
+	 * <p>
+	 * Note that values are wrapped in an {@code Optional} because modern maps do not support {@code null}
+	 * values.
 	 *
 	 * @return an unmodifiable map from each entry's name to its value
 	 */
-	public static Map<String, Object> getContext()
+	public static Map<String, Optional<Object>> getContext()
 	{
 		return StampedLocks.optimisticRead(CONTEXT_LOCK, DELEGATE::getContext);
 	}

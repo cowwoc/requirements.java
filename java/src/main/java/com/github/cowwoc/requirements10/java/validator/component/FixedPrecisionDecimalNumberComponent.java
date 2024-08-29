@@ -15,7 +15,7 @@ public interface FixedPrecisionDecimalNumberComponent<S>
 	 * Ensures that the value is a well-defined number.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if value is not a well-defined number
 	 * @see #isNotNumber()
 	 * @see Double#isNaN()
@@ -27,7 +27,7 @@ public interface FixedPrecisionDecimalNumberComponent<S>
 	 * by zero) or don't have a representation in real numbers (such as the square-root of -1).
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if value is a well-defined number
 	 * @see Double#isNaN()
 	 */
@@ -37,7 +37,7 @@ public interface FixedPrecisionDecimalNumberComponent<S>
 	 * Ensures that the value is a finite number.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is:
 	 *                                  <ul>
 	 *                                    <li>an infinite number</li>
@@ -52,7 +52,7 @@ public interface FixedPrecisionDecimalNumberComponent<S>
 	 * Ensures that the value is an infinite number.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is:
 	 *                                  <ul>
 	 *                                    <li>a finite number</li>

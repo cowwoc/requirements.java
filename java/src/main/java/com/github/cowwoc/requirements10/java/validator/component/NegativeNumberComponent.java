@@ -15,7 +15,7 @@ public interface NegativeNumberComponent<S>
 	 * Ensures that the value is a negative number. {@code -0.0} is considered to be zero *and* negative.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is:
 	 *                                  <ul>
 	 *                                    <li>not negative</li>
@@ -25,10 +25,10 @@ public interface NegativeNumberComponent<S>
 	S isNegative();
 
 	/**
-	 * Ensures that the value is not negative. {@code -0.0} is considered to be zero *and* negative.
+	 * Ensures that the value is not a negative number. {@code -0.0} is considered to be zero *and* negative.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is a negative number
 	 */
 	S isNotNegative();

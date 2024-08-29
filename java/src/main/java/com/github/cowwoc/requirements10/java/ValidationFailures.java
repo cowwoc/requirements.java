@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024 Gili Tzabari
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.github.cowwoc.requirements10.java;
 
 import com.github.cowwoc.requirements10.java.internal.util.Exceptions;
@@ -59,7 +63,7 @@ public final class ValidationFailures
 	 * @throws RuntimeException          if a method precondition was violated
 	 * @throws Error                     if a class invariant or method postcondition was violated
 	 * @throws MultipleFailuresException if more than one validation failed. This exception contains a list of
-	 *                                   the failures.
+	 *                                   the failures
 	 */
 	public boolean throwOnFailure()
 	{

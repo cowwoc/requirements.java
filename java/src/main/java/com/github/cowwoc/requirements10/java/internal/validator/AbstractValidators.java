@@ -13,6 +13,7 @@ import com.github.cowwoc.requirements10.java.internal.util.StampedLocks;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.locks.StampedLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -39,7 +40,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	private Configuration requireThatConfiguration;
 	private Configuration assertThatConfiguration;
 	private Configuration checkIfConfiguration;
-	protected final Map<String, Object> context = new HashMap<>();
+	protected final Map<String, Optional<Object>> context = new HashMap<>();
 
 	/**
 	 * Creates a new instance.
@@ -129,27 +130,6 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	}
 
 	/**
-	 * Updates the configuration that will be used by new validators, using a fluent API that automatically
-	 * applies the changes on exit. For example:
-	 * {@snippet :
-	 * validators.apply(v -> v.updateConfiguration().allowDiff(false)).
-	 * requireThat(value, name);
-	 *}
-	 *
-	 * @param consumer consumes the configuration updater
-	 * @return this
-	 * @throws NullPointerException if {@code updater} is null
-	 */
-	public S updateConfiguration(Consumer<ConfigurationUpdater> consumer)
-	{
-		try (ConfigurationUpdater updater = updateConfiguration())
-		{
-			consumer.accept(updater);
-		}
-		return self();
-	}
-
-	/**
 	 * Returns a configuration updater that sets the validator factory's configuration.
 	 *
 	 * @param setConfiguration a method that sets the validator factory's configuration
@@ -186,7 +166,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	}
 
 	@Override
-	public Map<String, Object> getContext()
+	public Map<String, Optional<Object>> getContext()
 	{
 		return Map.copyOf(context);
 	}

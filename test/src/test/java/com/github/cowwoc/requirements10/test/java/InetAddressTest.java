@@ -64,8 +64,9 @@ public final class InetAddressTest
 		{
 			InetAddress actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be an IP v4 address",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be an IP v4 address", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isIpV4().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -79,8 +80,9 @@ public final class InetAddressTest
 		{
 			InetAddress actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be an IP v6 address",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be an IP v6 address", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isIpV6().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

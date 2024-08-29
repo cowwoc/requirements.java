@@ -312,7 +312,6 @@ public final class ComparableTest
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void isGreaterThanOrEqualToConstant_actualIsLessThan()
 	{
-
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Year before = Year.of(0);
@@ -501,8 +500,9 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be less than 5",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be less than 5", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isLessThan(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -516,9 +516,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" must be less than "expected".
-					expected: 5""",
-				"\"actual\" must be equal to 5");
+				"actual" must be less than "expected".
+				expected: 5""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isLessThan(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -532,8 +533,9 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be less than or equal to 5",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be less than or equal to 5", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isLessThanOrEqualTo(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -547,9 +549,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" must be less than or equal to "expected".
-					expected: 5""",
-				"\"actual\" must be equal to 5");
+				"actual" must be less than or equal to "expected".
+				expected: 5""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isLessThanOrEqualTo(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -563,8 +566,9 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be greater than 5",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be greater than 5", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isGreaterThan(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -578,9 +582,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" must be greater than "expected".
-					expected: 5""",
-				"\"actual\" must be equal to 5");
+				"actual" must be greater than "expected".
+				expected: 5""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isGreaterThan(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -594,8 +599,9 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be greater than or equal to 5",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be greater than or equal to 5", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isGreaterThanOrEqualTo(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -609,9 +615,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" must be greater than or equal to "expected".
-					expected: 5""",
-				"\"actual\" must be equal to 5");
+				"actual" must be greater than or equal to "expected".
+				expected: 5""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isGreaterThanOrEqualTo(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -625,9 +632,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("""
-					"actual" must be equal to 5.
-					actual: null""",
-				"\"actual\" must be equal to 5");
+				"actual" must be equal to 5.
+				actual: null""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
@@ -648,10 +656,11 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("""
-					"actual" must be equal to "expected".
-					actual  : null
-					expected: 5""",
-				"\"actual\" must be equal to 5");
+				"actual" must be equal to "expected".
+				actual  : null
+				expected: 5""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
@@ -716,9 +725,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" is out of bounds.
-					bounds: [1, 3)""",
-				"\"actual\" must be equal to 5");
+				"actual" is out of bounds.
+				bounds: [1, 3)""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isBetween(1, 3).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -732,9 +742,10 @@ public final class ComparableTest
 		{
 			Integer actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" is out of bounds.
-					bounds: [1, 2]""",
-				"\"actual\" must be equal to 5");
+				"actual" is out of bounds.
+				bounds: [1, 2]""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{

@@ -93,8 +93,8 @@ public final class TestValidatorsImpl implements TestValidators
 	{
 		this(other.javaValidators.getScope());
 		setConfiguration(other.configuration());
-		for (Entry<String, Object> entry : other.getContext().entrySet())
-			withContext(entry.getValue(), entry.getKey());
+		for (Entry<String, Optional<Object>> entry : other.getContext().entrySet())
+			withContext(entry.getValue().orElse(null), entry.getKey());
 	}
 
 	/**
@@ -1375,7 +1375,7 @@ public final class TestValidatorsImpl implements TestValidators
 	}
 
 	@Override
-	public Map<String, Object> getContext()
+	public Map<String, Optional<Object>> getContext()
 	{
 		return javaValidators.getContext();
 	}

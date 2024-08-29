@@ -9,11 +9,12 @@ import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.ClassMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.GenericTypeValidator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @param <T> the type of the class modelled by the {@code GenericType} object
@@ -26,7 +27,7 @@ public final class GenericTypeValidatorImpl<T>
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -35,7 +36,8 @@ public final class GenericTypeValidatorImpl<T>
 	 *                                  or {@code failures} are null
 	 */
 	public GenericTypeValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<GenericType<T>> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<GenericType<T>> value, Map<String, Optional<Object>> context,
+		List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -43,12 +45,10 @@ public final class GenericTypeValidatorImpl<T>
 	@Override
 	public GenericTypeValidator<T> isPrimitive()
 	{
-		if (value.isNull())
-			onNull();
-		switch (value.test(GenericType::isPrimitive))
+		if (value.validationFailed(v -> v != null && v.isPrimitive()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ClassMessages.isPrimitive(this).toString());
+			addIllegalArgumentException(
+				ClassMessages.isPrimitiveFailed(this).toString());
 		}
 		return this;
 	}
@@ -60,31 +60,31 @@ public final class GenericTypeValidatorImpl<T>
 	}
 
 	@Override
-	public <U> GenericTypeValidator<U> isSupertypeOf(GenericType<? extends U> type)
+	public <U> GenericTypeValidator<U> isSupertypeOf(GenericType<? extends U> subtype)
 	{
-		scope.getInternalValidators().requireThat(type, "type").isNotNull();
-		switch (value.test(value -> value != null && type.isSubtypeOf(value)))
+		scope.getInternalValidators().requireThat(subtype, "type").isNotNull();
+		if (value.validationFailed(subtype::isSubtypeOf))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ClassMessages.isSupertypeOf(this, type).toString());
+			addIllegalArgumentException(
+				ClassMessages.isSupertypeOfFailed(this, subtype).toString());
 		}
 		return self();
 	}
 
 	@Override
-	public <U> GenericTypeValidator<U> isSubtypeOf(Class<? super U> type)
+	public <U> GenericTypeValidator<U> isSubtypeOf(Class<? super U> supertype)
 	{
-		return isSubtypeOf(GenericType.from(type));
+		return isSubtypeOf(GenericType.from(supertype));
 	}
 
 	@Override
-	public <U> GenericTypeValidator<U> isSubtypeOf(GenericType<? super U> type)
+	public <U> GenericTypeValidator<U> isSubtypeOf(GenericType<? super U> supertype)
 	{
-		scope.getInternalValidators().requireThat(type, "type").isNotNull();
-		switch (value.test(value -> value != null && type.isSupertypeOf(value)))
+		scope.getInternalValidators().requireThat(supertype, "type").isNotNull();
+		if (value.validationFailed(supertype::isSupertypeOf))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ClassMessages.isSubtypeOf(this, type).toString());
+			addIllegalArgumentException(
+				ClassMessages.isSubtypeOfFailed(this, supertype).toString());
 		}
 		return self();
 	}

@@ -17,7 +17,7 @@ import com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsIm
  * There are three kinds of validators:
  * <ul>
  *   <li>{@code requireThat()} for method preconditions.</li>
- *   <li>{@code assertThat()} for class invariants, and method postconditions.</li>
+ *   <li>{@code assert that()} for class invariants, and method postconditions.</li>
  *   <li>{@code checkIf()} for returning multiple validation failures.</li>
  * </ul>
  */

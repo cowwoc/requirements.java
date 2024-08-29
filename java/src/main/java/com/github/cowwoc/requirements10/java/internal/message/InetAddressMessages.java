@@ -19,12 +19,14 @@ public final class InetAddressMessages
 	 * @param type      the type of IP address (e.g. "IP v4" or "IP v6")
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isIpAddress(AbstractValidator<?, InetAddress> validator, String type)
+	public static MessageBuilder isIpAddressFailed(AbstractValidator<?, InetAddress> validator, String type)
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			MessageBuilder.quoteName(name) + " must be an " + type + " address.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		InetAddress value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 }

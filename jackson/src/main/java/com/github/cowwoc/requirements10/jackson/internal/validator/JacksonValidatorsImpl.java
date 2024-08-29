@@ -6,14 +6,15 @@ import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.valid;
 import static com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl.DEFAULT_NAME;
 
 public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
@@ -76,13 +77,13 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	private <T extends JsonNode> JsonNodeValidator<T> newInstance(T value, String name,
 		Configuration configuration)
 	{
-		return new JsonNodeValidatorImpl<>(getScope(), configuration, name, MaybeUndefined.defined(value),
-			newValidatorContext(), newValidatorFailures());
+		return new JsonNodeValidatorImpl<>(getScope(), configuration, name, valid(value), newValidatorContext(),
+			newValidatorFailures());
 	}
 
-	private Map<String, Object> newValidatorContext()
+	private Map<String, Optional<Object>> newValidatorContext()
 	{
-		Map<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
+		Map<String, Optional<Object>> context = HashMap.newHashMap(this.context.size() + 2);
 		context.putAll(this.context);
 		return context;
 	}
@@ -101,7 +102,7 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	@Override
 	public JacksonValidators withContext(Object value, String name)
 	{
-		context.put(name, value);
+		context.put(name, Optional.ofNullable(value));
 		return this;
 	}
 

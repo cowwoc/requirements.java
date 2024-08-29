@@ -4,16 +4,17 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements10.java.validator.CollectionValidator;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @param <T> the type of the collection
@@ -27,7 +28,7 @@ public final class CollectionValidatorImpl<T extends Collection<E>, E>
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param pluralizer    the type of items in the collection
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
@@ -35,7 +36,7 @@ public final class CollectionValidatorImpl<T extends Collection<E>, E>
 	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
 	 */
 	public CollectionValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Pluralizer pluralizer, Map<String, Object> context,
+		ValidationTarget<T> value, Pluralizer pluralizer, Map<String, Optional<Object>> context,
 		List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, pluralizer, context, failures);

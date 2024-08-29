@@ -5,7 +5,6 @@ import com.github.cowwoc.requirements10.guava.validator.MultimapValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
 import com.google.common.collect.Multimap;
 
@@ -13,7 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.valid;
 import static com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl.DEFAULT_NAME;
 
 public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
@@ -76,13 +77,13 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	private <K, V, T extends Multimap<K, V>> MultimapValidator<T, K, V> newInstance(T value, String name,
 		Configuration configuration)
 	{
-		return new MultimapValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
-			newValidatorContext(), newValidatorFailures());
+		return new MultimapValidatorImpl<>(scope, configuration, name, valid(value), newValidatorContext(),
+			newValidatorFailures());
 	}
 
-	private Map<String, Object> newValidatorContext()
+	private Map<String, Optional<Object>> newValidatorContext()
 	{
-		Map<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
+		Map<String, Optional<Object>> context = HashMap.newHashMap(this.context.size() + 2);
 		context.putAll(this.context);
 		return context;
 	}
@@ -101,7 +102,7 @@ public class GuavaValidatorsImpl extends AbstractValidators<GuavaValidators>
 	@Override
 	public GuavaValidators withContext(Object value, String name)
 	{
-		context.put(name, value);
+		context.put(name, Optional.ofNullable(value));
 		return this;
 	}
 

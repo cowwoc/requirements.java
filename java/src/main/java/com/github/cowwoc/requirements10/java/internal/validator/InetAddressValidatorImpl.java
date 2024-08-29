@@ -8,7 +8,7 @@ import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.InetAddressMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.InetAddressValidator;
 
 import java.net.Inet4Address;
@@ -16,6 +16,7 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class InetAddressValidatorImpl extends AbstractObjectValidator<InetAddressValidator, InetAddress>
 	implements InetAddressValidator
@@ -24,7 +25,7 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -33,7 +34,8 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	 *                                  or {@code failures} are null
 	 */
 	public InetAddressValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<InetAddress> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<InetAddress> value, Map<String, Optional<Object>> context,
+		List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -43,10 +45,10 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value instanceof Inet4Address))
+		if (value.validationFailed(v -> v instanceof Inet4Address))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				InetAddressMessages.isIpAddress(this, "IP v4").toString());
+			addIllegalArgumentException(
+				InetAddressMessages.isIpAddressFailed(this, "IP v4").toString());
 		}
 		return this;
 	}
@@ -56,10 +58,10 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value instanceof Inet6Address))
+		if (value.validationFailed(v -> v instanceof Inet6Address))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				InetAddressMessages.isIpAddress(this, "IP v6").toString());
+			addIllegalArgumentException(
+				InetAddressMessages.isIpAddressFailed(this, "IP v6").toString());
 		}
 		return this;
 	}

@@ -1,20 +1,23 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
+import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder.quoteName;
 
 /**
  * Validates the state of a value, recording failures without throwing an exception.
@@ -25,7 +28,7 @@ import java.util.function.Supplier;
 public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T>
 {
 	public static final Supplier<IllegalStateException> VALUE_IS_UNDEFINED = () ->
-		new IllegalStateException("value is undefined");
+		new IllegalStateException("value is invalid");
 	/**
 	 * The application configuration.
 	 */
@@ -37,15 +40,15 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	/**
 	 * The name of the value.
 	 */
-	protected String name;
+	protected final String name;
 	/**
 	 * The value being validated.
 	 */
-	protected MaybeUndefined<T> value;
+	public final ValidationTarget<T> value;
 	/**
-	 * The contextual information of this validator.
+	 * The contextual information of this validator. Values are wrapped in an {@code Optional}.
 	 */
-	protected final Map<String, Object> context;
+	protected final Map<String, Optional<Object>> context;
 	/**
 	 * The list of validation failures.
 	 */
@@ -64,7 +67,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	 *                                  or {@code failures} are null
 	 */
 	protected AbstractValidator(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<T> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		assert (scope != null) : "scope may not be null";
 		assert (configuration != null) : "configuration may not be null";
@@ -131,17 +134,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	@Override
 	public T getValueOrDefault(T defaultValue)
 	{
-		return value.orDefault(defaultValue);
-	}
-
-	/**
-	 * Consumes the value if it is defined. If the value is undefined, no action is taken.
-	 *
-	 * @param consumer consumes the value if it is defined
-	 */
-	public void ifDefined(Consumer<? super T> consumer)
-	{
-		value.ifDefined(consumer);
+		return value.or(defaultValue);
 	}
 
 	@Override
@@ -155,7 +148,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 
 	/**
 	 * Adds a validation failure and throws an exception if the validator is configured to throw an exception on
-	 * failure. The value is set to undefined.
+	 * failure.
 	 *
 	 * @param message          a message that explains what went wrong
 	 * @param cause            the underlying cause of the exception
@@ -176,7 +169,6 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 				default -> throw new AssertionError(throwable);
 			}
 		}
-		value = MaybeUndefined.undefined();
 	}
 
 	/**
@@ -192,8 +184,8 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	public <E extends Exception> void addFailure(String message, Throwable cause,
 		ExceptionBuilder exceptionBuilder, Class<E> checkedException) throws E
 	{
-		ValidationFailureImpl failure = new ValidationFailureImpl(configuration, message, cause,
-			exceptionBuilder, Set.of(checkedException));
+		ValidationFailureImpl failure = new ValidationFailureImpl(configuration, message, cause, exceptionBuilder,
+			Set.of(checkedException));
 		failures.add(failure);
 		if (configuration.throwOnFailure())
 		{
@@ -315,7 +307,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	}
 
 	@Override
-	public Map<String, Object> getContext()
+	public Map<String, Optional<Object>> getContext()
 	{
 		return Map.copyOf(context);
 	}
@@ -324,10 +316,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	public S withContext(Object value, String name)
 	{
 		requireThatNameIsUnique(name, false);
-		if (value == null)
-			context.remove(name);
-		else
-			context.put(name, value);
+		context.put(name, Optional.ofNullable(value));
 		return self();
 	}
 
@@ -395,7 +384,21 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	}
 
 	/**
-	 * Invoked by a validation if the value is null. Sets the value to {@code undefined}.
+	 * @param name        the name of the value ({@code null} if undefined)
+	 * @param namePrefix  the string to prepend to the name if the name is undefined
+	 * @param value       a value
+	 * @param valuePrefix the string to prepend to the value if the name is undefined
+	 * @return the prefixed name if it is defined; otherwise, the prefixed string representation of the value
+	 */
+	public String getNameOrValue(String namePrefix, String name, String valuePrefix, Object value)
+	{
+		if (name == null)
+			return valuePrefix + configuration().stringMappers().toString(value);
+		return namePrefix + quoteName(name);
+	}
+
+	/**
+	 * Invoked by a validation if the value is null.
 	 */
 	protected abstract void onNull();
 }

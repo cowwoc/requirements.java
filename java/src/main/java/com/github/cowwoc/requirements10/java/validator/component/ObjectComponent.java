@@ -22,7 +22,7 @@ public interface ObjectComponent<S, T>
 	T getValue();
 
 	/**
-	 * Ensures that the value is null.
+	 * Ensures that the value is {@code null}.
 	 *
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not null
@@ -39,7 +39,7 @@ public interface ObjectComponent<S, T>
 	 * handler is preferable because it throws {@code NullPointerException} with a helpful message.
 	 *
 	 * @return this
-	 * @throws NullPointerException if the value is null
+	 * @throws NullPointerException if the value is {@code null}
 	 */
 	S isNotNull();
 
@@ -49,7 +49,7 @@ public interface ObjectComponent<S, T>
 	 * @param expected the expected object
 	 * @param name     the name of the expected object
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code name} is empty</li>
@@ -60,7 +60,7 @@ public interface ObjectComponent<S, T>
 	 *                                    {@code expected}</li>
 	 *                                  </ul>
 	 */
-	S isSameReferenceAs(Object expected, String name);
+	S isReferenceEqualTo(Object expected, String name);
 
 	/**
 	 * Ensures that the value is not the same reference as {@code unwanted}.
@@ -68,7 +68,7 @@ public interface ObjectComponent<S, T>
 	 * @param unwanted the unwanted object
 	 * @param name     the name of the unwanted object
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code name} is empty</li>
@@ -78,7 +78,7 @@ public interface ObjectComponent<S, T>
 	 *                                    <li>the value references the same value as {@code unwanted}</li>
 	 *                                  </ul>
 	 */
-	S isNotSameReferenceAs(Object unwanted, String name);
+	S isReferenceNotEqualTo(Object unwanted, String name);
 
 	/**
 	 * Ensures that the object is an instance of a class.
@@ -132,8 +132,8 @@ public interface ObjectComponent<S, T>
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected}
-	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
-	 * format</a>
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/master/docs/Textual_Diff.md">An
+	 * explanation of the output format</a>
 	 */
 	S isEqualTo(Object expected);
 
@@ -143,7 +143,7 @@ public interface ObjectComponent<S, T>
 	 * @param expected the expected value
 	 * @param name     the name of the expected value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code name} is empty</li>
@@ -152,8 +152,8 @@ public interface ObjectComponent<S, T>
 	 *                                    the validator context</li>
 	 *                                    <li>the value is not equal to {@code expected}</li>
 	 *                                  </ul>
-	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
-	 * format</a>
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/master/docs/Textual_Diff.md">An
+	 * explanation of the output format</a>
 	 */
 	S isEqualTo(Object expected, String name);
 
@@ -163,8 +163,8 @@ public interface ObjectComponent<S, T>
 	 * @param unwanted the unwanted value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is equal to {@code expected}
-	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
-	 * format</a>
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/master/docs/Textual_Diff.md">An
+	 * explanation of the output format</a>
 	 */
 	S isNotEqualTo(Object unwanted);
 
@@ -174,7 +174,7 @@ public interface ObjectComponent<S, T>
 	 * @param unwanted the unwanted value
 	 * @param name     the name of the other value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code name} is empty</li>
@@ -183,8 +183,8 @@ public interface ObjectComponent<S, T>
 	 *                                    the validator context</li>
 	 *                                    <li>the value is equal to the {@code unwanted} value</li>
 	 *                                  </ul>
-	 * @see <a href="https://github.com/cowwoc/requirements/docs/Textual_Diff.md">An explanation of the output
-	 * format</a>
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/master/docs/Textual_Diff.md">An
+	 * explanation of the output format</a>
 	 */
 	S isNotEqualTo(Object unwanted, String name);
 }

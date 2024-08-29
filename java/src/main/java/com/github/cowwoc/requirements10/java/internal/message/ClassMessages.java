@@ -14,44 +14,39 @@ public final class ClassMessages
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isPrimitive(AbstractValidator<?, T> validator)
+	public static MessageBuilder isPrimitiveFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be a primitive type");
+		return ValidatorMessages.constraintFailed(validator, "must be a primitive type");
 	}
 
 	/**
-	 * @param <U>       the type to compare to
-	 * @param <T>       the type of the value
 	 * @param validator the validator
+	 * @param subtype   the subtype
 	 * @return a message for the validation failure
 	 */
-	public static <U, T> MessageBuilder isSupertypeOf(AbstractValidator<?, T> validator,
-		GenericType<? extends U> type)
+	public static MessageBuilder isSupertypeOfFailed(AbstractValidator<?, ?> validator, GenericType<?> subtype)
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			MessageBuilder.quoteName(name) + " must be a supertype of " + type + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+			MessageBuilder.quoteName(name) + " must be a supertype of " + subtype + ".");
+		validator.value.ifValid(v -> messageBuilder.withContext(v, name));
 		return messageBuilder;
 	}
 
 	/**
-	 * @param <U>       the type to compare to
-	 * @param <T>       the type of the value
 	 * @param validator the validator
+	 * @param supertype the supertype
 	 * @return a message for the validation failure
 	 */
-	public static <U, T> MessageBuilder isSubtypeOf(AbstractValidator<?, T> validator,
-		GenericType<? super U> type)
+	public static MessageBuilder isSubtypeOfFailed(AbstractValidator<?, ?> validator, GenericType<?> supertype)
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			MessageBuilder.quoteName(name) + " must be a subtype of " + type + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+			MessageBuilder.quoteName(name) + " must be a subtype of " + supertype + ".");
+		validator.value.ifValid(v -> messageBuilder.withContext(v, name));
 		return messageBuilder;
 	}
 }

@@ -24,7 +24,9 @@ public final class StringMessages
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must be empty or contain only whitespace codepoints.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -36,8 +38,10 @@ public final class StringMessages
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			name + " may not be empty or contain only whitespace codepoints.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+			quoteName(name) + " may not be empty or contain only whitespace codepoints.");
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -50,7 +54,9 @@ public final class StringMessages
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " may not contain leading or trailing whitespace.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -63,7 +69,9 @@ public final class StringMessages
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " may not contain leading or trailing whitespace codepoints.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -79,7 +87,9 @@ public final class StringMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must start with " + stringMappers.toString(prefix) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -94,7 +104,9 @@ public final class StringMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " may not start with " + stringMappers.toString(prefix) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -109,7 +121,9 @@ public final class StringMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must end with " + stringMappers.toString(suffix) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -124,7 +138,9 @@ public final class StringMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " may not end with " + stringMappers.toString(suffix) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -139,7 +155,9 @@ public final class StringMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must contain " + stringMappers.toString(expected) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -154,7 +172,9 @@ public final class StringMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " may not contain " + stringMappers.toString(unwanted) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -170,7 +190,9 @@ public final class StringMessages
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must match the regular expression " +
 				stringMappers.toString(regex) + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 }

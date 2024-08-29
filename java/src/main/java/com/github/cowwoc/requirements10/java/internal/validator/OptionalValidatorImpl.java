@@ -4,18 +4,19 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.OptionalValidator;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "OptionalAssignedToNull"})
 public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<OptionalValidator<T>, Optional<T>>
 	implements OptionalValidator<T>
 {
@@ -23,7 +24,7 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -32,7 +33,8 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	 *                                  or {@code failures} are null
 	 */
 	public OptionalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<Optional<T>> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<Optional<T>> value, Map<String, Optional<Object>> context,
+		List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -42,10 +44,10 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(Optional::isPresent))
+		if (value.validationFailed(v -> v != null && v.isPresent()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
 		return this;
 	}
@@ -55,10 +57,10 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(Optional::isEmpty))
+		if (value.validationFailed(v -> v != null && v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isEmptyFailed(this).toString());
 		}
 		return this;
 	}
@@ -66,24 +68,24 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	@Override
 	public OptionalValidator<T> contains(Object expected)
 	{
-		return containsImpl(expected, MaybeUndefined.undefined());
+		return containsImpl(expected, null);
 	}
 
 	@Override
 	public OptionalValidator<T> contains(Object expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		return containsImpl(expected, MaybeUndefined.defined(name));
+		return containsImpl(expected, name);
 	}
 
-	private OptionalValidator<T> containsImpl(Object expected, MaybeUndefined<String> name)
+	private OptionalValidator<T> containsImpl(Object expected, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.equals(Optional.ofNullable(expected))))
+		if (value.validationFailed(v -> v != null && v.equals(Optional.ofNullable(expected))))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				CollectionMessages.containsValue(this, name, expected).toString());
+			addIllegalArgumentException(
+				CollectionMessages.containsFailed(this, name, expected).toString());
 		}
 		return this;
 	}

@@ -20,7 +20,7 @@ public interface ObjectArrayValidator<T, E> extends
 	ArrayComponent<ObjectArrayValidator<T, E>, T, E>
 {
 	/**
-	 * Ensures that the array contains only null values, or only non-null values.
+	 * Ensures that the array contains only null values or only non-null values.
 	 *
 	 * @return this
 	 * @throws NullPointerException     if the value is null

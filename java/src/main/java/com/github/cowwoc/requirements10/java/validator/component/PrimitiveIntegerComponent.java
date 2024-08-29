@@ -46,7 +46,7 @@ public interface PrimitiveIntegerComponent<S>
 	 * @param expected the expected value
 	 * @param name     the name of the expected value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code name} is empty</li>
@@ -73,7 +73,7 @@ public interface PrimitiveIntegerComponent<S>
 	 * @param unwanted the value to compare to
 	 * @param name     the name of the other value
 	 * @return this
-	 * @throws NullPointerException     if {@code name} is null
+	 * @throws NullPointerException     if {@code name} is {@code null}
 	 * @throws IllegalArgumentException if:
 	 *                                  <ul>
 	 *                                    <li>{@code name} is empty</li>

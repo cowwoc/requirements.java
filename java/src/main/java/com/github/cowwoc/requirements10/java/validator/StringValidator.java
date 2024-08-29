@@ -90,7 +90,6 @@ public interface StringValidator extends
 	 * @return this
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the value is not empty
-	 * @see #trim()
 	 */
 	StringValidator isEmpty();
 
@@ -100,9 +99,31 @@ public interface StringValidator extends
 	 * @return this
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the value is empty
-	 * @see #trim()
 	 */
 	StringValidator isNotEmpty();
+
+	/**
+	 * Ensures that the value does not contain leading or trailing whitespace, where whitespace is defined by
+	 * {@link String#trim()}.
+	 *
+	 * @return this
+	 * @throws NullPointerException     if the value is null
+	 * @throws IllegalArgumentException if the value contains leading or trailing whitespace
+	 * @see String#trim()
+	 * @see #isEmpty()
+	 */
+	StringValidator isTrimmed();
+
+	/**
+	 * Ensures that the value does not contain leading or trailing whitespace, where whitespace is defined by
+	 * {@link String#strip()}.
+	 *
+	 * @return this
+	 * @throws NullPointerException     if the value is null
+	 * @throws IllegalArgumentException if the value contains leading or trailing whitespace
+	 * @see #isBlank()
+	 */
+	StringValidator isStripped();
 
 	/**
 	 * Ensures that the value is empty or contains only {@link Character#isWhitespace(int) whitespace}
@@ -131,45 +152,4 @@ public interface StringValidator extends
 	 * @throws NullPointerException if the value is null
 	 */
 	PrimitiveUnsignedIntegerValidator length();
-
-	/**
-	 * Removes all the whitespace from the beginning and end of the value, where whitespace is defined by
-	 * {@link String#trim()}.
-	 *
-	 * @return this
-	 * @throws NullPointerException if the value is null
-	 */
-	StringValidator trim();
-
-	/**
-	 * Ensures that the value does not contain leading or trailing whitespace, where whitespace is defined by
-	 * {@link String#trim()}.
-	 *
-	 * @return this
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value contains leading or trailing whitespace
-	 * @see String#trim()
-	 * @see #isEmpty()
-	 */
-	StringValidator isTrimmed();
-
-	/**
-	 * Removes all the whitespace from the beginning and end of the value, where whitespace is defined by
-	 * {@link String#strip()}.
-	 *
-	 * @return this
-	 * @throws NullPointerException if the value is null
-	 */
-	StringValidator strip();
-
-	/**
-	 * Ensures that the value does not contain leading or trailing whitespace, where whitespace is defined by
-	 * {@link String#strip()}.
-	 *
-	 * @return this
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value contains leading or trailing whitespace
-	 * @see #isBlank()
-	 */
-	StringValidator isStripped();
 }

@@ -3410,10 +3410,13 @@ public final class DefaultJavaValidators
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
+	 * <p>
+	 * Note that values are wrapped in an {@code Optional} because modern maps do not support {@code null}
+	 * values.
 	 *
 	 * @return an unmodifiable map from each entry's name to its value
 	 */
-	public static Map<String, Object> getContext()
+	public static Map<String, Optional<Object>> getContext()
 	{
 		return StampedLocks.optimisticRead(CONTEXT_LOCK, DELEGATE::getContext);
 	}

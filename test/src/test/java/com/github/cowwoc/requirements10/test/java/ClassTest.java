@@ -247,9 +247,8 @@ public final class ClassTest
 		{
 			Class<Integer> actual = null;
 			List<String> expectedMessages = List.of("""
-					"actual" must be a supertype of java.lang.Integer.
-					actual: null""",
-				"\"actual\" may not be equal to class java.lang.Double");
+				"actual" must be a supertype of java.lang.Integer.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

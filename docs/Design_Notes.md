@@ -91,17 +91,9 @@ Providing separate validators for primitives
     * Per JMH, there is no performance justification for this. The JIT optimizes away any performance
       difference.
 
---------------------------------------------------------------
+Modeling undefined values
+-------------------------
 
-requireThat(value, name).isNotNull().isGreaterThan(3);
-assertThat(value, name).isNotNull().isGreaterThan(3);
-assertThat(v -> v.requireThat(value, name).isNotNull().isGreaterThan(3));
-checkIf(v -> v.requireThat(value, name).isNotNull().isGreaterThan(3)));
-
-    assertThat(value, name, v -> v.isNotNull().isGreaterThan(3));
-    checkIf(value, name, v -> v.isNotNull().isGreaterThan(3));
-
-    assertThat(value, name).isNotNull().isGreaterThan(3));
-    checkIf(value, name).isNotNull().isGreaterThan(3));
-
-checkIf(value, name).isNotNull().isGreaterThan(3);
+* In some cases, it's clear that `null` denotes an undefined value (e.g. primitive values).
+* In other cases, there is no way to know. For example, is a Collection `null` or did a user dereference
+`Map.keys()` on a `null` value?

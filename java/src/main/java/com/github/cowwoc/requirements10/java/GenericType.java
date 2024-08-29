@@ -125,7 +125,7 @@ public abstract class GenericType<T>
 	 */
 	public <C> boolean isSupertypeOf(GenericType<C> child)
 	{
-		return child.isSubtypeOf(this);
+		return child != null && child.isSubtypeOf(this);
 	}
 
 	/**
@@ -137,6 +137,8 @@ public abstract class GenericType<T>
 	 */
 	public <C> boolean isSubtypeOf(GenericType<C> parent)
 	{
+		if (parent == null)
+			return false;
 		return switch (parent.type)
 		{
 			case TypeVariable<?> typeVariable ->
@@ -255,7 +257,7 @@ public abstract class GenericType<T>
 		// The raw type of Types with bounds (e.g. wildcards) is equal to their first bound.
 		return getRawTypes().iterator().next();
 	}
-	
+
 	@Override
 	public int hashCode()
 	{

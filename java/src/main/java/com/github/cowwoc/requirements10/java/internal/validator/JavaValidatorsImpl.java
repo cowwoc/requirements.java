@@ -1,11 +1,11 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.GenericType;
+import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.BigIntegerValidator;
@@ -1262,13 +1262,13 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 
 	private PrimitiveByteValidator newInstance(byte value, String name, Configuration configuration)
 	{
-		return new PrimitiveByteValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveByteValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
-	private Map<String, Object> newValidatorContext()
+	private Map<String, Optional<Object>> newValidatorContext()
 	{
-		Map<String, Object> context = HashMap.newHashMap(this.context.size() + 2);
+		Map<String, Optional<Object>> context = HashMap.newHashMap(this.context.size() + 2);
 		context.putAll(this.context);
 		return context;
 	}
@@ -1280,210 +1280,210 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 
 	private ByteValidator newInstance(Byte value, String name, Configuration configuration)
 	{
-		return new ByteValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new ByteValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveShortValidator newInstance(short value, String name, Configuration configuration)
 	{
-		return new PrimitiveShortValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveShortValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private ShortValidator newInstance(Short value, String name, Configuration configuration)
 	{
-		return new ShortValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new ShortValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveIntegerValidator newInstance(int value, String name, Configuration configuration)
 	{
-		return new PrimitiveIntegerValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveIntegerValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private IntegerValidator newInstance(Integer value, String name, Configuration configuration)
 	{
-		return new IntegerValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new IntegerValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveLongValidator newInstance(long value, String name, Configuration configuration)
 	{
-		return new PrimitiveLongValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveLongValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private LongValidator newInstance(Long value, String name, Configuration configuration)
 	{
-		return new LongValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new LongValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveFloatValidator newInstance(float value, String name, Configuration configuration)
 	{
-		return new PrimitiveFloatValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveFloatValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private FloatValidator newInstance(Float value, String name, Configuration configuration)
 	{
-		return new FloatValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new FloatValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveDoubleValidator newInstance(double value, String name, Configuration configuration)
 	{
-		return new PrimitiveDoubleValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveDoubleValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private DoubleValidator newInstance(Double value, String name, Configuration configuration)
 	{
-		return new DoubleValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new DoubleValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveBooleanValidator newInstance(boolean value, String name, Configuration configuration)
 	{
-		return new PrimitiveBooleanValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveBooleanValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private BooleanValidator newInstance(Boolean value, String name, Configuration configuration)
 	{
-		return new BooleanValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new BooleanValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveCharacterValidator newInstance(char value, String name, Configuration configuration)
 	{
-		return new PrimitiveCharacterValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveCharacterValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private CharacterValidator newInstance(Character value, String name, Configuration configuration)
 	{
-		return new CharacterValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new CharacterValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private BigIntegerValidator newInstance(BigInteger value, String name, Configuration configuration)
 	{
-		return new BigIntegerValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new BigIntegerValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private BigDecimalValidator newInstance(BigDecimal value, String name, Configuration configuration)
 	{
-		return new BigDecimalValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new BigDecimalValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private <T extends Comparable<T>> ComparableValidator<T> newInstance(T value, String name,
 		Configuration configuration)
 	{
-		return new ComparableValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new ComparableValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private <T> ObjectValidator<T> newInstance(T value, String name, Configuration configuration)
 	{
-		return new ObjectValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new ObjectValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private <T extends Collection<E>, E> CollectionValidator<T, E> newInstance(T value, String name,
 		Configuration configuration)
 	{
-		return new CollectionValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new CollectionValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			Pluralizer.ELEMENT, newValidatorContext(), newValidatorFailures());
 	}
 
 	private <T extends List<E>, E> ListValidator<T, E> newInstance(T value, String name,
 		Configuration configuration)
 	{
-		return new ListValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new ListValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			Pluralizer.ELEMENT, newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveByteArrayValidator newInstance(byte[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveByteArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveByteArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveShortArrayValidator newInstance(short[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveShortArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveShortArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveIntegerArrayValidator newInstance(int[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveIntegerArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveIntegerArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveLongArrayValidator newInstance(long[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveLongArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveLongArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveFloatArrayValidator newInstance(float[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveFloatArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveFloatArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveDoubleArrayValidator newInstance(double[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveDoubleArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveDoubleArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveBooleanArrayValidator newInstance(boolean[] value, String name,
 		Configuration configuration)
 	{
-		return new PrimitiveBooleanArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveBooleanArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PrimitiveCharacterArrayValidator newInstance(char[] value, String name, Configuration configuration)
 	{
-		return new PrimitiveCharacterArrayValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PrimitiveCharacterArrayValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private <E> ObjectArrayValidator<E[], E> newInstance(E[] value, String name, Configuration configuration)
 	{
-		return new ObjectArrayValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new ObjectArrayValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private <T extends Map<K, V>, K, V> MapValidator<T, K, V> newInstance(T value, String name,
 		Configuration configuration)
 	{
-		return new MapValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new MapValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private PathValidator newInstance(Path value, String name, Configuration configuration)
 	{
-		return new PathValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new PathValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private StringValidator newInstance(String value, String name, Configuration configuration)
 	{
-		return new StringValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new StringValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private UriValidator newInstance(URI value, String name, Configuration configuration)
 	{
-		return new UriValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new UriValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
@@ -1495,20 +1495,20 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	private <T> GenericTypeValidator<T> newInstance(GenericType<T> value, String name,
 		Configuration configuration)
 	{
-		return new GenericTypeValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new GenericTypeValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	private <T> OptionalValidator<T> newInstance(Optional<T> value, String name, Configuration configuration)
 	{
-		return new OptionalValidatorImpl<>(scope, configuration, name, MaybeUndefined.defined(value),
+		return new OptionalValidatorImpl<>(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
 	private InetAddressValidator newInstance(InetAddress value, String name, Configuration configuration)
 	{
-		return new InetAddressValidatorImpl(scope, configuration, name, MaybeUndefined.defined(value),
+		return new InetAddressValidatorImpl(scope, configuration, name, ValidationTarget.valid(value),
 			newValidatorContext(), newValidatorFailures());
 	}
 
@@ -1521,7 +1521,7 @@ public final class JavaValidatorsImpl extends AbstractValidators<JavaValidators>
 	@Override
 	public JavaValidators withContext(Object value, String name)
 	{
-		context.put(name, value);
+		context.put(name, Optional.ofNullable(value));
 		return this;
 	}
 

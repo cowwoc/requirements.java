@@ -1,8 +1,7 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
 
 /**
  * Helper methods for validating {@code Character}.
@@ -35,7 +34,7 @@ final class Characters<S>
 	 */
 	public S isEqualTo(char expected)
 	{
-		return isEqualToImpl(expected, MaybeUndefined.undefined());
+		return isEqualToImpl(expected, null);
 	}
 
 	/**
@@ -58,15 +57,15 @@ final class Characters<S>
 	public S isEqualTo(char expected, String name)
 	{
 		validator.requireThatNameIsUnique(name);
-		return isEqualToImpl(expected, MaybeUndefined.defined(name));
+		return isEqualToImpl(expected, name);
 	}
 
-	private S isEqualToImpl(char expected, MaybeUndefined<String> name)
+	private S isEqualToImpl(char expected, String name)
 	{
-		switch (validator.value.test(value -> value != null && value == expected))
+		if (validator.value.nullToInvalid().validationFailed(v -> v == expected))
 		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isEqualTo(validator, name, expected).toString());
+			validator.addIllegalArgumentException(
+				ValidatorMessages.isEqualToFailed(validator, name, expected).toString());
 		}
 		return self();
 	}
@@ -80,7 +79,7 @@ final class Characters<S>
 	 */
 	public S isNotEqualTo(char unwanted)
 	{
-		return isNotEqualToImpl(unwanted, MaybeUndefined.undefined());
+		return isNotEqualToImpl(unwanted, null);
 	}
 
 	/**
@@ -102,17 +101,15 @@ final class Characters<S>
 	public S isNotEqualTo(char unwanted, String name)
 	{
 		validator.requireThatNameIsUnique(name);
-		return isNotEqualToImpl(unwanted, MaybeUndefined.defined(name));
+		return isNotEqualToImpl(unwanted, name);
 	}
 
-	private S isNotEqualToImpl(char unwanted, MaybeUndefined<String> name)
+	private S isNotEqualToImpl(char unwanted, String name)
 	{
-		if (validator.value.isNull())
-			validator.onNull();
-		switch (validator.value.test(value -> value != unwanted))
+		if (validator.value.nullToInvalid().validationFailed(v -> v != unwanted))
 		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(validator, name, unwanted).toString());
+			validator.addIllegalArgumentException(
+				ValidatorMessages.isNotEqualToFailed(validator, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -402,7 +399,7 @@ final class Characters<S>
 	 *
 	 * @param minimumExclusive the exclusive lower bound
 	 * @return this
-	 * @throws NullPointerException     if the value or {@code minimumExclusive} is null
+	 * @throws NullPointerException     if the value or {@code minimumExclusive} are null
 	 * @throws IllegalArgumentException if the value is less than or equal to {@code minimumExclusive}
 	 */
 	public S isGreaterThan(Character minimumExclusive)
@@ -484,10 +481,9 @@ final class Characters<S>
 	/**
 	 * @return this
 	 */
+	@SuppressWarnings("unchecked")
 	private S self()
 	{
-		@SuppressWarnings("unchecked")
-		S self = (S) validator;
-		return self;
+		return (S) validator;
 	}
 }

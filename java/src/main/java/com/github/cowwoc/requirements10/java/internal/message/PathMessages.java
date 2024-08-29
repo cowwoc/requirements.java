@@ -19,16 +19,17 @@ public final class PathMessages
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder exists(AbstractValidator<?, T> validator)
+	public static MessageBuilder exists(AbstractValidator<?, Path> validator)
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must exist.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		Path value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
 		return messageBuilder;
 	}
 
@@ -44,8 +45,12 @@ public final class PathMessages
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must reference an existing " + type + ".");
-		validator.ifDefined(value -> messageBuilder.withContext(value.toAbsolutePath(), name).
-			withContext(options, "options"));
+		Path value = validator.getValueOrDefault(null);
+		if (value != null)
+		{
+			messageBuilder.withContext(value.toAbsolutePath(), name).
+				withContext(options, "options");
+		}
 		return messageBuilder;
 	}
 
@@ -66,36 +71,42 @@ public final class PathMessages
 		else
 			message = "Failed to read attributes of " + quoteName(name) + ".";
 		MessageBuilder messageBuilder = new MessageBuilder(validator, message);
-		validator.ifDefined(value -> messageBuilder.withContext(value.toAbsolutePath(), name));
-		messageBuilder.withContext(options, "options");
+		Path value = validator.getValueOrDefault(null);
+		if (value != null)
+		{
+			messageBuilder.withContext(value.toAbsolutePath(), name).
+				withContext(options, "options");
+		}
 		return messageBuilder;
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isRelative(AbstractValidator<?, T> validator)
+	public static MessageBuilder isRelative(AbstractValidator<?, Path> validator)
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must reference a relative path.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		Path value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value.toAbsolutePath(), name);
 		return messageBuilder;
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isAbsolute(AbstractValidator<?, T> validator)
+	public static MessageBuilder isAbsolute(AbstractValidator<?, Path> validator)
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " must reference an absolute path.");
-		validator.ifDefined(value -> messageBuilder.withContext(value, name));
+		Path value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value.toAbsolutePath(), name);
 		return messageBuilder;
 	}
 }

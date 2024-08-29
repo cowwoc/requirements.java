@@ -15,7 +15,7 @@ public interface ZeroNumberComponent<S>
 	 * Ensures that the value is zero. {@code -0.0} is considered to be zero *and* negative.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is:
 	 *                                  <ul>
 	 *                                    <li>not zero</li>
@@ -28,7 +28,7 @@ public interface ZeroNumberComponent<S>
 	 * Ensures that the value is not zero. {@code -0.0} is considered to be zero *and* negative.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is zero
 	 */
 	S isNotZero();

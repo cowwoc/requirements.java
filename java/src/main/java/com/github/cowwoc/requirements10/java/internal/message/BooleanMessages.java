@@ -20,17 +20,17 @@ public final class BooleanMessages
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isTrue(AbstractValidator<?, Boolean> validator)
+	public static MessageBuilder isTrueFailed(AbstractValidator<?, Boolean> validator)
 	{
-		return Messages.constraint(validator, "must be true");
+		return ValidatorMessages.constraintFailed(validator, "must be true");
 	}
 
 	/**
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isFalse(AbstractValidator<?, Boolean> validator)
+	public static MessageBuilder isFalseFailed(AbstractValidator<?, Boolean> validator)
 	{
-		return Messages.constraint(validator, "must be false");
+		return ValidatorMessages.constraintFailed(validator, "must be false");
 	}
 }

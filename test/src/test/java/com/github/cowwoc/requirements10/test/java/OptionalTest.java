@@ -164,8 +164,9 @@ public final class OptionalTest
 		{
 			Optional<?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" may not be empty",
-				"\"actual\" must be equal to 5");
+				"\"actual\" may not be empty", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isPresent().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -179,8 +180,9 @@ public final class OptionalTest
 		{
 			Optional<?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be empty",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must be empty", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isEmpty().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -194,8 +196,9 @@ public final class OptionalTest
 		{
 			Optional<?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must contain 5",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must contain 5", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				contains(5).isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -209,9 +212,10 @@ public final class OptionalTest
 		{
 			Optional<?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
-					"actual" must contain the same value as "expected".
-					expected: 5""",
-				"\"actual\" must be equal to 5");
+				"actual" must contain the same value as "expected".
+				expected: 5""", """
+				"actual" must be equal to 5.
+				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				contains(5, "expected").isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);

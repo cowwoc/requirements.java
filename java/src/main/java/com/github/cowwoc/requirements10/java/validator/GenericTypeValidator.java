@@ -31,50 +31,50 @@ public interface GenericTypeValidator<T> extends
 	GenericTypeValidator<T> isPrimitive();
 
 	/**
-	 * Ensures that the value is a superclass or superinterface of {@code type}.
+	 * Ensures that the value is a superclass or superinterface of {@code subtype}.
 	 *
 	 * @param <U>  the type to compare to
 	 * @param type the type to compare to. For types that contain type-parameters, use the
 	 *             {@link #isSupertypeOf(GenericType) TypeToken} overload.
 	 * @return this
 	 * @throws NullPointerException     if the value or {@code type} are null
-	 * @throws IllegalArgumentException if value is not a supertype of {@code type}
+	 * @throws IllegalArgumentException if value is not a supertype of {@code subtype}
 	 */
 	<U> GenericTypeValidator<U> isSupertypeOf(Class<? extends U> type);
 
 	/**
-	 * Ensures that the value is a superclass or superinterface of {@code type}.
+	 * Ensures that the value is a superclass or superinterface of {@code subtype}.
 	 *
-	 * @param <U>  the type to compare to
-	 * @param type the type to compare to. For types without type-parameters, prefer the *
-	 *             {@link #isSupertypeOf(Class) Class} overload.
+	 * @param <U>     the type to compare to
+	 * @param subtype the type to compare to. For types without type-parameters, prefer the *
+	 *                {@link #isSupertypeOf(Class) Class} overload.
 	 * @return this
 	 * @throws NullPointerException     if the value or {@code type} are null
-	 * @throws IllegalArgumentException if value is not a supertype of {@code type}
+	 * @throws IllegalArgumentException if value is not a supertype of {@code subtype}
 	 */
-	<U> GenericTypeValidator<U> isSupertypeOf(GenericType<? extends U> type);
+	<U> GenericTypeValidator<U> isSupertypeOf(GenericType<? extends U> subtype);
 
 	/**
-	 * Ensures that the value is a subclass or subinterface of {@code type}.
+	 * Ensures that the value is a subclass or subinterface of {@code supertype}.
 	 *
-	 * @param <U>  the type to compare to
-	 * @param type the type to compare to. For types that contain type-parameters, use the
-	 *             {@link #isSubtypeOf(GenericType) TypeToken} overload.
+	 * @param <U>       the type to compare to
+	 * @param supertype the type to compare to. For types that contain type-parameters, use the
+	 *                  {@link #isSubtypeOf(GenericType) TypeToken} overload.
 	 * @return this
 	 * @throws NullPointerException     if the value or {@code type} are null
-	 * @throws IllegalArgumentException if value is not a subtype of {@code type}
+	 * @throws IllegalArgumentException if value is not a subtype of {@code supertype}
 	 */
-	<U> GenericTypeValidator<U> isSubtypeOf(Class<? super U> type);
+	<U> GenericTypeValidator<U> isSubtypeOf(Class<? super U> supertype);
 
 	/**
-	 * Ensures that the value is a subclass or subinterface of {@code type}.
+	 * Ensures that the value is a subclass or subinterface of {@code supertype}.
 	 *
-	 * @param <U>  the type to compare to
-	 * @param type the type to compare to. For types without type-parameters, prefer the
-	 *             {@link #isSubtypeOf(Class) Class} overload.
+	 * @param <U>       the type to compare to
+	 * @param supertype the type to compare to. For types without type-parameters, prefer the
+	 *                  {@link #isSubtypeOf(Class) Class} overload.
 	 * @return this
 	 * @throws NullPointerException     if the value or {@code type} are null
-	 * @throws IllegalArgumentException if value is not a subtype of {@code type}
+	 * @throws IllegalArgumentException if value is not a subtype of {@code supertype}
 	 */
-	<U> GenericTypeValidator<U> isSubtypeOf(GenericType<? super U> type);
+	<U> GenericTypeValidator<U> isSubtypeOf(GenericType<? super U> supertype);
 }

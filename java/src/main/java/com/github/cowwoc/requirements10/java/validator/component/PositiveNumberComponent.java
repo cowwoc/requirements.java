@@ -15,7 +15,7 @@ public interface PositiveNumberComponent<S>
 	 * Ensures that the value is positive.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is:
 	 *                                  <ul>
 	 *                                    <li>not positive</li>
@@ -25,11 +25,11 @@ public interface PositiveNumberComponent<S>
 	S isPositive();
 
 	/**
-	 * Ensures that the value is not positive.
+	 * Ensures that the value is not a positive number.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the value is positive
+	 * @throws NullPointerException     if the value is {@code null}
+	 * @throws IllegalArgumentException if the value is a positive number
 	 */
 	S isNotPositive();
 }

@@ -12,12 +12,12 @@ import java.util.Set;
 /**
  * Set helper functions.
  */
-public final class Sets
+public final class Collections
 {
 	/**
 	 * Prevent construction.
 	 */
-	private Sets()
+	private Collections()
 	{
 	}
 
@@ -87,5 +87,25 @@ public final class Sets
 		Set<E> result = new LinkedHashSet<>(big);
 		result.removeAll(unwanted);
 		return result;
+	}
+
+	/**
+	 * @param <E>        the type of elements in the collection
+	 * @param collection a collection
+	 * @return the duplicate elements in the collection
+	 */
+	public static <E> Set<E> getDuplicates(Collection<E> collection)
+	{
+		if (collection instanceof Set<?>)
+			return Set.of();
+		int size = collection.size();
+		Set<E> unique = new HashSet<>(size);
+		Set<E> duplicates = new HashSet<>(size);
+		for (E element : collection)
+		{
+			if (!unique.add(element))
+				duplicates.add(element);
+		}
+		return duplicates;
 	}
 }

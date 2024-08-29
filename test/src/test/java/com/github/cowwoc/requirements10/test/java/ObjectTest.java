@@ -163,7 +163,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSameReferenceAs(actual, "itself");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
 		}
 	}
 
@@ -173,7 +173,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSameReferenceAs(actual, "itself");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
 		}
 	}
 
@@ -184,7 +184,7 @@ public final class ObjectTest
 		{
 			Object actual = new Object();
 			Object expected = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSameReferenceAs(expected, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(expected, "expected");
 		}
 	}
 
@@ -195,7 +195,7 @@ public final class ObjectTest
 		{
 			Object actual = new Object();
 			Object expected = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotSameReferenceAs(expected, "expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(expected, "expected");
 		}
 	}
 
@@ -205,7 +205,7 @@ public final class ObjectTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotSameReferenceAs(actual, "actual");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(actual, "actual");
 		}
 	}
 

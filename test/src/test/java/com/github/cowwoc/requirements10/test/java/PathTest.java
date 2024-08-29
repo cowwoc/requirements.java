@@ -249,8 +249,9 @@ public final class PathTest
 		{
 			Path actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must exist",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must exist", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				exists().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
@@ -265,8 +266,9 @@ public final class PathTest
 		{
 			Path actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must reference an absolute path",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must reference an absolute path", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isAbsolute().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
@@ -281,8 +283,9 @@ public final class PathTest
 		{
 			Path actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must reference an existing directory",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must reference an existing directory", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isDirectory().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
@@ -296,8 +299,9 @@ public final class PathTest
 		{
 			Path actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must reference an existing file",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must reference an existing file", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isRegularFile().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
@@ -312,8 +316,9 @@ public final class PathTest
 		{
 			Path actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must reference a relative path",
-				"\"actual\" must be equal to 5");
+				"\"actual\" must reference a relative path", """
+					"actual" must be equal to 5.
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isRelative().isEqualTo(5).elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").

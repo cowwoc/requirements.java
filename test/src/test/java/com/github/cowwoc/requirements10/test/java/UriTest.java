@@ -64,10 +64,11 @@ public final class UriTest
 		{
 			URI actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
-				"\"actual\" must be an absolute URI",
-				"\"actual\" must be equal to \"notEqual\"");
+				"\"actual\" must be an absolute URI", """
+					"actual" must be equal to "equal".
+					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
-				isAbsolute().isEqualTo("notEqual").elseGetFailures().getMessages();
+				isAbsolute().isEqualTo("equal").elseGetFailures().getMessages();
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}

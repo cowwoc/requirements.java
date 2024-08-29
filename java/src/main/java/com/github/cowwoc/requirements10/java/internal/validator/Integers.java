@@ -1,10 +1,9 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
-import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined.ValidationResult;
+import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Numbers;
 
 /**
@@ -38,7 +37,7 @@ final class Integers<S>
 	 */
 	public S isEqualTo(int expected)
 	{
-		return isEqualToImpl(expected, MaybeUndefined.undefined());
+		return isEqualToImpl(expected, null);
 	}
 
 	/**
@@ -61,15 +60,15 @@ final class Integers<S>
 	public S isEqualTo(int expected, String name)
 	{
 		validator.requireThatNameIsUnique(name);
-		return isEqualToImpl(expected, MaybeUndefined.defined(name));
+		return isEqualToImpl(expected, name);
 	}
 
-	private S isEqualToImpl(int expected, MaybeUndefined<String> name)
+	private S isEqualToImpl(int expected, String name)
 	{
-		switch (validator.value.test(value -> value != null && value == expected))
+		if (validator.value.nullToInvalid().validationFailed(v -> v == expected))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isEqualTo(validator, name, expected).toString());
+			validator.addIllegalArgumentException(
+				ValidatorMessages.isEqualToFailed(validator, name, expected).toString());
 		}
 		return self();
 	}
@@ -83,7 +82,7 @@ final class Integers<S>
 	 */
 	public S isNotEqualTo(int unwanted)
 	{
-		return isNotEqualToImpl(unwanted, MaybeUndefined.undefined());
+		return isNotEqualToImpl(unwanted, null);
 	}
 
 	/**
@@ -105,17 +104,15 @@ final class Integers<S>
 	public S isNotEqualTo(int unwanted, String name)
 	{
 		validator.requireThatNameIsUnique(name);
-		return isNotEqualToImpl(unwanted, MaybeUndefined.defined(name));
+		return isNotEqualToImpl(unwanted, name);
 	}
 
-	private S isNotEqualToImpl(int unwanted, MaybeUndefined<String> name)
+	private S isNotEqualToImpl(int unwanted, String name)
 	{
-		if (validator.value.isNull())
-			validator.onNull();
-		switch (validator.value.test(value -> value != unwanted))
+		if (validator.value.nullToInvalid().validationFailed(v -> v == unwanted))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isNotEqualTo(validator, name, unwanted).toString());
+			validator.addIllegalArgumentException(
+				ValidatorMessages.isNotEqualToFailed(validator, name, unwanted).toString());
 		}
 		return self();
 	}
@@ -129,12 +126,13 @@ final class Integers<S>
 	 */
 	public S isNegative()
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value < 0))
+		if (value.validationFailed(v -> v != null && v < 0))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNegative(validator).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isNegativeFailed(validator).toString());
 		}
 		return self();
 	}
@@ -146,14 +144,16 @@ final class Integers<S>
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the value is negative
 	 */
+	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotNegative()
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value >= 0))
+		if (value.validationFailed(v -> v != null && !(v < 0)))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotNegative(validator).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isNotNegativeFailed(validator).toString());
 		}
 		return self();
 	}
@@ -167,12 +167,13 @@ final class Integers<S>
 	 */
 	public S isZero()
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value == 0))
+		if (value.validationFailed(v -> v != null && v == 0))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isZero(validator).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isZeroFailed(validator).toString());
 		}
 		return self();
 	}
@@ -184,14 +185,16 @@ final class Integers<S>
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the value is zero
 	 */
+	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotZero()
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value != 0))
+		if (value.validationFailed(v -> v != null && !(v == 0)))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotZero(validator).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isNotZeroFailed(validator).toString());
 		}
 		return self();
 	}
@@ -205,12 +208,13 @@ final class Integers<S>
 	 */
 	public S isPositive()
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value > 0))
+		if (value.validationFailed(v -> v != null && v > 0))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isPositive(validator).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isPositiveFailed(validator).toString());
 		}
 		return self();
 	}
@@ -222,14 +226,16 @@ final class Integers<S>
 	 * @throws NullPointerException     if the value is null
 	 * @throws IllegalArgumentException if the value is positive
 	 */
+	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotPositive()
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value <= 0))
+		if (value.validationFailed(v -> v != null && !(v > 0)))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotPositive(validator).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isNotPositiveFailed(validator).toString());
 		}
 		return self();
 	}
@@ -519,7 +525,7 @@ final class Integers<S>
 	 *
 	 * @param minimumExclusive the exclusive lower bound
 	 * @return this
-	 * @throws NullPointerException     if the value or {@code minimumExclusive} is null
+	 * @throws NullPointerException     if the value or {@code minimumExclusive} are null
 	 * @throws IllegalArgumentException if the value is less than or equal to {@code minimumExclusive}
 	 */
 	public S isGreaterThan(Integer minimumExclusive)
@@ -606,7 +612,7 @@ final class Integers<S>
 	 */
 	public S isMultipleOf(int factor)
 	{
-		return isMultipleOfImpl(factor, MaybeUndefined.undefined());
+		return isMultipleOfImpl(factor, null);
 	}
 
 	/**
@@ -628,17 +634,18 @@ final class Integers<S>
 	public S isMultipleOf(int factor, String name)
 	{
 		validator.requireThatNameIsUnique(name);
-		return isMultipleOfImpl(factor, MaybeUndefined.defined(name));
+		return isMultipleOfImpl(factor, name);
 	}
 
-	private S isMultipleOfImpl(int factor, MaybeUndefined<String> name)
+	private S isMultipleOfImpl(int factor, String name)
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> Numbers.isMultipleOf(value, factor)))
+		if (value.validationFailed(v -> v != null && Numbers.isMultipleOf(v, factor)))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isMultipleOf(validator, name, factor).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isMultipleOfFailed(validator, name, factor).toString());
 		}
 		return self();
 	}
@@ -652,7 +659,7 @@ final class Integers<S>
 	 */
 	public S isNotMultipleOf(int factor)
 	{
-		return isNotMultipleOfImpl(factor, MaybeUndefined.undefined());
+		return isNotMultipleOfImpl(factor, null);
 	}
 
 	/**
@@ -674,17 +681,18 @@ final class Integers<S>
 	public S isNotMultipleOf(int factor, String name)
 	{
 		validator.requireThatNameIsUnique(name);
-		return isNotMultipleOfImpl(factor, MaybeUndefined.defined(name));
+		return isNotMultipleOfImpl(factor, name);
 	}
 
-	private S isNotMultipleOfImpl(int factor, MaybeUndefined<String> name)
+	private S isNotMultipleOfImpl(int factor, String name)
 	{
-		if (validator.value.isNull())
+		ValidationTarget<Integer> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> !Numbers.isMultipleOf(value, factor)))
+		if (value.validationFailed(v -> v != null && !Numbers.isMultipleOf(v, factor)))
 		{
-			case ValidationResult.UNDEFINED, ValidationResult.FALSE -> validator.addIllegalArgumentException(
-				NumberMessages.isNotMultipleOf(validator, name, factor).toString());
+			validator.addIllegalArgumentException(
+				NumberMessages.isNotMultipleOfFailed(validator, name, factor).toString());
 		}
 		return self();
 	}
@@ -692,10 +700,9 @@ final class Integers<S>
 	/**
 	 * @return this
 	 */
+	@SuppressWarnings("unchecked")
 	private S self()
 	{
-		@SuppressWarnings("unchecked")
-		S self = (S) validator;
-		return self;
+		return (S) validator;
 	}
 }

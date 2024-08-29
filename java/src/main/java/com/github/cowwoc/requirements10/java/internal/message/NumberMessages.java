@@ -1,7 +1,6 @@
 package com.github.cowwoc.requirements10.java.internal.message;
 
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
 /**
@@ -14,147 +13,134 @@ public final class NumberMessages
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isNegative(AbstractValidator<?, T> validator)
+	public static MessageBuilder isNegativeFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be negative");
-	}
-
-	/**
-	 * @param <T>       the type of the value
-	 * @param validator the validator
-	 * @return a message for the validation failure
-	 */
-	public static <T> MessageBuilder isNotNegative(AbstractValidator<?, T> validator)
-	{
-		return Messages.constraint(validator, "may not be negative");
-	}
-
-	/**
-	 * @param <T>       the type of the value
-	 * @param validator the validator
-	 * @return a message for the validation failure
-	 */
-	public static <T> MessageBuilder isZero(AbstractValidator<?, T> validator)
-	{
-		return Messages.constraint(validator, "must be zero");
+		return ValidatorMessages.constraintFailed(validator, "must be negative");
 	}
 
 	/**
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder isNotZero(AbstractValidator<?, ?> validator)
+	public static MessageBuilder isNotNegativeFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "may not be zero");
+		return ValidatorMessages.constraintFailed(validator, "may not be negative");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isPositive(AbstractValidator<?, T> validator)
+	public static MessageBuilder isZeroFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be positive");
+		return ValidatorMessages.constraintFailed(validator, "must be zero");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isNotPositive(AbstractValidator<?, T> validator)
+	public static MessageBuilder isNotZeroFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "may not be positive");
+		return ValidatorMessages.constraintFailed(validator, "may not be zero");
 	}
 
 	/**
-	 * @param <T>        the type of the value
+	 * @param validator the validator
+	 * @return a message for the validation failure
+	 */
+	public static MessageBuilder isPositiveFailed(AbstractValidator<?, ?> validator)
+	{
+		return ValidatorMessages.constraintFailed(validator, "must be positive");
+	}
+
+	/**
+	 * @param validator the validator
+	 * @return a message for the validation failure
+	 */
+	public static MessageBuilder isNotPositiveFailed(AbstractValidator<?, ?> validator)
+	{
+		return ValidatorMessages.constraintFailed(validator, "may not be positive");
+	}
+
+	/**
 	 * @param validator  the validator
-	 * @param factorName the name of the factor
+	 * @param factorName the name of the factor ({@code null} if undefined)
 	 * @param factor     the value being multiplied by
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isMultipleOf(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> factorName, Object factor)
+	public static MessageBuilder isMultipleOfFailed(AbstractValidator<?, ?> validator, String factorName,
+		Object factor)
 	{
 		return ComparableMessages.compareValues(validator, "must be a multiple of", factorName, factor);
 	}
 
 	/**
-	 * @param <T>        the type of the value
 	 * @param validator  the validator
-	 * @param factorName the name of the factor
+	 * @param factorName the name of the factor ({@code null} if undefined)
 	 * @param factor     the value being multiplied by
 	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isNotMultipleOf(AbstractValidator<?, T> validator,
-		MaybeUndefined<String> factorName, Object factor)
+	public static MessageBuilder isNotMultipleOfFailed(AbstractValidator<?, ?> validator, String factorName,
+		Object factor)
 	{
 		return ComparableMessages.compareValues(validator, "may not be a multiple of", factorName, factor);
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
-	 * @return a failure message for this validation
+	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isWholeNumber(AbstractValidator<?, T> validator)
+	public static MessageBuilder isWholeNumberFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be a whole number");
+		return ValidatorMessages.constraintFailed(validator, "must be a whole number");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
-	 * @return a failure message for this validation
+	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isNotWholeNumber(AbstractValidator<?, T> validator)
+	public static MessageBuilder isNotWholeNumberFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "may not be a whole number");
+		return ValidatorMessages.constraintFailed(validator, "may not be a whole number");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
-	 * @return a failure message for this validation
+	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isNumber(AbstractValidator<?, T> validator)
+	public static MessageBuilder isNumberFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be a well-defined number");
+		return ValidatorMessages.constraintFailed(validator, "must be a well-defined number");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
-	 * @return a failure message for this validation
+	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isNotNumber(AbstractValidator<?, T> validator)
+	public static MessageBuilder isNotNumberFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "may not be a well-defined number");
+		return ValidatorMessages.constraintFailed(validator, "may not be a well-defined number");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
-	 * @return a failure message for this validation
+	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isFinite(AbstractValidator<?, T> validator)
+	public static MessageBuilder isFiniteFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be a finite number");
+		return ValidatorMessages.constraintFailed(validator, "must be a finite number");
 	}
 
 	/**
-	 * @param <T>       the type of the value
 	 * @param validator the validator
-	 * @return a failure message for this validation
+	 * @return a message for the validation failure
 	 */
-	public static <T> MessageBuilder isInfinite(AbstractValidator<?, T> validator)
+	public static MessageBuilder isInfiniteFailed(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be an infinite number");
+		return ValidatorMessages.constraintFailed(validator, "must be an infinite number");
 	}
 }

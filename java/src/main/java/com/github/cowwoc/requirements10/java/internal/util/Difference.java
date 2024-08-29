@@ -24,12 +24,12 @@ public record Difference<E>(Set<E> common, Set<E> onlyInActual, Set<E> onlyInOth
 	 */
 	public static <E> Difference<E> actualVsOther(Collection<E> value, Collection<E> other)
 	{
-		Set<E> valueAsSet = Sets.asSet(value);
-		Set<E> otherAsSet = Sets.asSet(other);
+		Set<E> valueAsSet = Collections.asSet(value);
+		Set<E> otherAsSet = Collections.asSet(other);
 
-		Set<E> common = Sets.intersection(valueAsSet, otherAsSet);
-		Set<E> onlyInValue = Sets.firstMinusSecond(valueAsSet, otherAsSet);
-		Set<E> onlyInOther = Sets.firstMinusSecond(otherAsSet, valueAsSet);
+		Set<E> common = Collections.intersection(valueAsSet, otherAsSet);
+		Set<E> onlyInValue = Collections.firstMinusSecond(valueAsSet, otherAsSet);
+		Set<E> onlyInOther = Collections.firstMinusSecond(otherAsSet, valueAsSet);
 		return new Difference<>(common, onlyInValue, onlyInOther);
 	}
 

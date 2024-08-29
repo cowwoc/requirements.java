@@ -5,7 +5,7 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 
 /**
  * Helper methods for validating {@code Comparable}.
@@ -37,7 +37,7 @@ final class Comparables<S, T extends Comparable<T>>
 	 */
 	public S isLessThan(T maximumExclusive)
 	{
-		return isLessThanImpl(maximumExclusive, MaybeUndefined.undefined());
+		return isLessThanImpl(maximumExclusive, null);
 	}
 
 	/**
@@ -61,17 +61,18 @@ final class Comparables<S, T extends Comparable<T>>
 	{
 		validator.requireThatNameIsUnique(name).
 			requireThat(maximumExclusive, "maximumExclusive").isNotNull();
-		return isLessThanImpl(maximumExclusive, MaybeUndefined.defined(name));
+		return isLessThanImpl(maximumExclusive, name);
 	}
 
-	private S isLessThanImpl(T maximumExclusive, MaybeUndefined<String> name)
+	private S isLessThanImpl(T maximumExclusive, String name)
 	{
-		if (validator.value.isNull())
+		ValidationTarget<T> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value.compareTo(maximumExclusive) < 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(maximumExclusive) < 0))
 		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isLessThan(validator, name, maximumExclusive).toString());
+			validator.addIllegalArgumentException(
+				ComparableMessages.isLessThanFailed(validator, name, maximumExclusive).toString());
 		}
 		return self();
 	}
@@ -87,7 +88,7 @@ final class Comparables<S, T extends Comparable<T>>
 	public S isLessThanOrEqualTo(T maximumInclusive)
 	{
 		validator.scope.getInternalValidators().requireThat(maximumInclusive, "maximumInclusive").isNotNull();
-		return isLessThanOrEqualToImpl(maximumInclusive, MaybeUndefined.undefined());
+		return isLessThanOrEqualToImpl(maximumInclusive, null);
 	}
 
 	/**
@@ -110,17 +111,18 @@ final class Comparables<S, T extends Comparable<T>>
 	{
 		validator.requireThatNameIsUnique(name).
 			requireThat(maximumInclusive, "maximumInclusive").isNotNull();
-		return isLessThanOrEqualToImpl(maximumInclusive, MaybeUndefined.defined(name));
+		return isLessThanOrEqualToImpl(maximumInclusive, name);
 	}
 
-	private S isLessThanOrEqualToImpl(T maximumInclusive, MaybeUndefined<String> name)
+	private S isLessThanOrEqualToImpl(T maximumInclusive, String name)
 	{
-		if (validator.value.isNull())
+		ValidationTarget<T> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value.compareTo(maximumInclusive) <= 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(maximumInclusive) <= 0))
 		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isLessThanOrEqualTo(validator, name, maximumInclusive).toString());
+			validator.addIllegalArgumentException(
+				ComparableMessages.isLessThanOrEqualToFailed(validator, name, maximumInclusive).toString());
 		}
 		return self();
 	}
@@ -136,7 +138,7 @@ final class Comparables<S, T extends Comparable<T>>
 	public S isGreaterThanOrEqualTo(T minimumInclusive)
 	{
 		validator.scope.getInternalValidators().requireThat(minimumInclusive, "minimumInclusive").isNotNull();
-		return isGreaterThanOrEqualToImpl(minimumInclusive, MaybeUndefined.undefined());
+		return isGreaterThanOrEqualToImpl(minimumInclusive, null);
 	}
 
 	/**
@@ -159,17 +161,18 @@ final class Comparables<S, T extends Comparable<T>>
 	{
 		validator.requireThatNameIsUnique(name).
 			requireThat(minimumInclusive, "minimumInclusive").isNotNull();
-		return isGreaterThanOrEqualToImpl(minimumInclusive, MaybeUndefined.defined(name));
+		return isGreaterThanOrEqualToImpl(minimumInclusive, name);
 	}
 
-	private S isGreaterThanOrEqualToImpl(T minimumInclusive, MaybeUndefined<String> name)
+	private S isGreaterThanOrEqualToImpl(T minimumInclusive, String name)
 	{
-		if (validator.value.isNull())
+		ValidationTarget<T> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value.compareTo(minimumInclusive) >= 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(minimumInclusive) >= 0))
 		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isGreaterThanOrEqualTo(validator, name, minimumInclusive).toString());
+			validator.addIllegalArgumentException(
+				ComparableMessages.isGreaterThanOrEqualToFailed(validator, name, minimumInclusive).toString());
 		}
 		return self();
 	}
@@ -179,13 +182,13 @@ final class Comparables<S, T extends Comparable<T>>
 	 *
 	 * @param minimumExclusive the exclusive lower bound
 	 * @return this
-	 * @throws NullPointerException     if the value or {@code minimumExclusive} is null
+	 * @throws NullPointerException     if the value or {@code minimumExclusive} are null
 	 * @throws IllegalArgumentException if the value is less than or equal to {@code minimumExclusive}
 	 */
 	public S isGreaterThan(T minimumExclusive)
 	{
 		validator.scope.getInternalValidators().requireThat(minimumExclusive, "minimumExclusive").isNotNull();
-		return isGreaterThanImpl(minimumExclusive, MaybeUndefined.undefined());
+		return isGreaterThanImpl(minimumExclusive, null);
 	}
 
 	/**
@@ -208,17 +211,18 @@ final class Comparables<S, T extends Comparable<T>>
 	{
 		validator.requireThatNameIsUnique(name).
 			requireThat(minimumExclusive, "minimumExclusive").isNotNull();
-		return isGreaterThanImpl(minimumExclusive, MaybeUndefined.defined(name));
+		return isGreaterThanImpl(minimumExclusive, name);
 	}
 
-	private S isGreaterThanImpl(T minimumExclusive, MaybeUndefined<String> name)
+	private S isGreaterThanImpl(T minimumExclusive, String name)
 	{
-		if (validator.value.isNull())
+		ValidationTarget<T> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value -> value.compareTo(minimumExclusive) > 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(minimumExclusive) > 0))
 		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isGreaterThan(validator, name, minimumExclusive).toString());
+			validator.addIllegalArgumentException(
+				ComparableMessages.isGreaterThanFailed(validator, name, minimumExclusive).toString());
 		}
 		return self();
 	}
@@ -271,36 +275,49 @@ final class Comparables<S, T extends Comparable<T>>
 	{
 		validator.scope.getInternalValidators().requireThat(minimum, "minimum").
 			isLessThanOrEqualTo(maximum, "maximum");
-		if (validator.value.isNull())
+		ValidationTarget<T> value = validator.value;
+		if (value.isNull())
 			validator.onNull();
-		switch (validator.value.test(value ->
+		if (value.validationFailed(v -> v != null &&
+			inBounds(v, minimum, minimumIsInclusive, maximum, maximumIsInclusive)))
 		{
-			if (minimumIsInclusive)
-			{
-				if (value.compareTo(minimum) < 0)
-					return false;
-			}
-			else if (value.compareTo(minimum) <= 0)
-				return false;
-			if (maximumIsInclusive)
-				return value.compareTo(maximum) <= 0;
-			return value.compareTo(maximum) < 0;
-		}))
-		{
-			case UNDEFINED, FALSE -> validator.addIllegalArgumentException(
-				ComparableMessages.isBetween(validator, minimum, minimumIsInclusive, maximum, maximumIsInclusive).
+			validator.addIllegalArgumentException(
+				ComparableMessages.isBetweenFailed(validator, minimum, minimumIsInclusive, maximum,
+						maximumIsInclusive).
 					toString());
 		}
 		return self();
 	}
 
 	/**
+	 * @param value              the value being validated
+	 * @param minimum            the lower bound of the range
+	 * @param minimumIsInclusive {@code true} if the lower bound of the range is inclusive
+	 * @param maximum            the upper bound of the range
+	 * @param maximumIsInclusive {@code true} if the upper bound of the range is inclusive
+	 * @return true if the value is in bounds; false otherwise
+	 */
+	public boolean inBounds(T value, T minimum, boolean minimumIsInclusive, T maximum,
+		boolean maximumIsInclusive)
+	{
+		if (minimumIsInclusive)
+		{
+			if (value.compareTo(minimum) < 0)
+				return false;
+		}
+		else if (value.compareTo(minimum) <= 0)
+			return false;
+		if (maximumIsInclusive)
+			return value.compareTo(maximum) <= 0;
+		return value.compareTo(maximum) < 0;
+	}
+
+	/**
 	 * @return this
 	 */
+	@SuppressWarnings("unchecked")
 	private S self()
 	{
-		@SuppressWarnings("unchecked")
-		S self = (S) validator;
-		return self;
+		return (S) validator;
 	}
 }

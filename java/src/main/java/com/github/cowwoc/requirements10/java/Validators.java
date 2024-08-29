@@ -4,6 +4,7 @@ import com.github.cowwoc.requirements10.annotation.CheckReturnValue;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A factory that creates different types of validators.
@@ -11,7 +12,7 @@ import java.util.Map;
  * There are three kinds of validators:
  * <ul>
  *   <li>{@code requireThat()} for method preconditions.</li>
- *   <li>{@code assertThat()} for class invariants, and method postconditions.</li>
+ *   <li>{@code assert that()} for class invariants, and method postconditions.</li>
  *   <li>{@code checkIf()} for returning multiple validation failures.</li>
  * </ul>
  *
@@ -42,10 +43,13 @@ public interface Validators<S>
 	 * {@snippet lang = output:
 	 * Password may not be empty
 	 * username: john.smith}
+	 * <p>
+	 * Note that values are wrapped in an {@code Optional} because modern maps do not support {@code null}
+	 * values.
 	 *
 	 * @return an unmodifiable map from each entry's name to its value
 	 */
-	Map<String, Object> getContext();
+	Map<String, Optional<Object>> getContext();
 
 	/**
 	 * Sets the contextual information for validators created by this factory.

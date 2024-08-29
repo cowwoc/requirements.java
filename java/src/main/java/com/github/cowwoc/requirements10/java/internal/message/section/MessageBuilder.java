@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.SequencedMap;
 import java.util.StringJoiner;
 
@@ -18,7 +19,7 @@ import java.util.StringJoiner;
 public final class MessageBuilder
 {
 	public static final String DIFF_LEGEND = """
-
+		
 		Legend
 		------
 		+           : Add this character to the value
@@ -28,7 +29,7 @@ public final class MessageBuilder
 		""";
 	private final AbstractValidator<?, ?> validator;
 	private final String message;
-	private final Map<String, Object> failureContext = LinkedHashMap.newLinkedHashMap(2);
+	private final Map<String, Optional<Object>> failureContext = LinkedHashMap.newLinkedHashMap(2);
 	/**
 	 * A string that describes the difference between the expected and actual values.
 	 */
@@ -66,7 +67,7 @@ public final class MessageBuilder
 	 *                          <li>one of {@code context}'s keys contains whitespace or a colon</li>
 	 *                        </ul>
 	 */
-	public MessageBuilder withContext(Map<String, Object> context)
+	public MessageBuilder withContext(Map<String, Optional<Object>> context)
 	{
 		for (String name : context.keySet())
 		{
@@ -95,7 +96,7 @@ public final class MessageBuilder
 	{
 		assert (name != null);
 		assert (!name.isEmpty());
-		failureContext.put(name, value);
+		failureContext.put(name, Optional.ofNullable(value));
 		return this;
 	}
 
@@ -125,14 +126,14 @@ public final class MessageBuilder
 	 */
 	private ContextSection getValidatorContext()
 	{
-		Map<String, Object> mergedContext = new LinkedHashMap<>(failureContext);
-		for (Entry<String, Object> entry : validator.getContext().entrySet())
+		Map<String, Optional<Object>> mergedContext = new LinkedHashMap<>(failureContext);
+		for (Entry<String, Optional<Object>> entry : validator.getContext().entrySet())
 			mergedContext.putIfAbsent(entry.getKey(), entry.getValue());
 
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		SequencedMap<String, String> contextAsString = new LinkedHashMap<>();
-		for (Entry<String, Object> entry : mergedContext.entrySet())
-			contextAsString.put(entry.getKey(), stringMappers.toString(entry.getValue()));
+		for (Entry<String, Optional<Object>> entry : mergedContext.entrySet())
+			contextAsString.put(entry.getKey(), stringMappers.toString(entry.getValue().orElse(null)));
 		return new ContextSection(contextAsString);
 	}
 
@@ -180,49 +181,17 @@ public final class MessageBuilder
 
 	private String toString(List<MessageSection> context)
 	{
-		int maxKeyLength = getMaxKeyLength(context);
-		StringJoiner result = new StringJoiner("\n");
-		for (MessageSection section : context)
-		{
-			switch (section)
-			{
-				case ContextSection contextSection ->
-				{
-					// Align the colons vertically
-					for (Entry<String, String> entry : contextSection.value().entrySet())
-						result.add(alignLeft(entry.getKey(), maxKeyLength) + ": " + entry.getValue());
-				}
-				case StringSection stringSection -> result.add(stringSection.value());
-			}
-		}
-		return result.toString();
-	}
-
-	/**
-	 * @param text      the {@code String} to align
-	 * @param minLength the minimum length of {@code text}
-	 * @return {@code text} padded on the right with spaces until its length is greater than or equal to
-	 * {@code minLength}
-	 */
-	private static String alignLeft(String text, int minLength)
-	{
-		int actualLength = text.length();
-		if (actualLength > minLength)
-			return text;
-		return text + " ".repeat(minLength - actualLength);
-	}
-
-	private static int getMaxKeyLength(List<MessageSection> context)
-	{
 		int maxKeyLength = 0;
 		for (MessageSection section : context)
+			maxKeyLength = Math.max(maxKeyLength, section.getMaxKeyLength());
+
+		StringJoiner lines = new StringJoiner("\n");
+		for (MessageSection section : context)
 		{
-			if (!(section instanceof ContextSection contextSection))
-				continue;
-			for (String key : contextSection.value().keySet())
-				maxKeyLength = Math.max(maxKeyLength, key.length());
+			for (String line : section.getLines(maxKeyLength))
+				lines.add(line);
 		}
-		return maxKeyLength;
+		return lines.toString();
 	}
 
 	private void addExceptionMessageToContext(List<MessageSection> context)

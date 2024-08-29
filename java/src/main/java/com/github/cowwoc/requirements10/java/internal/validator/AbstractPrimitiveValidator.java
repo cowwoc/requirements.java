@@ -1,12 +1,13 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Validates the state of a primitive value, recording failures without throwing an exception.
@@ -29,7 +30,7 @@ public abstract class AbstractPrimitiveValidator<S, T> extends AbstractValidator
 	 *                                  or {@code failures} are null
 	 */
 	protected AbstractPrimitiveValidator(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<T> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}

@@ -22,6 +22,6 @@ public final class UriMessages
 	 */
 	public static MessageBuilder isAbsolute(AbstractValidator<?, ?> validator)
 	{
-		return Messages.constraint(validator, "must be an absolute URI");
+		return ValidatorMessages.constraintFailed(validator, "must be an absolute URI");
 	}
 }

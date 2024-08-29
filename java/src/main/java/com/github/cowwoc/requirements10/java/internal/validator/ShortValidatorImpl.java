@@ -3,11 +3,12 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.ShortValidator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValidator, Short>
 	implements ShortValidator
@@ -18,7 +19,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -27,7 +28,7 @@ public final class ShortValidatorImpl extends AbstractObjectValidator<ShortValid
 	 *                                  or {@code failures} are null
 	 */
 	public ShortValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<Short> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<Short> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}

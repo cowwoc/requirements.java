@@ -11,7 +11,7 @@ public interface DecimalNumberComponent<S>
 	 * Ensures that the value is a whole number.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is:
 	 *                                  <ul>
 	 *                                    <li>not a whole number</li>
@@ -24,7 +24,7 @@ public interface DecimalNumberComponent<S>
 	 * Ensures that the value is not a whole number.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the value is a whole number
 	 */
 	S isNotWholeNumber();

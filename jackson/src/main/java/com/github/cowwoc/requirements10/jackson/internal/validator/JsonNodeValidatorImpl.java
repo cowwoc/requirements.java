@@ -19,11 +19,12 @@ import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractObjectValidator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -37,7 +38,7 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -46,7 +47,7 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	 *                                  or {@code failures} are null
 	 */
 	public JsonNodeValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<T> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<T> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -54,11 +55,13 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	@Override
 	public JsonNodeValidator<JsonNode> property(String name)
 	{
-		MaybeUndefined<JsonNode> newValue = value.nullToUndefined().mapDefined(value -> value.get(name));
-		if (newValue.isUndefined())
+		if (value.isNull())
+			onNull();
+		ValidationTarget<JsonNode> newValue = value.nullToInvalid().map(v -> v.get(name)).nullToInvalid();
+		if (!newValue.isValid())
 		{
 			addIllegalArgumentException(
-				JsonNodeMessages.property(this, value, name).toString());
+				JsonNodeMessages.property(this, name).toString());
 		}
 		return new JsonNodeValidatorImpl<>(scope, configuration, this.name + "." + name, newValue, context,
 			failures);
@@ -81,10 +84,10 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(predicate))
+		if (value.validationFailed(v -> v != null && predicate.test(v)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				JsonNodeMessages.isType(this, value, type).toString());
+			addIllegalArgumentException(
+				JsonNodeMessages.isType(this, type).toString());
 		}
 	}
 

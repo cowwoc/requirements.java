@@ -8,7 +8,7 @@ import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.BigDecimalValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
@@ -16,6 +16,7 @@ import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerV
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDecimalValidator, BigDecimal>
 	implements BigDecimalValidator
@@ -26,7 +27,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -35,7 +36,8 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	 *                                  or {@code failures} are null
 	 */
 	public BigDecimalValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<BigDecimal> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<BigDecimal> value, Map<String, Optional<Object>> context,
+		List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -66,23 +68,24 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.compareTo(BigDecimal.ZERO) < 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(BigDecimal.ZERO) < 0))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNegative(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isNegativeFailed(this).toString());
 		}
 		return this;
 	}
 
 	@Override
+	@SuppressWarnings("PMD.LogicInversion")
 	public BigDecimalValidator isNotNegative()
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.compareTo(BigDecimal.ZERO) >= 0))
+		if (value.validationFailed(v -> v != null && !(v.compareTo(BigDecimal.ZERO) < 0)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotNegative(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isNotNegativeFailed(this).toString());
 		}
 		return this;
 	}
@@ -92,23 +95,24 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.compareTo(BigDecimal.ZERO) == 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(BigDecimal.ZERO) == 0))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isZero(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isZeroFailed(this).toString());
 		}
 		return this;
 	}
 
 	@Override
+	@SuppressWarnings("PMD.LogicInversion")
 	public BigDecimalValidator isNotZero()
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.compareTo(BigDecimal.ZERO) != 0))
+		if (value.validationFailed(v -> v != null && !(v.compareTo(BigDecimal.ZERO) == 0)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotZero(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isNotZeroFailed(this).toString());
 		}
 		return this;
 	}
@@ -118,23 +122,24 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.compareTo(BigDecimal.ZERO) > 0))
+		if (value.validationFailed(v -> v != null && v.compareTo(BigDecimal.ZERO) > 0))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isPositive(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isPositiveFailed(this).toString());
 		}
 		return this;
 	}
 
 	@Override
+	@SuppressWarnings("PMD.LogicInversion")
 	public BigDecimalValidator isNotPositive()
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.compareTo(BigDecimal.ZERO) <= 0))
+		if (value.validationFailed(v -> v != null && !(v.compareTo(BigDecimal.ZERO) > 0)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotPositive(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isNotPositiveFailed(this).toString());
 		}
 		return this;
 	}
@@ -144,10 +149,10 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(BigDecimalValidatorImpl::isWholeNumber))
+		if (value.validationFailed(v -> v != null && isWholeNumber(v)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isWholeNumber(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isWholeNumberFailed(this).toString());
 		}
 		return this;
 	}
@@ -157,10 +162,10 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !isWholeNumber(value)))
+		if (value.validationFailed(v -> v != null && !isWholeNumber(v)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotWholeNumber(this).toString());
+			addIllegalArgumentException(
+				NumberMessages.isNotWholeNumberFailed(this).toString());
 		}
 		return this;
 	}
@@ -169,7 +174,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	public BigDecimalValidator isMultipleOf(BigDecimal factor)
 	{
 		scope.getInternalValidators().requireThat(factor, "factor").isNotNull();
-		return isMultipleOfImpl(factor, MaybeUndefined.undefined());
+		return isMultipleOfImpl(factor, null);
 	}
 
 	@Override
@@ -177,17 +182,17 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		requireThatNameIsUnique(name).
 			requireThat(factor, "factor").isNotNull();
-		return isMultipleOfImpl(factor, MaybeUndefined.defined(name));
+		return isMultipleOfImpl(factor, name);
 	}
 
-	private BigDecimalValidator isMultipleOfImpl(BigDecimal factor, MaybeUndefined<String> name)
+	private BigDecimalValidator isMultipleOfImpl(BigDecimal factor, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> isMultipleOf(value, factor)))
+		if (value.validationFailed(v -> v != null && isMultipleOf(v, factor)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isMultipleOf(this, name, factor).toString());
+			addIllegalArgumentException(
+				NumberMessages.isMultipleOfFailed(this, name, factor).toString());
 		}
 		return this;
 	}
@@ -196,7 +201,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	public BigDecimalValidator isNotMultipleOf(BigDecimal factor)
 	{
 		scope.getInternalValidators().requireThat(factor, "factor").isNotNull();
-		return isNotMultipleOfImpl(factor, MaybeUndefined.undefined());
+		return isNotMultipleOfImpl(factor, null);
 	}
 
 	@Override
@@ -204,17 +209,17 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		requireThatNameIsUnique(name).
 			requireThat(factor, "factor").isNotNull();
-		return isNotMultipleOfImpl(factor, MaybeUndefined.defined(name));
+		return isNotMultipleOfImpl(factor, name);
 	}
 
-	private BigDecimalValidator isNotMultipleOfImpl(BigDecimal factor, MaybeUndefined<String> name)
+	private BigDecimalValidator isNotMultipleOfImpl(BigDecimal factor, String name)
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !isMultipleOf(value, factor)))
+		if (value.validationFailed(v -> v != null && !isMultipleOf(v, factor)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				NumberMessages.isNotMultipleOf(this, name, factor).toString());
+			addIllegalArgumentException(
+				NumberMessages.isNotMultipleOfFailed(this, name, factor).toString());
 		}
 		return this;
 	}
@@ -224,10 +229,10 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
+		ValidationTarget<BigDecimal> nullToInvalid = value.nullToInvalid();
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
-			configuration, name + ".precision()",
-			value.nullToUndefined().mapDefined(BigDecimal::precision), context, failures);
-		value.ifDefined(value -> newValidator.withContext(value, name));
+			configuration, name + ".precision()", nullToInvalid.map(BigDecimal::precision), context, failures);
+		nullToInvalid.ifValid(v -> newValidator.withContext(v, name));
 		return newValidator;
 	}
 
@@ -236,9 +241,10 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	{
 		if (value.isNull())
 			onNull();
+		ValidationTarget<BigDecimal> nullToInvalid = value.nullToInvalid();
 		PrimitiveIntegerValidatorImpl newValidator = new PrimitiveIntegerValidatorImpl(scope, configuration,
-			name + ".scale()", value.nullToUndefined().mapDefined(BigDecimal::scale), context, failures);
-		value.ifDefined(value -> newValidator.withContext(value, name));
+			name + ".scale()", nullToInvalid.map(BigDecimal::scale), context, failures);
+		nullToInvalid.ifValid(v -> newValidator.withContext(v, name));
 		return newValidator;
 	}
 

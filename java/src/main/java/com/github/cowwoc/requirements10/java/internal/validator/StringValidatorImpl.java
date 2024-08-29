@@ -4,20 +4,19 @@
  */
 package com.github.cowwoc.requirements10.java.internal.validator;
 
-import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.message.StringMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
-import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
-import com.github.cowwoc.requirements10.java.internal.util.ObjectAndSize;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.StringValidator;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Optional;
 
 public final class StringValidatorImpl extends AbstractObjectValidator<StringValidator, String>
 	implements StringValidator
@@ -26,7 +25,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	 * @param scope         the application configuration
 	 * @param configuration the validator configuration
 	 * @param name          the name of the value
-	 * @param value         the value
+	 * @param value         the value being validated
 	 * @param context       the contextual information set by a parent validator or the user
 	 * @param failures      the list of validation failures
 	 * @throws NullPointerException     if {@code name} is null
@@ -35,7 +34,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	 *                                  or {@code failures} are null
 	 */
 	public StringValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		MaybeUndefined<String> value, Map<String, Object> context, List<ValidationFailure> failures)
+		ValidationTarget<String> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	{
 		super(scope, configuration, name, value, context, failures);
 	}
@@ -45,10 +44,10 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(String::isEmpty))
+		if (value.validationFailed(v -> v != null && v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isEmptyFailed(this).toString());
 		}
 		return this;
 	}
@@ -58,10 +57,10 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.isEmpty()))
+		if (value.validationFailed(v -> v != null && !v.isEmpty()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
-				ObjectMessages.isNotEmpty(this).toString());
+			addIllegalArgumentException(
+				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
 		return this;
 	}
@@ -71,9 +70,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(String::isBlank))
+		if (value.validationFailed(v -> v != null && v.isBlank()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.isBlank(this).toString());
 		}
 		return this;
@@ -84,35 +83,11 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.isBlank()))
+		if (value.validationFailed(v -> v != null && !v.isBlank()))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.isNotBlank(this).toString());
 		}
-		return this;
-	}
-
-	@Override
-	public StringValidator trim()
-	{
-		return update(String::trim, "trim()");
-	}
-
-	/**
-	 * Updates the value.
-	 *
-	 * @param operation the operation to apply on the value
-	 * @param name      the name of the operation
-	 */
-	private StringValidator update(Function<String, String> operation, String name)
-	{
-		if (value.isNull())
-			onNull();
-		MaybeUndefined<String> oldValue = value;
-		MaybeUndefined<String> newValue = oldValue.mapDefined(operation);
-		if (!oldValue.equals(newValue))
-			this.name += "." + name;
-		value = newValue;
 		return this;
 	}
 
@@ -121,27 +96,28 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value ->
+		if (value.nullToInvalid().validationFailed(StringValidatorImpl::isTrimmed))
 		{
-			int length = value.length();
-			if (length == 0)
-				return true;
-			boolean foundWhitespace = (value.charAt(0) & 0xff) <= ' ';
-			if (!foundWhitespace && length > 1)
-				foundWhitespace = (value.charAt(length - 1) & 0xff) <= ' ';
-			return !foundWhitespace;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.isTrimmed(this).toString());
 		}
 		return this;
 	}
 
-	@Override
-	public StringValidator strip()
+	/**
+	 * @param value a value
+	 * @return {@code true} if the value is trimmed, or {@code false} if it is undefined, {@code null} or
+	 * contains leading or trailing whitespace
+	 */
+	private static boolean isTrimmed(String value)
 	{
-		return update(String::strip, "strip()");
+		int length = value.length();
+		if (length == 0)
+			return true;
+		boolean foundWhitespace = (value.charAt(0) & 0xff) <= ' ';
+		if (!foundWhitespace && length > 1)
+			foundWhitespace = (value.charAt(length - 1) & 0xff) <= ' ';
+		return !foundWhitespace;
 	}
 
 	@Override
@@ -149,25 +125,32 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		switch (value.test(value ->
+		if (value.nullToInvalid().validationFailed(StringValidatorImpl::isStripped))
 		{
-			int length = value.length();
-			if (length == 0)
-				return true;
-			int codepoint = value.codePointAt(0);
-			boolean foundWhitespace = Character.isWhitespace(codepoint);
-			if (!foundWhitespace && length > 1)
-			{
-				codepoint = value.codePointAt(length - 1);
-				foundWhitespace = Character.isWhitespace(codepoint);
-			}
-			return !foundWhitespace;
-		}))
-		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.isStripped(this).toString());
 		}
 		return this;
+	}
+
+	/**
+	 * @param value a value
+	 * @return {@code true} if the value is stripped, or {@code false} if it is undefined, {@code null} or
+	 * contains leading or trailing Unicode whitespace
+	 */
+	private static boolean isStripped(String value)
+	{
+		int length = value.length();
+		if (length == 0)
+			return true;
+		int codepoint = value.codePointAt(0);
+		boolean foundWhitespace = Character.isWhitespace(codepoint);
+		if (!foundWhitespace && length > 1)
+		{
+			codepoint = value.codePointAt(length - 1);
+			foundWhitespace = Character.isWhitespace(codepoint);
+		}
+		return !foundWhitespace;
 	}
 
 	@Override
@@ -176,9 +159,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(prefix, "prefix").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.startsWith(prefix)))
+		if (value.validationFailed(v -> v != null && v.startsWith(prefix)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.startsWith(this, prefix).toString());
 		}
 		return this;
@@ -190,9 +173,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(prefix, "prefix").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.startsWith(prefix)))
+		if (value.validationFailed(v -> v != null && !v.startsWith(prefix)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.doesNotStartWith(this, prefix).toString());
 		}
 		return this;
@@ -204,9 +187,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(suffix, "suffix").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.endsWith(suffix)))
+		if (value.validationFailed(v -> v != null && v.endsWith(suffix)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.endsWith(this, suffix).toString());
 		}
 		return this;
@@ -218,9 +201,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(suffix, "suffix").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.endsWith(suffix)))
+		if (value.validationFailed(v -> v != null && !v.endsWith(suffix)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.doesNotEndWith(this, suffix).toString());
 		}
 		return this;
@@ -232,9 +215,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.contains(expected)))
+		if (value.validationFailed(v -> v != null && v.contains(expected)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.contains(this, expected).toString());
 		}
 		return this;
@@ -246,9 +229,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> !value.contains(unwanted)))
+		if (value.validationFailed(v -> v != null && !v.contains(unwanted)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.doesNotContain(this, unwanted).toString());
 		}
 		return this;
@@ -260,9 +243,9 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 		scope.getInternalValidators().requireThat(regex, "regex").isNotNull();
 		if (value.isNull())
 			onNull();
-		switch (value.test(value -> value.matches(regex)))
+		if (value.validationFailed(v -> v != null && v.matches(regex)))
 		{
-			case UNDEFINED, FALSE -> addIllegalArgumentException(
+			addIllegalArgumentException(
 				StringMessages.matches(this, regex).toString());
 		}
 		return this;
@@ -273,8 +256,7 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	{
 		if (value.isNull())
 			onNull();
-		return new ObjectSizeValidatorImpl(scope, configuration, name,
-			value.nullToUndefined().mapDefined(value -> new ObjectAndSize(value, value.length())),
-			name + ".length()", Pluralizer.CHARACTER, context, failures);
+		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".length()",
+			value.nullToInvalid().map(String::length), Pluralizer.CHARACTER, context, failures);
 	}
 }

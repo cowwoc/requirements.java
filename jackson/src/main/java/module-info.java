@@ -16,6 +16,7 @@ module com.github.cowwoc.requirements10.jackson
 	requires transitive com.github.cowwoc.requirements10.annotation;
 	requires transitive com.github.cowwoc.requirements10.java;
 	requires com.github.cowwoc.pouch.core;
+	requires java.xml;
 
 	exports com.github.cowwoc.requirements10.jackson;
 	exports com.github.cowwoc.requirements10.jackson.internal.validator to com.github.cowwoc.requirements10.test;

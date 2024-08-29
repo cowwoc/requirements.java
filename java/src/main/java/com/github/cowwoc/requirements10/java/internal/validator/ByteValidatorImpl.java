@@ -7,11 +7,12 @@
  import com.github.cowwoc.requirements10.java.ValidationFailure;
  import com.github.cowwoc.requirements10.java.internal.Configuration;
  import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
- import com.github.cowwoc.requirements10.java.internal.util.MaybeUndefined;
+ import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
  import com.github.cowwoc.requirements10.java.validator.ByteValidator;
 
  import java.util.List;
  import java.util.Map;
+ import java.util.Optional;
 
  public final class ByteValidatorImpl extends AbstractObjectValidator<ByteValidator, Byte>
 	 implements ByteValidator
@@ -31,7 +32,7 @@
 	  *                                  or {@code failures} are null
 	  */
 	 public ByteValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
-		 MaybeUndefined<Byte> value, Map<String, Object> context, List<ValidationFailure> failures)
+		 ValidationTarget<Byte> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
 	 {
 		 super(scope, configuration, name, value, context, failures);
 	 }

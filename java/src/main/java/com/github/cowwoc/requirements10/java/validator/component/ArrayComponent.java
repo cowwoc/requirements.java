@@ -23,7 +23,7 @@ public interface ArrayComponent<S, T, E>
 	 * Ensures that the array is empty.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the array is not empty
 	 */
 	S isEmpty();
@@ -32,7 +32,7 @@ public interface ArrayComponent<S, T, E>
 	 * Ensures that the array is not empty.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the array is empty
 	 */
 	S isNotEmpty();
@@ -481,7 +481,7 @@ public interface ArrayComponent<S, T, E>
 	 * Ensures that the array does not contain any duplicate elements.
 	 *
 	 * @return this
-	 * @throws NullPointerException     if the value is null
+	 * @throws NullPointerException     if the value is {@code null}
 	 * @throws IllegalArgumentException if the array contains any duplicate elements
 	 */
 	S doesNotContainDuplicates();
@@ -490,7 +490,7 @@ public interface ArrayComponent<S, T, E>
 	 * Returns a validator for the array's length.
 	 *
 	 * @return a validator for the array's length
-	 * @throws NullPointerException if the value is null
+	 * @throws NullPointerException if the value is {@code null}
 	 */
 	PrimitiveUnsignedIntegerValidator length();
 }
