@@ -2,7 +2,7 @@
 
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 10.0 - ?
+## Version 10.0.0 - ?
 
 * Breaking changes:
     * The module and package names now contain the major version number of the library,
