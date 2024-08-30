@@ -56,7 +56,8 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.2/</link>
+								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
+								</link>
 							</links>
 							<offlineLinks>
 								<!--
