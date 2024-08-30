@@ -64,6 +64,18 @@ public final class MutableStringMappers
 	}
 
 	/**
+	 * Returns the function that maps an object of the given type to a String.
+	 * @param type a type
+	 * @param mapper a function that returns the String representation of the type's instances
+	 * @return this
+	 */
+	public MutableStringMappers putIfAbsent(Class<?> type, StringMapper mapper)
+	{
+		typeToMapper.putIfAbsent(Optional.ofNullable(type), mapper);
+		return this;
+	}
+
+	/**
 	 * Removes a mapper for a type.
 	 *
 	 * @param type the type

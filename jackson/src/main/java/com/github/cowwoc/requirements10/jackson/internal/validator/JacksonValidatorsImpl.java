@@ -5,6 +5,8 @@ import com.github.cowwoc.requirements10.jackson.JacksonValidators;
 import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
+import com.github.cowwoc.requirements10.java.internal.MutableStringMappers;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
 
@@ -29,6 +31,11 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	public JacksonValidatorsImpl(ApplicationScope scope, Configuration configuration)
 	{
 		super(scope, configuration);
+		try (ConfigurationUpdater config = updateConfiguration())
+		{
+			MutableStringMappers stringMappers = config.stringMappers();
+			stringMappers.putIfAbsent(JsonNode.class, (value, seen) -> ((JsonNode) value).toPrettyString());
+		}
 	}
 
 	/**
