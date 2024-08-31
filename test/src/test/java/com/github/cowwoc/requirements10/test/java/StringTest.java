@@ -351,6 +351,26 @@ public final class StringTest
 	}
 
 	@Test
+	public void doesNotContainWhitespace()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "mydogisthebest";
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContainWhitespace();
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainWhitespace_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = "my dog is the best";
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContainWhitespace();
+		}
+	}
+
+	@Test
 	public void lengthIsEqualTo()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

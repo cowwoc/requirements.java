@@ -238,6 +238,34 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	}
 
 	@Override
+	public StringValidator doesNotContainWhitespace()
+	{
+		if (value.isNull())
+			onNull();
+
+		if (value.nullToInvalid().validationFailed(v ->
+		{
+			if (v == null)
+				return false;
+			int length = v.length();
+			if (length == 0)
+				return true;
+			for (int i = 0; i < length; ++i)
+			{
+				int codepoint = v.codePointAt(i);
+				if (Character.isWhitespace(codepoint))
+					return false;
+			}
+			return true;
+		}))
+		{
+			addIllegalArgumentException(
+				StringMessages.doesNotContainWhitespace(this).toString());
+		}
+		return this;
+	}
+
+	@Override
 	public StringValidator matches(String regex)
 	{
 		scope.getInternalValidators().requireThat(regex, "regex").isNotNull();

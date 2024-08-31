@@ -24,6 +24,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 * New features:
     * Added `GenericTypeValidator.isPrimitive()`.
     * Added `validationFailed()` and `getValueOrDefault()` to all validators.
+    * Added `StringValidator.doesNotContainWhitespace()`.
 * Improvements
     * If `checkIf()` cannot run validations due to a null value, the expected conditions are still reported.
 

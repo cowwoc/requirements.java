@@ -49,11 +49,13 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	 * @param configuration the configuration to use for new validators
 	 * @throws NullPointerException if {@code scope} or {@code configuration} are null
 	 */
+	@SuppressWarnings("this-escape")
 	protected AbstractValidators(ApplicationScope scope, Configuration configuration)
 	{
 		if (scope == null)
 			throw new NullPointerException("scope may not be null");
 		this.scope = scope;
+		// Suppress "this-escape" because this method is only invoked after the state is fully initialized
 		setConfiguration(configuration);
 	}
 
@@ -124,8 +126,10 @@ public abstract class AbstractValidators<S> implements Validators<S>
 	 * @return the configuration updater
 	 */
 	@CheckReturnValue
-	public ConfigurationUpdater updateConfiguration()
+	public final ConfigurationUpdater updateConfiguration()
 	{
+		// Method must be final because it is invoked by subclass constructors:
+		// https://pmd.github.io/pmd/pmd_rules_java_errorprone.html#constructorcallsoverridablemethod
 		return new ConfigurationUpdaterImpl(this::setConfiguration);
 	}
 

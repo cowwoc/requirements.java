@@ -180,6 +180,21 @@ public final class StringMessages
 
 	/**
 	 * @param validator the validator
+	 * @return a message for the validation failure
+	 */
+	public static MessageBuilder doesNotContainWhitespace(AbstractValidator<?, String> validator)
+	{
+		String name = validator.getName();
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
+			quoteName(name) + " may not contain whitespace characters.");
+		String value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, name);
+		return messageBuilder;
+	}
+
+	/**
+	 * @param validator the validator
 	 * @param regex     the regular expression
 	 * @return a message for the validation failure
 	 */

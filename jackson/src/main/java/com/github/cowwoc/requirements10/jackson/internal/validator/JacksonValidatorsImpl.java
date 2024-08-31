@@ -7,6 +7,7 @@ import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.MutableStringMappers;
+import com.github.cowwoc.requirements10.java.internal.StringMapper;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidators;
 
@@ -22,19 +23,23 @@ import static com.github.cowwoc.requirements10.java.internal.validator.JavaValid
 public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	implements JacksonValidators
 {
+	private static final StringMapper STRING_MAPPER = (value, seen) -> ((JsonNode) value).toPrettyString();
+
 	/**
 	 * Creates a new instance of this validator with an independent configuration.
 	 *
 	 * @param scope         the application configuration
 	 * @param configuration the configuration to use for new validators
 	 */
+	@SuppressWarnings("this-escape")
 	public JacksonValidatorsImpl(ApplicationScope scope, Configuration configuration)
 	{
 		super(scope, configuration);
+		// Suppress "this-escape" because this method is only invoked after the class is fully initialized
 		try (ConfigurationUpdater config = updateConfiguration())
 		{
 			MutableStringMappers stringMappers = config.stringMappers();
-			stringMappers.putIfAbsent(JsonNode.class, (value, seen) -> ((JsonNode) value).toPrettyString());
+			stringMappers.putIfAbsent(JsonNode.class, STRING_MAPPER);
 		}
 	}
 

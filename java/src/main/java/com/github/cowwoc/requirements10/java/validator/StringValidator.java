@@ -75,6 +75,15 @@ public interface StringValidator extends
 	StringValidator doesNotContain(String unwanted);
 
 	/**
+	 * Ensures that the value does not contain whitespace characters.
+	 *
+	 * @return this
+	 * @throws NullPointerException     if the value is null
+	 * @throws IllegalArgumentException if the value contains whitespace characters
+	 */
+	StringValidator doesNotContainWhitespace();
+
+	/**
 	 * Ensures that the value matches a regular expression.
 	 *
 	 * @param regex the regular expression
