@@ -7,6 +7,7 @@ package com.github.cowwoc.requirements10.java.internal.message.diff;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.ContextSection;
+import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageSection;
 import com.github.cowwoc.requirements10.java.internal.message.section.StringSection;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
@@ -49,6 +50,10 @@ public final class ContextGenerator
 	 * {@code true} if exception messages may include a diff that compares actual and expected values.
 	 */
 	private boolean allowDiff;
+	/**
+	 * {@code true} if the output may include an explanation of the diff format.
+	 */
+	private boolean allowLegend;
 
 	/**
 	 * Creates a ContextGenerator.
@@ -122,6 +127,18 @@ public final class ContextGenerator
 	public ContextGenerator allowDiff(boolean allowDiff)
 	{
 		this.allowDiff = allowDiff;
+		return this;
+	}
+
+	/**
+	 * Overrides the value of {@link Configuration#allowDiff()}.
+	 *
+	 * @param allowLegend {@code true} if the output may include an explanation of the diff format
+	 * @return this
+	 */
+	public ContextGenerator allowLegend(boolean allowLegend)
+	{
+		this.allowLegend = allowLegend;
 		return this;
 	}
 
@@ -227,7 +244,8 @@ public final class ContextGenerator
 				elementsAreEqual = false;
 			}
 			ContextGenerator elementGenerator = new ContextGenerator(scope, configuration, actualNameLine,
-				expectedNameLine);
+				expectedNameLine).
+				allowLegend(false);
 			actualValueLine.ifValid(elementGenerator::actualValue);
 			expectedValueLine.ifValid(elementGenerator::expectedValue);
 
@@ -361,6 +379,8 @@ public final class ContextGenerator
 			context.add(elementGenerator.getDiffSection(actualNameLine, actualValueLine, diffLine, expectedNameLine,
 				expectedValueLine));
 		}
+		if (diffLinesExist && this.allowLegend)
+			context.add(new StringSection(MessageBuilder.DIFF_LEGEND));
 		return context;
 	}
 
