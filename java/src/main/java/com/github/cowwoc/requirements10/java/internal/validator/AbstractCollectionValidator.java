@@ -61,10 +61,9 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S isEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isEmpty()))
+		if (value.validationFailed(Collection::isEmpty))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isEmptyFailed(this).toString());
 		}
@@ -74,10 +73,9 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S isNotEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v.isEmpty()))
+		if (value.validationFailed(v -> !v.isEmpty()))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
@@ -99,10 +97,11 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S containsImpl(E expected, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.contains(expected)))
+		if (value.validationFailed(v -> v.contains(expected)))
+		{
+			failOnNull();
 			addIllegalArgumentException(CollectionMessages.containsFailed(this, name, expected).toString());
+		}
 		return self();
 	}
 
@@ -122,10 +121,9 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S doesNotContainImpl(E unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v.contains(unwanted)))
+		if (value.validationFailed(v -> !v.contains(unwanted)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainFailed(this, name, unwanted).toString());
 		}
@@ -147,12 +145,11 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S containsExactlyImpl(Collection<E> expected, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().
 			map(v -> Difference.actualVsOther(v, expected)).or(null);
-		if (difference == null || difference.areDifferent())
+		if (difference == null || !difference.areTheSame())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsExactlyFailed(this, difference, name, expected, pluralizer).toString());
 		}
@@ -191,12 +188,11 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S doesNotContainExactlyImpl(Collection<E> unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().
 			map(v -> Difference.actualVsOther(v, unwanted)).or(null);
-		if (difference == null || difference.areTheSame())
+		if (difference == null || !difference.areDifferent())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainExactlyFailed(this, name, unwanted, pluralizer).toString());
 		}
@@ -235,11 +231,9 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S containsAnyImpl(Collection<E> expected, String name)
 	{
-		if (value.isNull())
-			onNull();
-		T validOrNull = value.or(null);
-		if (validOrNull == null || Collections.disjoint(validOrNull, expected))
+		if (value.validationFailed(v -> !Collections.disjoint(v, expected)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsAnyFailed(this, name, expected, pluralizer).toString());
 		}
@@ -278,12 +272,11 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S doesNotContainAnyImpl(Collection<E> unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().
 			map(v -> Difference.actualVsOther(v, unwanted)).or(null);
 		if (difference == null || !difference.common().isEmpty())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainAnyFailed(this, difference, name, unwanted, pluralizer).
 					toString());
@@ -323,12 +316,11 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S containsAllImpl(Collection<E> expected, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().
 			map(v -> Difference.actualVsOther(v, expected)).or(null);
 		if (difference == null || !difference.onlyInOther().isEmpty())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsAllFailed(this, difference, name, expected, pluralizer).
 					toString());
@@ -368,10 +360,9 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 
 	private S doesNotContainAllImpl(Collection<E> unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v.containsAll(unwanted)))
+		if (value.validationFailed(v -> !v.containsAll(unwanted)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainAllFailed(this, name, unwanted, pluralizer).toString());
 		}
@@ -396,14 +387,13 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S doesNotContainDuplicates()
 	{
-		if (value.isNull())
-			onNull();
-		ValidationTarget<Set<E>> duplicates = value.nullToInvalid().
-			map(com.github.cowwoc.requirements10.java.internal.util.Collections::getDuplicates);
-		if (duplicates.validationFailed(Set::isEmpty))
+		Set<E> duplicates = value.nullToInvalid().
+			map(com.github.cowwoc.requirements10.java.internal.util.Collections::getDuplicates).or(null);
+		if (duplicates == null || !duplicates.isEmpty())
 		{
+			failOnNull();
 			addIllegalArgumentException(
-				CollectionMessages.doesNotContainDuplicatesFailed(this, duplicates.or(null), pluralizer).
+				CollectionMessages.doesNotContainDuplicatesFailed(this, duplicates, pluralizer).
 					toString());
 		}
 		return self();
@@ -412,11 +402,9 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S containsSameNullity()
 	{
-		if (value.isNull())
-			onNull();
-
 		if (containsSameNullityValidationFailed())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsSameNullityFailed(this).toString());
 		}
@@ -443,8 +431,7 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public PrimitiveUnsignedIntegerValidator size()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
 			value.nullToInvalid().map(Collection::size), pluralizer, context, failures);
 	}

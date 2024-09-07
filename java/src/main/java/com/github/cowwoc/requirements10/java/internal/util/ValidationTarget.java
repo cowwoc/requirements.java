@@ -14,8 +14,8 @@ import java.util.function.Supplier;
  * This class is not intended to replace {@code null} references but rather to record additional information
  * alongside them.
  * <p>
- * Instead of throwing an exception when an {@code null} value is accessed, the system marks it as invalid
- * and continues to record validation failures.
+ * Instead of throwing an exception when an {@code null} value is accessed, the system marks it as invalid and
+ * continues to record validation failures.
  *
  * @param <T> the type of the value
  */
@@ -29,7 +29,7 @@ public class ValidationTarget<T>
 	 * Creates a value that may be invalid.
 	 *
 	 * @param valid {@code true} if the value is valid, or {@code false} if invalid
-	 * @param value   the value
+	 * @param value the value
 	 */
 	public ValidationTarget(boolean valid, T value)
 	{
@@ -62,8 +62,8 @@ public class ValidationTarget<T>
 	}
 
 	/**
-	 * Returns the valid value, or a default value if invalid. A value of {@code null} does not hold any
-	 * special significance. It does not imply that the value is invalid.
+	 * Returns the valid value, or a default value if invalid. A value of {@code null} does not hold any special
+	 * significance. It does not imply that the value is invalid.
 	 *
 	 * @param defaultValue a value
 	 * @return the valid value, or {@code defaultValue} if the value is invalid
@@ -76,8 +76,8 @@ public class ValidationTarget<T>
 	}
 
 	/**
-	 * Returns the valid value, or a default value if invalid. A value of {@code null} does not hold any
-	 * special significance. It does not imply that the value is invalid.
+	 * Returns the valid value, or a default value if invalid. A value of {@code null} does not hold any special
+	 * significance. It does not imply that the value is invalid.
 	 *
 	 * @param defaultValue a supplier that returns the default value
 	 * @return the valid value, or {@code defaultValue} if the value is invalid
@@ -180,12 +180,12 @@ public class ValidationTarget<T>
 	 * Evaluates a condition on the value.
 	 *
 	 * @param condition the condition to evaluate
-	 * @return {@code true} if the value is invalid or if the {@code condition} returns {@code false};
-	 * otherwise, returns {@code false}
+	 * @return {@code true} if the value is invalid, {@code null}, or if the {@code condition} returns
+	 * {@code false}; otherwise, returns {@code false}
 	 */
 	public boolean validationFailed(Predicate<T> condition)
 	{
-		return !valid || !condition.test(value);
+		return !valid || value == null || !condition.test(value);
 	}
 
 	@Override

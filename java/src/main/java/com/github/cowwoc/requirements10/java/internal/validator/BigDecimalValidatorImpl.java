@@ -66,10 +66,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isNegative()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(BigDecimal.ZERO) < 0))
+		if (value.validationFailed(v -> v.compareTo(BigDecimal.ZERO) < 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNegativeFailed(this).toString());
 		}
@@ -80,10 +79,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@SuppressWarnings("PMD.LogicInversion")
 	public BigDecimalValidator isNotNegative()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !(v.compareTo(BigDecimal.ZERO) < 0)))
+		if (value.validationFailed(v -> !(v.compareTo(BigDecimal.ZERO) < 0)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotNegativeFailed(this).toString());
 		}
@@ -93,10 +91,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isZero()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(BigDecimal.ZERO) == 0))
+		if (value.validationFailed(v -> v.compareTo(BigDecimal.ZERO) == 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isZeroFailed(this).toString());
 		}
@@ -107,10 +104,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@SuppressWarnings("PMD.LogicInversion")
 	public BigDecimalValidator isNotZero()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !(v.compareTo(BigDecimal.ZERO) == 0)))
+		if (value.validationFailed(v -> !(v.compareTo(BigDecimal.ZERO) == 0)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotZeroFailed(this).toString());
 		}
@@ -120,10 +116,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isPositive()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(BigDecimal.ZERO) > 0))
+		if (value.validationFailed(v -> v.compareTo(BigDecimal.ZERO) > 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isPositiveFailed(this).toString());
 		}
@@ -134,10 +129,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@SuppressWarnings("PMD.LogicInversion")
 	public BigDecimalValidator isNotPositive()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !(v.compareTo(BigDecimal.ZERO) > 0)))
+		if (value.validationFailed(v -> !(v.compareTo(BigDecimal.ZERO) > 0)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotPositiveFailed(this).toString());
 		}
@@ -147,10 +141,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isWholeNumber()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && isWholeNumber(v)))
+		if (value.validationFailed(BigDecimalValidatorImpl::isWholeNumber))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isWholeNumberFailed(this).toString());
 		}
@@ -160,10 +153,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public BigDecimalValidator isNotWholeNumber()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !isWholeNumber(v)))
+		if (value.validationFailed(v -> !isWholeNumber(v)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotWholeNumberFailed(this).toString());
 		}
@@ -187,10 +179,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 
 	private BigDecimalValidator isMultipleOfImpl(BigDecimal factor, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && isMultipleOf(v, factor)))
+		if (value.validationFailed(v -> isMultipleOf(v, factor)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isMultipleOfFailed(this, name, factor).toString());
 		}
@@ -214,10 +205,9 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 
 	private BigDecimalValidator isNotMultipleOfImpl(BigDecimal factor, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !isMultipleOf(v, factor)))
+		if (value.validationFailed(v -> !isMultipleOf(v, factor)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotMultipleOfFailed(this, name, factor).toString());
 		}
@@ -227,8 +217,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public PrimitiveUnsignedIntegerValidator precision()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<BigDecimal> nullToInvalid = value.nullToInvalid();
 		PrimitiveUnsignedIntegerValidatorImpl newValidator = new PrimitiveUnsignedIntegerValidatorImpl(scope,
 			configuration, name + ".precision()", nullToInvalid.map(BigDecimal::precision), context, failures);
@@ -239,8 +228,7 @@ public final class BigDecimalValidatorImpl extends AbstractObjectValidator<BigDe
 	@Override
 	public PrimitiveIntegerValidator scale()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<BigDecimal> nullToInvalid = value.nullToInvalid();
 		PrimitiveIntegerValidatorImpl newValidator = new PrimitiveIntegerValidatorImpl(scope, configuration,
 			name + ".scale()", nullToInvalid.map(BigDecimal::scale), context, failures);

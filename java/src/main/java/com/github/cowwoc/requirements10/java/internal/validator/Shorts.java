@@ -3,7 +3,6 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
-import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Numbers;
 
 /**
@@ -65,7 +64,7 @@ final class Shorts<S>
 
 	private S isEqualToImpl(short expected, String name)
 	{
-		if (validator.value.nullToInvalid().validationFailed(v -> v == expected))
+		if (validator.value.validationFailed(v -> v == expected))
 		{
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isEqualToFailed(validator, name, expected).toString());
@@ -109,7 +108,7 @@ final class Shorts<S>
 
 	private S isNotEqualToImpl(short unwanted, String name)
 	{
-		if (validator.value.nullToInvalid().validationFailed(v -> v != unwanted))
+		if (validator.value.validationFailed(v -> v != unwanted))
 		{
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isNotEqualToFailed(validator, name, unwanted).toString());
@@ -126,11 +125,9 @@ final class Shorts<S>
 	 */
 	public S isNegative()
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v < (short) 0))
+		if (validator.value.validationFailed(v -> v < (short) 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNegativeFailed(validator).toString());
 		}
@@ -147,11 +144,9 @@ final class Shorts<S>
 	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotNegative()
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !(v < (short) 0)))
+		if (validator.value.validationFailed(v -> !(v < (short) 0)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotNegativeFailed(validator).toString());
 		}
@@ -167,11 +162,9 @@ final class Shorts<S>
 	 */
 	public S isZero()
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v == (short) 0))
+		if (validator.value.validationFailed(v -> v == (short) 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isZeroFailed(validator).toString());
 		}
@@ -188,11 +181,9 @@ final class Shorts<S>
 	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotZero()
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !(v == (short) 0)))
+		if (validator.value.validationFailed(v -> !(v == (short) 0)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotZeroFailed(validator).toString());
 		}
@@ -208,11 +199,9 @@ final class Shorts<S>
 	 */
 	public S isPositive()
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v > (short) 0))
+		if (validator.value.validationFailed(v -> v > (short) 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isPositiveFailed(validator).toString());
 		}
@@ -229,11 +218,9 @@ final class Shorts<S>
 	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotPositive()
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !(v > (short) 0)))
+		if (validator.value.validationFailed(v -> !(v > (short) 0)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotPositiveFailed(validator).toString());
 		}
@@ -639,11 +626,9 @@ final class Shorts<S>
 
 	private S isMultipleOfImpl(short factor, String name)
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && Numbers.isMultipleOf(v, factor)))
+		if (validator.value.validationFailed(v -> Numbers.isMultipleOf(v, factor)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isMultipleOfFailed(validator, name, factor).toString());
 		}
@@ -686,11 +671,9 @@ final class Shorts<S>
 
 	private S isNotMultipleOfImpl(short factor, String name)
 	{
-		ValidationTarget<Short> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !Numbers.isMultipleOf(v, factor)))
+		if (validator.value.validationFailed(v -> !Numbers.isMultipleOf(v, factor)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotMultipleOfFailed(validator, name, factor).toString());
 		}

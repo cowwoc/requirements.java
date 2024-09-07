@@ -43,10 +43,9 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	@Override
 	public InetAddressValidator isIpV4()
 	{
-		if (value.isNull())
-			onNull();
 		if (value.validationFailed(v -> v instanceof Inet4Address))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				InetAddressMessages.isIpAddressFailed(this, "IP v4").toString());
 		}
@@ -56,10 +55,9 @@ public final class InetAddressValidatorImpl extends AbstractObjectValidator<Inet
 	@Override
 	public InetAddressValidator isIpV6()
 	{
-		if (value.isNull())
-			onNull();
 		if (value.validationFailed(v -> v instanceof Inet6Address))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				InetAddressMessages.isIpAddressFailed(this, "IP v6").toString());
 		}

@@ -51,10 +51,9 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 	@Override
 	public MapValidator<T, K, V> isEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isEmpty()))
+		if (value.validationFailed(Map::isEmpty))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.isEmptyFailed(this).toString());
 		}
@@ -64,10 +63,9 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 	@Override
 	public MapValidator<T, K, V> isNotEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v.isEmpty()))
+		if (value.validationFailed(v -> !v.isEmpty()))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.isNotEmptyFailed(this).toString());
 		}
@@ -77,9 +75,7 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		if (value.isNull())
-			onNull();
-
+		failOnNull();
 		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Set<K>, K> newValidator = new CollectionValidatorImpl<>(scope, configuration,
 			name + ".keySet()", nullToInvalid.map(Map::keySet), Pluralizer.KEY, context, failures);
@@ -90,8 +86,7 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Collection<V>, V> newValidator = new CollectionValidatorImpl<>(scope,
 			configuration, name + ".values()", nullToInvalid.map(Map::values), Pluralizer.VALUE, context,
@@ -103,8 +98,7 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 	@Override
 	public CollectionValidator<Set<Entry<K, V>>, Entry<K, V>> entrySet()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Set<Entry<K, V>>, Entry<K, V>> newValidator = new CollectionValidatorImpl<>(
 			scope, configuration, name + ".entrySet()", nullToInvalid.map(Map::entrySet),
@@ -116,8 +110,7 @@ public final class MapValidatorImpl<T extends Map<K, V>, K, V>
 	@Override
 	public PrimitiveUnsignedIntegerValidator size()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
 			value.nullToInvalid().map(Map::size), Pluralizer.ENTRY, context, failures);
 	}

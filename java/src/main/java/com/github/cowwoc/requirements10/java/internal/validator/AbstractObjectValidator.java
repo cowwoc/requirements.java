@@ -62,9 +62,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	@Override
 	public S isNotNull()
 	{
-		T validOrNull = value.or(null);
-		if (validOrNull == null)
-			onNull();
+		failOnNull();
 		return self();
 	}
 
@@ -72,7 +70,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	public S isReferenceEqualTo(Object expected, String name)
 	{
 		requireThatNameIsUnique(name);
-		if (value.validationFailed(v -> v == expected))
+		if (value.map(v -> v != expected).or(true))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isReferenceEqualToFailed(this, name, expected).toString());
@@ -84,7 +82,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	public S isReferenceNotEqualTo(Object unwanted, String name)
 	{
 		requireThatNameIsUnique(name);
-		if (value.validationFailed(v -> v != unwanted))
+		if (value.map(v -> v == unwanted).or(true))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isReferenceNotEqualToFailed(this, name).toString());
@@ -120,7 +118,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	public S isNotInstanceOf(GenericType<?> unwanted)
 	{
 		scope.getInternalValidators().requireThat(unwanted, "unwanted").isNotNull();
-		if (value.validationFailed(v -> !unwanted.isTypeOf(v)))
+		if (value.map(unwanted::isTypeOf).or(true))
 		{
 			addIllegalArgumentException(
 				ObjectMessages.isNotInstanceOfFailed(this, unwanted).toString());
@@ -143,7 +141,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 
 	protected S isEqualToImpl(Object expected, String name)
 	{
-		if (value.validationFailed(v -> getEqualityFunction().apply(v, expected)))
+		if (value.map(v -> !getEqualityFunction().apply(v, expected)).or(true))
 		{
 			addIllegalArgumentException(
 				ValidatorMessages.isEqualToFailed(this, name, expected).toString());
@@ -166,7 +164,7 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 
 	private S isNotEqualToImpl(Object unwanted, String name)
 	{
-		if (value.validationFailed(v -> !getEqualityFunction().apply(v, unwanted)))
+		if (value.map(v -> getEqualityFunction().apply(v, unwanted)).or(true))
 		{
 			addIllegalArgumentException(
 				ValidatorMessages.isNotEqualToFailed(this, name, unwanted).toString());
@@ -187,8 +185,9 @@ public abstract class AbstractObjectValidator<S, T> extends AbstractValidator<S,
 	}
 
 	@Override
-	protected void onNull()
+	protected void failOnNull()
 	{
-		addNullPointerException(ObjectMessages.isNotNullFailed(this).toString());
+		if (value.isNull())
+			addNullPointerException(ObjectMessages.isNotNullFailed(this).toString());
 	}
 }

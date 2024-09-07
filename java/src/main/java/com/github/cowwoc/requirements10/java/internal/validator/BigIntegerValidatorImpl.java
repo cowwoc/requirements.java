@@ -54,10 +54,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@Override
 	public BigIntegerValidator isNegative()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(BigInteger.ZERO) < 0))
+		if (value.validationFailed(v -> v.compareTo(BigInteger.ZERO) < 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNegativeFailed(this).toString());
 		}
@@ -68,10 +67,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@SuppressWarnings("PMD.LogicInversion")
 	public BigIntegerValidator isNotNegative()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !(v.compareTo(BigInteger.ZERO) < 0)))
+		if (value.validationFailed(v -> !(v.compareTo(BigInteger.ZERO) < 0)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotNegativeFailed(this).toString());
 		}
@@ -81,10 +79,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@Override
 	public BigIntegerValidator isZero()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(BigInteger.ZERO) == 0))
+		if (value.validationFailed(v -> v.compareTo(BigInteger.ZERO) == 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isZeroFailed(this).toString());
 		}
@@ -95,10 +92,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@SuppressWarnings("PMD.LogicInversion")
 	public BigIntegerValidator isNotZero()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !(v.compareTo(BigInteger.ZERO) == 0)))
+		if (value.validationFailed(v -> !(v.compareTo(BigInteger.ZERO) == 0)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotZeroFailed(this).toString());
 		}
@@ -108,10 +104,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@Override
 	public BigIntegerValidator isPositive()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(BigInteger.ZERO) > 0))
+		if (value.validationFailed(v -> v.compareTo(BigInteger.ZERO) > 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isPositiveFailed(this).toString());
 		}
@@ -122,10 +117,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 	@SuppressWarnings("PMD.LogicInversion")
 	public BigIntegerValidator isNotPositive()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !(v.compareTo(BigInteger.ZERO) > 0)))
+		if (value.validationFailed(v -> !(v.compareTo(BigInteger.ZERO) > 0)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotPositiveFailed(this).toString());
 		}
@@ -149,10 +143,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 
 	private BigIntegerValidator isMultipleOfImpl(BigInteger factor, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && isMultipleOf(v, factor)))
+		if (value.validationFailed(v -> isMultipleOf(v, factor)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isMultipleOfFailed(this, name, factor).toString());
 		}
@@ -176,10 +169,9 @@ public final class BigIntegerValidatorImpl extends AbstractObjectValidator<BigIn
 
 	private BigIntegerValidator isNotMultipleOfImpl(BigInteger factor, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !isMultipleOf(v, factor)))
+		if (value.validationFailed(v -> !isMultipleOf(v, factor)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				NumberMessages.isNotMultipleOfFailed(this, name, factor).toString());
 		}

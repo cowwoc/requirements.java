@@ -119,20 +119,20 @@ public final class ObjectSizeValidatorImpl
 	@Override
 	public PrimitiveUnsignedIntegerValidator isZero()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v == 0))
+		if (value.validationFailed(v -> v == 0))
+		{
+			failOnNull();
 			addIllegalArgumentException(ObjectMessages.isEmptyFailed(objectValidator).toString());
+		}
 		return this;
 	}
 
 	@Override
 	public PrimitiveUnsignedIntegerValidator isNotZero()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v != 0))
+		if (value.validationFailed(v -> v != 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.isNotEmptyFailed(objectValidator).toString());
 		}
@@ -167,10 +167,9 @@ public final class ObjectSizeValidatorImpl
 
 	private PrimitiveUnsignedIntegerValidator isLessThanImpl(Integer maximumExclusive, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v < maximumExclusive))
+		if (value.validationFailed(v -> v < maximumExclusive))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsSizeFailed(objectValidator, this.name, value.or(null),
 					"must contain less than", name, maximumExclusive, pluralizer).toString());
@@ -195,10 +194,9 @@ public final class ObjectSizeValidatorImpl
 
 	private PrimitiveUnsignedIntegerValidator isLessThanOrEqualToImpl(Integer maximumInclusive, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v <= maximumInclusive))
+		if (value.validationFailed(v -> v <= maximumInclusive))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsSizeFailed(objectValidator, this.name, value.or(null),
 					"may not contain more than", name, maximumInclusive, pluralizer).toString());
@@ -223,10 +221,9 @@ public final class ObjectSizeValidatorImpl
 
 	private PrimitiveUnsignedIntegerValidator isGreaterThanOrEqualToImpl(Integer minimumInclusive, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v >= minimumInclusive))
+		if (value.validationFailed(v -> v >= minimumInclusive))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsSizeFailed(objectValidator, this.name, value.or(null),
 					"must contain at least", name, minimumInclusive, pluralizer).toString());
@@ -251,10 +248,9 @@ public final class ObjectSizeValidatorImpl
 
 	private PrimitiveUnsignedIntegerValidator isGreaterThanImpl(Integer minimumExclusive, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v > minimumExclusive))
+		if (value.validationFailed(v -> v > minimumExclusive))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsSizeFailed(objectValidator, this.name, value.or(null),
 					"must contain more than", name, minimumExclusive, pluralizer).toString());
@@ -290,10 +286,9 @@ public final class ObjectSizeValidatorImpl
 
 	private PrimitiveUnsignedIntegerValidator isMultipleOfImpl(int factor, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && Numbers.isMultipleOf(v, factor)))
+		if (value.validationFailed(v -> Numbers.isMultipleOf(v, factor)))
 		{
+			failOnNull();
 			MessageBuilder messageBuilder = NumberMessages.isMultipleOfFailed(this, name, factor);
 			objectValidator.value.ifValid(v -> messageBuilder.withContext(v, objectValidator.getName()));
 			addIllegalArgumentException(messageBuilder.toString());
@@ -316,10 +311,9 @@ public final class ObjectSizeValidatorImpl
 
 	private PrimitiveUnsignedIntegerValidator isNotMultipleOfImpl(int factor, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !Numbers.isMultipleOf(v, factor)))
+		if (value.validationFailed(v -> !Numbers.isMultipleOf(v, factor)))
 		{
+			failOnNull();
 			MessageBuilder messageBuilder = NumberMessages.isNotMultipleOfFailed(this, name, factor);
 			objectValidator.value.ifValid(v -> messageBuilder.withContext(v, objectValidator.getName()));
 			addIllegalArgumentException(messageBuilder.toString());
@@ -390,11 +384,10 @@ public final class ObjectSizeValidatorImpl
 		boolean maximumIsInclusive)
 	{
 		scope.getInternalValidators().requireThat(minimum, "minimum").isLessThanOrEqualTo(maximum, "maximum");
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null &&
+		if (value.validationFailed(v ->
 			comparables.inBounds(v, minimum, minimumIsInclusive, maximum, maximumIsInclusive)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ComparableMessages.isBetweenFailed(this, minimum, minimumIsInclusive, maximum, maximumIsInclusive).
 					toString());

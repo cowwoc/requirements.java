@@ -46,10 +46,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator exists()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && Files.exists(v)))
+		if (value.validationFailed(Files::exists))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				PathMessages.exists(this).toString());
 		}
@@ -78,12 +77,11 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		LinkOption... options) throws IOException
 	{
 		scope.getInternalValidators().requireThat(options, "options").isNotNull();
-		if (value.isNull())
-			onNull();
 		try
 		{
-			if (value.validationFailed(v -> v != null && isType(v, attributesMatchExpectation, options)))
+			if (value.validationFailed(v -> isType(v, attributesMatchExpectation, options)))
 			{
+				failOnNull();
 				addIllegalArgumentException(
 					PathMessages.exists(this, type, options).toString());
 			}
@@ -132,10 +130,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isRelative()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v.isAbsolute()))
+		if (value.validationFailed(v -> !v.isAbsolute()))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				PathMessages.isRelative(this).toString());
 		}
@@ -145,10 +142,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 	@Override
 	public PathValidator isAbsolute()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isAbsolute()))
+		if (value.validationFailed(Path::isAbsolute))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				PathMessages.isAbsolute(this).toString());
 		}

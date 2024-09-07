@@ -55,11 +55,10 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	@Override
 	public JsonNodeValidator<JsonNode> property(String name)
 	{
-		if (value.isNull())
-			onNull();
 		ValidationTarget<JsonNode> newValue = value.nullToInvalid().map(v -> v.get(name)).nullToInvalid();
 		if (!newValue.isValid())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				JsonNodeMessages.property(this, name).toString());
 		}
@@ -82,10 +81,9 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	 */
 	public void isType(Predicate<T> predicate, String type)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && predicate.test(v)))
+		if (value.validationFailed(predicate))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				JsonNodeMessages.isType(this, type).toString());
 		}

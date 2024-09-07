@@ -62,7 +62,7 @@ final class Characters<S>
 
 	private S isEqualToImpl(char expected, String name)
 	{
-		if (validator.value.nullToInvalid().validationFailed(v -> v == expected))
+		if (validator.value.validationFailed(v -> v == expected))
 		{
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isEqualToFailed(validator, name, expected).toString());
@@ -106,7 +106,7 @@ final class Characters<S>
 
 	private S isNotEqualToImpl(char unwanted, String name)
 	{
-		if (validator.value.nullToInvalid().validationFailed(v -> v != unwanted))
+		if (validator.value.validationFailed(v -> v != unwanted))
 		{
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isNotEqualToFailed(validator, name, unwanted).toString());

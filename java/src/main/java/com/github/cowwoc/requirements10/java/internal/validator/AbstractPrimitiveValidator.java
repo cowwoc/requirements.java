@@ -36,8 +36,9 @@ public abstract class AbstractPrimitiveValidator<S, T> extends AbstractValidator
 	}
 
 	@Override
-	protected void onNull()
+	protected void failOnNull()
 	{
-		throw new AssertionError(value);
+		if (value.isNull())
+			throw new AssertionError(value);
 	}
 }

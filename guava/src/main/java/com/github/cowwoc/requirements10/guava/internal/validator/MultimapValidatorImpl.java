@@ -55,10 +55,9 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	@Override
 	public MultimapValidator<T, K, V> isEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isEmpty()))
+		if (value.validationFailed(Multimap::isEmpty))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isEmptyFailed(this).toString());
 		}
@@ -68,10 +67,9 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	@Override
 	public MultimapValidator<T, K, V> isNotEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v.isEmpty()))
+		if (value.validationFailed(v -> !v.isEmpty()))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
@@ -81,8 +79,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	@Override
 	public CollectionValidator<Set<K>, K> keySet()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Set<K>, K> newValidator = new CollectionValidatorImpl<>(scope, configuration,
 			name + ".keySet()", nullToInvalid.map(Multimap::keySet), Pluralizer.KEY, context, failures);
@@ -93,8 +90,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	@Override
 	public CollectionValidator<Collection<V>, V> values()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Collection<V>, V> newValidator = new CollectionValidatorImpl<>(scope,
 			configuration, name + ".values()", nullToInvalid.map(Multimap::values), Pluralizer.VALUE,
@@ -106,8 +102,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	@Override
 	public CollectionValidator<Collection<Entry<K, V>>, Entry<K, V>> entries()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		ValidationTarget<T> nullToInvalid = value.nullToInvalid();
 		CollectionValidatorImpl<Collection<Entry<K, V>>, Entry<K, V>> newValidator =
 			new CollectionValidatorImpl<>(scope, configuration, name + ".entrySet()",
@@ -119,8 +114,7 @@ public final class MultimapValidatorImpl<K, V, T extends Multimap<K, V>>
 	@Override
 	public PrimitiveUnsignedIntegerValidator size()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
 			value.nullToInvalid().map(Multimap::size), Pluralizer.ELEMENT, context, failures);
 	}

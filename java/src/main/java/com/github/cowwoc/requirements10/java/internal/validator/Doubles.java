@@ -3,7 +3,6 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 import com.github.cowwoc.requirements10.java.internal.ConfigurationUpdater;
 import com.github.cowwoc.requirements10.java.internal.message.NumberMessages;
 import com.github.cowwoc.requirements10.java.internal.message.ValidatorMessages;
-import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Numbers;
 
 /**
@@ -67,10 +66,9 @@ final class Doubles<S>
 
 	private S isEqualToImpl(double expected, String name)
 	{
-		if (validator.value.isNull())
-			validator.onNull();
-		if (validator.value.validationFailed(v -> v != null && Double.compare(v, expected) == 0))
+		if (validator.value.validationFailed(v -> Double.compare(v, expected) == 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isEqualToFailed(validator, name, expected).toString());
 		}
@@ -115,10 +113,9 @@ final class Doubles<S>
 
 	private S isNotEqualToImpl(double unwanted, String name)
 	{
-		if (validator.value.isNull())
-			validator.onNull();
-		if (validator.value.validationFailed(v -> v != null && Double.compare(v, unwanted) != 0))
+		if (validator.value.validationFailed(v -> Double.compare(v, unwanted) != 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isNotEqualToFailed(validator, name, unwanted).toString());
 		}
@@ -138,11 +135,9 @@ final class Doubles<S>
 	 */
 	public S isNegative()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && Double.compare(v, 0.0) < 0))
+		if (validator.value.validationFailed(v -> Double.compare(v, 0.0) < 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNegativeFailed(validator).toString());
 		}
@@ -159,11 +154,9 @@ final class Doubles<S>
 	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotNegative()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !(Double.compare(v, 0.0) < 0)))
+		if (validator.value.validationFailed(v -> !(Double.compare(v, 0.0) < 0)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotNegativeFailed(validator).toString());
 		}
@@ -183,12 +176,9 @@ final class Doubles<S>
 	 */
 	public S isZero()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null &&
-			(Double.compare(v, -0.0) == 0 || Double.compare(v, 0.0) == 0)))
+		if (validator.value.validationFailed(v -> (Double.compare(v, -0.0) == 0 || Double.compare(v, 0.0) == 0)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isZeroFailed(validator).toString());
 		}
@@ -204,12 +194,9 @@ final class Doubles<S>
 	 */
 	public S isNotZero()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null &&
-			!(Double.compare(v, -0.0) == 0 || Double.compare(v, 0.0) == 0)))
+		if (validator.value.validationFailed(v -> !(Double.compare(v, -0.0) == 0 || Double.compare(v, 0.0) == 0)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotZeroFailed(validator).toString());
 		}
@@ -229,11 +216,9 @@ final class Doubles<S>
 	 */
 	public S isPositive()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !v.isNaN() && Double.compare(v, 0.0) > 0))
+		if (validator.value.validationFailed(v -> !v.isNaN() && Double.compare(v, 0.0) > 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isPositiveFailed(validator).toString());
 		}
@@ -250,11 +235,9 @@ final class Doubles<S>
 	@SuppressWarnings("PMD.LogicInversion")
 	public S isNotPositive()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && (v.isNaN() || !(Double.compare(v, 0.0) > 0))))
+		if (validator.value.validationFailed(v -> (v.isNaN() || !(Double.compare(v, 0.0) > 0))))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotPositiveFailed(validator).toString());
 		}
@@ -707,11 +690,9 @@ final class Doubles<S>
 
 	private S isMultipleOfImpl(double factor, String name)
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && Numbers.isMultipleOf(v, factor)))
+		if (validator.value.validationFailed(v -> Numbers.isMultipleOf(v, factor)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isMultipleOfFailed(validator, name, factor).toString());
 		}
@@ -754,11 +735,9 @@ final class Doubles<S>
 
 	private S isNotMultipleOfImpl(double factor, String name)
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !Numbers.isMultipleOf(v, factor)))
+		if (validator.value.validationFailed(v -> !Numbers.isMultipleOf(v, factor)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotMultipleOfFailed(validator, name, factor).toString());
 		}
@@ -776,11 +755,9 @@ final class Doubles<S>
 	 */
 	public S isNumber()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !v.isNaN()))
+		if (validator.value.validationFailed(v -> !v.isNaN()))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNumberFailed(validator).toString());
 		}
@@ -798,11 +775,9 @@ final class Doubles<S>
 	 */
 	public S isNotNumber()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v.isNaN()))
+		if (validator.value.validationFailed(v -> v.isNaN()))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotNumberFailed(validator).toString());
 		}
@@ -824,11 +799,9 @@ final class Doubles<S>
 	 */
 	public S isFinite()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && Double.isFinite(v)))
+		if (validator.value.validationFailed(Double::isFinite))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isFiniteFailed(validator).toString());
 		}
@@ -850,11 +823,9 @@ final class Doubles<S>
 	 */
 	public S isInfinite()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && Double.isInfinite(v)))
+		if (validator.value.validationFailed(v -> Double.isInfinite(v)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isInfiniteFailed(validator).toString());
 		}
@@ -874,11 +845,9 @@ final class Doubles<S>
 	 */
 	public S isWholeNumber()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && Numbers.isWholeNumber(v)))
+		if (validator.value.validationFailed(Numbers::isWholeNumber))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isWholeNumberFailed(validator).toString());
 		}
@@ -894,11 +863,9 @@ final class Doubles<S>
 	 */
 	public S isNotWholeNumber()
 	{
-		ValidationTarget<Double> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && !Numbers.isWholeNumber(v)))
+		if (validator.value.validationFailed(v -> !Numbers.isWholeNumber(v)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				NumberMessages.isNotWholeNumberFailed(validator).toString());
 		}

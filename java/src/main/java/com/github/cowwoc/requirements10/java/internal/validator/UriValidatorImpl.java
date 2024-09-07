@@ -40,10 +40,9 @@ public final class UriValidatorImpl extends AbstractObjectValidator<UriValidator
 	@Override
 	public UriValidator isAbsolute()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isAbsolute()))
+		if (value.validationFailed(URI::isAbsolute))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				UriMessages.isAbsolute(this).toString());
 		}

@@ -48,24 +48,18 @@ public final class ListValidatorImpl<T extends List<E>, E>
 	public ListValidator<T, E> isSorted(Comparator<E> comparator)
 	{
 		scope.getInternalValidators().requireThat(comparator, "comparator").isNotNull();
-		if (value.isNull())
-			onNull();
 
-		ValidationTarget<List<E>> sorted = value.map(v ->
+		List<E> expected = value.map(v ->
 		{
-			List<E> temp = new ArrayList<>(v);
-			temp.sort(comparator);
-			if (temp.equals(v))
-			{
-				// An empty value indicates that the value is already sorted
-				return List.of();
-			}
-			return temp;
-		});
-		if (sorted.validationFailed(List::isEmpty))
+			List<E> sorted = new ArrayList<>(v);
+			sorted.sort(comparator);
+			return sorted;
+		}).or(null);
+		if (value.validationFailed(v -> v.equals(expected)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
-				CollectionMessages.isSortedFailed(this, sorted.or(null)).toString());
+				CollectionMessages.isSortedFailed(this, expected).toString());
 		}
 		return this;
 	}

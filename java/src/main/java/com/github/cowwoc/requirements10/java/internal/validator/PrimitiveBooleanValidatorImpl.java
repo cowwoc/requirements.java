@@ -48,10 +48,9 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	@Override
 	public PrimitiveBooleanValidator isTrue()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v))
+		if (value.validationFailed(v -> v))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				BooleanMessages.isTrueFailed(this).toString());
 		}
@@ -61,10 +60,9 @@ public final class PrimitiveBooleanValidatorImpl extends AbstractPrimitiveValida
 	@Override
 	public PrimitiveBooleanValidator isFalse()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v))
+		if (value.validationFailed(v -> !v))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				BooleanMessages.isFalseFailed(this).toString());
 		}

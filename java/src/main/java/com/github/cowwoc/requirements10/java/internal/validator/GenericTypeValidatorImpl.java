@@ -45,7 +45,7 @@ public final class GenericTypeValidatorImpl<T>
 	@Override
 	public GenericTypeValidator<T> isPrimitive()
 	{
-		if (value.validationFailed(v -> v != null && v.isPrimitive()))
+		if (value.validationFailed(GenericType::isPrimitive))
 		{
 			addIllegalArgumentException(
 				ClassMessages.isPrimitiveFailed(this).toString());

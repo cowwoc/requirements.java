@@ -64,10 +64,9 @@ public abstract class AbstractArrayValidator<S, T, E>
 	@Override
 	public S isEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && getLength(v) == 0))
+		if (value.validationFailed(v -> getLength(v) == 0))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isEmptyFailed(this).toString());
 		}
@@ -102,10 +101,11 @@ public abstract class AbstractArrayValidator<S, T, E>
 	@Override
 	public S isNotEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && getLength(v) != 0))
+		if (value.validationFailed(v -> getLength(v) != 0))
+		{
+			failOnNull();
 			addIllegalArgumentException(CollectionMessages.isNotEmptyFailed(this).toString());
+		}
 		return self();
 	}
 
@@ -124,10 +124,11 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private S containsImpl(E expected, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && contains(v, expected)))
+		if (value.validationFailed(v -> contains(v, expected)))
+		{
+			failOnNull();
 			addIllegalArgumentException(CollectionMessages.containsFailed(this, name, expected).toString());
+		}
 		return self();
 	}
 
@@ -147,10 +148,9 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private S doesNotContainImpl(E unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !contains(v, unwanted)))
+		if (value.validationFailed(v -> !contains(v, unwanted)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainFailed(this, name, unwanted).toString());
 		}
@@ -172,12 +172,11 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private <C extends Collection<E>> S containsExactlyImpl(C expected, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().map(
 			v -> Difference.actualVsOther(asList(v), expected)).or(null);
-		if (difference == null || difference.areDifferent())
+		if (difference == null || !difference.areTheSame())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsExactlyFailed(this, difference, name, expected, Pluralizer.ELEMENT).
 					toString());
@@ -229,12 +228,11 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private <C extends Collection<E>> S doesNotContainExactlyImpl(C unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().map(
 			v -> Difference.actualVsOther(asList(v), unwanted)).or(null);
-		if (difference == null || difference.areTheSame())
+		if (difference == null || !difference.areDifferent())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainExactlyFailed(this, name, unwanted, Pluralizer.ELEMENT).toString());
 		}
@@ -273,11 +271,9 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private <C extends Collection<E>> S containsAnyImpl(C expected, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null &&
-			!Collections.disjoint(getValueAsSet(v), expected)))
+		if (value.validationFailed(v -> !Collections.disjoint(getValueAsSet(v), expected)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsAnyFailed(this, name, expected, Pluralizer.ELEMENT).toString());
 		}
@@ -316,12 +312,11 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private <C extends Collection<E>> S doesNotContainAnyImpl(C unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().map(
 			v -> Difference.actualVsOther(asList(v), unwanted)).or(null);
 		if (difference == null || !difference.common().isEmpty())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainAnyFailed(this, difference, name, unwanted, Pluralizer.ELEMENT).
 					toString());
@@ -361,12 +356,11 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private <C extends Collection<E>> S containsAllImpl(C expected, String name)
 	{
-		if (value.isNull())
-			onNull();
 		Difference<E> difference = value.nullToInvalid().map(
 			v -> Difference.actualVsOther(asList(v), expected)).or(null);
 		if (difference == null || !difference.onlyInOther().isEmpty())
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsAllFailed(this, difference, name, expected, Pluralizer.ELEMENT).
 					toString());
@@ -406,10 +400,9 @@ public abstract class AbstractArrayValidator<S, T, E>
 
 	private <C extends Collection<E>> S doesNotContainAllImpl(C unwanted, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !getValueAsSet(v).containsAll(unwanted)))
+		if (value.validationFailed(v -> !getValueAsSet(v).containsAll(unwanted)))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.doesNotContainAllFailed(this, name, unwanted, Pluralizer.ELEMENT).toString());
 		}
@@ -434,14 +427,14 @@ public abstract class AbstractArrayValidator<S, T, E>
 	@Override
 	public S doesNotContainDuplicates()
 	{
-		if (value.isNull())
-			onNull();
-		ValidationTarget<Set<E>> duplicates = value.nullToInvalid().
-			map(v -> com.github.cowwoc.requirements10.java.internal.util.Collections.getDuplicates(asList(v)));
-		if (duplicates.validationFailed(Set::isEmpty))
+		Set<E> duplicates = value.nullToInvalid().
+			map(v -> com.github.cowwoc.requirements10.java.internal.util.Collections.getDuplicates(asList(v)))
+			.or(null);
+		if (duplicates == null || !duplicates.isEmpty())
 		{
+			failOnNull();
 			addIllegalArgumentException(
-				CollectionMessages.doesNotContainDuplicatesFailed(this, duplicates.or(null), Pluralizer.ELEMENT).
+				CollectionMessages.doesNotContainDuplicatesFailed(this, duplicates, Pluralizer.ELEMENT).
 					toString());
 		}
 		return self();
@@ -450,8 +443,6 @@ public abstract class AbstractArrayValidator<S, T, E>
 	@Override
 	public S isSorted(Comparator<E> comparator)
 	{
-		if (value.isNull())
-			onNull();
 		ValidationTarget<List<E>> sorted = value.map(v ->
 		{
 			List<E> valueAsList = asList(v);
@@ -466,6 +457,7 @@ public abstract class AbstractArrayValidator<S, T, E>
 		});
 		if (sorted.validationFailed(List::isEmpty))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.isSortedFailed(this, sorted.or(null)).toString());
 		}
@@ -475,8 +467,7 @@ public abstract class AbstractArrayValidator<S, T, E>
 	@Override
 	public PrimitiveUnsignedIntegerValidator length()
 	{
-		if (value.isNull())
-			onNull();
+		failOnNull();
 		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".length()",
 			value.nullToInvalid().map(this::getLength), Pluralizer.ELEMENT, context, failures);
 	}

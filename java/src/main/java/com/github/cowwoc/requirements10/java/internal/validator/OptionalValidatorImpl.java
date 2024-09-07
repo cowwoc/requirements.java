@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "OptionalAssignedToNull"})
 public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<OptionalValidator<T>, Optional<T>>
 	implements OptionalValidator<T>
 {
@@ -42,10 +41,9 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	@Override
 	public OptionalValidator<T> isPresent()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isPresent()))
+		if (value.validationFailed(Optional::isPresent))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isNotEmptyFailed(this).toString());
 		}
@@ -55,10 +53,9 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 	@Override
 	public OptionalValidator<T> isEmpty()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.isEmpty()))
+		if (value.validationFailed(Optional::isEmpty))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				ObjectMessages.isEmptyFailed(this).toString());
 		}
@@ -80,10 +77,9 @@ public final class OptionalValidatorImpl<T> extends AbstractObjectValidator<Opti
 
 	private OptionalValidator<T> containsImpl(Object expected, String name)
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v.equals(Optional.ofNullable(expected))))
+		if (value.validationFailed(v -> v.equals(Optional.ofNullable(expected))))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				CollectionMessages.containsFailed(this, name, expected).toString());
 		}

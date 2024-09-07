@@ -5,7 +5,6 @@
 package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.internal.message.ComparableMessages;
-import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 
 /**
  * Helper methods for validating {@code Comparable}.
@@ -66,11 +65,9 @@ final class Comparables<S, T extends Comparable<T>>
 
 	private S isLessThanImpl(T maximumExclusive, String name)
 	{
-		ValidationTarget<T> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(maximumExclusive) < 0))
+		if (validator.value.validationFailed(v -> v.compareTo(maximumExclusive) < 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ComparableMessages.isLessThanFailed(validator, name, maximumExclusive).toString());
 		}
@@ -116,11 +113,9 @@ final class Comparables<S, T extends Comparable<T>>
 
 	private S isLessThanOrEqualToImpl(T maximumInclusive, String name)
 	{
-		ValidationTarget<T> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(maximumInclusive) <= 0))
+		if (validator.value.validationFailed(v -> v.compareTo(maximumInclusive) <= 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ComparableMessages.isLessThanOrEqualToFailed(validator, name, maximumInclusive).toString());
 		}
@@ -166,11 +161,9 @@ final class Comparables<S, T extends Comparable<T>>
 
 	private S isGreaterThanOrEqualToImpl(T minimumInclusive, String name)
 	{
-		ValidationTarget<T> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(minimumInclusive) >= 0))
+		if (validator.value.validationFailed(v -> v.compareTo(minimumInclusive) >= 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ComparableMessages.isGreaterThanOrEqualToFailed(validator, name, minimumInclusive).toString());
 		}
@@ -216,11 +209,9 @@ final class Comparables<S, T extends Comparable<T>>
 
 	private S isGreaterThanImpl(T minimumExclusive, String name)
 	{
-		ValidationTarget<T> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null && v.compareTo(minimumExclusive) > 0))
+		if (validator.value.validationFailed(v -> v.compareTo(minimumExclusive) > 0))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ComparableMessages.isGreaterThanFailed(validator, name, minimumExclusive).toString());
 		}
@@ -275,12 +266,10 @@ final class Comparables<S, T extends Comparable<T>>
 	{
 		validator.scope.getInternalValidators().requireThat(minimum, "minimum").
 			isLessThanOrEqualTo(maximum, "maximum");
-		ValidationTarget<T> value = validator.value;
-		if (value.isNull())
-			validator.onNull();
-		if (value.validationFailed(v -> v != null &&
+		if (validator.value.validationFailed(v ->
 			inBounds(v, minimum, minimumIsInclusive, maximum, maximumIsInclusive)))
 		{
+			validator.failOnNull();
 			validator.addIllegalArgumentException(
 				ComparableMessages.isBetweenFailed(validator, minimum, minimumIsInclusive, maximum,
 						maximumIsInclusive).

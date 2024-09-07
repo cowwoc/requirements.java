@@ -35,10 +35,9 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 	@Override
 	public BooleanValidator isTrue()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && v))
+		if (value.validationFailed(v -> v))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				BooleanMessages.isTrueFailed(this).toString());
 		}
@@ -48,10 +47,9 @@ public final class BooleanValidatorImpl extends AbstractObjectValidator<BooleanV
 	@Override
 	public BooleanValidator isFalse()
 	{
-		if (value.isNull())
-			onNull();
-		if (value.validationFailed(v -> v != null && !v))
+		if (value.validationFailed(v -> !v))
 		{
+			failOnNull();
 			addIllegalArgumentException(
 				BooleanMessages.isFalseFailed(this).toString());
 		}

@@ -398,7 +398,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	}
 
 	/**
-	 * Invoked by a validation if the value is null.
+	 * Fails the validation if the value is "null".
 	 */
-	protected abstract void onNull();
+	protected abstract void failOnNull();
 }
