@@ -110,6 +110,6 @@ public final class TypicalUsageTest
 	public void namelessValidation()
 	{
 		int actual = 5;
-		DefaultJavaValidators.that(actual).isEqualTo(6);
+		DefaultJavaValidators.that(actual).isEqualTo(6).elseThrow();
 	}
 }

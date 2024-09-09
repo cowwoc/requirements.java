@@ -12,8 +12,9 @@ public interface JacksonAssertThat
 	/**
 	 * Validates the state of a {@code JsonNode}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -30,8 +31,9 @@ public interface JacksonAssertThat
 	/**
 	 * Validates the state of a {@code JsonNode}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.

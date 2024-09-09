@@ -54,15 +54,17 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Creates validators for the Java API that throw {@code AssertionError} immediately on validation failure.
+ * Creates validators for the Java API that capture exceptions on validation failure rather than throwing them
+ * immediately. The exceptions are converted into an {@link AssertionError}.
  */
 public interface JavaAssertThat
 {
 	/**
 	 * Validates the state of a {@code byte}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -78,8 +80,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code byte}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -92,8 +95,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Byte}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -109,8 +113,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Byte}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -123,8 +128,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code short}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -140,8 +146,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code short}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -154,8 +161,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Short}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -171,8 +179,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Short}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -185,8 +194,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of an {@code int}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -202,8 +212,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of an {@code int}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -216,8 +227,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of an {@code Integer}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -233,8 +245,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of an {@code Integer}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -247,8 +260,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code long}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -264,8 +278,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code long}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -278,8 +293,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Long}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -295,8 +311,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Long}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -309,8 +326,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code float}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -326,8 +344,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code float}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -340,8 +359,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Float}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -357,8 +377,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Float}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -371,8 +392,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code double}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -388,8 +410,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code double}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -402,8 +425,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Double}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -419,8 +443,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Double}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -433,8 +458,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code boolean}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -450,8 +476,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code boolean}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -464,8 +491,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Boolean}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -481,8 +509,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Boolean}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -495,8 +524,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code char}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -512,8 +542,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code char}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -526,8 +557,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Character}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -543,8 +575,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Character}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -557,8 +590,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code BigInteger}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -574,8 +608,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code BigInteger}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -588,8 +623,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code BigDecimal}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -605,8 +641,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code BigDecimal}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -640,8 +677,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of an {@code Object}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -658,8 +696,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of an {@code Object}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -673,8 +712,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Collection}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -692,8 +732,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code Collection}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -708,8 +749,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code List}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -727,8 +769,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a {@code List}.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -743,8 +786,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code byte} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -760,8 +804,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code byte} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -774,8 +819,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code short} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -791,8 +837,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code short} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -805,8 +852,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code int} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -822,8 +870,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code int} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -836,8 +885,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code long} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -853,8 +903,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code long} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -867,8 +918,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code float} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.
@@ -884,8 +936,9 @@ public interface JavaAssertThat
 	/**
 	 * Validates the state of a primitive {@code float} array.
 	 * <p>
-	 * The returned validator throws an exception immediately if a validation fails. This exception is then
-	 * converted into an {@link AssertionError}. Exceptions unrelated to validation failures are not converted.
+	 * The returned validator captures exceptions on validation failure rather than throwing them immediately.
+	 * The exceptions are converted into an {@link AssertionError} and can be retrieved or thrown once the
+	 * validation completes. Exceptions unrelated to validation failures are thrown immediately.
 	 * <p>
 	 * This method is intended to be used with the {@code assert} keyword, like so:
 	 * {@code assert that(value, name)}.

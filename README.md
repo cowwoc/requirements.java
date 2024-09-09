@@ -50,11 +50,11 @@ public final class Cake
   public int eat()
   {
     ++bitesTaken;
-    assert that(bitesTaken, "bitesTaken").isNotNegative();
+    assert that(bitesTaken, "bitesTaken").isNotNegative().elseThrow();
 
     piecesLeft -= ThreadLocalRandom.current().nextInt(5);
 
-    assert that(piecesLeft, "piecesLeft").isNotNegative();
+    assert that(piecesLeft, "piecesLeft").isNotNegative().elseThrow();
     return piecesLeft;
   }
 

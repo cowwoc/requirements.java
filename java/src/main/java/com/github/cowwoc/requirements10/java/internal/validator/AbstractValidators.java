@@ -160,7 +160,7 @@ public abstract class AbstractValidators<S> implements Validators<S>
 		StampedLocks.write(assertThatLock, () ->
 		{
 			this.assertThatConfiguration = MutableConfiguration.from(configuration).
-				exceptionTransformer(CONVERT_TO_ASSERTION_ERROR).toImmutable();
+				throwOnFailure(false).exceptionTransformer(CONVERT_TO_ASSERTION_ERROR).toImmutable();
 		});
 		StampedLocks.write(checkIfLock, () ->
 		{
