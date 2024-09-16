@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BigIntegerNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.node.MissingNode;
@@ -141,4 +142,14 @@ public interface JsonNodeValidator<T extends JsonNode> extends
 	 * @see JsonNode#isTextual()
 	 */
 	JsonNodeValidator<TextNode> isString();
+
+	/**
+	 * Ensures that the node contains a Boolean.
+	 *
+	 * @return this
+	 * @throws NullPointerException     if the value is null
+	 * @throws IllegalArgumentException if the value is not a Boolean
+	 * @see JsonNode#isBoolean()
+	 */
+	JsonNodeValidator<BooleanNode> isBoolean();
 }

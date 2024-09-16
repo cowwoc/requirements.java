@@ -7,6 +7,7 @@ package com.github.cowwoc.requirements10.jackson.internal.validator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BigIntegerNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.node.MissingNode;
@@ -156,6 +157,13 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 	public JsonNodeValidator<TextNode> isString()
 	{
 		isType(JsonNode::isTextual, "a String");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<BooleanNode> isBoolean()
+	{
+		isType(JsonNode::isBoolean, "a Boolean");
 		return self();
 	}
 }

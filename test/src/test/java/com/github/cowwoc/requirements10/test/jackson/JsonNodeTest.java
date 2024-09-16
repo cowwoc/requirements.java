@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
@@ -151,9 +152,39 @@ public final class JsonNodeTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			JsonNode node = om.createObjectNode().put("value", true).get("value");
-			boolean value = new TestValidatorsImpl(scope).requireThat(node, "node").isValue().getValue().
+			boolean value = new TestValidatorsImpl(scope).requireThat(node, "node").isBoolean().getValue().
 				booleanValue();
 			requireThat(value, "value").isTrue();
+		}
+	}
+
+	@Test
+	public void nodeIsValue() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			JsonNode node = om.createObjectNode().
+				put("base64", "SGVsbG8gV29ybGQ=").
+				put("boolean", true).
+				putNull("null").
+				put("number", 5).
+				put("string", "Hello World");
+			JsonNodeValidator<JsonNode> validator = new TestValidatorsImpl(scope).requireThat(node, "node");
+
+			byte[] binaryValue = validator.property("base64").isValue().getValue().binaryValue();
+			requireThat(binaryValue, "binaryValue").isEqualTo("Hello World".getBytes(StandardCharsets.UTF_8));
+
+			boolean booleanValue = validator.property("boolean").isValue().getValue().booleanValue();
+			requireThat(booleanValue, "booleanValue").isTrue();
+
+			boolean isNull = validator.property("null").isValue().getValue().isNull();
+			requireThat(isNull, "nullValue").isTrue();
+
+			Number numberValue = validator.property("number").isValue().getValue().numberValue();
+			requireThat(numberValue, "numberValue").isEqualTo(5);
+
+			String stringValue = validator.property("string").isValue().getValue().textValue();
+			requireThat(stringValue, "stringValue").isEqualTo("Hello World");
 		}
 	}
 

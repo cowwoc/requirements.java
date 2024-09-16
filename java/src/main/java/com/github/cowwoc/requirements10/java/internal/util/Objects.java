@@ -63,6 +63,13 @@ public final class Objects
 		assert (type != null);
 		if (!type.getComponentType().isPrimitive())
 			return Arrays.asList((Object[]) array);
+		if (type == byte[].class)
+		{
+			byte[] valueAsArray = (byte[]) array;
+			int length = valueAsArray.length;
+			return IntStream.range(0, length).mapToObj(i -> valueAsArray[i]).
+				collect(Collectors.toCollection(() -> new ArrayList<>(length)));
+		}
 		if (type == boolean[].class)
 		{
 			boolean[] valueAsArray = (boolean[]) array;
