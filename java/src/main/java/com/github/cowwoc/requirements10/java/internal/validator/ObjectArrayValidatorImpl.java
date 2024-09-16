@@ -6,7 +6,6 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
-import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Arrays;
 import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
@@ -69,23 +68,5 @@ public final class ObjectArrayValidatorImpl<E> extends AbstractArrayValidator<Ob
 				duplicates.add(element);
 		}
 		return duplicates;
-	}
-
-	@Override
-	public ObjectArrayValidator<E[], E> containsSameNullity()
-	{
-		if (value.validationFailed(v ->
-		{
-			int numberOfNulls = 0;
-			for (E element : v)
-				if (element == null)
-					++numberOfNulls;
-			return numberOfNulls == getLength(v);
-		}))
-		{
-			addIllegalArgumentException(
-				CollectionMessages.containsSameNullityFailed(this).toString());
-		}
-		return this;
 	}
 }

@@ -19,12 +19,4 @@ public interface ObjectArrayValidator<T, E> extends
 	ObjectComponent<ObjectArrayValidator<T, E>, T>,
 	ArrayComponent<ObjectArrayValidator<T, E>, T, E>
 {
-	/**
-	 * Ensures that the array contains only null values or only non-null values.
-	 *
-	 * @return this
-	 * @throws NullPointerException     if the value is null
-	 * @throws IllegalArgumentException if the array contains a mix of null and non-null values
-	 */
-	ObjectArrayValidator<T, E> containsSameNullity();
 }

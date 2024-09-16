@@ -494,16 +494,6 @@ public interface CollectionComponent<S, E>
 	S doesNotContainAll(Collection<E> unwanted, String name);
 
 	/**
-	 * Ensures that the collection contains only null values, or only non-null values.
-	 *
-	 * @return this
-	 * @throws NullPointerException     if the value is {@code null}
-	 * @throws IllegalArgumentException if the collection contains a mix of {@code null} and non-{@code null}
-	 *                                  values
-	 */
-	S containsSameNullity();
-
-	/**
 	 * Ensures that the collection does not contain any duplicate elements.
 	 *
 	 * @return this

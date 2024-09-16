@@ -400,35 +400,6 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	}
 
 	@Override
-	public S containsSameNullity()
-	{
-		if (containsSameNullityValidationFailed())
-		{
-			failOnNull();
-			addIllegalArgumentException(
-				CollectionMessages.containsSameNullityFailed(this).toString());
-		}
-		return self();
-	}
-
-	/**
-	 * @return {@code true} if the elements in the value are all {@code null} or all not {@code null}, or
-	 * {@code false} if the value is undefined, {@code null}, or contains a mix of {@code null} and not
-	 * {@code null} elements
-	 */
-	private boolean containsSameNullityValidationFailed()
-	{
-		T invalidToNull = getValueOrDefault(null);
-		if (invalidToNull == null)
-			return true;
-		int numberOfNulls = 0;
-		for (E element : invalidToNull)
-			if (element == null)
-				++numberOfNulls;
-		return numberOfNulls != invalidToNull.size();
-	}
-
-	@Override
 	public PrimitiveUnsignedIntegerValidator size()
 	{
 		failOnNull();

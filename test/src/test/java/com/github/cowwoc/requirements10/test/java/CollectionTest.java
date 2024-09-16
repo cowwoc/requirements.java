@@ -1180,40 +1180,4 @@ public final class CollectionTest
 			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
-
-	public void doesNotContainMixedNullity_IsNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Map<String, Object> nameToValue = new HashMap<>();
-			nameToValue.put("first", null);
-			nameToValue.put("second", null);
-			validators.requireThat(nameToValue, "nameToValue").values().containsSameNullity();
-		}
-	}
-
-	public void doesNotContainMixedNullity_IsNotNull()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Map<String, Object> nameToValue = Map.of("first", 1,
-				"second", 10);
-			validators.requireThat(nameToValue, "nameToValue").values().containsSameNullity();
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void doesNotContainMixedNullity_False()
-	{
-		try (ApplicationScope scope = new TestApplicationScope(NONE))
-		{
-			TestValidators validators = new TestValidatorsImpl(scope);
-			Map<String, Object> nameToValue = new HashMap<>();
-			nameToValue.put("first", 1);
-			nameToValue.put("second", null);
-			validators.requireThat(nameToValue, "nameToValue").values().containsSameNullity();
-		}
-	}
 }

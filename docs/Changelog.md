@@ -21,6 +21,7 @@ See https://github.com/cowwoc/requirements.java/commits/master for a full list.
     * Replaced `Validator.elseGetException()` with `Validator.getFailures().getException()`.
     * Renamed `Validator.isSameReferenceAs()` to `isReferenceEqualTo()`, `Validator.isNotSameReferenceAs()` to
       `isReferenceNotEqualTo()`.
+    * Removed `CollectionValidator.containsSameNullity()` yet again due to poor usability.
 * New features:
     * Added `GenericTypeValidator.isPrimitive()`.
     * Added `validationFailed()` and `getValueOrDefault()` to all validators.

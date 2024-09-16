@@ -415,17 +415,4 @@ public final class CollectionMessages
 			messageBuilder.withContext(sorted, "expected");
 		return messageBuilder;
 	}
-
-	/**
-	 * @param validator the validator
-	 * @return a message for the validation failure
-	 */
-	public static MessageBuilder containsSameNullityFailed(AbstractObjectValidator<?, ?> validator)
-	{
-		String name = validator.getName();
-		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(name) + " must contain all nulls, or no nulls.");
-		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));
-		return messageBuilder;
-	}
 }
