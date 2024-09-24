@@ -56,17 +56,17 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
-								</link>
-							</links>
-							<offlineLinks>
 								<!--
 								The plugin looks for Javadoc at ${project.url}/apidocs but Github doesn't support
 								this layout
 								-->
+								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
+								</link>
+							</links>
+							<offlineLinks>
 								<offlineLink>
 									<url>https://cowwoc.github.io/requirements.java/${project.version}/docs/api/</url>
-									<location>${rootBaseDir}/java/target/apidocs/</location>
+									<location>${rootBaseDir}/java/target/reports/apidocs/</location>
 								</offlineLink>
 							</offlineLinks>
 							<excludePackageNames>

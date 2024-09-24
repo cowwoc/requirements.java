@@ -56,16 +56,16 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
-							</links>
-							<offlineLinks>
 								<!--
 								The plugin looks for Javadoc at ${project.url}/apidocs but Github doesn't support
 								this layout
 								-->
+								<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
+							</links>
+							<offlineLinks>
 								<offlineLink>
 									<url>https://cowwoc.github.io/requirements.java/${project.version}/docs/api/</url>
-									<location>${rootBaseDir}/guava/target/apidocs/</location>
+									<location>${rootBaseDir}/java/target/reports/apidocs/</location>
 								</offlineLink>
 							</offlineLinks>
 							<excludePackageNames>

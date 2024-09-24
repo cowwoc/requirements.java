@@ -4,6 +4,7 @@ import com.github.cowwoc.pouch.core.WrappedCheckedException;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.StampedLock;
+import java.util.function.Supplier;
 
 /**
  * Helper functions for {@code StampedLock}s.
@@ -29,7 +30,7 @@ public final class StampedLocks
 	 *
 	 * @param <V>  the type of value returned by the task
 	 * @param lock a lock
-	 * @param task the task to run while holding the lock
+	 * @param task the task to run
 	 * @return the value returned by the task
 	 * @throws NullPointerException    if any of the arguments are null
 	 * @throws WrappedCheckedException if any checked exceptions are thrown
@@ -51,7 +52,7 @@ public final class StampedLocks
 	 *
 	 * @param <V>  the type of value returned by the task
 	 * @param lock a lock
-	 * @param task the task to run while holding the lock
+	 * @param task the task to run
 	 * @return the value returned by the task
 	 * @throws NullPointerException    if any of the arguments are null
 	 * @throws WrappedCheckedException if {@code task} throws a checked exception
@@ -73,26 +74,30 @@ public final class StampedLocks
 	 * Acquires a write lock and runs a task.
 	 *
 	 * @param lock a lock
-	 * @param task the task to run while holding the lock
-	 * @return a write lock as a resource
-	 * @throws NullPointerException if {@code lock} is null
+	 * @param task the task to run
+	 * @throws NullPointerException if any of the arguments are null
 	 */
-	public static <V> V write(StampedLock lock, Runnable task)
+	public static void write(StampedLock lock, Runnable task)
 	{
-		return write(lock, () ->
+		long stamp = lock.writeLock();
+		try
 		{
-			task.run();
-			return null;
-		});
+			runTask(task);
+		}
+		finally
+		{
+			lock.unlockWrite(stamp);
+		}
 	}
 
 	/**
 	 * Acquires a write lock and runs a task.
 	 *
+	 * @param <V>  the type of value returned by the task
 	 * @param lock a lock
-	 * @param task the task to run while holding the lock
-	 * @return a write lock as a resource
-	 * @throws NullPointerException if {@code lock} is null
+	 * @param task the task to run
+	 * @return the value returned by the task
+	 * @throws NullPointerException if any of the arguments are null
 	 */
 	public static <V> V write(StampedLock lock, Callable<V> task)
 	{
@@ -110,8 +115,27 @@ public final class StampedLocks
 	/**
 	 * Runs a task.
 	 *
+	 * @param task the task to run
+	 * @throws NullPointerException    if {@code task} is null
+	 * @throws WrappedCheckedException if {@code task} throws a checked exception
+	 */
+	private static void runTask(Runnable task)
+	{
+		try
+		{
+			task.run();
+		}
+		catch (Exception e)
+		{
+			throw WrappedCheckedException.wrap(e);
+		}
+	}
+
+	/**
+	 * Runs a task.
+	 *
 	 * @param <V>  the type of value returned by the task
-	 * @param task the task to run while holding the lock
+	 * @param task the task to run
 	 * @return the value returned by the task
 	 * @throws NullPointerException    if {@code task} is null
 	 * @throws WrappedCheckedException if {@code task} throws a checked exception
@@ -126,5 +150,106 @@ public final class StampedLocks
 		{
 			throw WrappedCheckedException.wrap(e);
 		}
+	}
+
+	/**
+	 * Returns a value, initializing it if it hasn't been initialized yet.
+	 *
+	 * @param <V>         the type of value returned by the task
+	 * @param lock        the lock used to ensure thread safety
+	 * @param supplier    returns the value, or {@code null} if it hasn't been initialized yet
+	 * @param initializer initializes the value if it hasn't been initialized yet and returns it
+	 * @return the initialized value
+	 * @throws NullPointerException if any of the arguments are null
+	 */
+	public static <V> V getLazilyInitializedValue(StampedLock lock, Supplier<V> supplier,
+		Callable<V> initializer)
+	{
+		long stamp = lock.tryOptimisticRead();
+		if (stamp == 0)
+			return getLazilyInitializedValueUsingRead(lock, supplier, initializer);
+		V value = supplier.get();
+		if (!lock.validate(stamp))
+			return getLazilyInitializedValueUsingRead(lock, supplier, initializer);
+		if (value != null)
+			return value;
+		stamp = lock.tryConvertToWriteLock(stamp);
+		if (stamp == 0)
+			return getLazilyInitializedValueUsingWrite(lock, supplier, initializer);
+		try
+		{
+			return runTask(initializer);
+		}
+		finally
+		{
+			lock.unlockWrite(stamp);
+		}
+	}
+
+	/**
+	 * Returns a value, initializing it if it hasn't been initialized yet, using a read lock.
+	 *
+	 * @param <V>         the type of value returned by the task
+	 * @param lock        the lock used to ensure thread safety
+	 * @param supplier    returns the value, or {@code null} if it hasn't been initialized yet
+	 * @param initializer initializes the value if it hasn't been initialized yet
+	 * @return the initialized value
+	 * @throws NullPointerException if any of the arguments are null
+	 */
+	private static <V> V getLazilyInitializedValueUsingRead(StampedLock lock, Supplier<V> supplier,
+		Callable<V> initializer)
+	{
+		long stamp = lock.readLock();
+		V value;
+		try
+		{
+			value = supplier.get();
+		}
+		catch (RuntimeException e)
+		{
+			lock.unlockRead(stamp);
+			throw e;
+		}
+		if (value != null)
+		{
+			lock.unlockRead(stamp);
+			return value;
+		}
+		stamp = lock.tryConvertToWriteLock(stamp);
+		if (stamp == 0)
+		{
+			lock.unlockRead(stamp);
+			return getLazilyInitializedValueUsingWrite(lock, supplier, initializer);
+		}
+		try
+		{
+			return runTask(initializer);
+		}
+		finally
+		{
+			lock.unlockWrite(stamp);
+		}
+	}
+
+	/**
+	 * Returns a value, initializing it if it hasn't been initialized yet, using a write lock.
+	 *
+	 * @param <V>         the type of value returned by the task
+	 * @param lock        the lock used to ensure thread safety
+	 * @param supplier    returns the value, or {@code null} if it hasn't been initialized yet
+	 * @param initializer initializes the value if it hasn't been initialized yet
+	 * @return the value
+	 * @throws NullPointerException if any of the arguments are null
+	 */
+	private static <V> V getLazilyInitializedValueUsingWrite(StampedLock lock, Supplier<V> supplier,
+		Callable<V> initializer)
+	{
+		return write(lock, () ->
+		{
+			V value = supplier.get();
+			if (value != null)
+				return value;
+			return runTask(initializer);
+		});
 	}
 }
