@@ -11,8 +11,6 @@
 		<exclude name="UseVarargs"/>
 		<exclude name="GuardLogStatement"/>
 		<exclude name="AbstractClassWithoutAbstractMethod"/>
-		<!-- WORKAROUND: https://github.com/pmd/pmd/issues/4813 -->
-		<exclude name="SwitchStmtsShouldHaveDefault"/>
 		<!-- WORKAROUND: https://github.com/pmd/pmd/issues/5025 -->
 		<exclude name="PreserveStackTrace"/>
 	</rule>
@@ -133,7 +131,7 @@
 	<rule ref="category/java/performance.xml">
 		<exclude name="AvoidInstantiatingObjectsInLoops"/>
 		<exclude name="ConsecutiveLiteralAppends"/>
-		<exclude name="TooFewBranchesForASwitchStatement"/>
+		<exclude name="TooFewBranchesForSwitch"/>
 	</rule>
 	<rule ref="category/java/security.xml"/>
 </ruleset>
