@@ -3,7 +3,7 @@
 
 # <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
 
-[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/)
+[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/10.0/docs/api/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/Changelog.md)
 [![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
@@ -32,9 +32,9 @@ To get started, add this Maven dependency:
 import java.util.List;
 import java.util.StringJoiner;
 
-import static com.github.cowwoc.requirements.java.DefaultJavaValidators.assumeThat;
-import static com.github.cowwoc.requirements.java.DefaultJavaValidators.checkIf;
-import static com.github.cowwoc.requirements.java.DefaultJavaValidators.requireThat;
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
+import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.that;
 
 public final class Cake
 {
@@ -50,11 +50,11 @@ public final class Cake
   public int eat()
   {
     ++bitesTaken;
-    assert assumeThat(bitesTaken, "bitesTaken").isNotNegative().elseThrow();
+    assert that(bitesTaken, "bitesTaken").isNotNegative().elseThrow();
 
     piecesLeft -= ThreadLocalRandom.current().nextInt(5);
 
-    assert assumeThat(piecesLeft, "piecesLeft").isNotNegative().elseThrow();
+    assert that(piecesLeft, "piecesLeft").isNotNegative().elseThrow();
     return piecesLeft;
   }
 
@@ -77,7 +77,7 @@ You'll get:
 
 ```
 java.lang.IllegalArgumentException: "piecesLeft" must be positive.
-Actual: -1000
+actual: -1000
 ```
 
 If you violate a **class invariant**:
@@ -92,7 +92,7 @@ You'll get:
 
 ```
 java.lang.AssertionError: "bitesTaken" may not be negative.
-Actual: -128
+actual: -128
 ```
 
 If you violate a **postcondition**:
@@ -107,7 +107,7 @@ You'll get:
 
 ```
 java.lang.AssertionError: "piecesLeft" may not be negative.
-Actual: -4
+actual: -4
 ```
 
 If you violate **multiple** conditions at once:
@@ -126,10 +126,10 @@ You'll get:
 
 ```
 "bitesTaken" may not be negative.
-Actual: -1
+actual: -1
 
 "piecesLeft" must be greater than 3.
-Actual: 2
+actual: 2
 ```
 
 ## Features
@@ -152,29 +152,21 @@ This library offers the following features:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#requireThat(T,java.lang.String)) for method preconditions.
-* [assumeThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#assumeThat(T,java.lang.String)) for class invariants, method postconditions and private methods.
-* [checkIfThat(value, name)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/DefaultJavaValidators.html#checkIf(T,java.lang.String)) for multiple failures and customized error handling.
-* [JavaValidators](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/JavaValidators.html) for custom configurations.
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
+  for method preconditions.
+* [that(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#that(T,java.lang.String))
+  for [class invariants, method postconditions and private methods](docs/Features.md#assertion-support). 
+* [checkIf(value, name)](https://cowwoc.github.io/requirements.java/10.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
+  for multiple failures and customized error handling.
 
-The first three methods use a shared configuration, while `JavaValidators` allows you to create an independent
-configuration.
+See the [API documentation](https://cowwoc.github.io/requirements.java/10.0/docs/api/) for more details.
 
-* `requireThat()` and `assumeThat()` throw an exception on the first validation failure.
-* `checkIf()` returns multiple validation failures at once. It is more flexible than the others, but its syntax
-is more verbose.
+## Best practices
 
-Thrown exceptions may be configured using [ConfigurationUpdater.exceptionTransformer(Function)](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements/java/ConfigurationUpdater.html#exceptionTransformer(java.util.function.Function)).
-
-See the [API documentation](https://cowwoc.github.io/requirements.java/9.0.0/docs/api/) for more details.
-
-## Tips
-
-* Use `assert` with `assumeThat().elseThrow()` for sanity checks. When assertions are disabled, the checks will get removed.
 * Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
   This is the fastest validation approach, ideal for web services.
-* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional. 
-  In other words, favor `assumeThat(value, name)` to `assumeThat(value)`.
+* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
+  In other words, favor `assert that(value, name)` over `assert that(value)`.
 
 ## Third-party libraries and tools
 

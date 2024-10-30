@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>9.0.1-SNAPSHOT</version>
+		<version>10.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>test</artifactId>
 	<packaging>jar</packaging>
 
 	<properties>
-		<argLine />
+		<rootBaseDir>${project.basedir}/..</rootBaseDir>
+		<argLine/>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,7 +43,6 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.25.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -50,7 +51,7 @@
 		<dependency>
 			<groupId>com.github.cowwoc.requirements</groupId>
 			<artifactId>jackson</artifactId>
-			<version>9.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -63,7 +64,7 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:all,-requires-automatic,-try</arg>
+						<arg>-Xlint:all,-requires-automatic,-try,-module</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>
@@ -75,7 +76,7 @@
 					<useModulePath>false</useModulePath>
 					<argLine>
 						${argLine} -Dfile.encoding=UTF-8 "-Djava.library.path=${project.build.directory}" -ea
-						-da:com.github.cowwoc.requirements.test.java.AssertionsDisabledTest
+						-da:com.github.cowwoc.requirements10.test.java.AssertionsDisabledTest
 					</argLine>
 					<!--
 					Tests run faster sequentially than in parallel for me, but they are fast regardless.

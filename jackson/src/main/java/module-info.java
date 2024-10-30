@@ -9,13 +9,16 @@
  * <a href="https://en.wikipedia.org/docs/Invariant_(mathematics)#Invariants_in_computer_science">
  * invariants</a> of <a href="https://github.com/FasterXML/jackson-databind">Jackson</a> types.
  */
-module com.github.cowwoc.requirements.jackson
+@SuppressWarnings("JavaModuleNaming")
+module com.github.cowwoc.requirements10.jackson
 {
 	requires transitive com.fasterxml.jackson.databind;
-	requires transitive com.github.cowwoc.requirements.annotation;
-	requires transitive com.github.cowwoc.requirements.java;
+	requires transitive com.github.cowwoc.requirements10.annotation;
+	requires transitive com.github.cowwoc.requirements10.java;
 	requires com.github.cowwoc.pouch.core;
+	requires java.xml;
 
-	exports com.github.cowwoc.requirements.jackson;
-	exports com.github.cowwoc.requirements.jackson.internal.implementation to com.github.cowwoc.requirements.test;
+	exports com.github.cowwoc.requirements10.jackson;
+	exports com.github.cowwoc.requirements10.jackson.internal.validator to com.github.cowwoc.requirements10.test;
+	exports com.github.cowwoc.requirements10.jackson.validator;
 }

@@ -1,5 +1,33 @@
-Minor updates involving cosmetic changes have been omitted from this list.
+    Minor updates involving cosmetic changes have been omitted from this list.
+
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
+
+## Version 10.0.0 - ?
+
+* Breaking changes:
+    * The module and package names now contain the major version number of the library,
+      per: https://www.reddit.com/r/java/comments/1dxbag2/comment/lc63gz1/
+    * Parameter names may not contain whitespace (previously only leading or trailing whitespace was
+      disallowed).
+    * Removed ability to configure validators in order to simplify API.
+    * Reduced the library scope by removing all type-conversion methods, such as `asString()` or `asList()`.
+    * Removed `UrlValidator`.
+    * Replaced `assumeThat()` with `assert that()`.
+    * Moved `com.github.cowwoc.requirements10.java.terminal.TerminalEncoding`
+      to `com.github.cowwoc.requirements10.java.TerminalEncoding`.
+    * Added `GenericType` to represent types with type parameters. `ClassValidator` was replaced
+      by `GenericTypeValidator`.
+    * Replaced `Validator.elseGetMessages()` with `Validator.getFailures().getMessages()`.
+    * Replaced `Validator.elseGetException()` with `Validator.getFailures().getException()`.
+    * Renamed `Validator.isSameReferenceAs()` to `isReferenceEqualTo()`, `Validator.isNotSameReferenceAs()` to
+      `isReferenceNotEqualTo()`.
+    * Removed `CollectionValidator.containsSameNullity()` yet again due to poor usability.
+* New features:
+    * Added `GenericTypeValidator.isPrimitive()`.
+    * Added `validationFailed()` and `getValueOrDefault()` to all validators.
+    * Added `StringValidator.doesNotContainWhitespace()`.
+* Improvements
+    * If `checkIf()` cannot run validations due to a null value, the expected conditions are still reported.
 
 ## Version 9.0.0 - 2024/05/23
 

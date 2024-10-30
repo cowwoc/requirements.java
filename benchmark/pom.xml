@@ -5,10 +5,15 @@
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>9.0.1-SNAPSHOT</version>
+		<version>10.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>benchmark</artifactId>
 	<packaging>pom</packaging>
+
+	<properties>
+		<rootBaseDir>${project.basedir}/..</rootBaseDir>
+		<skipBenchmarks>true</skipBenchmarks>
+	</properties>
 
 	<modules>
 		<module>java</module>
@@ -24,7 +29,7 @@
 					<compilerArgs>
 						<arg>-Xdiags:verbose</arg>
 						<arg>-Werror</arg>
-						<arg>-Xlint:all,-requires-automatic,-processing</arg>
+						<arg>-Xlint:all,-requires-automatic,-processing,-module</arg>
 					</compilerArgs>
 					<annotationProcessorPaths>
 						<!-- WORKAROUND: https://issues.apache.org/jira/browse/MCOMPILER-369 -->
@@ -48,6 +53,9 @@
 							<key>false</key>
 						</property>
 					</properties>
+					<systemPropertyVariables>
+						<!--						<FAST_ESTIMATE>true</FAST_ESTIMATE>-->
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<!-- Tests don't publish artifacts -->
@@ -117,9 +125,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<properties>
-		<skipBenchmarks>true</skipBenchmarks>
-	</properties>
 	<profiles>
 		<profile>
 			<id>run-benchmarks</id>

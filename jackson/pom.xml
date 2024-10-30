@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
 		<artifactId>root</artifactId>
-		<version>9.0.1-SNAPSHOT</version>
+		<version>10.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>jackson</artifactId>
 	<packaging>jar</packaging>
+
+	<properties>
+		<rootBaseDir>${project.basedir}/..</rootBaseDir>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -51,21 +56,22 @@
 								<option>summary</option>
 							</additionalOptions>
 							<links>
-								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.17.1/</link>
-							</links>
-							<offlineLinks>
 								<!--
 								The plugin looks for Javadoc at ${project.url}/apidocs but Github doesn't support
 								this layout
 								-->
+								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
+								</link>
+							</links>
+							<offlineLinks>
 								<offlineLink>
 									<url>https://cowwoc.github.io/requirements.java/${project.version}/docs/api/</url>
-									<location>${project.basedir}/../java/target/apidocs</location>
+									<location>${rootBaseDir}/java/target/reports/apidocs/</location>
 								</offlineLink>
 							</offlineLinks>
 							<excludePackageNames>
-								com.github.cowwoc.requirements.jackson.internal,
-								com.github.cowwoc.requirements.jackson.internal.*
+								com.github.cowwoc.requirements10.jackson.internal,
+								com.github.cowwoc.requirements10.jackson.internal.*
 							</excludePackageNames>
 						</configuration>
 					</execution>
