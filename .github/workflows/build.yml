@@ -21,10 +21,8 @@ jobs:
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
-          # Avoid caching generated artifacts
           path: |
             ~/.m2/repository/*
-            !~/.m2/repository/com/github/cowwoc/requirements
           key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
 
       # Maven command-line options:
@@ -34,4 +32,4 @@ jobs:
       #                           having to crawl the workspace files to see the cause).
       # -e: Display stack-traces on failure
       - name: Build
-        run: ./mvnw install --batch-mode -V "-Dsurefire.useFile=false" -e
+        run: ./mvnw verify --batch-mode -V "-Dsurefire.useFile=false" -e
