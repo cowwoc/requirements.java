@@ -23,7 +23,7 @@ jobs:
         with:
           path: |
             ~/.m2/repository/*
-          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
+          key: ${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}
 
       # Maven command-line options:
       # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)

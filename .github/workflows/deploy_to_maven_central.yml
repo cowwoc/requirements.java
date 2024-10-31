@@ -16,7 +16,8 @@ jobs:
   open-release:
     runs-on: ubuntu-latest
     outputs:
-      INITIAL_REF_POSITION: ${{ steps.create-tag.outputs.INITIAL_REF_POSITION }}
+      INITIAL_MASTER_POSITION: ${{ steps.create-tag.outputs.INITIAL_MASTER_POSITION }}
+      INITIAL_GH_PAGES_POSITION: ${{ steps.create-tag.outputs.INITIAL_GH_PAGES_POSITION }}
       TAG: ${{ steps.create-tag.outputs.TAG }}
       VERSION: ${{ steps.create-tag.outputs.VERSION }}
       STAGING_PROFILE_ID: ${{ steps.parse-profile-id.outputs.STAGING_PROFILE_ID }}
@@ -25,8 +26,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-          fetch-depth: 0
-          token: ${{ secrets.WORKFLOW_TOKEN }}
       - uses: actions/setup-java@v4
         with:
           distribution: zulu
@@ -41,8 +40,7 @@ jobs:
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.m2/repository/*
+          path: ~/.m2/repository/*
           key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
 
       - name: Configure Git User
@@ -64,7 +62,7 @@ jobs:
       - name: Create tag
         id: create-tag
         run: |
-          echo "INITIAL_REF_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "INITIAL_MASTER_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           ./mvnw release:prepare --batch-mode -V -e
           TAG=$(git describe --tag --abbrev=0)
           echo "TAG=${TAG}" >> "$GITHUB_OUTPUT"
@@ -106,7 +104,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.open-release.outputs.TAG }}
-          token: ${{ secrets.WORKFLOW_TOKEN }}
       - uses: actions/setup-java@v4
         with:
           distribution: zulu
@@ -121,14 +118,13 @@ jobs:
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.m2/repository/*
+          path: ~/.m2/repository/*
           key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
 
       - name: Test build
         run: ./mvnw --batch-mode -V -e verify
 
-      # Avoid using exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
+      # Must quote exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
       - name: Deploy to Maven Central
         run: >
           ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj'
@@ -136,8 +132,42 @@ jobs:
           -Dstaging_host="${{ env.STAGING_HOST }}"
           deploy -P release
 
-  close-release:
+  document:
+    name: Publish Javadoc documentation
     needs: [ open-release, deploy ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.open-release.outputs.TAG }}
+          fetch-depth: 0
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Configure Git User
+        run: |
+          git config user.email "cowwoc2020@gmail.com"
+          git config user.name "Gili Tzabari"
+
+      - name: Generate Javadoc
+        run: |
+          ./mvnw --batch-mode -V -e verify javadoc:aggregate -pl !dropwizard,!jersey
+          mkdir --parents "${{ needs.open-release.outputs.VERSION }}/docs"
+          mv target/reports/apidocs "${{ needs.open-release.outputs.VERSION }}/docs/api"
+
+      - name: Commit changes
+        run: |
+          git checkout gh-pages
+          echo "INITIAL_GH_PAGES_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          git add "${{ needs.open-release.outputs.VERSION }}/docs/api"
+          git commit -m "Released version ${{ needs.open-release.outputs.VERSION }}"
+          git push
+
+  close-release:
+    needs: [ open-release, deploy, document ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -158,8 +188,7 @@ jobs:
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.m2/repository/*
+          path: ~/.m2/repository/*
           key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
 
       - name: Close staging repository
@@ -191,13 +220,6 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Cache Dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository/*
-          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
-
       - name: Drop staging repository
         if: needs.open-release.outputs.STAGING_REPOSITORY_ID != '' && needs.open-release.outputs.STAGING_PROFILE_ID != ''
         run: >
@@ -206,17 +228,12 @@ jobs:
           -d '{"data": {"stagedRepositoryId": "${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}", "description": "Dropping repository"}}'
           'https://${{ env.STAGING_HOST }}/service/local/staging/profiles/${{ needs.open-release.outputs.STAGING_PROFILE_ID }}/drop'
 
-      - name: Configure Git User
-        run: |
-          git config user.email "cowwoc2020@gmail.com"
-          git config user.name "Gili Tzabari"
-
-      - name: Restore the workflow ref to its original position
-        if: needs.open-release.outputs.INITIAL_REF_POSITION != ''
+      - name: Restore the master ref to its original position
+        if: needs.open-release.outputs.INITIAL_MASTER_POSITION != ''
         run: |
           CURRENT_REF_POSITION=$(git rev-parse HEAD)
-          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_REF_POSITION }}" ]; then
-            git reset --hard ${{ needs.open-release.outputs.INITIAL_REF_POSITION }}
+          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_MASTER_POSITION }}" ]; then
+            git reset --hard ${{ needs.open-release.outputs.INITIAL_MASTER_POSITION }}
             if [ "${{ github.ref_type }}" == "tag" ]; then
               git ${{ github.ref_type }} -f ${{ github.ref_name }}
             fi
@@ -227,3 +244,15 @@ jobs:
         if: needs.open-release.outputs.TAG != ''
         run: |
           git push --delete origin ${{ needs.open-release.outputs.TAG }}
+
+      - name: Restore the gh-pages ref to its original position
+        if: needs.open-release.outputs.INITIAL_GH_PAGES_POSITION != ''
+        run: |
+          CURRENT_REF_POSITION=$(git rev-parse HEAD)
+          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_GH_PAGES_POSITION }}" ]; then
+            git reset --hard ${{ needs.open-release.outputs.INITIAL_GH_PAGES_POSITION }}
+            if [ "${{ github.ref_type }}" == "tag" ]; then
+              git ${{ github.ref_type }} -f ${{ github.ref_name }}
+            fi
+            git push -f origin ${{ github.ref_name }}
+          fi
