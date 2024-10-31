@@ -154,13 +154,13 @@ jobs:
 
       - name: Generate Javadoc
         run: |
-          ./mvnw --batch-mode -V -e verify javadoc:aggregate -pl !dropwizard,!jersey
+          ./mvnw --batch-mode -V -e verify javadoc:aggregate
           mkdir --parents "${{ needs.open-release.outputs.VERSION }}/docs"
           mv target/reports/apidocs "${{ needs.open-release.outputs.VERSION }}/docs/api"
 
       - name: Commit changes
         run: |
-          git checkout gh-pages
+          git checkout gh-pages -f
           echo "INITIAL_GH_PAGES_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           git add "${{ needs.open-release.outputs.VERSION }}/docs/api"
           git commit -m "Released version ${{ needs.open-release.outputs.VERSION }}"
