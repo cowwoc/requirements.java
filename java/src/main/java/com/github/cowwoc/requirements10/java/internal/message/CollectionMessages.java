@@ -44,7 +44,7 @@ public final class CollectionMessages
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
 			quoteName(name) + " " + relationship + " " + expectedNameOrSize + " " +
-				pluralizer.nameOf(expectedSize) + ".");
+				pluralizer.nameOf(expectedSize, expectedSizeName) + ".");
 
 		validator.value.nullToInvalid().ifValid(v ->
 			messageBuilder.withContext(v, name));
@@ -80,7 +80,8 @@ public final class CollectionMessages
 			// The size is undefined (e.g. the collection is null)
 			//
 			//  "actual" must contain [1, 3] elements
-			message.append(" must contain ").append(bounds).append(' ').append(pluralizer.nameOf(2)).append('.');
+			message.append(" must contain ").append(bounds).append(' ').
+				append(pluralizer.nameOf(2, null)).append('.');
 			return new MessageBuilder(validator, message.toString());
 		}
 
@@ -111,7 +112,7 @@ public final class CollectionMessages
 				"actual: " + actualSize + "\n" +
 				"bounds: " + bounds);
 		}
-		message.append(pluralizer.nameOf(2)).append('.');
+		message.append(pluralizer.nameOf(2, null)).append('.');
 		return new MessageBuilder(validator, message.toString()).
 			withContext(validator.getValue(), name).
 			withContext(actualSize, actualSizeName).
@@ -206,7 +207,7 @@ public final class CollectionMessages
 
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(name) + " must contain any of the " + pluralizer.nameOf(2) +
+			quoteName(name) + " must contain any of the " + pluralizer.nameOf(2, null) +
 				" present in " + expectedNameOrValue + ".");
 
 		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));
@@ -237,7 +238,7 @@ public final class CollectionMessages
 
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(name) + " may not contain any of the " + pluralizer.nameOf(2) +
+			quoteName(name) + " may not contain any of the " + pluralizer.nameOf(2, null) +
 				" present in " + unwantedNameOrValue + ".");
 
 		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));
@@ -274,7 +275,7 @@ public final class CollectionMessages
 		StringBuilder message = new StringBuilder(quoteName(name)).append(" must consist of the ");
 		if (expectedName != null)
 			message.append("same ");
-		message.append(pluralizer.nameOf(2)).append(' ');
+		message.append(pluralizer.nameOf(2, null)).append(' ');
 
 		String expectedNameOrValue = validator.getNameOrValue("as ", expectedName, "", expected);
 		message.append(expectedNameOrValue).append(", regardless of their order.");
@@ -311,7 +312,7 @@ public final class CollectionMessages
 			append(" may not consist of the ");
 		if (unwantedName != null)
 			message.append("same ");
-		message.append(pluralizer.nameOf(2)).append(' ');
+		message.append(pluralizer.nameOf(2, null)).append(' ');
 		String unwantedNameOrValue = validator.getNameOrValue("as ", unwantedName, "", unwanted);
 		message.append(unwantedNameOrValue).append(", regardless of their order.");
 
@@ -343,7 +344,7 @@ public final class CollectionMessages
 
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(name) + " must contain all the " + pluralizer.nameOf(2) + " present in " +
+			quoteName(name) + " must contain all the " + pluralizer.nameOf(2, null) + " present in " +
 				expectedNameOrValue + ".");
 
 		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));
@@ -372,7 +373,7 @@ public final class CollectionMessages
 		String unwantedNameOrValue = validator.getNameOrValue("", unwantedName, "the set ", unwanted);
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(name) + " may contain some, but not all, the " + pluralizer.nameOf(2) +
+			quoteName(name) + " may contain some, but not all, the " + pluralizer.nameOf(2, null) +
 				" present in " + unwantedNameOrValue + ".");
 
 		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));
@@ -393,7 +394,7 @@ public final class CollectionMessages
 	{
 		String name = validator.getName();
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(name) + " may not contain any duplicate " + pluralizer.nameOf(2) + ".");
+			quoteName(name) + " may not contain any duplicate " + pluralizer.nameOf(2, null) + ".");
 		if (duplicates != null)
 			messageBuilder.withContext(duplicates, "duplicates");
 		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));

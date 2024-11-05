@@ -12,72 +12,46 @@ public enum Pluralizer
 	/**
 	 * The names of one or more characters.
 	 */
-	CHARACTER
-		{
-			@Override
-			public String nameOf(int count)
-			{
-				if (count == 1)
-					return "character";
-				return "characters";
-			}
-		},
+	CHARACTER("character", "characters"),
 	/**
 	 * The names of one or more keys.
 	 */
-	KEY
-		{
-			@Override
-			public String nameOf(int count)
-			{
-				if (count == 1)
-					return "key";
-				return "keys";
-			}
-		},
+	KEY("key", "keys"),
 	/**
 	 * The names of one or more values.
 	 */
-	VALUE
-		{
-			@Override
-			public String nameOf(int count)
-			{
-				if (count == 1)
-					return "value";
-				return "values";
-			}
-		},
+	VALUE("value", "values"),
 	/**
 	 * The names of one or more entries.
 	 */
-	ENTRY
-		{
-			@Override
-			public String nameOf(int count)
-			{
-				if (count == 1)
-					return "entry";
-				return "entries";
-			}
-		},
+	ENTRY("entry", "entries"),
 	/**
 	 * The names of one or more elements.
 	 */
-	ELEMENT
-		{
-			@Override
-			public String nameOf(int count)
-			{
-				if (count == 1)
-					return "element";
-				return "elements";
-			}
-		};
+	ELEMENT("element", "elements");
+
+	private final String singular;
+	private final String plural;
+
+	/**
+	 * @param singular - the singular form of the element
+	 * @param plural   - the plural form of the element
+	 */
+	Pluralizer(String singular, String plural)
+	{
+		this.singular = singular;
+		this.plural = plural;
+	}
 
 	/**
 	 * @param count the number of elements
+	 * @param name  the name of the parameter containing the number of elements ({@code null} if absent)
 	 * @return the singular or plural form of the element type (in lowercase)
 	 */
-	public abstract String nameOf(int count);
+	public String nameOf(int count, String name)
+	{
+		if (count == 1 && name == null)
+			return singular;
+		return plural;
+	}
 }

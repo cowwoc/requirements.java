@@ -2,6 +2,12 @@
 
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 10.1 - ?
+
+* Improvements
+    * When referencing to a variable number of elements, always use the plural form of a type (e.g.
+      `actual must contain X entries` even if `X` is one).
+
 ## Version 10.0 - 2024/10/31
 
 * Breaking changes:
