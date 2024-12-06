@@ -2,7 +2,7 @@
 
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
-## Version 10.1 - ?
+## Version 10.1 - 2024/12/06
 
 * Improvements
     * When referencing to a variable number of elements, always use the plural form of a type (e.g.
