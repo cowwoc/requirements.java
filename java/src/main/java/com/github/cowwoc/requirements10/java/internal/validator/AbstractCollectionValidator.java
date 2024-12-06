@@ -95,9 +95,26 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 		return containsImpl(expected, name);
 	}
 
+	@SuppressWarnings("PMD.AvoidCatchingNPE")
 	private S containsImpl(E expected, String name)
 	{
-		if (value.validationFailed(v -> v.contains(expected)))
+		if (value.validationFailed(v ->
+		{
+			try
+			{
+				return v.contains(expected);
+			}
+			catch (NullPointerException e)
+			{
+				if (expected == null)
+				{
+					// The specified element is null, and this collection does not permit null elements
+					assert (v != null);
+					return false;
+				}
+				throw e;
+			}
+		}))
 		{
 			failOnNull();
 			addIllegalArgumentException(CollectionMessages.containsFailed(this, name, expected).toString());
@@ -119,9 +136,22 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 		return doesNotContainImpl(unwanted, name);
 	}
 
+	@SuppressWarnings("PMD.AvoidCatchingNPE")
 	private S doesNotContainImpl(E unwanted, String name)
 	{
-		if (value.validationFailed(v -> !v.contains(unwanted)))
+		if (value.validationFailed(v ->
+		{
+			try
+			{
+				return !v.contains(unwanted);
+			}
+			catch (NullPointerException e)
+			{
+				// The specified element is null, and this collection does not permit null elements
+				assert (v != null);
+				return true;
+			}
+		}))
 		{
 			failOnNull();
 			addIllegalArgumentException(

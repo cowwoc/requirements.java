@@ -13,9 +13,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
@@ -99,6 +97,20 @@ public final class CollectionTest
 		{
 			Collection<String> actual = List.of("notElement");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains("element");
+		}
+	}
+
+	@Test
+	public void containsNull_collectionDoesNotPermitNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = List.of("element");
+			List<String> expectedMessages = List.of("\"actual\" must contain null");
+			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
+				contains(null).elseGetFailures().getMessages();
+			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+				isEqualTo(expectedMessages);
 		}
 	}
 
@@ -328,6 +340,17 @@ public final class CollectionTest
 		{
 			Collection<String> actual = List.of("element");
 			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContain("element");
+		}
+	}
+
+	@Test
+	public void doesNotContainNull_collectionDoesNotPermitNull()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			Collection<String> actual = List.of("element");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+				doesNotContain(null);
 		}
 	}
 
