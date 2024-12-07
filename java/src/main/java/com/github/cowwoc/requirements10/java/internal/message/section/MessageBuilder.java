@@ -188,7 +188,7 @@ public final class MessageBuilder
 		StringJoiner lines = new StringJoiner("\n");
 		for (MessageSection section : context)
 		{
-			for (String line : section.getLines(maxKeyLength))
+			for (String line : section.getLinesWithPaddedKeys(maxKeyLength))
 				lines.add(line);
 		}
 		return lines.toString();

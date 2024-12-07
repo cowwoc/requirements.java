@@ -2,6 +2,10 @@
 
 See https://github.com/cowwoc/requirements.java/commits/master for a full list.
 
+## Version 10.2 - 2024/12/07
+
+* Improvement: Escape linefeed characters in diffs.
+
 ## Version 10.1 - 2024/12/06
 
 * Improvements

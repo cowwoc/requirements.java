@@ -29,6 +29,7 @@ import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffCo
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_EQUAL;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.DIFF_INSERT;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.EOS_MARKER;
+import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.LINEFEED_MARKER;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.NEWLINE_MARKER;
 import static com.github.cowwoc.requirements10.java.internal.message.diff.TextOnly.DIFF_PADDING;
 import static org.testng.Assert.fail;
@@ -199,6 +200,34 @@ public final class DiffTest
 				DIFF_PADDING.repeat(EOS_MARKER.length()) +
 				"\n" +
 				"expected@0: " + DIFF_PADDING + "\"" + EXTEND_LENGTH("expected") + "\"" + EOS_MARKER;
+			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
+				"\n**************** Expected:\n" + expectedMessage;
+		}
+	}
+
+	/**
+	 * Test multi-line text-mode diffs where actual contains a trailing linefeed character.
+	 */
+	@Test
+	public void diffLinefeedPostfix()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			String actual = EXTEND_LENGTH("actual") + "\r";
+			String expected = EXTEND_LENGTH("expected");
+			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			fail("Expected method to throw exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String expectedMessage = "actual  : \"" + EXTEND_LENGTH("actual") + LINEFEED_MARKER + "\"" +
+				DIFF_PADDING.repeat(("\"" + EXTEND_LENGTH("expected") + "\"").length()) + EOS_MARKER + "\n" +
+				"diff    : " + DIFF_DELETE.repeat(("\"" + EXTEND_LENGTH("actual") + LINEFEED_MARKER +
+				"\"").length()) + DIFF_INSERT.repeat(("\"" + EXTEND_LENGTH("expected") + "\"").length()) +
+				DIFF_EQUAL.repeat(EOS_MARKER.length()) + "\n" +
+				"expected: " + DIFF_PADDING.repeat(("\"" + EXTEND_LENGTH("actual") + LINEFEED_MARKER + "\"").
+				length()) + "\"" + EXTEND_LENGTH("expected") + "\"" + EOS_MARKER;
 			assert (actualMessage.contains(expectedMessage)) : "**************** Actual:\n" + actualMessage +
 				"\n**************** Expected:\n" + expectedMessage;
 		}

@@ -20,7 +20,7 @@ public record StringSection(String value) implements MessageSection
 	}
 
 	@Override
-	public List<String> getLines(int maxKeyLength)
+	public List<String> getLinesWithPaddedKeys(int maxKeyLength)
 	{
 		return List.of(value);
 	}
