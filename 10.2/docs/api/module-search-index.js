@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"com.github.cowwoc.requirements10.annotation"},{"l":"com.github.cowwoc.requirements10.guava"},{"l":"com.github.cowwoc.requirements10.jackson"},{"l":"com.github.cowwoc.requirements10.java"}];updateSearchResults();
