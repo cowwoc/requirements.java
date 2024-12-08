@@ -26,7 +26,7 @@ public record ContextSection(SequencedMap<String, String> value) implements Mess
 	}
 
 	@Override
-	public List<String> getLines(int maxKeyLength)
+	public List<String> getLinesWithPaddedKeys(int maxKeyLength)
 	{
 		// Align the colons vertically
 		List<String> lines = new ArrayList<>();

@@ -12,6 +12,10 @@ import java.util.regex.Pattern;
 public final class DiffConstants
 {
 	/**
+	 * Character denoting a linefeed character.
+	 */
+	public static final String LINEFEED_MARKER = "\\r";
+	/**
 	 * Character denoting a newline character.
 	 */
 	public static final String NEWLINE_MARKER = "\\n";

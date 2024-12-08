@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import static com.github.cowwoc.requirements10.java.internal.message.diff.DiffConstants.LINEFEED_MARKER;
+
 /**
  * Base implementation for all diff writers.
  */
@@ -126,7 +128,7 @@ abstract class AbstractDiffWriter implements DiffWriter
 		{
 			boolean isLastLine = i == lines.length - 1;
 			line.delete(0, line.length());
-			line.append(lines[i]);
+			line.append(lines[i].replace("\r", LINEFEED_MARKER));
 			if (!isLastLine)
 				line.append(DiffConstants.NEWLINE_MARKER);
 			if (!line.isEmpty())
