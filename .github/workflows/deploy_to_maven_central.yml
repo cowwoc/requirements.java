@@ -21,7 +21,7 @@ jobs:
     name: Open release
     runs-on: ubuntu-latest
     outputs:
-      INITIAL_MASTER_POSITION: ${{ steps.create-tag.outputs.INITIAL_MASTER_POSITION }}
+      INITIAL_MAIN_POSITION: ${{ steps.create-tag.outputs.INITIAL_MAIN_POSITION }}
       INITIAL_GH_PAGES_POSITION: ${{ steps.create-tag.outputs.INITIAL_GH_PAGES_POSITION }}
       TAG: ${{ steps.create-tag.outputs.TAG }}
       VERSION: ${{ steps.create-tag.outputs.VERSION }}
@@ -67,7 +67,7 @@ jobs:
       - name: Create tag
         id: create-tag
         run: |
-          echo "INITIAL_MASTER_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "INITIAL_MAIN_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           ./mvnw release:prepare --batch-mode -V -e
           TAG=$(git describe --tag --abbrev=0)
           echo "TAG=${TAG}" >> "$GITHUB_OUTPUT"
@@ -224,12 +224,12 @@ jobs:
           -d '{"data": {"stagedRepositoryId": "${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}", "description": "Dropping repository"}}'
           'https://${{ env.STAGING_HOST }}/service/local/staging/profiles/${{ needs.open-release.outputs.STAGING_PROFILE_ID }}/drop'
 
-      - name: Restore the master ref to its original position
-        if: needs.open-release.outputs.INITIAL_MASTER_POSITION != ''
+      - name: Restore the main ref to its original position
+        if: needs.open-release.outputs.INITIAL_MAIN_POSITION != ''
         run: |
           CURRENT_REF_POSITION=$(git rev-parse HEAD)
-          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_MASTER_POSITION }}" ]; then
-            git reset --hard ${{ needs.open-release.outputs.INITIAL_MASTER_POSITION }}
+          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_MAIN_POSITION }}" ]; then
+            git reset --hard ${{ needs.open-release.outputs.INITIAL_MAIN_POSITION }}
             if [ "${{ github.ref_type }}" == "tag" ]; then
               git ${{ github.ref_type }} -f ${{ github.ref_name }}
             fi

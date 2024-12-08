@@ -24,7 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           path-to-signatures: 'cla/version1/signatures/cla.json'
-          path-to-document: 'https://github.com/cowwoc/requirements.java/blob/master/cla/version1/cla.md' # e.g. a CLA or a DCO document
+          path-to-document: 'https://github.com/cowwoc/requirements.java/blob/main/cla/version1/cla.md' # e.g. a CLA or a DCO document
           # branch should not be protected
           branch: 'main'
           allowlist: cowwoc

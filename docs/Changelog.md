@@ -1,6 +1,6 @@
     Minor updates involving cosmetic changes have been omitted from this list.
 
-See https://github.com/cowwoc/requirements.java/commits/master for a full list.
+See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
 ## Version 10.2 - 2024/12/07
 
