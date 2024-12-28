@@ -1,4 +1,4 @@
-    Minor updates involving cosmetic changes have been omitted from this list.
+Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 

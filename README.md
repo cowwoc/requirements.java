@@ -4,12 +4,12 @@
 # <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
 
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/10.2/docs/api/)
-[![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/Changelog.md)
+[![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/changelog.md)
 [![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
 A [fluent API](https://en.m.wikipedia.org/docs/Fluent_interface) for enforcing
 [design contracts](https://en.wikipedia.org/docs/Design_by_contract) with
-[automatic message generation](docs/Features.md#automatic-message-generation):
+[automatic message generation](docs/features.md#automatic-message-generation):
 
 ✔️ Easy to use  
 ✔️ Fast  
@@ -136,16 +136,16 @@ actual: 2
 
 This library offers the following features:
 
-* [Automatic message generation](docs/Features.md#automatic-message-generation) for validation failures
-* [Diffs provided whenever possible](docs/Features.md#diffs-provided-whenever-possible) to highlight the
-  differences between expected and actual values
-* [Clean stack-traces](docs/Features.md#clean-stack-traces) that remove unnecessary frames
-* [Zero overhead when assertions are disabled](docs/Features.md#assertion-support) for better performance
-* [Multiple validation failures](docs/Features.md#multiple-validation-failures) that report all the errors at
-  once
-* [Nested validations](docs/Features.md#nested-validations) that allow you to validate complex objects
-* [String diff](docs/Features.md#string-diff) that shows the differences between two strings
-* [Performant and robust](docs/Performance.md)
+* [Automatic message generation](docs/features.md#automatic-message-generation) for validation failures
+  * [Diffs provided whenever possible](docs/features.md#diffs-provided-whenever-possible) to highlight the
+    differences between expected and actual values
+  * [Clean stack-traces](docs/features.md#clean-stack-traces) that remove unnecessary frames
+  * [Zero overhead when assertions are disabled](docs/features.md#assertion-support) for better performance
+  * [Multiple validation failures](docs/features.md#multiple-validation-failures) that report all the errors at
+    once
+  * [Nested validations](docs/features.md#nested-validations) that allow you to validate complex objects
+  * [String diff](docs/features.md#string-diff) that shows the differences between two strings
+  * [Performant and robust](docs/performance.md)
 
 ## Entry Points
 
@@ -154,10 +154,10 @@ The main entry points are:
 
 * [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
   for method preconditions.
-* [that(value, name)](https://cowwoc.github.io/requirements.java/10.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#that(T,java.lang.String))
-  for [class invariants, method postconditions and private methods](docs/Features.md#assertion-support). 
-* [checkIf(value, name)](https://cowwoc.github.io/requirements.java/10.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
-  for multiple failures and customized error handling.
+  * [that(value, name)](https://cowwoc.github.io/requirements.java/10.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#that(T,java.lang.String))
+    for [class invariants, method postconditions and private methods](docs/features.md#assertion-support). 
+  * [checkIf(value, name)](https://cowwoc.github.io/requirements.java/10.2/docs/api/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
+    for multiple failures and customized error handling.
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/10.2/docs/api/) for more details.
 
@@ -165,18 +165,18 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/10.2/docs
 
 * Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
   This is the fastest validation approach, ideal for web services.
-* To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
-  In other words, favor `assert that(value, name)` over `assert that(value)`.
+  * To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
+    In other words, favor `assert that(value, name)` over `assert that(value)`.
 
 ## Third-party libraries and tools
 
 This library supports the following third-party libraries and tools:
 
-* [guava](docs/Supported_Libraries.md)
-* [IntelliJ IDEA](docs/Supported_Tools.md)
+* [guava](docs/supported_libraries.md)
+  * [IntelliJ IDEA](docs/supported_tools.md)
 
 ## Licenses
 
 * This library is licensed under the [Apache License, Version 2.0](LICENSE)
-* See [Third party licenses](LICENSE-3RD-PARTY.md) for the licenses of the dependencies
-* Icons made by Flat Icons from www.flaticon.com are licensed by CC 3.0 BY
+  * See [Third party licenses](LICENSE-3RD-PARTY.md) for the licenses of the dependencies
+  * Icons made by Flat Icons from www.flaticon.com are licensed by CC 3.0 BY

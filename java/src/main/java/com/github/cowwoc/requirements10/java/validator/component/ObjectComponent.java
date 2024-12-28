@@ -132,7 +132,7 @@ public interface ObjectComponent<S, T>
 	 * @param expected the expected value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is not equal to {@code expected}
-	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/Textual_Diff.md">An
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/textual_diff.md">An
 	 * explanation of the output format</a>
 	 */
 	S isEqualTo(Object expected);
@@ -152,7 +152,7 @@ public interface ObjectComponent<S, T>
 	 *                                    the validator context</li>
 	 *                                    <li>the value is not equal to {@code expected}</li>
 	 *                                  </ul>
-	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/Textual_Diff.md">An
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/textual_diff.md">An
 	 * explanation of the output format</a>
 	 */
 	S isEqualTo(Object expected, String name);
@@ -163,7 +163,7 @@ public interface ObjectComponent<S, T>
 	 * @param unwanted the unwanted value
 	 * @return this
 	 * @throws IllegalArgumentException if the value is equal to {@code expected}
-	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/Textual_Diff.md">An
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/textual_diff.md">An
 	 * explanation of the output format</a>
 	 */
 	S isNotEqualTo(Object unwanted);
@@ -183,7 +183,7 @@ public interface ObjectComponent<S, T>
 	 *                                    the validator context</li>
 	 *                                    <li>the value is equal to the {@code unwanted} value</li>
 	 *                                  </ul>
-	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/Textual_Diff.md">An
+	 * @see <a href="https://github.com/cowwoc/requirements.java/blob/main/docs/textual_diff.md">An
 	 * explanation of the output format</a>
 	 */
 	S isNotEqualTo(Object unwanted, String name);
