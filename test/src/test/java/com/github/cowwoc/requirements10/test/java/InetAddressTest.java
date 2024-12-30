@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements10.test.java;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -22,8 +23,10 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			InetAddress actual = InetAddress.getByName("1.2.3.4");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isIpV4();
+			validators.requireThat(actual, "actual").isIpV4();
 		}
 	}
 
@@ -32,8 +35,10 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			InetAddress actual = InetAddress.getByName("2001:db8:a0b:12f0::1");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isIpV4();
+			validators.requireThat(actual, "actual").isIpV4();
 		}
 	}
 
@@ -42,8 +47,10 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			InetAddress actual = InetAddress.getByName("2001:db8:a0b:12f0::1");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isIpV6();
+			validators.requireThat(actual, "actual").isIpV6();
 		}
 	}
 
@@ -52,8 +59,10 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			InetAddress actual = InetAddress.getByName("1.2.3.4");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isIpV6();
+			validators.requireThat(actual, "actual").isIpV6();
 		}
 	}
 
@@ -62,6 +71,8 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			InetAddress actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be an IP v4 address", """
@@ -69,7 +80,7 @@ public final class InetAddressTest
 					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isIpV4().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -78,6 +89,8 @@ public final class InetAddressTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			InetAddress actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be an IP v6 address", """
@@ -85,7 +98,7 @@ public final class InetAddressTest
 					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isIpV6().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

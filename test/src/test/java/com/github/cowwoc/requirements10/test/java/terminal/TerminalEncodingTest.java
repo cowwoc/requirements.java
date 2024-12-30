@@ -25,7 +25,7 @@ public final class TerminalEncodingTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 
 			List<TerminalEncoding> availableEncodings = new ArrayList<>(Arrays.asList(XTERM_16_COLORS, NONE));
 			availableEncodings.sort(TerminalEncoding.sortByDecreasingRank());

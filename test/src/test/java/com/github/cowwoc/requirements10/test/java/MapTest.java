@@ -29,8 +29,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of();
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -39,8 +41,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of();
-			new TestValidatorsImpl(scope).requireThat(actual, "");
+			validators.requireThat(actual, "");
 		}
 	}
 
@@ -49,8 +53,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
+			validators.requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -59,8 +65,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
+			validators.requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -69,8 +77,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
+			validators.requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -79,8 +89,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
+			validators.requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -89,8 +101,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().contains("key");
+			validators.requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -99,8 +113,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().contains("key");
+			validators.requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -109,8 +125,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().
+			validators.requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -120,8 +138,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().
+			validators.requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -131,8 +151,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().contains("value");
+			validators.requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -141,8 +163,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "notValue");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().contains("value");
+			validators.requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -151,8 +175,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().
+			validators.requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -162,8 +188,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "notValue");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().
+			validators.requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -173,8 +201,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entrySet().
+			validators.requireThat(actual, "actual").entrySet().
 				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
@@ -184,8 +214,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entrySet().
+			validators.requireThat(actual, "actual").entrySet().
 				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
@@ -195,8 +227,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entrySet().
+			validators.requireThat(actual, "actual").entrySet().
 				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
@@ -206,8 +240,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entrySet().
+			validators.requireThat(actual, "actual").entrySet().
 				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
@@ -217,8 +253,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(1);
+			validators.requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -227,8 +265,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(2);
+			validators.requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -237,8 +277,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
+			validators.requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -247,8 +289,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
+			validators.requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -257,8 +301,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				and(v -> v.keySet().contains("key")).
 				and(v -> v.values().contains("value"));
 		}
@@ -269,8 +315,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				and(v -> v.keySet().contains("notTheKey")).
 				and(v -> v.values().contains("value"));
 		}
@@ -281,8 +329,10 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<String, String> actual = Map.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				and(v -> v.keySet().contains("key")).
 				and(v -> v.values().contains("notTheValue"));
 		}
@@ -293,12 +343,14 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<?, ?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.keySet() must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				keySet().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -307,12 +359,14 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<?, ?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.values() must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				values().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -321,12 +375,14 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<?, ?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.entrySet() must be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				entrySet().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -335,6 +391,8 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<?, ?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be empty", """
@@ -342,7 +400,7 @@ public final class MapTest
 					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isEmpty().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -351,6 +409,8 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<?, ?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" may not be empty", """
@@ -358,7 +418,7 @@ public final class MapTest
 					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotEmpty().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -367,12 +427,14 @@ public final class MapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<?, ?> actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must contain 5 entries");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").size().
 				isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+			validators.requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
 	}
@@ -387,7 +449,7 @@ public final class MapTest
 			input.put(3, 1);
 			input.put(1, 3);
 
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			Map<Integer, Integer> sorted = new TreeMap<>(input);
 			String output = validators.configuration().stringMappers().toString(sorted);
 
@@ -410,7 +472,7 @@ public final class MapTest
 			input.put(new AtomicInteger(3), 1);
 			input.put(new AtomicInteger(1), 3);
 
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			String output = validators.configuration().stringMappers().toString(input);
 
 			// Ordering should not change
@@ -432,7 +494,7 @@ public final class MapTest
 			input.put(3, 1);
 			input.put(1, 3);
 
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			String output = validators.configuration().stringMappers().toString(input);
 
 			// Input should get sorted

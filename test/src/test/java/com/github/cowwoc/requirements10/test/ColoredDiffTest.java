@@ -19,11 +19,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 1");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("", "actual").isEqualTo("text");
+				validators.requireThat("", "actual").isEqualTo("text");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -37,11 +39,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 2");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("text", "actual").isEqualTo("");
+				validators.requireThat("text", "actual").isEqualTo("");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -55,11 +59,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 3");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("foo", "actual").isEqualTo("   foo");
+				validators.requireThat("foo", "actual").isEqualTo("   foo");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -73,11 +79,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 4");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("foosball", "actual").isEqualTo("ballroom");
+				validators.requireThat("foosball", "actual").isEqualTo("ballroom");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -91,11 +99,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 5");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("null", "actual").isEqualTo(null);
+				validators.requireThat("null", "actual").isEqualTo(null);
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -109,11 +119,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 6");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("first\nsecond\nfoo\nforth\nfifth", "actual").
+				validators.requireThat("first\nsecond\nfoo\nforth\nfifth", "actual").
 					isEqualTo("first\nsecond\nbar\nforth\nfifth");
 			}
 			catch (IllegalArgumentException e)
@@ -128,11 +140,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 7");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat("Foo\nBar", "actual").isEqualTo("Bar");
+				validators.requireThat("Foo\nBar", "actual").isEqualTo("Bar");
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -146,11 +160,13 @@ public final class ColoredDiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			log.info("Example 8");
 			log.info("---------");
 			try
 			{
-				new TestValidatorsImpl(scope).requireThat(List.of("1", "foo\nbar", "3"), "actual").
+				validators.requireThat(List.of("1", "foo\nbar", "3"), "actual").
 					isEqualTo(List.of("1", "bar\nfoo"), "expected");
 			}
 			catch (IllegalArgumentException e)

@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
  */
 final class Processes
 {
-	private static final String NEWLINE = System.getProperty("line.separator");
+	private static final String NEWLINE = System.lineSeparator();
 
 	/**
 	 * Prevent construction.

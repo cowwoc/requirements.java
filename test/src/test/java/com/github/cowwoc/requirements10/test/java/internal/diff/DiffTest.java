@@ -12,6 +12,7 @@ import com.github.cowwoc.requirements10.java.internal.message.diff.Writer16Milli
 import com.github.cowwoc.requirements10.java.internal.message.diff.Writer256Colors;
 import com.github.cowwoc.requirements10.java.internal.message.diff.Writer8Colors;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.java.SameToStringAndHashCodeDifferentIdentity;
 import com.github.cowwoc.requirements10.test.java.SameToStringDifferentHashCode;
@@ -52,7 +53,7 @@ public final class DiffTest
 				actual: "int[6]"\
 				""");
 
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.allowDiff(false);
@@ -79,9 +80,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = EXTEND_LENGTH("actual");
 			String expected = EXTEND_LENGTH("expected");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -122,9 +125,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -147,9 +152,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "\n" + EXTEND_LENGTH("actual");
 			String expected = EXTEND_LENGTH("expected");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -179,9 +186,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = EXTEND_LENGTH("actual") + "\n";
 			String expected = EXTEND_LENGTH("expected");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -213,9 +222,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = EXTEND_LENGTH("actual") + "\r";
 			String expected = EXTEND_LENGTH("expected");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -241,9 +252,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = EXTEND_LENGTH("prefix") + "\n\nvalue";
 			String expected = EXTEND_LENGTH("prefix") + "value";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -273,9 +286,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -308,9 +323,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -337,9 +354,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "you like me?";
 			String expected = "Don't you like me?";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -360,9 +379,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "I lice dogs";
 			String expected = "I like dogs";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -383,9 +404,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "I like dog";
 			String expected = "I like dogs";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -406,9 +429,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "I lices dogs";
 			String expected = "I like dogs";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -437,9 +462,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "2017-05-13T17:55:01-04:00[America/Montreal]";
 			String expected = "2017-05-13T17:56:03-04:00[America/Montreal]";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -470,7 +497,9 @@ public final class DiffTest
 		SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(actual, "actual").
 				isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
@@ -500,7 +529,9 @@ public final class DiffTest
 		SameToStringAndHashCodeDifferentIdentity expected = new SameToStringAndHashCodeDifferentIdentity();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(actual, "actual").
 				isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
@@ -537,7 +568,9 @@ public final class DiffTest
 			""";
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -567,9 +600,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			List<Integer> actual = List.of(1, 2, 3, 4, 5);
 			List<Integer> expected = List.of(1, 2, 9, 4, 5);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -599,9 +634,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			List<String> actual = List.of("1", "foo\nbar", "3");
 			List<String> expected = List.of("1", "bar\nfoo", "3");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -636,11 +673,13 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			// 3 elements
 			List<String> actual = List.of("1", "2, 3, 4", "5");
 			// 5 elements
 			List<String> expected = List.of("1", "2", "3", "4", "5");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -682,9 +721,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -710,9 +751,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "different-same-different";
 			String expected = "maybe-same-maybe";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -760,9 +803,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "actual\nsame\nactual actual";
 			String expected = "expected\nsame\nexpected expected";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -798,9 +843,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -827,9 +874,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_8_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -855,9 +904,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_256_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -883,9 +934,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(RGB_888_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)
@@ -912,9 +965,11 @@ public final class DiffTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(XTERM_16_COLORS))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = EXTEND_LENGTH("prefix") + "foo\nbar";
 			String expected = EXTEND_LENGTH("prefix") + "bar";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 			fail("Expected method to throw exception");
 		}
 		catch (IllegalArgumentException e)

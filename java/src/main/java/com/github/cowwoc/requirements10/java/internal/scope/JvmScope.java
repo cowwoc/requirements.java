@@ -4,17 +4,18 @@
  */
 package com.github.cowwoc.requirements10.java.internal.scope;
 
+import com.github.cowwoc.pouch.core.Scope;
 import com.github.cowwoc.requirements10.java.internal.terminal.Terminal;
 
 /**
- * The process configuration.
+ * Values specific to the lifetime of a JVM.
  * <p>
- * <b>Thread-safety</b>: Implementations must be thread-safe.
+ * Implementations must be thread-safe.
  */
-public interface ProcessScope extends AutoCloseable
+public interface JvmScope extends Scope
 {
 	/**
-	 * @return the terminal attached to the process
+	 * @return the terminal that the JVM will output to
 	 */
 	Terminal getTerminal();
 

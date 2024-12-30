@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -18,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class JsonNodeTest
@@ -30,10 +30,11 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(Byte.MAX_VALUE);
-			int value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().isIntegralNumber().
-				getValue().intValue();
-			requireThat(value, "value").isEqualTo(Byte.MAX_VALUE);
+			int value = validators.requireThat(node, "node").isNumber().isIntegralNumber().getValue().intValue();
+			validators.requireThat(value, "value").isEqualTo(Byte.MAX_VALUE);
 		}
 	}
 
@@ -42,10 +43,12 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(Short.MAX_VALUE);
-			short value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().isIntegralNumber().
-				getValue().shortValue();
-			requireThat(value, "value").isEqualTo(Short.MAX_VALUE);
+			short value = validators.requireThat(node, "node").isNumber().isIntegralNumber().getValue().
+				shortValue();
+			validators.requireThat(value, "value").isEqualTo(Short.MAX_VALUE);
 		}
 	}
 
@@ -54,10 +57,11 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(Integer.MAX_VALUE);
-			int value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().isIntegralNumber().
-				getValue().intValue();
-			requireThat(value, "value").isEqualTo(Integer.MAX_VALUE);
+			int value = validators.requireThat(node, "node").isNumber().isIntegralNumber().getValue().intValue();
+			validators.requireThat(value, "value").isEqualTo(Integer.MAX_VALUE);
 		}
 	}
 
@@ -66,10 +70,11 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(Long.MAX_VALUE);
-			long value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().isIntegralNumber().
-				getValue().longValue();
-			requireThat(value, "value").isEqualTo(Long.MAX_VALUE);
+			long value = validators.requireThat(node, "node").isNumber().isIntegralNumber().getValue().longValue();
+			validators.requireThat(value, "value").isEqualTo(Long.MAX_VALUE);
 		}
 	}
 
@@ -78,10 +83,12 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(5.5f);
-			float value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().
-				isFloatingPointNumber().getValue().floatValue();
-			requireThat(value, "value").isEqualTo(5.5f);
+			float value = validators.requireThat(node, "node").isNumber().isFloatingPointNumber().getValue().
+				floatValue();
+			validators.requireThat(value, "value").isEqualTo(5.5f);
 		}
 	}
 
@@ -90,10 +97,12 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(5.5);
-			double value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().
-				isFloatingPointNumber().getValue().floatValue();
-			requireThat(value, "value").isEqualTo(5.5);
+			double value = validators.requireThat(node, "node").isNumber().isFloatingPointNumber().getValue().
+				floatValue();
+			validators.requireThat(value, "value").isEqualTo(5.5);
 		}
 	}
 
@@ -102,11 +111,13 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigInteger input = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
 			JsonNode node = om.createObjectNode().numberNode(input);
-			BigInteger value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().isBigInteger().
-				getValue().bigIntegerValue();
-			requireThat(value, "value").isEqualTo(input);
+			BigInteger value = validators.requireThat(node, "node").isNumber().isBigInteger().getValue().
+				bigIntegerValue();
+			validators.requireThat(value, "value").isEqualTo(input);
 		}
 	}
 
@@ -115,11 +126,13 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal input = BigDecimal.valueOf(Double.MAX_VALUE).add(BigDecimal.ONE);
 			JsonNode node = om.createObjectNode().numberNode(input);
-			BigDecimal value = new TestValidatorsImpl(scope).requireThat(node, "node").isNumber().isBigDecimal().
-				getValue().decimalValue();
-			requireThat(value, "value").isEqualTo(input);
+			BigDecimal value = validators.requireThat(node, "node").isNumber().isBigDecimal().getValue().
+				decimalValue();
+			validators.requireThat(value, "value").isEqualTo(input);
 		}
 	}
 
@@ -128,11 +141,12 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().put("value", "dGVzdA==").get("value");
-			byte[] value = new TestValidatorsImpl(scope).requireThat(node, "node").isValue().getValue().
-				binaryValue();
+			byte[] value = validators.requireThat(node, "node").isValue().getValue().binaryValue();
 			String output = new String(value, StandardCharsets.UTF_8);
-			requireThat(output, "output").isEqualTo("test");
+			validators.requireThat(output, "output").isEqualTo("test");
 		}
 	}
 
@@ -141,8 +155,10 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().put("value", "123456789").get("value");
-			new TestValidatorsImpl(scope).requireThat(node, "node").isValue().getValue().binaryValue();
+			validators.requireThat(node, "node").isValue().getValue().binaryValue();
 		}
 	}
 
@@ -151,10 +167,11 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().put("value", true).get("value");
-			boolean value = new TestValidatorsImpl(scope).requireThat(node, "node").isBoolean().getValue().
-				booleanValue();
-			requireThat(value, "value").isTrue();
+			boolean value = validators.requireThat(node, "node").isBoolean().getValue().booleanValue();
+			validators.requireThat(value, "value").isTrue();
 		}
 	}
 
@@ -163,28 +180,31 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().
 				put("base64", "SGVsbG8gV29ybGQ=").
 				put("boolean", true).
 				putNull("null").
 				put("number", 5).
 				put("string", "Hello World");
-			JsonNodeValidator<JsonNode> validator = new TestValidatorsImpl(scope).requireThat(node, "node");
+			JsonNodeValidator<JsonNode> validator = validators.requireThat(node, "node");
 
 			byte[] binaryValue = validator.property("base64").isValue().getValue().binaryValue();
-			requireThat(binaryValue, "binaryValue").isEqualTo("Hello World".getBytes(StandardCharsets.UTF_8));
+			validators.requireThat(binaryValue, "binaryValue").
+				isEqualTo("Hello World".getBytes(StandardCharsets.UTF_8));
 
 			boolean booleanValue = validator.property("boolean").isValue().getValue().booleanValue();
-			requireThat(booleanValue, "booleanValue").isTrue();
+			validators.requireThat(booleanValue, "booleanValue").isTrue();
 
 			boolean isNull = validator.property("null").isValue().getValue().isNull();
-			requireThat(isNull, "nullValue").isTrue();
+			validators.requireThat(isNull, "nullValue").isTrue();
 
 			Number numberValue = validator.property("number").isValue().getValue().numberValue();
-			requireThat(numberValue, "numberValue").isEqualTo(5);
+			validators.requireThat(numberValue, "numberValue").isEqualTo(5);
 
 			String stringValue = validator.property("string").isValue().getValue().textValue();
-			requireThat(stringValue, "stringValue").isEqualTo("Hello World");
+			validators.requireThat(stringValue, "stringValue").isEqualTo("Hello World");
 		}
 	}
 
@@ -193,8 +213,10 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().missingNode();
-			new TestValidatorsImpl(scope).requireThat(node, "node").isMissing();
+			validators.requireThat(node, "node").isMissing();
 		}
 	}
 
@@ -203,10 +225,10 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
 			JsonNode node = om.createObjectNode().textNode("test");
-			String value = new TestValidatorsImpl(scope).requireThat(node, "node").isValue().getValue().
-				textValue();
-			requireThat(value, "value").isEqualTo("test");
+			String value = validators.requireThat(node, "node").isValue().getValue().textValue();
+			validators.requireThat(value, "value").isEqualTo("test");
 		}
 	}
 
@@ -215,8 +237,10 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(5);
-			new TestValidatorsImpl(scope).requireThat(node, "node").isString();
+			validators.requireThat(node, "node").isString();
 		}
 	}
 
@@ -225,13 +249,15 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			ArrayNode node = om.createArrayNode();
 			node.add(1).add(2).add(3);
-			ArrayNode value = new TestValidatorsImpl(scope).requireThat(node, "node").isArray().getValue();
+			ArrayNode value = validators.requireThat(node, "node").isArray().getValue();
 			List<Integer> list = new ArrayList<>();
 			for (JsonNode element : value)
 				list.add(element.intValue());
-			requireThat(list, "list").containsExactly(List.of(1, 2, 3));
+			validators.requireThat(list, "list").containsExactly(List.of(1, 2, 3));
 		}
 	}
 
@@ -240,8 +266,10 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(5);
-			new TestValidatorsImpl(scope).requireThat(node, "node").isArray();
+			validators.requireThat(node, "node").isArray();
 		}
 	}
 
@@ -250,10 +278,12 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			ObjectNode node = om.createObjectNode();
 			node.put("name", "John Smith");
 			node.put("age", 52);
-			new TestValidatorsImpl(scope).requireThat(node, "node").isContainer();
+			validators.requireThat(node, "node").isContainer();
 		}
 	}
 
@@ -262,8 +292,10 @@ public final class JsonNodeTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			JsonNode node = om.createObjectNode().numberNode(5);
-			new TestValidatorsImpl(scope).requireThat(node, "node").isContainer();
+			validators.requireThat(node, "node").isContainer();
 		}
 	}
 }

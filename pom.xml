@@ -59,13 +59,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.version>3.9.9</maven.version>
 		<maven.compiler.release>21</maven.compiler.release>
-		<guava.version>33.3.1-jre</guava.version>
+		<guava.version>33.4.0-jre</guava.version>
 		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
-		<jackson.version>2.18.1</jackson.version>
+		<jackson.version>2.18.2</jackson.version>
 		<slf4j.version>2.0.16</slf4j.version>
 		<testng.version>7.10.2</testng.version>
 		<jmh.version>1.37</jmh.version>
-		<pmd.version>7.7.0</pmd.version>
+		<pmd.version>7.9.0</pmd.version>
 	</properties>
 
 	<dependencyManagement>
@@ -118,17 +118,17 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.12</version>
+				<version>1.5.15</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.javaparser</groupId>
 				<artifactId>javaparser-core</artifactId>
-				<version>3.26.2</version>
+				<version>3.26.3</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.java-diff-utils</groupId>
 				<artifactId>java-diff-utils</artifactId>
-				<version>4.12</version>
+				<version>4.15</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -143,7 +143,7 @@
 			<dependency>
 				<groupId>com.github.cowwoc.pouch</groupId>
 				<artifactId>core</artifactId>
-				<version>5.2</version>
+				<version>6.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.twdata.maven</groupId>
@@ -158,7 +158,7 @@
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
-				<version>3.26.3</version>
+				<version>3.27.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -318,6 +318,34 @@
 							<!-- Based on https://gist.github.com/cstamas/69e6365bbb70521923020d68369bf8e5 -->
 							maven-central-releases::https://${staging_host}/service/local/staging/deployByRepositoryId/${staging_repository_id}
 						</altReleaseDeploymentRepository>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.18.0</version>
+					<configuration>
+						<ruleSet>
+							<rules>
+								<rule>
+									<groupId>org.apache.maven.plugins</groupId>
+									<ignoreVersions>
+										<ignoreVersion>
+											<type>regex</type>
+											<version>.+-(alpha|beta).+|.+-rc-.*</version>
+										</ignoreVersion>
+									</ignoreVersions>
+								</rule>
+								<rule>
+									<ignoreVersions>
+										<ignoreVersion>
+											<type>regex</type>
+											<version>(.+-SNAPSHOT|.+-M\d|.+-(alpha|beta).+)||.+-rc-.*</version>
+										</ignoreVersion>
+									</ignoreVersions>
+								</rule>
+							</rules>
+						</ruleSet>
 					</configuration>
 				</plugin>
 			</plugins>

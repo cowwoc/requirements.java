@@ -8,6 +8,7 @@ module com.github.cowwoc.requirements10.test
 	requires com.google.common;
 	requires org.testng;
 	requires org.slf4j;
+	requires com.github.cowwoc.pouch.core;
 	requires com.github.cowwoc.requirements10.guava;
 	requires com.github.cowwoc.requirements10.jackson;
 	requires com.fasterxml.jackson.databind;

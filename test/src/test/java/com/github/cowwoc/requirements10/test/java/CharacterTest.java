@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements10.test.java;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -19,8 +20,10 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '1';
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -29,8 +32,10 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '1';
-			new TestValidatorsImpl(scope).requireThat(actual, "");
+			validators.requireThat(actual, "");
 		}
 	}
 
@@ -39,10 +44,12 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '0';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -51,10 +58,12 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '1';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -63,10 +72,12 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -75,10 +86,12 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '1';
 			char first = '3';
 			char last = '4';
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -87,10 +100,12 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '2';
 			char first = '0';
 			char last = '2';
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, true, last, true);
+			validators.requireThat(actual, "actual").isBetween(first, true, last, true);
 		}
 	}
 
@@ -99,6 +114,8 @@ public final class CharacterTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			char actual = '1';
 			assert new TestValidatorsImpl(scope).that(actual, "actual").isGreaterThan(actual).elseThrow();
 		}

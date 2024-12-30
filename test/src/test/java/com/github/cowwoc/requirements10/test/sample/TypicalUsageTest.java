@@ -1,6 +1,5 @@
 package com.github.cowwoc.requirements10.test.sample;
 
-import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
@@ -17,8 +16,6 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class TypicalUsageTest
@@ -26,37 +23,50 @@ public final class TypicalUsageTest
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void precondition()
 	{
-		String[] args = new String[0];
-		requireThat(args, "args").length().isPositive();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			String[] args = new String[0];
+			validators.requireThat(args, "args").length().isPositive();
+		}
 	}
 
 	@Test(expectedExceptions = AssertionError.class)
 	public void invariantOrPostCondition()
 	{
-		String[] args = new String[]{"planet"};
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
 
-		// Precondition
-		requireThat(args, "args").length().isPositive();
+			String[] args = new String[]{"planet"};
+			// Precondition
+			validators.requireThat(args, "args").length().isPositive();
 
-		// Class invariant or method postcondition
-		assert DefaultJavaValidators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
+			// Class invariant or method postcondition
+			assert validators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
+		}
 	}
 
 	@Test(expectedExceptions = MultipleFailuresException.class)
 	public void multipleFailures()
 	{
-		String[] args = new String[]{"world"};
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
 
-		// Precondition
-		requireThat(args, "args").length().isPositive();
+			String[] args = new String[]{"world"};
+			// Precondition
+			validators.requireThat(args, "args").length().isPositive();
 
-		// Class invariant or method postcondition
-		assert DefaultJavaValidators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
+			// Class invariant or method postcondition
+			assert validators.that(args[0], "args[0]").isEqualTo("world").elseThrow();
 
-		// Throwing multiple validation failures at once
-		ValidationFailures failures = checkIf(args, "args").isEmpty().elseGetFailures();
-		failures.addAll(checkIf(args[0], "args[0]").isEqualTo("planet").elseGetFailures());
-		failures.throwOnFailure();
+			// Throwing multiple validation failures at once
+			ValidationFailures failures = validators.checkIf(args, "args").isEmpty().elseGetFailures();
+			failures.addAll(validators.checkIf(args[0], "args[0]").isEqualTo("planet").elseGetFailures());
+			failures.throwOnFailure();
+		}
 	}
 
 	@Test
@@ -64,10 +74,10 @@ public final class TypicalUsageTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Duration duration = Duration.ofDays(1);
 			Set<Duration> bucket = Set.of();
-
-			TestValidators validators = new TestValidatorsImpl(scope);
 			validators.requireThat(duration, "duration").isGreaterThan(Duration.ofDays(0));
 			try
 			{
@@ -91,7 +101,8 @@ public final class TypicalUsageTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			Map<Integer, Integer> map = Map.of(1, 5);
 			Multimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5, 1, 6);
 
@@ -109,7 +120,12 @@ public final class TypicalUsageTest
 	@Test(expectedExceptions = AssertionError.class)
 	public void namelessValidation()
 	{
-		int actual = 5;
-		DefaultJavaValidators.that(actual).isEqualTo(6).elseThrow();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			int actual = 5;
+			validators.that(actual).isEqualTo(6).elseThrow();
+		}
 	}
 }

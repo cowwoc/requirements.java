@@ -19,7 +19,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class ConfigurationTest
@@ -29,7 +28,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			try
 			{
 				Set<Integer> actual = Sets.newLinkedHashSetWithExpectedSize(2);
@@ -61,7 +61,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.exceptionTransformer(IllegalStateException::new);
@@ -77,6 +78,7 @@ public final class ConfigurationTest
 		{
 			TestValidators validators = new TestValidatorsImpl(scope).updateConfiguration(c ->
 				c.exceptionTransformer(IllegalStateException::new));
+
 			validators.requireThat(false, "false").isEqualTo(true);
 		}
 	}
@@ -89,7 +91,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			try (ConfigurationUpdater configuration = validators.updateConfiguration())
 			{
 				configuration.allowDiff(true);
@@ -114,7 +117,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			try (ConfigurationUpdater configuration = validators.updateConfiguration())
 			{
 				configuration.allowDiff(true);
@@ -137,8 +141,9 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 
+			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
 			TestValidators factory2 = factory1.copy();
 			factory2.withContext("factoryValue", "factoryName");
 
@@ -147,9 +152,9 @@ public final class ConfigurationTest
 			String message2 = factory2.checkIf("value", "name").
 				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 
-			requireThat(message1, "message1").contains("validatorName: \"validatorValue\"").
+			validators.requireThat(message1, "message1").contains("validatorName: \"validatorValue\"").
 				doesNotContain("factoryName   : \"factoryValue\"");
-			requireThat(message2, "message2").contains("validatorName: \"validatorValue\"").
+			validators.requireThat(message2, "message2").contains("validatorName: \"validatorValue\"").
 				contains("factoryName  : \"factoryValue\"");
 		}
 	}
@@ -159,6 +164,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
 			factory1.withContext("factoryValue", "factoryName");
 
@@ -166,7 +173,7 @@ public final class ConfigurationTest
 			String message = factory2.checkIf("value", "name").
 				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 
-			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
+			validators.requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
 				contains("factoryName  : \"factoryValue\"");
 		}
 	}
@@ -179,15 +186,16 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl factory = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 
+			TestValidatorsImpl factory = new TestValidatorsImpl(scope);
 			String message = factory.checkIf("value", "name").
 				withContext("validatorValue", "validatorName").isNull().elseGetFailures().getMessages().getFirst();
 
 			// Ensure that this does not affect pre-existing validators
 			factory.withContext("factoryValue", "factoryName");
 
-			requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
+			validators.requireThat(message, "message2").contains("validatorName: \"validatorValue\"").
 				doesNotContain("factoryName  : \"factoryValue\"");
 		}
 	}
@@ -200,6 +208,8 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			TestValidatorsImpl factory1 = new TestValidatorsImpl(scope);
 			factory1.withContext("factoryValue", "collision");
 
@@ -209,9 +219,9 @@ public final class ConfigurationTest
 			String message2 = factory2.checkIf("value", "name").
 				withContext("validatorValue", "collision").isNull().elseGetFailures().getMessages().getFirst();
 
-			requireThat(message1, "message1").contains("collision: \"validatorValue\"").
+			validators.requireThat(message1, "message1").contains("collision: \"validatorValue\"").
 				doesNotContain("collision: \"factoryValue\"");
-			requireThat(message2, "message2").contains("collision: \"validatorValue\"").
+			validators.requireThat(message2, "message2").contains("collision: \"validatorValue\"").
 				doesNotContain("collision: \"factoryValue\"");
 		}
 	}
@@ -224,7 +234,7 @@ public final class ConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			validators.withContext("factoryValue", "missing");
 
 			Set<Integer> actual = Set.of(1, 2, 3);

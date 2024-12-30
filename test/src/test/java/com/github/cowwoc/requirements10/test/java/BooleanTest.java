@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements10.test.java;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -20,8 +21,10 @@ public final class BooleanTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			boolean actual = false;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isTrue();
+			validators.requireThat(actual, "actual").isTrue();
 		}
 	}
 
@@ -30,8 +33,10 @@ public final class BooleanTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			boolean actual = false;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFalse();
+			validators.requireThat(actual, "actual").isFalse();
 		}
 	}
 
@@ -40,8 +45,10 @@ public final class BooleanTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			boolean actual = true;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isFalse();
+			validators.requireThat(actual, "actual").isFalse();
 		}
 	}
 
@@ -50,8 +57,10 @@ public final class BooleanTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			boolean actual = false;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(true);
+			validators.requireThat(actual, "actual").isEqualTo(true);
 			assert (false) : "Expected validator to throw an exception";
 		}
 		catch (IllegalArgumentException e)
@@ -68,6 +77,8 @@ public final class BooleanTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Boolean actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be true", """
@@ -75,7 +86,7 @@ public final class BooleanTest
 					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isTrue().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -84,6 +95,8 @@ public final class BooleanTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Boolean actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be false", """
@@ -91,7 +104,7 @@ public final class BooleanTest
 					actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isFalse().isEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

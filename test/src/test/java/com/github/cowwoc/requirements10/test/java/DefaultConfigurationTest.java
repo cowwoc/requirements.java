@@ -24,7 +24,8 @@ public final class DefaultConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			Configuration configuration = validators.configuration();
 			validators.requireThat(configuration.cleanStackTrace(), "configuration.cleanStackTrace()").isTrue();
 		}
@@ -35,7 +36,8 @@ public final class DefaultConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			validators.requireThat(validators.configuration().cleanStackTrace(), "configuration.cleanStackTrace()"
 			).isTrue();
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
@@ -52,7 +54,8 @@ public final class DefaultConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false);
@@ -73,7 +76,8 @@ public final class DefaultConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()").
 				isTrue();
 		}
@@ -84,7 +88,8 @@ public final class DefaultConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isTrue();
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
@@ -101,7 +106,7 @@ public final class DefaultConfigurationTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			validators.requireThat(validators.configuration().allowDiff(), "configuration.allowDiff()"
 			).isTrue();
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())

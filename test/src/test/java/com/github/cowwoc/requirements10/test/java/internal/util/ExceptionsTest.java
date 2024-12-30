@@ -28,7 +28,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
@@ -54,7 +54,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(true).
@@ -135,7 +135,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
@@ -184,7 +184,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(false).
@@ -225,7 +225,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.cleanStackTrace(true).
@@ -266,7 +266,7 @@ public final class ExceptionsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.recordStacktrace(false);

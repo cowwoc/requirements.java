@@ -10,7 +10,7 @@ import com.github.cowwoc.requirements10.java.JavaValidators;
 /**
  * The configuration of an application. A process may contain multiple applications.
  */
-public interface ApplicationScope extends ProcessScope
+public interface ApplicationScope extends JvmScope
 {
 	/**
 	 * @return the global configuration inherited by all validators

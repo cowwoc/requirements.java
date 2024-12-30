@@ -4,12 +4,13 @@
  */
 package com.github.cowwoc.requirements10.test.java.internal.terminal;
 
-import com.github.cowwoc.requirements10.java.internal.scope.DefaultProcessScope;
-import com.github.cowwoc.requirements10.java.internal.terminal.Terminal;
 import com.github.cowwoc.requirements10.java.TerminalEncoding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.java.internal.terminal.Terminal;
+import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
+
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 public final class TerminalTest
 {
@@ -19,12 +20,9 @@ public final class TerminalTest
 	@Test
 	public void forceUnsupportedEncoding()
 	{
-		try (DefaultProcessScope process = DefaultProcessScope.INSTANCE)
+		try (ApplicationScope application = new TestApplicationScope(NONE))
 		{
-			Terminal terminal = process.getTerminal();
-
-			Logger log = LoggerFactory.getLogger(TerminalTest.class);
-			log.debug("*** The following exception is expected and does not denote a test failure ***");
+			Terminal terminal = application.getTerminal();
 			terminal.setEncoding(TerminalEncoding.RGB_888_COLORS);
 		}
 	}

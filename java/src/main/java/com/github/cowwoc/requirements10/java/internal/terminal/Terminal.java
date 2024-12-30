@@ -21,15 +21,13 @@ import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_256_C
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.XTERM_8_COLORS;
 
 /**
- * The terminal associated with the process.
+ * The terminal that the JVM is outputting to.
  */
 public final class Terminal
 {
 	private final AtomicReference<TerminalEncoding> encoding = new AtomicReference<>();
 	private final Reference<Set<TerminalEncoding>> supportedTypes =
-		ConcurrentLazyReference.create(this::getSupportedTypesImpl);
-	private final Reference<Boolean> connectedToStdout =
-		ConcurrentLazyReference.create(this::isConnectedToStdoutImpl);
+		ConcurrentLazyReference.create(this::getSupportedEncodingsImpl);
 
 	/**
 	 * Creates a new instance.
@@ -41,7 +39,7 @@ public final class Terminal
 	/**
 	 * @return the ANSI escape codes supported by the terminal
 	 */
-	public Set<TerminalEncoding> getSupportedTypes()
+	public Set<TerminalEncoding> getSupportedEncodings()
 	{
 		return supportedTypes.getValue();
 	}
@@ -49,23 +47,23 @@ public final class Terminal
 	/**
 	 * @return the ANSI escape codes supported by the terminal
 	 */
-	private Set<TerminalEncoding> getSupportedTypesImpl()
+	private Set<TerminalEncoding> getSupportedEncodingsImpl()
 	{
 		return switch (OperatingSystem.detected().type)
 		{
-			case WINDOWS -> getSupportedTypesForWindows();
-			case LINUX, MAC -> getSupportedTypesForLinuxOrMac();
+			case WINDOWS -> getSupportedEncodingsForWindows();
+			case LINUX, MAC -> getSupportedEncodingsForLinuxOrMac();
 		};
 	}
 
-	private Set<TerminalEncoding> getSupportedTypesForLinuxOrMac()
+	private Set<TerminalEncoding> getSupportedEncodingsForLinuxOrMac()
 	{
 		String term = System.getenv("TERM");
 		if (term == null)
 			return Set.of(NONE);
 		// Following the approach set out in http://stackoverflow.com/a/39033815/14731, we don't attempt to
-		// support all possible terminal types. Instead, we support mainstream types and require the terminal
-		// to support or emulate them.
+		// support all possible terminal encodings. Instead, we support mainstream encodings and require the
+		// terminal to support or emulate them.
 		Set<TerminalEncoding> result = EnumSet.of(NONE);
 		switch (term)
 		{
@@ -99,8 +97,9 @@ public final class Terminal
 		return result;
 	}
 
-	private Set<TerminalEncoding> getSupportedTypesForWindows()
+	private Set<TerminalEncoding> getSupportedEncodingsForWindows()
 	{
+		// WT_SESSION indicates that we are running in Windows Terminal.
 		if (System.getenv("WT_SESSION") == null)
 			return Set.of(NONE);
 		return Set.of(NONE, XTERM_8_COLORS, XTERM_16_COLORS, XTERM_256_COLORS, RGB_888_COLORS);
@@ -126,7 +125,7 @@ public final class Terminal
 			this.encoding.set(NONE);
 			return;
 		}
-		if (!getSupportedTypes().contains(encoding) && !force)
+		if (!getSupportedEncodings().contains(encoding) && !force)
 		{
 			this.encoding.set(NONE);
 			return;
@@ -141,10 +140,10 @@ public final class Terminal
 	 */
 	public void useBestEncoding()
 	{
-		Set<TerminalEncoding> supportedTypes = getSupportedTypes();
-		List<TerminalEncoding> sortedTypes = new ArrayList<>(supportedTypes);
-		sortedTypes.sort(TerminalEncoding.sortByDecreasingRank());
-		setEncodingImpl(sortedTypes.getFirst(), false);
+		Set<TerminalEncoding> supportedEncodings = getSupportedEncodings();
+		List<TerminalEncoding> sortedEncodings = new ArrayList<>(supportedEncodings);
+		sortedEncodings.sort(TerminalEncoding.sortByDecreasingRank());
+		setEncodingImpl(sortedEncodings.getFirst(), false);
 	}
 
 	/**
@@ -176,21 +175,11 @@ public final class Terminal
 	}
 
 	/**
-	 * @return true if stdout is connected to the terminal
+	 * @return true if stdout is connected to a terminal
 	 */
 	public boolean isConnectedToStdout()
 	{
-		return connectedToStdout.getValue();
-	}
-
-	/**
-	 * @return true if stdout is connected to the terminal
-	 */
-	private boolean isConnectedToStdoutImpl()
-	{
-		// System.console() is not as accurate as the native library in that it returns null when stdin
-		// is redirected (which we don't care about). We try using System.console() and if we need more
-		// information, we send a follow-up query to the native library.
+		// Reminder: System.console() returns null if stdin is redirected
 		return System.console() != null;
 	}
 }

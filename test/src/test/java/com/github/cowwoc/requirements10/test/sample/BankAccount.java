@@ -1,10 +1,7 @@
 package com.github.cowwoc.requirements10.test.sample;
 
-import com.github.cowwoc.requirements10.java.DefaultJavaValidators;
 import com.github.cowwoc.requirements10.java.ValidationFailures;
-
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
+import com.github.cowwoc.requirements10.test.TestValidators;
 
 /**
  * A class that represents a bank account.
@@ -12,17 +9,24 @@ import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requir
 public final class BankAccount
 {
 	public static final double ONE_MILLION = 1_000_000;
+	private final TestValidators validators;
 	private double balance;
 	public boolean preconditionEnabled = true;
 	public boolean postconditionEnabled = true;
 	public boolean invariantEnabled = true;
 
 	/**
+	 * @param validators     the validators to use
 	 * @param initialBalance the account balance
+	 * @throws NullPointerException if {@code validators} is null
 	 */
-	public BankAccount(double initialBalance)
+	public BankAccount(TestValidators validators, double initialBalance)
 	{
-		requireThat(initialBalance, "initialBalance").isNotNegative();
+		if (validators == null)
+			throw new NullPointerException("validators may not be null");
+		this.validators = validators;
+
+		validators.requireThat(initialBalance, "initialBalance").isNotNegative();
 		balance = initialBalance;
 		if (invariantEnabled)
 			checkInvariant();
@@ -36,7 +40,7 @@ public final class BankAccount
 		ValidationFailures failures;
 		if (preconditionEnabled)
 		{
-			failures = checkIf(amount, "amount").isPositive().isLessThanOrEqualTo(balance, "balance").
+			failures = validators.checkIf(amount, "amount").isPositive().isLessThanOrEqualTo(balance, "balance").
 				elseGetFailures();
 		}
 		else
@@ -50,8 +54,9 @@ public final class BankAccount
 				// Special restrictions for millionaires:
 				// * Minimum withdrawal of $1000
 				// * The account balance may not drop below $1,000,000
-				failures.addAll(checkIf(amount, "amount").isGreaterThan(1000).elseGetFailures());
-				failures.addAll(checkIf(balance, "balance").isGreaterThanOrEqualTo(ONE_MILLION).elseGetFailures());
+				failures.addAll(validators.checkIf(amount, "amount").isGreaterThan(1000).elseGetFailures());
+				failures.addAll(
+					validators.checkIf(balance, "balance").isGreaterThanOrEqualTo(ONE_MILLION).elseGetFailures());
 			}
 			failures.throwOnFailure();
 		}
@@ -61,13 +66,13 @@ public final class BankAccount
 			checkInvariant();
 		if (postconditionEnabled)
 		{
-			assert DefaultJavaValidators.that(balance, "balance").isEqualTo(oldBalance - amount, "expected").
+			assert validators.that(balance, "balance").isEqualTo(oldBalance - amount, "expected").
 				elseThrow();
 		}
 	}
 
 	private void checkInvariant()
 	{
-		assert DefaultJavaValidators.that(balance, "balance").isNotNegative().elseThrow();
+		assert validators.that(balance, "balance").isNotNegative().elseThrow();
 	}
 }

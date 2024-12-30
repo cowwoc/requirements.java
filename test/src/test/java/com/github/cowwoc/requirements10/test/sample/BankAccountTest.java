@@ -2,12 +2,18 @@ package com.github.cowwoc.requirements10.test.sample;
 
 import com.github.cowwoc.requirements10.java.MultipleFailuresException;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
+import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
+import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
+import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.util.List;
 import java.util.StringJoiner;
+
+import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
 /**
  * A class that represents a bank account
@@ -19,38 +25,44 @@ public final class BankAccountTest
 	@Test
 	public void preconditions()
 	{
-		try
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new BankAccount(-100);
+			TestValidators validators = TestValidators.of(scope);
+
+			new BankAccount(validators, -100);
 		}
 		catch (IllegalArgumentException e)
 		{
-			log.info("Precondition failed: " + e.getMessage());
+			log.info("Precondition failed: {}", e.getMessage());
 		}
 	}
 
 	@Test
 	public void postconditions()
 	{
-		try
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			BankAccount b = new BankAccount(100);
+			TestValidators validators = TestValidators.of(scope);
+
+			BankAccount b = new BankAccount(validators, 100);
 			b.invariantEnabled = false;
 			b.preconditionEnabled = false;
 			b.withdraw(150);
 		}
 		catch (AssertionError e)
 		{
-			log.info("Postcondition failed: " + e.getMessage());
+			log.info("Postcondition failed: {}", e.getMessage());
 		}
 	}
 
 	@Test
 	public void invariants()
 	{
-		try
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			BankAccount b = new BankAccount(100);
+			TestValidators validators = TestValidators.of(scope);
+
+			BankAccount b = new BankAccount(validators, 100);
 			// Hacker steals money
 			b.preconditionEnabled = false;
 			b.postconditionEnabled = false;
@@ -63,16 +75,18 @@ public final class BankAccountTest
 		}
 		catch (AssertionError e)
 		{
-			log.info("Invariant failed: " + e.getMessage());
+			log.info("Invariant failed: {}", e.getMessage());
 		}
 	}
 
 	@Test
 	public void multipleFailures()
 	{
-		try
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			BankAccount b = new BankAccount(BankAccount.ONE_MILLION + 500);
+			TestValidators validators = TestValidators.of(scope);
+
+			BankAccount b = new BankAccount(validators, BankAccount.ONE_MILLION + 500);
 			b.withdraw(900);
 		}
 		catch (MultipleFailuresException e)

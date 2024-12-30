@@ -4,6 +4,7 @@
  */
 package com.github.cowwoc.requirements10.java.internal.scope;
 
+import com.github.cowwoc.pouch.core.AbstractScope;
 import com.github.cowwoc.pouch.core.ConcurrentLazyReference;
 import com.github.cowwoc.pouch.core.Reference;
 import com.github.cowwoc.requirements10.java.GlobalConfiguration;
@@ -16,9 +17,10 @@ import com.github.cowwoc.requirements10.java.internal.validator.MutableConfigura
 /**
  * ApplicationScope for the main and test codebases.
  */
-public abstract class AbstractApplicationScope implements ApplicationScope
+public abstract class AbstractApplicationScope extends AbstractScope
+	implements ApplicationScope
 {
-	private final ProcessScope parent;
+	protected final JvmScope parent;
 	/**
 	 * The global configuration.
 	 */
@@ -35,7 +37,7 @@ public abstract class AbstractApplicationScope implements ApplicationScope
 	 * @param globalConfiguration the global configuration
 	 * @throws NullPointerException if any of the arguments are null
 	 */
-	protected AbstractApplicationScope(ProcessScope parent, GlobalConfiguration globalConfiguration)
+	protected AbstractApplicationScope(JvmScope parent, GlobalConfiguration globalConfiguration)
 	{
 		assert (parent != null);
 		assert (globalConfiguration != null);

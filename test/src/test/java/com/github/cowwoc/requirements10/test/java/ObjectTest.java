@@ -7,6 +7,7 @@ package com.github.cowwoc.requirements10.test.java;
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.validator.IntegerValidator;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -29,8 +30,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -39,8 +42,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "");
+			validators.requireThat(actual, "");
 		}
 	}
 
@@ -49,8 +54,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			List<Integer> actual = List.of(1, 2, 3);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains(2, "actual");
+			validators.requireThat(actual, "actual").contains(2, "actual");
 		}
 	}
 
@@ -59,8 +66,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "actual";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(actual);
+			validators.requireThat(actual, "actual").isEqualTo(actual);
 		}
 	}
 
@@ -69,8 +78,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "actual";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo("expected");
+			validators.requireThat(actual, "actual").isEqualTo("expected");
 		}
 	}
 
@@ -79,8 +90,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "null";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(null);
+			validators.requireThat(actual, "actual").isEqualTo(null);
 		}
 	}
 
@@ -89,9 +102,11 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
 			SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}
 
@@ -100,10 +115,12 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			SameToStringAndHashCodeDifferentIdentity actual = new SameToStringAndHashCodeDifferentIdentity();
 			SameToStringAndHashCodeDifferentIdentity expected =
 				new SameToStringAndHashCodeDifferentIdentity();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}
 
@@ -112,8 +129,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(actual);
+			validators.requireThat(actual, "actual").isEqualTo(actual);
 		}
 	}
 
@@ -122,8 +141,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo("expected");
+			validators.requireThat(actual, "actual").isEqualTo("expected");
 		}
 	}
 
@@ -132,8 +153,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String actual = "actual";
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(null);
+			validators.requireThat(actual, "actual").isEqualTo(null);
 		}
 	}
 
@@ -142,8 +165,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEqualTo(new Object());
+			validators.requireThat(actual, "actual").isNotEqualTo(new Object());
 		}
 	}
 
@@ -152,8 +177,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEqualTo(actual);
+			validators.requireThat(actual, "actual").isNotEqualTo(actual);
 		}
 	}
 
@@ -162,8 +189,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
+			validators.requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
 		}
 	}
 
@@ -172,8 +201,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
+			validators.requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
 		}
 	}
 
@@ -182,9 +213,11 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
 			Object expected = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(expected, "expected");
+			validators.requireThat(actual, "actual").isReferenceEqualTo(expected, "expected");
 		}
 	}
 
@@ -193,9 +226,11 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
 			Object expected = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(expected, "expected");
+			validators.requireThat(actual, "actual").isReferenceNotEqualTo(expected, "expected");
 		}
 	}
 
@@ -204,8 +239,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(actual, "actual");
+			validators.requireThat(actual, "actual").isReferenceNotEqualTo(actual, "actual");
 		}
 	}
 
@@ -214,8 +251,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInstanceOf(Random.class).
+			validators.requireThat(actual, "actual").isInstanceOf(Random.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -225,8 +264,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInstanceOf(Random.class);
+			validators.requireThat(actual, "actual").isInstanceOf(Random.class);
 		}
 	}
 
@@ -235,8 +276,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInstanceOf((Class<?>) null);
+			validators.requireThat(actual, "actual").isInstanceOf((Class<?>) null);
 		}
 	}
 
@@ -245,8 +288,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInstanceOf((GenericType<?>) null);
+			validators.requireThat(actual, "actual").isInstanceOf((GenericType<?>) null);
 		}
 	}
 
@@ -255,8 +300,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isInstanceOf(String.class);
+			validators.requireThat(actual, "actual").isInstanceOf(String.class);
 		}
 	}
 
@@ -265,8 +312,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotInstanceOf(Integer.class).
+			validators.requireThat(actual, "actual").isNotInstanceOf(Integer.class).
 				isInstanceOf(Object.class);
 		}
 	}
@@ -276,8 +325,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotInstanceOf(Random.class);
+			validators.requireThat(actual, "actual").isNotInstanceOf(Random.class);
 		}
 	}
 
@@ -286,8 +337,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotInstanceOf((GenericType<?>) null);
+			validators.requireThat(actual, "actual").isNotInstanceOf((GenericType<?>) null);
 		}
 	}
 
@@ -296,8 +349,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Random actual = new Random();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotInstanceOf(Random.class);
+			validators.requireThat(actual, "actual").isNotInstanceOf(Random.class);
 		}
 	}
 
@@ -306,8 +361,9 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object input = 25;
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			validators.requireThat(input, "input").isInstanceOf(Integer.class).
 				and(v ->
 				{
@@ -322,8 +378,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNull();
+			validators.requireThat(actual, "actual").isNull();
 		}
 	}
 
@@ -332,8 +390,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNull();
+			validators.requireThat(actual, "actual").isNull();
 		}
 	}
 
@@ -342,8 +402,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new Object();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNull();
+			validators.requireThat(actual, "actual").isNotNull();
 		}
 	}
 
@@ -352,8 +414,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNull();
+			validators.requireThat(actual, "actual").isNotNull();
 		}
 	}
 
@@ -365,10 +429,12 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new HashSet<>(List.of(1));
 			Object expected = new LinkedHashSet<>(List.of(2));
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected, "expected");
+			validators.requireThat(actual, "actual").isEqualTo(expected, "expected");
 		}
 	}
 
@@ -377,8 +443,10 @@ public final class ObjectTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Path actual = Paths.get("non-existing-path");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isDirectory();
+			validators.requireThat(actual, "actual").isDirectory();
 		}
 	}
 }

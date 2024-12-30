@@ -30,7 +30,7 @@ public final class MainGlobalConfiguration implements GlobalConfiguration
 	@Override
 	public Set<TerminalEncoding> supportedTerminalEncodings()
 	{
-		return terminal.getSupportedTypes();
+		return terminal.getSupportedEncodings();
 	}
 
 	@Override

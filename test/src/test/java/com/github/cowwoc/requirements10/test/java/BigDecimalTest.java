@@ -23,8 +23,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -33,8 +35,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "");
+			validators.requireThat(actual, "");
 		}
 	}
 
@@ -43,10 +47,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -55,10 +61,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -67,10 +75,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(2);
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -79,10 +89,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
 			BigDecimal first = BigDecimal.valueOf(10);
 			BigDecimal last = BigDecimal.valueOf(20);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, last);
+			validators.requireThat(actual, "actual").isBetween(first, last);
 		}
 	}
 
@@ -91,10 +103,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(2);
 			BigDecimal first = BigDecimal.ZERO;
 			BigDecimal last = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isBetween(first, true, last, true);
+			validators.requireThat(actual, "actual").isBetween(first, true, last, true);
 		}
 	}
 
@@ -103,8 +117,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(-1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
+			validators.requireThat(actual, "actual").isNegative();
 		}
 	}
 
@@ -113,8 +129,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
+			validators.requireThat(actual, "actual").isNegative();
 		}
 	}
 
@@ -123,8 +141,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNegative();
+			validators.requireThat(actual, "actual").isNegative();
 		}
 	}
 
@@ -133,7 +153,8 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			validators.requireThat(BigDecimal.ZERO, "actual").isNotNegative();
 			validators.requireThat(BigDecimal.ONE, "actual").isNotNegative();
 		}
@@ -144,8 +165,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(-1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotNegative();
+			validators.requireThat(actual, "actual").isNotNegative();
 		}
 	}
 
@@ -154,7 +177,9 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new TestValidatorsImpl(scope).requireThat(BigDecimal.ZERO, "actual").isZero();
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(BigDecimal.ZERO, "actual").isZero();
 		}
 	}
 
@@ -163,8 +188,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
+			validators.requireThat(actual, "actual").isZero();
 		}
 	}
 
@@ -173,8 +200,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(-1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
+			validators.requireThat(actual, "actual").isZero();
 		}
 	}
 
@@ -183,8 +212,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(0.1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
+			validators.requireThat(actual, "actual").isZero();
 		}
 	}
 
@@ -193,8 +224,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isZero();
+			validators.requireThat(actual, "actual").isZero();
 		}
 	}
 
@@ -203,7 +236,8 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			TestValidators validators = new TestValidatorsImpl(scope);
+			TestValidators validators = TestValidators.of(scope);
+
 			validators.requireThat(BigDecimal.valueOf(-1), "actual").isNotZero();
 			validators.requireThat(BigDecimal.valueOf(0.1), "actual").isNotZero();
 			validators.requireThat(BigDecimal.ONE, "actual").isNotZero();
@@ -215,7 +249,9 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new TestValidatorsImpl(scope).requireThat(BigDecimal.ZERO, "actual").isNotZero();
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(BigDecimal.ZERO, "actual").isNotZero();
 		}
 	}
 
@@ -224,8 +260,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPositive();
+			validators.requireThat(actual, "actual").isPositive();
 		}
 	}
 
@@ -234,8 +272,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPositive();
+			validators.requireThat(actual, "actual").isPositive();
 		}
 	}
 
@@ -244,8 +284,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(-1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPositive();
+			validators.requireThat(actual, "actual").isPositive();
 		}
 	}
 
@@ -254,8 +296,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
-			new TestValidatorsImpl(scope).requireThat(BigDecimal.ZERO, "actual").isNotPositive();
-			new TestValidatorsImpl(scope).requireThat(BigDecimal.valueOf(-1), "actual").
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(BigDecimal.ZERO, "actual").isNotPositive();
+			validators.requireThat(BigDecimal.valueOf(-1), "actual").
 				isNotPositive();
 		}
 	}
@@ -265,8 +309,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotPositive();
+			validators.requireThat(actual, "actual").isNotPositive();
 		}
 	}
 
@@ -275,8 +321,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
+			validators.requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
 		}
 	}
 
@@ -285,8 +333,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
+			validators.requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
 		}
 	}
 
@@ -295,8 +345,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
+			validators.requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
 		}
 	}
 
@@ -305,8 +357,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
+			validators.requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
 		}
 	}
 
@@ -315,8 +369,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
+			validators.requireThat(actual, "actual").isLessThan(BigDecimal.ONE, "expected");
 		}
 	}
 
@@ -325,8 +381,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
+			validators.requireThat(actual, "actual").isLessThan(BigDecimal.ONE);
 		}
 	}
 
@@ -335,8 +393,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isLessThanOrEqualTo(BigDecimal.ONE, "expected");
 		}
 	}
@@ -346,8 +406,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isLessThanOrEqualTo(BigDecimal.ONE);
 		}
 	}
@@ -357,8 +419,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(3);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isLessThanOrEqualTo(BigDecimal.valueOf(2), "expected");
 		}
 	}
@@ -368,8 +432,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(3);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isLessThanOrEqualTo(BigDecimal.valueOf(2));
 		}
 	}
@@ -379,8 +445,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO, "expected");
+			validators.requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO, "expected");
 		}
 	}
 
@@ -389,8 +457,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThan(BigDecimal.ZERO);
 		}
 	}
@@ -400,8 +470,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO, " ");
+			validators.requireThat(actual, "actual").isGreaterThan(BigDecimal.ZERO, " ");
 		}
 	}
 
@@ -410,8 +482,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isGreaterThan(BigDecimal.ONE, "expected");
+			validators.requireThat(actual, "actual").isGreaterThan(BigDecimal.ONE, "expected");
 		}
 	}
 
@@ -420,8 +494,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isGreaterThan(BigDecimal.ONE);
+			validators.requireThat(actual, "actual").isGreaterThan(BigDecimal.ONE);
 		}
 	}
 
@@ -430,8 +506,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThan(BigDecimal.valueOf(2), "expected");
 		}
 	}
@@ -441,8 +519,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThan(BigDecimal.valueOf(2));
 		}
 	}
@@ -452,8 +532,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThanOrEqualTo(BigDecimal.ONE, "expected");
 		}
 	}
@@ -463,8 +545,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThanOrEqualTo(BigDecimal.ONE);
 		}
 	}
@@ -474,8 +558,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isGreaterThanOrEqualTo(BigDecimal.ONE, " ");
+			validators.requireThat(actual, "actual").isGreaterThanOrEqualTo(BigDecimal.ONE, " ");
 		}
 	}
 
@@ -484,8 +570,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThanOrEqualTo(BigDecimal.valueOf(2), "expected");
 		}
 	}
@@ -495,8 +583,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isGreaterThanOrEqualTo(BigDecimal.valueOf(2));
 		}
 	}
@@ -506,10 +596,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(1234, 2);
 			int first = 3;
 			int last = 5;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").precision().isBetween(first, last);
+			validators.requireThat(actual, "actual").precision().isBetween(first, last);
 		}
 	}
 
@@ -518,10 +610,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 2);
 			int first = 10;
 			int last = 20;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").precision().isBetween(first, last);
+			validators.requireThat(actual, "actual").precision().isBetween(first, last);
 		}
 	}
 
@@ -530,10 +624,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(1234, 4);
 			int first = 3;
 			int last = 5;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isBetween(first, last);
+			validators.requireThat(actual, "actual").scale().isBetween(first, last);
 		}
 	}
 
@@ -542,10 +638,12 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 2);
 			int first = 10;
 			int last = 20;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isBetween(first, last);
+			validators.requireThat(actual, "actual").scale().isBetween(first, last);
 		}
 	}
 
@@ -554,8 +652,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 0);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isZero();
+			validators.requireThat(actual, "actual").scale().isZero();
 		}
 	}
 
@@ -564,8 +664,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isZero();
+			validators.requireThat(actual, "actual").scale().isZero();
 		}
 	}
 
@@ -574,8 +676,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNotZero();
+			validators.requireThat(actual, "actual").scale().isNotZero();
 		}
 	}
 
@@ -584,8 +688,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 0);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNotZero();
+			validators.requireThat(actual, "actual").scale().isNotZero();
 		}
 	}
 
@@ -594,8 +700,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isPositive();
+			validators.requireThat(actual, "actual").scale().isPositive();
 		}
 	}
 
@@ -604,8 +712,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 0);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isPositive();
+			validators.requireThat(actual, "actual").scale().isPositive();
 		}
 	}
 
@@ -614,8 +724,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 0);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNotPositive();
+			validators.requireThat(actual, "actual").scale().isNotPositive();
 		}
 	}
 
@@ -624,8 +736,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNotPositive();
+			validators.requireThat(actual, "actual").scale().isNotPositive();
 		}
 	}
 
@@ -634,8 +748,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, -1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNegative();
+			validators.requireThat(actual, "actual").scale().isNegative();
 		}
 	}
 
@@ -644,8 +760,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 0);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNegative();
+			validators.requireThat(actual, "actual").scale().isNegative();
 		}
 	}
 
@@ -654,8 +772,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, 0);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNotNegative();
+			validators.requireThat(actual, "actual").scale().isNotNegative();
 		}
 	}
 
@@ -664,8 +784,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(123, -1);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").scale().isNotNegative();
+			validators.requireThat(actual, "actual").scale().isNotNegative();
 		}
 	}
 
@@ -674,8 +796,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isWholeNumber();
+			validators.requireThat(actual, "actual").isWholeNumber();
 		}
 	}
 
@@ -684,8 +808,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isWholeNumber();
+			validators.requireThat(actual, "actual").isWholeNumber();
 		}
 	}
 
@@ -694,8 +820,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = new BigDecimal("1.1");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isWholeNumber();
+			validators.requireThat(actual, "actual").isWholeNumber();
 		}
 	}
 
@@ -704,8 +832,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = new BigDecimal("1.1");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotWholeNumber();
+			validators.requireThat(actual, "actual").isNotWholeNumber();
 		}
 	}
 
@@ -714,8 +844,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.valueOf(2);
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isMultipleOf(BigDecimal.ONE);
+			validators.requireThat(actual, "actual").isMultipleOf(BigDecimal.ONE);
 		}
 	}
 
@@ -724,8 +856,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isMultipleOf(actual);
+			validators.requireThat(actual, "actual").isMultipleOf(actual);
 		}
 	}
 
@@ -734,8 +868,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isMultipleOf(BigDecimal.ONE);
+			validators.requireThat(actual, "actual").isMultipleOf(BigDecimal.ONE);
 		}
 	}
 
@@ -744,8 +880,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isMultipleOf(BigDecimal.ZERO);
+			validators.requireThat(actual, "actual").isMultipleOf(BigDecimal.ZERO);
 		}
 	}
 
@@ -754,8 +892,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ZERO;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isMultipleOf(BigDecimal.ZERO);
+			validators.requireThat(actual, "actual").isMultipleOf(BigDecimal.ZERO);
 		}
 	}
 
@@ -764,8 +904,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isMultipleOf(BigDecimal.valueOf(2));
+			validators.requireThat(actual, "actual").isMultipleOf(BigDecimal.valueOf(2));
 		}
 	}
 
@@ -774,8 +916,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = BigDecimal.ONE;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotMultipleOf(BigDecimal.valueOf(2));
+			validators.requireThat(actual, "actual").isNotMultipleOf(BigDecimal.valueOf(2));
 		}
 	}
 
@@ -787,8 +931,10 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = new BigDecimal("0.1");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPositive();
+			validators.requireThat(actual, "actual").isPositive();
 		}
 	}
 
@@ -797,12 +943,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be zero");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isZero().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -811,12 +959,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" may not be zero");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotZero().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -825,12 +975,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.precision() may not be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				precision().isNotEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -839,12 +991,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"actual.scale() may not be equal to 5");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				scale().isNotEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -853,12 +1007,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be a whole number");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -867,12 +1023,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" may not be a whole number");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotWholeNumber().isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -881,12 +1039,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" must be a multiple of 10");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isMultipleOf(BigDecimal.TEN).isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -895,13 +1055,15 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
 				"actual" must be a multiple of "other".
 				other: 10""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isMultipleOf(BigDecimal.TEN, "other").isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -910,12 +1072,14 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" may not be a multiple of 1");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotMultipleOf(BigDecimal.ONE).isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 
@@ -924,13 +1088,15 @@ public final class BigDecimalTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			BigDecimal actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null", """
 				"actual" may not be a multiple of "other".
 				other: 1""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isNotMultipleOf(BigDecimal.ONE, "other").isNotEqualTo(BigDecimal.ONE).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

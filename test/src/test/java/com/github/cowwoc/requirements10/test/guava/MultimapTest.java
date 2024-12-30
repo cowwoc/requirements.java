@@ -5,6 +5,7 @@
 package com.github.cowwoc.requirements10.test.guava;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import com.google.common.collect.HashMultimap;
@@ -24,8 +25,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = HashMultimap.create();
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -34,8 +37,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = HashMultimap.create();
-			new TestValidatorsImpl(scope).requireThat(actual, "");
+			validators.requireThat(actual, "");
 		}
 	}
 
@@ -44,8 +49,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = HashMultimap.create();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
+			validators.requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -54,8 +61,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
+			validators.requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -64,8 +73,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
+			validators.requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -74,8 +85,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = HashMultimap.create();
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
+			validators.requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -84,8 +97,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().contains("key");
+			validators.requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -94,8 +109,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().contains("key");
+			validators.requireThat(actual, "actual").keySet().contains("key");
 		}
 	}
 
@@ -104,8 +121,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().
+			validators.requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -115,8 +134,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").keySet().
+			validators.requireThat(actual, "actual").keySet().
 				doesNotContain("notKey");
 		}
 	}
@@ -126,8 +147,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().contains("value");
+			validators.requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -136,8 +159,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "notValue");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().contains("value");
+			validators.requireThat(actual, "actual").values().contains("value");
 		}
 	}
 
@@ -146,8 +171,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().
+			validators.requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -157,8 +184,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "notValue");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").values().
+			validators.requireThat(actual, "actual").values().
 				doesNotContain("notValue");
 		}
 	}
@@ -168,8 +197,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entries().
+			validators.requireThat(actual, "actual").entries().
 				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
@@ -179,8 +210,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entries().
+			validators.requireThat(actual, "actual").entries().
 				contains(new SimpleImmutableEntry<>("key", "value"));
 		}
 	}
@@ -190,8 +223,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entries().
+			validators.requireThat(actual, "actual").entries().
 				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
@@ -201,8 +236,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").entries().
+			validators.requireThat(actual, "actual").entries().
 				doesNotContain(new SimpleImmutableEntry<>("notKey", "value"));
 		}
 	}
@@ -212,8 +249,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(1);
+			validators.requireThat(actual, "actual").size().isEqualTo(1);
 		}
 	}
 
@@ -222,8 +261,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isEqualTo(2);
+			validators.requireThat(actual, "actual").size().isEqualTo(2);
 		}
 	}
 
@@ -232,8 +273,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(2);
+			validators.requireThat(actual, "actual").size().isNotEqualTo(2);
 		}
 	}
 
@@ -242,8 +285,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("notKey", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").size().isNotEqualTo(1);
+			validators.requireThat(actual, "actual").size().isNotEqualTo(1);
 		}
 	}
 
@@ -252,8 +297,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				and(v -> v.keySet().contains("key")).
 				and(v -> v.values().contains("value"));
 		}
@@ -264,8 +311,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				and(v -> v.keySet().contains("notTheKey")).
 				and(v -> v.values().contains("value"));
 		}
@@ -276,8 +325,10 @@ public final class MultimapTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Multimap<String, String> actual = ImmutableMultimap.of("key", "value");
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				and(v -> v.keySet().contains("key")).
 				and(v -> v.values().contains("notTheValue"));
 		}

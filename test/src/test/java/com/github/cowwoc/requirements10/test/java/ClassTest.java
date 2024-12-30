@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements10.test.java;
 
 import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
@@ -23,8 +24,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -33,8 +36,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = boolean.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -43,8 +48,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = byte.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -53,8 +60,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = char.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -63,8 +72,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = short.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -73,8 +84,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = int.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -83,8 +96,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = long.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -93,8 +108,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = float.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -103,8 +120,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = double.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -113,8 +132,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isPrimitive();
+			validators.requireThat(actual, "actual").isPrimitive();
 		}
 	}
 
@@ -123,8 +144,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			validators.requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -133,8 +156,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf(Object.class);
+			validators.requireThat(actual, "actual").isSupertypeOf(Object.class);
 		}
 	}
 
@@ -143,8 +168,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf((Class<?>) null);
+			validators.requireThat(actual, "actual").isSupertypeOf((Class<?>) null);
 		}
 	}
 
@@ -153,8 +180,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf((GenericType<?>) null);
+			validators.requireThat(actual, "actual").isSupertypeOf((GenericType<?>) null);
 		}
 	}
 
@@ -163,8 +192,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSupertypeOf(Random.class);
+			validators.requireThat(actual, "actual").isSupertypeOf(Random.class);
 		}
 	}
 
@@ -173,8 +204,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Random.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf(Object.class);
+			validators.requireThat(actual, "actual").isSubtypeOf(Object.class);
 		}
 	}
 
@@ -183,8 +216,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
+			validators.requireThat(actual, "actual").isSubtypeOf(Random.class);
 		}
 	}
 
@@ -193,8 +228,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf((Class<?>) null);
+			validators.requireThat(actual, "actual").isSubtypeOf((Class<?>) null);
 		}
 	}
 
@@ -203,8 +240,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = Object.class;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf((GenericType<?>) null);
+			validators.requireThat(actual, "actual").isSubtypeOf((GenericType<?>) null);
 		}
 	}
 
@@ -213,8 +252,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<?> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSubtypeOf(Random.class);
+			validators.requireThat(actual, "actual").isSubtypeOf(Random.class);
 		}
 	}
 
@@ -223,8 +264,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isSupertypeOf((Class<?>) null);
 		}
 	}
@@ -234,8 +277,10 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<Integer> actual = null;
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				isSupertypeOf((GenericType<?>) null);
 		}
 	}
@@ -245,13 +290,15 @@ public final class ClassTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Class<Integer> actual = null;
 			List<String> expectedMessages = List.of("""
 				"actual" must be a supertype of java.lang.Integer.
 				actual: null""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isSupertypeOf(Integer.class).isNotEqualTo(Double.class).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }

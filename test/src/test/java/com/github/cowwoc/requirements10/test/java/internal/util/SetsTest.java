@@ -6,6 +6,7 @@ package com.github.cowwoc.requirements10.test.java.internal.util;
 
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Collections;
+import com.github.cowwoc.requirements10.test.TestValidators;
 import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import com.google.common.collect.ImmutableList;
@@ -24,9 +25,11 @@ public final class SetsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Collection<Integer> input = ImmutableList.of(1, 2, 3);
 			Set<Integer> output = Collections.asSet(input);
-			new TestValidatorsImpl(scope).requireThat(input, "Input").isReferenceNotEqualTo(output, "output");
+			validators.requireThat(input, "Input").isReferenceNotEqualTo(output, "output");
 		}
 	}
 
@@ -35,9 +38,11 @@ public final class SetsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Collection<Integer> input = ImmutableSet.of(1, 2, 3);
 			Set<Integer> output = Collections.asSet(input);
-			new TestValidatorsImpl(scope).requireThat(input, "Input").isReferenceEqualTo(output, "output");
+			validators.requireThat(input, "Input").isReferenceEqualTo(output, "output");
 		}
 	}
 
@@ -46,10 +51,12 @@ public final class SetsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Set<Integer> first = ImmutableSet.of(1, 2, 3);
 			Set<Integer> second = ImmutableSet.of(2, 3, 4);
 			Set<Integer> difference = Collections.firstMinusSecond(first, second);
-			new TestValidatorsImpl(scope).requireThat(difference, "difference").
+			validators.requireThat(difference, "difference").
 				containsExactly(ImmutableSet.of(1));
 		}
 	}
@@ -59,10 +66,12 @@ public final class SetsTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Set<Integer> first = ImmutableSet.of(1, 2, 3);
 			Set<Integer> second = ImmutableSet.of(2, 3, 4);
 			Set<Integer> intersection = Collections.intersection(first, second);
-			new TestValidatorsImpl(scope).requireThat(intersection, "intersection").
+			validators.requireThat(intersection, "intersection").
 				containsExactly(ImmutableSet.of(2, 3));
 		}
 	}

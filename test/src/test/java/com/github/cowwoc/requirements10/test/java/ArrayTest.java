@@ -31,10 +31,12 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, null);
+			validators.requireThat(actual, null);
 		}
 	}
 
@@ -43,10 +45,12 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "");
+			validators.requireThat(actual, "");
 		}
 	}
 
@@ -55,10 +59,12 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
+			validators.requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -67,11 +73,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEmpty();
+			validators.requireThat(actual, "actual").isEmpty();
 		}
 	}
 
@@ -80,11 +88,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
+			validators.requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -93,10 +103,12 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEmpty();
+			validators.requireThat(actual, "actual").isNotEmpty();
 		}
 	}
 
@@ -105,11 +117,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains("element");
+			validators.requireThat(actual, "actual").contains("element");
 		}
 	}
 
@@ -118,11 +132,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"notElement"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").contains("element");
+			validators.requireThat(actual, "actual").contains("element");
 		}
 	}
 
@@ -131,11 +147,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				contains("element", "expectedName");
 		}
 	}
@@ -145,11 +163,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"notElement"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				contains("element", "expectedName");
 		}
 	}
@@ -159,13 +179,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -175,13 +197,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -191,12 +215,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -206,12 +232,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"), "expected");
 		}
 	}
@@ -221,13 +249,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"), "expectedName");
 		}
 	}
@@ -237,13 +267,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two"), "expectedName");
 		}
 	}
@@ -253,13 +285,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsExactly(Arrays.asList("one", "two", "three"), " ");
 		}
 	}
@@ -269,13 +303,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAny(Arrays.asList("two", "four"));
 		}
 	}
@@ -285,13 +321,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAny(Arrays.asList("four", "five"));
 		}
 	}
@@ -301,13 +339,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAny(Arrays.asList("two", "four"), "expectedName");
 		}
 	}
@@ -317,13 +357,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAny(Arrays.asList("four", "five"), "expectedName");
 		}
 	}
@@ -333,13 +375,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAny(Arrays.asList("two", "four"), " ");
 
 		}
@@ -350,13 +394,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "three"));
 		}
 	}
@@ -366,13 +412,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "four"));
 		}
 	}
@@ -382,13 +430,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "three"), "expectedName");
 
 		}
@@ -399,13 +449,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "four"), "expectedName");
 
 		}
@@ -416,13 +468,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				containsAll(Arrays.asList("two", "three"), " ");
 
 		}
@@ -433,11 +487,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"notElement"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContain("element");
+			validators.requireThat(actual, "actual").doesNotContain("element");
 		}
 	}
 
@@ -446,11 +502,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContain("element");
+			validators.requireThat(actual, "actual").doesNotContain("element");
 		}
 	}
 
@@ -459,11 +517,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"notElement"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContain("element", "unwantedName");
 		}
 	}
@@ -473,11 +533,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContain("element", "unwantedName");
 		}
 	}
@@ -487,11 +549,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"notElement"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContain("element", " ");
 		}
 	}
@@ -501,13 +565,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two"));
 		}
 	}
@@ -517,12 +583,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -532,13 +600,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -548,13 +618,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two"), "unwantedName");
 
 		}
@@ -565,12 +637,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"), "unwanted");
 
 		}
@@ -581,13 +655,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainExactly(Arrays.asList("one", "two", "three"), "unwantedName");
 
 		}
@@ -598,13 +674,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"));
 		}
 	}
@@ -614,13 +692,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("three", "four", "five"));
 		}
 	}
@@ -630,13 +710,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"), "unwantedName");
 
 		}
@@ -647,13 +729,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("three", "four", "five"), "unwantedName");
 
 		}
@@ -664,13 +748,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAny(Arrays.asList("four", "five", "six"), " ");
 
 		}
@@ -681,13 +767,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"));
 		}
 	}
@@ -697,6 +785,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
@@ -704,7 +794,7 @@ public final class ArrayTest
 					"three",
 					"four"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "three"));
 		}
 	}
@@ -714,13 +804,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"), "unwantedName");
 
 		}
@@ -731,6 +823,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
@@ -738,7 +832,7 @@ public final class ArrayTest
 					"three",
 					"four"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "three"), "unwantedName");
 
 		}
@@ -749,13 +843,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").
+			validators.requireThat(actual, "actual").
 				doesNotContainAll(Arrays.asList("one", "two", "four"), " ");
 
 		}
@@ -766,13 +862,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
 					"two",
 					"three"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContainDuplicates();
+			validators.requireThat(actual, "actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -781,6 +879,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"one",
@@ -789,7 +889,7 @@ public final class ArrayTest
 					"two",
 					"four"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").doesNotContainDuplicates();
+			validators.requireThat(actual, "actual").doesNotContainDuplicates();
 		}
 	}
 
@@ -798,8 +898,10 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual = {1, 2, 3};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+			validators.requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 
@@ -808,8 +910,10 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual = {3, 2, 1};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
+			validators.requireThat(actual, "actual").isSorted(Comparator.naturalOrder());
 		}
 	}
 
@@ -818,11 +922,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isEqualTo(1);
+			validators.requireThat(actual, "actual").length().isEqualTo(1);
 		}
 	}
 
@@ -831,11 +937,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isEqualTo(2);
+			validators.requireThat(actual, "actual").length().isEqualTo(2);
 		}
 	}
 
@@ -844,11 +952,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().
+			validators.requireThat(actual, "actual").length().
 				isEqualTo(1, "expectedName");
 		}
 	}
@@ -858,11 +968,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().
+			validators.requireThat(actual, "actual").length().
 				isEqualTo(2, "expectedName");
 		}
 	}
@@ -872,11 +984,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isEqualTo(1, " ");
+			validators.requireThat(actual, "actual").length().isEqualTo(1, " ");
 		}
 	}
 
@@ -885,11 +999,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isNotEqualTo(2);
+			validators.requireThat(actual, "actual").length().isNotEqualTo(2);
 		}
 	}
 
@@ -898,11 +1014,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isNotEqualTo(1);
+			validators.requireThat(actual, "actual").length().isNotEqualTo(1);
 		}
 	}
 
@@ -911,11 +1029,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().
+			validators.requireThat(actual, "actual").length().
 				isNotEqualTo(2, "expectedName");
 		}
 	}
@@ -925,11 +1045,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().
+			validators.requireThat(actual, "actual").length().
 				isNotEqualTo(1, "expectedName");
 		}
 	}
@@ -939,11 +1061,13 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual =
 				{
 					"element"
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isNotEqualTo(2, " ");
+			validators.requireThat(actual, "actual").length().isNotEqualTo(2, " ");
 		}
 	}
 
@@ -952,13 +1076,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual =
 				{
 					1,
 					2,
 					3
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			validators.requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -967,6 +1093,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual =
 				{
 					1,
@@ -974,7 +1102,7 @@ public final class ArrayTest
 					3,
 					4
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			validators.requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -983,6 +1111,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual =
 				{
 					1,
@@ -991,7 +1121,7 @@ public final class ArrayTest
 					4,
 					5
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			validators.requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -1000,12 +1130,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual =
 				{
 					1,
 					2
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isBetween(3, 5);
+			validators.requireThat(actual, "actual").length().isBetween(3, 5);
 		}
 	}
 
@@ -1014,6 +1146,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Integer[] actual =
 				{
 					1,
@@ -1022,7 +1156,7 @@ public final class ArrayTest
 					4,
 					5
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").length().isBetween(3, true, 5, true);
+			validators.requireThat(actual, "actual").length().isBetween(3, true, 5, true);
 		}
 	}
 
@@ -1031,6 +1165,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1040,7 +1176,7 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat((Object) actual, "actual").isEqualTo(expected);
+			validators.requireThat((Object) actual, "actual").isEqualTo(expected);
 		}
 	}
 
@@ -1049,6 +1185,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1059,7 +1197,7 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 			expected[0] = 4;
 
-			new TestValidatorsImpl(scope).requireThat((Object) actual, "actual").isEqualTo(expected);
+			validators.requireThat((Object) actual, "actual").isEqualTo(expected);
 
 		}
 	}
@@ -1069,6 +1207,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1079,7 +1219,7 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, unwanted, 0, actual.length);
 			unwanted[0] = 4;
 
-			new TestValidatorsImpl(scope).requireThat((Object) actual, "actual").isNotEqualTo(unwanted);
+			validators.requireThat((Object) actual, "actual").isNotEqualTo(unwanted);
 		}
 	}
 
@@ -1088,6 +1228,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1097,7 +1239,7 @@ public final class ArrayTest
 			int[] unwanted = new int[actual.length];
 			System.arraycopy(actual, 0, unwanted, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat((Object) actual, "actual").isNotEqualTo(unwanted);
+			validators.requireThat((Object) actual, "actual").isNotEqualTo(unwanted);
 		}
 	}
 
@@ -1106,6 +1248,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1115,7 +1259,7 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}
 
@@ -1124,6 +1268,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1134,7 +1280,7 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 			expected[0] = 4;
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isEqualTo(expected);
+			validators.requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}
 
@@ -1143,6 +1289,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1153,7 +1301,7 @@ public final class ArrayTest
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 			expected[0] = 4;
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEqualTo(expected);
+			validators.requireThat(actual, "actual").isNotEqualTo(expected);
 		}
 	}
 
@@ -1162,6 +1310,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1171,7 +1321,7 @@ public final class ArrayTest
 			int[] expected = new int[actual.length];
 			System.arraycopy(actual, 0, expected, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isNotEqualTo(expected);
+			validators.requireThat(actual, "actual").isNotEqualTo(expected);
 		}
 	}
 
@@ -1180,13 +1330,15 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
 					2,
 					3
 				};
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
+			validators.requireThat(actual, "actual").isReferenceEqualTo(actual, "itself");
 		}
 	}
 
@@ -1195,6 +1347,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1204,7 +1358,7 @@ public final class ArrayTest
 			int[] other = new int[actual.length];
 			System.arraycopy(actual, 0, other, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceEqualTo(other, "other");
+			validators.requireThat(actual, "actual").isReferenceEqualTo(other, "other");
 		}
 	}
 
@@ -1213,6 +1367,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1222,7 +1378,7 @@ public final class ArrayTest
 			int[] other = new int[actual.length];
 			System.arraycopy(actual, 0, other, 0, actual.length);
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(other, "other");
+			validators.requireThat(actual, "actual").isReferenceNotEqualTo(other, "other");
 		}
 	}
 
@@ -1231,6 +1387,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1238,7 +1396,7 @@ public final class ArrayTest
 					3
 				};
 
-			new TestValidatorsImpl(scope).requireThat(actual, "actual").isReferenceNotEqualTo(actual, "actual");
+			validators.requireThat(actual, "actual").isReferenceNotEqualTo(actual, "actual");
 		}
 	}
 
@@ -1248,6 +1406,7 @@ public final class ArrayTest
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = TestValidators.of(scope);
+
 			String actual = validators.configuration().stringMappers().toString(null);
 			String expected = "null";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
@@ -1259,6 +1418,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[] actual = new int[]
 				{
 					1,
@@ -1271,7 +1432,6 @@ public final class ArrayTest
 					1,
 					3
 				};
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.stringMappers().put(int[].class, (value, seen) -> "primitive[]");
@@ -1291,6 +1451,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[][] actual = new int[][]
 				{
 					{
@@ -1317,7 +1479,6 @@ public final class ArrayTest
 						6
 					}
 				};
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.stringMappers().put(int[][].class, (value, seen) -> "primitive[][]");
@@ -1337,6 +1498,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object actual = new String[]
 				{
 					"1",
@@ -1349,7 +1512,6 @@ public final class ArrayTest
 					"1",
 					"3"
 				};
-			TestValidatorsImpl validators = new TestValidatorsImpl(scope);
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())
 			{
 				configurationUpdater.stringMappers().put(Object[].class, (value, seen) -> "object[]");
@@ -1368,6 +1530,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object[] actual = new Integer[]
 				{
 					1,
@@ -1385,7 +1549,7 @@ public final class ArrayTest
 				actual: [1, 2, 3]""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isEqualTo(expected).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+			validators.requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
 	}
@@ -1395,6 +1559,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			Object[][] actual = new Integer[][]
 				{
 					{
@@ -1427,7 +1593,7 @@ public final class ArrayTest
 				DIFF_LEGEND);
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isEqualTo(expected).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+			validators.requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
 	}
@@ -1437,6 +1603,8 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			int[][] actual = new int[][]
 				{
 					{
@@ -1486,7 +1654,7 @@ public final class ArrayTest
 				DIFF_LEGEND);
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				isEqualTo(expected).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").
+			validators.requireThat(actualMessages, "actualMessages").
 				isEqualTo(expectedMessages);
 		}
 	}
@@ -1496,12 +1664,14 @@ public final class ArrayTest
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
+			TestValidators validators = TestValidators.of(scope);
+
 			String[] actual = null;
 			List<String> expectedMessages = List.of("\"actual\" may not be null",
 				"\"actual\" may not contain 5 elements");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				length().isNotEqualTo(5).elseGetFailures().getMessages();
-			new TestValidatorsImpl(scope).requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
+			validators.requireThat(actualMessages, "actualMessages").isEqualTo(expectedMessages);
 		}
 	}
 }
