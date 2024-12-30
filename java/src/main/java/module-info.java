@@ -15,9 +15,6 @@ module com.github.cowwoc.requirements10.java
 	requires transitive com.github.cowwoc.requirements10.annotation;
 	requires io.github.javadiffutils;
 	requires com.github.cowwoc.pouch.core;
-	requires java.desktop;
-	requires java.compiler;
-	requires jdk.dynalink;
 
 	exports com.github.cowwoc.requirements10.java;
 	exports com.github.cowwoc.requirements10.java.validator;
