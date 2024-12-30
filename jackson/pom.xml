@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
@@ -54,11 +55,9 @@
 								<option>--override-methods</option>
 								<option>summary</option>
 							</additionalOptions>
+							<validateLinks>true</validateLinks>
 							<links>
-								<!--
-								The plugin looks for Javadoc at ${project.url}/apidocs but Github doesn't support
-								this layout
-								-->
+								<!-- BUG: https://github.com/maxcellent/javadoc.io/issues/200 -->
 								<link>https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
 								</link>
 							</links>

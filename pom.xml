@@ -206,10 +206,11 @@
 									<option>--override-methods</option>
 									<option>summary</option>
 								</additionalOptions>
+								<validateLinks>true</validateLinks>
 								<links>
 									<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
 									<link>
-										https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
+										https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
 									</link>
 								</links>
 								<excludePackageNames>
