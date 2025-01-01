@@ -333,7 +333,7 @@
 									<ignoreVersions>
 										<ignoreVersion>
 											<type>regex</type>
-											<version>.+-(alpha|beta).+|.+-rc-.*</version>
+											<version>.+(-|\.)(alpha|beta).+|.+-rc(-|\.).*</version>
 										</ignoreVersion>
 									</ignoreVersions>
 								</rule>
@@ -341,7 +341,7 @@
 									<ignoreVersions>
 										<ignoreVersion>
 											<type>regex</type>
-											<version>(.+-SNAPSHOT|.+-M\d|.+(-|\.)(alpha|beta).+)||.+-rc-.*</version>
+											<version>(.+-SNAPSHOT|.+(-|\.)M\d|.+(-|\.)(alpha|beta).+)|.+-rc(-|\.).*</version>
 										</ignoreVersion>
 									</ignoreVersions>
 								</rule>
