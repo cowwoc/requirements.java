@@ -147,7 +147,7 @@ jobs:
           deploy
 
       # Must quote exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
-      - name: Generate Javadoc
+      - name: Generate documentation
         run: |
           ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj' javadoc:aggregate
           VERSION=${{ needs.open-release.outputs.VERSION }}
@@ -155,15 +155,15 @@ jobs:
           mkdir --parents "docs/api/${VERSION}"
           mv target/reports/apidocs/* "docs/api/${VERSION}"
 
-      - name: Commit changes
+      - name: Commit documentation
         run: |
           git checkout ${{ github.ref_name }} -f
           git add "docs/api/${{ needs.open-release.outputs.VERSION }}"
-          git commit -m "Publishing Javadoc for version ${{ needs.open-release.outputs.VERSION }}"
+          git commit -m "Publishing documentation for version ${{ needs.open-release.outputs.VERSION }}"
           git push
 
-  javadoc:
-    name: Javadoc
+  document:
+    name: Document
     needs: deploy
     environment:
       name: github-pages
@@ -186,7 +186,7 @@ jobs:
 
   close-release:
     name: Close release
-    needs: [ open-release, deploy, javadoc ]
+    needs: [ open-release, deploy, document ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -219,7 +219,7 @@ jobs:
   # Cleanup on failure: https://stackoverflow.com/a/74562058/14731
   on-failure:
     name: On failure
-    needs: [ open-release, deploy, javadoc, close-release ]
+    needs: [ open-release, deploy, document, close-release ]
     runs-on: ubuntu-latest
     if: ${{ failure() || cancelled() }}
     steps:
