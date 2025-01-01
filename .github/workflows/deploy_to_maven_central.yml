@@ -9,6 +9,7 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: write
+  pages: write
   id-token: write
 
 env:
@@ -22,7 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       INITIAL_MAIN_POSITION: ${{ steps.create-tag.outputs.INITIAL_MAIN_POSITION }}
-      INITIAL_GH_PAGES_POSITION: ${{ steps.create-tag.outputs.INITIAL_GH_PAGES_POSITION }}
       TAG: ${{ steps.create-tag.outputs.TAG }}
       VERSION: ${{ steps.create-tag.outputs.VERSION }}
       STAGING_PROFILE_ID: ${{ steps.parse-profile-id.outputs.STAGING_PROFILE_ID }}
@@ -150,20 +150,43 @@ jobs:
       - name: Generate Javadoc
         run: |
           ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj' javadoc:aggregate
-          mkdir --parents "${{ needs.open-release.outputs.VERSION }}/docs"
-          mv target/reports/apidocs "${{ needs.open-release.outputs.VERSION }}/docs/api"
+          VERSION=${{ needs.open-release.outputs.VERSION }}
+          rm -rf "docs/api/${VERSION}"
+          mkdir --parents "docs/api/${VERSION}"
+          mv target/reports/apidocs/* "docs/api/${VERSION}"
 
       - name: Commit changes
         run: |
-          git checkout gh-pages -f
-          echo "INITIAL_GH_PAGES_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          git add "${{ needs.open-release.outputs.VERSION }}/docs/api"
-          git commit -m "Released version ${{ needs.open-release.outputs.VERSION }}"
+          git checkout ${{ github.ref_name }} -f
+          git add "docs/api/${{ needs.open-release.outputs.VERSION }}"
+          git commit -m "Publishing Javadoc for version ${{ needs.open-release.outputs.VERSION }}"
           git push
+
+  javadoc:
+    name: Javadoc
+    needs: deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "docs/api"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   close-release:
     name: Close release
-    needs: [ open-release, deploy ]
+    needs: [ open-release, deploy, javadoc ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -196,7 +219,7 @@ jobs:
   # Cleanup on failure: https://stackoverflow.com/a/74562058/14731
   on-failure:
     name: On failure
-    needs: [ open-release, deploy, close-release ]
+    needs: [ open-release, deploy, javadoc, close-release ]
     runs-on: ubuntu-latest
     if: ${{ failure() || cancelled() }}
     steps:
@@ -240,15 +263,3 @@ jobs:
         if: needs.open-release.outputs.TAG != ''
         run: |
           git push --delete origin ${{ needs.open-release.outputs.TAG }}
-
-      - name: Restore the gh-pages ref to its original position
-        if: needs.open-release.outputs.INITIAL_GH_PAGES_POSITION != ''
-        run: |
-          CURRENT_REF_POSITION=$(git rev-parse HEAD)
-          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_GH_PAGES_POSITION }}" ]; then
-            git reset --hard ${{ needs.open-release.outputs.INITIAL_GH_PAGES_POSITION }}
-            if [ "${{ github.ref_type }}" == "tag" ]; then
-              git ${{ github.ref_type }} -f ${{ github.ref_name }}
-            fi
-            git push -f origin ${{ github.ref_name }}
-          fi
