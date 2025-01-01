@@ -71,4 +71,25 @@ public interface PathValidator extends
 	 *                                  does not exist or the user lacks the required permissions)
 	 */
 	PathValidator isRegularFile(LinkOption... options) throws IOException;
+
+	/**
+	 * Ensures that the path contains another path.
+	 *
+	 * @param expected the other path
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code expected} is null
+	 * @throws IllegalArgumentException if the path does not contain {@code expected}
+	 */
+	PathValidator contains(Path expected);
+
+	/**
+	 * Ensures that the path contains another path.
+	 *
+	 * @param expected the other path
+	 * @param name     the name of the expected value
+	 * @return this
+	 * @throws NullPointerException     if the value or {@code expected} is null
+	 * @throws IllegalArgumentException if the path does not contain {@code expected}
+	 */
+	PathValidator contains(Path expected, String name);
 }

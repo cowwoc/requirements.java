@@ -150,4 +150,28 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 		}
 		return this;
 	}
+
+	@Override
+	public PathValidator contains(Path expected)
+	{
+		return containsImpl(expected, null);
+	}
+
+	@Override
+	public PathValidator contains(Path expected, String name)
+	{
+		requireThatNameIsUnique(name);
+		return containsImpl(expected, name);
+	}
+
+	private PathValidator containsImpl(Path expected, String name)
+	{
+		if (value.validationFailed(v -> expected.normalize().startsWith(v.normalize())))
+		{
+			failOnNull();
+			addIllegalArgumentException(
+				PathMessages.contains(this, name, expected).toString());
+		}
+		return this;
+	}
 }

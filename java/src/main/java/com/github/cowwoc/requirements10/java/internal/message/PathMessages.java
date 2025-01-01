@@ -2,6 +2,7 @@ package com.github.cowwoc.requirements10.java.internal.message;
 
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
+import com.github.cowwoc.requirements10.java.internal.validator.PathValidatorImpl;
 
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
@@ -107,6 +108,32 @@ public final class PathMessages
 		Path value = validator.getValueOrDefault(null);
 		if (value != null)
 			messageBuilder.withContext(value.toAbsolutePath(), name);
+		return messageBuilder;
+	}
+
+	/**
+	 * @param validator    the validator
+	 * @param expectedName the name of the expected path ({@code null} if undefined)
+	 * @param expected     the expected path
+	 * @return a message for the validation failure
+	 */
+	public static MessageBuilder contains(PathValidatorImpl validator, String expectedName, Path expected)
+	{
+		String actualName = validator.getName();
+
+		//     "actual" must contain "expected".
+		//     actual  : /users
+		//     expected: /home/root
+		String expectedNameOrValue = validator.getNameOrValue("", expectedName, "", expected);
+
+		MessageBuilder messageBuilder = new MessageBuilder(validator,
+			quoteName(actualName) + " must contain " + expectedNameOrValue + ".");
+
+		Object value = validator.getValueOrDefault(null);
+		if (value != null)
+			messageBuilder.withContext(value, actualName);
+		if (expectedName != null)
+			messageBuilder.withContext(expected, expectedName);
 		return messageBuilder;
 	}
 }

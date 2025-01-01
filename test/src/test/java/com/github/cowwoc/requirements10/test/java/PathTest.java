@@ -253,6 +253,32 @@ public final class PathTest
 		}
 	}
 
+	@Test
+	public void contains()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path actual = Paths.get(new File("/paths1/path2").toURI());
+			Path child = actual.resolve("child");
+			validators.requireThat(actual, "actual").contains(child);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path actual = Paths.get("path1/path2");
+			Path other = actual.resolve("../other");
+			validators.requireThat(actual, "actual").contains(other);
+		}
+	}
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void multipleFailuresIsDirectoryNullOptions() throws IOException
 	{

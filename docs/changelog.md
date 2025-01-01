@@ -2,6 +2,10 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 10.5 - 2025/01/01
+
+* Improvement: Added `PathValidator.contains(Path)`.
+
 ## Version 10.2 - 2024/12/07
 
 * Improvement: Escape linefeed characters in diffs.
