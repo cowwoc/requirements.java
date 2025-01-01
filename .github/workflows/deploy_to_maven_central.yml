@@ -92,7 +92,7 @@ jobs:
           echo "STAGING_REPOSITORY_ID=$(curl -u '${{ secrets.OSSRH_USERNAME}}:${{ secrets.OSSRH_TOKEN }}'
           -H 'Accept: application/json'
           -H 'Content-type: application/json'
-          -X POST -d '{"data": {"description": "com.googlecode.cmake-maven-project:${{ steps.create-tag.outputs.VERSION }}"}}'
+          -X POST -d '{"data": {"description": "requirements.java ${{ steps.create-tag.outputs.VERSION }}"}}'
           'https://${{ env.STAGING_HOST }}/service/local/staging/profiles/${{ steps.parse-profile-id.outputs.STAGING_PROFILE_ID }}/start')"
           >> "$GITHUB_OUTPUT"
 
