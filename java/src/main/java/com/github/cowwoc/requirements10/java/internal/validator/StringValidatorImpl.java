@@ -17,6 +17,7 @@ import com.github.cowwoc.requirements10.java.validator.StringValidator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public final class StringValidatorImpl extends AbstractObjectValidator<StringValidator, String>
 	implements StringValidator
@@ -252,8 +253,14 @@ public final class StringValidatorImpl extends AbstractObjectValidator<StringVal
 	@Override
 	public StringValidator matches(String regex)
 	{
+		return matches(Pattern.compile(regex));
+	}
+
+	@Override
+	public StringValidator matches(Pattern regex)
+	{
 		scope.getInternalValidators().requireThat(regex, "regex").isNotNull();
-		if (value.validationFailed(v -> v.matches(regex)))
+		if (value.validationFailed(v -> regex.matcher(v).matches()))
 		{
 			failOnNull();
 			addIllegalArgumentException(

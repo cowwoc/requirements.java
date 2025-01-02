@@ -7,6 +7,8 @@ package com.github.cowwoc.requirements10.java.validator;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
+import java.util.regex.Pattern;
+
 /**
  * Validates the state of a {@code String}.
  */
@@ -92,6 +94,16 @@ public interface StringValidator extends
 	 * @throws IllegalArgumentException if the value does not match {@code regex}
 	 */
 	StringValidator matches(String regex);
+
+	/**
+	 * Ensures that the value matches a regular expression.
+	 *
+	 * @param regex the regular expression
+	 * @return this
+	 * @throws NullPointerException     if the value is null
+	 * @throws IllegalArgumentException if the value does not match {@code regex}
+	 */
+	StringValidator matches(Pattern regex);
 
 	/**
 	 * Ensures that the value is empty.

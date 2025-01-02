@@ -11,6 +11,7 @@ import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
@@ -370,7 +371,7 @@ public final class StringTest
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			String expected = "^.*(?:\\s)dog(?:\\s).*$";
+			Pattern expected = Pattern.compile("^.*\\sdog\\s.*$");
 			String actual = "my dog is the best";
 			validators.requireThat(actual, "actual").matches(expected);
 		}
@@ -383,7 +384,7 @@ public final class StringTest
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			String expected = "^.*(?:\\s)cat(?:\\s).*$";
+			Pattern expected = Pattern.compile("^.*\\scat\\s.*$");
 			String actual = "my dog is the best";
 			validators.requireThat(actual, "actual").matches(expected);
 		}

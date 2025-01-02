@@ -4,6 +4,8 @@ import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractValidator;
 
+import java.util.regex.Pattern;
+
 import static com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder.quoteName;
 
 /**
@@ -198,7 +200,7 @@ public final class StringMessages
 	 * @param regex     the regular expression
 	 * @return a message for the validation failure
 	 */
-	public static MessageBuilder matches(AbstractValidator<?, String> validator, String regex)
+	public static MessageBuilder matches(AbstractValidator<?, String> validator, Pattern regex)
 	{
 		String name = validator.getName();
 		StringMappers stringMappers = validator.configuration().stringMappers();
