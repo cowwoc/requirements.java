@@ -2,6 +2,10 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 10.7 - 2025/01/03
+
+* Compare the types of the expected and actual values even if their String representation spans multiple lines.
+
 ## Version 10.6 - 2025/01/01
 
 * Added `StringValidator.matches(Pattern)`.

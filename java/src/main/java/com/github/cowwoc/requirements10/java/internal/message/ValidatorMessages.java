@@ -53,8 +53,8 @@ public final class ValidatorMessages
 		StringMappers stringMappers = validator.configuration().stringMappers();
 		String name = validator.getName();
 		Object value = validator.getValueOrDefault(null);
-		if (value == null || unnecessaryDiff(value, stringMappers) ||
-			unnecessaryDiff(expected, stringMappers))
+		if (value == null || diffIsUnnecessary(value, stringMappers) ||
+			diffIsUnnecessary(expected, stringMappers))
 		{
 			// 1. One of the values is short and simple enough to make a diff unnecessary.
 			//
@@ -88,7 +88,7 @@ public final class ValidatorMessages
 	 * @param stringMappers the configuration used to map contextual values to a String
 	 * @return true if the value is short and simple enough to forego a diff
 	 */
-	private static boolean unnecessaryDiff(Object value, StringMappers stringMappers)
+	private static boolean diffIsUnnecessary(Object value, StringMappers stringMappers)
 	{
 		String valueForDiff = stringMappers.toString(value);
 		return valueForDiff.length() < MINIMUM_LENGTH_FOR_DIFF &&

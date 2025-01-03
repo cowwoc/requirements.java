@@ -13,9 +13,9 @@ import com.github.cowwoc.requirements10.java.internal.message.diff.Writer256Colo
 import com.github.cowwoc.requirements10.java.internal.message.diff.Writer8Colors;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.test.TestValidators;
-import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
-import com.github.cowwoc.requirements10.test.java.SameToStringAndHashCodeDifferentIdentity;
-import com.github.cowwoc.requirements10.test.java.SameToStringDifferentHashCode;
+import com.github.cowwoc.requirements10.test.java.SameLineAndHashCodeWithDifferentIdentity;
+import com.github.cowwoc.requirements10.test.java.SameLineWithDifferentHashCode;
+import com.github.cowwoc.requirements10.test.java.SameMultilineWithDifferentHashCode;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
@@ -85,7 +85,7 @@ public final class DiffTest
 			String actual = EXTEND_LENGTH("actual");
 			String expected = EXTEND_LENGTH("expected");
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -130,7 +130,7 @@ public final class DiffTest
 			String actual = "\"key\": \"value \"";
 			String expected = "\"key\": \"value\"";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -157,7 +157,7 @@ public final class DiffTest
 			String actual = "\n" + EXTEND_LENGTH("actual");
 			String expected = EXTEND_LENGTH("expected");
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -191,7 +191,7 @@ public final class DiffTest
 			String actual = EXTEND_LENGTH("actual") + "\n";
 			String expected = EXTEND_LENGTH("expected");
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -227,7 +227,7 @@ public final class DiffTest
 			String actual = EXTEND_LENGTH("actual") + "\r";
 			String expected = EXTEND_LENGTH("expected");
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -257,7 +257,7 @@ public final class DiffTest
 			String actual = EXTEND_LENGTH("prefix") + "\n\nvalue";
 			String expected = EXTEND_LENGTH("prefix") + "value";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -291,7 +291,7 @@ public final class DiffTest
 			String actual = "1\n2\n3\n4\n5";
 			String expected = "1\n2\n9\n4\n5";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -328,7 +328,7 @@ public final class DiffTest
 			String actual = "The dog is brown";
 			String expected = "The fox is down";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -359,7 +359,7 @@ public final class DiffTest
 			String actual = "you like me?";
 			String expected = "Don't you like me?";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -384,7 +384,7 @@ public final class DiffTest
 			String actual = "I lice dogs";
 			String expected = "I like dogs";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -409,7 +409,7 @@ public final class DiffTest
 			String actual = "I like dog";
 			String expected = "I like dogs";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -434,7 +434,7 @@ public final class DiffTest
 			String actual = "I lices dogs";
 			String expected = "I like dogs";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -467,7 +467,7 @@ public final class DiffTest
 			String actual = "2017-05-13T17:55:01-04:00[America/Montreal]";
 			String expected = "2017-05-13T17:56:03-04:00[America/Montreal]";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -493,15 +493,14 @@ public final class DiffTest
 	@Test
 	public void stringValueIsEqualDifferentHashCode()
 	{
-		SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
-		SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
+		SameLineWithDifferentHashCode actual = new SameLineWithDifferentHashCode();
+		SameLineWithDifferentHashCode expected = new SameLineWithDifferentHashCode();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			validators.requireThat(actual, "actual").
-				isEqualTo(expected);
-			fail("Expected method to throw exception");
+			validators.requireThat(actual, "actual").isEqualTo(expected);
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -525,15 +524,14 @@ public final class DiffTest
 	@Test
 	public void stringValueIsEqualDifferentIdentityHashCode()
 	{
-		SameToStringAndHashCodeDifferentIdentity actual = new SameToStringAndHashCodeDifferentIdentity();
-		SameToStringAndHashCodeDifferentIdentity expected = new SameToStringAndHashCodeDifferentIdentity();
+		SameLineAndHashCodeWithDifferentIdentity actual = new SameLineAndHashCodeWithDifferentIdentity();
+		SameLineAndHashCodeWithDifferentIdentity expected = new SameLineAndHashCodeWithDifferentIdentity();
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			validators.requireThat(actual, "actual").
-				isEqualTo(expected);
-			fail("Expected method to throw exception");
+			validators.requireThat(actual, "actual").isEqualTo(expected);
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -546,6 +544,42 @@ public final class DiffTest
 					"actual:\n" + actualMessage;
 			assert (actualMessage.contains("expected.identityHashCode")) :
 				"Was expecting output to contain expected.identityHashCode, but did not.\n" +
+					"actual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * If actual != expected but their string value is identical, make sure that the hashCode() is returned.
+	 */
+	@Test
+	public void multilineStringValueIsEqualDifferentHashCode()
+	{
+		SameMultilineWithDifferentHashCode actual = new SameMultilineWithDifferentHashCode();
+		SameMultilineWithDifferentHashCode expected = new SameMultilineWithDifferentHashCode();
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(actual, "actual").isEqualTo(expected);
+			fail("The method should have thrown an exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			String actualLines = actual.toString();
+			String actualFirstLine = actualLines.substring(0, actualLines.indexOf("\n"));
+			String actualLastLine = actualLines.substring(actualLines.lastIndexOf("\n") + 1);
+			assert (actualMessage.contains(actualFirstLine)) :
+				"Was expecting output to contain the actual value's first line, but did not.\n" +
+					"actual:\n" + actualMessage;
+			assert (actualMessage.contains(actualLastLine)) :
+				"Was expecting output to contain the actual value's last line, but did not.\n" +
+					"actual:\n" + actualMessage;
+			assert (actualMessage.contains("actual.hashCode")) :
+				"Was expecting output to contain actual.hashCode, but did not.\n" +
+					"actual:\n" + actualMessage;
+			assert (actualMessage.contains("expected.hashCode")) :
+				"Was expecting output to contain expected.hashCode, but did not.\n" +
 					"actual:\n" + actualMessage;
 		}
 	}
@@ -571,7 +605,7 @@ public final class DiffTest
 			TestValidators validators = TestValidators.of(scope);
 
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -605,7 +639,7 @@ public final class DiffTest
 			List<Integer> actual = List.of(1, 2, 3, 4, 5);
 			List<Integer> expected = List.of(1, 2, 9, 4, 5);
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -639,7 +673,7 @@ public final class DiffTest
 			List<String> actual = List.of("1", "foo\nbar", "3");
 			List<String> expected = List.of("1", "bar\nfoo", "3");
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -680,7 +714,7 @@ public final class DiffTest
 			// 5 elements
 			List<String> expected = List.of("1", "2", "3", "4", "5");
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -726,7 +760,7 @@ public final class DiffTest
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -756,7 +790,7 @@ public final class DiffTest
 			String actual = "different-same-different";
 			String expected = "maybe-same-maybe";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -808,7 +842,7 @@ public final class DiffTest
 			String actual = "actual\nsame\nactual actual";
 			String expected = "expected\nsame\nexpected expected";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -848,7 +882,7 @@ public final class DiffTest
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -879,7 +913,7 @@ public final class DiffTest
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -909,7 +943,7 @@ public final class DiffTest
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -939,7 +973,7 @@ public final class DiffTest
 			String actual = "int[1234567890]";
 			String expected = "int[1234 67890]";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -970,7 +1004,7 @@ public final class DiffTest
 			String actual = EXTEND_LENGTH("prefix") + "foo\nbar";
 			String expected = EXTEND_LENGTH("prefix") + "bar";
 			validators.requireThat(actual, "actual").isEqualTo(expected);
-			fail("Expected method to throw exception");
+			fail("The method should have thrown an exception");
 		}
 		catch (IllegalArgumentException e)
 		{

@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.SequencedMap;
 
-import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.valid;
 import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.invalid;
+import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.valid;
 
 /**
  * Generates the contextual information to add to the exception message.
@@ -299,28 +299,44 @@ public final class ContextGenerator
 		assert actualValue.isValid() || expectedValue.isValid() :
 			"actualValue and expectedValue were both undefined";
 
+		// Calculate the diff
 		StringMappers stringMappers = configuration.stringMappers();
 		String actualAsString = actualValue.map(stringMappers::toString).or("");
 		String expectedAsString = expectedValue.map(stringMappers::toString).or("");
 		DiffResult lines = diffGenerator.diff(actualAsString, expectedAsString);
-		boolean diffLinesExist = !lines.getDiffLines().isEmpty();
 
-		// When comparing multiline strings, this method is invoked one line at a time. If the actual or expected
-		// value is invalid, it indicates that one of the values contains more lines than the other. The value
-		// with fewer lines will be considered invalid on a per-line basis.
-		int numberOfLines = Math.max(lines.getActualLines().size(), lines.getExpectedLines().size());
-		// Don't diff boolean values
-		if (!allowDiff || numberOfLines == 1 ||
-			actualValue.map(v -> v instanceof Boolean).or(false) ||
+		// Don't show diff lines for boolean values
+		if (actualValue.map(v -> v instanceof Boolean).or(false) ||
 			expectedValue.map(v -> v instanceof Boolean).or(false))
 		{
 			return getContextForSingleLine(lines);
 		}
+
+		List<MessageSection> context = new ArrayList<>();
+		context.addAll(diffToMessageSections(lines));
+		context.addAll(compareTypes(lines));
+		return context;
+	}
+
+	/**
+	 * @param lines the difference between the actual and expected value
+	 * @return the difference represented as an exception message
+	 */
+	private List<MessageSection> diffToMessageSections(DiffResult lines)
+	{
+		// When comparing multiline strings, this method is invoked one line at a time. If the actual or expected
+		// value is invalid, it indicates that one of the values contains more lines than the other. The value
+		// with fewer lines will be considered invalid on a per-line basis.
+		int numberOfLines = Math.max(lines.getActualLines().size(), lines.getExpectedLines().size());
+		if (!allowDiff || numberOfLines == 1)
+			return getContextForSingleLine(lines);
+
 		int actualLineNumber = 0;
 		int expectedLineNumber = 0;
 		List<String> actualLines = lines.getActualLines();
 		List<String> expectedLines = lines.getExpectedLines();
 		List<Boolean> equalLines = lines.getEqualLines();
+		boolean diffLinesExist = !lines.getDiffLines().isEmpty();
 
 		// Indicates if the previous line was equal
 		boolean skippedEqualLines = false;
@@ -421,20 +437,11 @@ public final class ContextGenerator
 		else
 			diffLine = "";
 
+		// We need to check if the values are equal because some collection elements may be equal even if the
+		// overall collections differ.
 		List<MessageSection> context = new ArrayList<>();
 		context.add(getDiffSection(actualName, actualAsString, diffLine, expectedName, expectedAsString));
-
-		if (!actualValue.equals(expectedValue) && stringRepresentationsAreEqual(lines))
-		{
-			// If the String representation of the values is equal, output getClass(), hashCode(),
-			// or System.identityHashCode() to figure out why they differ.
-			List<MessageSection> optionalContext = compareTypes();
-			if (!optionalContext.isEmpty())
-			{
-				context.add(new StringSection(""));
-				context.addAll(optionalContext);
-			}
-		}
+		context.addAll(compareTypes(lines));
 		return context;
 	}
 
@@ -448,11 +455,20 @@ public final class ContextGenerator
 	}
 
 	/**
-	 * @return the difference between the expected and actual values
+	 * If the values differ but their string representation is the same adds lines which compare getClass(),
+	 * hashCode() and/or System.identityHashCode() to figure out why they differ.
+	 *
+	 * @param lines the difference between the actual and expected value
+	 * @return an empty List if the values are equal or the string representations differ
 	 * @throws AssertionError if {@code actualName} or {@code expectedName} are null
 	 */
-	private List<MessageSection> compareTypes()
+	private List<MessageSection> compareTypes(DiffResult lines)
 	{
+		// We need to check if the values are equal because some collection elements may be equal even if the
+		// overall collections differ.
+		if (actualValue.equals(expectedValue) || !stringRepresentationsAreEqual(lines))
+			return List.of();
+
 		assert actualValue.isValid() : "actualValue was undefined";
 		assert expectedValue.isValid() : "expectedValue was undefined";
 		Object actualValueOrNull = actualValue.orThrow(AssertionError::new);
@@ -462,11 +478,15 @@ public final class ContextGenerator
 		String expectedClassName = getClassName(getClass(actualValueOrNull));
 		if (!actualClassName.equals(expectedClassName))
 		{
-			return new ContextGenerator(scope, configuration, actualName + ".class", expectedName + ".class").
-				actualValue(actualClassName).
-				expectedValue(expectedClassName).
-				allowDiff(false).
-				build();
+			List<MessageSection> context = new ArrayList<>();
+			context.add(new StringSection(""));
+			context.addAll(
+				new ContextGenerator(scope, configuration, actualName + ".class", expectedName + ".class").
+					actualValue(actualClassName).
+					expectedValue(expectedClassName).
+					allowDiff(false).
+					build());
+			return context;
 		}
 		// Do not use config.toString() for hashCode values because their exact value does not matter, just the
 		// fact that they are different.
@@ -474,23 +494,29 @@ public final class ContextGenerator
 		int expectedHashCode = Objects.hashCode(expectedValueOrNull);
 		if (actualHashCode != expectedHashCode)
 		{
-			return new ContextGenerator(scope, configuration, actualName + ".hashCode",
+			List<MessageSection> context = new ArrayList<>();
+			context.add(new StringSection(""));
+			context.addAll(new ContextGenerator(scope, configuration, actualName + ".hashCode",
 				expectedName + ".hashCode").
 				actualValue(actualHashCode).
 				expectedValue(expectedHashCode).
 				allowDiff(false).
-				build();
+				build());
+			return context;
 		}
 		int actualIdentityHashCode = System.identityHashCode(actualValueOrNull);
 		int expectedIdentityHashCode = System.identityHashCode(expectedValueOrNull);
 		if (actualIdentityHashCode != expectedIdentityHashCode)
 		{
-			return new ContextGenerator(scope, configuration, actualName + ".identityHashCode",
+			List<MessageSection> context = new ArrayList<>();
+			context.add(new StringSection(""));
+			context.addAll(new ContextGenerator(scope, configuration, actualName + ".identityHashCode",
 				expectedName + ".identityHashCode").
 				actualValue(actualIdentityHashCode).
 				expectedValue(expectedIdentityHashCode).
 				allowDiff(false).
-				build();
+				build());
+			return context;
 		}
 		return List.of();
 	}

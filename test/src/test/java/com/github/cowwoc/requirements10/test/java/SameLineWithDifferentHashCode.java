@@ -5,9 +5,9 @@
 package com.github.cowwoc.requirements10.test.java;
 
 /**
- * A class whose instances have the same toString() value but are never equal.
+ * A class whose instances have the same single-line toString() but are never equal.
  */
-public final class SameToStringDifferentHashCode
+public final class SameLineWithDifferentHashCode
 {
 	@Override
 	public String toString()

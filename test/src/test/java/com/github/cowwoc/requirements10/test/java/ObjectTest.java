@@ -8,7 +8,6 @@ import com.github.cowwoc.requirements10.java.GenericType;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.validator.IntegerValidator;
 import com.github.cowwoc.requirements10.test.TestValidators;
-import com.github.cowwoc.requirements10.test.TestValidatorsImpl;
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
@@ -104,8 +103,8 @@ public final class ObjectTest
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			SameToStringDifferentHashCode actual = new SameToStringDifferentHashCode();
-			SameToStringDifferentHashCode expected = new SameToStringDifferentHashCode();
+			SameLineWithDifferentHashCode actual = new SameLineWithDifferentHashCode();
+			SameLineWithDifferentHashCode expected = new SameLineWithDifferentHashCode();
 			validators.requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}
@@ -117,9 +116,9 @@ public final class ObjectTest
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			SameToStringAndHashCodeDifferentIdentity actual = new SameToStringAndHashCodeDifferentIdentity();
-			SameToStringAndHashCodeDifferentIdentity expected =
-				new SameToStringAndHashCodeDifferentIdentity();
+			SameLineAndHashCodeWithDifferentIdentity actual = new SameLineAndHashCodeWithDifferentIdentity();
+			SameLineAndHashCodeWithDifferentIdentity expected =
+				new SameLineAndHashCodeWithDifferentIdentity();
 			validators.requireThat(actual, "actual").isEqualTo(expected);
 		}
 	}
