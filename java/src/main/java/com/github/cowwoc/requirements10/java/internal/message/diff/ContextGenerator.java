@@ -475,7 +475,7 @@ public final class ContextGenerator
 		Object expectedValueOrNull = expectedValue.orThrow(AssertionError::new);
 
 		String actualClassName = getClassName(getClass(actualValueOrNull));
-		String expectedClassName = getClassName(getClass(actualValueOrNull));
+		String expectedClassName = getClassName(getClass(expectedValueOrNull));
 		if (!actualClassName.equals(expectedClassName))
 		{
 			List<MessageSection> context = new ArrayList<>();

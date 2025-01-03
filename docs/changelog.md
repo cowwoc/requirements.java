@@ -4,7 +4,10 @@ See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
 ## Version 10.7 - 2025/01/03
 
-* Compare the types of the expected and actual values even if their String representation spans multiple lines.
+* Bugfix: If the string representation of the expected and actual values was equal, the class names were not
+  being compared.
+* Compare the types of the expected and actual values even if their String representation spans multiple
+  lines.
 
 ## Version 10.6 - 2025/01/01
 

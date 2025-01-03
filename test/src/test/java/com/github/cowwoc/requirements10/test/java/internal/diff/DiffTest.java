@@ -19,6 +19,9 @@ import com.github.cowwoc.requirements10.test.java.SameMultilineWithDifferentHash
 import com.github.cowwoc.requirements10.test.scope.TestApplicationScope;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
@@ -488,10 +491,47 @@ public final class DiffTest
 	}
 
 	/**
-	 * If actual != expected but their string value is identical, make sure that the hashCode() is returned.
+	 * If actual != expected but their single-line string value is identical, make sure that their class names
+	 * are returned.
 	 */
 	@Test
-	public void stringValueIsEqualDifferentHashCode()
+	public void singleLineStringIsEqualWithDifferentClassNames()
+	{
+		Collection<Integer> actual = new ArrayList<>();
+		Collection<Integer> expected = new HashSet<>();
+		for (int i = 0; i < 10; ++i)
+		{
+			actual.add(i);
+			expected.add(i);
+		}
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			validators.requireThat(actual, "actual").isEqualTo(expected);
+			fail("The method should have thrown an exception");
+		}
+		catch (IllegalArgumentException e)
+		{
+			String actualMessage = e.getMessage();
+			assert (actualMessage.contains(actual.toString())) :
+				"Was expecting output to contain actual value, but did not.\n" +
+					"actual:\n" + actualMessage;
+			assert (actualMessage.contains("actual.class")) :
+				"Was expecting output to contain actual.class, but did not.\n" +
+					"actual:\n" + actualMessage;
+			assert (actualMessage.contains("expected.class")) :
+				"Was expecting output to contain expected.class, but did not.\n" +
+					"actual:\n" + actualMessage;
+		}
+	}
+
+	/**
+	 * If actual != expected but their single-line string value is identical, make sure that the hashCode() is
+	 * returned.
+	 */
+	@Test
+	public void singleLineStringIsEqualWithDifferentHashCode()
 	{
 		SameLineWithDifferentHashCode actual = new SameLineWithDifferentHashCode();
 		SameLineWithDifferentHashCode expected = new SameLineWithDifferentHashCode();
@@ -518,11 +558,11 @@ public final class DiffTest
 	}
 
 	/**
-	 * If actual != expected but their string value and hashCode() are identical, make sure that the identity
-	 * hashCode is returned.
+	 * If actual != expected but their single-line string value and hashCode() are identical, make sure that the
+	 * identity hashCode is returned.
 	 */
 	@Test
-	public void stringValueIsEqualDifferentIdentityHashCode()
+	public void singleLineStringIsEqualWithDifferentIdentityHashCode()
 	{
 		SameLineAndHashCodeWithDifferentIdentity actual = new SameLineAndHashCodeWithDifferentIdentity();
 		SameLineAndHashCodeWithDifferentIdentity expected = new SameLineAndHashCodeWithDifferentIdentity();
@@ -549,10 +589,11 @@ public final class DiffTest
 	}
 
 	/**
-	 * If actual != expected but their string value is identical, make sure that the hashCode() is returned.
+	 * If actual != expected but their multiline string value is identical, make sure that the hashCode() is
+	 * returned.
 	 */
 	@Test
-	public void multilineStringValueIsEqualDifferentHashCode()
+	public void multilineStringValueIsEqualWithDifferentHashCode()
 	{
 		SameMultilineWithDifferentHashCode actual = new SameMultilineWithDifferentHashCode();
 		SameMultilineWithDifferentHashCode expected = new SameMultilineWithDifferentHashCode();
