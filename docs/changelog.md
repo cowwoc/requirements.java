@@ -2,9 +2,14 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 10.9 - 2025/01/13
+
+* Bugfix: `PathValidator.contains(Path)` returned false when the first path was the current directory and the
+  second path was a subdirectory.
+
 ## Version 10.8 - 2025/01/13
 
-* When returning multiple failures, eliminate any duplicate messages. 
+* When returning multiple failures, eliminate any duplicate messages.
 
 ## Version 10.7 - 2025/01/03
 

@@ -166,7 +166,9 @@ public final class PathValidatorImpl extends AbstractObjectValidator<PathValidat
 
 	private PathValidator containsImpl(Path expected, String name)
 	{
-		if (value.validationFailed(v -> expected.normalize().startsWith(v.normalize())))
+		// If we don't invoke toAbsolutePath() first then Path.of("") will not contain Path.of("subDirectory")
+		if (value.validationFailed(v -> expected.toAbsolutePath().normalize().
+			startsWith(v.toAbsolutePath().normalize())))
 		{
 			failOnNull();
 			addIllegalArgumentException(

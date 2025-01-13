@@ -266,6 +266,19 @@ public final class PathTest
 		}
 	}
 
+	@Test
+	public void currentDirectoryContainsSubDirectory()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path actual = Path.of("");
+			Path child = actual.resolve("child");
+			validators.requireThat(actual, "actual").contains(child);
+		}
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void contains_False()
 	{
