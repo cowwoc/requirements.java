@@ -130,7 +130,7 @@ String province = "Florida";
 List<String> provinces = Arrays.asList("Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba",
   "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador");
 
-List<ValidationFailure> failures = checkIf(name, "name").length().isBetween(10, 30).elseGetFailures();
+List<ValidationFailure> failures = new ArrayList<>(checkIf(name, "name").length().isBetween(10, 30).elseGetFailures());
 failures.addAll(checkIf(provinces, "provinces").contains(province).elseGetFailures());
 
 for (ValidationFailure failure: failures)
@@ -174,7 +174,7 @@ requireThat(nameToAge, "nameToAge").
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/10.7/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/10.8/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
 fails, the library outputs a diff of the values being compared.
 
 Depending on the terminal capability, you will see a [textual](textual_diff.md) or a [colored](colored_diff.md) diff.
@@ -188,7 +188,7 @@ terminal.
 
 The use of colors is disabled by default if stdin or stdout are redirected, even if ANSI colors are supported.
 To enable colors,
-invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.7/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.TerminalEncoding)).
+invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.8/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.TerminalEncoding)).
 
 ## Returning the value after validation
 

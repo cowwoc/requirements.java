@@ -715,9 +715,8 @@ public final class ComparableTest
 			TestValidators validators = TestValidators.of(scope);
 
 			Integer actual = null;
+			// Ensure that expectedMessages does not contain the same failure message twice
 			List<String> expectedMessages = List.of("""
-				"actual" must be equal to 5.
-				actual: null""", """
 				"actual" must be equal to 5.
 				actual: null""");
 			try (ConfigurationUpdater configurationUpdater = validators.updateConfiguration())

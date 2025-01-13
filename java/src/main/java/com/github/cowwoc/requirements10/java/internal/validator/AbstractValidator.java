@@ -158,6 +158,13 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	{
 		ValidationFailureImpl failure = new ValidationFailureImpl(configuration, message, cause,
 			exceptionBuilder, Set.of());
+		for (ValidationFailure existingFailure : failures)
+			if (existingFailure.getMessage().equals(failure.getMessage()))
+			{
+				// Skip duplicate failure messages
+				return;
+			}
+
 		failures.add(failure);
 		if (configuration.throwOnFailure())
 		{
@@ -186,6 +193,13 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	{
 		ValidationFailureImpl failure = new ValidationFailureImpl(configuration, message, cause, exceptionBuilder,
 			Set.of(checkedException));
+		for (ValidationFailure existingFailure : failures)
+			if (existingFailure.getMessage().equals(failure.getMessage()))
+			{
+				// Skip duplicate failure messages
+				return;
+			}
+
 		failures.add(failure);
 		if (configuration.throwOnFailure())
 		{

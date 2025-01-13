@@ -2,6 +2,10 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 10.8 - 2025/01/13
+
+* When returning multiple failures, eliminate any duplicate messages. 
+
 ## Version 10.7 - 2025/01/03
 
 * Bugfix: If the string representation of the expected and actual values was equal, the class names were not

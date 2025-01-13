@@ -69,14 +69,7 @@ public final class ValidationFailures
 	{
 		if (failures.isEmpty())
 			return true;
-		Throwable throwable;
-		if (failures.size() == 1)
-		{
-			ValidationFailure failure = failures.getFirst();
-			throwable = failure.getException();
-		}
-		else
-			throwable = new MultipleFailuresException(failures);
+		Throwable throwable = getThrowable();
 		if (cleanStackTrace)
 			Exceptions.removeLibraryFromStackTrace(throwable);
 		switch (throwable)
@@ -85,6 +78,19 @@ public final class ValidationFailures
 			case Error e -> throw e;
 			default -> throw new AssertionError(throwable);
 		}
+	}
+
+	/**
+	 * @return the failure exception
+	 */
+	private Throwable getThrowable()
+	{
+		if (failures.size() == 1)
+		{
+			ValidationFailure failure = failures.getFirst();
+			return failure.getException();
+		}
+		return new MultipleFailuresException(failures);
 	}
 
 	/**
@@ -115,14 +121,7 @@ public final class ValidationFailures
 	{
 		if (failures.isEmpty())
 			return null;
-		Throwable throwable;
-		if (failures.size() == 1)
-		{
-			ValidationFailure failure = failures.getFirst();
-			throwable = failure.getException();
-		}
-		else
-			throwable = new MultipleFailuresException(failures);
+		Throwable throwable = getThrowable();
 		if (cleanStackTrace)
 			Exceptions.removeLibraryFromStackTrace(throwable);
 		return throwable;
