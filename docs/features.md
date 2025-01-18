@@ -174,7 +174,7 @@ requireThat(nameToAge, "nameToAge").
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/10.9/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/10.10/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
 fails, the library outputs a diff of the values being compared.
 
 Depending on the terminal capability, you will see a [textual](textual_diff.md) or a [colored](colored_diff.md) diff.
@@ -188,7 +188,7 @@ terminal.
 
 The use of colors is disabled by default if stdin or stdout are redirected, even if ANSI colors are supported.
 To enable colors,
-invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.9/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.TerminalEncoding)).
+invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/10.10/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements10.java.TerminalEncoding)).
 
 ## Returning the value after validation
 

@@ -2,6 +2,10 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 10.10 - 2025/01/18
+
+* `JacksonValidator`: improved diffs by sorting object keys.
+
 ## Version 10.9 - 2025/01/13
 
 * Bugfix: `PathValidator.contains(Path)` returned false when the first path was the current directory and the

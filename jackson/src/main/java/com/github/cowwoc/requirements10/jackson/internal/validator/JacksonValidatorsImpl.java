@@ -1,6 +1,7 @@
 package com.github.cowwoc.requirements10.jackson.internal.validator;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.cowwoc.requirements10.jackson.JacksonValidators;
 import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import static com.github.cowwoc.requirements10.java.internal.util.ValidationTarget.valid;
 import static com.github.cowwoc.requirements10.java.internal.validator.JavaValidatorsImpl.DEFAULT_NAME;
@@ -23,7 +25,11 @@ import static com.github.cowwoc.requirements10.java.internal.validator.JavaValid
 public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 	implements JacksonValidators
 {
-	private static final StringMapper STRING_MAPPER = (value, seen) -> ((JsonNode) value).toPrettyString();
+	private static final StringMapper STRING_MAPPER = (value, seen) ->
+	{
+		JsonNode node = (JsonNode) value;
+		return normalize(node).toPrettyString();
+	};
 
 	/**
 	 * Creates a new instance of this validator with an independent configuration.
@@ -41,6 +47,32 @@ public class JacksonValidatorsImpl extends AbstractValidators<JacksonValidators>
 			MutableStringMappers stringMappers = config.stringMappers();
 			stringMappers.putIfAbsent(JsonNode.class, STRING_MAPPER);
 		}
+	}
+
+	/**
+	 * Normalizes the order of object keys and array elements to make them easier to diff.
+	 *
+	 * @param node a JSON node
+	 * @return the updated node
+	 * @throws NullPointerException if {@code node} is null
+	 */
+	public static JsonNode normalize(JsonNode node)
+	{
+		if (node.isObject())
+		{
+			ObjectNode objectNode = (ObjectNode) node;
+
+			// Convert the ObjectNode into a TreeMap and sort the keys
+			Map<String, JsonNode> sortedMap = new TreeMap<>();
+			objectNode.fieldNames().forEachRemaining(field ->
+				sortedMap.put(field, normalize(objectNode.get(field))));
+
+			// Convert the TreeMap back into an ObjectNode
+			ObjectNode sortedNode = objectNode.objectNode();
+			sortedMap.forEach(sortedNode::set);
+			return sortedNode;
+		}
+		return node;
 	}
 
 	/**

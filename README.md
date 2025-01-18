@@ -3,7 +3,7 @@
 
 # <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
 
-[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/10.9/)
+[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/10.10/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/changelog.md)
 [![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
@@ -22,7 +22,7 @@ To get started, add this Maven dependency:
 <dependency>
   <groupId>com.github.cowwoc.requirements</groupId>
   <artifactId>java</artifactId>
-  <version>10.9</version>
+  <version>10.10</version>
 </dependency>
 ```
 
@@ -152,14 +152,14 @@ This library offers the following features:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.9/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/10.10/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
   for method preconditions.
-  * [that(value, name)](https://cowwoc.github.io/requirements.java/10.9/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#that(T,java.lang.String))
+  * [that(value, name)](https://cowwoc.github.io/requirements.java/10.10/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#that(T,java.lang.String))
     for [class invariants, method postconditions and private methods](docs/features.md#assertion-support). 
-  * [checkIf(value, name)](https://cowwoc.github.io/requirements.java/10.9/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
+  * [checkIf(value, name)](https://cowwoc.github.io/requirements.java/10.10/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
     for multiple failures and customized error handling.
 
-See the [API documentation](https://cowwoc.github.io/requirements.java/10.9/) for more details.
+See the [API documentation](https://cowwoc.github.io/requirements.java/10.10/) for more details.
 
 ## Best practices
 
