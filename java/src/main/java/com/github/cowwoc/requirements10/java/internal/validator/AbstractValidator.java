@@ -4,10 +4,13 @@ import com.github.cowwoc.requirements10.java.JavaValidators;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.ValidationFailures;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
+import com.github.cowwoc.requirements10.java.internal.StringMappers;
 import com.github.cowwoc.requirements10.java.internal.message.section.MessageBuilder;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +56,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 	 * The list of validation failures.
 	 */
 	protected final List<ValidationFailure> failures;
+	private final Logger log = LoggerFactory.getLogger(StringMappers.class);
 
 	/**
 	 * @param scope         the application configuration
@@ -168,6 +172,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		failures.add(failure);
 		if (configuration.throwOnFailure())
 		{
+			wrongValidator();
 			Throwable throwable = failure.getException();
 			switch (throwable)
 			{
@@ -203,6 +208,7 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 		failures.add(failure);
 		if (configuration.throwOnFailure())
 		{
+			wrongValidator();
 			Throwable throwable = failure.getException();
 			switch (throwable)
 			{
@@ -220,6 +226,20 @@ public abstract class AbstractValidator<S, T> implements ValidatorComponent<S, T
 					throw new AssertionError(throwable);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Warn the user if they are using the wrong validator.
+	 */
+	private void wrongValidator()
+	{
+		T value = getValueOrDefault(null);
+		if (value != null && value.getClass().getPackageName().startsWith("com.fasterxml.jackson") &&
+			!configuration.stringMappers().containsMapping(value))
+		{
+			log.warn("Jackson types should be validated using " +
+				"DefaultJacksonValidators.requireThat(), not DefaultJavaValidators.requireThat().");
 		}
 	}
 

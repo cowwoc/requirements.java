@@ -143,19 +143,17 @@ public final class StringMappers
 	 */
 	private String toString(Object object, Set<Object> seen)
 	{
-		StringMapper mapper = getMapper(object, typeToMapper);
+		StringMapper mapper = getMapper(object);
 		return mapper.apply(object, seen);
 	}
 
 	/**
 	 * Returns the String representation of an object using the mappers.
 	 *
-	 * @param object       an object
-	 * @param typeToMapper a mapping from each class to a function that the String representation of its
-	 *                     objects
+	 * @param object an object
 	 * @return the StringMapper for {@code object}
 	 */
-	private static StringMapper getMapper(Object object, Map<Optional<Class<?>>, StringMapper> typeToMapper)
+	private StringMapper getMapper(Object object)
 	{
 		if (object == null)
 		{
@@ -177,6 +175,29 @@ public final class StringMappers
 		if (match == null)
 			return (value, seen) -> String.valueOf(value);
 		return match.mapper();
+	}
+
+	/**
+	 * Determines if there is a configured mapping for the object's type.
+	 *
+	 * @param object an object
+	 * @return {@code true} if there is a mapping
+	 */
+	public boolean containsMapping(Object object)
+	{
+		if (object == null)
+			return true;
+		Class<?> type = object.getClass();
+		StringMapper mapper = typeToMapper.get(Optional.<Class<?>>of(type));
+		if (mapper != null)
+			return true;
+		if (type.isArray() && Object.class.isAssignableFrom(type.componentType()))
+		{
+			// Treat arrays of different object types as Object[]
+			type = Object[].class;
+		}
+		MatchingMapper match = getTypesThatMatch(type, 0, typeToMapper);
+		return match != null;
 	}
 
 	/**
@@ -254,7 +275,7 @@ public final class StringMappers
 			Object element = iterator.next();
 			if (seen.add(element))
 			{
-				StringMapper elementToString = getMapper(element, typeToMapper);
+				StringMapper elementToString = getMapper(element);
 				joiner.add(elementToString.apply(element, seen));
 			}
 			else
@@ -324,7 +345,7 @@ public final class StringMappers
 				keyAsString = "(this Map)";
 			else
 			{
-				StringMapper keyToString = getMapper(key, typeToMapper);
+				StringMapper keyToString = getMapper(key);
 				keyAsString = keyToString.apply(key, seen);
 			}
 			Object valueAsString;
@@ -332,7 +353,7 @@ public final class StringMappers
 				valueAsString = "(this Map)";
 			else
 			{
-				StringMapper valueToString = getMapper(value, typeToMapper);
+				StringMapper valueToString = getMapper(value);
 				valueAsString = valueToString.apply(value, seen);
 			}
 			joiner.add(keyAsString + "=" + valueAsString);
@@ -361,7 +382,7 @@ public final class StringMappers
 	 */
 	public String toString(Object object)
 	{
-		StringMapper mapper = getMapper(object, typeToMapper);
+		StringMapper mapper = getMapper(object);
 		return mapper.apply(object, new HashSet<>());
 	}
 
