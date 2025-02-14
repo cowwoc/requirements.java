@@ -1,7 +1,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cowwoc.requirements/java/badge.svg)](https://search.maven.org/search?q=g:com.github.cowwoc.requirements)
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
 
-# <img src="docs/checklist.svg" width=64 height=64 alt="checklist"> Requirements API
+# <img src="docs/logo.svg" width=64 height=64 alt="checklist"> Requirements API
 
 [![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/10.12/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/changelog.md)
