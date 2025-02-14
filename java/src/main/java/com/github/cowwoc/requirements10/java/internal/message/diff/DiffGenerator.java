@@ -153,8 +153,6 @@ public final class DiffGenerator
 				writer.writeInserted(fromCodepoints(delta.getTarget().getLines()));
 				break;
 			}
-			default:
-				throw new AssertionError("Unexpected type: " + delta.getType());
 		}
 	}
 
@@ -202,8 +200,6 @@ public final class DiffGenerator
 					DiffConstants.POSTFIX), "");
 				break;
 			}
-			default:
-				throw new AssertionError(encoding.name());
 		}
 		return containsOnly(line, paddingMarker);
 	}
@@ -448,8 +444,6 @@ public final class DiffGenerator
 						result += 2;
 						break;
 					}
-					default:
-						throw new AssertionError(delta.getType().name());
 				}
 			}
 			return result;
@@ -627,8 +621,6 @@ public final class DiffGenerator
 						result = Math.min(result, fromCodepoints(delta.getTarget().getLines()).length());
 						break;
 					}
-					default:
-						throw new AssertionError(delta.getType().name());
 				}
 			}
 			return result;
@@ -671,8 +663,6 @@ public final class DiffGenerator
 						lengthOfTarget += fromCodepoints(delta.getTarget().getLines()).length();
 						break;
 					}
-					default:
-						throw new AssertionError(delta.getType().name());
 				}
 			}
 			int result = Math.max(lengthOfSource, lengthOfTarget);
